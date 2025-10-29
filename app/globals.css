@@ -1,0 +1,97 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Dark glass theme */
+:root {
+  --accent: #00ffff;
+}
+body {
+  @apply bg-neutral-950 text-neutral-100 font-sans;
+}
+.glass {
+  background-color: rgba(20, 20, 25, 0.4);
+  backdrop-filter: blur(20px);
+  border-radius: 1rem;
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.05);
+}
+
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at 30% 30%, #00ffff10, transparent 60%),
+              radial-gradient(circle at 70% 70%, #ff00ff10, transparent 60%);
+  z-index: -1;
+  animation: float 10s ease-in-out infinite alternate;
+}
+
+@keyframes float {
+  from { transform: translateY(-10px); }
+  to { transform: translateY(10px); }
+}
+
+@keyframes shine {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.glow-text {
+  background: linear-gradient(90deg, #0ff, #fff, #0ff);
+  background-size: 200%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+.group:hover .glow-text {
+  animation: shine 2s linear infinite;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(circle, #ffffff10 1px, transparent 1px);
+  background-size: 3px 3px;
+  opacity: 0.05;
+}
+
+.card-accent {
+  background: radial-gradient(circle at 50% 50%, #00ffff15, transparent 70%);
+  transition: box-shadow 0.3s ease;
+}
+.card-accent:hover {
+  box-shadow: 0 0 30px #00ffff30, 0 0 60px #ff00ff15;
+}
+
+.gradient-text {
+  background: linear-gradient(90deg, #00ffff, #ff00ff);
+  background-clip: text;
+  color: transparent;
+}
+
+.tilt-wrapper {
+  perspective: 800px;
+  perspective-origin: center;
+}
+
+.tilt {
+  transform-style: preserve-3d;
+  will-change: transform;
+  cursor: pointer;
+}
+
+
+.tilt::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 50%, #ffffff15, transparent 60%);
+  pointer-events: none;
+  transition: background-position 0.1s;
+}
+
+* {
+  outline: 1px solid rgba(255,255,255,0.03);
+}
