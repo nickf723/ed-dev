@@ -134,17 +134,41 @@ body::after {
    🧮 TYPOGRAPHY
    ============================== */
 .prose {
-  @apply max-w-none leading-relaxed text-neutral-200;
+  @apply max-w-none leading-relaxed text-neutral-300;
 }
 
 .prose h2 {
-  @apply text-2xl font-semibold text-cyan-300 mt-12 mb-4;
+  @apply mt-12 mb-4 border-b border-neutral-800 pb-2 text-3xl font-bold text-cyan-300;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   padding-bottom: 0.25rem;
 }
 
+.prose h3 {
+  @apply mt-8 mb-3 text-2xl font-semibold text-cyan-400;
+}
+
 .prose p {
   @apply mb-4 text-neutral-300;
+}
+
+/* Style links to match the theme */
+.prose a {
+  @apply text-cyan-400 transition-colors hover:text-cyan-200;
+}
+
+/* Style lists */
+.prose ul,
+.prose ol {
+  @apply mb-4 pl-5;
+}
+
+.prose li {
+  @apply mb-2;
+}
+
+/* Ensure components fit without double margins */
+.prose > :where(figure, div) {
+  @apply my-8;
 }
 
 .prose code {
