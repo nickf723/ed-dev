@@ -78,6 +78,7 @@ export default function Sidebar() {
                 active={pathname.startsWith("/math/algebra/equations")}
                 nested
               />
+              
             </Dropdown>
 
             {/* Geometry */}
