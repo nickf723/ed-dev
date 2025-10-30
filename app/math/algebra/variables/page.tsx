@@ -1,11 +1,12 @@
 "use client";
 import LessonLayout from "@/components/LessonLayout";
-import LessonHeader from "@/components/LessonHeader"; // 👈 Our new icon header
+import LessonHeader from "@/components/LessonHeader";
 import {
   LessonVideo,
-  LessonApplet,
   PracticeProblem,
   ResourceLink,
+  EvaluateApplet, // 👈 Our new coded applet
+  StepByStepSolution, // 👈 Our new step-by-step
 } from "@/components/LessonBlocks";
 
 // Import all the icons we'll use
@@ -66,10 +67,6 @@ export default function VariablesPage() {
       subtitle="The fundamental building blocks of algebra. Learn how symbols like 'x' and 'y' unlock the power to describe relationships and solve puzzles."
       aside={lessonAside} // 👈 Pass our custom aside content
     >
-      {/* This is now a single, flowing article. 
-        The .prose class from LessonLayout will style all the p, ul, table, etc.
-      */}
-
       <LessonHeader icon={Box} title="What is a Variable?" />
       <p>
         In mathematics, a <strong>variable</strong> is a symbol (usually a
@@ -96,38 +93,12 @@ export default function VariablesPage() {
       </p>
       <LessonVideo url="https://www.youtube.com/embed/v-6MShC82ow" />
 
-      <LessonHeader icon={Goal} title="Why Do We Use Them?" />
-      <p>
-        Variables are the main idea that separates algebra from basic
-        arithmetic. They give us a new, powerful way to think about numbers.
-      </p>
-      <ul>
-        <li>
-          <strong>To Describe Patterns:</strong> If you want to say "take any number and double it," you could write{" "}
-          <code>n * 2</code> or just <code>2n</code>. The variable <code>n</code> stands
-          for "any number."
-        </li>
-        <li>
-          <strong>To Write General Rules (Formulas):</strong> The rule for the
-          area of a rectangle is <code>Area = length × width</code>. We can write this
-          as the formula <code>A = l × w</code>. This rule now works for *every*
-          rectangle.
-        </li>
-        <li>
-          <strong>To Solve for Unknowns:</strong> This is the "puzzle" part of
-          algebra. If you have 20 dollars and spend <code>x</code> dollars on a
-          snack, you have 14 dollars left. This gives you the equation{" "}
-          <code>20 - x = 14</code>. You can solve this to find the unknown cost
-          of the snack.
-        </li>
-      </ul>
-
       <LessonHeader icon={Scale} title="Expressions vs. Equations" />
       <p>
         This is one of the most important concepts in algebra. The difference is
         very simple, but critical.
       </p>
-      
+
       <div className="prose-table:my-4 grid grid-cols-1 gap-4 md:grid-cols-2">
         <div className="rounded-lg border border-neutral-700 bg-neutral-900/40 p-4">
           <h4 className="!mt-0 !mb-2 text-xl font-semibold text-green-300">Expression</h4>
@@ -145,7 +116,7 @@ export default function VariablesPage() {
       <p>Here is a great video that explains this core idea in more detail:</p>
       <LessonVideo url="https://www.youtube.com/embed/AS-g-b-8P0M" />
 
-      <LessonHeader icon={Variable} title="The Parts of an Expression" />
+      <LessonHeader icon={Puzzle} title="The Parts of an Expression" />
       <p>
         Let's look closer at that expression, <code>2x + 3</code>. It's built
         from smaller pieces called <strong>terms</strong>.
@@ -184,25 +155,33 @@ export default function VariablesPage() {
         value of the variable. You simply substitute—or "plug in"—the number
         for the letter.
       </p>
-      <p>
-        For example, to evaluate <code>2x + 3</code> when <code>x = 4</code>:
-      </p>
-      <pre className="!bg-neutral-800">
-        <code>
-          2(4) + 3 <br />
-          8 + 3 <br />
-          11
-        </code>
-      </pre>
+
+      {/* 👇 Use our new StepByStep component 👇 */}
+      <StepByStepSolution
+        title="Example: Evaluate 2x + 5 when x = 3"
+        steps={[
+          "Write the original expression: 2x + 5",
+          "Substitute '3' for 'x': 2(3) + 5",
+          "Multiply 2 and 3: 6 + 5",
+          "Add 6 and 5: 11",
+          "The final value is 11.",
+        ]}
+      />
+
       <p>
         Try it yourself! Use the slider in this applet to change the value of{" "}
         <code>x</code> and see how the expression <code>3x - 5</code> is
         evaluated.
       </p>
-      {/* This GeoGebra applet is perfect for evaluating expressions */}
-      <LessonApplet src="https://www.geogebra.org/material/iframe/id/jajg86nh/width/700/height/500/border/888888/sfsb/true/smb/false/stb/false/stbh/false/ai/false/asb/false/sri/true/rc/false/ld/false/sdz/true/smd/false/pr/false" />
+      
+      {/* 👇 Use our new coded applet 👇 */}
+      <EvaluateApplet 
+        expression="3x - 5" 
+        fn={(x) => 3 * x - 5} 
+      />
 
       <LessonHeader icon={CheckSquare} title="Check Your Understanding" />
+      {/* 👇 Use the new PracticeProblem component 👇 */}
       <PracticeProblem
         question="In the expression 8a - 1, what is the variable?"
         solution="The variable is a."
@@ -225,10 +204,6 @@ export default function VariablesPage() {
       />
 
       <LessonHeader icon={BookOpen} title="Further Learning" />
-      <p>
-        Ready to keep going? Check out these resources or head to the next
-        lesson on expressions.
-      </p>
       <ResourceLink
         title="Khan Academy: Intro to Variables"
         url="https://www.khanacademy.org/math/algebra/x2f8bb11595b61c86:intro-to-variables/x2f8bb11595b61c86:why-variables/v/variables-intro"
