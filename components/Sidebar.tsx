@@ -34,7 +34,7 @@ export default function Sidebar() {
       <aside
         className={`glass fixed left-0 top-0 h-screen z-40 border-r border-neutral-800
                     transition-all duration-300 ease-in-out
-                    ${open ? "translate-x-0 w-64" : "-translate-x-full md:translate-x-0 md:w-64"}`}
+                    ${open ? "translate-x-0 w-[var(--sidebar-width)]" : "-translate-x-full md:translate-x-0 md:w-[var(--sidebar-width)]"}`}
       >
         <nav className="flex flex-col gap-2 p-4 pt-16 md:pt-6 text-sm font-medium text-neutral-300">
           {/* Home */}

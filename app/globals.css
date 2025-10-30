@@ -11,6 +11,7 @@
   --glass-bg: rgba(20, 20, 25, 0.5);
   --text: #e5e7eb;
   --bg: #000;
+  --sidebar-width: 16rem;
 }
 
 body {

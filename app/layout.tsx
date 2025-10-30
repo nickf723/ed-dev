@@ -15,7 +15,7 @@ export default function RootLayout({
     <html lang="en">
       <body className="flex">
         <Sidebar />
-        <div className="ml-64 flex-1">{children}</div>
+        <div className="ml-[var(--sidebar-width)] flex-1">{children}</div>
       </body>
     </html>
   );

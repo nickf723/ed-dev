@@ -1,11 +1,11 @@
-// .prettierrc.mjs
-/** @type {import("prettier").Config} */
-const config = {
-  semi: true,
-  tabWidth: 2,
-  singleQuote: false,
-  trailingComma: "es5",
-  plugins: ["prettier-plugin-tailwindcss"],
+/** @type {import('tailwindcss').Config} */
+export default {
+  content: [
+    "./app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./components/**/*.{js,ts,jsx,tsx,mdx}",
+  ],
+  theme: {
+    extend: {},
+  },
+  plugins: [require("@tailwindcss/typography")],
 };
-
-export default config;
