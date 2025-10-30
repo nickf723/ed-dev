@@ -6,7 +6,11 @@ export const metadata = {
   description: "Working smarter, not harder.",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en">
       <body className="flex">

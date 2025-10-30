@@ -2,7 +2,17 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { Menu, X, ChevronDown, ChevronRight, Home, BookOpen, Calculator, Ruler, FunctionSquare } from "lucide-react";
+import {
+  Menu,
+  X,
+  ChevronDown,
+  ChevronRight,
+  Home,
+  BookOpen,
+  Calculator,
+  Ruler,
+  FunctionSquare,
+} from "lucide-react";
 
 export default function Sidebar() {
   const pathname = usePathname();
@@ -27,9 +37,13 @@ export default function Sidebar() {
                     ${open ? "translate-x-0 w-64" : "-translate-x-full md:translate-x-0 md:w-64"}`}
       >
         <nav className="flex flex-col gap-2 p-4 pt-16 md:pt-6 text-sm font-medium text-neutral-300">
-
           {/* Home */}
-          <SidebarLink href="/" label="Home" icon={<Home size={16} />} active={pathname === "/"} />
+          <SidebarLink
+            href="/"
+            label="Home"
+            icon={<Home size={16} />}
+            active={pathname === "/"}
+          />
 
           {/* Math Dropdown */}
           <Dropdown

@@ -47,34 +47,56 @@ export default function MathPage() {
       </section>
 
       {/* Floating Math Symbols */}
-<div className="absolute inset-0 -z-10 overflow-hidden select-none">
-  {[
-  "π", "∞", "√", "∑", "Σ", "Δ", "θ", "φ", "Ω", "λ", "μ", "γ",
-  "x²+y²=z²", "∫ f(x) dx", "E=mc²", "P(A|B)", "ℝ", "∂/∂t", 
-  "∇·F", "e^{iπ}+1=0", "f′(x)", "y=mx+b", "sinθ", "log₁₀x",
-  "F=ma", "P=2πr", "ℕ⊂ℤ⊂ℚ⊂ℝ⊂ℂ", "∀x∈ℝ", "∴", "∃", "∈"
-]
-.map((symbol, i) => (
-    <span
-      key={i}
-      className={`floating-symbol text-neutral-500/15 text-[3rem] sm:text-[4rem] lg:text-[5rem] font-mono`}
-      style={{
-  left: `${Math.random() * 100}%`,
-  top: `${Math.random() * 100}%`,
-  animationDelay: `${Math.random() * 20}s`,
-  animationDuration: `${20 + Math.random() * 20}s`,
-  transform: `scale(${0.8 + Math.random() * 0.8})`,
-  filter: `blur(${Math.random() * 2}px)`,
-}}
-
-    >
-      {symbol}
-    </span>
-  ))}
-</div>
-
-
-
+      <div className="absolute inset-0 -z-10 overflow-hidden select-none">
+        {[
+          "π",
+          "∞",
+          "√",
+          "∑",
+          "Σ",
+          "Δ",
+          "θ",
+          "φ",
+          "Ω",
+          "λ",
+          "μ",
+          "γ",
+          "x²+y²=z²",
+          "∫ f(x) dx",
+          "E=mc²",
+          "P(A|B)",
+          "ℝ",
+          "∂/∂t",
+          "∇·F",
+          "e^{iπ}+1=0",
+          "f′(x)",
+          "y=mx+b",
+          "sinθ",
+          "log₁₀x",
+          "F=ma",
+          "P=2πr",
+          "ℕ⊂ℤ⊂ℚ⊂ℝ⊂ℂ",
+          "∀x∈ℝ",
+          "∴",
+          "∃",
+          "∈",
+        ].map((symbol, i) => (
+          <span
+            key={i}
+            className={`floating-symbol text-neutral-500/15 text-[3rem] sm:text-[4rem] lg:text-[5rem] font-mono`}
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              animationDelay: `${Math.random() * 20}s`,
+              animationDuration: `${20 + Math.random() * 20}s`,
+              transform: `scale(${0.8 + Math.random() * 0.8})`,
+              filter: `blur(${Math.random() * 2}px)`,
+            }}
+          >
+            {symbol}
+          </span>
+        ))}
+      </div>
 
       {/* Branch Cards */}
       <section className="grid sm:grid-cols-2 lg:grid-cols-3 gap-10 max-w-6xl w-full justify-center">

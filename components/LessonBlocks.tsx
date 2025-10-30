@@ -2,7 +2,13 @@
 import React from "react";
 
 /* ------------------------- IMAGES / DIAGRAMS ------------------------- */
-export function LessonImage({ src, caption }: { src: string; caption?: string }) {
+export function LessonImage({
+  src,
+  caption,
+}: {
+  src: string;
+  caption?: string;
+}) {
   return (
     <figure className="my-6">
       <img
@@ -43,13 +49,20 @@ export function LessonApplet({ src }: { src: string }) {
 }
 
 /* ------------------------ PRACTICE PROBLEMS -------------------------- */
-export function PracticeProblem({ question, solution }: { question: string; solution?: string }) {
+export function PracticeProblem({
+  question,
+  solution,
+}: {
+  question: string;
+  solution?: string;
+}) {
   return (
     <div className="bg-neutral-900/40 border border-neutral-800 rounded-lg p-4 mb-4">
       <p className="font-medium text-cyan-300 mb-2">{question}</p>
       {solution && (
         <p className="text-neutral-400">
-          <span className="text-cyan-400 font-semibold">Solution:</span> {solution}
+          <span className="text-cyan-400 font-semibold">Solution:</span>{" "}
+          {solution}
         </p>
       )}
     </div>

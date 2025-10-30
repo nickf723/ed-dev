@@ -18,9 +18,9 @@ export default function VariablesPage() {
       <section>
         <h2>Definition</h2>
         <p>
-          A <strong>variable</strong> is a letter or symbol that represents a number or
-          quantity that can change. Variables are essential for describing patterns,
-          relationships, and equations in mathematics.
+          A <strong>variable</strong> is a letter or symbol that represents a
+          number or quantity that can change. Variables are essential for
+          describing patterns, relationships, and equations in mathematics.
         </p>
         <LessonImage
           src="/images/variable-symbols.png"
@@ -32,8 +32,9 @@ export default function VariablesPage() {
       <section>
         <h2>Using Variables</h2>
         <p>
-          When we write <code>x + 5 = 8</code>, the variable <code>x</code> represents an
-          unknown number. Solving means finding what number makes the equation true.
+          When we write <code>x + 5 = 8</code>, the variable <code>x</code>{" "}
+          represents an unknown number. Solving means finding what number makes
+          the equation true.
         </p>
         <p>
           Variables also appear in formulas, such as the area of a circle:
@@ -52,8 +53,9 @@ export default function VariablesPage() {
       <section>
         <h2>Interactive Exploration</h2>
         <p>
-          Try adjusting the sliders and watch how changing one variable affects the
-          output. This shows how variables control relationships dynamically.
+          Try adjusting the sliders and watch how changing one variable affects
+          the output. This shows how variables control relationships
+          dynamically.
         </p>
         <LessonApplet src="https://www.desmos.com/calculator" />
       </section>
@@ -69,10 +71,7 @@ export default function VariablesPage() {
           question="2️⃣ If A = πr² and r = 4, find A."
           solution="A = 16π"
         />
-        <PracticeProblem
-          question="3️⃣ Simplify: 3x + 2x"
-          solution="5x"
-        />
+        <PracticeProblem question="3️⃣ Simplify: 3x + 2x" solution="5x" />
         <PracticeProblem
           question="4️⃣ Write an equation: 'A number increased by 6 equals 10.'"
           solution="x + 6 = 10"

@@ -81,10 +81,11 @@ export default function Home() {
         <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-10">
           {cards.map(({ title, desc, href, color, Icon }) => (
             <Link
-                key={href}
-                href={href}
-                className="tilt group relative overflow-hidden rounded-3xl border border-neutral-800/70 
-                          bg-neutral-900/40 p-8 transition-transform duration-200 ease-out card-accent">
+              key={href}
+              href={href}
+              className="tilt group relative overflow-hidden rounded-3xl border border-neutral-800/70 
+                          bg-neutral-900/40 p-8 transition-transform duration-200 ease-out card-accent"
+            >
               <Icon className="relative z-10 mb-2 h-10 w-10 text-neutral-500 group-hover:text-cyan-400 transition-colors" />
               <h2 className={`text-2xl font-semibold gradient-text ${color}`}>
                 {title}
