@@ -4,10 +4,10 @@ import LessonHeader from "@/components/LessonHeader";
 import {
   LessonVideo,
   PracticeProblem,
-  ResourceLink,
-  EvaluateApplet, // 👈 Our new coded applet
+  ResourceLink, // 👈 Our new coded applet
   StepByStepSolution, // 👈 Our new step-by-step
 } from "@/components/LessonBlocks";
+import { EvaluateApplet } from "../variables/EvaluateApplet";
 
 // Import all the icons we'll use
 import {
