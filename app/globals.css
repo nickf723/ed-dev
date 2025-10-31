@@ -12,8 +12,14 @@
   --text: #e5e7eb;
   --bg: #000;
   --sidebar-width: 16rem;
-}
 
+  /* 🎨 NEW THEME VARIABLES (Default: Cyan/Blue) */
+  --color-primary-glow: rgba(14, 165, 233, 0.12); /* blue-500 */
+  --color-secondary-glow: rgba(0, 255, 255, 0.5); /* cyan-500 */
+  --color-text-title: #06b6d4; /* cyan-500 */
+  --color-text-header: #22d3ee; /* cyan-400 */
+  --color-text-icon: #67e8f9; /* cyan-300 */
+}
 body {
   @apply bg-neutral-950 text-neutral-100 font-sans antialiased;
   background-color: var(--bg);
@@ -252,4 +258,20 @@ hr {
 }
 ::-webkit-scrollbar-track {
   background: rgba(255, 255, 255, 0.05);
+}
+
+.theme-math {
+  --color-primary-glow: rgba(220, 38, 38, 0.12); /* red-600 */
+  --color-secondary-glow: rgba(249, 115, 22, 0.5); /* orange-500 */
+  --color-text-title: #f87171; /* red-400 */
+  --color-text-header: #fb923c; /* orange-400 */
+  --color-text-icon: #fdba74; /* orange-300 */
+}
+
+.theme-algebra {
+  --color-primary-glow: rgba(168, 85, 247, 0.12); /* purple-500 */
+  --color-secondary-glow: rgba(217, 70, 239, 0.5); /* fuchsia-500 */
+  --color-text-title: #c084fc; /* purple-400 */
+  --color-text-header: #e879f9; /* fuchsia-400 */
+  --color-text-icon: #f0abfc; /* fuchsia-300 */
 }

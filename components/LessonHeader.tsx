@@ -15,9 +15,15 @@ export default function LessonHeader({
   title,
 }: LessonHeaderProps) {
   return (
-    // We use ! to override the default prose styles for margins
-    <h2 className="!mt-12 !mb-4 flex items-center gap-3 border-b border-neutral-800 pb-2 text-3xl font-bold text-cyan-300">
-      <Icon className="h-7 w-7 flex-shrink-0 text-cyan-400/70" />
+    // 👇 UPDATED: Uses CSS variables
+    <h2 
+      className="!mt-12 !mb-4 flex items-center gap-3 border-b border-neutral-800 pb-2 text-3xl font-bold"
+      style={{ color: "var(--color-text-header)" }}
+    >
+      <Icon 
+        className="h-7 w-7 flex-shrink-0" 
+        style={{ color: "var(--color-text-icon)" }}
+      />
       <span>{title}</span>
     </h2>
   );

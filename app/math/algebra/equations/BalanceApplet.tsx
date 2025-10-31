@@ -1,3 +1,5 @@
+// app/math/algebra/equations/BalanceApplet.tsx
+"use client"; // 👈 Add this "use client" directive
 import { useState } from "react";
 import { Plus, Minus, RefreshCcw } from "lucide-react";
 
@@ -7,8 +9,21 @@ export function BalanceApplet() {
   const problem = { x: 1, left: 3, right: 5 }; // x + 3 = 5
   const solution = problem.right - problem.left; // 2
 
-  const isBalanced = leftBlocks === rightBlocks;
+  // Solved state logic
   const isSolved = leftBlocks === 0 && rightBlocks === solution;
+
+  // 👇 --- THIS IS THE FIX --- 👇
+  // The tilt is now based on the total *value* of each side,
+  // where 'x' is worth 'solution' (or 2) blocks.
+  const getTilt = () => {
+    const leftWeight = solution + leftBlocks;
+    const rightWeight = rightBlocks;
+
+    if (leftWeight === rightWeight) return "rotate-0";
+    if (leftWeight > rightWeight) return "-rotate-3";
+    return "rotate-3";
+  };
+  // 👆 --- END OF FIX --- 👆
 
   const addBlock = () => {
     setLeftBlocks((n) => n + 1);
@@ -16,21 +31,19 @@ export function BalanceApplet() {
   };
 
   const removeBlock = () => {
+    // Prevent removing blocks if the 'x' side has none left
     if (leftBlocks > 0) {
       setLeftBlocks((n) => n - 1);
-      setRightBlocks((n) => n - 1);
+      // Only remove from the right if it also has blocks
+      if (rightBlocks > 0) {
+        setRightBlocks((n) => n - 1);
+      }
     }
   };
 
   const reset = () => {
     setLeftBlocks(problem.left);
     setRightBlocks(problem.right);
-  };
-
-  const getTilt = () => {
-    if (isBalanced) return "rotate-0";
-    if (leftBlocks > rightBlocks) return "-rotate-3";
-    return "rotate-3";
   };
 
   return (
@@ -110,7 +123,8 @@ export function BalanceApplet() {
         </button>
       </div>
       <p className="mt-4 text-center text-sm text-neutral-400">
-        Notice how you must add or remove from <strong>both sides</strong> to keep
+        Notice how you must add or remove from 
+        <strong> both sides</strong> to keep
         the scale balanced.
       </p>
 

@@ -16,17 +16,23 @@ export default function LessonLayout({
   return (
     <main className="relative min-h-screen w-full overflow-x-hidden px-6 py-20 text-neutral-200 md:px-16 lg:py-28">
       {/* Background gradient */}
-      <div className="absolute inset-0 -z-10 bg-gradient-to-b from-black via-slate-950 to-black" />
-      <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top_right,_rgba(14,165,233,0.12),_transparent_60%)]" />
+      {/* 👇 UPDATED: Uses CSS variables */}
+      <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top_right,var(--color-primary-glow),_transparent_60%)]" />
       <div
-        className="zen-blob absolute left-1/4 top-0 -z-10 h-3/5 w-1/3 animate-zen-float rounded-full 
-                   bg-[radial-gradient(ellipse_at_center,_rgba(0,255,255,0.5),_transparent_70%)] 
-                   blur-3xl"
+        className="zen-blob absolute ... bg-[radial-gradient(ellipse_at_center,var(--color-secondary-glow),_transparent_70%)] ..."
         style={{ animationDuration: "25s" }}
       />
+      
       {/* Header */}
       <header className="mb-12 text-center">
-        <h1 className="mb-4 bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-5xl font-bold text-transparent md:text-6xl">
+        {/* 👇 UPDATED: Uses CSS variables */}
+        <h1 
+          className="mb-4 text-5xl font-bold text-transparent md:text-6xl"
+          style={{ 
+            background: "linear-gradient(to right, var(--color-text-title), var(--color-text-header))",
+            backgroundClip: "text",
+          }}
+        >
           {title}
         </h1>
         {subtitle && (
