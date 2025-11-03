@@ -276,3 +276,11 @@ hr {
   --color-text-header: #a5b4fc; /* indigo-300 */
   --color-text-icon: #facc15; /* yellow-400 */
 }
+
+.theme-variables-detective {
+  --color-primary-glow: rgba(99, 102, 241, 0.12); /* indigo-500 */
+  --color-secondary-glow: rgba(20, 184, 166, 0.4); /* teal-500 */
+  --color-text-title: #818cf8; /* indigo-400 */
+  --color-text-header: #5eead4; /* teal-300 */
+  --color-text-icon: #a78bfa; /* violet-400 */
+}

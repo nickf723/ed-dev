@@ -9,7 +9,7 @@ import {
 
 // 1. Import all our components
 // Re-using the applet from the 'variables' lesson
-import { EvaluateApplet } from "../variables/EvaluateApplet";
+import { EvaluateApplet } from "../variables/VariableComponents";
 // 🧩 UPDATED: Imports now come from the new component file
 import {
   ExpressionTermHighlighter,

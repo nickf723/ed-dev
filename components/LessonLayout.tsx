@@ -7,17 +7,22 @@ export default function LessonLayout({
   subtitle,
   children,
   aside,
+  className, // 👈 ADDED
 }: {
   title: string;
   subtitle?: string;
   children: React.ReactNode;
   aside?: React.ReactNode;
+  className?: string; // 👈 ADDED
 }) {
   return (
-    <main className="relative min-h-screen w-full overflow-x-hidden px-6 py-20 text-neutral-200 md:px-16 lg:py-28">
+    <main
+      className={`relative min-h-screen w-full overflow-x-hidden px-6 py-20 
+                  text-neutral-200 md:px-16 lg:py-28 ${className || ""}`} // 👈 APPLIED
+    >
       {/* Background gradient */}
       <div className="absolute inset-0 -z-10 bg-gradient-to-b from-black via-slate-950 to-black" />
-      
+
       {/* 👇 UPDATED: Uses CSS variables for unique page glows */}
       <div
         className="absolute inset-0 -z-10"
@@ -35,7 +40,7 @@ export default function LessonLayout({
           animationDuration: "25s",
         }}
       />
-      
+
       {/* Header */}
       <header className="mb-12 text-center">
         <h1
