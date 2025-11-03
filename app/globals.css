@@ -309,3 +309,11 @@ hr {
   --color-text-header: #fbbf24; /* yellow-500 */
   --color-text-icon: #eab308; /* yellow-600 */
 }
+
+.theme-inequalities-duel {
+  --color-primary-glow: rgba(220, 38, 38, 0.15); /* red-600 */
+  --color-secondary-glow: rgba(5, 150, 105, 0.3); /* emerald-600 */
+  --color-text-title: #f87171; /* red-400 */
+  --color-text-header: #ef4444; /* red-500 */
+  --color-text-icon: #dc2626; /* red-600 */
+}

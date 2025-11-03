@@ -61,6 +61,16 @@ export {
   BookText,
   GanttChartSquare,
 
+  // ⚔️ Inequalities ("Duel")
+  Swords,
+  Zap,
+  TrendingUp,
+  ArrowRight,
+  ChevronLeft, // 👈 Corrected
+  ChevronRightSquare, // 👈 Corrected
+  ChevronLeftSquare, // 👈 Corrected
+  EqualNot,// 👈 This one was correct
+
   // 🔗 Shared
-  Link, // 👈 The missing icon
+  Link,
 } from "lucide-react";

@@ -244,7 +244,7 @@ export default function EquationsPage() {
       </p>
       <ResourceLink
         title="Next Up: Inequalities"
-        url="#" // Placeholder
+        url="/math/algebra/inequalities" // Placeholder
       />
     </LessonLayout>
   );
