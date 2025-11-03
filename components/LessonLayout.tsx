@@ -17,7 +17,7 @@ export default function LessonLayout({
 }) {
   return (
     <main
-      className={`algebra-lesson relative min-h-screen w-full overflow-x-hidden px-6 py-20                  
+      className={`algebra-lesson relative min-h-screen w-full overflow-hidden px-6 py-20                  
         text-neutral-200 md:px-16 lg:py-28 ${className || ""}`}
     >
       {/* Background gradient */}

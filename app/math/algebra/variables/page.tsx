@@ -1,267 +1,180 @@
 "use client";
 import LessonLayout from "@/components/LessonLayout";
-import LessonHeader from "@/components/LessonHeader";
 import {
-  PracticeProblem,
-  ResourceLink,
-  StepByStepSolution,
-} from "@/components/LessonBlocks";
-
-// 1. Import all our new components
-import {
-  WhatIsVariableExplainer,
-  ValidOrNotGame,
-  EvaluateApplet, // 👈 Now imported from its new location
+  CoreDefinition,
+  SliderApplet,
+  ValueSwapDemo,
+  NotationCard,
+  ExpressionPlayground,
+  GraphExplorer,
+  TableMapper,
+  RecapList,
+  CheckYourIntuition,
+  EvaluateApplet,
   ConstantVsVariableSorter,
-  VariableQuiz,
 } from "./VariableComponents";
 
-// 2. Import icons for the new theme
-import {
-  Key,
-  AlertTriangle,
-  Search,
-  Users,
-  CheckCircle,
-  Calculator,
-  Shuffle,
-  Beaker,
-  Link,
-  CheckSquare,
-  BookOpen,
-  HelpCircle,
-  Binary,
-} from "lucide-react";
-
-// 3. Define the new sidebar content
-const lessonAside = (
-  <>
-    {/* Key Concepts */}
-    <div className="glass detective-card detective-card--sidebar">
-      <h3 className="mb-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-teal-200">
-        <Key className="h-4 w-4" />
-        Key Concepts
-      </h3>
-      <ul className="detective-list detective-list--compact">
-        <li>
-          A <strong>variable</strong> is a letter (like <code>x</code>) that
-          holds the place for an unknown or changing number.
-        </li>
-        <li>
-          <strong>Substitution</strong> is the act of replacing a variable
-          with a specific number.
-        </li>
-        <li>
-          A <strong>Constant</strong> is a number that does not change (like{" "}
-          <code>5</code>).
-        </li>
-      </ul>
-    </div>
-
-    {/* Common Mistakes */}
-    <div className="glass detective-card detective-card--sidebar mt-6">
-      <h3 className="mb-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-amber-200">
-        <AlertTriangle className="h-4 w-4" />
-        Common Mistakes
-      </h3>
-      <ul className="detective-list detective-list--compact">
-        <li>
-          Forgetting Order of Operations (PEMDAS) when substituting.
-        </li>
-        <li>
-          Thinking <code>x</code> can only stand for one number. It can change!
-        </li>
-        <li>
-          Confusing <code>2x</code> (multiplication) with <code>2 + x</code>{" "}
-          (addition).
-        </li>
-      </ul>
-    </div>
-  </>
-);
-
-// 4. The new Page Component, following your 12-point plan
 export default function VariablesPage() {
   return (
     <LessonLayout
       title="Variables"
-      subtitle="Uncover the ‘unknowns’ of algebra. Learn what variables are, why we use them, and how to find their value."
-      aside={lessonAside}
-      className="theme-variables-detective"
+      subtitle="Variables represent change, relationships, and unknowns. Build intuition first, then formalize."
+      className="theme-variables"
     >
-      <div className="casefile-intro">
-        <span className="casefile-intro__tag">
-          Case File 001 · Variable Investigation
-        </span>
-        <h2 className="casefile-intro__title">Unlock the Mystery of the Unknown</h2>
-        <p className="casefile-intro__body">
-          Welcome to the detective desk of algebra. Follow the glowing clues,
-          sift through notes, and learn how variables help us solve every
-          numerical mystery that comes our way.
-        </p>
-      </div>
+      <div className="two-col">
+        {/* Left column: Overview, Intuition, Formalization */}
+        <div className="space-y-8">
+          <section>
+            <h2>What is a variable?</h2>
+            <CoreDefinition
+              title="Variable"
+              definition="A variable is a symbol that can represent any number or value."
+              example="x could be 2, 5, or 100 depending on the situation."
+            />
+          </section>
 
-      {/* 1. What Are Variables? */}
-      <LessonHeader icon={Search} title="What Are Variables?" />
-      <p>
-        A <strong>variable</strong> is a symbol (often a letter like{" "}
-        <code>x</code> or <code>y</code>) that stands for an unknown or
-        changeable number.
-      </p>
-      <p>
-        Think of it like a treasure chest mystery box: you don’t know what’s
-        inside until you <strong>substitute</strong> a value.
-      </p>
-      <WhatIsVariableExplainer />
+          <section>
+            <h2>Build Intuition</h2>
+            <p className="text-neutral-300">
+              Use the slider to feel how a variable changes and how that change
+              shows up visually and numerically.
+            </p>
+            <SliderApplet
+              variableName="x"
+              min={0}
+              max={10}
+              formula="bar length = x"
+              liveText="As x grows, so does the bar."
+            />
+            <ValueSwapDemo
+              variable="x"
+              visual="cupFill"
+              range={[0, 10]}
+              caption="As x increases, the cup fills up — the number and the picture describe the same thing."
+            />
+          </section>
 
-      {/* 2. Why We Use Variables */}
-      <LessonHeader icon={Users} title="Why We Use Variables" />
-      <p>
-        Variables let us describe <strong>patterns</strong> and{" "}
-        <strong>rules</strong> instead of just one-time situations.
-      </p>
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-        <div className="casefile-note casefile-note--without">
-          <h4 className="casefile-note__title">Without Variables</h4>
-          <p className="casefile-note__body">“I have 3 apples, you have 5.”</p>
-          <em className="casefile-note__footnote">
-            (This only works for one case)
-          </em>
+          <section>
+            <h2>Naming What Changes</h2>
+            <p className="text-neutral-300">
+              Instead of always describing the quantity in words, we give it a
+              name: x. Variables are names for change.
+            </p>
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+              <NotationCard
+                symbol="x"
+                meaning="Represents a quantity that can vary"
+                relatedSymbols={["y", "z"]}
+                example="x = number of cups filled"
+              />
+              <NotationCard
+                symbol="t"
+                meaning="Often used for time"
+                relatedSymbols={["h", "d"]}
+                example="d = s·t relates distance, speed, and time"
+              />
+              <NotationCard
+                symbol="n"
+                meaning="A counting variable (integers)"
+                relatedSymbols={["k", "i", "j"]}
+                example="n = number of tickets"
+              />
+            </div>
+          </section>
         </div>
-        <div className="casefile-note casefile-note--with">
-          <h4 className="casefile-note__title">With Variables</h4>
-          <p className="casefile-note__body">
-            “I have <code>x</code> apples, you have <code>y</code>.”
-          </p>
-          <em className="casefile-note__footnote">
-            (This works for any number of apples)
-          </em>
+
+        {/* Right column: Key notes, Exploration, Evaluate, Recap */}
+        <div className="space-y-8">
+          <section className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <div className="note-card">
+              <h3 className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-teal-200">
+                Key Ideas
+              </h3>
+              <ul className="list-disc space-y-2 pl-6 text-sm text-neutral-300">
+                <li>Variables can represent unknowns or changing quantities.</li>
+                <li>Symbols like x, y, z stand for numbers.</li>
+                <li>Expressions describe relationships between variables and numbers.</li>
+              </ul>
+            </div>
+            <div className="note-card">
+              <h3 className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-amber-200">
+                Common Pitfalls
+              </h3>
+              <ul className="list-disc space-y-2 pl-6 text-sm text-neutral-300">
+                <li>Forgetting order of operations when substituting.</li>
+                <li>Mixing up 2x (multiply) with 2 + x (add).</li>
+                <li>Thinking x can only be one fixed number.</li>
+              </ul>
+            </div>
+          </section>
+
+          <section>
+            <h2>Expressing Relationships</h2>
+            <p className="text-neutral-300">
+              Variables connect things. Build expressions and see how a choice of x
+              changes the outcome.
+            </p>
+            <ExpressionPlayground
+              blocks={["2", "x", "+", "3"]}
+              computeMode={true}
+              liveValue={{ x: 4 }}
+              showOutput={true}
+            />
+            <h3 className="mt-8">Seeing Variables on a Graph</h3>
+            <GraphExplorer
+              equation="y = 2x + 3"
+              rangeX={[-5, 5]}
+              variableName="x"
+              highlightMode="tracePoint"
+            />
+            <h3 className="mt-8">Table of Values</h3>
+            <TableMapper inputs={[-3, -1, 0, 1, 2, 4]} fn={(x) => 2 * x + 3} />
+          </section>
+
+          <section>
+            <h2>Substituting Values</h2>
+            <p className="text-neutral-300">
+              To substitute means to replace a variable with a specific number. This
+              is how we evaluate an expression to find its value.
+            </p>
+            <EvaluateApplet expression="4x + 1" fn={(x) => 4 * x + 1} />
+            <EvaluateApplet expression="2x^2 - x + 4" fn={(x) => 2 * x * x - x + 4} />
+          </section>
+
+          <section>
+            <h2>Constant vs. Variable</h2>
+            <p className="text-neutral-300">
+              Identify which tokens are constants and which are variables.
+            </p>
+            <ConstantVsVariableSorter />
+          </section>
+
+          <section>
+            <h2>Recap</h2>
+            <RecapList
+              items={[
+                "Variables represent unknowns or changing quantities.",
+                "They help us describe relationships using math.",
+                "Symbols like x, y, and z stand for numbers.",
+              ]}
+            />
+            <CheckYourIntuition
+              questions={[
+                {
+                  prompt: "When x increases, what happens to 2x + 3?",
+                  options: ["It increases", "It decreases"],
+                  correct: 0,
+                },
+                {
+                  prompt: "What does 'x = 4' mean?",
+                  options: ["x is always 4", "x currently equals 4"],
+                  correct: 1,
+                },
+              ]}
+            />
+          </section>
         </div>
       </div>
-
-      {/* 3. Naming Variables */}
-      <LessonHeader icon={CheckCircle} title="Naming Variables" />
-      <p>
-        You can use almost any letter, but <code>x</code>, <code>y</code>, and{" "}
-        <code>z</code> are the most common. Sometimes, we use letters that
-        stand for words, like <code>t</code> for <strong>time</strong> or{" "}
-        <code>h</code> for <strong>height</strong>.
-      </p>
-      <ValidOrNotGame />
-
-      {/* 4. Visualizing Variables */}
-      <LessonHeader icon={Binary} title="Visualizing Variables" />
-      <p>
-        Variables are powerful because they let us see how one quantity{" "}
-        <strong>depends</strong> on another. For example, the total cost (
-        <code>y</code>) of buying movie tickets (<code>x</code>) depends on
-        how many you buy.
-      </p>
-      <p>(Placeholder: An interactive graph widget could go here.)</p>
-
-      {/* 5. Substituting Values */}
-      <LessonHeader icon={Calculator} title="Substituting Values" />
-      <p>
-        To “substitute” means to replace a variable with a specific number.
-        This is how we “evaluate” an expression to find its value.
-      </p>
-      <StepByStepSolution
-        title="Example: Evaluate 4x + 1 when x = 3"
-        steps={[
-          "Write the original expression: 4x + 1",
-          "Substitute ‘3’ for ‘x’: 4(3) + 1",
-          "Multiply 4 and 3: 12 + 1",
-          "Add 12 and 1: 13",
-          "The final value is 13.",
-        ]}
-      />
-      {/* Re-using the EvaluateApplet */}
-      <EvaluateApplet expression="4x + 1" fn={(x) => 4 * x + 1} />
-
-      {/* 6. Constant vs. Variable */}
-      <LessonHeader icon={Shuffle} title="Constant vs. Variable" />
-      <p>
-        It’s important to know the difference between a variable and a{" "}
-        <strong>constant</strong>.
-      </p>
-      <ConstantVsVariableSorter />
-
-      {/* 7. Using Variables in Real Life */}
-      <LessonHeader icon={Beaker} title="Using Variables in Real Life" />
-      <p>You use the idea of variables all the time!</p>
-      <ul className="detective-list">
-        <li>
-          <strong>Baking:</strong> “I need 2 cups of flour per (<code>x</code>)
-          batches of cookies.”
-        </li>
-        <li>
-          <strong>Games:</strong> “You get 50 points for every (<code>n</code>)
-          coins you collect.”
-        </li>
-        <li>
-          <strong>Science:</strong> “The distance (<code>d</code>) is equal to
-          speed (<code>s</code>) multiplied by time (<code>t</code>).”
-        </li>
-      </ul>
-
-      {/* 8. Connections */}
-      <LessonHeader icon={Link} title="Connections" />
-      <p>
-        Variables are the glue that connects different parts of algebra.
-      </p>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <ResourceLink
-          title="Next Step: Expressions"
-          url="/math/algebra/expressions"
-        />
-        <ResourceLink
-          title="Learn: Equations"
-          url="/math/algebra/equations"
-        />
-      </div>
-
-      {/* 9. Practice Section */}
-      <LessonHeader icon={CheckSquare} title="Practice Section" />
-      <PracticeProblem
-        question="Highlight the variable in: 5y - 8"
-        solution="The variable is y."
-      />
-      <PracticeProblem
-        question="Evaluate 3n + 2 when n = 5."
-        solution="3(5) + 2 = 15 + 2 = 17"
-      />
-      <PracticeProblem
-        question="Write an expression for: ‘A number x decreased by 10’"
-        solution="x - 10"
-      />
-
-      {/* 10. Interactive Quiz */}
-      <LessonHeader icon={HelpCircle} title="Interactive Quiz" />
-      <p>
-        Ready to solve the mystery? Test your knowledge on variables.
-      </p>
-      <VariableQuiz />
-
-      {/* 11. Summary */}
-      <LessonHeader icon={BookOpen} title="Summary" />
-      <p>
-        <strong>Variables</strong> are symbols (like <code>x</code>) for
-        unknowns or changing values. They allow math to describe patterns, not
-        just single numbers. We use <strong>substitution</strong> to replace
-        variables with numbers to evaluate expressions.
-      </p>
-
-      {/* 12. Extension / Next Lesson */}
-      <LessonHeader icon={CheckSquare} title="Next Lesson" />
-      <p>
-        Now that you understand variables (the “unknowns”) and expressions (the
-        “phrases”), you’re ready to see what happens when we set two
-        expressions equal to each other.
-      </p>
-      <ResourceLink
-        title="Next Up: Equations"
-        url="/math/algebra/equations"
-      />
     </LessonLayout>
   );
 }

@@ -46,7 +46,7 @@
       radial-gradient(circle at 30% 30%, #00ffff10, transparent 60%),
       radial-gradient(circle at 70% 70%, #ff00ff10, transparent 60%);
     z-index: -2;
-    animation: float 12s ease-in-out infinite alternate;
+    animation: float 60s ease-in-out infinite alternate;
   }
     body::after {
     content: "";
@@ -175,7 +175,7 @@
 
   .topic-page .floating-symbol {
     color: var(--topic-symbol-color);
-    text-shadow: 0 0 30px color-mix(in srgb, var(--topic-symbol-color) 40%, transparent);
+    text-shadow: 0 0 30px color-mix(in srgb, var(--topic-symbol-color) 30%, transparent);
   }
 
   .topic-grid {
@@ -223,6 +223,23 @@
     border-color: var(--topic-badge-border);
     color: var(--topic-badge-text);
   }
+
+  /* Lesson/app-specific helpers */
+  .applet-card {
+    @apply rounded-lg border border-neutral-800 bg-neutral-900/50 p-5 shadow-sm transition-colors;
+  }
+  .applet-card:hover {
+    @apply hover:border-cyan-600/30 hover:bg-neutral-900/60;
+  }
+  .applet-header {
+    @apply text-xs font-semibold uppercase tracking-[0.2em] text-teal-200;
+  }
+  .note-card {
+    @apply rounded-lg border border-neutral-800 bg-neutral-900/40 p-4;
+  }
+  .two-col {
+    @apply grid gap-8 md:grid-cols-2 lg:gap-10;
+  }
 }
 
 @keyframes float {
@@ -267,9 +284,9 @@
 .floating-symbol {
   position: absolute;
   pointer-events: none;
-  animation: floatAround 25s ease-in-out infinite;
+  animation: floatAround 90s ease-in-out infinite;
   will-change: transform, opacity;
-  opacity: 0.2;
+  opacity: 0.06;
   filter: blur(1px);
 }
 
@@ -350,25 +367,25 @@
 /* === Algebra lesson theming ============================================= */
 
 .algebra-lesson {
-  --algebra-particle-color: rgba(147, 197, 253, 0.22);
-  --algebra-particle-secondary: rgba(224, 231, 255, 0.2);
+  --algebra-particle-color: rgba(147, 197, 253, 0.18);
+  --algebra-particle-secondary: rgba(224, 231, 255, 0.16);
   --algebra-particle-size: 220px;
-  --algebra-particle-speed: 44s;
-  --algebra-particle-alt-speed: 62s;
+  --algebra-particle-speed: 120s;
+  --algebra-particle-alt-speed: 180s;
   --algebra-glyphs-primary: "x  y  z  n";
   --algebra-glyphs-secondary: "1   2   3   4";
   --algebra-glyph-font: "JetBrains Mono", "Fira Code", monospace;
-  --algebra-glyph-speed: 68s;
-  --algebra-glyph-morph-speed: 26s;
+  --algebra-glyph-speed: 180s;
+  --algebra-glyph-morph-speed: 90s;
   --algebra-glyph-tilt: 8deg;
   --algebra-grid-color: rgba(103, 232, 249, 0.22);
   --algebra-grid-size: 160px;
-  --algebra-grid-speed: 52s;
-  --algebra-grid-opacity: 0.08;
+  --algebra-grid-speed: 240s;
+  --algebra-grid-opacity: 0.03;
   --algebra-grid-rotation: -6deg;
-  --algebra-diagonal-opacity: 0.04;
+  --algebra-diagonal-opacity: 0.03;
   --algebra-diagonal-size: 260px;
-  --algebra-diagonal-speed: 24s;
+  --algebra-diagonal-speed: 60s;
 }
 
 .algebra-particle-field,
@@ -397,7 +414,7 @@
     radial-gradient(circle, color-mix(in srgb, var(--algebra-particle-secondary) 70%, transparent) 0 1px, transparent 70%);
   background-size: var(--algebra-particle-size) var(--algebra-particle-size),
     calc(var(--algebra-particle-size) * 1.4) calc(var(--algebra-particle-size) * 1.4);
-  opacity: 0.55;
+  opacity: 0.18;
 }
 
 .algebra-particle-field::before {
@@ -407,7 +424,7 @@
 .algebra-particle-field::after {
   animation: algebraParticleOrbit var(--algebra-particle-alt-speed) linear infinite;
   mix-blend-mode: lighten;
-  opacity: 0.35;
+  opacity: 0.1;
 }
 
 .algebra-sigil-field {
@@ -429,7 +446,7 @@
   background: linear-gradient(90deg, var(--color-text-title), color-mix(in srgb, var(--color-text-header) 65%, transparent));
   background-clip: text;
   -webkit-background-clip: text;
-  opacity: 0.12;
+  opacity: 0.06;
   filter: blur(0.4px);
   transform: rotate(var(--algebra-glyph-tilt)) scale(1.05);
   animation: algebraGlyphOrbit var(--algebra-glyph-speed) linear infinite;
@@ -439,7 +456,7 @@
   content: var(--algebra-glyphs-secondary);
   font-size: clamp(2.1rem, 6vw, 5.2rem);
   letter-spacing: clamp(0.5rem, 4.5vw, 5rem);
-  opacity: 0.16;
+  opacity: 0.08;
   mix-blend-mode: lighten;
   animation: algebraGlyphMorph var(--algebra-glyph-morph-speed) ease-in-out infinite;
 }
@@ -481,6 +498,82 @@
 
 /* Theme variations */
 
+.theme-variables {
+  --color-primary-glow: rgba(56, 189, 248, 0.12);
+  --color-secondary-glow: rgba(99, 102, 241, 0.18);
+  --color-text-title: #7dd3fc;
+  --color-text-header: #a5b4fc;
+  --color-text-icon: #bae6fd;
+  --glass-bg: rgba(2, 6, 23, 0.7);
+  --glass-border: rgba(148, 163, 184, 0.15);
+}
+
+/* Hide old detective intro block on Variables page */
+.theme-variables .casefile-intro {
+  display: none;
+}
+
+/* Make algebra ambient layers extremely subtle on variables pages */
+.theme-variables .algebra-particle-field,
+.theme-variables .algebra-sigil-field,
+.theme-variables .algebra-grid-field {
+  opacity: 0.04;
+}
+.theme-variables .algebra-particle-field::before,
+.theme-variables .algebra-particle-field::after,
+.theme-variables .algebra-grid-field::before {
+  animation-duration: 240s !important;
+}
+.theme-variables .algebra-sigil-field::before,
+.theme-variables .algebra-sigil-field::after {
+  opacity: 0.05 !important;
+}
+
+/* Neutralize detective-styled components within Variables theme */
+.theme-variables .detective-card {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(2, 6, 23, 0.7);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+}
+.theme-variables .detective-card--sidebar {
+  background: rgba(2, 6, 23, 0.7);
+}
+.theme-variables .detective-chip,
+.theme-variables .detective-option,
+.theme-variables .detective-case-button,
+.theme-variables .detective-action {
+  border-color: rgba(255,255,255,0.12) !important;
+  background: rgba(2, 6, 23, 0.7) !important;
+}
+.theme-variables .detective-option.is-selected,
+.theme-variables .detective-case-button.is-correct {
+  border-color: rgba(16, 185, 129, 0.5) !important;
+  background: rgba(6, 95, 70, 0.25) !important;
+}
+.theme-variables .detective-option.is-wrong,
+.theme-variables .detective-case-button.is-incorrect {
+  border-color: rgba(244, 63, 94, 0.55) !important;
+  background: rgba(99, 15, 25, 0.25) !important;
+}
+.theme-variables .detective-readout {
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(2, 6, 23, 0.7);
+}
+.theme-variables .detective-action {
+  text-transform: none;
+  letter-spacing: 0.02em;
+}
+.theme-variables .detective-list {
+  list-style: disc;
+  padding-left: 1.25rem;
+  gap: 0.5rem;
+}
+.theme-variables .detective-list li {
+  background: transparent;
+  border: 0;
+  padding: 0;
+}
+
 .theme-variables-detective {
   --color-primary-glow: rgba(45, 212, 191, 0.18);
   --color-secondary-glow: rgba(56, 189, 248, 0.45);
@@ -504,15 +597,15 @@
   --topic-noise-opacity: 0.1;
   --algebra-particle-color: rgba(56, 189, 248, 0.3);
   --algebra-particle-secondary: rgba(94, 234, 212, 0.28);
-  --algebra-particle-speed: 36s;
-  --algebra-particle-alt-speed: 54s;
+  --algebra-particle-speed: 120s;
+  --algebra-particle-alt-speed: 180s;
   --algebra-glyphs-primary: "x  y  z  clue";
   --algebra-glyphs-secondary: "?  solve  pattern  n";
-  --algebra-glyph-morph-speed: 22s;
+  --algebra-glyph-morph-speed: 80s;
   --algebra-glyph-tilt: 12deg;
-  --algebra-grid-opacity: 0.12;
+  --algebra-grid-opacity: 0.06;
   --algebra-grid-rotation: -2deg;
-  --algebra-diagonal-opacity: 0.08;
+  --algebra-diagonal-opacity: 0.05;
   --detective-rim: rgba(94, 234, 212, 0.32);
   --detective-paper: rgba(9, 35, 47, 0.78);
 }
@@ -532,7 +625,7 @@
     radial-gradient(circle at 78% 18%, rgba(45, 212, 191, 0.18), transparent 55%),
     radial-gradient(circle at 50% 70%, rgba(59, 130, 246, 0.16), transparent 60%);
   box-shadow: inset 0 0 40px rgba(13, 148, 136, 0.14);
-  opacity: 0.75;
+  opacity: 0.28;
   filter: blur(0.5px);
 }
 
@@ -547,16 +640,16 @@
       transparent 1px 18px
     );
   mix-blend-mode: screen;
-  opacity: 0.45;
-  animation: detectiveScan 12s linear infinite;
+  opacity: 0.16;
+  animation: detectiveScan 60s linear infinite;
 }
 
 .theme-variables-detective .algebra-sigil-field::before {
-  opacity: 0.16;
+  opacity: 0.08;
 }
 
 .theme-variables-detective .algebra-sigil-field::after {
-  opacity: 0.2;
+  opacity: 0.1;
   letter-spacing: clamp(0.35rem, 4vw, 3.5rem);
 }
 
@@ -733,7 +826,7 @@
   mix-blend-mode: screen;
   opacity: 0.7;
   pointer-events: none;
-  animation: detectiveScan 16s linear infinite;
+  animation: detectiveScan 60s linear infinite;
 }
 
 .casefile-intro__tag {
@@ -1162,14 +1255,14 @@
 
 @keyframes detectiveScan {
   0% {
-    transform: translateX(-35%) rotate(-2deg);
+    transform: translateX(-10%) rotate(-1deg);
     opacity: 0;
   }
-  45% {
-    opacity: 0.35;
+  50% {
+    opacity: 0.25;
   }
   100% {
-    transform: translateX(125%) rotate(1deg);
+    transform: translateX(30%) rotate(1deg);
     opacity: 0;
   }
 }
