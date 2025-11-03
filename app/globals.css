@@ -143,54 +143,55 @@ body::after {
   position: absolute;
   z-index: -10;
   border-radius: 9999px;
+  /* Updated for a more "fluid" and "consolidated" shape */
+  filter: blur(50px);
   mix-blend-mode: overlay;
-  filter: blur(50px); /* This creates the "fluid" effect */
   will-change: transform, opacity;
 }
 
 @keyframes blob-float-1 {
   0% {
     transform: translate(0px, 0px) scale(1);
-    opacity: 0.25; /* 👈 Increased opacity */
+    opacity: 0.25;
   }
   25% {
     transform: translate(15vw, -20vh) scale(1.1);
-    opacity: 0.35; /* 👈 Increased opacity */
+    opacity: 0.35;
   }
   50% {
     transform: translate(0px, 20vh) scale(0.9);
-    opacity: 0.25; /* 👈 Increased opacity */
+    opacity: 0.25;
   }
   75% {
     transform: translate(-20vw, -10vh) scale(1.1);
-    opacity: 0.35; /* 👈 Increased opacity */
+    opacity: 0.35;
   }
   100% {
     transform: translate(0px, 0px) scale(1);
-    opacity: 0.25; /* 👈 Increased opacity */
+    opacity: 0.25;
   }
 }
 
 @keyframes blob-float-2 {
   0% {
     transform: translate(0px, 0px) scale(1);
-    opacity: 0.25; /* 👈 Increased opacity */
+    opacity: 0.25;
   }
   25% {
     transform: translate(-20vw, 15vh) scale(1.1);
-    opacity: 0.35; /* 👈 Increased opacity */
+    opacity: 0.35;
   }
   50% {
     transform: translate(10vw, -20vh) scale(0.9);
-    opacity: 0.25; /* 👈 Increased opacity */
+    opacity: 0.25;
   }
   75% {
     transform: translate(15vw, 10vh) scale(1.1);
-    opacity: 0.35; /* 👈 Increased opacity */
+    opacity: 0.35;
   }
   100% {
     transform: translate(0px, 0px) scale(1);
-    opacity: 0.25; /* 👈 Increased opacity */
+    opacity: 0.25;
   }
 }
 
