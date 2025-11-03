@@ -1,21 +1,6 @@
-"use client";
-import LessonLayout from "@/components/LessonLayout";
-import LessonHeader from "@/components/LessonHeader";
-import {
-  PracticeProblem,
-  ResourceLink,
-  StepByStepSolution,
-} from "@/components/LessonBlocks";
-
-// 1. Import all our new components
-import {
-  WhatIsVariableExplainer,
-  ValidOrNotGame,
-  EvaluateApplet, // 👈 Now imported from its new location
-  ConstantVsVariableSorter,
+ConstantVsVariableSorter,
   VariableQuiz,
 } from "./VariableComponents";
-
 // 2. Import icons for the new theme
 import {
   Key,
@@ -32,16 +17,18 @@ import {
   HelpCircle,
   Binary,
 } from "lucide-react";
-
 // 3. Define the new sidebar content
 const lessonAside = (
   <>
     {/* Key Concepts */}
+    <div className="glass rounded-lg border border-neutral-800 p-4">
+      <h3 className="mb-3 flex items-center gap-2 font-semibold text-violet-400">
     <div className="glass detective-card detective-card--sidebar">
       <h3 className="mb-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-teal-200">
         <Key className="h-4 w-4" />
         Key Concepts
       </h3>
+      <ul className="list-disc space-y-2 pl-5 text-sm text-neutral-400">
       <ul className="detective-list detective-list--compact">
         <li>
           A <strong>variable</strong> is a letter (like <code>x</code>) that
@@ -57,13 +44,15 @@ const lessonAside = (
         </li>
       </ul>
     </div>
-
     {/* Common Mistakes */}
+    <div className="glass mt-6 rounded-lg border border-neutral-800 p-4">
+      <h3 className="mb-3 flex items-center gap-2 font-semibold text-amber-300">
     <div className="glass detective-card detective-card--sidebar mt-6">
       <h3 className="mb-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-amber-200">
         <AlertTriangle className="h-4 w-4" />
         Common Mistakes
       </h3>
+      <ul className="list-disc space-y-2 pl-5 text-sm text-neutral-400">
       <ul className="detective-list detective-list--compact">
         <li>
           Forgetting Order of Operations (PEMDAS) when substituting.
@@ -79,12 +68,12 @@ const lessonAside = (
     </div>
   </>
 );
-
 // 4. The new Page Component, following your 12-point plan
 export default function VariablesPage() {
   return (
     <LessonLayout
       title="Variables"
+      subtitle="Uncover the 'unknowns' of algebra. Learn what variables are, why we use them, and how to find their value."
       subtitle="Uncover the ‘unknowns’ of algebra. Learn what variables are, why we use them, and how to find their value."
       aside={lessonAside}
       className="theme-variables-detective"
@@ -100,7 +89,6 @@ export default function VariablesPage() {
           numerical mystery that comes our way.
         </p>
       </div>
-
       {/* 1. What Are Variables? */}
       <LessonHeader icon={Search} title="What Are Variables?" />
       <p>
@@ -109,17 +97,25 @@ export default function VariablesPage() {
         changeable number.
       </p>
       <p>
+        Think of it like a treasure chest Mystery Box: you don’t know
+        what’s inside until you <strong>substitute</strong> a value.
         Think of it like a treasure chest mystery box: you don’t know what’s
         inside until you <strong>substitute</strong> a value.
       </p>
       <WhatIsVariableExplainer />
-
       {/* 2. Why We Use Variables */}
       <LessonHeader icon={Users} title="Why We Use Variables" />
       <p>
         Variables let us describe <strong>patterns</strong> and{" "}
         <strong>rules</strong> instead of just one-time situations.
       </p>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="rounded-lg border border-neutral-700 bg-neutral-900/40 p-4">
+          <h4 className="!my-0 font-semibold text-red-300">
+            Without Variables
+          </h4>
+          <p className="!my-2 text-sm">"I have 3 apples, you have 5."</p>
+          <em className="text-xs text-neutral-400">
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         <div className="casefile-note casefile-note--without">
           <h4 className="casefile-note__title">Without Variables</h4>
@@ -128,17 +124,23 @@ export default function VariablesPage() {
             (This only works for one case)
           </em>
         </div>
+        <div className="rounded-lg border border-green-700 bg-green-900/40 p-4">
+          <h4 className="!my-0 font-semibold text-green-300">
+            With Variables
+          </h4>
+          <p className="!my-2 text-sm">
+            "I have <code>x</code> apples, you have <code>y</code>."
         <div className="casefile-note casefile-note--with">
           <h4 className="casefile-note__title">With Variables</h4>
           <p className="casefile-note__body">
             “I have <code>x</code> apples, you have <code>y</code>.”
           </p>
+          <em className="text-xs text-neutral-400">
           <em className="casefile-note__footnote">
             (This works for any number of apples)
           </em>
         </div>
       </div>
-
       {/* 3. Naming Variables */}
       <LessonHeader icon={CheckCircle} title="Naming Variables" />
       <p>
@@ -148,7 +150,6 @@ export default function VariablesPage() {
         <code>h</code> for <strong>height</strong>.
       </p>
       <ValidOrNotGame />
-
       {/* 4. Visualizing Variables */}
       <LessonHeader icon={Binary} title="Visualizing Variables" />
       <p>
@@ -158,10 +159,11 @@ export default function VariablesPage() {
         how many you buy.
       </p>
       <p>(Placeholder: An interactive graph widget could go here.)</p>
-
       {/* 5. Substituting Values */}
       <LessonHeader icon={Calculator} title="Substituting Values" />
       <p>
+        To "substitute" means to replace a variable with a specific number.
+        This is how we "evaluate" an expression to find its value.
         To “substitute” means to replace a variable with a specific number.
         This is how we “evaluate” an expression to find its value.
       </p>
@@ -169,6 +171,7 @@ export default function VariablesPage() {
         title="Example: Evaluate 4x + 1 when x = 3"
         steps={[
           "Write the original expression: 4x + 1",
+          "Substitute '3' for 'x': 4(3) + 1",
           "Substitute ‘3’ for ‘x’: 4(3) + 1",
           "Multiply 4 and 3: 12 + 1",
           "Add 12 and 1: 13",
@@ -177,33 +180,41 @@ export default function VariablesPage() {
       />
       {/* Re-using the EvaluateApplet */}
       <EvaluateApplet expression="4x + 1" fn={(x) => 4 * x + 1} />
-
       {/* 6. Constant vs. Variable */}
       <LessonHeader icon={Shuffle} title="Constant vs. Variable" />
       <p>
+        It's important to know the difference between a variable and a{" "}
         It’s important to know the difference between a variable and a{" "}
         <strong>constant</strong>.
       </p>
       <ConstantVsVariableSorter />
-
       {/* 7. Using Variables in Real Life */}
       <LessonHeader icon={Beaker} title="Using Variables in Real Life" />
+      <p>
+        You use the idea of variables all the time!
+      </p>
+      <ul className="list-disc pl-5 text-neutral-300">
       <p>You use the idea of variables all the time!</p>
       <ul className="detective-list">
         <li>
+          <strong>Baking:</strong> "I need 2 cups of flour per (<code>x</code>)
+          batches of cookies."
           <strong>Baking:</strong> “I need 2 cups of flour per (<code>x</code>)
           batches of cookies.”
         </li>
         <li>
+          <strong>Games:</strong> "You get 50 points for every (<code>n</code>)
+          coins you collect."
           <strong>Games:</strong> “You get 50 points for every (<code>n</code>)
           coins you collect.”
         </li>
         <li>
+          <strong>Science:</strong> "The distance (<code>d</code>) is equal to
+          speed (<code>s</code>) multiplied by time (<code>t</code>)."
           <strong>Science:</strong> “The distance (<code>d</code>) is equal to
           speed (<code>s</code>) multiplied by time (<code>t</code>).”
         </li>
       </ul>
-
       {/* 8. Connections */}
       <LessonHeader icon={Link} title="Connections" />
       <p>
@@ -219,7 +230,6 @@ export default function VariablesPage() {
           url="/math/algebra/equations"
         />
       </div>
-
       {/* 9. Practice Section */}
       <LessonHeader icon={CheckSquare} title="Practice Section" />
       <PracticeProblem
@@ -231,17 +241,16 @@ export default function VariablesPage() {
         solution="3(5) + 2 = 15 + 2 = 17"
       />
       <PracticeProblem
+        question="Write an expression for: 'A number x decreased by 10'"
         question="Write an expression for: ‘A number x decreased by 10’"
         solution="x - 10"
       />
-
       {/* 10. Interactive Quiz */}
       <LessonHeader icon={HelpCircle} title="Interactive Quiz" />
       <p>
         Ready to solve the mystery? Test your knowledge on variables.
       </p>
       <VariableQuiz />
-
       {/* 11. Summary */}
       <LessonHeader icon={BookOpen} title="Summary" />
       <p>
@@ -250,10 +259,11 @@ export default function VariablesPage() {
         just single numbers. We use <strong>substitution</strong> to replace
         variables with numbers to evaluate expressions.
       </p>
-
       {/* 12. Extension / Next Lesson */}
       <LessonHeader icon={CheckSquare} title="Next Lesson" />
       <p>
+        Now that you understand variables (the "unknowns") and expressions
+        (the "phrases"), you're ready to see what happens when we set two
         Now that you understand variables (the “unknowns”) and expressions (the
         “phrases”), you’re ready to see what happens when we set two
         expressions equal to each other.

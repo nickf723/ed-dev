@@ -2,7 +2,7 @@
 "use client";
 import React, { useState } from "react";
 // 🌀 Using the "detective" theme icons
-import { Check, X, RefreshCw, HelpCircle, Shuffle } from "lucide-react";
+import { Check, X, RefreshCw, HelpCircle } from "lucide-react";
 
 /* -------------------------------------- */
 /* 1. WHAT IS A VARIABLE (Section 1)      */
@@ -13,26 +13,25 @@ export function WhatIsVariableExplainer() {
   const examples = [2, 10, -4];
 
   return (
-    <div className="glass my-6 rounded-lg border border-neutral-800 p-6 shadow-md text-center">
-      <h4 className="text-lg font-semibold text-neutral-200 mb-4">
-        Interactive: The "x" Treasure Chest
-      </h4>
-      <p className="text-neutral-400 text-sm mb-4">
-        Hover over the buttons to see what 'x' can be!
+      <div className="glass detective-card my-6 p-6 text-center">
+        <h4 className="mb-4 text-lg font-semibold text-neutral-100">
+          Interactive: The “x” Treasure Chest
+        </h4>
+        <p className="mb-4 text-sm text-neutral-300">
+          Hover over the buttons to see what ‘x’ can be!
       </p>
-      <div className="flex justify-center gap-4 mb-4">
+      <div className="mb-4 flex justify-center gap-3">
         {examples.map((ex) => (
           <button
             key={ex}
             onMouseEnter={() => setValue(ex)}
-            className="px-4 py-2 rounded-lg bg-neutral-800 text-white font-mono
-                       hover:bg-indigo-500 hover:scale-105 transition-all"
+            className="detective-chip px-4"
           >
             x = {ex}
           </button>
         ))}
       </div>
-      <div className="font-mono text-2xl p-4 rounded-lg bg-neutral-900/50 w-full max-w-sm mx-auto">
+      <div className="detective-readout font-mono text-2xl">
         <code className="text-cyan-300">
           2x + 3 ={" "}
           <span className="text-yellow-300 font-bold">
@@ -40,7 +39,7 @@ export function WhatIsVariableExplainer() {
           </span>
         </code>
         <p className="text-sm text-neutral-300 mt-3 font-sans">
-          The expression <strong>changes</strong> based on the "mystery" value of{" "}
+          The expression <strong>changes</strong> based on the “mystery” value of{" "}
           <code>x</code>.
         </p>
       </div>
@@ -63,14 +62,14 @@ export function ValidOrNotGame() {
   const [revealed, setRevealed] = useState<number | null>(null);
 
   return (
-    <div className="glass my-6 rounded-lg border border-neutral-800 p-6 shadow-md">
-      <div className="flex justify-between items-center mb-4">
-        <h4 className="text-lg font-semibold text-neutral-200 text-center">
+    <div className="glass detective-card my-6 p-6">
+      <div className="mb-4 flex items-center justify-between">
+        <h4 className="text-lg font-semibold text-neutral-100">
           Mini-Activity: Valid or Not?
         </h4>
         <button
           onClick={() => setRevealed(null)}
-          className="text-xs text-neutral-400 hover:text-cyan-300 flex items-center gap-1"
+          className="detective-reset flex items-center gap-1"
         >
           <RefreshCw size={12} />
           Reset
@@ -81,40 +80,38 @@ export function ValidOrNotGame() {
           <button
             key={item.name}
             onClick={() => setRevealed(index)}
-            className={`flex justify-between items-center w-full p-3 rounded-lg
-                      border transition-all
-                      ${
-                        revealed === index
-                          ? item.valid
-                            ? "bg-green-900/40 border-green-700"
-                            : "bg-red-900/40 border-red-700"
-                          : "bg-neutral-900/50 border-neutral-700 hover:bg-neutral-800/50"
-                      }`}
+            className={`detective-case-button ${
+              revealed === index
+                ? item.valid
+                  ? "is-correct"
+                  : "is-incorrect"
+                : ""
+            }`}
           >
-            <code className="font-mono text-xl text-white">{item.name}</code>
+            <code className="font-mono text-xl text-cyan-200">{item.name}</code>
             {revealed === index ? (
               // Show the answer
-              <div className="flex items-center gap-2">
-                <span className="text-sm text-neutral-300 italic">
+              <div className="flex items-center gap-2 text-right">
+                <span className="text-sm italic text-neutral-200">
                   {item.reason}
                 </span>
                 {item.valid ? (
-                  <Check className="h-5 w-5 text-green-400 flex-shrink-0" />
+                  <Check className="h-5 w-5 flex-shrink-0 text-emerald-300" />
                 ) : (
-                  <X className="h-5 w-5 text-red-400 flex-shrink-0" />
+                  <X className="h-5 w-5 flex-shrink-0 text-rose-300" />
                 )}
               </div>
             ) : (
               // Show the prompt
-              <span className="text-sm font-semibold text-neutral-400">
+              <span className="text-sm font-semibold uppercase tracking-[0.18em] text-sky-200">
                 Valid?
               </span>
             )}
           </button>
         ))}
       </div>
-      <p className="text-center text-sm text-neutral-400 mt-4">
-        Click an item to check if it's a valid name.
+      <p className="mt-4 text-center text-sm text-neutral-300">
+        Click an item to check if it’s a valid name.
       </p>
     </div>
   );
@@ -134,30 +131,22 @@ export function EvaluateApplet({
   const [val, setVal] = useState(0);
   const [result, setResult] = useState<number | null>(null);
 
-  const calculate = () => {
-    try {
-      setResult(fn(val));
-    } catch (e) {
-      setResult(null);
-    }
-  };
-
   // Update result in real-time as slider moves
   const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newVal = parseInt(e.target.value, 10);
     setVal(newVal);
-    try {
-      setResult(fn(newVal));
-    } catch (e) {
-      setResult(null);
-    }
-  };
+      try {
+        setResult(fn(newVal));
+      } catch {
+        setResult(null);
+      }
+    };
 
   // 🌀 Tweaked to be slider-first per your plan, with input box sync
   return (
-    <div className="glass my-6 rounded-lg border border-neutral-800 p-6 shadow-md">
+    <div className="glass detective-card my-6 p-6">
       <div className="mb-4 flex flex-col items-center justify-between gap-4 md:flex-row">
-        <div className="font-mono text-lg text-neutral-200 md:text-xl">
+        <div className="font-mono text-lg text-cyan-200 md:text-xl">
           Evaluate: <code className="text-cyan-300">{expression}</code>
         </div>
         <div className="flex items-center gap-2 font-mono text-lg md:text-xl">
@@ -172,13 +161,13 @@ export function EvaluateApplet({
                 setVal(num);
                 try {
                   setResult(fn(num));
-                } catch (e) {
+                } catch {
                   setResult(null);
                 }
               }}
               className="w-16 rounded-md border border-neutral-700 bg-neutral-900
                          p-1 text-center font-mono text-amber-300
-                         focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400"
+                         focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400"
             />
           </code>
         </div>
@@ -194,11 +183,11 @@ export function EvaluateApplet({
         className="w-full"
       />
 
-      <div className="mt-6 border-t border-neutral-700 pt-4 text-center">
-        <div className="text-sm uppercase tracking-wide text-neutral-400">
+      <div className="mt-6 border-t border-cyan-500/30 pt-4 text-center">
+        <div className="text-xs font-semibold uppercase tracking-[0.32em] text-teal-200">
           Result
         </div>
-        <div className="font-mono text-3xl font-bold text-green-300">
+        <div className="font-mono text-3xl font-bold text-emerald-300 drop-shadow-[0_0_12px_rgba(16,185,129,0.4)]">
           {result === null ? fn(val) : result}
         </div>
       </div>
@@ -218,8 +207,6 @@ const initialSorterItems = [
   { id: 5, text: "a", type: "var" },
   { id: 6, text: "2.5", type: "const" },
 ];
-
-type SortStatus = "unclassified" | "const" | "var" | "wrong";
 
 export function ConstantVsVariableSorter() {
   const [items, setItems] = useState(
@@ -258,14 +245,14 @@ export function ConstantVsVariableSorter() {
   const wrong = items.find((i) => i.status === "wrong");
 
   return (
-    <div className="glass my-6 rounded-lg border border-neutral-800 p-6 shadow-md">
-      <div className="flex justify-between items-center mb-4">
-        <h4 className="text-lg font-semibold text-neutral-200">
+    <div className="glass detective-card my-6 p-6">
+      <div className="mb-4 flex items-center justify-between">
+        <h4 className="text-lg font-semibold text-neutral-100">
           Mini-Game: Constant vs. Variable
         </h4>
         <button
           onClick={resetSorter}
-          className="text-xs text-neutral-400 hover:text-cyan-300 flex items-center gap-1"
+          className="detective-reset flex items-center gap-1"
         >
           <RefreshCw size={12} />
           Reset
@@ -273,31 +260,31 @@ export function ConstantVsVariableSorter() {
       </div>
 
       {/* Drop Zones */}
-      <div className="flex gap-4">
-        <div className="flex-1 rounded-lg border-2 border-teal-500 bg-neutral-900/50 p-4 min-h-24">
-          <h5 className="text-center font-semibold text-teal-300">
+      <div className="flex flex-col gap-4 md:flex-row">
+        <div className="casefile-dropzone casefile-dropzone--constants">
+          <h5 className="mb-2 text-center text-xs font-semibold uppercase tracking-[0.25em] text-emerald-200">
             Constants (Fixed)
           </h5>
-          <div className="mt-2 flex flex-wrap justify-center gap-2">
+          <div className="mt-3 flex flex-wrap justify-center gap-2">
             {constants.map((item) => (
               <span
                 key={item.id}
-                className="px-3 py-1 bg-teal-800 rounded-md font-mono text-white"
+                className="detective-chip detective-chip--constant"
               >
                 {item.text}
               </span>
             ))}
           </div>
         </div>
-        <div className="flex-1 rounded-lg border-2 border-indigo-500 bg-neutral-900/50 p-4 min-h-24">
-          <h5 className="text-center font-semibold text-indigo-300">
+        <div className="casefile-dropzone casefile-dropzone--variables">
+          <h5 className="mb-2 text-center text-xs font-semibold uppercase tracking-[0.25em] text-sky-200">
             Variables (Can Change)
           </h5>
-          <div className="mt-2 flex flex-wrap justify-center gap-2">
+          <div className="mt-3 flex flex-wrap justify-center gap-2">
             {variables.map((item) => (
               <span
                 key={item.id}
-                className="px-3 py-1 bg-indigo-800 rounded-md font-mono text-white"
+                className="detective-chip detective-chip--variable"
               >
                 {item.text}
               </span>
@@ -307,8 +294,8 @@ export function ConstantVsVariableSorter() {
       </div>
 
       {/* Unclassified Items */}
-      <div className="my-4 border-t border-neutral-700 pt-4">
-        <h5 className="text-center text-sm text-neutral-400 mb-3">
+      <div className="my-4 border-t border-cyan-500/30 pt-4">
+        <h5 className="mb-3 text-center text-xs font-semibold uppercase tracking-[0.28em] text-neutral-200">
           Click a tile to classify it:
         </h5>
         <div className="flex flex-wrap justify-center gap-3">
@@ -316,8 +303,7 @@ export function ConstantVsVariableSorter() {
             <button
               key={item.id}
               onClick={() => handleClassify(item.id, "const")}
-              className="px-4 py-2 bg-neutral-700 hover:bg-neutral-600 rounded-md 
-                         font-mono text-xl text-white transition-all"
+              className="detective-chip detective-chip--neutral"
             >
               {item.text}
             </button>
@@ -325,21 +311,20 @@ export function ConstantVsVariableSorter() {
           {/* Show the 'wrong' item temporarily */}
           {wrong && (
             <div
-              className="px-4 py-2 bg-red-600 rounded-md font-mono text-xl text-white
-                         animate-shake" // You'd add an 'animate-shake' keyframe to globals.css
+              className="detective-chip detective-chip--neutral animate-detective-shake"
             >
               {wrong.text}
             </div>
           )}
         </div>
       </div>
-      <div className="flex justify-center gap-4 mt-4">
+      <div className="mt-4 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
         <button
           onClick={() =>
             unclassified.length > 0 &&
             handleClassify(unclassified[0].id, "const")
           }
-          className="px-4 py-2 rounded-md bg-teal-800 hover:bg-teal-700 text-teal-200"
+          className="detective-action"
         >
           Classify as Constant
         </button>
@@ -348,7 +333,7 @@ export function ConstantVsVariableSorter() {
             unclassified.length > 0 &&
             handleClassify(unclassified[0].id, "var")
           }
-          className="px-4 py-2 rounded-md bg-indigo-800 hover:bg-indigo-700 text-indigo-200"
+          className="detective-action detective-action--alt"
         >
           Classify as Variable
         </button>
@@ -414,16 +399,16 @@ export function VariableQuiz() {
 
   if (isFinished) {
     return (
-      <div className="glass my-6 rounded-lg border-indigo-500/50 border-2 bg-indigo-900/20 p-6 shadow-xl text-center">
-        <h4 className="text-2xl font-bold text-indigo-300 mb-2">
+      <div className="glass detective-card detective-card--quiz my-6 p-6 text-center">
+        <h4 className="mb-2 text-2xl font-bold text-cyan-200">
           Mystery Solved!
         </h4>
-        <p className="text-xl text-neutral-200">
+        <p className="text-xl text-neutral-100">
           You scored {score} out of {quizQuestions.length}
         </p>
         <button
           onClick={handleRestart}
-          className="mt-6 bg-cyan-600 hover:bg-cyan-500 text-white font-bold py-2 px-6 rounded-lg transition-colors"
+          className="detective-action mt-6"
         >
           Retake Quiz
         </button>
@@ -434,17 +419,17 @@ export function VariableQuiz() {
   const question = quizQuestions[currentQ];
 
   return (
-    <div className="glass my-6 rounded-lg border-indigo-500/50 border-2 bg-indigo-900/20 p-6 shadow-xl">
-      <h4 className="text-lg font-semibold text-neutral-200 mb-4 flex justify-between">
+    <div className="glass detective-card detective-card--quiz my-6 p-6">
+      <h4 className="mb-4 flex justify-between text-lg font-semibold text-neutral-100">
         <span>
-          <HelpCircle className="inline h-5 w-5 mr-2 text-indigo-300" />
+          <HelpCircle className="mr-2 inline h-5 w-5 text-cyan-300" />
           Detective Quiz: Question {currentQ + 1}
         </span>
-        <span className="text-neutral-400">
+        <span className="detective-score">
           {score} / {quizQuestions.length}
         </span>
       </h4>
-      <p className="text-xl text-neutral-200 mb-6">{question.q}</p>
+      <p className="mb-6 text-xl text-neutral-100">{question.q}</p>
       <div className="space-y-3">
         {question.options.map((option, i) => (
           <button
@@ -453,15 +438,13 @@ export function VariableQuiz() {
               setSelected(i);
               setWasWrong(false);
             }}
-            className={`block w-full text-left p-4 rounded-lg border
-                      transition-all font-mono
-                      ${
-                        selected === i
-                          ? wasWrong
-                            ? "bg-red-900/50 border-red-400 ring-2 ring-red-400"
-                            : "bg-cyan-900/50 border-cyan-400 ring-2 ring-cyan-400"
-                          : "bg-neutral-900/50 border-neutral-700 hover:bg-neutral-800/50"
-                      }`}
+            className={`detective-option ${
+              selected === i
+                ? wasWrong
+                  ? "is-wrong"
+                  : "is-selected"
+                : ""
+            }`}
           >
             {option}
           </button>
@@ -470,8 +453,7 @@ export function VariableQuiz() {
       <button
         onClick={handleSubmit}
         disabled={selected === null}
-        className="mt-6 w-full bg-cyan-600 hover:bg-cyan-500 text-white font-bold py-3 px-4 rounded-lg 
-                   transition-colors disabled:bg-neutral-600 disabled:cursor-not-allowed"
+        className="detective-action mt-6 w-full"
       >
         {wasWrong ? "Try Again" : "Submit"}
       </button>
