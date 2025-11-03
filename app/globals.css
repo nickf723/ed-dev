@@ -150,6 +150,23 @@ body::after {
   }
 }
 
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25%,
+  75% {
+    transform: translateX(-5px);
+  }
+  50% {
+    transform: translateX(5px);
+  }
+}
+.animate-shake {
+  animation: shake 0.3s ease-in-out;
+}
+
 .floating-symbol {
   position: absolute;
   pointer-events: none;
@@ -283,4 +300,12 @@ hr {
   --color-text-title: #818cf8; /* indigo-400 */
   --color-text-header: #5eead4; /* teal-300 */
   --color-text-icon: #a78bfa; /* violet-400 */
+}
+
+.theme-equations-justice {
+  --color-primary-glow: rgba(30, 58, 138, 0.2); /* navy-900 */
+  --color-secondary-glow: rgba(250, 204, 21, 0.3); /* yellow-400 */
+  --color-text-title: #facc15; /* yellow-400 */
+  --color-text-header: #fbbf24; /* yellow-500 */
+  --color-text-icon: #eab308; /* yellow-600 */
 }

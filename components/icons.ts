@@ -14,7 +14,7 @@ export {
   Ruler,
   FunctionSquare,
 
-  // Lesson Headers & Asides
+  // Lesson Headers & Asides (Original)
   Box,
   Variable,
   Puzzle,
@@ -38,4 +38,29 @@ export {
   Plus,
   Minus,
   RefreshCcw,
+
+  // --- Icons for new lesson plans ---
+
+  // 🌀 Variables ("Mystery")
+  Search,
+  Users,
+  CheckCircle,
+  Beaker,
+  HelpCircle,
+  Binary,
+  Shuffle,
+
+  // 🧩 Expressions ("Blueprint")
+  Component,
+  Network, // Also used in Equations
+  Package,
+  PackagePlus,
+  PencilRuler,
+
+  // ⚖️ Equations ("Justice")
+  BookText,
+  GanttChartSquare,
+
+  // 🔗 Shared
+  Link, // 👈 The missing icon
 } from "lucide-react";
