@@ -31,6 +31,7 @@ import {
   CheckSquare,
   BookOpen,
   HelpCircle,
+  Network, // Added for placeholder
 } from "@/components/icons";
 
 // 3. Define the new sidebar content
@@ -107,8 +108,8 @@ export default function FunctionsPage() {
       {/* 3. Function Notation */}
       <LessonHeader icon={BrainCircuit} title="Function Notation" />
       <p>
-        We have a special way to write functions. Instead of <code>y = 2x + 1</code>, we write{" "}
-        <code>f(x) = 2x + 1</code>.
+        We have a special way to write functions. Instead of{" "}
+        <code>y = 2x + 1</code>, we write <code>f(x) = 2x + 1</code>.
       </p>
       <ul className="list-disc pl-5 text-neutral-300">
         <li>
@@ -168,9 +169,11 @@ export default function FunctionsPage() {
       <VerticalLineTest />
 
       {/* 7. Function Rules in Action */}
+      <LessonHeader icon={Network} title="Function Rules in Action" />
       <p>(Placeholder: Side-by-side function rule demo)</p>
 
       {/* 8. Piecewise Functions */}
+      <LessonHeader icon={Network} title="Piecewise Functions" />
       <p>(Placeholder: Piecewise function explainer)</p>
 
       {/* 9. Real-World Connections */}
@@ -195,12 +198,8 @@ export default function FunctionsPage() {
       </ul>
 
       {/* 10. Connections Table */}
-      <LessonHeader icon={Link} title="Connections" />
-      <p>
-        Functions are the master concept that combine everything we've
-        learned so far.
-      </p>
-      {/* (Placeholder for Connections Table) */}
+      <LessonHeader icon={Link} title="Connections Table" />
+      <p>(Placeholder for Connections Table)</p>
 
       {/* 11. Practice Section */}
       <LessonHeader icon={CheckSquare} title="Check Your Understanding" />

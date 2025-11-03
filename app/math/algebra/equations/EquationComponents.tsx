@@ -7,15 +7,12 @@ import {
   Minus,
   RefreshCcw,
   Check,
-  X,
   Scale,
-  FileText,
+  X,
+  Network, // 👈 Now imported
+  CheckSquare, // 👈 Now imported
   HelpCircle,
-  CheckSquare,
-  GanttChartSquare,
-  Network,
-  ArrowRight,
-} from "lucide-react";
+} from "@/components/icons"; // 👈 Updated imports
 
 /* -------------------------------------- */
 /* 1. BALANCE APPLET (Moved here)         */
@@ -436,14 +433,70 @@ export function WordProblemConverter() {
 /* 8. EQUATION TYPES (Section 8)          */
 /* -------------------------------------- */
 export function EquationTypesExplainer() {
+  const [expanded, setExpanded] = useState<string | null>(null);
+
+  const types = [
+    {
+      icon: Network,
+      name: "Linear",
+      example: "2x + 1 = 7",
+      def: "Has one variable (like x) raised to the power of 1. Has one solution.",
+      color: "text-cyan-300",
+    },
+    {
+      icon: CheckSquare,
+      name: "Identity",
+      example: "x + 1 = x + 1",
+      def: "An equation that is *always* true, no matter what value x is.",
+      color: "text-green-300",
+    },
+    {
+      icon: X,
+      name: "No-Solution",
+      example: "x + 2 = x + 3",
+      def: "An equation that is *never* true. There is no value for x that can make it balance.",
+      color: "text-red-300",
+    },
+  ];
+
   return (
     <div className="glass my-6 rounded-lg border border-neutral-800 p-6 shadow-md">
       <h4 className="text-lg font-semibold text-neutral-200 text-center mb-4">
-        Types of Equations (Placeholder)
+        Types of Equations
       </h4>
-      <p className="text-center text-sm text-neutral-400">
-        (Placeholder: Expandable cards for Linear, Quadratic, Identity, and
-        No-Solution.)
+      <div className="flex flex-col md:flex-row justify-center gap-4">
+        {types.map((type) => (
+          <div
+            key={type.name}
+            className={`rounded-lg border border-neutral-700 bg-neutral-900/40 p-4 w-full cursor-pointer
+                      transition-all duration-300 ${
+                        expanded === type.name
+                          ? "ring-2 ring-yellow-400 opacity-100"
+                          : "opacity-70 hover:opacity-100"
+                      }`}
+            onClick={() =>
+              setExpanded(expanded === type.name ? null : type.name)
+            }
+          >
+            <div className="flex items-center gap-3">
+              <type.icon className={`h-6 w-6 ${type.color}`} />
+              <div>
+                <h5 className={`text-lg font-semibold ${type.color}`}>
+                  {type.name}
+                </h5>
+              </div>
+            </div>
+            <code className="block my-3 text-center text-lg text-neutral-200">
+              {type.example}
+            </code>
+            {expanded === type.name && (
+              <p className="text-sm text-neutral-300 mt-2">{type.def}</p>
+            )}
+          </div>
+        ))}
+      </div>
+      <p className="col-span-full text-center text-sm text-neutral-400 mt-4">
+        Click a type to see its definition.
       </p>
     </div>
   );
@@ -452,18 +505,119 @@ export function EquationTypesExplainer() {
 /* -------------------------------------- */
 /* 11. QUICK QUIZ (Section 11)            */
 /* -------------------------------------- */
+const quizQuestions = [
+  {
+    q: "x + 3 = 10",
+    options: ["x = 3", "x = 7", "x = 13"],
+    a: 1,
+  },
+  {
+    q: "4x = 20",
+    options: ["x = 5", "x = 16", "x = 80"],
+    a: 0,
+  },
+  {
+    q: "2x + 1 = 11",
+    options: ["x = 6", "x = 10", "x = 5"],
+    a: 2,
+  },
+];
+
 export function BalanceQuiz() {
+  const [currentQ, setCurrentQ] = useState(0);
+  const [selected, setSelected] = useState<number | null>(null);
+  const [score, setScore] = useState(0);
+  const [isFinished, setIsFinished] = useState(false);
+  const [wasWrong, setWasWrong] = useState(false);
+
+  const handleSubmit = () => {
+    if (selected === null) return;
+    if (selected === quizQuestions[currentQ].a) {
+      setScore(score + 1);
+      setWasWrong(false);
+      setSelected(null);
+      if (currentQ < quizQuestions.length - 1) {
+        setCurrentQ(currentQ + 1);
+      } else {
+        setIsFinished(true);
+      }
+    } else {
+      setWasWrong(true);
+    }
+  };
+
+  const handleRestart = () => {
+    setCurrentQ(0);
+    setSelected(null);
+    setScore(0);
+    setIsFinished(false);
+    setWasWrong(false);
+  };
+
+  if (isFinished) {
+    return (
+      <div className="glass my-6 rounded-lg border-yellow-500/50 border-2 bg-yellow-900/20 p-6 shadow-xl text-center">
+        <h4 className="text-2xl font-bold text-yellow-300 mb-2">
+          Quiz Complete!
+        </h4>
+        <p className="text-xl text-neutral-200">
+          You scored {score} out of {quizQuestions.length}
+        </p>
+        <button
+          onClick={handleRestart}
+          className="mt-6 bg-cyan-600 hover:bg-cyan-500 text-white font-bold py-2 px-6 rounded-lg transition-colors"
+        >
+          Retake Quiz
+        </button>
+      </div>
+    );
+  }
+
+  const question = quizQuestions[currentQ];
+
   return (
-    <div className="glass my-6 rounded-lg border-yellow-500/50 border-2 bg-yellow-900/20 p-6 shadow-xl text-center">
-      <h4 className="text-2xl font-bold text-yellow-300 mb-2">
-        ⚖️ Quick Quiz: Balance the Scales!
+    <div className="glass my-6 rounded-lg border-yellow-500/50 border-2 bg-yellow-900/20 p-6 shadow-xl">
+      <h4 className="text-lg font-semibold text-neutral-200 mb-4 flex justify-between">
+        <span>
+          <Scale className="inline h-5 w-5 mr-2 text-yellow-400" />
+          Balance the Scales: {currentQ + 1}
+        </span>
+        <span className="text-neutral-400">
+          {score} / {quizQuestions.length}
+        </span>
       </h4>
-      <p className="text-neutral-300 mb-4">
-        (Placeholder: A timer-based game to solve equations by dragging
-        weights.)
+      <p className="text-3xl text-center font-mono text-white mb-6">
+        {question.q}
       </p>
-      <button className="w-full mt-4 bg-yellow-600 hover:bg-yellow-500 text-white font-bold py-2 px-4 rounded-lg transition-colors">
-        Start Challenge
+      <div className="space-y-3">
+        {question.options.map((option, i) => (
+          <button
+            key={i}
+            onClick={() => {
+              setSelected(i);
+              setWasWrong(false);
+            }}
+            className={`block w-full text-left p-4 rounded-lg border
+                      transition-all font-mono text-lg
+                      ${
+                        selected === i
+                          ? wasWrong
+                            ? "bg-red-900/50 border-red-400 ring-2 ring-red-400 animate-shake"
+                            : "bg-green-900/50 border-green-400 ring-2 ring-green-400"
+                          : "bg-neutral-900/50 border-neutral-700 hover:bg-neutral-800/50"
+                      }`}
+          >
+            {option}
+          </button>
+        ))}
+      </div>
+      <button
+        onClick={handleSubmit}
+        disabled={selected === null}
+        className="mt-6 w-full bg-yellow-600 hover:bg-yellow-500 text-white font-bold py-3 px-4 rounded-lg 
+                   transition-colors disabled:bg-neutral-600 disabled:cursor-not-allowed"
+      >
+        {wasWrong ? "Try Again" : "Submit"}
       </button>
     </div>
   );
