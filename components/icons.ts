@@ -66,11 +66,20 @@ export {
   Zap,
   TrendingUp,
   ArrowRight,
-  ChevronLeft, // 👈 Corrected
-  ChevronRightSquare, // 👈 Corrected
-  ChevronLeftSquare, // 👈 Corrected
-  EqualNot,// 👈 This one was correct
+  ChevronLeft,
+  ChevronRightSquare,
+  ChevronLeftSquare,
+  EqualNot,
+
+  // 🔁 Functions ("Machine")
+  ArrowRightLeft, // 👈 ADDED
+  Database, // 👈 ADDED
+  BrainCircuit, // 👈 ADDED
+  Waypoints, // 👈 ADDED
+  ScanLine, // 👈 ADDED
+  Factory, // 👈 ADDED
+  Briefcase, // 👈 ADDED
 
   // 🔗 Shared
-  Link,
+  Link, Check,
 } from "lucide-react";

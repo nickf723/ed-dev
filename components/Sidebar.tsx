@@ -12,7 +12,7 @@ import {
   Calculator,
   Ruler,
   FunctionSquare,
-} from "@/components/icons"; // 👈 Now imports from central icons file
+} from "@/components/icons";
 
 export default function Sidebar() {
   const pathname = usePathname();
@@ -82,11 +82,17 @@ export default function Sidebar() {
                 active={pathname.startsWith("/math/algebra/equations")}
                 nested
               />
-              {/* ⚔️ NEW LINK */}
               <SidebarLink
                 href="/math/algebra/inequalities"
                 label="Inequalities"
                 active={pathname.startsWith("/math/algebra/inequalities")}
+                nested
+              />
+              {/* 🔁 NEW LINK */}
+              <SidebarLink
+                href="/math/algebra/functions"
+                label="Functions"
+                active={pathname.startsWith("/math/algebra/functions")}
                 nested
               />
             </Dropdown>

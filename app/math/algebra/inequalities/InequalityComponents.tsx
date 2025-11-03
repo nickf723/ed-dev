@@ -54,6 +54,24 @@ export function InequalitySymbolExplainer() {
       color: "text-yellow-400",
     },
   ];
+  return (
+    <div className="my-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+      {symbols.map((s) => (
+        <div
+          key={s.symbol}
+          className="glass h-40 rounded-lg border border-neutral-800 p-4 
+                     flex flex-col justify-between items-center text-center
+                     transition-all hover:border-red-500/50 hover:scale-105"
+        >
+          <s.icon className={`h-10 w-10 ${s.color}`} />
+          <div>
+            <p className={`font-semibold ${s.color}`}>{s.name}</p>
+            <code className="text-neutral-200 text-lg">{s.ex}</code>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
 }
 /* -------------------------------------- */
 /* 3. NUMBER LINE TOOL (Section 3)        */

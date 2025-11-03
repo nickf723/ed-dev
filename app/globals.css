@@ -317,3 +317,11 @@ hr {
   --color-text-header: #ef4444; /* red-500 */
   --color-text-icon: #dc2626; /* red-600 */
 }
+
+.theme-functions-machine {
+  --color-primary-glow: rgba(37, 99, 235, 0.2); /* blue-700 */
+  --color-secondary-glow: rgba(219, 39, 119, 0.3); /* magenta/pink-600 */
+  --color-text-title: #3b82f6; /* blue-500 */
+  --color-text-header: #60a5fa; /* blue-400 */
+  --color-text-icon: #ec4899; /* pink-500 */
+}
