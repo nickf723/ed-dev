@@ -143,54 +143,54 @@ body::after {
   position: absolute;
   z-index: -10;
   border-radius: 9999px;
-  mix-blend-mode: hard-light;
-  filter: blur(80px); /* This creates the "fluid" effect */
+  mix-blend-mode: overlay;
+  filter: blur(50px); /* This creates the "fluid" effect */
   will-change: transform, opacity;
 }
 
 @keyframes blob-float-1 {
   0% {
     transform: translate(0px, 0px) scale(1);
-    opacity: 0.15;
+    opacity: 0.25; /* 👈 Increased opacity */
   }
   25% {
     transform: translate(15vw, -20vh) scale(1.1);
-    opacity: 0.2;
+    opacity: 0.35; /* 👈 Increased opacity */
   }
   50% {
     transform: translate(0px, 20vh) scale(0.9);
-    opacity: 0.15;
+    opacity: 0.25; /* 👈 Increased opacity */
   }
   75% {
     transform: translate(-20vw, -10vh) scale(1.1);
-    opacity: 0.2;
+    opacity: 0.35; /* 👈 Increased opacity */
   }
   100% {
     transform: translate(0px, 0px) scale(1);
-    opacity: 0.15;
+    opacity: 0.25; /* 👈 Increased opacity */
   }
 }
 
 @keyframes blob-float-2 {
   0% {
     transform: translate(0px, 0px) scale(1);
-    opacity: 0.15;
+    opacity: 0.25; /* 👈 Increased opacity */
   }
   25% {
     transform: translate(-20vw, 15vh) scale(1.1);
-    opacity: 0.2;
+    opacity: 0.35; /* 👈 Increased opacity */
   }
   50% {
     transform: translate(10vw, -20vh) scale(0.9);
-    opacity: 0.15;
+    opacity: 0.25; /* 👈 Increased opacity */
   }
   75% {
     transform: translate(15vw, 10vh) scale(1.1);
-    opacity: 0.2;
+    opacity: 0.35; /* 👈 Increased opacity */
   }
   100% {
     transform: translate(0px, 0px) scale(1);
-    opacity: 0.15;
+    opacity: 0.25; /* 👈 Increased opacity */
   }
 }
 
@@ -215,7 +215,11 @@ body::after {
 }
 
 .prose h3 {
-  @apply mt-8 mb-3 text-2xl font-semibold text-cyan-400;
+  margin-top: 2rem;      /* mt-8 */
+  margin-bottom: 0.75rem; /* mb-3 */
+  font-size: 1.5rem;     /* text-2xl */
+  font-weight: 600;      /* font-semibold */
+  color: #22d3ee;        /* text-cyan-400 */
 }
 
 .prose p {
