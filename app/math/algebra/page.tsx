@@ -33,10 +33,20 @@ export default function AlgebraPage() {
       // 👇 All props removed
     },
     {
+      title: "Inequalities",
+      desc: "Comparisons using <, >, ≤, or ≥ — discover solution sets on number lines.",
+      href: "/math/algebra/inequalities",
+    },
+    {
       title: "Functions",
       desc: "Rules linking input and output — the engine of algebraic models.",
       href: "/math/algebra/functions",
       // 👇 All props removed
+    },
+    {
+      title: "Relations & Graphs",
+      desc: "Transform ordered pairs into visuals and master the vertical line test.",
+      href: "/math/algebra/relations",
     },
   ];
 

@@ -92,6 +92,7 @@ export default function ExpressionsPage() {
       title="Expressions"
       subtitle="The fundamental building blocks of algebra. Learn to build, read, and simplify mathematical phrases."
       aside={lessonAside}
+      className="theme-expressions-workshop"
     >
       {/* 1. Interactive Overview */}
       <LessonHeader icon={Package} title="What is an Expression?" />

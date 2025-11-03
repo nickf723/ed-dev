@@ -79,7 +79,14 @@ export {
   ScanLine, // 👈 ADDED
   Factory, // 👈 ADDED
   Briefcase, // 👈 ADDED
-
+  LineChart,
+  Map,
+  Grid3X3,
+  ChartScatter,
+  Axis3D,
+  Compass,
+  ListChecks,
+  Sparkles,
   // 🔗 Shared
   Link,
   Check,

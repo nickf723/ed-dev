@@ -286,6 +286,14 @@ hr {
   --color-text-icon: #a78bfa; /* violet-400 */
 }
 
+.theme-expressions-workshop {
+  --color-primary-glow: rgba(59, 130, 246, 0.18); /* blue-500 */
+  --color-secondary-glow: rgba(14, 165, 233, 0.25); /* sky-500 */
+  --color-text-title: #60a5fa; /* blue-400 */
+  --color-text-header: #38bdf8; /* sky-400 */
+  --color-text-icon: #fbbf24; /* amber-400 */
+}
+
 /* "Balance & Justice" theme for the equations page */
 .theme-equations-justice {
   --color-primary-glow: rgba(30, 58, 138, 0.2); /* navy-900 */
@@ -311,6 +319,15 @@ hr {
   --color-text-title: #3b82f6; /* blue-500 */
   --color-text-header: #60a5fa; /* blue-400 */
   --color-text-icon: #ec4899; /* pink-500 */
+}
+
+/* 📈 NEW: "Relations & Graphs" theme */
+.theme-relations-graph {
+  --color-primary-glow: rgba(45, 212, 191, 0.18); /* teal-400 */
+  --color-secondary-glow: rgba(129, 140, 248, 0.25); /* indigo-400 */
+  --color-text-title: #5eead4; /* teal-300 */
+  --color-text-header: #a855f7; /* fuchsia-500 */
+  --color-text-icon: #7dd3fc; /* sky-300 */
 }
 
 /* Utility for shake animation on wrong answers */

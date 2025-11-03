@@ -337,7 +337,7 @@ export default function FunctionsPage() {
       </p>
       <ResourceLink
         title="Next Up: Relations & Graphs"
-        url="#" // Placeholder
+        url="/math/algebra/relations"
       />
     </LessonLayout>
   );

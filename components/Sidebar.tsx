@@ -95,6 +95,12 @@ export default function Sidebar() {
                 active={pathname.startsWith("/math/algebra/functions")}
                 nested
               />
+              <SidebarLink
+                href="/math/algebra/relations"
+                label="Relations & Graphs"
+                active={pathname.startsWith("/math/algebra/relations")}
+                nested
+              />
             </Dropdown>
 
             {/* Geometry */}
