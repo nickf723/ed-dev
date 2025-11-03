@@ -72,13 +72,15 @@ export {
   EqualNot,
 
   // 🔁 Functions ("Machine")
-  ArrowRightLeft, // 👈 ADDED
-  Database, // 👈 ADDED
-  BrainCircuit, // 👈 ADDED
-  Waypoints, // 👈 ADDED
-  ScanLine, // 👈 ADDED
-  Factory, // 👈 ADDED
-  Briefcase, // 👈 ADDED
+  ArrowRightLeft,
+  Database,
+  BrainCircuit,
+  Waypoints,
+  ScanLine,
+  Factory,
+  Briefcase,
+  
+  // 📈 Relations & Graphs
   LineChart,
   Map,
   Grid3X3,
@@ -87,6 +89,11 @@ export {
   Compass,
   ListChecks,
   Sparkles,
+  Table, // 👈 ADDED
+  Move, // 👈 ADDED
+  TrendingDown, // 👈 ADDED
+  Dot, // 👈 ADDED
+
   // 🔗 Shared
   Link,
   Check,

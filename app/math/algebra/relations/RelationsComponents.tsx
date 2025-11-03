@@ -1,40 +1,48 @@
 "use client";
 
 import React, { useMemo, useState } from "react";
+// 1. UPDATED: Import new icons
+import {
+  TrendingDown,
+  TrendingUp,
+  Minus,
+  Move,
+  Dot,
+  Table,
+} from "@/components/icons";
 
 /* -------------------------------------------------- */
-/* 1. Coordinate Plane Explorer                       */
+/* 1. Coordinate Plane Explorer (Unchanged)           */
 /* -------------------------------------------------- */
 type QuadrantKey = "I" | "II" | "III" | "IV" | "Axes";
-
 const QUADRANT_INFO: Record<QuadrantKey, { title: string; description: string }>
   = {
-    I: {
-      title: "Quadrant I",
-      description:
-        "Both x and y are positive here (x > 0, y > 0). You'll find points like (2, 3).",
-    },
-    II: {
-      title: "Quadrant II",
-      description:
-        "x is negative, but y is positive (x < 0, y > 0). Points such as (-4, 5) live here.",
-    },
-    III: {
-      title: "Quadrant III",
-      description:
-        "Both coordinates are negative (x < 0, y < 0). Think of (-2, -6).",
-    },
-    IV: {
-      title: "Quadrant IV",
-      description:
-        "x is positive, y is negative (x > 0, y < 0). Points like (3, -1) fall here.",
-    },
-    Axes: {
-      title: "On the Axes",
-      description:
-        "Any point with x = 0 or y = 0 lies on an axis. The origin (0, 0) is where both meet.",
-    },
-  };
+  I: {
+    title: "Quadrant I",
+    description:
+      "Both x and y are positive here (x > 0, y > 0). You'll find points like (2, 3).",
+  },
+  II: {
+    title: "Quadrant II",
+    description:
+      "x is negative, but y is positive (x < 0, y > 0). Points such as (-4, 5) live here.",
+  },
+  III: {
+    title: "Quadrant III",
+    description:
+      "Both coordinates are negative (x < 0, y < 0). Think of (-2, -6).",
+  },
+  IV: {
+    title: "Quadrant IV",
+    description:
+      "x is positive, y is negative (x > 0, y < 0). Points like (3, -1) fall here.",
+  },
+  Axes: {
+    title: "On the Axes",
+    description:
+      "Any point with x = 0 or y = 0 lies on an axis. The origin (0, 0) is where both meet.",
+  },
+};
 
 export function CoordinatePlaneExplorer() {
   const [selected, setSelected] = useState<QuadrantKey>("I");
@@ -48,7 +56,6 @@ export function CoordinatePlaneExplorer() {
       <p className="text-sm text-neutral-400">
         Tap a region to remember which sign patterns belong to each quadrant.
       </p>
-
       <div className="mt-6 grid grid-cols-2 gap-3">
         {orderedCells.map((cell) => {
           const isActive = cell === selected;
@@ -57,12 +64,11 @@ export function CoordinatePlaneExplorer() {
               key={cell}
               type="button"
               onClick={() => setSelected(cell)}
-              className={`flex h-28 flex-col items-center justify-center rounded-lg border text-center text-sm font-medium transition-colors
-                ${
-                  isActive
-                    ? "border-teal-400/70 bg-teal-400/20 text-teal-200"
-                    : "border-neutral-700 bg-neutral-900/40 text-neutral-300 hover:border-teal-400/60 hover:text-teal-200"
-                }`}
+              className={`flex h-28 flex-col items-center justify-center rounded-lg border text-center text-sm font-medium transition-colors ${
+                isActive
+                  ? "border-teal-400/70 bg-teal-400/20 text-teal-200"
+                  : "border-neutral-700 bg-neutral-900/40 text-neutral-300 hover:border-teal-400/60 hover:text-teal-200"
+              }`}
             >
               <span className="text-2xl font-bold">{cell}</span>
               <span className="mt-1 text-xs opacity-80">
@@ -78,25 +84,22 @@ export function CoordinatePlaneExplorer() {
           );
         })}
       </div>
-
       <div className="mt-4 flex flex-wrap justify-center gap-2">
         {(["I", "II", "III", "IV", "Axes"] as QuadrantKey[]).map((key) => (
           <button
             key={key}
             type="button"
             onClick={() => setSelected(key)}
-            className={`rounded-full px-4 py-1 text-xs font-semibold transition-colors
-              ${
-                selected === key
-                  ? "bg-teal-500/80 text-black"
-                  : "bg-neutral-800 text-neutral-300 hover:bg-neutral-700/80"
-              }`}
+            className={`rounded-full px-4 py-1 text-xs font-semibold transition-colors ${
+              selected === key
+                ? "bg-teal-500/80 text-black"
+                : "bg-neutral-800 text-neutral-300 hover:bg-neutral-700/80"
+            }`}
           >
             {key === "Axes" ? "Axes" : `Quadrant ${key}`}
           </button>
         ))}
       </div>
-
       <div className="mt-6 rounded-md border border-neutral-700 bg-neutral-900/40 p-4">
         <h5 className="text-sm font-semibold text-teal-300">
           {QUADRANT_INFO[selected].title}
@@ -110,181 +113,127 @@ export function CoordinatePlaneExplorer() {
 }
 
 /* -------------------------------------------------- */
-/* 2. Relation Type Checker                           */
+/* 2. NEW: Interactive Plotter (Replaces Checklist)   */
 /* -------------------------------------------------- */
-type RelationExample = {
-  name: string;
-  pairs: string[];
-  isFunction: boolean;
-  reason: string;
-};
-
-const RELATION_EXAMPLES: RelationExample[] = [
+const PLOT_POINTS = [
   {
-    name: "Table A",
-    pairs: ["(1, 3)", "(2, 5)", "(3, 7)", "(4, 9)"],
-    isFunction: true,
-    reason: "Each x-value is used only once, so it passes the vertical line test.",
+    label: "A (-3, 2)",
+    x: -3,
+    y: 2,
+    steps: "Start at Origin (0,0) → Go Left 3 → Go Up 2",
+    color: "bg-teal-400",
   },
   {
-    name: "Table B",
-    pairs: ["(1, 4)", "(1, 6)", "(2, 8)", "(3, 8)"],
-    isFunction: false,
-    reason: "x = 1 is paired with two different y-values.",
+    label: "B (1, -4)",
+    x: 1,
+    y: -4,
+    steps: "Start at Origin (0,0) → Go Right 1 → Go Down 4",
+    color: "bg-fuchsia-400",
   },
   {
-    name: "Table C",
-    pairs: ["(-2, -3)", "(0, 1)", "(2, -3)", "(4, -3)"],
-    isFunction: true,
-    reason: "Repeated y-values are okay; every x still has only one output.",
+    label: "C (4, 3)",
+    x: 4,
+    y: 3,
+    steps: "Start at Origin (0,0) → Go Right 4 → Go Up 3",
+    color: "bg-amber-400",
   },
 ];
 
-export function RelationTypeChecker() {
-  const [revealed, setRevealed] = useState<Record<string, boolean>>({});
-
-  return (
-    <div className="my-6 space-y-4">
-      {RELATION_EXAMPLES.map((example) => {
-        const isShown = revealed[example.name];
-        return (
-          <div
-            key={example.name}
-            className="glass rounded-lg border border-neutral-800 p-4"
-          >
-            <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-              <div>
-                <h5 className="text-sm font-semibold text-sky-300">{example.name}</h5>
-                <p className="font-mono text-base text-neutral-200">
-                  {example.pairs.join(", ")}
-                </p>
-              </div>
-              <button
-                type="button"
-                onClick={() =>
-                  setRevealed((prev) => ({
-                    ...prev,
-                    [example.name]: !prev[example.name],
-                  }))
-                }
-                className="rounded-md border border-sky-500/40 bg-sky-500/10 px-4 py-2 text-sm font-semibold text-sky-200 transition hover:bg-sky-500/20"
-              >
-                {isShown ? "Hide Answer" : "Is this a function?"}
-              </button>
-            </div>
-            {isShown && (
-              <div className="mt-3 rounded-md border border-neutral-700 bg-neutral-900/60 p-3 text-sm text-neutral-200">
-                <p>
-                  <strong>{example.isFunction ? "Yes" : "No"}.</strong>{" "}
-                  {example.reason}
-                </p>
-              </div>
-            )}
-          </div>
-        );
-      })}
-    </div>
-  );
-}
-
-/* -------------------------------------------------- */
-/* 3. Mapping Diagram Visual                          */
-/* -------------------------------------------------- */
-type MappingPair = {
-  input: number;
-  output: number;
+// Helper to convert (x,y) to (left, top) percentage
+// Grid is from -5 to 5 on both axes
+const getPosition = (x: number, y: number) => {
+  const left = ((x - -5) / (5 - -5)) * 100;
+  const top = ((y - 5) / (-5 - 5)) * 100;
+  return { left: `${left}%`, top: `${top}%` };
 };
 
-type MappingDataset = {
-  name: string;
-  pairs: MappingPair[];
-};
+export function InteractivePlotter() {
+  const [visible, setVisible] = useState<Set<string>>(new Set());
+  const [currentStep, setCurrentStep] = useState(PLOT_POINTS[0].steps);
 
-const mappingSets: MappingDataset[] = [
-  {
-    name: "Double It",
-    pairs: [
-      { input: -2, output: -4 },
-      { input: -1, output: -2 },
-      { input: 0, output: 0 },
-      { input: 2, output: 4 },
-    ],
-  },
-  {
-    name: "Square Then Subtract",
-    pairs: [
-      { input: -2, output: 2 },
-      { input: -1, output: 0 },
-      { input: 1, output: 0 },
-      { input: 3, output: 8 },
-    ],
-  },
-];
-
-export function MappingDiagram() {
-  const [index, setIndex] = useState(0);
-  const active = mappingSets[index];
+  const togglePoint = (point: (typeof PLOT_POINTS)[0]) => {
+    setVisible((prev) => {
+      const next = new Set(prev);
+      if (next.has(point.label)) {
+        next.delete(point.label);
+      } else {
+        next.add(point.label);
+      }
+      return next;
+    });
+    setCurrentStep(point.steps);
+  };
 
   return (
     <div className="glass my-6 rounded-lg border border-neutral-800 p-6">
-      <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-        <div>
-          <h4 className="text-lg font-semibold text-neutral-100">
-            Mapping Diagram
-          </h4>
-          <p className="text-sm text-neutral-400">
-            Watch how each input connects to exactly one output in a function.
-          </p>
-        </div>
-        <div className="flex gap-2">
-          {mappingSets.map((set, i) => (
-            <button
-              key={set.name}
-              type="button"
-              onClick={() => setIndex(i)}
-              className={`rounded-full px-3 py-1 text-xs font-semibold transition-colors
-                ${
-                  i === index
-                    ? "bg-fuchsia-500/80 text-black"
-                    : "bg-neutral-800 text-neutral-300 hover:bg-neutral-700"
-                }`}
+      <h4 className="text-lg font-semibold text-neutral-100">
+        Interactive Plotter
+      </h4>
+      <p className="text-sm text-neutral-400">
+        Click the buttons to see how each point is plotted from the Origin.
+      </p>
+      <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* Graph */}
+        <div className="relative aspect-square md:col-span-2 rounded-lg bg-neutral-900/50 p-4">
+          {/* Axes */}
+          <div className="absolute left-0 right-0 top-1/2 h-0.5 -translate-y-1/2 bg-neutral-600" />
+          <div className="absolute top-0 bottom-0 left-1/2 w-0.5 -translate-x-1/2 bg-neutral-600" />
+          {/* Origin Label */}
+          <span className="absolute left-1/2 top-1/2 -translate-y-4 -translate-x-4 text-xs text-neutral-500">
+            (0,0)
+          </span>
+          {/* Plotted Points */}
+          {PLOT_POINTS.map((point) => (
+            <div
+              key={point.label}
+              className={`absolute -translate-x-1/2 -translate-y-1/2 rounded-full p-1 transition-all duration-300 ${
+                visible.has(point.label)
+                  ? "opacity-100 scale-100"
+                  : "opacity-0 scale-0"
+              }`}
+              style={getPosition(point.x, point.y)}
             >
-              {set.name}
+              <div
+                className={`h-3 w-3 rounded-full ${point.color} ring-2 ring-black`}
+              />
+              <span
+                className={`absolute left-1/2 top-1/2 -translate-y-6 text-sm font-semibold ${point.color.replace(
+                  "bg",
+                  "text",
+                )}`}
+              >
+                {point.label}
+              </span>
+            </div>
+          ))}
+        </div>
+        {/* Controls */}
+        <div className="flex flex-col gap-3">
+          {PLOT_POINTS.map((point) => (
+            <button
+              key={point.label}
+              onClick={() => togglePoint(point)}
+              className={`rounded-md border p-3 text-left transition-colors ${
+                visible.has(point.label)
+                  ? `${point.color.replace(
+                      "bg",
+                      "border",
+                    )}/50 ${point.color.replace("bg", "bg")}/20`
+                  : "border-neutral-700 bg-neutral-800/40 hover:bg-neutral-700/50"
+              }`}
+            >
+              <span
+                className={`font-semibold ${point.color.replace("bg", "text")}`}
+              >
+                {visible.has(point.label) ? "Hide" : "Show"} Point{" "}
+                {point.label}
+              </span>
             </button>
           ))}
-        </div>
-      </div>
-
-      <div className="mt-6 grid gap-6 md:grid-cols-[1fr_auto_1fr] md:items-center">
-        <div className="space-y-2">
-          {active.pairs.map((pair, pairIndex) => (
-            <div
-              key={`input-${pairIndex}`}
-              className="rounded-md border border-neutral-700 bg-neutral-900/40 px-4 py-2 text-center text-sm text-neutral-200"
-            >
-              {pair.input}
-            </div>
-          ))}
-        </div>
-
-        <div className="flex flex-col items-center">
-          {active.pairs.map((pair, pairIndex) => (
-            <div key={`arrow-${pairIndex}`} className="relative h-12 w-20">
-              <div className="absolute left-0 top-1/2 h-1 w-full -translate-y-1/2 bg-gradient-to-r from-sky-500/20 to-sky-400/80" />
-              <div className="absolute right-0 top-1/2 h-3 w-3 -translate-y-1/2 rotate-45 bg-sky-400/80" />
-            </div>
-          ))}
-        </div>
-
-        <div className="space-y-2">
-          {active.pairs.map((pair, pairIndex) => (
-            <div
-              key={`output-${pairIndex}`}
-              className="rounded-md border border-neutral-700 bg-neutral-900/40 px-4 py-2 text-center text-sm text-neutral-200"
-            >
-              {pair.output}
-            </div>
-          ))}
+          <div className="mt-4 rounded-md border border-neutral-700 bg-neutral-900 p-3 text-sm text-neutral-300">
+            <span className="font-semibold text-teal-300">Instructions:</span>
+            <p>{currentStep}</p>
+          </div>
         </div>
       </div>
     </div>
@@ -292,24 +241,135 @@ export function MappingDiagram() {
 }
 
 /* -------------------------------------------------- */
-/* 4. Story to Graph Match                            */
+/* 3. NEW: Table to Graph                             */
+/* -------------------------------------------------- */
+const tablePoints = [
+  { x: -2, y: -5 },
+  { x: -1, y: -3 },
+  { x: 0, y: -1 },
+  { x: 1, y: 1 },
+  { x: 2, y: 3 },
+];
+
+export function TableToGraph() {
+  const [showGraph, setShowGraph] = useState(false);
+
+  return (
+    <div className="glass my-6 rounded-lg border border-neutral-800 p-6">
+      <h4 className="text-lg font-semibold text-neutral-100">
+        From Table to Graph
+      </h4>
+      <p className="text-sm text-neutral-400">
+        A table of values is just a list of ordered pairs. Let's plot the
+        relation <code>y = 2x - 1</code>.
+      </p>
+      <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Table */}
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-max border-collapse">
+            <thead>
+              <tr className="bg-neutral-800/50">
+                <th className="border border-neutral-700 p-3 text-sm font-semibold text-teal-300">
+                  x (Input)
+                </th>
+                <th className="border border-neutral-700 p-3 text-sm font-semibold text-fuchsia-300">
+                  y (Output)
+                </th>
+                <th className="border border-neutral-700 p-3 text-sm font-semibold text-neutral-400">
+                  Point (x, y)
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {tablePoints.map((point) => (
+                <tr key={point.x} className="bg-neutral-900/40">
+                  <td className="border border-neutral-700 p-3 text-center font-mono text-teal-300">
+                    {point.x}
+                  </td>
+                  <td className="border border-neutral-700 p-3 text-center font-mono text-fuchsia-300">
+                    {point.y}
+                  </td>
+                  <td className="border border-neutral-700 p-3 text-center font-mono text-neutral-400">
+                    ({point.x}, {point.y})
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <button
+            onClick={() => setShowGraph(!showGraph)}
+            className="mt-4 w-full rounded-md bg-teal-600 px-4 py-2 font-semibold text-white transition hover:bg-teal-500"
+          >
+            {showGraph ? "Hide Graph" : "Plot these Points"}
+          </button>
+        </div>
+        {/* Graph */}
+        <div className="relative aspect-square rounded-lg bg-neutral-900/50 p-4">
+          {/* Axes */}
+          <div className="absolute left-0 right-0 top-1/2 h-0.5 -translate-y-1/2 bg-neutral-600" />
+          <div className="absolute top-0 bottom-0 left-1/2 w-0.5 -translate-x-1/2 bg-neutral-600" />
+          {/* Plotted Points */}
+          {tablePoints.map((point) => (
+            <div
+              key={point.x}
+              className={`absolute -translate-x-1/2 -translate-y-1/2 rounded-full transition-all duration-500 ${
+                showGraph ? "opacity-100" : "opacity-0"
+              }`}
+              style={getPosition(point.x, point.y)}
+            >
+              <Dot className="h-4 w-4 text-teal-300" />
+            </div>
+          ))}
+          {/* Connecting Line (SVG) */}
+          <svg
+            viewBox="0 0 100 100"
+            className="absolute inset-0 overflow-visible"
+            preserveAspectRatio="none"
+          >
+            <path
+              d="M 0 0 L 100 100"
+              stroke="#5eead4"
+              strokeWidth="2"
+              strokeDasharray="4"
+              className={`transition-all duration-1000 ${
+                showGraph ? "opacity-50" : "opacity-0"
+              }`}
+              style={{
+                transform: "scale(0.8) translate(10px, 10px)", // Scale/translate to match points
+              }}
+            />
+          </svg>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* -------------------------------------------------- */
+/* 4. UPGRADED: Graph Story Match                     */
 /* -------------------------------------------------- */
 const SCENARIOS = [
   {
-    label: "Jogging pace increases steadily",
-    answer: "Increasing line",
-  },
-  {
-    label: "Water tank draining at a constant rate",
-    answer: "Decreasing line",
-  },
-  {
-    label: "Parking meter that stays full",
+    label: "A car cruising at a constant speed.",
     answer: "Horizontal line",
+  },
+  {
+    label: "The height of a ball thrown into the air.",
+    answer: "Increasing, then Decreasing",
+  },
+  {
+    label: "A hot drink cooling down to room temperature.",
+    answer: "Decreasing line",
   },
 ];
 
-const GRAPH_CHOICES = ["Increasing line", "Decreasing line", "Horizontal line"];
+// 2. UPDATED: Choices are now visual
+const GRAPH_CHOICES = [
+  { name: "Increasing line", icon: TrendingUp },
+  { name: "Decreasing line", icon: TrendingDown },
+  { name: "Horizontal line", icon: Minus },
+  { name: "Increasing, then Decreasing", icon: Move }, // Placeholder icon
+];
 
 export function GraphStoryMatch() {
   const [choices, setChoices] = useState<Record<string, string>>({});
@@ -349,7 +409,7 @@ export function GraphStoryMatch() {
         </button>
       </div>
 
-      <div className="space-y-3">
+      <div className="space-y-4">
         {SCENARIOS.map((scenario) => (
           <div
             key={scenario.label}
@@ -358,28 +418,31 @@ export function GraphStoryMatch() {
             <p className="text-sm font-semibold text-neutral-200">
               {scenario.label}
             </p>
-            <select
-              className="mt-2 w-full rounded-md border border-neutral-700 bg-neutral-950/70 px-3 py-2 text-sm text-neutral-100"
-              value={choices[scenario.label] ?? ""}
-              onChange={(event) =>
-                setChoices((prev) => ({
-                  ...prev,
-                  [scenario.label]: event.target.value,
-                }))
-              }
-            >
-              <option value="" disabled>
-                Select a graph type
-              </option>
+            {/* 3. UPDATED: Replaced <select> with buttons */}
+            <div className="mt-3 flex flex-wrap gap-3">
               {GRAPH_CHOICES.map((choice) => (
-                <option key={choice} value={choice}>
-                  {choice}
-                </option>
+                <button
+                  key={choice.name}
+                  onClick={() =>
+                    setChoices((prev) => ({
+                      ...prev,
+                      [scenario.label]: choice.name,
+                    }))
+                  }
+                  className={`flex items-center gap-2 rounded-lg border p-3 text-sm transition-all ${
+                    choices[scenario.label] === choice.name
+                      ? "border-teal-400/70 bg-teal-400/20 text-teal-200 ring-2 ring-teal-400"
+                      : "border-neutral-700 bg-neutral-800/40 text-neutral-300 hover:bg-neutral-700/50"
+                  }`}
+                >
+                  <choice.icon className="h-5 w-5" />
+                  <span>{choice.name}</span>
+                </button>
               ))}
-            </select>
+            </div>
             {checked && (
               <p
-                className={`mt-2 text-sm font-medium ${
+                className={`mt-3 text-sm font-medium ${
                   choices[scenario.label] === scenario.answer
                     ? "text-teal-300"
                     : "text-rose-300"
@@ -387,7 +450,13 @@ export function GraphStoryMatch() {
               >
                 {choices[scenario.label] === scenario.answer
                   ? "Great match!"
-                  : `Try again — think about whether the line should slope up, down, or stay flat.`}
+                  : `Not quite. ${
+                      scenario.answer === "Horizontal line"
+                        ? "Think about what 'constant' speed means for the graph."
+                        : scenario.answer === "Decreasing line"
+                        ? "The temperature is going down, so the line should fall."
+                        : "The ball goes up, then comes down."
+                    }`}
               </p>
             )}
           </div>
@@ -404,61 +473,7 @@ export function GraphStoryMatch() {
 }
 
 /* -------------------------------------------------- */
-/* 5. Plotting Checklist                              */
-/* -------------------------------------------------- */
-const PLOT_POINTS = [
-  { label: "Plot point A (−3, 2)", coordinate: "A" },
-  { label: "Plot point B (1, −4)", coordinate: "B" },
-  { label: "Plot point C (4, 3)", coordinate: "C" },
-];
-
-export function PlottingChecklist() {
-  const [completed, setCompleted] = useState<Record<string, boolean>>({});
-
-  const allDone = PLOT_POINTS.every((point) => completed[point.coordinate]);
-
-  return (
-    <div className="glass my-6 rounded-lg border border-neutral-800 p-6">
-      <h4 className="text-lg font-semibold text-neutral-100">Plotting Checklist</h4>
-      <p className="text-sm text-neutral-400">
-        Imagine plotting each point on graph paper. Check off each item as you
-        picture it on the coordinate plane.
-      </p>
-      <ul className="mt-4 space-y-3">
-        {PLOT_POINTS.map((point) => (
-          <li key={point.coordinate} className="flex items-start gap-3">
-            <input
-              type="checkbox"
-              id={`plot-${point.coordinate}`}
-              checked={Boolean(completed[point.coordinate])}
-              onChange={(event) =>
-                setCompleted((prev) => ({
-                  ...prev,
-                  [point.coordinate]: event.target.checked,
-                }))
-              }
-              className="mt-1 h-5 w-5 rounded border border-neutral-700 bg-neutral-900 text-teal-400 focus:ring-teal-400"
-            />
-            <label
-              htmlFor={`plot-${point.coordinate}`}
-              className="text-sm text-neutral-300"
-            >
-              {point.label}
-            </label>
-          </li>
-        ))}
-      </ul>
-      <div className="mt-4 rounded-md border border-neutral-700 bg-neutral-900/50 p-3 text-sm text-neutral-200">
-        {allDone
-          ? "Awesome! Those points build the skeleton of a graph."
-          : "Keep going — plot each point carefully before drawing the line."}
-      </div>
-    </div>
-  );
-}
-
-/* -------------------------------------------------- */
-/* 6. Slope & Intercept Playground                     */
+/* 5. Slope & Intercept Playground (Unchanged)        */
 /* -------------------------------------------------- */
 function describeSlope(slope: number) {
   if (slope > 0) return "Positive slope → the line rises as x increases.";
@@ -525,7 +540,10 @@ export function SlopeInterceptPlayground() {
 
       <div className="mt-6 space-y-3 rounded-md border border-neutral-700 bg-neutral-900/50 p-4 text-sm text-neutral-200">
         <p>
-          Equation: <code className="text-teal-300">y = {slope.toFixed(1)}x + {intercept.toFixed(1)}</code>
+          Equation:{" "}
+          <code className="text-teal-300">
+            y = {slope.toFixed(1)}x + {intercept.toFixed(1)}
+          </code>
         </p>
         <p>{describeSlope(slope)}</p>
         <p>{interceptDescription}</p>

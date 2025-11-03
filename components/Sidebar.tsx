@@ -88,17 +88,17 @@ export default function Sidebar() {
                 active={pathname.startsWith("/math/algebra/inequalities")}
                 nested
               />
-              {/* 🔁 NEW LINK */}
-              <SidebarLink
-                href="/math/algebra/functions"
-                label="Functions"
-                active={pathname.startsWith("/math/algebra/functions")}
-                nested
-              />
+              {/* 🔁 ORDER UPDATED HERE 🔁 */}
               <SidebarLink
                 href="/math/algebra/relations"
                 label="Relations & Graphs"
                 active={pathname.startsWith("/math/algebra/relations")}
+                nested
+              />
+              <SidebarLink
+                href="/math/algebra/functions"
+                label="Functions"
+                active={pathname.startsWith("/math/algebra/functions")}
                 nested
               />
             </Dropdown>
