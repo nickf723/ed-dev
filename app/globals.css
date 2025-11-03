@@ -150,32 +150,6 @@ body::after {
   }
 }
 
-@keyframes scan {
-  0% {
-    left: 0%;
-  }
-  100% {
-    left: 100%;
-  }
-}
-
-@keyframes shake {
-  0%,
-  100% {
-    transform: translateX(0);
-  }
-  25%,
-  75% {
-    transform: translateX(-5px);
-  }
-  50% {
-    transform: translateX(5px);
-  }
-}
-.animate-shake {
-  animation: shake 0.3s ease-in-out;
-}
-
 .floating-symbol {
   position: absolute;
   pointer-events: none;
@@ -294,7 +268,7 @@ hr {
   --color-text-icon: #fdba74; /* orange-300 */
 }
 
-/* 燥 UPDATED: This theme now matches your "blueprint" plan */
+/* "Blueprint" theme for the main algebra section */
 .theme-algebra {
   --color-primary-glow: rgba(59, 130, 246, 0.12); /* blue-500 */
   --color-secondary-glow: rgba(234, 179, 8, 0.4); /* yellow-500 */
@@ -303,6 +277,7 @@ hr {
   --color-text-icon: #facc15; /* yellow-400 */
 }
 
+/* "Detective" theme for the variables page */
 .theme-variables-detective {
   --color-primary-glow: rgba(99, 102, 241, 0.12); /* indigo-500 */
   --color-secondary-glow: rgba(20, 184, 166, 0.4); /* teal-500 */
@@ -311,6 +286,7 @@ hr {
   --color-text-icon: #a78bfa; /* violet-400 */
 }
 
+/* "Balance & Justice" theme for the equations page */
 .theme-equations-justice {
   --color-primary-glow: rgba(30, 58, 138, 0.2); /* navy-900 */
   --color-secondary-glow: rgba(250, 204, 21, 0.3); /* yellow-400 */
@@ -319,6 +295,7 @@ hr {
   --color-text-icon: #eab308; /* yellow-600 */
 }
 
+/* ⚔️ "Inequalities Duel" theme */
 .theme-inequalities-duel {
   --color-primary-glow: rgba(220, 38, 38, 0.15); /* red-600 */
   --color-secondary-glow: rgba(5, 150, 105, 0.3); /* emerald-600 */
@@ -327,10 +304,39 @@ hr {
   --color-text-icon: #dc2626; /* red-600 */
 }
 
+/* 🔁 NEW: "Functions Machine" theme */
 .theme-functions-machine {
   --color-primary-glow: rgba(37, 99, 235, 0.2); /* blue-700 */
   --color-secondary-glow: rgba(219, 39, 119, 0.3); /* magenta/pink-600 */
   --color-text-title: #3b82f6; /* blue-500 */
   --color-text-header: #60a5fa; /* blue-400 */
   --color-text-icon: #ec4899; /* pink-500 */
+}
+
+/* Utility for shake animation on wrong answers */
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25%,
+  75% {
+    transform: translateX(-5px);
+  }
+  50% {
+    transform: translateX(5px);
+  }
+}
+.animate-shake {
+  animation: shake 0.3s ease-in-out;
+}
+
+/* 🔁 NEW: Animation for Vertical Line Test */
+@keyframes scan {
+  0% {
+    left: 0%;
+  }
+  100% {
+    left: 100%;
+  }
 }

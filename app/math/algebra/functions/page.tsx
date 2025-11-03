@@ -170,10 +170,63 @@ export default function FunctionsPage() {
 
       {/* 7. Function Rules in Action */}
       <LessonHeader icon={Network} title="Function Rules in Action" />
-      <p>(Placeholder: Side-by-side function rule demo)</p>
+      <p>
+        Functions can have all sorts of rules. The input <code>x</code> is just
+        a placeholder for whatever rule you're using.
+      </p>
+      <div className="prose-table:my-0">
+        <table>
+          <thead>
+            <tr>
+              <th>Function Rule</th>
+              <th>Example Input: 4</th>
+              <th>Output</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <code>f(x) = 3x - 2</code>
+              </td>
+              <td>
+                <code>f(4) = 3(4) - 2</code>
+              </td>
+              <td>
+                <code>10</code>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <code>g(x) = x²</code>
+              </td>
+              <td>
+                <code>g(4) = 4²</code>
+              </td>
+              <td>
+                <code>16</code>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <code>h(x) = ½x + 4</code>
+              </td>
+              <td>
+                <code>h(4) = ½(4) + 4</code>
+              </td>
+              <td>
+                <code>6</code>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
       {/* 8. Piecewise Functions */}
-      <LessonHeader icon={Network} title="Piecewise Functions" />
+      <LessonHeader icon={Network} title="Piecewise Functions (Advanced)" />
+      <p>
+        Sometimes, a function uses different rules for different inputs. This
+        is called a <strong>piecewise function</strong>.
+      </p>
       <p>(Placeholder: Piecewise function explainer)</p>
 
       {/* 9. Real-World Connections */}
@@ -199,7 +252,50 @@ export default function FunctionsPage() {
 
       {/* 10. Connections Table */}
       <LessonHeader icon={Link} title="Connections Table" />
-      <p>(Placeholder for Connections Table)</p>
+      <p>
+        Functions are the master concept that combine everything we've
+        learned so far.
+      </p>
+      <div className="prose-table:my-0">
+        <table>
+          <thead>
+            <tr>
+              <th>Concept</th>
+              <th>Relation to Functions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <strong>Variables</strong>
+              </td>
+              <td>
+                Variables are the <strong>inputs</strong> (like <code>x</code>)
+                and <strong>outputs</strong> (like <code>f(x)</code>) in a
+                function.
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <strong>Expressions</strong>
+              </td>
+              <td>
+                The "rule" of the function (like <code>2x + 1</code>) is an
+                expression.
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <strong>Equations</strong>
+              </td>
+              <td>
+                An equation is a special case where you set the function's
+                output to a fixed value (e.g., <code>f(x) = 11</code>).
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
       {/* 11. Practice Section */}
       <LessonHeader icon={CheckSquare} title="Check Your Understanding" />

@@ -81,5 +81,6 @@ export {
   Briefcase, // 👈 ADDED
 
   // 🔗 Shared
-  Link, Check,
+  Link,
+  Check,
 } from "lucide-react";
