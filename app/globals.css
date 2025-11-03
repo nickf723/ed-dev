@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 /* ==============================
-   🌌 UNIVERSAL THEME FOUNDATION
+   血 UNIVERSAL THEME FOUNDATION
    ============================== */
 :root {
   --accent: #00ffff;
@@ -13,7 +13,7 @@
   --bg: #000;
   --sidebar-width: 16rem;
 
-  /* 🎨 NEW THEME VARIABLES (Default: Cyan/Blue) */
+  /* 耳 NEW THEME VARIABLES (Default: Cyan/Blue) */
   --color-primary-glow: rgba(14, 165, 233, 0.12); /* blue-500 */
   --color-secondary-glow: rgba(0, 255, 255, 0.5); /* cyan-500 */
   --color-text-title: #06b6d4; /* cyan-500 */
@@ -51,7 +51,7 @@ body::after {
 }
 
 /* ==============================
-   ✨ GLASS & GLOW STYLING
+   笨ｨ GLASS & GLOW STYLING
    ============================== */
 .glass {
   background-color: var(--glass-bg);
@@ -86,7 +86,7 @@ body::after {
 }
 
 /* ==============================
-   🌊 ANIMATIONS
+   穴 ANIMATIONS
    ============================== */
 @keyframes float {
   from {
@@ -160,7 +160,7 @@ body::after {
 }
 
 /* ==============================
-   🧮 TYPOGRAPHY
+   ｧｮ TYPOGRAPHY
    ============================== */
 .prose {
   @apply max-w-none leading-relaxed text-neutral-300;
@@ -222,7 +222,7 @@ body::after {
 }
 
 /* ==============================
-   🪞 TILT EFFECTS
+   ｪTILT EFFECTS
    ============================== */
 .tilt-wrapper {
   perspective: 800px;
@@ -243,7 +243,7 @@ body::after {
 }
 
 /* ==============================
-   🧭 UTILITY & CLEANUP
+   ｧｭ UTILITY & CLEANUP
    ============================== */
 hr {
   border-color: rgba(255, 255, 255, 0.1);
@@ -268,10 +268,11 @@ hr {
   --color-text-icon: #fdba74; /* orange-300 */
 }
 
+/* 燥 UPDATED: This theme now matches your "blueprint" plan */
 .theme-algebra {
-  --color-primary-glow: rgba(168, 85, 247, 0.12); /* purple-500 */
-  --color-secondary-glow: rgba(217, 70, 239, 0.5); /* fuchsia-500 */
-  --color-text-title: #c084fc; /* purple-400 */
-  --color-text-header: #e879f9; /* fuchsia-400 */
-  --color-text-icon: #f0abfc; /* fuchsia-300 */
+  --color-primary-glow: rgba(59, 130, 246, 0.12); /* blue-500 */
+  --color-secondary-glow: rgba(234, 179, 8, 0.4); /* yellow-500 */
+  --color-text-title: #60a5fa; /* blue-400 */
+  --color-text-header: #a5b4fc; /* indigo-300 */
+  --color-text-icon: #facc15; /* yellow-400 */
 }

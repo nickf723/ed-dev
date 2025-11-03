@@ -1,7 +1,8 @@
+// app/page.tsx
 "use client";
 
 import { Calculator, BookOpen } from "lucide-react";
-import TopicCard from "@/components/TopicCard"; // 👈 Import new component
+import TopicCard from "@/components/TopicCard"; 
 
 export default function Home() {
   // 🧩  Card data - NOW WITH CORRECT PROPS
@@ -11,28 +12,36 @@ export default function Home() {
       desc: "Patterns, logic, and structure.",
       href: "/math",
       Icon: Calculator,
-      gradient: "from-cyan-400 to-blue-500",
-      iconHoverColor: "group-hover:text-cyan-400",
-      underlineColor: "bg-cyan-400",
+      // 👇 We use the 'style' prop to *override* the default theme
+      //    This makes the homepage math card red, as you wanted.
+      style: {
+        "--card-gradient-start": "var(--color-text-title, #f87171)",
+        "--card-gradient-end": "var(--color-text-header, #fb923c)",
+        "--card-icon-hover": "var(--color-text-icon, #fdba74)",
+        "--card-underline": "var(--color-text-header, #fb923c)",
+      }
     },
     {
       title: "Glossary",
       desc: "Definitions and key terms.",
       href: "/glossary",
       Icon: BookOpen,
-      gradient: "from-amber-400 to-orange-500",
-      iconHoverColor: "group-hover:text-amber-400",
-      underlineColor: "bg-amber-400",
+      // 👇 This card will use the default (cyan) theme from :root
+      //    Or we can give it its own theme.
+      style: {
+        "--card-gradient-start": "#fcd34d", // amber-300
+        "--card-gradient-end": "#fbbf24", // amber-400
+        "--card-icon-hover": "#fde68a", // amber-200
+        "--card-underline": "#fbbf24", // amber-400
+      }
     },
   ];
-
-  // 🌀 Tilt animation logic is now in TopicCard
 
   // 🧱 Page layout
   return (
     <main className="flex min-h-screen items-center justify-center px-6 py-12">
       <div className="glass w-full max-w-5xl border border-neutral-800/60 p-10 text-center shadow-2xl">
-        {/* Tagline */}
+        {/* ... (Tagline and H1) ... */}
         <div className="flex justify-center mb-4">
           <span className="text-xs tracking-widest text-cyan-300 uppercase bg-neutral-800/50 px-3 py-1 rounded-full">
             v0.1 — prototype
@@ -53,9 +62,7 @@ export default function Home() {
               title={card.title}
               desc={card.desc}
               Icon={card.Icon}
-              gradient={card.gradient}
-              iconHoverColor={card.iconHoverColor}
-              underlineColor={card.underlineColor}
+              style={card.style as any} // Pass the style object
             />
           ))}
         </div>

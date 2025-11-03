@@ -1,4 +1,6 @@
+// app/math/page.tsx
 "use client";
+import React from "react";
 import PageHeader from "@/components/PageHeader";
 import FloatingSymbols from "@/components/FloatingSymbols";
 import TopicCard from "@/components/TopicCard";
@@ -10,25 +12,8 @@ const mathSymbols = [
   "∀x∈ℝ", "∴", "∃", "∈",
 ];
 
-// Helper map for colors
-const colorMap: Record<string, { icon: string; underline: string }> = {
-  "from-cyan-400 to-blue-500": {
-    icon: "group-hover:text-cyan-400",
-    underline: "bg-cyan-400",
-  },
-  "from-indigo-400 to-purple-500": {
-    icon: "group-hover:text-indigo-400",
-    underline: "bg-indigo-400",
-  },
-  "from-amber-400 to-orange-500": {
-    icon: "group-hover:text-amber-400",
-    underline: "bg-amber-400",
-  },
-  "from-pink-400 to-rose-500": {
-    icon: "group-hover:text-pink-400",
-    underline: "bg-pink-400",
-  },
-};
+// 👇 --- NO LONGER NEEDED --- 👇
+// const colorMap: Record<string, { icon: string; underline: string }> = { ... };
 
 export default function MathPage() {
   const branches = [
@@ -36,31 +21,49 @@ export default function MathPage() {
       title: "Algebra",
       desc: "The language of patterns and equations — where symbols reveal logic.",
       href: "/math/algebra",
-      color: "from-cyan-400 to-blue-500",
+      // 👇 style prop added to show evolving theme
+      style: {
+        "--card-gradient-start": "var(--color-text-title, #c084fc)", // purple-400
+        "--card-gradient-end": "var(--color-text-header, #e879f9)", // fuchsia-400
+        "--card-icon-hover": "var(--color-text-icon, #f0abfc)", // fuchsia-300
+        "--card-underline": "var(--color-text-header, #e879f9)", // fuchsia-400
+      }
     },
     {
       title: "Geometry",
       desc: "Understanding shape, space, and proportion — mathematics made visual.",
       href: "/math/geometry",
-      color: "from-indigo-400 to-purple-500",
+      // 👇 style prop added to show evolving theme
+      style: {
+        "--card-gradient-start": "#a5b4fc", // indigo-300
+        "--card-gradient-end": "#818cf8", // indigo-400
+        "--card-icon-hover": "#c7d2fe", // indigo-200
+        "--card-underline": "#818cf8", // indigo-400
+      }
     },
     {
       title: "Calculus",
       desc: "Exploring motion and change — the mathematics of the universe’s flow.",
       href: "/math/calculus",
-      color: "from-amber-400 to-orange-500",
+      // 👇 All cards will just inherit the page theme (red/orange)
     },
     {
       title: "Statistics",
       desc: "Finding truth in data — probability, inference, and real-world meaning.",
       href: "/math/statistics",
-      color: "from-pink-400 to-rose-500",
+      // 👇 style prop added to show evolving theme
+      style: {
+        "--card-gradient-start": "#f9a8d4", // pink-300
+        "--card-gradient-end": "#f472b6", // pink-400
+        "--card-icon-hover": "#fbcfe8", // pink-200
+        "--card-underline": "#f472b6", // pink-400
+      }
     },
   ];
 
   return (
     <main className="relative flex min-h-screen flex-col items-center overflow-hidden px-8 py-20 text-center">
-      {/* Backgrounds */}
+      {/* ... (backgrounds) ... */}
       <div className="absolute inset-0 -z-10 bg-gradient-to-b from-black via-neutral-950 to-black" />
       <div className="absolute top-0 left-1/2 h-[90vw] w-[90vw] -translate-x-1/2 rounded-full bg-gradient-to-tr from-cyan-500/10 to-pink-500/5 blur-3xl" />
 
@@ -74,20 +77,16 @@ export default function MathPage() {
       {/* Branch Cards */}
       <section className="grid w-full max-w-6xl justify-center gap-10 sm:grid-cols-2 lg:grid-cols-3">
         {branches.map((branch) => {
-          const colors =
-            colorMap[branch.color] ||
-            colorMap["from-cyan-400 to-blue-500"];
-          return (
-            <TopicCard
+          // 👇 --- REMOVED colorMap logic --- 👇
+            return (
+              <TopicCard
               key={branch.href}
               href={branch.href}
               title={branch.title}
               desc={branch.desc}
-              gradient={branch.color}
-              iconHoverColor={colors.icon}
-              underlineColor={colors.underline}
-            />
-          );
+              style={branch.style as unknown as React.CSSProperties}
+              />
+            );
         })}
       </section>
     </main>

@@ -6,30 +6,38 @@ export default function LessonLayout({
   title,
   subtitle,
   children,
-  aside, // 👈 Kept your aside prop
+  aside,
 }: {
   title: string;
   subtitle?: string;
   children: React.ReactNode;
-  aside?: React.ReactNode; // 👈 Kept your aside prop type
+  aside?: React.ReactNode;
 }) {
   return (
     <main className="relative min-h-screen w-full overflow-x-hidden px-6 py-20 text-neutral-200 md:px-16 lg:py-28">
       {/* Background gradient */}
       <div className="absolute inset-0 -z-10 bg-gradient-to-b from-black via-slate-950 to-black" />
       
-      {/* 👇 UPDATED: Uses CSS variables */}
-      <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top_right,var(--color-primary-glow),_transparent_60%)]" />
+      {/* 👇 UPDATED: Uses CSS variables for unique page glows */}
+      <div
+        className="absolute inset-0 -z-10"
+        style={{
+          background:
+            "radial-gradient(ellipse at top right, var(--color-primary-glow), transparent 60%)",
+        }}
+      />
       <div
         className="zen-blob absolute left-1/4 top-0 -z-10 h-3/5 w-1/3 animate-zen-float rounded-full 
-                   bg-[radial-gradient(ellipse_at_center,var(--color-secondary-glow),_transparent_70%)] 
                    blur-3xl"
-        style={{ animationDuration: "25s" }}
+        style={{
+          background:
+            "radial-gradient(ellipse at center, var(--color-secondary-glow), transparent 70%)",
+          animationDuration: "25s",
+        }}
       />
       
       {/* Header */}
       <header className="mb-12 text-center">
-        {/* 👇 UPDATED: Uses CSS variables */}
         <h1
           className="mb-4 text-5xl font-bold text-transparent md:text-6xl"
           style={{
@@ -48,7 +56,7 @@ export default function LessonLayout({
         )}
       </header>
 
-      {/* 👇 KEPT: All of your original grid/aside logic */}
+      {/* Content Grid */}
       <div
         className={`mx-auto max-w-7xl ${
           aside ? "grid gap-12 md:grid-cols-[minmax(0,3fr)_minmax(0,1fr)]" : ""
