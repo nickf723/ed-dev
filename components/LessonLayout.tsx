@@ -17,16 +17,17 @@ export default function LessonLayout({
 }) {
   return (
     <main
-      className={`relative min-h-screen w-full overflow-x-hidden px-6 py-20 
-                  text-neutral-200 md:px-16 lg:py-28 ${className || ""}`}
+      className={`algebra-lesson relative min-h-screen w-full overflow-x-hidden px-6 py-20                  
+        text-neutral-200 md:px-16 lg:py-28 ${className || ""}`}
     >
       {/* Background gradient */}
-      <div className="absolute inset-0 -z-10 bg-gradient-to-b from-black via-slate-950 to-black" />
+  <div className="absolute inset-0 -z-20 bg-gradient-to-b from-black via-slate-950 to-black" />
 
-      {/* 🔥 NEW FLUID ANIMATIONS 🔥
-        These two blobs replace the old static/zen-blob glows.
-        They automatically use the CSS variables from the active theme.
-      */}
+      {/* Algebra ambient layers */}
+      <div className="algebra-particle-field" aria-hidden />
+      <div className="algebra-sigil-field" aria-hidden />
+      <div className="algebra-grid-field" aria-hidden />
+
       <div
         className="animated-blob animate-blob-1 -top-1/4 -left-1/4 h-3/5 w-3/5"
         style={{

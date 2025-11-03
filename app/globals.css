@@ -346,3 +346,310 @@
     opacity: 0.22;
   }
 }
+
+/* === Algebra lesson theming ============================================= */
+
+.algebra-lesson {
+  --algebra-particle-color: rgba(147, 197, 253, 0.22);
+  --algebra-particle-secondary: rgba(224, 231, 255, 0.2);
+  --algebra-particle-size: 220px;
+  --algebra-particle-speed: 44s;
+  --algebra-particle-alt-speed: 62s;
+  --algebra-glyphs-primary: "x  y  z  n";
+  --algebra-glyphs-secondary: "1   2   3   4";
+  --algebra-glyph-font: "JetBrains Mono", "Fira Code", monospace;
+  --algebra-glyph-speed: 68s;
+  --algebra-glyph-morph-speed: 26s;
+  --algebra-glyph-tilt: 8deg;
+  --algebra-grid-color: rgba(103, 232, 249, 0.22);
+  --algebra-grid-size: 160px;
+  --algebra-grid-speed: 52s;
+  --algebra-grid-opacity: 0.08;
+  --algebra-grid-rotation: -6deg;
+  --algebra-diagonal-opacity: 0.04;
+  --algebra-diagonal-size: 260px;
+  --algebra-diagonal-speed: 24s;
+}
+
+.algebra-particle-field,
+.algebra-sigil-field,
+.algebra-grid-field {
+  position: absolute;
+  inset: -15%;
+  pointer-events: none;
+  z-index: -15;
+  mix-blend-mode: screen;
+}
+
+.algebra-particle-field {
+  overflow: hidden;
+  filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.08));
+  z-index: -11;
+}
+
+.algebra-particle-field::before,
+.algebra-particle-field::after {
+  content: "";
+  position: absolute;
+  inset: -10%;
+  background-image:
+    radial-gradient(circle, var(--algebra-particle-color) 0 1px, transparent 70%),
+    radial-gradient(circle, color-mix(in srgb, var(--algebra-particle-secondary) 70%, transparent) 0 1px, transparent 70%);
+  background-size: var(--algebra-particle-size) var(--algebra-particle-size),
+    calc(var(--algebra-particle-size) * 1.4) calc(var(--algebra-particle-size) * 1.4);
+  opacity: 0.55;
+}
+
+.algebra-particle-field::before {
+  animation: algebraParticleFloat var(--algebra-particle-speed) ease-in-out infinite;
+}
+
+.algebra-particle-field::after {
+  animation: algebraParticleOrbit var(--algebra-particle-alt-speed) linear infinite;
+  mix-blend-mode: lighten;
+  opacity: 0.35;
+}
+
+.algebra-sigil-field {
+  z-index: -9;
+  isolation: isolate;
+}
+
+.algebra-sigil-field::before,
+.algebra-sigil-field::after {
+  content: var(--algebra-glyphs-primary);
+  position: absolute;
+  inset: -10%;
+  font-family: var(--algebra-glyph-font);
+  font-size: clamp(2.8rem, 8vw, 6.5rem);
+  letter-spacing: clamp(0.75rem, 6vw, 6rem);
+  text-transform: none;
+  line-height: 1.3;
+  color: transparent;
+  background: linear-gradient(90deg, var(--color-text-title), color-mix(in srgb, var(--color-text-header) 65%, transparent));
+  background-clip: text;
+  -webkit-background-clip: text;
+  opacity: 0.12;
+  filter: blur(0.4px);
+  transform: rotate(var(--algebra-glyph-tilt)) scale(1.05);
+  animation: algebraGlyphOrbit var(--algebra-glyph-speed) linear infinite;
+}
+
+.algebra-sigil-field::after {
+  content: var(--algebra-glyphs-secondary);
+  font-size: clamp(2.1rem, 6vw, 5.2rem);
+  letter-spacing: clamp(0.5rem, 4.5vw, 5rem);
+  opacity: 0.16;
+  mix-blend-mode: lighten;
+  animation: algebraGlyphMorph var(--algebra-glyph-morph-speed) ease-in-out infinite;
+}
+
+.algebra-grid-field {
+  background-image:
+    linear-gradient(
+      to right,
+      color-mix(in srgb, var(--algebra-grid-color) 55%, transparent) 0 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--algebra-grid-color) 55%, transparent) 0 1px,
+      transparent 1px
+    );
+  background-size: var(--algebra-grid-size) var(--algebra-grid-size);
+  opacity: var(--algebra-grid-opacity);
+  transform: rotate(var(--algebra-grid-rotation));
+  animation: algebraGridShift var(--algebra-grid-speed) linear infinite;
+  z-index: -18;
+}
+
+.algebra-grid-field::before {
+  content: "";
+  position: absolute;
+  inset: -20%;
+  background-image: linear-gradient(
+    45deg,
+    transparent 55%,
+    color-mix(in srgb, var(--algebra-grid-color) 50%, transparent) 60%,
+    transparent 65%
+  );
+  background-size: var(--algebra-diagonal-size) var(--algebra-diagonal-size);
+  opacity: var(--algebra-diagonal-opacity);
+  animation: algebraGridPulse var(--algebra-diagonal-speed) ease-in-out infinite;
+  transform: rotate(calc(var(--algebra-grid-rotation) * -1));
+}
+
+/* Theme variations */
+
+.theme-variables-detective {
+  --algebra-particle-color: rgba(244, 114, 182, 0.3);
+  --algebra-particle-secondary: rgba(192, 132, 252, 0.26);
+  --algebra-particle-speed: 36s;
+  --algebra-particle-alt-speed: 54s;
+  --algebra-glyphs-primary: "x  y  z  n  t";
+  --algebra-glyphs-secondary: "3  7  12  β  α";
+  --algebra-glyph-morph-speed: 22s;
+  --algebra-glyph-tilt: 10deg;
+  --algebra-grid-opacity: 0.1;
+  --algebra-grid-rotation: -4deg;
+  --algebra-diagonal-opacity: 0.06;
+}
+
+.theme-expressions-workshop {
+  --algebra-particle-color: rgba(192, 132, 252, 0.28);
+  --algebra-particle-secondary: rgba(96, 165, 250, 0.22);
+  --algebra-particle-size: 200px;
+  --algebra-glyphs-primary: "(x+3)  4y-1  2a+5";
+  --algebra-glyphs-secondary: "7b-4  c/2  3(x-1)";
+  --algebra-glyph-speed: 58s;
+  --algebra-glyph-tilt: 6deg;
+  --algebra-grid-opacity: 0.18;
+  --algebra-grid-size: 140px;
+  --algebra-grid-rotation: 3deg;
+  --algebra-diagonal-opacity: 0.08;
+  --algebra-diagonal-speed: 18s;
+}
+
+.theme-equations-justice {
+  --algebra-particle-color: rgba(56, 189, 248, 0.3);
+  --algebra-particle-secondary: rgba(250, 204, 21, 0.22);
+  --algebra-particle-speed: 40s;
+  --algebra-glyphs-primary: "x=5  y=2x  a=b";
+  --algebra-glyphs-secondary: "4x-7=9  3y+1=13  2a=14";
+  --algebra-glyph-speed: 64s;
+  --algebra-glyph-tilt: 4deg;
+  --algebra-grid-opacity: 0.22;
+  --algebra-grid-size: 170px;
+  --algebra-grid-rotation: 0deg;
+  --algebra-diagonal-opacity: 0.12;
+  --algebra-diagonal-size: 220px;
+}
+
+.theme-inequalities-duel {
+  --algebra-particle-color: rgba(248, 113, 113, 0.28);
+  --algebra-particle-secondary: rgba(59, 130, 246, 0.24);
+  --algebra-particle-size: 210px;
+  --algebra-glyphs-primary: "x>4  y≤7  a≠b";
+  --algebra-glyphs-secondary: "5<x  n≥2  p<q";
+  --algebra-glyph-speed: 50s;
+  --algebra-glyph-morph-speed: 20s;
+  --algebra-glyph-tilt: 18deg;
+  --algebra-grid-opacity: 0.16;
+  --algebra-grid-rotation: 28deg;
+  --algebra-diagonal-opacity: 0.18;
+  --algebra-diagonal-size: 180px;
+  --algebra-diagonal-speed: 14s;
+}
+
+.theme-functions-machine {
+  --algebra-particle-color: rgba(45, 212, 191, 0.3);
+  --algebra-particle-secondary: rgba(244, 114, 182, 0.24);
+  --algebra-particle-speed: 32s;
+  --algebra-particle-alt-speed: 48s;
+  --algebra-particle-size: 240px;
+  --algebra-glyphs-primary: "ƒ(x)  g(x)  h(t)";
+  --algebra-glyphs-secondary: "→  inputs  outputs";
+  --algebra-glyph-speed: 54s;
+  --algebra-glyph-tilt: -2deg;
+  --algebra-grid-opacity: 0.14;
+  --algebra-grid-rotation: -12deg;
+  --algebra-grid-size: 150px;
+  --algebra-diagonal-opacity: 0.05;
+  --algebra-diagonal-speed: 26s;
+}
+
+.theme-relations-graph {
+  --algebra-particle-color: rgba(96, 165, 250, 0.32);
+  --algebra-particle-secondary: rgba(165, 243, 252, 0.28);
+  --algebra-particle-size: 180px;
+  --algebra-glyphs-primary: "(2,3)  (4,5)  (x,y)";
+  --algebra-glyphs-secondary: "Δx  Δy  slope";
+  --algebra-glyph-speed: 72s;
+  --algebra-glyph-tilt: 0deg;
+  --algebra-grid-opacity: 0.3;
+  --algebra-grid-size: 130px;
+  --algebra-grid-rotation: 0deg;
+  --algebra-diagonal-opacity: 0.1;
+  --algebra-diagonal-size: 200px;
+  --algebra-diagonal-speed: 20s;
+}
+
+/* Animation definitions */
+
+@keyframes algebraParticleFloat {
+  0% {
+    transform: translate3d(-6%, -4%, 0) scale(1);
+    opacity: 0.4;
+  }
+  50% {
+    transform: translate3d(7%, 6%, 0) scale(1.08);
+    opacity: 0.65;
+  }
+  100% {
+    transform: translate3d(-6%, -4%, 0) scale(1);
+    opacity: 0.4;
+  }
+}
+
+@keyframes algebraParticleOrbit {
+  0% {
+    transform: translate3d(8%, -6%, 0) rotate(0deg) scale(1.05);
+  }
+  50% {
+    transform: translate3d(-10%, 4%, 0) rotate(180deg) scale(1);
+  }
+  100% {
+    transform: translate3d(8%, -6%, 0) rotate(360deg) scale(1.05);
+  }
+}
+
+@keyframes algebraGlyphOrbit {
+  0% {
+    transform: rotate(calc(var(--algebra-glyph-tilt))) translate3d(-6%, -8%, 0) scale(1.05);
+  }
+  50% {
+    transform: rotate(calc(var(--algebra-glyph-tilt) + 180deg)) translate3d(4%, 6%, 0) scale(1.1);
+  }
+  100% {
+    transform: rotate(calc(var(--algebra-glyph-tilt) + 360deg)) translate3d(-6%, -8%, 0) scale(1.05);
+  }
+}
+
+@keyframes algebraGlyphMorph {
+  0%,
+  100% {
+    letter-spacing: clamp(0.4rem, 3vw, 3.5rem);
+    opacity: 0.12;
+    filter: blur(0.6px);
+  }
+  33% {
+    letter-spacing: clamp(1rem, 5vw, 5rem);
+    opacity: 0.2;
+    filter: blur(0.2px);
+  }
+  66% {
+    letter-spacing: clamp(1.6rem, 7vw, 6.5rem);
+    opacity: 0.1;
+    filter: blur(0.8px);
+  }
+}
+
+@keyframes algebraGridShift {
+  0% {
+    background-position: 0 0, 0 0;
+  }
+  100% {
+    background-position: var(--algebra-grid-size) var(--algebra-grid-size),
+      calc(var(--algebra-grid-size) * -1) calc(var(--algebra-grid-size) * -1);
+  }
+}
+
+@keyframes algebraGridPulse {
+  0%,
+  100% {
+    opacity: calc(var(--algebra-diagonal-opacity) * 0.65);
+  }
+  50% {
+    opacity: calc(var(--algebra-diagonal-opacity) * 1.1);
+  }
+}
