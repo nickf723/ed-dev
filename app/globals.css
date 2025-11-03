@@ -2,92 +2,229 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ==============================
-   血 UNIVERSAL THEME FOUNDATION
-   ============================== */
-:root {
-  --accent: #00ffff;
-  --accent2: #ff00ff;
-  --glass-bg: rgba(20, 20, 25, 0.5);
-  --text: #e5e7eb;
-  --bg: #000;
-  --sidebar-width: 16rem;
+@layer base {
+  :root {
+    --accent: #00ffff;
+    --accent2: #ff00ff;
+    --glass-bg: rgba(20, 20, 25, 0.5);
+    --glass-border: rgba(255, 255, 255, 0.05);
+    --text: #e5e7eb;
+    --bg: #000;
+    --sidebar-width: 16rem;
 
-  /* 耳 NEW THEME VARIABLES (Default: Cyan/Blue) */
-  --color-primary-glow: rgba(14, 165, 233, 0.12); /* blue-500 */
-  --color-secondary-glow: rgba(0, 255, 255, 0.5); /* cyan-500 */
-  --color-text-title: #06b6d4; /* cyan-500 */
-  --color-text-header: #22d3ee; /* cyan-400 */
-  --color-text-icon: #67e8f9; /* cyan-300 */
-}
-body {
-  @apply bg-neutral-950 text-neutral-100 font-sans antialiased;
-  background-color: var(--bg);
-  color: var(--text);
-  overflow-x: hidden;
+    --color-primary-glow: rgba(14, 165, 233, 0.12);
+    --color-secondary-glow: rgba(0, 255, 255, 0.5);
+    --color-text-title: #06b6d4;
+    --color-text-header: #22d3ee;
+    --color-text-icon: #67e8f9;
+
+    --topic-gradient-from: rgba(34, 211, 238, 0.75);
+    --topic-gradient-to: rgba(14, 165, 233, 0.75);
+    --topic-symbol-color: rgba(103, 232, 249, 0.18);
+    --topic-surface: rgba(15, 23, 42, 0.62);
+    --topic-surface-border: rgba(56, 189, 248, 0.2);
+    --topic-card-shadow: rgba(14, 165, 233, 0.22);
+    --topic-card-sheen: rgba(14, 165, 233, 0.18);
+    --topic-badge-bg: rgba(8, 145, 178, 0.14);
+    --topic-badge-border: rgba(8, 145, 178, 0.32);
+    --topic-badge-text: #67e8f9;
+    --topic-blob-1: rgba(6, 182, 212, 0.28);
+    --topic-blob-2: rgba(59, 130, 246, 0.24);
+    --topic-noise-opacity: 0.06;
+  }
+  body {
+    @apply bg-neutral-950 text-neutral-100 font-sans antialiased;
+    background-color: var(--bg);
+    color: var(--text);
+    overflow-x: hidden;
+  }
+   body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(circle at 30% 30%, #00ffff10, transparent 60%),
+      radial-gradient(circle at 70% 70%, #ff00ff10, transparent 60%);
+    z-index: -2;
+    animation: float 12s ease-in-out infinite alternate;
+  }
+    body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background-image: radial-gradient(circle, #ffffff0c 1px, transparent 1px);
+    background-size: 3px 3px;
+    opacity: var(--topic-noise-opacity);
+    z-index: -1;
+  }
+  .theme-math {
+    --color-primary-glow: rgba(236, 72, 153, 0.14);
+    --color-secondary-glow: rgba(249, 115, 22, 0.4);
+    --color-text-title: #fb7185;
+    --color-text-header: #f97316;
+    --color-text-icon: #fed7aa;
+    --topic-gradient-from: rgba(236, 72, 153, 0.7);
+    --topic-gradient-to: rgba(249, 115, 22, 0.68);
+    --topic-symbol-color: rgba(251, 146, 60, 0.22);
+    --topic-surface: rgba(44, 14, 31, 0.65);
+    --topic-surface-border: rgba(249, 115, 22, 0.28);
+    --topic-card-shadow: rgba(249, 115, 22, 0.23);
+    --topic-card-sheen: rgba(244, 114, 182, 0.22);
+    --topic-badge-bg: rgba(236, 72, 153, 0.18);
+    --topic-badge-border: rgba(236, 72, 153, 0.38);
+    --topic-badge-text: #f9a8d4;
+    --topic-blob-1: rgba(236, 72, 153, 0.36);
+    --topic-blob-2: rgba(249, 115, 22, 0.3);
+  }
+  .theme-algebra {
+    --topic-gradient-from: rgba(244, 114, 182, 0.72);
+    --topic-gradient-to: rgba(192, 132, 252, 0.7);
+    --topic-symbol-color: rgba(244, 114, 182, 0.26);
+    --topic-card-shadow: rgba(192, 132, 252, 0.25);
+    --topic-card-sheen: rgba(217, 70, 239, 0.2);
+  }
+
+  .theme-glossary {
+    --color-primary-glow: rgba(234, 179, 8, 0.14);
+    --color-secondary-glow: rgba(253, 224, 71, 0.4);
+    --color-text-title: #facc15;
+    --color-text-header: #fbbf24;
+    --color-text-icon: #fef3c7;
+    --topic-gradient-from: rgba(234, 179, 8, 0.72);
+    --topic-gradient-to: rgba(251, 191, 36, 0.7);
+    --topic-symbol-color: rgba(253, 224, 71, 0.22);
+    --topic-surface: rgba(49, 38, 11, 0.62);
+    --topic-surface-border: rgba(251, 191, 36, 0.32);
+    --topic-card-shadow: rgba(251, 191, 36, 0.23);
+    --topic-card-sheen: rgba(253, 224, 71, 0.2);
+    --topic-badge-bg: rgba(234, 179, 8, 0.18);
+    --topic-badge-border: rgba(234, 179, 8, 0.36);
+    --topic-badge-text: #fde68a;
+    --topic-blob-1: rgba(253, 224, 71, 0.32);
+    --topic-blob-2: rgba(249, 115, 22, 0.28);
+  }
 }
 
-/* Subtle cosmic gradient background */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background:
-    radial-gradient(circle at 30% 30%, #00ffff10, transparent 60%),
-    radial-gradient(circle at 70% 70%, #ff00ff10, transparent 60%);
-  z-index: -1;
-  animation: float 12s ease-in-out infinite alternate;
+@layer components {
+  .glass {
+    background: var(--glass-bg, var(--topic-surface));
+    backdrop-filter: blur(20px);
+    border-radius: 1rem;
+    border: 1px solid var(--glass-border, rgba(255, 255, 255, 0.05));
+    box-shadow: 0 0 25px rgba(0, 255, 255, 0.05);
+    transition: all 0.3s ease;
+  }
+
+  .glass:hover {
+    box-shadow:
+      0 0 30px rgba(0, 255, 255, 0.1),
+      0 0 60px rgba(255, 0, 255, 0.05);
+  }
+
+  .card-accent {
+    background: radial-gradient(circle at 50% 50%, var(--topic-card-sheen), transparent 70%);
+    transition: box-shadow 0.3s ease;
+  }
+
+  .card-accent:hover {
+    box-shadow:
+      0 0 30px var(--topic-card-shadow),
+      0 0 60px color-mix(in srgb, var(--topic-card-shadow) 40%, transparent);
+  }
+
+  .gradient-text {
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+  }
+
+  .topic-page {
+    position: relative;
+    min-height: 100vh;
+    @apply flex flex-col items-center overflow-hidden px-6 py-20 text-center;
+    gap: clamp(3rem, 6vw, 5rem);
+    isolation: isolate;
+    background: radial-gradient(circle at 50% -20%, rgba(255, 255, 255, 0.04), transparent 55%);
+  }
+
+  .topic-page::before {
+    content: "";
+    position: absolute;
+    inset: -25% -10% 0;
+    background:
+      radial-gradient(circle at 18% 20%, var(--topic-blob-1), transparent 55%),
+      radial-gradient(circle at 80% 0%, var(--topic-blob-2), transparent 55%);
+    filter: blur(60px);
+    opacity: 0.85;
+    z-index: -2;
+  }
+
+  .topic-page::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: radial-gradient(circle, var(--topic-symbol-color) 1px, transparent 1px);
+    background-size: 4px 4px;
+    opacity: 0.18;
+    mix-blend-mode: screen;
+    z-index: -1;
+  }
+
+  .topic-page .floating-symbol {
+    color: var(--topic-symbol-color);
+    text-shadow: 0 0 30px color-mix(in srgb, var(--topic-symbol-color) 40%, transparent);
+  }
+
+  .topic-grid {
+    @apply grid w-full max-w-6xl gap-10;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  }
+
+  .topic-card {
+    @apply relative block overflow-hidden rounded-3xl border p-8 text-left transition-transform duration-200 ease-out;
+    background: linear-gradient(145deg, rgba(15, 23, 42, 0.55), rgba(2, 6, 23, 0.35));
+    border-color: var(--topic-surface-border, rgba(255, 255, 255, 0.08));
+    box-shadow:
+      0 20px 45px rgba(2, 6, 23, 0.55),
+      0 0 0 1px rgba(255, 255, 255, 0.02);
+    color: var(--text);
+  }
+
+  .topic-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      120deg,
+      transparent 0%,
+      color-mix(in srgb, var(--topic-card-sheen) 55%, transparent) 45%,
+      transparent 80%
+    );
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: 0;
+  }
+
+  .topic-card:hover::after {
+    opacity: 1;
+  }
+
+  .topic-card > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  .topic-card__eyebrow {
+    @apply inline-flex items-center gap-2 rounded-full border px-3 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.3em];
+    background: color-mix(in srgb, var(--topic-badge-bg) 70%, transparent);
+    border-color: var(--topic-badge-border);
+    color: var(--topic-badge-text);
+  }
 }
 
-body::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  background-image: radial-gradient(circle, #ffffff08 1px, transparent 1px);
-  background-size: 3px 3px;
-  opacity: 0.05;
-  z-index: -1;
-}
-
-/* ==============================
-   笨ｨ GLASS & GLOW STYLING
-   ============================== */
-.glass {
-  background-color: var(--glass-bg);
-  backdrop-filter: blur(20px);
-  border-radius: 1rem;
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  box-shadow: 0 0 25px rgba(0, 255, 255, 0.05);
-  transition: all 0.3s ease;
-}
-
-.glass:hover {
-  box-shadow:
-    0 0 30px rgba(0, 255, 255, 0.1),
-    0 0 60px rgba(255, 0, 255, 0.05);
-}
-
-.card-accent {
-  background: radial-gradient(circle at 50% 50%, #00ffff15, transparent 70%);
-  transition: box-shadow 0.3s ease;
-}
-.card-accent:hover {
-  box-shadow:
-    0 0 30px #00ffff30,
-    0 0 60px #ff00ff15;
-}
-
-.gradient-text {
-  background: linear-gradient(90deg, var(--accent), var(--accent2));
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: transparent;
-}
-
-/* ==============================
-   穴 ANIMATIONS
-   ============================== */
 @keyframes float {
   from {
     transform: translateY(-10px);
@@ -136,14 +273,10 @@ body::after {
   filter: blur(1px);
 }
 
-/* ==============================
-   🔥 NEW ANIMATED BLOBS
-   ============================== */
 .animated-blob {
   position: absolute;
   z-index: -10;
   border-radius: 9999px;
-  /* Updated for a more "fluid" and "consolidated" shape */
   filter: blur(50px);
   mix-blend-mode: overlay;
   will-change: transform, opacity;
@@ -159,12 +292,12 @@ body::after {
     opacity: 0.35;
   }
   50% {
-    transform: translate(0px, 20vh) scale(0.9);
-    opacity: 0.25;
+    transform: translate(-20vw, 15vh) scale(0.95);
+    opacity: 0.2;
   }
   75% {
-    transform: translate(-20vw, -10vh) scale(1.1);
-    opacity: 0.35;
+    transform: translate(10vw, 10vh) scale(1.05);
+    opacity: 0.3;
   }
   100% {
     transform: translate(0px, 0px) scale(1);
@@ -174,233 +307,42 @@ body::after {
 
 @keyframes blob-float-2 {
   0% {
-    transform: translate(0px, 0px) scale(1);
-    opacity: 0.25;
+    transform: translate(-5vw, -5vh) scale(1.1);
+    opacity: 0.2;
   }
   25% {
     transform: translate(-20vw, 15vh) scale(1.1);
     opacity: 0.35;
   }
-  50% {
-    transform: translate(10vw, -20vh) scale(0.9);
-    opacity: 0.25;
+  30% {
+    transform: translate(10vw, 10vh) scale(0.9);
+    opacity: 0.28;
   }
-  75% {
-    transform: translate(15vw, 10vh) scale(1.1);
-    opacity: 0.35;
+  60% {
+    transform: translate(-12vw, 20vh) scale(1.08);
+    opacity: 0.32;
   }
   100% {
-    transform: translate(0px, 0px) scale(1);
-    opacity: 0.25;
+    transform: translate(-5vw, -5vh) scale(1.1);
+    opacity: 0.2;
   }
 }
 
-.animate-blob-1 {
-  animation: blob-float-1 30s ease-in-out infinite;
-}
-.animate-blob-2 {
-  animation: blob-float-2 40s ease-in-out infinite;
-}
-
-/* ==============================
-   ｧｮ TYPOGRAPHY
-   ============================== */
-.prose {
-  @apply max-w-none leading-relaxed text-neutral-300;
-}
-
-.prose h2 {
-  @apply mt-12 mb-4 border-b border-neutral-800 pb-2 text-3xl font-bold text-cyan-300;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  padding-bottom: 0.25rem;
-}
-
-.prose h3 {
-  margin-top: 2rem;      /* mt-8 */
-  margin-bottom: 0.75rem; /* mb-3 */
-  font-size: 1.5rem;     /* text-2xl */
-  font-weight: 600;      /* font-semibold */
-  color: #22d3ee;        /* text-cyan-400 */
-}
-
-.prose p {
-  @apply mb-4 text-neutral-300;
-}
-
-/* Style links to match the theme */
-.prose a {
-  @apply text-cyan-400 transition-colors hover:text-cyan-200;
-}
-
-/* Style lists */
-.prose ul,
-.prose ol {
-  @apply mb-4 pl-5;
-}
-
-.prose li {
-  @apply mb-2;
-}
-
-/* Ensure components fit without double margins */
-.prose > :where(figure, div) {
-  @apply my-8;
-}
-
-.prose code {
-  background: rgba(255, 255, 255, 0.08);
-  padding: 2px 6px;
-  border-radius: 6px;
-  font-family: "Fira Code", monospace;
-  font-size: 0.9em;
-}
-
-.prose table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 1rem 0;
-}
-
-.prose th,
-.prose td {
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  padding: 0.6rem 0.8rem;
-  text-align: left;
-}
-
-/* ==============================
-   ｪTILT EFFECTS
-   ============================== */
-.tilt-wrapper {
-  perspective: 800px;
-  perspective-origin: center;
-}
-.tilt {
-  transform-style: preserve-3d;
-  will-change: transform;
-  cursor: pointer;
-  position: relative;
-}
-.tilt::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at 50% 50%, #ffffff10, transparent 70%);
-  pointer-events: none;
-}
-
-/* ==============================
-   ｧｭ UTILITY & CLEANUP
-   ============================== */
-hr {
-  border-color: rgba(255, 255, 255, 0.1);
-}
-
-::-webkit-scrollbar {
-  width: 8px;
-}
-::-webkit-scrollbar-thumb {
-  background: linear-gradient(var(--accent), var(--accent2));
-  border-radius: 10px;
-}
-::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.05);
-}
-
-.theme-math {
-  --color-primary-glow: rgba(220, 38, 38, 0.12); /* red-600 */
-  --color-secondary-glow: rgba(249, 115, 22, 0.5); /* orange-500 */
-  --color-text-title: #f87171; /* red-400 */
-  --color-text-header: #fb923c; /* orange-400 */
-  --color-text-icon: #fdba74; /* orange-300 */
-}
-
-/* "Blueprint" theme for the main algebra section */
-.theme-algebra {
-  --color-primary-glow: rgba(59, 130, 246, 0.12); /* blue-500 */
-  --color-secondary-glow: rgba(234, 179, 8, 0.4); /* yellow-500 */
-  --color-text-title: #60a5fa; /* blue-400 */
-  --color-text-header: #a5b4fc; /* indigo-300 */
-  --color-text-icon: #facc15; /* yellow-400 */
-}
-
-/* "Detective" theme for the variables page */
-.theme-variables-detective {
-  --color-primary-glow: rgba(99, 102, 241, 0.12); /* indigo-500 */
-  --color-secondary-glow: rgba(20, 184, 166, 0.4); /* teal-500 */
-  --color-text-title: #818cf8; /* indigo-400 */
-  --color-text-header: #5eead4; /* teal-300 */
-  --color-text-icon: #a78bfa; /* violet-400 */
-}
-
-.theme-expressions-workshop {
-  --color-primary-glow: rgba(59, 130, 246, 0.18); /* blue-500 */
-  --color-secondary-glow: rgba(14, 165, 233, 0.25); /* sky-500 */
-  --color-text-title: #60a5fa; /* blue-400 */
-  --color-text-header: #38bdf8; /* sky-400 */
-  --color-text-icon: #fbbf24; /* amber-400 */
-}
-
-/* "Balance & Justice" theme for the equations page */
-.theme-equations-justice {
-  --color-primary-glow: rgba(30, 58, 138, 0.2); /* navy-900 */
-  --color-secondary-glow: rgba(250, 204, 21, 0.3); /* yellow-400 */
-  --color-text-title: #facc15; /* yellow-400 */
-  --color-text-header: #fbbf24; /* yellow-500 */
-  --color-text-icon: #eab308; /* yellow-600 */
-}
-
-/* ⚔️ "Inequalities Duel" theme */
-.theme-inequalities-duel {
-  --color-primary-glow: rgba(220, 38, 38, 0.15); /* red-600 */
-  --color-secondary-glow: rgba(5, 150, 105, 0.3); /* emerald-600 */
-  --color-text-title: #f87171; /* red-400 */
-  --color-text-header: #ef4444; /* red-500 */
-  --color-text-icon: #dc2626; /* red-600 */
-}
-
-/* 🔁 NEW: "Functions Machine" theme */
-.theme-functions-machine {
-  --color-primary-glow: rgba(37, 99, 235, 0.2); /* blue-700 */
-  --color-secondary-glow: rgba(219, 39, 119, 0.3); /* magenta/pink-600 */
-  --color-text-title: #3b82f6; /* blue-500 */
-  --color-text-header: #60a5fa; /* blue-400 */
-  --color-text-icon: #ec4899; /* pink-500 */
-}
-
-/* 📈 NEW: "Relations & Graphs" theme */
-.theme-relations-graph {
-  --color-primary-glow: rgba(45, 212, 191, 0.18); /* teal-400 */
-  --color-secondary-glow: rgba(129, 140, 248, 0.25); /* indigo-400 */
-  --color-text-title: #5eead4; /* teal-300 */
-  --color-text-header: #a855f7; /* fuchsia-500 */
-  --color-text-icon: #7dd3fc; /* sky-300 */
-}
-
-/* Utility for shake animation on wrong answers */
-@keyframes shake {
-  0%,
-  100% {
-    transform: translateX(0);
-  }
-  25%,
-  75% {
-    transform: translateX(-5px);
-  }
-  50% {
-    transform: translateX(5px);
-  }
-}
-.animate-shake {
-  animation: shake 0.3s ease-in-out;
-}
-
-/* Animation for Vertical Line Test */
-@keyframes scan {
+@keyframes blob-float-3  {
   0% {
-    left: 0%;
+    transform: translate(10vw, 5vh) scale(0.95);
+    opacity: 0.22;
+  }
+  40% {
+    transform: translate(-15vw, -10vh) scale(1.05);
+    opacity: 0.3;
+  }
+  80% {
+    transform: translate(5vw, 15vh) scale(1.08);
+    opacity: 0.26;
   }
   100% {
-    left: 100%;
+    transform: translate(10vw, 5vh) scale(0.95);
+    opacity: 0.22;
   }
 }

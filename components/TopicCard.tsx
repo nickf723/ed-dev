@@ -78,8 +78,7 @@ export default function TopicCard({
     <Link
       ref={cardRef}
       href={href}
-      className="tilt group relative block overflow-hidden rounded-3xl border border-neutral-800/70 
-                 bg-neutral-900/40 p-8 transition-transform duration-200 ease-out card-accent"
+      className="topic-card tilt group card-accent"
       style={cardStyles} // Apply all our styles
     >
       {/* Background Glow */}
