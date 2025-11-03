@@ -114,8 +114,11 @@ export default function RelationsPage() {
         the relation fails the test.
       </p>
       <StepByStepSolution
-        prompt="Explain the vertical line test in your own words."
-        solution="Draw or imagine a vertical line sweeping across the graph. If it ever touches the graph twice at the same x-value, the relation gives one input two outputs — so it is not a function."
+        title="Explain the vertical line test"
+        steps={[
+          "Draw or imagine a vertical line sweeping across the graph.",
+          "If it ever touches the graph twice at the same x-value, the relation gives one input two outputs, so it is not a function.",
+        ]}
       />
 
       <LessonHeader icon={ChartScatter} title="Stories Become Graphs" />
