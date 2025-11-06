@@ -5,10 +5,10 @@ import FloatingSymbols from "@/components/FloatingSymbols";
 import TopicCard from "@/components/TopicCard";
 
 const mathSymbols = [
-  "π", "∞", "√", "∑", "Σ", "Δ", "θ", "φ", "Ω", "λ", "μ", "γ", "x²+y²=z²",
+  "π", "∞", "√", "∑", "Δ", "θ", "φ", "Ω", "λ", "a²+b²=c²",
   "∫ f(x) dx", "E=mc²", "P(A|B)", "ℝ", "∂/∂t", "∇·F", "e^{iπ}+1=0",
-  "f′(x)", "y=mx+b", "sinθ", "log₁₀x", "F=ma", "P=2πr", "ℕ⊂ℤ⊂ℚ⊂ℝ⊂ℂ",
-  "∀x∈ℝ", "∴", "∃", "∈",
+  "f′(x)", "y=mx+b", "sinθ", "cosθ", "tanθ", "secθ", "cscθ", "cotθ", "log₁₀x", "F=ma", "P=2πr", "ℕ⊂ℤ⊂ℚ⊂ℝ⊂ℂ",
+  "∀x∈ℝ", "∴", "∃", "∈", "∉", "⊆", "∪", "∩", 
 ];
 
 export default function MathPage() {
@@ -32,6 +32,16 @@ export default function MathPage() {
       title: "Statistics",
       desc: "Finding truth in data — probability, inference, and real-world meaning.",
       href: "/math/statistics",
+    },
+    {
+      title: "Number Theory",
+      desc: "Numbers and their hidden properties — the purest form of mathematical thought.",
+      href: "/math/number-theory",
+    },
+    {
+      title: "Discrete Mathematics",
+      desc: "The study of countable structures — essential for computer science and combinatorics.",
+      href: "/math/discrete-mathematics",
     },
   ];
 

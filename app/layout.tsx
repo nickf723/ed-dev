@@ -2,8 +2,8 @@ import "./globals.css";
 import Sidebar from "@/components/Sidebar";
 
 export const metadata = {
-  title: "Ed Dev Protocol",
-  description: "Working smarter, not harder.",
+  title: "Knowledge Netowrk",
+  description: "A hub for learning anything, powered by interconnected concepts and clear explanations.",
 };
 
 export default function RootLayout({

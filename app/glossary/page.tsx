@@ -6,16 +6,7 @@ import PageHeader from "@/components/PageHeader";
 import TopicCard from "@/components/TopicCard";
 import { BookMarked, Layers, Network } from "lucide-react";
 
-const knowledgeSymbols = [
-  "✦",
-  "✧",
-  "✹",
-  "✺",
-  "◇",
-  "◆",
-  "⌘",
-  "∞",
-];
+const knowledgeSymbols = [ "✦", "✧", "✹", "✺", "◇", "◆", "⌘",  "∞", "⚙", "⚛", "🜚", "🝗", ];
 
 const glossarySections = [
   {

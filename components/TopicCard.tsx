@@ -4,32 +4,26 @@
 import Link from "next/link";
 import React, { useEffect, useRef } from "react";
 
+//Topic Card Class
 type TopicCardProps = {
   href: string;
   title: string;
   desc: string;
   Icon?: React.ElementType;
-  // 👇 --- REMOVED PROPS --- 👇
-  // We no longer need these, as the theme will provide them.
-  // gradient: string;
-  // iconHoverColor?: string;
-  // underlineColor?: string;
-  
-  // 👇 --- ADDED PROP (Optional) --- 👇
-  // We can pass in *override* styles if a card needs
-  // to be different from its page's theme.
   style?: React.CSSProperties;
 };
 
+//Topic Card Export
 export default function TopicCard({
   href,
   title,
   desc,
   Icon,
-  style, // Use the passed-in style
+  style,
 }: TopicCardProps) {
   const cardRef = useRef<HTMLAnchorElement>(null);
-
+  
+  // Tilt effect
   useEffect(() => {
     const card = cardRef.current;
     if (!card) return;
@@ -60,31 +54,25 @@ export default function TopicCard({
       card.removeEventListener("mouseleave", handleMouseLeave);
     };
   }, []);
-
-  // 👇 --- NEW --- 👇
-  // Define the styles that will be applied.
-  // These variables will be picked up from the layout's theme class.
-  // If a `style` prop is passed, it will merge and override.
-  // Use a type assertion so we can set custom CSS variables without type errors.
+  //Palette
   const cardStyles = {
     "--card-gradient-start": "var(--color-text-title)",
     "--card-gradient-end": "var(--color-text-header)",
     "--card-icon-hover": "var(--color-text-icon)",
     "--card-underline": "var(--color-text-header)",
-    ...style, // Apply any overrides from props
+    ...style,
   } as React.CSSProperties;
 
+  //Display
   return (
     <Link
       ref={cardRef}
       href={href}
       className="topic-card tilt group card-accent"
-      style={cardStyles} // Apply all our styles
-    >
+      style={cardStyles} >
       {/* Background Glow */}
       <div
-        className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100 blur-3xl"
-        // 👇 UPDATED: Use the new CSS variables for the gradient
+        className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-50 blur-3xl"
         style={{
           background:
             "linear-gradient(to top right, var(--card-gradient-start), var(--card-gradient-end))",
@@ -94,7 +82,6 @@ export default function TopicCard({
       {/* Icon (for homepage) */}
       {Icon && (
         <Icon
-          // We use a utility class that reads the variable on hover
           className="relative z-10 mb-2 h-10 w-10 text-neutral-500 transition-colors group-hover:[color:var(--card-icon-hover)]"
         />
       )}
@@ -102,7 +89,6 @@ export default function TopicCard({
       {/* Title */}
       <h2
         className="relative z-10 bg-clip-text text-2xl font-semibold text-transparent sm:text-3xl"
-        // 👇 UPDATED: Use the new CSS variables for the gradient
         style={{
           background:
             "linear-gradient(to right, var(--card-gradient-start), var(--card-gradient-end))",
@@ -118,8 +104,7 @@ export default function TopicCard({
 
       {/* Underline accent */}
       <div
-        className="absolute bottom-0 left-0 h-[2px] w-0 transition-all duration-500 group-hover:w-full"
-        // 👇 UPDATED: Use the new CSS variable for the underline
+        className="absolute bottom-0 left-0 h-[25px] w-0 transition-all duration-1000 group-hover:w-full"
         style={{ backgroundColor: "var(--card-underline)" }}
       />
     </Link>

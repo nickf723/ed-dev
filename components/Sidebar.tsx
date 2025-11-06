@@ -10,15 +10,21 @@ import {
   Home,
   BookOpen,
   Calculator,
-  Ruler,
+  Ruler, // Not used in new structure, but keeping import
   FunctionSquare,
 } from "@/components/icons";
 
 export default function Sidebar() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+
+  // State for the new nested structure
+  const [expandFormalScience, setExpandFormalScience] = useState(true);
   const [expandMath, setExpandMath] = useState(true);
   const [expandAlgebra, setExpandAlgebra] = useState(true);
+  const [expandElemAlgebra, setExpandElemAlgebra] = useState(true);
+  const [expandFoundations, setExpandFoundations] = useState(true);
+  const [expandNumOps, setExpandNumOps] = useState(true);
 
   return (
     <>
@@ -33,12 +39,12 @@ export default function Sidebar() {
       {/* Sidebar */}
       <aside
         className={`glass fixed left-0 top-0 h-screen z-40 border-r border-neutral-800
-                    transition-all duration-300 ease-in-out
-                    ${
-                      open
-                        ? "translate-x-0 w-[var(--sidebar-width)]"
-                        : "-translate-x-full md:translate-x-0 md:w-[var(--sidebar-width)]"
-                    }`}
+                  transition-all duration-300 ease-in-out
+                  ${
+                    open
+                      ? "translate-x-0 w-[var(--sidebar-width)]"
+                      : "-translate-x-full md:translate-x-0 md:w-[var(--sidebar-width)]"
+                  }`}
       >
         <nav className="flex flex-col gap-2 p-4 pt-16 md:pt-6 text-sm font-medium text-neutral-300">
           {/* Home */}
@@ -49,76 +55,126 @@ export default function Sidebar() {
             active={pathname === "/"}
           />
 
-          {/* Math Dropdown */}
+          {/* Formal Science */}
           <Dropdown
-            label="Mathematics"
+            label="Formal Science"
             icon={<BookOpen size={16} />}
-            expanded={expandMath}
-            setExpanded={setExpandMath}
+            expanded={expandFormalScience}
+            setExpanded={setExpandFormalScience}
           >
-            {/* Algebra Dropdown */}
+            {/* Mathematics Dropdown */}
             <Dropdown
-              label="Algebra"
+              label="Mathematics"
               icon={<Calculator size={14} />}
-              expanded={expandAlgebra}
-              setExpanded={setExpandAlgebra}
+              expanded={expandMath}
+              setExpanded={setExpandMath}
               nested
             >
-              <SidebarLink
-                href="/math/algebra/variables"
-                label="Variables"
-                active={pathname.startsWith("/math/algebra/variables")}
+              {/* Algebra Dropdown */}
+              <Dropdown
+                label="Algebra"
+                icon={<FunctionSquare size={14} />}
+                expanded={expandAlgebra}
+                setExpanded={setExpandAlgebra}
                 nested
-              />
-              <SidebarLink
-                href="/math/algebra/expressions"
-                label="Expressions"
-                active={pathname.startsWith("/math/algebra/expressions")}
-                nested
-              />
-              <SidebarLink
-                href="/math/algebra/equations"
-                label="Equations"
-                active={pathname.startsWith("/math/algebra/equations")}
-                nested
-              />
-              <SidebarLink
-                href="/math/algebra/inequalities"
-                label="Inequalities"
-                active={pathname.startsWith("/math/algebra/inequalities")}
-                nested
-              />
-              {/* 🔁 ORDER UPDATED HERE 🔁 */}
-              <SidebarLink
-                href="/math/algebra/relations"
-                label="Relations & Graphs"
-                active={pathname.startsWith("/math/algebra/relations")}
-                nested
-              />
-              <SidebarLink
-                href="/math/algebra/functions"
-                label="Functions"
-                active={pathname.startsWith("/math/algebra/functions")}
-                nested
-              />
+              >
+                {/* Elementary Algebra Dropdown */}
+                <Dropdown
+                  label="Elementary Algebra"
+                  expanded={expandElemAlgebra}
+                  setExpanded={setExpandElemAlgebra}
+                  nested
+                >
+                  {/* Foundations Dropdown */}
+                  <Dropdown
+                    label="Foundations"
+                    expanded={expandFoundations}
+                    setExpanded={setExpandFoundations}
+                    nested
+                  >
+                    {/* Numbers and Operations Dropdown */}
+                    <Dropdown
+                      label="Numbers and Operations"
+                      expanded={expandNumOps}
+                      setExpanded={setExpandNumOps}
+                      nested
+                    >
+                      {/* Final Link */}
+                      <SidebarLink
+                        href="/formal-science/math/algebra/elementary/foundations/num-ops/number-systems"
+                        label="Number Systems"
+                        active={pathname.startsWith(
+                          "/formal-science/math/algebra/elementary/foundations/num-ops/number-systems"
+                        )}
+                        nested
+                      />
+                    </Dropdown>
+                  </Dropdown>
+                </Dropdown>
+              </Dropdown>
             </Dropdown>
-
-            {/* Geometry */}
-            <SidebarLink
-              href="/math/geometry"
-              label="Geometry"
-              icon={<Ruler size={14} />}
-              active={pathname.startsWith("/math/geometry")}
-            />
-
-            {/* Calculus */}
-            <SidebarLink
-              href="/math/calculus"
-              label="Calculus"
-              icon={<FunctionSquare size={14} />}
-              active={pathname.startsWith("/math/calculus")}
-            />
           </Dropdown>
+          {/* Natural Science */}
+          <Dropdown
+            label="Natural Science"
+            icon={<BookOpen size={16} />}
+            expanded={expandFormalScience}
+            setExpanded={setExpandFormalScience}
+          > 
+            {/* Placeholder for future links */}
+            <span className="text-neutral-500 italic px-3 py-2">
+              (Coming Soon)
+            </span>          
+          </Dropdown>
+          {/* Social Science */}
+          <Dropdown
+            label="Social Science"
+            icon={<BookOpen size={16} />}
+            expanded={expandFormalScience}
+            setExpanded={setExpandFormalScience}
+          > 
+            {/* Placeholder for future links */}
+            <span className="text-neutral-500 italic px-3 py-2">
+              (Coming Soon)
+            </span>          
+          </Dropdown>
+          {/* Applied Science */}
+          <Dropdown
+            label="Applied Science"
+            icon={<BookOpen size={16} />}
+            expanded={expandFormalScience}
+            setExpanded={setExpandFormalScience}
+          > 
+            {/* Placeholder for future links */}
+            <span className="text-neutral-500 italic px-3 py-2">
+              (Coming Soon)
+            </span>          
+          </Dropdown>
+          {/* Humanities */}
+          <Dropdown
+            label="Humanities"
+            icon={<BookOpen size={16} />}
+            expanded={expandFormalScience}
+            setExpanded={setExpandFormalScience}
+          > 
+            {/* Placeholder for future links */}
+            <span className="text-neutral-500 italic px-3 py-2">
+              (Coming Soon)
+            </span>          
+          </Dropdown>
+          {/* Interdisciplines */}
+          <Dropdown
+            label="Interdisciplines"
+            icon={<BookOpen size={16} />}
+            expanded={expandFormalScience}
+            setExpanded={setExpandFormalScience}
+          > 
+            {/* Placeholder for future links */}
+            <span className="text-neutral-500 italic px-3 py-2">
+              (Coming Soon)
+            </span>          
+          </Dropdown>
+          {/* === END: New Nested Structure === */}
 
           {/* Glossary */}
           <SidebarLink
