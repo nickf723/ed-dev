@@ -13,6 +13,11 @@ export {
   Calculator,
   Ruler,
   FunctionSquare,
+  FlaskConical, // 👈 ADDED (for Natural Science)
+  Users, // 👈 ADDED (for Social Science)
+  Building, // 👈 ADDED (for Applied Science)
+  Palette, // 👈 ADDED (for Humanities)
+  GitMerge, // 👈 ADDED (for Interdisciplines)
 
   // Lesson Headers & Asides (Original)
   Box,
@@ -43,7 +48,7 @@ export {
 
   // 🌀 Variables ("Mystery")
   Search,
-  Users,
+  // Users, // Already added above
   CheckCircle,
   Beaker,
   HelpCircle,
@@ -79,7 +84,7 @@ export {
   ScanLine,
   Factory,
   Briefcase,
-  
+
   // 📈 Relations & Graphs
   LineChart,
   Map,
@@ -89,10 +94,10 @@ export {
   Compass,
   ListChecks,
   Sparkles,
-  Table, // 👈 ADDED
-  Move, // 👈 ADDED
-  TrendingDown, // 👈 ADDED
-  Dot, // 👈 ADDED
+  Table,
+  Move,
+  TrendingDown,
+  Dot,
 
   // 🔗 Shared
   Link,

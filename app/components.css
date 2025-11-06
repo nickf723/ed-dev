@@ -1,0 +1,155 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .glass {
+    background: var(--glass-bg, var(--topic-surface));
+    backdrop-filter: blur(20px);
+    border-radius: 1rem;
+    border: 1px solid var(--glass-border, rgba(255, 255, 255, 0.05));
+    box-shadow: 0 0 25px rgba(0, 255, 255, 0.05);
+    transition: all 0.3s ease;
+  }
+
+  .glass:hover {
+    box-shadow:
+      0 0 30px rgba(0, 255, 255, 0.1),
+      0 0 60px rgba(255, 0, 255, 0.05);
+  }
+
+  .card-accent {
+    background: radial-gradient(
+      circle at 50% 50%,
+      var(--topic-card-sheen),
+      transparent 70%
+    );
+    transition: box-shadow 0.3s ease;
+  }
+
+  .card-accent:hover {
+    box-shadow:
+      0 0 30px var(--topic-card-shadow),
+      0 0 60px color-mix(in srgb, var(--topic-card-shadow) 40%, transparent);
+  }
+
+  .gradient-text {
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+  }
+
+  .topic-page {
+    position: relative;
+    min-height: 100vh;
+    @apply flex flex-col items-center overflow-hidden px-6 py-20 text-center;
+    gap: clamp(3rem, 6vw, 5rem);
+    isolation: isolate;
+    background: radial-gradient(
+      circle at 50% -20%,
+      rgba(255, 255, 255, 0.04),
+      transparent 55%
+    );
+  }
+
+  .topic-page::before {
+    content: "";
+    position: absolute;
+    inset: -25% -10% 0;
+    background:
+      radial-gradient(circle at 18% 20%, var(--topic-blob-1), transparent 55%),
+      radial-gradient(circle at 80% 0%, var(--topic-blob-2), transparent 55%);
+    filter: blur(60px);
+    opacity: 0.85;
+    z-index: -2;
+  }
+
+  .topic-page::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: radial-gradient(
+      circle,
+      var(--topic-symbol-color) 1px,
+      transparent 1px
+    );
+    background-size: 4px 4px;
+    opacity: 0.18;
+    mix-blend-mode: screen;
+    z-index: -1;
+  }
+
+  .topic-page .floating-symbol {
+    color: var(--topic-symbol-color);
+    text-shadow: 0 0 30px color-mix(in srgb, var(--topic-symbol-color) 30%, transparent);
+  }
+
+  .topic-grid {
+    @apply grid w-full max-w-6xl gap-10;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  }
+
+  .topic-card {
+    @apply relative block overflow-hidden rounded-3xl border p-8 text-left transition-transform duration-200 ease-out;
+    background: linear-gradient(
+      145deg,
+      rgba(15, 23, 42, 0.55),
+      rgba(2, 6, 23, 0.35)
+    );
+    border-color: var(--topic-surface-border, rgba(255, 255, 255, 0.08));
+    box-shadow:
+      0 20px 45px rgba(2, 6, 23, 0.55),
+      0 0 0 1px rgba(255, 255, 255, 0.02);
+    color: var(--text);
+  }
+
+  .topic-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      120deg,
+      transparent 0%,
+      color-mix(in srgb, var(--topic-card-sheen) 55%, transparent) 45%,
+      transparent 80%
+    );
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: 0;
+  }
+
+  .topic-card:hover::after {
+    opacity: 1;
+  }
+
+  .topic-card > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  .topic-card__eyebrow {
+    @apply inline-flex items-center gap-2 rounded-full border px-3 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.3em];
+    background: color-mix(in srgb, var(--topic-badge-bg) 70%, transparent);
+    border-color: var(--topic-badge-border);
+    color: var(--topic-badge-text);
+  }
+
+  /* Lesson/app-specific helpers */
+  .applet-card {
+    @apply rounded-lg border border-neutral-800 bg-neutral-900/50 p-5 shadow-sm transition-colors;
+  }
+  .applet-card:hover {
+    @apply hover:border-cyan-600/30 hover:bg-neutral-900/60;
+  }
+  .applet-header {
+    @apply text-xs font-semibold uppercase tracking-[0.2em] text-teal-200;
+  }
+  .note-card {
+    @apply rounded-lg border border-neutral-800 bg-neutral-900/40 p-4;
+  }
+  .two-col {
+    @apply grid gap-8 md:grid-cols-2 lg:gap-10;
+  }
+}

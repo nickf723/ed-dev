@@ -26,6 +26,13 @@ export default function Sidebar() {
   const [expandFoundations, setExpandFoundations] = useState(true);
   const [expandNumOps, setExpandNumOps] = useState(true);
 
+  // 🔽 FIXED: Added unique state for each new section
+  const [expandNatural, setExpandNatural] = useState(false);
+  const [expandSocial, setExpandSocial] = useState(false);
+  const [expandApplied, setExpandApplied] = useState(false);
+  const [expandHumanities, setExpandHumanities] = useState(false);
+  const [expandInter, setExpandInter] = useState(false);
+
   return (
     <>
       {/* Mobile toggle */}
@@ -101,10 +108,10 @@ export default function Sidebar() {
                     >
                       {/* Final Link */}
                       <SidebarLink
-                        href="/formal-science/math/algebra/elementary/foundations/num-ops/number-systems"
+                        href="/formal-science/mathematics/algebra/elementary-algebra/foundations/num-ops/number-systems"
                         label="Number Systems"
                         active={pathname.startsWith(
-                          "/formal-science/math/algebra/elementary/foundations/num-ops/number-systems"
+                          "/formal-science/mathematics/algebra/elementary-algebra/foundations/num-ops/number-systems",
                         )}
                         nested
                       />
@@ -114,65 +121,66 @@ export default function Sidebar() {
               </Dropdown>
             </Dropdown>
           </Dropdown>
+
           {/* Natural Science */}
           <Dropdown
             label="Natural Science"
             icon={<BookOpen size={16} />}
-            expanded={expandFormalScience}
-            setExpanded={setExpandFormalScience}
-          > 
+            expanded={expandNatural}
+            setExpanded={setExpandNatural}
+          >
             {/* Placeholder for future links */}
             <span className="text-neutral-500 italic px-3 py-2">
               (Coming Soon)
-            </span>          
+            </span>
           </Dropdown>
           {/* Social Science */}
           <Dropdown
             label="Social Science"
             icon={<BookOpen size={16} />}
-            expanded={expandFormalScience}
-            setExpanded={setExpandFormalScience}
-          > 
+            expanded={expandSocial}
+            setExpanded={setExpandSocial}
+          >
             {/* Placeholder for future links */}
             <span className="text-neutral-500 italic px-3 py-2">
               (Coming Soon)
-            </span>          
+            </span>
           </Dropdown>
           {/* Applied Science */}
           <Dropdown
             label="Applied Science"
             icon={<BookOpen size={16} />}
-            expanded={expandFormalScience}
-            setExpanded={setExpandFormalScience}
-          > 
+            expanded={expandApplied}
+            setExpanded={setExpandApplied}
+          >
             {/* Placeholder for future links */}
             <span className="text-neutral-500 italic px-3 py-2">
               (Coming Soon)
-            </span>          
+            </span>
           </Dropdown>
           {/* Humanities */}
           <Dropdown
             label="Humanities"
             icon={<BookOpen size={16} />}
-            expanded={expandFormalScience}
-            setExpanded={setExpandFormalScience}
-          > 
+            expanded={expandHumanities}
+            setExpanded={setExpandHumanities}
+          >
             {/* Placeholder for future links */}
             <span className="text-neutral-500 italic px-3 py-2">
               (Coming Soon)
-            </span>          
+            </span>
           </Dropdown>
           {/* Interdisciplines */}
           <Dropdown
             label="Interdisciplines"
             icon={<BookOpen size={16} />}
-            expanded={expandFormalScience}
-            setExpanded={setExpandFormalScience}
-          > 
+            expanded={expandInter}
+            setExpanded={setExpandInter}
+          >
             {/* Placeholder for future links */}
             <span className="text-neutral-500 italic px-3 py-2">
               (Coming Soon)
-            </span>          
+            </span>
           </Dropdown>
           {/* === END: New Nested Structure === */}
 

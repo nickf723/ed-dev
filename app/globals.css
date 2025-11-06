@@ -3,42 +3,13 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
-    --accent: #00ffff;
-    --accent2: #ff00ff;
-    --glass-bg: rgba(20, 20, 25, 0.116);
-    --glass-border: rgba(255, 255, 255, 0.048);
-    --text: #e5e7eb;
-    --bg: #000;
-    --sidebar-width: 16rem;
-
-    --color-primary-glow: rgba(14, 164, 233, 0.158);
-    --color-secondary-glow: rgba(0, 255, 255, 0.5);
-    --color-text-title: #06b6d4;
-    --color-text-header: #22d3ee;
-    --color-text-icon: #67e8f9;
-
-    --topic-gradient-from: rgba(121, 4, 4, 0.75);
-    --topic-gradient-to: rgba(14, 165, 233, 0.75);
-    --topic-symbol-color: rgba(103, 232, 249, 0.18);
-    --topic-surface: rgba(15, 23, 42, 0.62);
-    --topic-surface-border: rgba(56, 189, 248, 0.2);
-    --topic-card-shadow: rgba(14, 165, 233, 0.22);
-    --topic-card-sheen: rgba(14, 165, 233, 0.18);
-    --topic-badge-bg: rgba(8, 145, 178, 0.14);
-    --topic-badge-border: rgba(114, 255, 248, 0.212);
-    --topic-badge-text: #67e8f9;
-    --topic-blob-1: rgba(6, 182, 212, 0.28);
-    --topic-blob-2: rgba(59, 130, 246, 0.24);
-    --topic-noise-opacity: 0.26;
-  }
   body {
     @apply bg-neutral-950 text-neutral-100 font-sans antialiased;
     background-color: var(--bg);
     color: var(--text);
     overflow-x: hidden;
   }
-   body::before {
+  body::before {
     content: "";
     position: fixed;
     inset: 0;
@@ -50,7 +21,7 @@
     z-index: -2;
     animation: float 60s ease-in-out infinite alternate;
   }
-    body::after {
+  body::after {
     content: "";
     position: fixed;
     inset: 0;
@@ -59,173 +30,6 @@
     background-size: 3px 3px;
     opacity: var(--topic-noise-opacity);
     z-index: -1;
-  }
-  .theme-math {
-    --color-text-title: #ff0000;
-    --color-text-header: #ff0037;
-    --topic-symbol-color: rgba(251, 146, 60, 0.22);
-    --topic-surface: rgba(44, 14, 31, 0.65);
-    --topic-surface-border: rgba(249, 115, 22, 0.28);
-    --topic-card-shadow: rgba(249, 115, 22, 0.23);
-    --topic-card-sheen: rgba(244, 114, 182, 0.22);
-    --topic-badge-bg: rgba(236, 72, 153, 0.18);
-    --topic-badge-border: rgba(236, 72, 153, 0.38);
-    --topic-badge-text: #f9a8d4;
-    --topic-blob-1: rgba(236, 72, 153, 0.36);
-    --topic-blob-2: rgba(249, 115, 22, 0.3);
-  }
-
-  .theme-glossary {
-    --color-text-title: #facc15;
-    --color-text-header: #fbbf24;
-    --topic-gradient-from: rgba(234, 179, 8, 0.72);
-    --topic-gradient-to: rgba(251, 191, 36, 0.7);
-    --topic-symbol-color: rgba(253, 224, 71, 0.22);
-    --topic-surface: rgba(49, 38, 11, 0.62);
-    --topic-surface-border: rgba(251, 191, 36, 0.32);
-    --topic-card-shadow: rgba(251, 191, 36, 0.23);
-    --topic-card-sheen: rgba(253, 224, 71, 0.2);
-    --topic-badge-bg: rgba(234, 179, 8, 0.18);
-    --topic-badge-border: rgba(234, 179, 8, 0.36);
-    --topic-badge-text: #fde68a;
-    --topic-blob-1: rgba(253, 224, 71, 0.32);
-    --topic-blob-2: rgba(249, 115, 22, 0.28);
-  }
-}
-
-@layer components {
-  .glass {
-    background: var(--glass-bg, var(--topic-surface));
-    backdrop-filter: blur(20px);
-    border-radius: 1rem;
-    border: 1px solid var(--glass-border, rgba(255, 255, 255, 0.05));
-    box-shadow: 0 0 25px rgba(0, 255, 255, 0.05);
-    transition: all 0.3s ease;
-  }
-
-  .glass:hover {
-    box-shadow:
-      0 0 30px rgba(0, 255, 255, 0.1),
-      0 0 60px rgba(255, 0, 255, 0.05);
-  }
-
-  .card-accent {
-    background: radial-gradient(circle at 50% 50%, var(--topic-card-sheen), transparent 70%);
-    transition: box-shadow 0.3s ease;
-  }
-
-  .card-accent:hover {
-    box-shadow:
-      0 0 30px var(--topic-card-shadow),
-      0 0 60px color-mix(in srgb, var(--topic-card-shadow) 40%, transparent);
-  }
-
-  .gradient-text {
-    background: linear-gradient(90deg, var(--accent), var(--accent2));
-    background-clip: text;
-    -webkit-background-clip: text;
-    color: transparent;
-  }
-
-  .topic-page {
-    position: relative;
-    min-height: 100vh;
-    @apply flex flex-col items-center overflow-hidden px-6 py-20 text-center;
-    gap: clamp(3rem, 6vw, 5rem);
-    isolation: isolate;
-    background: radial-gradient(circle at 50% -20%, rgba(255, 255, 255, 0.04), transparent 55%);
-  }
-
-  .topic-page::before {
-    content: "";
-    position: absolute;
-    inset: -25% -10% 0;
-    background:
-      radial-gradient(circle at 18% 20%, var(--topic-blob-1), transparent 55%),
-      radial-gradient(circle at 80% 0%, var(--topic-blob-2), transparent 55%);
-    filter: blur(60px);
-    opacity: 0.85;
-    z-index: -2;
-  }
-
-  .topic-page::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background-image: radial-gradient(circle, var(--topic-symbol-color) 1px, transparent 1px);
-    background-size: 4px 4px;
-    opacity: 0.18;
-    mix-blend-mode: screen;
-    z-index: -1;
-  }
-
-  .topic-page .floating-symbol {
-    color: var(--topic-symbol-color);
-    text-shadow: 0 0 30px color-mix(in srgb, var(--topic-symbol-color) 30%, transparent);
-  }
-
-  .topic-grid {
-    @apply grid w-full max-w-6xl gap-10;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  }
-
-  .topic-card {
-    @apply relative block overflow-hidden rounded-3xl border p-8 text-left transition-transform duration-200 ease-out;
-    background: linear-gradient(145deg, rgba(15, 23, 42, 0.55), rgba(2, 6, 23, 0.35));
-    border-color: var(--topic-surface-border, rgba(255, 255, 255, 0.08));
-    box-shadow:
-      0 20px 45px rgba(2, 6, 23, 0.55),
-      0 0 0 1px rgba(255, 255, 255, 0.02);
-    color: var(--text);
-  }
-
-  .topic-card::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      120deg,
-      transparent 0%,
-      color-mix(in srgb, var(--topic-card-sheen) 55%, transparent) 45%,
-      transparent 80%
-    );
-    opacity: 0;
-    transition: opacity 0.4s ease;
-    z-index: 0;
-  }
-
-  .topic-card:hover::after {
-    opacity: 1;
-  }
-
-  .topic-card > * {
-    position: relative;
-    z-index: 1;
-  }
-
-  .topic-card__eyebrow {
-    @apply inline-flex items-center gap-2 rounded-full border px-3 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.3em];
-    background: color-mix(in srgb, var(--topic-badge-bg) 70%, transparent);
-    border-color: var(--topic-badge-border);
-    color: var(--topic-badge-text);
-  }
-
-  /* Lesson/app-specific helpers */
-  .applet-card {
-    @apply rounded-lg border border-neutral-800 bg-neutral-900/50 p-5 shadow-sm transition-colors;
-  }
-  .applet-card:hover {
-    @apply hover:border-cyan-600/30 hover:bg-neutral-900/60;
-  }
-  .applet-header {
-    @apply text-xs font-semibold uppercase tracking-[0.2em] text-teal-200;
-  }
-  .note-card {
-    @apply rounded-lg border border-neutral-800 bg-neutral-900/40 p-4;
-  }
-  .two-col {
-    @apply grid gap-8 md:grid-cols-2 lg:gap-10;
   }
 }
 
@@ -332,7 +136,7 @@
   }
 }
 
-@keyframes blob-float-3  {
+@keyframes blob-float-3 {
   0% {
     transform: translate(10vw, 5vh) scale(0.95);
     opacity: 0.22;
