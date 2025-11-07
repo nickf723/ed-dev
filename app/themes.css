@@ -29,7 +29,19 @@
     --card-underline: rgb(223, 0, 0);;
     background:
       radial-gradient( circle at 0% 0%, #ff00008f, transparent 50%),
-      radial-gradient( circle at 100% 100%, #ffc4008f, transparent 50%),
+      radial-gradient( circle at 100% 100%, #ffc4008f, transparent 50%);
+    --color-text-title: #a78bfa; /* Light Purple */
+    --color-text-header: #818cf8; /* Indigo */
+    --topic-symbol-color: rgba(167, 139, 250, 0.22);
+    --topic-surface: rgba(22, 18, 44, 0.65); /* Dark Purple */
+    --topic-surface-border: rgba(129, 140, 248, 0.28);
+    --topic-card-shadow: rgba(167, 139, 250, 0.23);
+    --topic-card-sheen: rgba(190, 170, 255, 0.22);
+    --topic-badge-bg: rgba(129, 140, 248, 0.18);
+    --topic-badge-border: rgba(129, 140, 248, 0.38);
+    --topic-badge-text: #c7d2fe; /* Light Indigo */
+    --topic-blob-1: none;
+    --topic-blob-2: none;
   }
   
   .theme-natural-science, .card-theme-natural-science {
