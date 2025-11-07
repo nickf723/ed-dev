@@ -18,7 +18,7 @@ export default function Home() {
       desc: "Study of abstract systems and logic.",
       href: "/formal-science",
       Icon: Calculator,
-      className: "card-theme-formal-science"
+      className: "theme-formal-science"
     }
   ,
     {
@@ -26,42 +26,42 @@ export default function Home() {
       desc: "Study of the physical world.",
       href: "/natural-science",
       Icon: FlaskConical,
-      className: "card-theme-natural-science"
+      className: "theme-natural-science"
     },
     {
       title: "Social Sciences",
       desc: "Study of societies and relationships.",
       href: "/social-science",
       Icon: Users,
-      className: "card-theme-social-science"
+      className: "theme-social-science"
     },
     {
       title: "Applied Sciences",
       desc: "Study of practical applications.",
       href: "/applied-science",
       Icon: Building,
-      className: "card-theme-applied-science"
+      className: "theme-applied-science"
     },
     {
       title: "Humanities",
       desc: "Study of human culture and expression.",
       href: "/humanities",
       Icon: Palette,
-      className: "card-theme-humanities"
+      className: "theme-humanities"
     },
     {
       title: "Interdisciplines",
       desc: "Connecting fields of study.",
       href: "/interdisciplines",
       Icon: GitMerge,
-      className: "card-theme-interdisciplines"
+      className: "theme-interdisciplines"
     },
     {
       title: "Glossary",
       desc: "Definitions and key terms.",
       href: "/glossary",
       Icon: BookOpen,
-      className: "card-theme-glossary"
+      className: "theme-glossary"
     },
   ];
 

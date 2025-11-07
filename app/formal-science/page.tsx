@@ -37,12 +37,14 @@ export default function FormalSciencePage() {
       desc: "The study of quantity, structure, space, and change.",
       href: "/formal-science/mathematics",
       Icon: Calculator,
+      className: "theme-math"
     },
     {
       title: "Logic",
       desc: "The study of reasoning, inference, and validity.",
       href: "/formal-science/logic",
       Icon: BrainCircuit,
+      className: "theme-logic"
     },
     {
       title: "Systems Science",
@@ -71,7 +73,7 @@ export default function FormalSciencePage() {
   ];
 
   return (
-    <main className="topic-page theme-math lg:px-16">
+    <main className="topic-page theme-formal-science lg:px-16">
       <FloatingSymbols symbols={formalScienceSymbols} />
       <PageHeader
         eyebrow="Discipline Overview"
@@ -86,6 +88,7 @@ export default function FormalSciencePage() {
             title={branch.title}
             desc={branch.desc}
             Icon={branch.Icon}
+            className={branch.className}
           />
         ))}
       </section>

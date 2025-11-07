@@ -21,7 +21,7 @@ export default function TopicCard({
   desc,
   Icon,
   style,
-  className = ""
+  className = "",
 }: TopicCardProps) {
   const cardRef = useRef<HTMLAnchorElement>(null);
   
@@ -58,10 +58,6 @@ export default function TopicCard({
   }, []);
   //Palette
   const cardStyles = {
-    "--card-gradient-start": "var(--color-text-title)",
-    "--card-gradient-end": "var(--color-text-header)",
-    "--card-icon-hover": "var(--color-text-icon)",
-    "--card-underline": "var(--color-text-header)",
     ...style,
   } as React.CSSProperties;
 
@@ -70,7 +66,7 @@ export default function TopicCard({
     <Link
       ref={cardRef}
       href={href}
-      className="topic-card tilt group card-accent ${className}"
+      className={`topic-card tilt group card-accent ${className}`}
       style={cardStyles} >
       {/* Background Glow */}
       <div

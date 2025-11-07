@@ -22,75 +22,69 @@
       radial-gradient(circle at 0% 88%, #a200ffaf, transparent 40%);
   }
 
-  .card-theme-formal-science {
-    --card-gradient-start: #ff0000;
-    --card-gradient-end: #ff0037;
-    --card-icon-hover: #ff0000;
-    --card-underline: #ff0000af;
+  .theme-formal-science, .card-theme-formal-science {
+    --card-gradient-start: rgb(255, 0, 0);
+    --card-gradient-end: rgb(221, 217, 2);
+    --card-icon-hover: rgb(255, 0, 0);
+    --card-underline: rgb(223, 0, 0);;
+    background:
+      radial-gradient( circle at 0% 0%, #ff00008f, transparent 50%),
+      radial-gradient( circle at 100% 100%, #ffc4008f, transparent 50%),
   }
   
-  .card-theme-natural-science {
+  .theme-natural-science, .card-theme-natural-science {
     --card-gradient-start: #00ff2aff;
     --card-gradient-end: #02ddddff;
     --card-icon-hover: #00ff5eff;
     --card-underline: #00df52ff;
   }
   
-  .card-theme-social-science {
+  .theme-social-science, .card-theme-social-science {
     --card-gradient-start: #1519ffff;
     --card-gradient-end: #5b04e7ff;
     --card-icon-hover: #00c;
     --card-underline: #2e0bf5c2;
   }
 
-  .card-theme-applied-science {
-    --card-gradient-start: #ff8c00ff;
+  .theme-applied-science, .card-theme-applied-science {
+    --card-gradient-start: rgb(162, 0, 255);
     --card-gradient-end: #ff0055ff;
     --card-icon-hover: #ff00aaff;
     --card-underline: #ff0066c2;
   }
 
-  .card-theme-humanities {
+  .theme-humanities, .card-theme-humanities {
     --card-gradient-start: #fffb00ff;
-    --card-gradient-end: #9eff02ff;
+    --card-gradient-end: rgb(82, 255, 2);
     --card-icon-hover: #e7eb00ff;
     --card-underline: #fcf700bb;
   }
 
-  .card-theme-interdisciplines {
-    --card-gradient-start: #a0a0a0ff;
-    --card-gradient-end: #2c2c2cff;
-    --card-icon-hover: #bbbbbbff;
-    --card-underline: #202020ff;
+  .theme-interdisciplines, .card-theme-interdisciplines {
+    --card-gradient-start: rgb(216, 122, 0);
+    --card-gradient-end: rgb(200, 214, 0);
+    --card-icon-hover: rgb(247, 202, 4);
+    --card-underline: rgb(255, 196, 0);
   }
 
-  .theme-math {
-    --color-text-title: #ff0000;
-    --color-text-header: #ffd900;
-    --topic-symbol-color: rgba(253, 253, 253, 0.096);
-    --topic-surface-border: rgba(249, 115, 22, 0.28);
-    --topic-card-shadow: rgba(249, 115, 22, 0.23);
-    --topic-card-sheen: rgba(244, 114, 182, 0.22);
-    --topic-blob-1: rgba(236, 72, 153, 0.36);
-    --topic-blob-2: rgba(249, 115, 22, 0.3);
+  .theme-math, .card-theme-math {
+    --card-gradient-start: #ff0000;
+    --card-gradient-end: #ff0037;
+    --card-icon-hover: #ff0000;
+    --card-underline: #ff0000af;
   }
   
-  .theme-logic {
-  --color-text-title: #00aaff; /* Some blue */
-  --color-text-header: #0077cc; /* A darker blue */
-  --topic-symbol-color: rgba(0, 170, 255, 0.22);
-  --topic-surface: rgba(14, 30, 44, 0.65);
-  --topic-surface-border: rgba(0, 150, 255, 0.28);
-  --topic-card-shadow: rgba(0, 150, 255, 0.23);
-  --topic-card-sheen: rgba(0, 170, 255, 0.22);
-}
+  .theme-logic, .card-theme-logic {
+    --card-gradient-start: #00aaff;
+    --card-gradient-end: #0077cc;
+    --card-icon-hover: #00aaff;
+    --card-underline: #00aaffc2;
+  }
 
-  .theme-glossary {
-    --color-text-title: #e2e2e2;
-    --color-text-header: #cecece;
-    --topic-symbol-color: rgba(255, 255, 255, 0.315);
-    --topic-surface-border: rgba(255, 255, 255, 0.534);
-    --topic-card-shadow: rgb(168, 168, 168);
-    --topic-card-sheen: rgb(7, 7, 7);
+  .theme-glossary, .card-theme-glossary {
+    --card-gradient-start: #00f5f5;
+    --card-gradient-end: #6600ec;
+    --card-icon-hover: #00ffff;
+    --card-underline: #00f7ff;
   }
 }
