@@ -40,11 +40,6 @@
     @apply flex flex-col items-center overflow-hidden px-6 py-20 text-center;
     gap: clamp(3rem, 6vw, 5rem);
     isolation: isolate;
-    background: radial-gradient(
-      circle at 50% -20%,
-      rgba(197, 194, 194, 0.04),
-      transparent 55%
-    );
   }
 
   .topic-page::before {

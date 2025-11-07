@@ -11,6 +11,25 @@
     --text: #e5e7eb;
     --bg: #000;
     --sidebar-width: 21rem;
+
+    /* * NEW DEFAULTS
+     * Pasted from your global/component CSS files 
+     */
+    --global-background-glow: 
+    radial-gradient( circle at 0% 0%, #ff00008f, transparent 50%
+      ),
+      radial-gradient(circle at 45% 15%, #ff5e00ad, transparent 40%),
+      radial-gradient(circle at 105% -20%, #fffb00b7, transparent 40%),
+      radial-gradient(circle at 96% 89%, #00ff15ad, transparent 40%),
+      radial-gradient(circle at 70% 70%, #00fff2a8, transparent 40%),
+      radial-gradient(circle at 33% 60%, #0011ffb6, transparent 40%),
+      radial-gradient(circle at 0% 88%, #a200ffaf, transparent 40%);
+
+    --topic-page-background: radial-gradient(
+      circle at 50% -20%,
+      rgba(197, 194, 194, 0.04),
+      transparent 55%
+    );
   }
 
   /* Math Theme */
@@ -27,7 +46,24 @@
     --topic-badge-text: #f9a8d4;
     --topic-blob-1: rgba(236, 72, 153, 0.36);
     --topic-blob-2: rgba(249, 115, 22, 0.3);
+    --global-background-glow: none;
+    --topic-page-background: none;
   }
+
+  .theme-logic {
+  --color-text-title: #00aaff; /* Some blue */
+  --color-text-header: #0077cc; /* A darker blue */
+  --topic-symbol-color: rgba(0, 170, 255, 0.22);
+  --topic-surface: rgba(14, 30, 44, 0.65);
+  --topic-surface-border: rgba(0, 150, 255, 0.28);
+  --topic-card-shadow: rgba(0, 150, 255, 0.23);
+  --topic-card-sheen: rgba(0, 170, 255, 0.22);
+  --topic-badge-bg: rgba(0, 170, 255, 0.18);
+  --topic-badge-border: rgba(0, 170, 255, 0.38);
+  --topic-badge-text: #a8e0ff;
+  --topic-blob-1: rgba(0, 170, 255, 0.36);
+  --topic-blob-2: rgba(0, 100, 200, 0.3);
+}
 
   /* Glossary Theme */
   .theme-glossary {
