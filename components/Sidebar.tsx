@@ -1,3 +1,4 @@
+// components/Sidebar.tsx
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -19,41 +20,67 @@ export default function Sidebar() {
   const [open, setOpen] = useState(false);
 
   // State for the new nested structure
-  const [expandFormalScience, setExpandFormalScience] = useState(true);
-  const [expandMath, setExpandMath] = useState(true);
-  const [expandAlgebra, setExpandAlgebra] = useState(true);
-  const [expandElemAlgebra, setExpandElemAlgebra] = useState(true);
-  const [expandFoundations, setExpandFoundations] = useState(true);
-  const [expandNumOps, setExpandNumOps] = useState(true);
+  const [expandFormalScience, setExpandFormalScience] = useState(
+    pathname.startsWith("/formal-science"),
+  );
+  const [expandMath, setExpandMath] = useState(
+    pathname.startsWith("/formal-science/mathematics"),
+  );
+  const [expandAlgebra, setExpandAlgebra] = useState(
+    pathname.startsWith("/formal-science/mathematics/algebra"),
+  );
+  const [expandElemAlgebra, setExpandElemAlgebra] = useState(
+    pathname.startsWith("/formal-science/mathematics/algebra/elementary-algebra"),
+  );
+  const [expandFoundations, setExpandFoundations] = useState(
+    pathname.startsWith(
+      "/formal-science/mathematics/algebra/elementary-algebra/foundations",
+    ),
+  );
+  const [expandNumOps, setExpandNumOps] = useState(
+    pathname.startsWith(
+      "/formal-science/mathematics/algebra/elementary-algebra/foundations/num-ops",
+    ),
+  );
 
   // 🔽 FIXED: Added unique state for each new section
-  const [expandNatural, setExpandNatural] = useState(false);
-  const [expandSocial, setExpandSocial] = useState(false);
-  const [expandApplied, setExpandApplied] = useState(false);
-  const [expandHumanities, setExpandHumanities] = useState(false);
-  const [expandInter, setExpandInter] = useState(false);
+  const [expandNatural, setExpandNatural] = useState(
+    pathname.startsWith("/natural-science"),
+  );
+  const [expandSocial, setExpandSocial] = useState(
+    pathname.startsWith("/social-science"),
+  );
+  const [expandApplied, setExpandApplied] = useState(
+    pathname.startsWith("/applied-science"),
+  );
+  const [expandHumanities, setExpandHumanities] = useState(
+    pathname.startsWith("/humanities"),
+  );
+  const [expandInter, setExpandInter] = useState(
+    pathname.startsWith("/interdisciplines"),
+  );
 
   return (
     <>
       {/* Mobile toggle */}
       <button
         onClick={() => setOpen(!open)}
-        className="fixed top-4 left-4 z-50 bg-neutral-900/80 border border-neutral-700 rounded-md p-2 text-neutral-300 hover:text-cyan-300 transition md:hidden"
+        className="fixed top-4 left-4 z-50 rounded-md border border-neutral-700 bg-neutral-900/80 p-2 text-neutral-300 transition hover:text-cyan-300 md:hidden"
       >
         {open ? <X size={20} /> : <Menu size={20} />}
       </button>
 
       {/* Sidebar */}
       <aside
-        className={`glass fixed left-0 top-0 h-screen z-40 border-r border-neutral-800
+        className={`glass fixed left-0 top-0 z-40 h-screen border-r border-neutral-800
                   transition-all duration-300 ease-in-out
                   ${
                     open
-                      ? "translate-x-0 w-[var(--sidebar-width)]"
-                      : "-translate-x-full md:translate-x-0 md:w-[var(--sidebar-width)]"
+                      ? "w-[var(--sidebar-width)] translate-x-0"
+                      : "w-[var(--sidebar-width)] -translate-x-full md:translate-x-0"
                   }`}
       >
-        <nav className="flex flex-col gap-2 p-4 pt-16 md:pt-6 text-sm font-medium text-neutral-300">
+        <nav className="flex flex-col gap-2 p-4 pt-16 text-sm font-medium text-neutral-300 md:pt-6">
           {/* Home */}
           <SidebarLink
             href="/"
@@ -68,6 +95,8 @@ export default function Sidebar() {
             icon={<BookOpen size={16} />}
             expanded={expandFormalScience}
             setExpanded={setExpandFormalScience}
+            href="/formal-science"
+            active={pathname === "/formal-science"}
           >
             {/* Mathematics Dropdown */}
             <Dropdown
@@ -75,6 +104,8 @@ export default function Sidebar() {
               icon={<Calculator size={14} />}
               expanded={expandMath}
               setExpanded={setExpandMath}
+              href="/formal-science/mathematics"
+              active={pathname === "/formal-science/mathematics"}
               nested
             >
               {/* Algebra Dropdown */}
@@ -83,6 +114,8 @@ export default function Sidebar() {
                 icon={<FunctionSquare size={14} />}
                 expanded={expandAlgebra}
                 setExpanded={setExpandAlgebra}
+                href="/formal-science/mathematics/algebra"
+                active={pathname === "/formal-science/mathematics/algebra"}
                 nested
               >
                 {/* Elementary Algebra Dropdown */}
@@ -90,6 +123,11 @@ export default function Sidebar() {
                   label="Elementary Algebra"
                   expanded={expandElemAlgebra}
                   setExpanded={setExpandElemAlgebra}
+                  href="/formal-science/mathematics/algebra/elementary-algebra"
+                  active={
+                    pathname ===
+                    "/formal-science/mathematics/algebra/elementary-algebra"
+                  }
                   nested
                 >
                   {/* Foundations Dropdown */}
@@ -97,6 +135,11 @@ export default function Sidebar() {
                     label="Foundations"
                     expanded={expandFoundations}
                     setExpanded={setExpandFoundations}
+                    href="/formal-science/mathematics/algebra/elementary-algebra/foundations"
+                    active={
+                      pathname ===
+                      "/formal-science/mathematics/algebra/elementary-algebra/foundations"
+                    }
                     nested
                   >
                     {/* Numbers and Operations Dropdown */}
@@ -104,6 +147,11 @@ export default function Sidebar() {
                       label="Numbers and Operations"
                       expanded={expandNumOps}
                       setExpanded={setExpandNumOps}
+                      href="/formal-science/mathematics/algebra/elementary-algebra/foundations/num-ops"
+                      active={
+                        pathname ===
+                        "/formal-science/mathematics/algebra/elementary-algebra/foundations/num-ops"
+                      }
                       nested
                     >
                       {/* Final Link */}
@@ -128,9 +176,11 @@ export default function Sidebar() {
             icon={<BookOpen size={16} />}
             expanded={expandNatural}
             setExpanded={setExpandNatural}
+            href="/natural-science"
+            active={pathname === "/natural-science"}
           >
             {/* Placeholder for future links */}
-            <span className="text-neutral-500 italic px-3 py-2">
+            <span className="px-3 py-2 text-neutral-500 italic">
               (Coming Soon)
             </span>
           </Dropdown>
@@ -140,9 +190,11 @@ export default function Sidebar() {
             icon={<BookOpen size={16} />}
             expanded={expandSocial}
             setExpanded={setExpandSocial}
+            href="/social-science"
+            active={pathname === "/social-science"}
           >
             {/* Placeholder for future links */}
-            <span className="text-neutral-500 italic px-3 py-2">
+            <span className="px-3 py-2 text-neutral-500 italic">
               (Coming Soon)
             </span>
           </Dropdown>
@@ -152,9 +204,11 @@ export default function Sidebar() {
             icon={<BookOpen size={16} />}
             expanded={expandApplied}
             setExpanded={setExpandApplied}
+            href="/applied-science"
+            active={pathname === "/applied-science"}
           >
             {/* Placeholder for future links */}
-            <span className="text-neutral-500 italic px-3 py-2">
+            <span className="px-3 py-2 text-neutral-500 italic">
               (Coming Soon)
             </span>
           </Dropdown>
@@ -164,9 +218,11 @@ export default function Sidebar() {
             icon={<BookOpen size={16} />}
             expanded={expandHumanities}
             setExpanded={setExpandHumanities}
+            href="/humanities"
+            active={pathname === "/humanities"}
           >
             {/* Placeholder for future links */}
-            <span className="text-neutral-500 italic px-3 py-2">
+            <span className="px-3 py-2 text-neutral-500 italic">
               (Coming Soon)
             </span>
           </Dropdown>
@@ -176,9 +232,11 @@ export default function Sidebar() {
             icon={<BookOpen size={16} />}
             expanded={expandInter}
             setExpanded={setExpandInter}
+            href="/interdisciplines"
+            active={pathname === "/interdisciplines"}
           >
             {/* Placeholder for future links */}
-            <span className="text-neutral-500 italic px-3 py-2">
+            <span className="px-3 py-2 text-neutral-500 italic">
               (Coming Soon)
             </span>
           </Dropdown>
@@ -216,7 +274,7 @@ function SidebarLink({
   return (
     <Link
       href={href}
-      className={`flex items-center gap-2 px-3 py-2 rounded-md transition-colors ${
+      className={`flex items-center gap-2 rounded-md px-3 py-2 transition-colors ${
         active
           ? "bg-cyan-500/20 text-cyan-300"
           : "text-neutral-300 hover:text-cyan-200"
@@ -229,7 +287,7 @@ function SidebarLink({
 }
 
 /* -------------------------------------- */
-/* 🔹 Dropdown Component */
+/* 🔹 Dropdown Component (Updated) 🔹 */
 /* -------------------------------------- */
 function Dropdown({
   label,
@@ -238,6 +296,8 @@ function Dropdown({
   setExpanded,
   children,
   nested = false,
+  href,
+  active,
 }: {
   label: string;
   icon?: React.ReactNode;
@@ -245,19 +305,44 @@ function Dropdown({
   setExpanded: (value: boolean) => void;
   children: React.ReactNode;
   nested?: boolean;
+  href?: string;
+  active?: boolean;
 }) {
+  const LabelContent = () => (
+    <>
+      {icon && <span className="text-cyan-400">{icon}</span>}
+      {label}
+    </>
+  );
+
+  const labelClasses = `flex items-center gap-2 p-2 rounded-md transition-colors ${
+    active
+      ? "bg-cyan-500/20 text-cyan-300"
+      : "text-neutral-300 hover:text-cyan-200"
+  }`;
+
   return (
     <div className={`transition-all ${nested ? "ml-2" : ""}`}>
-      <button
-        onClick={() => setExpanded(!expanded)}
-        className="flex justify-between items-center w-full p-2 rounded-md hover:text-cyan-300 transition"
-      >
-        <span className="flex items-center gap-2">
-          {icon && <span className="text-cyan-400">{icon}</span>}
-          {label}
-        </span>
-        {expanded ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
-      </button>
+      <div className="group flex w-full items-center justify-between">
+        {href ? (
+          <Link href={href} className={`${labelClasses} flex-grow`}>
+            <LabelContent />
+          </Link>
+        ) : (
+          // If no href, make it a non-interactive span but with same padding
+          <span className={`${labelClasses} flex-grow cursor-default`}>
+            <LabelContent />
+          </span>
+        )}
+        {/* Chevron button */}
+        <button
+          onClick={() => setExpanded(!expanded)}
+          className="p-2 rounded-md text-neutral-400 transition hover:text-cyan-300"
+          aria-label={expanded ? `Collapse ${label}` : `Expand ${label}`}
+        >
+          {expanded ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
+        </button>
+      </div>
 
       {expanded && <div className="ml-2 flex flex-col gap-1">{children}</div>}
     </div>
