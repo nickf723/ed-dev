@@ -11,6 +11,7 @@ type TopicCardProps = {
   desc: string;
   Icon?: React.ElementType;
   style?: React.CSSProperties;
+  className?: string;
 };
 
 //Topic Card Export
@@ -20,6 +21,7 @@ export default function TopicCard({
   desc,
   Icon,
   style,
+  className = ""
 }: TopicCardProps) {
   const cardRef = useRef<HTMLAnchorElement>(null);
   
@@ -68,7 +70,7 @@ export default function TopicCard({
     <Link
       ref={cardRef}
       href={href}
-      className="topic-card tilt group card-accent"
+      className="topic-card tilt group card-accent ${className}"
       style={cardStyles} >
       {/* Background Glow */}
       <div

@@ -85,7 +85,7 @@ export default function FormalSciencePage() {
             href={branch.href}
             title={branch.title}
             desc={branch.desc}
-            Icon={branch.Icon} // Using the Icon prop for the main topic card
+            Icon={branch.Icon}
           />
         ))}
       </section>

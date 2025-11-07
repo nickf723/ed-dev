@@ -9,18 +9,61 @@
     --text: #e5e7eb;
     --bg: #000;
     --sidebar-width: 21rem;
-    --topic-page-background: (
-    radial-gradient( circle at 0% 0%, #ff00008f, transparent 50%),
+  }
+
+  .theme-home {
+    background: 
+      radial-gradient( circle at 0% 0%, #ff00008f, transparent 50%),
       radial-gradient(circle at 45% 15%, #ff5e00ad, transparent 40%),
       radial-gradient(circle at 105% -20%, #fffb00b7, transparent 40%),
       radial-gradient(circle at 96% 89%, #00ff15ad, transparent 40%),
       radial-gradient(circle at 70% 70%, #00fff2a8, transparent 40%),
       radial-gradient(circle at 33% 60%, #0011ffb6, transparent 40%),
       radial-gradient(circle at 0% 88%, #a200ffaf, transparent 40%);
-    );
   }
 
-  /* Math Theme */
+  .card-theme-formal-science {
+    --card-gradient-start: #ff0000;
+    --card-gradient-end: #ff0037;
+    --card-icon-hover: #ff0000;
+    --card-underline: #ff0000af;
+  }
+  
+  .card-theme-natural-science {
+    --card-gradient-start: #00ff2aff;
+    --card-gradient-end: #02ddddff;
+    --card-icon-hover: #00ff5eff;
+    --card-underline: #00df52ff;
+  }
+  
+  .card-theme-social-science {
+    --card-gradient-start: #1519ffff;
+    --card-gradient-end: #5b04e7ff;
+    --card-icon-hover: #00c;
+    --card-underline: #2e0bf5c2;
+  }
+
+  .card-theme-applied-science {
+    --card-gradient-start: #ff8c00ff;
+    --card-gradient-end: #ff0055ff;
+    --card-icon-hover: #ff00aaff;
+    --card-underline: #ff0066c2;
+  }
+
+  .card-theme-humanities {
+    --card-gradient-start: #fffb00ff;
+    --card-gradient-end: #9eff02ff;
+    --card-icon-hover: #e7eb00ff;
+    --card-underline: #fcf700bb;
+  }
+
+  .card-theme-interdisciplines {
+    --card-gradient-start: #a0a0a0ff;
+    --card-gradient-end: #2c2c2cff;
+    --card-icon-hover: #bbbbbbff;
+    --card-underline: #202020ff;
+  }
+
   .theme-math {
     --color-text-title: #ff0000;
     --color-text-header: #ffd900;
@@ -42,7 +85,6 @@
   --topic-card-sheen: rgba(0, 170, 255, 0.22);
 }
 
-  /* Glossary Theme */
   .theme-glossary {
     --color-text-title: #e2e2e2;
     --color-text-header: #cecece;
