@@ -31,19 +31,13 @@
 
   /* Glossary Theme */
   .theme-glossary {
-    --color-text-title: #facc15;
-    --color-text-header: #fbbf24;
-    --topic-gradient-from: rgba(234, 179, 8, 0.72);
-    --topic-gradient-to: rgba(251, 191, 36, 0.7);
-    --topic-symbol-color: rgba(253, 224, 71, 0.22);
-    --topic-surface: rgba(49, 38, 11, 0.62);
-    --topic-surface-border: rgba(251, 191, 36, 0.32);
-    --topic-card-shadow: rgba(251, 191, 36, 0.23);
-    --topic-card-sheen: rgba(253, 224, 71, 0.2);
+    --color-text-title: #e2e2e2;
+    --color-text-header: #cecece;
+    --topic-symbol-color: rgba(255, 255, 255, 0.315);
+    --topic-surface-border: rgba(255, 255, 255, 0.534);
+    --topic-card-shadow: rgb(168, 168, 168);
+    --topic-card-sheen: rgb(7, 7, 7);
     --topic-badge-bg: rgba(234, 179, 8, 0.18);
-    --topic-badge-border: rgba(234, 179, 8, 0.36);
-    --topic-badge-text: #fde68a;
-    --topic-blob-1: rgba(253, 224, 71, 0.32);
-    --topic-blob-2: rgba(249, 115, 22, 0.28);
-  }
+    --topic-badge-border: rgba(150, 150, 150, 0.36);
+    --topic-badge-text: #ffffff;  }
 }
