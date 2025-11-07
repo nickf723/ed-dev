@@ -12,17 +12,11 @@
     transition: all 0.3s ease;
   }
 
-  .glass:hover {
-    box-shadow:
-      0 0 30px rgba(207, 207, 207, 0.1),
-      0 0 60px rgba(255, 0, 255, 0.05);
-  }
-
   .card-accent {
     background: radial-gradient(
       circle at 50% 50%,
       var(--topic-card-sheen),
-      transparent 70%
+      transparent 50%
     );
     transition: box-shadow 0.3s ease;
   }

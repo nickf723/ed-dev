@@ -82,7 +82,7 @@ export default function Home() {
         "--card-gradient-start": "#cc5200ff",
         "--card-gradient-end": "#fdad00ff",
         "--card-icon-hover": "#ff9f21ff",
-        "--card-underline": "#a3a3a3",
+        "--card-underline": "#ff8800ff",
       },
     },
     {

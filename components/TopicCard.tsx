@@ -100,7 +100,7 @@ export default function TopicCard({
       </h2>
 
       {/* Description */}
-      <p className="relative z-10 mt-1 text-neutral-400 sm:mt-3">{desc}</p>
+      <p className="relative z-10 mt-1 text-neutral-300 sm:mt-3">{desc}</p>
 
       {/* Underline accent */}
       <div
