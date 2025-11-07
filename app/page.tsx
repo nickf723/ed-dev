@@ -14,63 +14,63 @@ import TopicCard from "@/components/TopicCard";
 export default function Home() {
   const cards = [
     {
-      title: "Formal Science",
-      desc: "Logic, mathematics, and systems.",
+      title: "Formal Sciences",
+      desc: "Study of abstract systems and logic.",
       href: "/formal-science",
       Icon: Calculator,
       style: {
-        "--card-gradient-start": "#f87171",
-        "--card-gradient-end": "#fb923c",
-        "--card-icon-hover": "#fdba74",
-        "--card-underline": "#fb923c",
+        "--card-gradient-start": "#ff2020ff",
+        "--card-gradient-end": "#ff7b0fff",
+        "--card-icon-hover": "#ff1100ff",
+        "--card-underline": "#ff0000af",
       },
     },
     {
-      title: "Natural Science",
-      desc: "Physics, chemistry, and biology.",
+      title: "Natural Sciences",
+      desc: "Study of the physical world.",
       href: "/natural-science",
       Icon: FlaskConical,
       style: {
-        "--card-gradient-start": "#34d399",
-        "--card-gradient-end": "#22c55e",
-        "--card-icon-hover": "#86efac",
-        "--card-underline": "#22c55e",
+        "--card-gradient-start": "#00ff2aff",
+        "--card-gradient-end": "#02ddddff",
+        "--card-icon-hover": "#00ff5eff",
+        "--card-underline": "#00df52ff",
       },
     },
     {
-      title: "Social Science",
-      desc: "Societies, behavior, and culture.",
+      title: "Social Sciences",
+      desc: "Study of societies and relationships.",
       href: "/social-science",
       Icon: Users,
       style: {
-        "--card-gradient-start": "#fbbf24",
-        "--card-gradient-end": "#f59e0b",
-        "--card-icon-hover": "#fde68a",
-        "--card-underline": "#f59e0b",
+        "--card-gradient-start": "#1519ffff",
+        "--card-gradient-end": "#5b04e7ff",
+        "--card-icon-hover": "#00c4e6ff",
+        "--card-underline": "#2e0bf5c2",
       },
     },
     {
-      title: "Applied Science",
-      desc: "Engineering and technology.",
+      title: "Applied Sciences",
+      desc: "Study of practical applications.",
       href: "/applied-science",
       Icon: Building,
       style: {
-        "--card-gradient-start": "#a78bfa",
-        "--card-gradient-end": "#c084fc",
-        "--card-icon-hover": "#e9d5ff",
-        "--card-underline": "#c084fc",
+        "--card-gradient-start": "#ff0f93ff",
+        "--card-gradient-end": "#af4cffff",
+        "--card-icon-hover": "#ff77f8ff",
+        "--card-underline": "#ff00b3e3",
       },
     },
     {
       title: "Humanities",
-      desc: "Arts, history, and philosophy.",
+      desc: "Study of human culture and expression.",
       href: "/humanities",
       Icon: Palette,
       style: {
-        "--card-gradient-start": "#f472b6",
-        "--card-gradient-end": "#ec4899",
-        "--card-icon-hover": "#fbcfe8",
-        "--card-underline": "#ec4899",
+        "--card-gradient-start": "#fffb00ff",
+        "--card-gradient-end": "#9eff02ff",
+        "--card-icon-hover": "#e7eb00ff",
+        "--card-underline": "#fcf700bb",
       },
     },
     {
@@ -79,9 +79,9 @@ export default function Home() {
       href: "/interdisciplines",
       Icon: GitMerge,
       style: {
-        "--card-gradient-start": "#737373",
-        "--card-gradient-end": "#a3a3a3",
-        "--card-icon-hover": "#e5e5e5",
+        "--card-gradient-start": "#cc5200ff",
+        "--card-gradient-end": "#fdad00ff",
+        "--card-icon-hover": "#ff9f21ff",
         "--card-underline": "#a3a3a3",
       },
     },
@@ -91,10 +91,10 @@ export default function Home() {
       href: "/glossary",
       Icon: BookOpen,
       style: {
-        "--card-gradient-start": "#fcd34d",
-        "--card-gradient-end": "#fbbf24",
-        "--card-icon-hover": "#fde68a",
-        "--card-underline": "#fbbf24",
+        "--card-gradient-start": "#a0a0a0ff",
+        "--card-gradient-end": "#2c2c2cff",
+        "--card-icon-hover": "#bbbbbbff",
+        "--card-underline": "#202020ff",
       },
     },
   ];
@@ -102,16 +102,10 @@ export default function Home() {
   return (
     <main className="flex min-h-screen items-center justify-center px-6 py-12">
       <div className="glass w-full max-w-5xl border border-neutral-800/60 p-10 text-center shadow-2xl">
-        {/* ... (Tagline and H1) ... */}
         <div className="flex justify-center mb-4">
-          <span className="text-xs tracking-widest text-cyan-300 uppercase bg-neutral-800/50 px-3 py-1 rounded-full">
-            -- Welcome --
-          </span>
         </div>
-
         <h1 className="text-4xl font-bold text-cyan-400">Academia</h1>
         <p className="mt-2 text-neutral-300 italic">Knowledge Network 🚀</p>
-        {/* Card grid */}
         <div className="mt-10 grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-3">
           {cards.map((card) => (
             <TopicCard

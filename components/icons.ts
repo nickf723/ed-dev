@@ -1,7 +1,6 @@
 // components/icons.ts
 "use client";
 
-// Re-export all icons from a single file for easy management
 export {
   // Sidebar & Home
   Menu,
@@ -9,15 +8,19 @@ export {
   ChevronDown,
   ChevronRight,
   Home,
-  BookOpen, // Also used in Glossary
+  BookOpen,
   Calculator,
   Ruler,
   FunctionSquare,
-  FlaskConical, // 👈 ADDED (for Natural Science)
-  Users, // 👈 ADDED (for Social Science)
-  Building, // 👈 ADDED (for Applied Science)
-  Palette, // 👈 ADDED (for Humanities)
-  GitMerge, // 👈 ADDED (for Interdisciplines)
+  FlaskConical, 
+  Users, 
+  Building, 
+  Palette, 
+  GitMerge, 
+  Info,
+  BookCopy,
+  Target, 
+  ExternalLink,
 
   // Lesson Headers & Asides (Original)
   Box,
@@ -45,28 +48,19 @@ export {
   RefreshCcw,
 
   // --- Icons for new lesson plans ---
-
-  // 🌀 Variables ("Mystery")
   Search,
-  // Users, // Already added above
   CheckCircle,
   Beaker,
   HelpCircle,
   Binary,
   Shuffle,
-
-  // 🧩 Expressions ("Blueprint")
   Component,
-  Network, // Also used in Equations
+  Network,
   Package,
   PackagePlus,
   PencilRuler,
-
-  // ⚖️ Equations ("Justice")
   BookText,
   GanttChartSquare,
-
-  // ⚔️ Inequalities ("Duel")
   Swords,
   Zap,
   TrendingUp,
@@ -75,8 +69,6 @@ export {
   ChevronRightSquare,
   ChevronLeftSquare,
   EqualNot,
-
-  // 🔁 Functions ("Machine")
   ArrowRightLeft,
   Database,
   BrainCircuit,
@@ -84,8 +76,6 @@ export {
   ScanLine,
   Factory,
   Briefcase,
-
-  // 📈 Relations & Graphs
   LineChart,
   Map,
   Grid3X3,
@@ -99,7 +89,7 @@ export {
   TrendingDown,
   Dot,
 
-  // 🔗 Shared
+  // Misc
   Link,
   Check,
 } from "lucide-react";

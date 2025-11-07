@@ -14,7 +14,7 @@
 
   .glass:hover {
     box-shadow:
-      0 0 30px rgba(0, 255, 255, 0.1),
+      0 0 30px rgba(207, 207, 207, 0.1),
       0 0 60px rgba(255, 0, 255, 0.05);
   }
 
@@ -48,7 +48,7 @@
     isolation: isolate;
     background: radial-gradient(
       circle at 50% -20%,
-      rgba(255, 255, 255, 0.04),
+      rgba(197, 194, 194, 0.04),
       transparent 55%
     );
   }
