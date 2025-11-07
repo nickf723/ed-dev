@@ -118,13 +118,6 @@
     z-index: 1;
   }
 
-  .topic-card__eyebrow {
-    @apply inline-flex items-center gap-2 rounded-full border px-3 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.3em];
-    background: color-mix(in srgb, var(--topic-badge-bg) 70%, transparent);
-    border-color: var(--topic-badge-border);
-    color: var(--topic-badge-text);
-  }
-
   /* Lesson/app-specific helpers */
   .applet-card {
     @apply rounded-lg border border-neutral-800 bg-neutral-900/50 p-5 shadow-sm transition-colors;

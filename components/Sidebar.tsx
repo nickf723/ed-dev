@@ -19,7 +19,6 @@ export default function Sidebar() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
-  // State for the new nested structure
   const [expandFormalScience, setExpandFormalScience] = useState(
     pathname.startsWith("/formal-science"),
   );
@@ -42,8 +41,9 @@ export default function Sidebar() {
       "/formal-science/mathematics/algebra/elementary-algebra/foundations/num-ops",
     ),
   );
-
-  // 🔽 FIXED: Added unique state for each new section
+  const [expandLogic, setExpandLogic] = useState(
+    pathname.startsWith("/formal-science/logic"),
+  );
   const [expandNatural, setExpandNatural] = useState(
     pathname.startsWith("/natural-science"),
   );
@@ -65,7 +65,7 @@ export default function Sidebar() {
       {/* Mobile toggle */}
       <button
         onClick={() => setOpen(!open)}
-        className="fixed top-4 left-4 z-50 rounded-md border border-neutral-700 bg-neutral-900/80 p-2 text-neutral-300 transition hover:text-cyan-300 md:hidden"
+        className="fixed top-4 left-4 z-50 rounded-md border border-neutral-700 bg-neutral-900/80 p-2 text-neutral-300 transition hover:text-red-300 md:hidden"
       >
         {open ? <X size={20} /> : <Menu size={20} />}
       </button>
@@ -167,8 +167,27 @@ export default function Sidebar() {
                   </Dropdown>
                 </Dropdown>
               </Dropdown>
-            </Dropdown>
-          </Dropdown>
+            </Dropdown> { /* End Mathematics Dropdown */}
+
+            {/* Logic Dropdown */}
+            <Dropdown
+              label="Logic"
+              icon={<Calculator size={14} />}
+              expanded={expandLogic}
+              setExpanded={setExpandLogic}
+              href="/formal-science/logic"
+              active={pathname === "/formal-science/logic"}
+              nested
+            >
+              {/* Placeholder for future links */}
+              <span className="px-3 py-2 text-neutral-500 italic">
+                (Coming Soon)
+              </span>
+            </Dropdown> { /* End Logic Dropdown */}
+          </Dropdown> { /* End Formal Science Dropdown */}
+          
+
+
 
           {/* Natural Science */}
           <Dropdown

@@ -3,7 +3,7 @@ import PageHeader from "@/components/PageHeader";
 
 export default function PlaceholderPage() {
   return (
-    <main className="topic-page lg:px-16">
+    <main className="topic-page theme-logic lg:px-16">
       <PageHeader
         eyebrow="Content Coming Soon"
         title="Under Construction"

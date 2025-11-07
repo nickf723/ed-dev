@@ -8,11 +8,7 @@ export const metadata = {
   description: "A hub for learning anything, powered by interconnected concepts and clear explanations.",
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body className="flex">

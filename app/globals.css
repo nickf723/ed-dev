@@ -13,7 +13,7 @@
     content: "";
     position: fixed;
     inset: 0;
-    background: var(--global-background-glow);
+    background: var(--topic-page-background);
     z-index: -2;
   }
 }
