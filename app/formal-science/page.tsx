@@ -51,24 +51,28 @@ export default function FormalSciencePage() {
       desc: "The study of complex systems, their structure, and behavior.",
       href: "/formal-science/systems-science",
       Icon: Network,
+      className: "theme-systems-science"
     },
     {
       title: "Data Science",
       desc: "Extracting knowledge and insights from structured and unstructured data.",
       href: "/formal-science/data-science",
       Icon: ChartScatter,
+      className: "theme-data-science"
     },
     {
       title: "Information Science",
       desc: "The study of information processing, storage, and retrieval.",
       href: "/formal-science/information-science",
       Icon: BookText,
+      className: "theme-information-science"
     },
     {
       title: "Computer Science",
       desc: "The study of computation, automation, and information.",
       href: "/formal-science/computer-science",
       Icon: Binary,
+      className: "theme-computer-science"
     },
   ];
 

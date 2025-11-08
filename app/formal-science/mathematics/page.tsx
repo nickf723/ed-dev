@@ -16,32 +16,34 @@ export default function MathPage() {
     {
       title: "Algebra",
       desc: "The language of patterns and equations — where symbols reveal logic.",
-      href: "/formal-science/mathematics/algebra", // 👈 Updated link
+      href: "/formal-science/mathematics/algebra",
+      Icon: undefined,
+      className: "theme-algebra"
     },
     {
       title: "Geometry",
       desc: "Understanding shape, space, and proportion — mathematics made visual.",
-      href: "/formal-science/mathematics/geometry", // 👈 Updated link
+      href: "/formal-science/mathematics/geometry",
     },
     {
       title: "Calculus",
       desc: "Exploring motion and change — the mathematics of the universe’s flow.",
-      href: "/formal-science/mathematics/calculus", // 👈 Updated link
+      href: "/formal-science/mathematics/calculus",
     },
     {
       title: "Statistics",
       desc: "Finding truth in data — probability, inference, and real-world meaning.",
-      href: "/formal-science/mathematics/statistics", // 👈 Updated link
+      href: "/formal-science/mathematics/statistics",
     },
     {
       title: "Number Theory",
       desc: "Numbers and their hidden properties — the purest form of mathematical thought.",
-      href: "/formal-science/mathematics/number-theory", // 👈 Updated link
+      href: "/formal-science/mathematics/number-theory",
     },
     {
       title: "Discrete Mathematics",
       desc: "The study of countable structures — essential for computer science and combinatorics.",
-      href: "/formal-science/mathematics/discrete-mathematics", // 👈 Updated link
+      href: "/formal-science/mathematics/discrete-mathematics",
     },
   ];
 
@@ -60,6 +62,8 @@ export default function MathPage() {
             href={branch.href}
             title={branch.title}
             desc={branch.desc}
+            className={branch.className}
+            Icon={branch.Icon}
           />
         ))}
       </section>
