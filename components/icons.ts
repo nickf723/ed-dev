@@ -2,7 +2,6 @@
 "use client";
 
 export {
-  // Sidebar & Home
   Menu,
   X,
   ChevronDown,
@@ -21,8 +20,6 @@ export {
   BookCopy,
   Target, 
   ExternalLink,
-
-  // Lesson Headers & Asides (Original)
   Box,
   Variable,
   Puzzle,
@@ -37,8 +34,6 @@ export {
   PenSquare,
   Boxes,
   Replace,
-
-  // Lesson Blocks
   ChevronUp,
   Eye,
   EyeOff,
@@ -46,8 +41,6 @@ export {
   Plus,
   Minus,
   RefreshCcw,
-
-  // --- Icons for new lesson plans ---
   Search,
   CheckCircle,
   Beaker,
@@ -88,6 +81,9 @@ export {
   Move,
   TrendingDown,
   Dot,
+  Equal,
+  AreaChart,
+  BookMarked,
 
   // Misc
   Link,
