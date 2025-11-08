@@ -103,6 +103,13 @@
     --card-underline: #7700ffc2;
   }
 
+  .theme-elementary-algebra, .card-theme-elementary-algebra {
+    --card-gradient-start: #ff00d4;
+    --card-gradient-end: #cc0099;
+    --card-icon-hover: #ff00d4;
+    --card-underline: #ff00c2c2;
+  }
+
   .theme-logic, .card-theme-logic {
     --card-gradient-start: #00aaff;
     --card-gradient-end: #0077cc;
