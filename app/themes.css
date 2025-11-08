@@ -109,13 +109,6 @@
     --topic-blob-2: rgba(45, 0, 204, 0.2);
     --grid-color: rgba(132, 0, 255, 0.08);
   }
-  .theme-algebra.topic-page {
-    background-image:
-      linear-gradient(var(--grid-color) 1px, transparent 1px),
-      linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
-    background-size: 40px 40px;
-    background-position: -1px -1px;
-  }
 
   .theme-elementary-algebra, .card-theme-elementary-algebra {
     --card-gradient-start: #ff00d4;
@@ -130,19 +123,19 @@
     --topic-blob-2: rgb(204, 0, 153);
     --grid-color: rgba(255, 0, 212, 0.08);
   }
-  .theme-elementary-algebra.topic-page {
-    background-image:
-      linear-gradient(var(--grid-color) 1px, transparent 1px),
-      linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
-    background-size: 40px 40px;
-    background-position: -1px -1px;
-  }
 
   .theme-elementary-algebra-foundations, .card-theme-elementary-algebra-foundations {
-    --card-gradient-start: #ff0066;
-    --card-gradient-end: #cc0088;
-    --card-icon-hover: #ff0066;
-    --card-underline: #ff0077c2;
+    --card-gradient-start: #06b6d4; 
+    --card-gradient-end: #0891b2; 
+    --card-icon-hover: #22d3ee; 
+    --card-underline: #06b6d4c2;
+    --color-text-title: #22d3ee;
+    --color-text-header: #67e8f9;
+    --color-text-icon: #22d3ee;
+    --topic-symbol-color: rgba(34, 211, 238, 0.15);
+    --topic-blob-1: rgba(34, 211, 238, 0.2);
+    --topic-blob-2: rgba(103, 232, 249, 0.15);
+    --grid-dot-color: rgba(34, 211, 238, 0.08);
   }
 
   .theme-logic, .card-theme-logic {
