@@ -154,15 +154,14 @@ export default function Sidebar() {
                       }
                       nested
                     >
-                      {/* Final Link */}
-                      <SidebarLink
-                        href="/formal-science/mathematics/algebra/elementary-algebra/foundations/num-ops/number-systems"
-                        label="Number Systems"
-                        active={pathname.startsWith(
-                          "/formal-science/mathematics/algebra/elementary-algebra/foundations/num-ops/number-systems",
-                        )}
-                        nested
-                      />
+                      <span className="px-3 py-2 text-neutral-500 italic">
+                        Number Systems
+                        Algebraic Properties
+                        Order of Operations
+                        Absolute Value
+                        Factors & Multiples
+                        Integers and Rationals
+                      </span>
                     </Dropdown>
                   </Dropdown>
                 </Dropdown>
