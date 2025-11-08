@@ -33,7 +33,7 @@ const foundationsTopics = [
     href: "/formal-science/mathematics/algebra/elementary-algebra/foundations/num-ops",
     Icon: Calculator,
     description: "Explore number systems, properties, and the order of operations.",
-    className: "card-theme-elementary-algebra-foundations",
+    className: "card-theme-elementary-algebra-foundations", // <-- FIXED
     status: "In Progress",
   },
   {
@@ -41,7 +41,7 @@ const foundationsTopics = [
     href: "#",
     Icon: FunctionSquare,
     description: "Learn how symbols (variables) are used to represent unknown values.",
-    className: "theme-foundations",
+    className: "card-theme-elementary-algebra-foundations",
     status: "Planned",
   },
   {
@@ -49,7 +49,7 @@ const foundationsTopics = [
     href: "#",
     Icon: Shuffle,
     description: "The core rules (commutative, associative, distributive) that govern algebra.",
-    className: "theme-foundations",
+    className: "card-theme-elementary-algebra-foundations",
     status: "Planned",
   },
 ];
@@ -57,14 +57,14 @@ const foundationsTopics = [
 // Main Page Component
 export default function FoundationsPage() {
   return (
-    <main className="topic-page theme-foundations lg:px-16">
+    <main className="topic-page theme-elementary-algebra-foundations lg:px-16">
       <FloatingSymbols symbols={foundationsSymbols} />
       <PageHeader
         eyebrow="Elementary Algebra"
         title="Foundations"
         subtitle="The essential building blocks of algebra. Master these concepts, and all of high-level mathematics will become more intuitive."
       />
-
+      {/* Grid for Units */}
       <section className="topic-grid">
         {foundationsTopics.map((topic) => (
           <TopicCard

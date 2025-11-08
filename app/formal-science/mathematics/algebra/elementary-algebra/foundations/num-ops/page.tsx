@@ -153,6 +153,15 @@ export default function NumbersAndOperationsPage() {
             subtitle="Connecting fractions to real-world comparisons."
           />
         </CollapsibleTopic>
+
+        {/* --- 8. FRACTIONS AND DECIMALS --- */}
+        <CollapsibleTopic title="Fractions and Decimals" icon={MinusIcon}>
+          <PageHeader
+            eyebrow="Content Coming Soon"
+            title="Under Construction"
+            subtitle="Conversions and operations."
+          />
+        </CollapsibleTopic>
       </div>
     </main>
   );

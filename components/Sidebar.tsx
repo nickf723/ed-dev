@@ -155,12 +155,14 @@ export default function Sidebar() {
                       nested
                     >
                       <span className="px-3 py-2 text-neutral-500 italic">
-                        Number Systems
-                        Algebraic Properties
-                        Order of Operations
-                        Absolute Value
-                        Factors & Multiples
-                        Integers and Rationals
+                        <li>Number Systems</li>
+                        <li>Algebraic Properties</li>
+                        <li>Order of Operations</li>
+                        <li>Absolute Value</li>
+                        <li>Factors and Multiples</li>
+                        <li>Integers and Rationals</li>
+                        <li>Percentages / Ratios / Rates</li>
+                        <li>Fractions and Decimals</li>
                       </span>
                     </Dropdown>
                   </Dropdown>
