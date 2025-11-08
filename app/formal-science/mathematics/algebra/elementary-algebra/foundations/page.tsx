@@ -33,7 +33,7 @@ const foundationsTopics = [
     href: "/formal-science/mathematics/algebra/elementary-algebra/foundations/num-ops",
     Icon: Calculator,
     description: "Explore number systems, properties, and the order of operations.",
-    className: "theme-elementary-algebra-foundations",
+    className: "card-theme-elementary-algebra-foundations",
     status: "In Progress",
   },
   {
@@ -68,7 +68,7 @@ export default function FoundationsPage() {
       <section className="topic-grid">
         {foundationsTopics.map((topic) => (
           <TopicCard
-            key={topic.href}
+            key={topic.title}
             href={topic.href}
             title={topic.title}
             Icon={topic.Icon}

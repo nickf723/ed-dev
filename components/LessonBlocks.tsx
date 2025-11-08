@@ -26,6 +26,14 @@ type LessonHeaderProps = {
   title: string;
 };
 
+//Collapsible Topic Component
+type CollapsibleTopicProps = {
+  title: string;
+  icon: LucideIcon;
+  children: React.ReactNode;
+  startOpen?: boolean;
+};
+
 export default function LessonHeader({
   icon: Icon,
   title,
@@ -298,5 +306,45 @@ export function StepByStepSolution({
         </div>
       )}
     </div>
+  );
+}
+
+//Collapsible Topic Component
+export function CollapsibleTopic({
+  title,
+  icon: Icon,
+  children,
+  startOpen = false,
+}: CollapsibleTopicProps) {
+  const [isExpanded, setIsExpanded] = useState(startOpen);
+
+  return (
+    <section className="my-8 rounded-2xl border border-neutral-800 bg-neutral-900/30">
+      <button
+        onClick={() => setIsExpanded(!isExpanded)}
+        className="flex w-full items-center justify-between p-4 text-left transition-colors duration-200 hover:bg-neutral-800/50"
+        aria-expanded={isExpanded}
+      >
+        <div className="flex items-center gap-3">
+          <Icon
+            className="h-6 w-6 flex-shrink-0"
+            style={{ color: "var(--color-text-icon)" }}
+          />
+          <h2 className="!m-0 text-2xl font-bold text-neutral-100">
+            {title}
+          </h2>
+        </div>
+        {isExpanded ? (
+          <ChevronUp size={20} className="text-neutral-500" />
+        ) : (
+          <ChevronDown size={20} className="text-neutral-500" />
+        )}
+      </button>
+      {isExpanded && (
+        <div className="border-t border-neutral-800 p-6 pt-6">
+          {children}
+        </div>
+      )}
+    </section>
   );
 }

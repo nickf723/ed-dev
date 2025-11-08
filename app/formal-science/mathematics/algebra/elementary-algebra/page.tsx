@@ -68,7 +68,7 @@ export default function ElementaryAlgebraPage() {
       <section className="grid w-full max-w-6xl grid-cols-1 gap-8 md:grid-cols-1 lg:grid-cols-3">
         {elementaryAlgebraUnits.map((unit) => (
           <TopicCard
-            key={unit.href}
+            key={unit.title}
             href={unit.href}
             title={unit.title}
             Icon={unit.Icon}

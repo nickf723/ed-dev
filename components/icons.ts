@@ -84,7 +84,9 @@ export {
   Equal,
   AreaChart,
   BookMarked,
-
+  PlusIcon,
+  MinusIcon,
+  Percent,
   // Misc
   Link,
   Check,
