@@ -8,7 +8,7 @@ import {
   BrainCircuit,
 } from "@/components/icons";
 import React from "react";
-import TopicCard from "@/components/TopicCard"; // Import the updated TopicCard
+import TopicCard from "@/components/TopicCard";
 
 // Symbols for the background
 const algebraSymbols = [
@@ -64,7 +64,7 @@ const algebraBranches = [
       { name: "Matrices & Transformations", href: "#", status: "Planned" },
       { name: "Eigenvalues & Eigenvectors", href: "#", status: "Planned" },
     ],
-    className: "", // No specific theme override
+    className: "",
   },
   {
     title: "Abstract Algebra",
@@ -78,7 +78,7 @@ const algebraBranches = [
       { name: "Rings & Fields", href: "#", status: "Planned" },
       { name: "Galois Theory", href: "#", status: "Planned" },
     ],
-    className: "", // No specific theme override
+    className: "",
   },
 ];
 

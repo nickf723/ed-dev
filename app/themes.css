@@ -98,9 +98,23 @@
   
   .theme-algebra, .card-theme-algebra {
     --card-gradient-start: #8400ff;
-    --card-gradient-end: #0025cc;
+    --card-gradient-end: #2d00cc;   
     --card-icon-hover: #8400ff;
     --card-underline: #7700ffc2;
+    --color-text-title: #a78bfa;
+    --color-text-header: #818cf8;
+    --color-text-icon: #a78bfa;
+    --topic-symbol-color: rgba(132, 0, 255, 0.15);
+    --topic-blob-1: rgba(132, 0, 255, 0.25);
+    --topic-blob-2: rgba(45, 0, 204, 0.2);
+    --grid-color: rgba(132, 0, 255, 0.08);
+  }
+  .theme-algebra.topic-page {
+    background-image:
+      linear-gradient(var(--grid-color) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+    background-size: 40px 40px;
+    background-position: -1px -1px;
   }
 
   .theme-elementary-algebra, .card-theme-elementary-algebra {
@@ -108,6 +122,19 @@
     --card-gradient-end: #cc0099;
     --card-icon-hover: #ff00d4;
     --card-underline: #ff00c2c2;
+    --color-text-title: #ff00d4;
+    --color-text-header: #ff40e0;
+    --color-text-icon: #ff00d4;
+    --topic-symbol-color: rgba(255, 0, 212, 0.15);
+    --topic-blob-1: rgba(255, 0, 212, 0.25);
+    --topic-blob-2: rgba(204, 0, 153, 0.2);
+    --grid-color: rgba(255, 0, 212, 0.08);
+  }
+  .theme-elementary-algebra.topic-page {
+    background-image:
+      radial-gradient(circle at 10% 20%, var(--topic-blob-1), transparent 40%),
+      radial-gradient(circle at 80% 70%, var(--topic-blob-2), transparent 40%);
+    animation: pulseFade 15s ease-in-out infinite;
   }
 
   .theme-logic, .card-theme-logic {
