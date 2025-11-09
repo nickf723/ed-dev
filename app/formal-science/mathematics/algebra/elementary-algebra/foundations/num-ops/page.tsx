@@ -33,31 +33,41 @@ import {
   Spline,
 } from "@/components/icons";
 import React, { useState, useEffect } from "react";
-
+import { MBlock, M } from "@/components/Math";
+  
 // Symbols for the background
 const numOpsSymbols = [
   "1", "2", "3", "π", "√2", "-5", "0.5", "1/3", "i", "+", "-", "×", "÷", "=", "%", "±",
 ];
 
+// Tabs content for Algebraic Properties
 const propertyTabs: TabItem[] = [
   {
     title: "Commutative",
     icon: ArrowRightLeft,
     content: (
       <>
-      <ContentP>
+        <ContentP>
           The <strong>Commutative Property</strong> states that the order of
           numbers does not matter for addition and multiplication. Think
           "commute," as in the numbers can move or swap places.
         </ContentP>
         <ExampleBlock>
-          <p><strong>Addition:</strong> $a + b = b + a$</p>
-          <p>$5 + 2 = 2 + 5$  (both equal 7)</p>
-          <p className="mt-2"><strong>Multiplication:</strong> $a \times b = b \times a$</p>
-          <p>$3 \times 4 = 4 \times 3$  (both equal 12)</p>
+          <p>
+            <strong>Addition:</strong> <M>a + b = b + a</M>
+          </p>
+          <p>
+            <M>5 + 2 = 2 + 5</M> (both equal 7)
+          </p>
+          <p className="mt-2">
+            <strong>Multiplication:</strong> <M>a \times b = b \times a</M>
+          </p>
+          <p>
+            <M>3 \times 4 = 4 \times 3</M> (both equal 12)
+          </p>
         </ExampleBlock>
         <SideNote>
-          <strong>Note:</strong> This property does NOT apply to subtraction or division. $5 - 2 \neq 2 - 5$.
+          This property does NOT apply to subtraction or division. <M>5 - 2 \neq 2 - 5</M>.
         </SideNote>
       </>
     ),
@@ -74,10 +84,18 @@ const propertyTabs: TabItem[] = [
           together first.
         </ContentP>
         <ExampleBlock>
-          <p><strong>Addition:</strong> $(a + b) + c = a + (b + c)$</p>
-          <p>$(2 + 3) + 4 = 2 + (3 + 4)$  (both equal 9)</p>
-          <p className="mt-2"><strong>Multiplication:</strong> $(a \times b) \times c = a \times (b \times c)$</p>
-          <p>$(4 \times 2) \times 5 = 4 \times (2 \times 5)$  (both equal 40)</p>
+          <p>
+            <strong>Addition:</strong> <M>(a + b) + c = a + (b + c)</M>
+          </p>
+          <p>
+            <M>(2 + 3) + 4 = 2 + (3 + 4)</M> (both equal 9)
+          </p>
+          <p className="mt-2">
+            <strong>Multiplication:</strong> <M>(a \times b) \times c = a \times (b \times c)</M>
+          </p>
+          <p>
+            <M>(4 \times 2) \times 5 = 4 \times (2 \times 5)</M> (both equal 40)
+          </p>
         </ExampleBlock>
       </>
     ),
@@ -93,29 +111,45 @@ const propertyTabs: TabItem[] = [
           identity).
         </ContentP>
         <ExampleBlock>
-          <p><strong>Additive Identity:</strong> The identity is <strong>0</strong>.</p>
-          <p>$a + 0 = a$  (e.g., $9 + 0 = 9$)</p>
-          <p className="mt-2"><strong>Multiplicative Identity:</strong> The identity is <strong>1</strong>.</p>
-          <p>$a \times 1 = a$  (e.g., $-6 \times 1 = -6$)</p>
+          <p>
+            <strong>Additive Identity:</strong> The identity is <strong>0</strong>.
+          </p>
+          <p>
+            <M>a + 0 = a</M> (e.g., <M>9 + 0 = 9</M>)
+          </p>
+          <p className="mt-2">
+            <strong>Multiplicative Identity:</strong> The identity is <strong>1</strong>.
+          </p>
+          <p>
+            <M>a \times 1 = a</M> (e.g., <M>-6 \times 1 = -6</M>)
+          </p>
         </ExampleBlock>
       </>
     ),
   },
   {
     title: "Inverse",
-    icon: PlusIcon,
+    icon: PlusIcon, // Re-using PlusIcon, can be changed
     content: (
       <>
         <ContentP>
           The <strong>Inverse Property</strong> involves finding a number that
-          "cancels out" another number, returning you to the identity (0 for
-          addition, 1 for multiplication).
+          "cancels out" another number, returning you to the identity (<M>0</M> for
+          addition, <M>1</M> for multiplication).
         </ContentP>
         <ExampleBlock>
-          <p><strong>Additive Inverse (Opposite):</strong></p>
-          <p>$a + (-a) = 0$  (e.g., $5 + (-5) = 0$)</p>
-          <p className="mt-2"><strong>Multiplicative Inverse (Reciprocal):</strong></p>
-          <p>$a \times (1/a) = 1$  (e.g., $7 \times (1/7) = 1$)</p>
+          <p>
+            <strong>Additive Inverse (Opposite):</strong>
+          </p>
+          <p>
+            <M>a + (-a) = 0</M> (e.g., <M>5 + (-5) = 0</M>)
+          </p>
+          <p className="mt-2">
+            <strong>Multiplicative Inverse (Reciprocal):</strong>
+          </p>
+          <p>
+            <M>{"a \\times \\frac{1}{a} = 1"}</M> (e.g., <M>{"7 \\times \\frac{1}{7} = 1"}</M>)
+          </p>
         </ExampleBlock>
       </>
     ),
@@ -130,18 +164,19 @@ const propertyTabs: TabItem[] = [
           links addition and multiplication. It describes how to
           "distribute" a factor to each term inside parentheses.
         </ContentP>
+        <MBlock>a \times (b + c) = (a \times b) + (a \times c)</MBlock>
         <ExampleBlock>
-          <p><strong>Property:</strong> $a \times (b + c) = (a \times b) + (a \times c)$</p>
-          <p>$5 \times (2 + 3) = (5 \times 2) + (5 \times 3)$</p>
-          <p>$5 \times (5) = 10 + 15$</p>
-          <p>$25 = 25$</p>
+          <M>5 \times (2 + 3) = (5 \times 2) + (5 \times 3)</M>
+          <br />
+          <M>5 \times (5) = 10 + 15</M>
+          <br />
+          <M>25 = 25</M>
         </ExampleBlock>
         <SideNote>
-          This is the key to expanding expressions like $3(x + 4) = 3x + 12$.
+          This is the key to expanding expressions like <M>3(x + 4) = 3x + 12</M>.
         </SideNote>
       </>
-    ),
-  },
+    ),},
 ];
 
 export default function NumbersAndOperationsPage() {
@@ -158,7 +193,7 @@ export default function NumbersAndOperationsPage() {
       <div className="w-full max-w-6xl text-left">
         {/* --- 1. NUMBER SYSTEMS --- */}
         <CollapsibleTopic
-          title="Number Systems"
+          title="1. Number Systems"
           icon={Binary}
           startOpen={true}>
           <ContentP>
@@ -168,114 +203,208 @@ export default function NumbersAndOperationsPage() {
             system you're working in is crucial because it defines the "rules"
             and tells you what kind of answers are possible.
           </ContentP>
-
-          {/* Diagram */}
-          <LessonImage
-            src="/image_7dc108.jpg"
-            caption="The hierarchy of real numbers, showing how Natural numbers are a subset of Whole numbers, which are in Integers, then Rationals, all within the Real number system."/>
+              <div className="my-6 rounded-lg border border-neutral-700 bg-neutral-900 p-4 text-center">
+                <span className="text-sm italic text-neutral-400">
+                  [Image: Hierarchy of Number Systems]
+                </span>
+                <p className="mt-2 text-neutral-200">
+                  <M>{"\\mathbb{N} \\subset \\mathbb{W} \\subset \\mathbb{Z} \\subset \\mathbb{Q} \\subset \\mathbb{R}"}</M>
+                </p>
+              </div>
           <ContentSubhead title="The Hierarchy of Real Numbers" />
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-+            <TermDefinition term="Natural Numbers (ℕ)">
-+              The "counting numbers." <strong>Examples:</strong> 1, 2, 3...
-+            </TermDefinition>
-+            <TermDefinition term="Whole Numbers (𝕎)">
-+              Natural numbers plus **zero**. <strong>Examples:</strong> 0, 1, 2, 3...
-+            </TermDefinition>
-+            <TermDefinition term="Integers (ℤ)">
-+              Whole numbers and their **negative opposites**.{" "}
-+              <strong>Examples:</strong> 
-+              ...-2, -1, 0, 1, 2...
-+            </TermDefinition>
-+            <TermDefinition term="Rational Numbers (ℚ)">
-+              Any number that can be a **fraction** (ratio). Includes terminating
-+              and repeating decimals. <strong>Examples:</strong> 1/2, -3/4, 7, 0.5
-+            </TermDefinition>
-+            <TermDefinition term="Irrational Numbers (𝕀)">
-+              Numbers that **cannot** be a simple fraction. Their decimals are
-+              non-terminating and non-repeating. <strong>Examples:</strong> π, √2
-+            </TermDefinition>
-+            <TermDefinition term="Real Numbers (ℝ)">
-+              All rational and irrational numbers. Every point on the number
-+              line.
-+            </TermDefinition>
-+         </div>
+                      <TermDefinition term="Natural Numbers (ℕ)">
+          +              The "counting numbers." <strong>Examples:</strong> <M>1, 2, 3...</M>
+                      </TermDefinition>
+                      <TermDefinition term="Whole Numbers (𝕎)">
+                        Natural numbers plus **zero**. <strong>Examples:</strong>{" "}
+                        <M>0, 1, 2, 3...</M>
+                      </TermDefinition>
+                      <TermDefinition term="Integers (ℤ)">
+                        Whole numbers and their **negative opposites**.{" "}
+                        <strong>Examples:</strong>
+                        <M>...-2, -1, 0, 1, 2...</M>
+                      </TermDefinition>
+                      <TermDefinition term="Rational Numbers (ℚ)">
+                        Any number that can be a **fraction** (ratio). Includes terminating
+                        and repeating decimals. <strong>Examples:</strong>{" "}
+                        <M>{"1/2, -3/4, 7, 0.5, 0.\\overline{3}"}</M>
+                      </TermDefinition>
+                      <TermDefinition term="Irrational Numbers (𝕀)">
+                        Numbers that **cannot** be a simple fraction. Their decimals are
+                        non-terminating and non-repeating. <strong>Examples:</strong>{" "}
+                        <M>{"\\pi, \\sqrt{2}, e"}</M>
+                      </TermDefinition>
+                      <TermDefinition term="Real Numbers (ℝ)">
+                        All rational and irrational numbers. Every point on the number
+                        line.
+                      </TermDefinition>
+                    </div>
           <ContentSubhead title="Interactive Classifier" />
           <NumberClassifierApplet />
           <SideNote>
             <strong>Why does this matter?</strong> When solving an equation, the
             instructions might say "find the *integer* solution." This tells
-            you that if your answer is 1.5, it's not a valid solution for that
+            you that if your answer is <M>1.5</M>, it's not a valid solution for that
             problem.
           </SideNote>
         </CollapsibleTopic>
-
         {/* --- 2. ALGEBRAIC PROPERTIES --- */}
-        <CollapsibleTopic title="Algebraic Properties" icon={Shuffle}>
+       <CollapsibleTopic title="2. Algebraic Properties" icon={Shuffle}>
           <ContentP>
-            Algebraic properties are the fundamental rules or laws that govern
-            how we manipulate numbers and variables in algebra. They are the
-            "rules of the road" that ensure our calculations are consistent and
-            correct. Understanding these properties allows us to simplify complex
-            expressions and solve equations with confidence.
+            Algebraic properties are the fundamental rules that govern how we
+            manipulate numbers and variables. They are the "rules of the road"
+            that ensure our calculations are consistent and correct.
           </ContentP>
-          <LessonImage src="/image_7e442d.jpg" caption="A visual summary of the core algebraic properties: Commutative, Associative, Identity, Inverse, and Distributive."/>
-          <ContentSubhead title="The Core Properties" />
+
           <ContentTabs items={propertyTabs} />
         </CollapsibleTopic>
-
         {/* --- 3. ORDER OF OPERATIONS --- */}
-        <CollapsibleTopic title="Order of Operations" icon={Calculator}>
-          <PageHeader
-            eyebrow="Content Coming Soon"
-            title="Under Construction"
-            subtitle="PEMDAS/BODMAS and why it matters."
-          />
+        <CollapsibleTopic title="3. Order of Operations" icon={Calculator}>
+          <ContentP>
+            The <strong>Order of Operations</strong> is a rule that tells us
+            the sequence in which to perform operations in a mathematical
+            expression. We often use the acronym <strong>PEMDAS</strong> (or
+            BODMAS) to remember it.
+          </ContentP>
+          <div className="my-6 rounded-lg border border-neutral-700 bg-neutral-900 p-6">
+            <ol className="list-decimal space-y-2 pl-6 text-lg font-semibold text-neutral-100">
+              <li>
+                <strong>P</strong>arentheses (or any grouping symbols like{" "}
+                <M>{"[], \\{\\}"}</M>)
+              </li>
+              <li>
+                <strong>E</strong>xponents (and roots)
+              </li>
+              <li>
+                <strong>M</strong>ultiplication and <strong>D</strong>ivision
+                (from left to right)
+              </li>
+              <li>
+                <strong>A</strong>ddition and <strong>S</strong>ubtraction (from
+                left to right)
+              </li>
+            </ol>
+          </div>
+          <ExampleBlock>
+            Solve: <M>10 + (3 - 1)^2 \times 5</M>
+            <br />
+            1. <strong>P</strong>arentheses: <M>3 - 1 = 2</M>
+            <br />
+            Expression becomes: <M>10 + 2^2 \times 5</M>
+            <br />
+            2. <strong>E</strong>xponents: <M>2^2 = 4</M>
+            <br />
+            Expression becomes: <M>10 + 4 \times 5</M>
+            <br />
+            3. <strong>M</strong>ultiplication: <M>4 \times 5 = 20</M>
+            <br />
+            Expression becomes: <M>10 + 20</M>
+            <br />
+            4. <strong>A</strong>ddition: <M>10 + 20 = 30</M>
+            <br />
+            Final Answer: <strong>30</strong>
+          </ExampleBlock>
         </CollapsibleTopic>
-
         {/* --- 4. ABSOLUTE VALUE --- */}
-        <CollapsibleTopic title="Absolute Value" icon={Scale}>
-          <PageHeader
-            eyebrow="Content Coming Soon"
-            title="Under Construction"
-            subtitle="Understanding distance from zero."
-          />
+        <CollapsibleTopic title="4. Absolute Value" icon={Scale}>
+          <ContentP>
+            The <strong>Absolute Value</strong> of a number is its distance
+            from zero on the number line. Distance is always positive, so the
+            absolute value is always positive (or zero). We use two vertical
+            bars <M>| |</M> to denote it.
+          </ContentP>
+          <ExampleBlock>
+            <p><M>|5| = 5</M> (5 is 5 units away from 0)</p>
+            <p><M>|-5| = 5</M> (-5 is also 5 units away from 0)</p>
+            <p><M>|0| = 0</M></p>
+          </ExampleBlock>
         </CollapsibleTopic>
-
         {/* --- 5. FACTORS AND MULTIPLES --- */}
-        <CollapsibleTopic title="Factors and Multiples" icon={Component}>
-          <PageHeader
-            eyebrow="Content Coming Soon"
-            title="Under Construction"
-            subtitle="Prime factorization, GCF, and LCM."
-          />
+        <CollapsibleTopic title="5. Factors and Multiples" icon={Component}>
+          <ContentP>
+            These concepts are key to understanding fractions, division, and
+            prime numbers.
+          </ContentP>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <TermDefinition term="Factor">
+              Numbers that are multiplied together to get a product.{" "}
+              <strong>Example:</strong> The factors of 12 are 1, 2, 3, 4, 6,
+              and 12.
+            </TermDefinition>
+            <TermDefinition term="Multiple">
+              The result of multiplying a number by an integer.{" "}
+              <strong>Example:</strong> Multiples of 3 are 3, 6, 9, 12...
+            </TermDefinition>
+            <TermDefinition term="Greatest Common Factor (GCF)">
+              The largest factor that two or more numbers share.{" "}
+              <strong>Example:</strong> The GCF of 12 and 18 is 6.
+            </TermDefinition>
+            <TermDefinition term="Least Common Multiple (LCM)">
+              The smallest multiple that two or more numbers share.{" "}
+              <strong>Example:</strong> The LCM of 4 and 6 is 12.
+            </TermDefinition>
+          </div>
         </CollapsibleTopic>
-
         {/* --- 6. INTEGERS AND RATIONALS --- */}
-        <CollapsibleTopic title="Integers and Rationals" icon={PlusIcon}>
-          <PageHeader
-            eyebrow="Content Coming Soon"
-            title="Under Construction"
-            subtitle="Operations with positive/negative numbers, fractions, and decimals."
-          />
+        <CollapsibleTopic title="6. Integers and Rationals" icon={PlusIcon}>
+          <ContentP>
+            This topic covers the rules for performing operations
+            (add, subtract, multiply, divide) with negative numbers and
+            fractions.
+          </ContentP>
+          <ContentSubhead title="Operations with Integers (Negatives)" />
+          <ExampleBlock>
+            <p><strong>Adding:</strong> <M>5 + (-2) = 5 - 2 = 3</M></p>
+            <p><strong>Subtracting:</strong> <M>5 - (-2) = 5 + 2 = 7</M></p>
+            <p><strong>Multiplying:</strong> <M>(-5) \times 2 = -10</M></p>
+            <p><strong>Multiplying Negatives:</strong> <M>(-5) \times (-2) = 10</M></p>
+            <p><strong>Dividing:</strong> <M>(-10) \div 2 = -5</M></p>
+          </ExampleBlock>
+          <ContentSubhead title="Operations with Rationals (Fractions)" />
+          <ExampleBlock>
+            <p><strong>Adding (Common Denominator):</strong> <M>{"\\frac{1}{4} + \\frac{2}{4} = \\frac{3}{4}"}</M></p>
+            <p><strong>Adding (Different Denominators):</strong> <M>{"\\frac{1}{2} + \\frac{1}{3} = \\frac{3}{6} + \\frac{2}{6} = \\frac{5}{6}"}</M></p>
+            <p><strong>Multiplying:</strong> <M>{"\\frac{1}{2} \\times \\frac{3}{4} = \\frac{1 \times 3}{2 \times 4} = \\frac{3}{8}"}</M></p>
+            <p><strong>Dividing (Keep, Change, Flip):</strong> <M>{"\\frac{1}{2} \div \\frac{3}{4} = \\frac{1}{2} \times \\frac{4}{3} = \\frac{4}{6} = \\frac{2}{3}"}</M></p>
+          </ExampleBlock>
         </CollapsibleTopic>
 
         {/* --- 7. PERCENTAGES, RATIOS, & RATES --- */}
-        <CollapsibleTopic title="Percentages, Ratios, & Rates" icon={Percent}>
-          <PageHeader
-            eyebrow="Content Coming Soon"
-            title="Under Construction"
-            subtitle="Connecting fractions to real-world comparisons."
-          />
-        </CollapsibleTopic>
+        <CollapsibleTopic title="7. Percentages, Ratios, & Rates" icon={Percent}>
+          <ContentP>
+            These are all ways of comparing numbers.
+          </ContentP>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <TermDefinition term="Ratio">
+              A comparison of two quantities. <strong>Example:</strong> The
+              ratio of 3 apples to 4 oranges is <M>3:4</M> or <M>{"\\frac{3}{4}"}</M>.
+            </TermDefinition>
+            <TermDefinition term="Rate">
+              A ratio that compares two quantities with different units.
+              <strong>Example:</strong> 60 miles per 2 hours = 30 mph.
+            </TermDefinition>
+            <TermDefinition term="Percentage">
+              A ratio where the second number is always 100. "Per cent" means
+              "per hundred." <strong>Example:</strong> <M>{"75\\% = \\frac{75}{100} = 0.75"}</M>
+            </TermDefinition>
+          </div>
+         </CollapsibleTopic>
 
         {/* --- 8. FRACTIONS AND DECIMALS --- */}
-        <CollapsibleTopic title="Fractions and Decimals" icon={MinusIcon}>
-          <PageHeader
-            eyebrow="Content Coming Soon"
-            title="Under Construction"
-            subtitle="Conversions and operations."
-          />
-        </CollapsibleTopic>
+        <CollapsibleTopic title="8. Fractions and Decimals" icon={MinusIcon}>
+          <ContentP>
+            Fractions and decimals are two different ways to represent the same
+            rational numbers (parts of a whole).
+          </ContentP>
+          <ExampleBlock>
+            <p><strong>Fraction to Decimal:</strong> Divide the numerator by the denominator.</p>
+            <p><M>{"\\frac{3}{4} = 3 \div 4 = 0.75"}</M></p>
+            <p className="mt-2"><strong>Decimal to Fraction:</strong> Use the place value as the denominator.</p>
+            <p><M>{"0.75 = \\frac{75}{100} = \\frac{3}{4}"}</M> (after simplifying)</p>
+            <p><M>{"0.5 = \\frac{5}{10} = \\frac{1}{2}"}</M></p>
+          </ExampleBlock>
+         </CollapsibleTopic>
       </div>
     </main>
   );

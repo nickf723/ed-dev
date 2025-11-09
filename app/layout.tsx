@@ -2,6 +2,7 @@ import "./globals.css";
 import "./themes.css"
 import "./components.css"
 import Sidebar from "@/components/Sidebar";
+import "katex/dist/katex.min.css";
 
 export const metadata = {
   title: "Knowledge Netowrk",

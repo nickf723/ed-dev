@@ -18,6 +18,7 @@ import {
   ArrowRightLeft,
   Parentheses,
   Sigma,
+  Spline,
   Link as LinkIcon,
   ExternalLink as ExternalLinkIcon
 } from "./icons";
@@ -68,27 +69,20 @@ export function ContentSubhead({ title }: { title: string }) {
 
 //Text Paragraph Component
 export function ContentP({ children }: { children: React.ReactNode }) {
-  // We use `prose-p:` to reset any weird margins from the parent prose class
   return (
     <p className="prose-p:!my-0 text-neutral-300 leading-relaxed">{children}</p>
   );
 }
 
 //Term Definition Component
-export function TermDefinition({
-  term,
-  children,
-}: {
-  term: string;
-  children: React.ReactNode;
-}) {
+export function TermDefinition({ term, children }: { term: string; children: React.ReactNode }) {
   return (
-    <div className="my-5 rounded-lg border border-[var(--color-text-icon)]/30 bg-[var(--color-text-icon)]/10 p-4">
+      <div className="my-5 rounded-lg border border-indigo-800/40 bg-indigo-900/20 p-4">      
       <h4 className="!mt-0 !mb-2 flex items-center gap-2">
-        <BookCopy size={16} style={{ color: "var(--color-text-icon)" }} />
-         <span className="font-semibold" style={{ color: "var(--color-text-title)" }}>{term} </span>
+        <BookCopy size={16} className="text-indigo-400" />
+         <span className="font-semibold text-indigo-300">{term} </span>
       </h4>
-      <p className="!my-0 text-sm text-neutral-300">{children}</p>
+      <p className="!my-0 text-sm text-indigo-100/80">{children}</p>
     </div>
   );
 }
@@ -96,11 +90,11 @@ export function TermDefinition({
 //Sidenote Component
 export function SideNote({ children }: { children: React.ReactNode }) {
   return (
-    <aside className="my-5 rounded-lg border border-neutral-700 bg-neutral-900/30 p-4">
+    <aside className="my-5 rounded-lg border border-amber-700 bg-amber-900/30 p-4">
       <div className="flex gap-3">
-        <Info size={18} className="mt-1 flex-shrink-0 text-neutral-400" />
-        <div className="text-sm text-neutral-300 prose-p:!my-0">
-          {children}
+        <Info size={18} className="mt-1 flex-shrink-0 text-amber-400" />
+        <div className="text-sm text-amber-300 prose-p:!my-0">
+          <ContentP>{children}</ContentP>
         </div>
       </div>
     </aside>
@@ -108,25 +102,11 @@ export function SideNote({ children }: { children: React.ReactNode }) {
 }
 
 //Image Component
-export function LessonImage({
-  src,
-  caption,
-}: {
-  src: string;
-  caption?: string;
-}) {
+export function LessonImage({src, caption}: {src: string; caption?: string;}) {
   return (
     <figure className="my-6">
-      <img
-        src={src}
-        alt={caption || "Diagram"}
-        className="mx-auto rounded-lg border border-neutral-800 shadow-lg"
-      />
-      {caption && (
-        <figcaption className="mt-2 text-center text-sm text-neutral-400">
-          {caption}
-        </figcaption>
-      )}
+      <img src={src} alt={caption || "Diagram"} className="mx-auto rounded-lg border border-neutral-800 shadow-lg"/>
+      {caption && (<figcaption className="mt-2 text-center text-sm text-neutral-400">{caption}</figcaption>)}
     </figure>
   );
 }
@@ -135,31 +115,20 @@ export function LessonImage({
 export function LessonVideo({ url }: { url: string }) {
   return (
     <div className="my-6 aspect-video w-full overflow-hidden rounded-xl border border-neutral-800 shadow-md">
-      <iframe
-        src={url}
-        title="Embedded video"
-        className="h-full w-full"
-        allowFullScreen
-      />
+      <iframe src={url} title="Embedded video" className="h-full w-full" allowFullScreen/>
     </div>
   );
 }
 
 //Quiz Container Component
-export function QuizContainer({
-  title,
-  children,
-}: {
-  title: string;
-  children: React.ReactNode;
-}) {
+export function QuizContainer({title,children,}: {title: string; children: React.ReactNode;}) {
   return (
     <div className="my-6 rounded-lg border border-neutral-800 bg-neutral-900/40">
       <div className="flex items-center gap-2 border-b border-neutral-800 p-4">
-        <Target size={18} style={{ color: "var(--color-text-icon)" }} />
-          <h3 className="!m-0 text-lg font-semibold" style={{ color: "var(--color-text-title)" }}> {title} </h3>
+        <Target size={18} className="text-cyan-400" />
+          <h3 className="!m-0 text-lg font-semibold text-indigo-300"> {title} </h3>
       </div>
-      <div className="p-4 space-y-4">{children}</div>
+      <div className="space-y-4 p-4">{children}</div>
     </div>
   );
 }
@@ -184,9 +153,9 @@ export function PracticeProblem({
         <>
           <button
             onClick={() => setIsShown(!isShown)}
-            className="flex items-center gap-2 rounded-md px-3 py-1.5 text-sm font-medium
-                       text-neutral-400 transition-colors hover:text-[var(--color-text-title)]                      
-                       data-[open=true]:text-[var(--color-text-title)]"
+            className="group flex items-center gap-2 rounded-md px-3 py-1.5 text-sm font-medium
+                      text-neutral-400 transition-colors hover:text-indigo-300
+                      data-[open=true]:text-indigo-300"
             data-open={isShown}
           >
             {isShown ? <EyeOff size={14} /> : <Eye size={14} />}
@@ -194,7 +163,7 @@ export function PracticeProblem({
           </button>
           {isShown && (
             <p className="mt-3 rounded-md border border-neutral-700 bg-neutral-900 p-3 text-neutral-300">
-              <span className="font-semibold" style={{ color: "var(--color-text-icon)" }}> Solution: </span>{" "}
+              <span className="font-semibold text-indigo-300"> Solution: </span>{" "}
               {solution}
             </p>
           )}
@@ -355,14 +324,11 @@ export function CollapsibleTopic({
 //Example Block Component
 export function ExampleBlock({ children }: { children: React.ReactNode }) {
   return (
-    <div
-      className="mt-3 rounded-lg border border-[var(--color-text-icon)]/20 
-                 bg-[var(--color-bg-light)]/30 p-3"
-    >
-      <span className="text-sm font-semibold text-neutral-300">Example:</span>
-      <div className="mt-1 text-sm text-neutral-300">{children}</div>
-    </div>
-  );
+    <div className="mt-4 mb-2 rounded-lg border border-green-800/40 bg-green-900/30 p-4">
+      <p className="!m-0 text-sm !leading-relaxed text-green-200">
+        <span className="font-semibold uppercase tracking-wide text-green-300">Example:</span>{" "}{children}
+      </p>
+     </div>);
 }
 
 //Tab Item Component
@@ -393,21 +359,22 @@ export function ContentTabs({
             className="flex items-center gap-2 rounded-t-md px-4 py-2.5 text-sm
                        font-medium text-neutral-400 transition-colors
                        hover:text-neutral-100 data-[active=true]:text-[var(--color-text-title)]
-                       border-b-2 border-transparent data-[active=true]:border-[var(--color-text-icon)] -mb-0.5"
-            data-active={index === activeIndex}>
-            {item.icon && <item.icon size={15} className="shrink-0"/>}
+                       -mb-0.5 border-b-2 border-transparent data-[active=true]:border-[var(--color-text-icon)]"
+            data-active={index === activeIndex}
+          >
+            {item.icon && <item.icon size={15} className="shrink-0" />}
             <span>{item.title}</span>
           </button>
         ))}
       </div>
       {/* Tab Content */}
-      <div className="py-4">
-          {items.map((item, index) => (
+      <div className="rounded-b-md border border-t-0 border-neutral-800 bg-neutral-900/30 p-4">
+        {items.map((item, index) => (
           <div key={index} hidden={index !== activeIndex}>
             {item.content}
           </div>
         ))}
       </div>
-    </div>
+   </div>
   );
 }
