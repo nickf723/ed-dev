@@ -9,6 +9,7 @@ import {
   TermDefinition,
   AppletContainer,
   SideNote,
+  LessonImage
 } from "@/components/LessonBlocks";
 import {
   BookCopy,
@@ -55,40 +56,38 @@ export default function NumbersAndOperationsPage() {
             and tells you what kind of answers are possible.
           </ContentP>
 
-          {/* Diagram Placeholder */}
-          <div className="my-6 rounded-lg border border-neutral-700 bg-neutral-900 p-4 text-center">
-            <span className="text-sm italic text-neutral-400">
-              [Image: Hierarchy of Number Systems]
-            </span>
-            <p className="mt-2 text-neutral-200">
-              Natural ⊂ Whole ⊂ Integers ⊂ Rational ⊂ Real
-            </p>
-          </div>
+          {/* Diagram */}
+          <LessonImage
+            src="/image_7dc108.jpg"
+            caption="The hierarchy of real numbers, showing how Natural numbers are a subset of Whole numbers, which are in Integers, then Rationals, all within the Real number system."
+          />
 
           <ContentSubhead title="The Hierarchy of Real Numbers" />
-          <TermDefinition term="Natural Numbers (ℕ)">
-            The "counting numbers." <strong>Examples:</strong> 1, 2, 3...
-          </TermDefinition>
-          <TermDefinition term="Whole Numbers (𝕎)">
-            Natural numbers plus **zero**. <strong>Examples:</strong> 0, 1, 2, 3...
-          </TermDefinition>
-          <TermDefinition term="Integers (ℤ)">
-            Whole numbers and their **negative opposites**. <strong>Examples:</strong> 
-            ...-2, -1, 0, 1, 2...
-          </TermDefinition>
-          <TermDefinition term="Rational Numbers (ℚ)">
-            Any number that can be a **fraction** (ratio). Includes terminating
-            and repeating decimals. <strong>Examples:</strong> 1/2, -3/4, 7, 0.5
-          </TermDefinition>
-          <TermDefinition term="Irrational Numbers (𝕀)">
-            Numbers that **cannot** be a simple fraction. Their decimals are
-            non-terminating and non-repeating. <strong>Examples:</strong> π, √2
-          </TermDefinition>
-          <TermDefinition term="Real Numbers (ℝ)">
-            All rational and irrational numbers. Every point on the number
-            line.
-          </TermDefinition>
-
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
++            <TermDefinition term="Natural Numbers (ℕ)">
++              The "counting numbers." <strong>Examples:</strong> 1, 2, 3...
++            </TermDefinition>
++            <TermDefinition term="Whole Numbers (𝕎)">
++              Natural numbers plus **zero**. <strong>Examples:</strong> 0, 1, 2, 3...
++            </TermDefinition>
++            <TermDefinition term="Integers (ℤ)">
++              Whole numbers and their **negative opposites**.{" "}
++              <strong>Examples:</strong> 
++              ...-2, -1, 0, 1, 2...
++            </TermDefinition>
++            <TermDefinition term="Rational Numbers (ℚ)">
++              Any number that can be a **fraction** (ratio). Includes terminating
++              and repeating decimals. <strong>Examples:</strong> 1/2, -3/4, 7, 0.5
++            </TermDefinition>
++            <TermDefinition term="Irrational Numbers (𝕀)">
++              Numbers that **cannot** be a simple fraction. Their decimals are
++              non-terminating and non-repeating. <strong>Examples:</strong> π, √2
++            </TermDefinition>
++            <TermDefinition term="Real Numbers (ℝ)">
++              All rational and irrational numbers. Every point on the number
++              line.
++            </TermDefinition>
++          </div>
           <ContentSubhead title="Interactive Classifier" />
           <NumberClassifierApplet />
 

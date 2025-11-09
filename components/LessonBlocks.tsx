@@ -80,12 +80,12 @@ export function TermDefinition({
   children: React.ReactNode;
 }) {
   return (
-    <div className="my-5 rounded-lg border border-cyan-800/40 bg-cyan-900/20 p-4">
+    <div className="my-5 rounded-lg border border-[var(--color-text-icon)]/30 bg-[var(--color-text-icon)]/10 p-4">
       <h4 className="!mt-0 !mb-2 flex items-center gap-2">
-        <BookCopy size={16} className="text-cyan-400" />
-        <span className="font-semibold text-cyan-300">{term}</span>
+        <BookCopy size={16} style={{ color: "var(--color-text-icon)" }} />
+         <span className="font-semibold" style={{ color: "var(--color-text-title)" }}>{term} </span>
       </h4>
-      <p className="!my-0 text-sm text-cyan-100/80">{children}</p>
+      <p className="!my-0 text-sm text-neutral-300">{children}</p>
     </div>
   );
 }
@@ -153,8 +153,8 @@ export function QuizContainer({
   return (
     <div className="my-6 rounded-lg border border-neutral-800 bg-neutral-900/40">
       <div className="flex items-center gap-2 border-b border-neutral-800 p-4">
-        <Target size={18} className="text-cyan-400" />
-        <h3 className="!m-0 text-lg font-semibold text-cyan-300">{title}</h3>
+        <Target size={18} style={{ color: "var(--color-text-icon)" }} />
+          <h3 className="!m-0 text-lg font-semibold" style={{ color: "var(--color-text-title)" }}> {title} </h3>
       </div>
       <div className="p-4 space-y-4">{children}</div>
     </div>
@@ -182,8 +182,8 @@ export function PracticeProblem({
           <button
             onClick={() => setIsShown(!isShown)}
             className="flex items-center gap-2 rounded-md px-3 py-1.5 text-sm font-medium
-                       text-neutral-400 transition-colors hover:text-cyan-200
-                       data-[open=true]:text-cyan-300"
+                       text-neutral-400 transition-colors hover:text-[var(--color-text-title)]                      
+                       data-[open=true]:text-[var(--color-text-title)]"
             data-open={isShown}
           >
             {isShown ? <EyeOff size={14} /> : <Eye size={14} />}
@@ -191,7 +191,7 @@ export function PracticeProblem({
           </button>
           {isShown && (
             <p className="mt-3 rounded-md border border-neutral-700 bg-neutral-900 p-3 text-neutral-300">
-              <span className="font-semibold text-cyan-400">Solution:</span>{" "}
+              <span className="font-semibold" style={{ color: "var(--color-text-icon)" }}> Solution: </span>{" "}
               {solution}
             </p>
           )}
