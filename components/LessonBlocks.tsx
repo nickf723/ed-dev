@@ -325,9 +325,7 @@ export function CollapsibleTopic({
 export function ExampleBlock({ children }: { children: React.ReactNode }) {
   return (
     <div className="mt-4 mb-2 rounded-lg border border-green-800/40 bg-green-900/30 p-4">
-      <p className="!m-0 text-sm !leading-relaxed text-green-200">
         <span className="font-semibold uppercase tracking-wide text-green-300">Example:</span>{" "}{children}
-      </p>
      </div>);
 }
 
