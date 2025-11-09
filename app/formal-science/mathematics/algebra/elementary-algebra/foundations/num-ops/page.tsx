@@ -9,7 +9,10 @@ import {
   TermDefinition,
   AppletContainer,
   SideNote,
-  LessonImage
+  LessonImage,
+  ExampleBlock,
+  ContentTabs,
+  TabItem
 } from "@/components/LessonBlocks";
 import {
   BookCopy,
@@ -22,12 +25,123 @@ import {
   Scale,
   Component,
   Shuffle,
+  ArrowRightLeft,
+  Parentheses,
+  Sigma,
+  Plus,
+  Minus,
+  Spline,
 } from "@/components/icons";
 import React, { useState, useEffect } from "react";
 
 // Symbols for the background
 const numOpsSymbols = [
   "1", "2", "3", "π", "√2", "-5", "0.5", "1/3", "i", "+", "-", "×", "÷", "=", "%", "±",
+];
+
+const propertyTabs: TabItem[] = [
+  {
+    title: "Commutative",
+    icon: ArrowRightLeft,
+    content: (
+      <>
+      <ContentP>
+          The <strong>Commutative Property</strong> states that the order of
+          numbers does not matter for addition and multiplication. Think
+          "commute," as in the numbers can move or swap places.
+        </ContentP>
+        <ExampleBlock>
+          <p><strong>Addition:</strong> $a + b = b + a$</p>
+          <p>$5 + 2 = 2 + 5$  (both equal 7)</p>
+          <p className="mt-2"><strong>Multiplication:</strong> $a \times b = b \times a$</p>
+          <p>$3 \times 4 = 4 \times 3$  (both equal 12)</p>
+        </ExampleBlock>
+        <SideNote>
+          <strong>Note:</strong> This property does NOT apply to subtraction or division. $5 - 2 \neq 2 - 5$.
+        </SideNote>
+      </>
+    ),
+  },
+  {
+    title: "Associative",
+    icon: Parentheses,
+    content: (
+      <>
+        <ContentP>
+          The <strong>Associative Property</strong> states that the grouping of
+          numbers (using parentheses) does not matter for addition and
+          multiplication. Think "associate," as in which numbers "group up"
+          together first.
+        </ContentP>
+        <ExampleBlock>
+          <p><strong>Addition:</strong> $(a + b) + c = a + (b + c)$</p>
+          <p>$(2 + 3) + 4 = 2 + (3 + 4)$  (both equal 9)</p>
+          <p className="mt-2"><strong>Multiplication:</strong> $(a \times b) \times c = a \times (b \times c)$</p>
+          <p>$(4 \times 2) \times 5 = 4 \times (2 \times 5)$  (both equal 40)</p>
+        </ExampleBlock>
+      </>
+    ),
+  },
+  {
+    title: "Identity",
+    icon: Sigma,
+    content: (
+      <>
+        <ContentP>
+          The <strong>Identity Property</strong> involves a number that, when
+          used in an operation, leaves the other number unchanged (it keeps its
+          identity).
+        </ContentP>
+        <ExampleBlock>
+          <p><strong>Additive Identity:</strong> The identity is <strong>0</strong>.</p>
+          <p>$a + 0 = a$  (e.g., $9 + 0 = 9$)</p>
+          <p className="mt-2"><strong>Multiplicative Identity:</strong> The identity is <strong>1</strong>.</p>
+          <p>$a \times 1 = a$  (e.g., $-6 \times 1 = -6$)</p>
+        </ExampleBlock>
+      </>
+    ),
+  },
+  {
+    title: "Inverse",
+    icon: PlusIcon,
+    content: (
+      <>
+        <ContentP>
+          The <strong>Inverse Property</strong> involves finding a number that
+          "cancels out" another number, returning you to the identity (0 for
+          addition, 1 for multiplication).
+        </ContentP>
+        <ExampleBlock>
+          <p><strong>Additive Inverse (Opposite):</strong></p>
+          <p>$a + (-a) = 0$  (e.g., $5 + (-5) = 0$)</p>
+          <p className="mt-2"><strong>Multiplicative Inverse (Reciprocal):</strong></p>
+          <p>$a \times (1/a) = 1$  (e.g., $7 \times (1/7) = 1$)</p>
+        </ExampleBlock>
+      </>
+    ),
+  },
+  {
+    title: "Distributive",
+    icon: Spline,
+    content: (
+      <>
+        <ContentP>
+          The <strong>Distributive Property</strong> is the one property that
+          links addition and multiplication. It describes how to
+          "distribute" a factor to each term inside parentheses.
+        </ContentP>
+        <ExampleBlock>
+          <p><strong>Property:</strong> $a \times (b + c) = (a \times b) + (a \times c)$</p>
+          <p>$5 \times (2 + 3) = (5 \times 2) + (5 \times 3)$</p>
+          <p>$5 \times (5) = 10 + 15$</p>
+          <p>$25 = 25$</p>
+        </ExampleBlock>
+        <SideNote>
+          This is the key to expanding expressions like $3(x + 4) = 3x + 12$.
+        </SideNote>
+      </>
+    ),
+  },
 ];
 
 export default function NumbersAndOperationsPage() {
@@ -46,8 +160,7 @@ export default function NumbersAndOperationsPage() {
         <CollapsibleTopic
           title="Number Systems"
           icon={Binary}
-          startOpen={true}
-        >
+          startOpen={true}>
           <ContentP>
             In algebra, we don't just work with "numbers"; we work with
             different **systems** of numbers. Each system is like a container
@@ -59,9 +172,7 @@ export default function NumbersAndOperationsPage() {
           {/* Diagram */}
           <LessonImage
             src="/image_7dc108.jpg"
-            caption="The hierarchy of real numbers, showing how Natural numbers are a subset of Whole numbers, which are in Integers, then Rationals, all within the Real number system."
-          />
-
+            caption="The hierarchy of real numbers, showing how Natural numbers are a subset of Whole numbers, which are in Integers, then Rationals, all within the Real number system."/>
           <ContentSubhead title="The Hierarchy of Real Numbers" />
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
 +            <TermDefinition term="Natural Numbers (ℕ)">
@@ -87,10 +198,9 @@ export default function NumbersAndOperationsPage() {
 +              All rational and irrational numbers. Every point on the number
 +              line.
 +            </TermDefinition>
-+          </div>
++         </div>
           <ContentSubhead title="Interactive Classifier" />
           <NumberClassifierApplet />
-
           <SideNote>
             <strong>Why does this matter?</strong> When solving an equation, the
             instructions might say "find the *integer* solution." This tells
@@ -101,11 +211,16 @@ export default function NumbersAndOperationsPage() {
 
         {/* --- 2. ALGEBRAIC PROPERTIES --- */}
         <CollapsibleTopic title="Algebraic Properties" icon={Shuffle}>
-          <PageHeader
-            eyebrow="Content Coming Soon"
-            title="Under Construction"
-            subtitle="Commutative, Associative, Distributive properties, etc."
-          />
+          <ContentP>
+            Algebraic properties are the fundamental rules or laws that govern
+            how we manipulate numbers and variables in algebra. They are the
+            "rules of the road" that ensure our calculations are consistent and
+            correct. Understanding these properties allows us to simplify complex
+            expressions and solve equations with confidence.
+          </ContentP>
+          <LessonImage src="/image_7e442d.jpg" caption="A visual summary of the core algebraic properties: Commutative, Associative, Identity, Inverse, and Distributive."/>
+          <ContentSubhead title="The Core Properties" />
+          <ContentTabs items={propertyTabs} />
         </CollapsibleTopic>
 
         {/* --- 3. ORDER OF OPERATIONS --- */}

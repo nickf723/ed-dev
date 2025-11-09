@@ -87,6 +87,9 @@ export {
   PlusIcon,
   MinusIcon,
   Percent,
+  Parentheses,
+  Sigma,
+  Spline,
   // Misc
   Link,
   Check,

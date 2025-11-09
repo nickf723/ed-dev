@@ -15,6 +15,9 @@ import {
   BookCopy,
   Target,
   CheckSquare,
+  ArrowRightLeft,
+  Parentheses,
+  Sigma,
   Link as LinkIcon,
   ExternalLink as ExternalLinkIcon
 } from "./icons";
@@ -346,5 +349,65 @@ export function CollapsibleTopic({
         </div>
       )}
     </section>
+  );
+}
+
+//Example Block Component
+export function ExampleBlock({ children }: { children: React.ReactNode }) {
+  return (
+    <div
+      className="mt-3 rounded-lg border border-[var(--color-text-icon)]/20 
+                 bg-[var(--color-bg-light)]/30 p-3"
+    >
+      <span className="text-sm font-semibold text-neutral-300">Example:</span>
+      <div className="mt-1 text-sm text-neutral-300">{children}</div>
+    </div>
+  );
+}
+
+//Tab Item Component
+export interface TabItem {
+  title: string;
+  icon?: React.ElementType;
+  content: React.ReactNode;
+}
+
+//Content Tabs Component
+export function ContentTabs({
+  items,
+  initialIndex = 0,
+}: {
+  items: TabItem[];
+  initialIndex?: number;
+}) {
+  const [activeIndex, setActiveIndex] = useState(initialIndex);
+
+  return (
+    <div className="my-6">
+      {/* Tab Buttons */}
+      <div className="flex flex-wrap gap-1 border-b-2 border-neutral-800">
+        {items.map((item, index) => (
+          <button
+            key={index}
+            onClick={() => setActiveIndex(index)}
+            className="flex items-center gap-2 rounded-t-md px-4 py-2.5 text-sm
+                       font-medium text-neutral-400 transition-colors
+                       hover:text-neutral-100 data-[active=true]:text-[var(--color-text-title)]
+                       border-b-2 border-transparent data-[active=true]:border-[var(--color-text-icon)] -mb-0.5"
+            data-active={index === activeIndex}>
+            {item.icon && <item.icon size={15} className="shrink-0"/>}
+            <span>{item.title}</span>
+          </button>
+        ))}
+      </div>
+      {/* Tab Content */}
+      <div className="py-4">
+          {items.map((item, index) => (
+          <div key={index} hidden={index !== activeIndex}>
+            {item.content}
+          </div>
+        ))}
+      </div>
+    </div>
   );
 }
