@@ -30,7 +30,7 @@ export default function FloatingSymbols({ symbols }: FloatingSymbolsProps) {
   return (
     <div
       aria-hidden="true"
-      className="absolute inset-0 -z-10 select-none overflow-hidden"
+      className="fixed inset-0 -z-10 select-none overflow-hidden"
     >
       {symbols.map((symbol, i) => (
         <span

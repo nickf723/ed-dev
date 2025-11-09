@@ -44,8 +44,8 @@
 
   .topic-page::before {
     content: "";
-    position: absolute;
-    inset: -25% -10% 0;
+    position: fixed;
+    inset: -25% -10%;
     background:
       radial-gradient(circle at 18% 20%, var(--topic-blob-1), transparent 55%),
       radial-gradient(circle at 80% 0%, var(--topic-blob-2), transparent 55%);

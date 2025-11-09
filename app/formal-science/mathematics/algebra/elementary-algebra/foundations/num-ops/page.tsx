@@ -18,15 +18,15 @@ import {
   Percent,
   Calculator,
   ChevronRight,
-  Scale, // For Absolute Value
-  Component, // For Factors & Multiples
-  Shuffle, // For Algebraic Properties
+  Scale,
+  Component,
+  Shuffle,
 } from "@/components/icons";
 import React, { useState, useEffect } from "react";
 
 // Symbols for the background
 const numOpsSymbols = [
-  "1", "2", "3", "π", "√2", "-5", "0.5", "1/3", "i", "+", "-", "×", "÷",
+  "1", "2", "3", "π", "√2", "-5", "0.5", "1/3", "i", "+", "-", "×", "÷", "=", "%", "±",
 ];
 
 export default function NumbersAndOperationsPage() {
@@ -40,12 +40,12 @@ export default function NumbersAndOperationsPage() {
       />
 
       {/* Main content area for collapsible topics */}
-      <div className="w-full max-w-4xl text-left">
+      <div className="w-full max-w-6xl text-left">
         {/* --- 1. NUMBER SYSTEMS --- */}
         <CollapsibleTopic
           title="Number Systems"
           icon={Binary}
-          startOpen={true} // Start with the first one open
+          startOpen={true}
         >
           <ContentP>
             In algebra, we don't just work with "numbers"; we work with
