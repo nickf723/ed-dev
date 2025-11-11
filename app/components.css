@@ -210,18 +210,43 @@
 }
 
 /* Natural Science Theme Enhancements */
+.theme-natural-science.topic-page::before {
+  content: "";
+  position: absolute;
+  top: 5%;
+  left: 10%;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    var(--color-text-icon) 5%,
+    transparent 60%
+  );
+  opacity: 0.2;
+  filter: blur(20px);
+  will-change: transform, opacity;
+  animation: floatAround 40s ease-in-out infinite alternate;
+}
 .theme-natural-science.topic-page::after {
   content: "";
   position: absolute;
   inset: 0;
   pointer-events: none;
   background-image: radial-gradient(
-    circle,
-    var(--grid-dot-color) 1px,
-    transparent 1px
+    circle at 80% 20%,
+    var(--topic-blob-1) 0%,
+    transparent 70%
   );
-  background-size: 1.5rem 1.5rem;
+  background-size: 100% 100%;
   background-position: 0 0;
-  opacity: 0.5;
-  animation: animatedGrid 20s linear infinite;
+  opacity: 0.15;
+  animation: pulseFade 15s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+.theme-natural-science .floating-symbol {
+  animation: pulseFade 12s ease-in-out infinite;
+  opacity: 0;
+  will-change: opacity, transform;
+  animation-name: pulseFade;
 }

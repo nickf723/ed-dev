@@ -47,12 +47,12 @@
     --card-icon-hover: #00ff5eff;
     --card-underline: #00df52ff;
     --color-text-title: #22d3ee;
-    --color-text-header: #10b981;
-    --color-text-icon: #22d3ee;
-    --topic-symbol-color: rgba(0, 255, 115, 0.15);
-    --topic-blob-1: rgba(16, 185, 129, 0.25);
-    --topic-blob-2: rgba(34, 211, 238, 0.2);
-    --grid-dot-color: rgba(45, 212, 191, 0.1);
+    --color-text-header: #00ff15;
+    --color-text-icon: #da0909;
+    --topic-symbol-color: rgba(177, 177, 177, 0.459);
+    --topic-blob-1: rgba(0, 231, 31, 0.527);
+    --topic-blob-2: rgba(34, 211, 238, 0.637);
+    --grid-dot-color: rgba(255, 251, 0, 0.1);
   }
   
   .theme-social-science, .card-theme-social-science {
@@ -82,7 +82,7 @@
     --card-icon-hover: rgb(247, 202, 4);
     --card-underline: rgb(255, 196, 0);
   }
-
+/*----------------------------------------------------------------------------------------------------------*/
   .theme-math, .card-theme-math {
     --card-gradient-start: #ff0000;
     --card-gradient-end: #ff6600;
@@ -151,6 +151,78 @@
     --card-icon-hover: #00aaff;
     --card-underline: #00aaffc2;
   }
+
+/*---------------------------------------------------------------------------------------------------------------*/
+
+.theme-astronomy, .card-theme-astronomy {
+    --card-gradient-start: rgb(140, 0, 255);
+    --card-gradient-end: rgb(2, 0, 97);
+    --card-icon-hover: rgb(163, 0, 155);
+    --card-underline: rgb(171, 0, 223);
+    --color-text-title: #a322ee;
+    --color-text-header: #00e1ff;
+    --color-text-icon: #5909da;
+    --topic-symbol-color: rgba(0, 255, 13, 0.966);
+    --topic-blob-1: rgba(117, 16, 185, 0.25);
+    --topic-blob-2: rgba(6, 27, 212, 0.664);
+    --grid-dot-color: rgba(13, 6, 20, 0.726);
+  }
+
+.theme-physics, .card-theme-pysics {
+    --card-gradient-start: rgb(0, 0, 255);
+    --card-gradient-end: rgb(255, 0, 0);
+    --card-icon-hover: rgb(255, 251, 0);
+    --card-underline: rgb(134, 0, 223);
+    --color-text-title: #22d3ee;
+    --color-text-header: #00e1ff;
+    --color-text-icon: #09da14;
+    --topic-symbol-color: rgba(0, 184, 83, 0.15);
+    --topic-blob-1: rgba(16, 185, 129, 0.25);
+    --topic-blob-2: rgba(0, 217, 250, 0.2);
+    --grid-dot-color: rgb(255, 238, 0);
+  }
+
+.theme-chemistry, .card-theme-chemistry {
+  --card-gradient-start: rgb(255, 166, 0);
+  --card-gradient-end: rgb(221, 2, 2);
+  --card-icon-hover: rgb(0, 255, 0);
+  --card-underline: rgb(223, 208, 0);
+  --color-text-title: #22d3ee;
+  --color-text-header: #00e1ff;
+  --color-text-icon: #09da14;
+  --topic-symbol-color: rgba(0, 184, 83, 0.15);
+  --topic-blob-1: rgba(16, 185, 129, 0.25);
+  --topic-blob-2: rgba(34, 211, 238, 0.2);
+  --grid-dot-color: rgba(45, 212, 191, 0.1);
+}
+
+.theme-earth-science, .card-theme-earth-science {
+  --card-gradient-start: rgb(59, 39, 0);
+  --card-gradient-end: rgba(49, 247, 0, 0.685);
+  --card-icon-hover: rgb(255, 166, 0);
+  --card-underline: rgb(51, 51, 51);
+  --color-text-title: #22d3ee;
+  --color-text-header: #00e1ff;
+  --color-text-icon: #09da14;
+  --topic-symbol-color: rgba(0, 184, 83, 0.15);
+  --topic-blob-1: rgba(16, 185, 129, 0.25);
+  --topic-blob-2: rgba(34, 211, 238, 0.2);
+  --grid-dot-color: rgba(45, 212, 191, 0.1);
+}
+
+.theme-biology, .card-theme-biology {
+  --card-gradient-start: rgb(0, 255, 42);
+  --card-gradient-end: rgb(206, 221, 2);
+  --card-icon-hover: rgb(0, 110, 255);
+  --card-underline: rgb(0, 223, 112);
+  --color-text-title: #22d3ee;
+  --color-text-header: #00e1ff;
+  --color-text-icon: #09da14;
+  --topic-symbol-color: rgba(0, 184, 83, 0.15);
+  --topic-blob-1: rgba(16, 185, 129, 0.25);
+  --topic-blob-2: rgba(34, 211, 238, 0.2);
+  --grid-dot-color: rgba(45, 212, 191, 0.1);
+}
 
   .theme-glossary, .card-theme-glossary {
     --card-gradient-start: #00f5f5;
