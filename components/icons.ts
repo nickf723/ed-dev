@@ -90,7 +90,10 @@ export {
   Parentheses,
   Sigma,
   Spline,
-  // Misc
+  Atom,
+  Dna,
+  Orbit,
+  Mountain,
   Link,
   Check,
 } from "lucide-react";

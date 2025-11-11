@@ -46,6 +46,13 @@
     --card-gradient-end: #02ddddff;
     --card-icon-hover: #00ff5eff;
     --card-underline: #00df52ff;
+    --color-text-title: #22d3ee;
+    --color-text-header: #10b981;
+    --color-text-icon: #22d3ee;
+    --topic-symbol-color: rgba(0, 255, 115, 0.15);
+    --topic-blob-1: rgba(16, 185, 129, 0.25);
+    --topic-blob-2: rgba(34, 211, 238, 0.2);
+    --grid-dot-color: rgba(45, 212, 191, 0.1);
   }
   
   .theme-social-science, .card-theme-social-science {

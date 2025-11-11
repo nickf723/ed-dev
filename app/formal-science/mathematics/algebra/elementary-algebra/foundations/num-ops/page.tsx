@@ -214,7 +214,7 @@ export default function NumbersAndOperationsPage() {
           <ContentSubhead title="The Hierarchy of Real Numbers" />
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                       <TermDefinition term="Natural Numbers (ℕ)">
-          +              The "counting numbers." <strong>Examples:</strong> <M>1, 2, 3...</M>
+                        The "counting numbers." <strong>Examples:</strong> <M>1, 2, 3...</M>
                       </TermDefinition>
                       <TermDefinition term="Whole Numbers (𝕎)">
                         Natural numbers plus **zero**. <strong>Examples:</strong>{" "}

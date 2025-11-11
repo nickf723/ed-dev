@@ -11,7 +11,12 @@ import {
   Home,
   BookOpen,
   Calculator,
-  Ruler, // Not used in new structure, but keeping import
+  Ruler,
+  FlaskConical,
+  Atom,
+  Dna,
+  Mountain,
+  Orbit,
   FunctionSquare,
 } from "@/components/icons";
 
@@ -193,16 +198,49 @@ export default function Sidebar() {
           {/* Natural Science */}
           <Dropdown
             label="Natural Science"
-            icon={<BookOpen size={16} />}
+            icon={<FlaskConical size={16} />}
             expanded={expandNatural}
             setExpanded={setExpandNatural}
             href="/natural-science"
             active={pathname === "/natural-science"}
           >
-            {/* Placeholder for future links */}
-            <span className="px-3 py-2 text-neutral-500 italic">
-              (Coming Soon)
-            </span>
+            {/* Physics */}
+            <SidebarLink
+              href="/natural-science/physics"
+              label="Physics"
+              icon={<Atom size={14} />}
+              active={pathname.startsWith("/natural-science/physics")}
+              nested
+            />
+            {/* Chemistry */}
+            <SidebarLink
+              href="/natural-science/chemistry"
+              label="Chemistry"
+              icon={<FlaskConical size={14} />}
+              active={pathname.startsWith("/natural-science/chemistry")}
+              nested
+            />
+            <SidebarLink
+              href="/natural-science/biology"
+              label="Biology"
+              icon={<Dna size={14} />}
+              active={pathname.startsWith("/natural-science/biology")}
+              nested
+            />
+            <SidebarLink
+              href="/natural-science/earth-science"
+              label="Earth Science"
+              icon={<Mountain size={14} />}
+              active={pathname.startsWith("/natural-science/earth-science")}
+              nested
+            />
+            <SidebarLink
+              href="/natural-science/astronomy"
+              label="Astronomy"
+              icon={<Orbit size={14} />}
+              active={pathname.startsWith("/natural-science/astronomy")}
+              nested
+            />
           </Dropdown>
           {/* Social Science */}
           <Dropdown
