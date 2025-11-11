@@ -19,8 +19,9 @@ type TopicCardProps = {
   Icon?: React.ElementType;
   style?: React.CSSProperties;
   className?: string;
-  difficulty?: string; // Add optional difficulty prop
-  units?: Unit[]; // Add optional units prop
+  difficulty?: string;
+  units?: Unit[];
+  subtitle: string;
 };
 
 // --- Helper Functions ---
@@ -38,7 +39,7 @@ const getStatusColor = (status: Unit["status"]) => {
 
 // --- Main Component ---
 export default function TopicCard(props: TopicCardProps) {
-  const { href, title, desc, Icon, style, className = "", difficulty, units } = props;
+  const { href, title, desc, Icon, style, className = "", difficulty, units, subtitle } = props;
 
   // Use tilt effect on a ref, which will be applied to the root element
   const cardRef = useRef<HTMLDivElement & HTMLAnchorElement>(null);
@@ -125,7 +126,18 @@ export default function TopicCard(props: TopicCardProps) {
             {title}
           </h2>
         )}
-
+        {/* Subtitle */}
+        {subtitle && (
+          <p className="bg-clip-text text-transparent"
+          style={{
+                background:
+                  "linear-gradient(to right, var(--card-gradient-start), var(--card-gradient-end))",
+                backgroundClip: "text",
+                WebkitBackgroundClip: "text",
+              }}>
+            {subtitle}
+          </p>
+        )}
         {/* Difficulty Blurb */}
         {difficulty && (
           <p className="mt-4 text-xs font-semibold uppercase tracking-wider text-amber-300">

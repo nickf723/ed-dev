@@ -17,8 +17,8 @@ import {
 } from "@/components/LessonBlocks";
 import {
   BookCopy,
-  PlusIcon,
-  MinusIcon,
+  Plus,
+  Minus,
   Binary,
   Percent,
   Calculator,
@@ -29,8 +29,6 @@ import {
   ArrowRightLeft,
   Parentheses,
   Sigma,
-  Plus,
-  Minus,
   Spline,
 } from "@/components/icons";
 import React, { useState, useEffect } from "react";
@@ -130,7 +128,7 @@ const propertyTabs: TabItem[] = [
   },
   {
     title: "Inverse",
-    icon: PlusIcon, // Re-using PlusIcon, can be changed
+    icon: Plus,
     content: (
       <>
         <ContentP>
@@ -347,7 +345,7 @@ export default function NumbersAndOperationsPage() {
           </div>
         </CollapsibleTopic>
         {/* --- 6. INTEGERS AND RATIONALS --- */}
-        <CollapsibleTopic title="6. Integers and Rationals" icon={PlusIcon}>
+        <CollapsibleTopic title="6. Integers and Rationals" icon={Plus}>
           <ContentP>
             This topic covers the rules for performing operations
             (add, subtract, multiply, divide) with negative numbers and
@@ -392,7 +390,7 @@ export default function NumbersAndOperationsPage() {
          </CollapsibleTopic>
 
         {/* --- 8. FRACTIONS AND DECIMALS --- */}
-        <CollapsibleTopic title="8. Fractions and Decimals" icon={MinusIcon}>
+        <CollapsibleTopic title="8. Fractions and Decimals" icon={Minus}>
           <ContentP>
             Fractions and decimals are two different ways to represent the same
             rational numbers (parts of a whole).

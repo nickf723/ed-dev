@@ -3,7 +3,7 @@
 import PageHeader from "@/components/PageHeader";
 import FloatingSymbols from "@/components/FloatingSymbols";
 import {
-  FunctionSquare,
+  SquareFunction,
   Grid3X3,
   BrainCircuit,
 } from "@/components/icons";
@@ -37,7 +37,7 @@ const algebraBranches = [
   {
     title: "Elementary Algebra",
     href: "/formal-science/mathematics/algebra/elementary-algebra",
-    Icon: FunctionSquare,
+    Icon: SquareFunction,
     difficulty: "High School / Early College",
     description:
       "The foundational study of variables, expressions, equations, and functions. This is the language of problem-solving.",
@@ -51,6 +51,7 @@ const algebraBranches = [
       { name: "Functions & Graphs", href: "#", status: "Planned" },
     ],
     className: "theme-elementary-algebra",
+    subtitle: "X Y Z",
   },
   {
     title: "Linear Algebra",
@@ -65,6 +66,7 @@ const algebraBranches = [
       { name: "Eigenvalues & Eigenvectors", href: "#", status: "Planned" },
     ],
     className: "theme-linear-algebra",
+    subtitle: "",
   },
   {
     title: "Abstract Algebra",
@@ -79,6 +81,7 @@ const algebraBranches = [
       { name: "Galois Theory", href: "#", status: "Planned" },
     ],
     className: "theme-abstract-algebra",
+    subtitle: "",
   },
 ];
 
@@ -104,6 +107,7 @@ export default function AlgebraPage() {
             difficulty={branch.difficulty} // Pass difficulty
             units={branch.units as any} // Pass units (cast to satisfy Unit[])
             className={branch.className} // Pass className
+            subtitle={branch.subtitle}
           />
         ))}
       </section>
