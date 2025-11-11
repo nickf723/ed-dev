@@ -33,11 +33,11 @@ const formalScienceSymbols = [
 export default function FormalSciencePage() {
   const disciplines = [
     {
-      title: "Mathematics",
+      title: "Mathematics and Statistics",
       desc: "The study of quantity, structure, space, and change.",
       href: "/formal-science/mathematics",
       Icon: Calculator,
-      className: "theme-math"
+      className: "theme-math topic-card-wide"
     },
     {
       title: "Logic",
@@ -72,7 +72,7 @@ export default function FormalSciencePage() {
       desc: "The study of computation, automation, and information.",
       href: "/formal-science/computer-science",
       Icon: Binary,
-      className: "theme-computer-science"
+      className: "theme-computer-science topic-card-wide"
     },
   ];
 

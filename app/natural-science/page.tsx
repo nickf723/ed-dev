@@ -49,21 +49,21 @@ export default function NaturalSciencePage() {
       desc: "The study of living organisms, life, and evolution.",
       href: "/natural-science/biology",
       Icon: Dna,
-      className: "theme-biology",
+      className: "theme-biology topic-card-wide",
     },
     {
       title: "Earth Science",
       desc: "The study of the Earth, its systems, and its history.",
       href: "/natural-science/earth-science",
       Icon: Mountain,
-      className: "theme-earth-science",
+      className: "theme-earth-science topic-card-wide",
     },
     {
       title: "Astronomy",
       desc: "The study of celestial objects, space, and the universe.",
       href: "/natural-science/astronomy",
       Icon: Orbit,
-      className: "theme-astronomy",
+      className: "theme-astronomy topic-card-wide",
     },
   ];
 

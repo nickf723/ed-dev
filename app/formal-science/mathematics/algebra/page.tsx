@@ -64,7 +64,7 @@ const algebraBranches = [
       { name: "Matrices & Transformations", href: "#", status: "Planned" },
       { name: "Eigenvalues & Eigenvectors", href: "#", status: "Planned" },
     ],
-    className: "",
+    className: "theme-linear-algebra",
   },
   {
     title: "Abstract Algebra",
@@ -78,7 +78,7 @@ const algebraBranches = [
       { name: "Rings & Fields", href: "#", status: "Planned" },
       { name: "Galois Theory", href: "#", status: "Planned" },
     ],
-    className: "",
+    className: "theme-abstract-algebra",
   },
 ];
 

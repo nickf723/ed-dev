@@ -1,6 +1,7 @@
 // app/formal-science/mathematics/algebra/elementary-algebra/foundations/num-ops/page.tsx
 "use client";
 import PageHeader from "@/components/PageHeader";
+import TopicCard from "@/components/TopicCard"
 import FloatingSymbols from "@/components/FloatingSymbols";
 import {
   CollapsibleTopic,
@@ -188,9 +189,8 @@ export default function NumbersAndOperationsPage() {
         title="Numbers and Operations"
         subtitle="Understanding the types of numbers that exist and the rules for how they interact. This is the bedrock of all mathematics."
       />
-
       {/* Main content area for collapsible topics */}
-      <div className="w-full max-w-6xl text-left">
+      <div className="w-full max-w-6x1 text-left">
         {/* --- 1. NUMBER SYSTEMS --- */}
         <CollapsibleTopic
           title="1. Number Systems"
@@ -405,7 +405,7 @@ export default function NumbersAndOperationsPage() {
             <p><M>{"0.5 = \\frac{5}{10} = \\frac{1}{2}"}</M></p>
           </ExampleBlock>
          </CollapsibleTopic>
-      </div>
+      </div>      
     </main>
   );
 }

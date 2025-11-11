@@ -21,29 +21,34 @@ export default function MathPage() {
       className: "theme-algebra"
     },
     {
-      title: "Geometry",
+      title: "Geometry and Trigonometry",
       desc: "Understanding shape, space, and proportion — mathematics made visual.",
       href: "/formal-science/mathematics/geometry",
+      className: "theme-geometry topic-card-wide"
     },
     {
       title: "Calculus",
       desc: "Exploring motion and change — the mathematics of the universe’s flow.",
       href: "/formal-science/mathematics/calculus",
+      className: "theme-calculus"
     },
     {
-      title: "Statistics",
+      title: "Statistics and Probability",
       desc: "Finding truth in data — probability, inference, and real-world meaning.",
       href: "/formal-science/mathematics/statistics",
+      className: "theme-statistics topic-card-wide"
     },
     {
       title: "Number Theory",
       desc: "Numbers and their hidden properties — the purest form of mathematical thought.",
       href: "/formal-science/mathematics/number-theory",
+      className: "theme-number-theory"
     },
     {
       title: "Discrete Mathematics",
       desc: "The study of countable structures — essential for computer science and combinatorics.",
       href: "/formal-science/mathematics/discrete-mathematics",
+      className: "theme-discrete-math"
     },
   ];
 

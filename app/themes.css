@@ -24,19 +24,19 @@
 
   .theme-formal-science, .card-theme-formal-science {
     --card-gradient-start: rgb(255, 0, 0);
-    --card-gradient-end: rgb(221, 217, 2);
+    --card-gradient-end: rgb(221, 82, 2);
     --card-icon-hover: rgb(255, 0, 0);
     --card-underline: rgb(223, 0, 0);;
-    --color-text-title: #a78bfa; /* Light Purple */
-    --color-text-header: #818cf8; /* Indigo */
-    --topic-symbol-color: rgba(167, 139, 250, 0.22);
-    --topic-surface: rgba(22, 18, 44, 0.65); /* Dark Purple */
-    --topic-surface-border: rgba(129, 140, 248, 0.28);
-    --topic-card-shadow: rgba(167, 139, 250, 0.23);
-    --topic-card-sheen: rgba(190, 170, 255, 0.22);
-    --topic-badge-bg: rgba(129, 140, 248, 0.18);
+    --color-text-title: #ff0000;
+    --color-text-header: #ff8800c2;
+    --topic-symbol-color: rgba(216, 216, 216, 0.144);
+    --topic-surface: rgba(22, 18, 44, 0.65);
+    --topic-surface-border: rgba(128, 128, 128, 0);
+    --topic-card-shadow: rgba(255, 102, 0, 0.63);
+    --topic-card-sheen: rgba(255, 111, 111, 0.411);
+    --topic-badge-bg: rgba(207, 110, 0, 0.699);
     --topic-badge-border: rgba(129, 140, 248, 0.38);
-    --topic-badge-text: #c7d2fe; /* Light Indigo */
+    --topic-badge-text: #bebebe;
     --topic-blob-1: none;
     --topic-blob-2: none;
   }
@@ -84,10 +84,10 @@
   }
 /*----------------------------------------------------------------------------------------------------------*/
   .theme-math, .card-theme-math {
-    --card-gradient-start: #ff0000;
+    --card-gradient-start: #ff0037;
     --card-gradient-end: #ff6600;
     --card-icon-hover: #ff0000;
-    --card-underline: #ff0000af;
+    --card-underline: #ff00003d;
     --color-text-title: #ff0000;
     --color-text-header: #ff0037;
     --topic-symbol-color: rgba(251, 146, 60, 0.22);
@@ -107,7 +107,77 @@
     --card-gradient-start: #8400ff;
     --card-gradient-end: #2d00cc;   
     --card-icon-hover: #8400ff;
-    --card-underline: #7700ffc2;
+    --card-underline: #7700ff3d;
+    --color-text-title: #a78bfa;
+    --color-text-header: #818cf8;
+    --color-text-icon: #a78bfa;
+    --topic-symbol-color: rgba(132, 0, 255, 0.15);
+    --topic-blob-1: rgba(132, 0, 255, 0.25);
+    --topic-blob-2: rgba(45, 0, 204, 0.2);
+    --grid-color: rgba(132, 0, 255, 0.08);
+  }
+
+  .theme-geometry, .card-theme-geometry {
+    --card-gradient-start: #1100ff;
+    --card-gradient-end: #00adcc;   
+    --card-icon-hover: #a200ff;
+    --card-underline: #1900ff3d;
+    --color-text-title: #a78bfa;
+    --color-text-header: #818cf8;
+    --color-text-icon: #a78bfa;
+    --topic-symbol-color: rgba(132, 0, 255, 0.15);
+    --topic-blob-1: rgba(132, 0, 255, 0.25);
+    --topic-blob-2: rgba(45, 0, 204, 0.2);
+    --grid-color: rgba(132, 0, 255, 0.925);
+  }
+
+  .theme-calculus, .card-theme-calculus {
+    --card-gradient-start: #ff0000;
+    --card-gradient-end: #2d00cc;   
+    --card-icon-hover: #8400ff;
+    --card-underline: #ff00dd3d;
+    --color-text-title: #a78bfa;
+    --color-text-header: #818cf8;
+    --color-text-icon: #a78bfa;
+    --topic-symbol-color: rgba(132, 0, 255, 0.15);
+    --topic-blob-1: rgba(132, 0, 255, 0.25);
+    --topic-blob-2: rgba(45, 0, 204, 0.2);
+    --grid-color: rgba(132, 0, 255, 0.08);
+  }
+
+  .theme-statistics, .card-theme-statistics {
+    --card-gradient-start: #ff9900;
+    --card-gradient-end: #cc00cc;   
+    --card-icon-hover: #8400ff;
+    --card-underline: #ff00ea3d;
+    --color-text-title: #a78bfa;
+    --color-text-header: #818cf8;
+    --color-text-icon: #a78bfa;
+    --topic-symbol-color: rgba(132, 0, 255, 0.15);
+    --topic-blob-1: rgba(132, 0, 255, 0.25);
+    --topic-blob-2: rgba(45, 0, 204, 0.2);
+    --grid-color: rgba(132, 0, 255, 0.08);
+  }
+
+  .theme-number-theory, .card-theme-number-theory {
+    --card-gradient-start: #fbff00;
+    --card-gradient-end: #fdfdfdbb;   
+    --card-icon-hover: #ffc40033;
+    --card-underline: #eeff003d;
+    --color-text-title: #a78bfa;
+    --color-text-header: #818cf8;
+    --color-text-icon: #a78bfa;
+    --topic-symbol-color: rgba(132, 0, 255, 0.15);
+    --topic-blob-1: rgba(132, 0, 255, 0.25);
+    --topic-blob-2: rgba(45, 0, 204, 0.2);
+    --grid-color: rgba(132, 0, 255, 0.08);
+  }
+
+  .theme-discrete-math, .card-theme-discrete-math {
+    --card-gradient-start: #5eff00;
+    --card-gradient-end: #0a5500;   
+    --card-icon-hover: #8400ff;
+    --card-underline: #00ff2a3d;
     --color-text-title: #a78bfa;
     --color-text-header: #818cf8;
     --color-text-icon: #a78bfa;
@@ -121,7 +191,7 @@
     --card-gradient-start: #ff00d4;
     --card-gradient-end: #8100cc;
     --card-icon-hover: #ff00d4;
-    --card-underline: #ff00c2c2;
+    --card-underline: #ff00c23d;
     --color-text-title: #ff00d4;
     --color-text-header: #ff40e0;
     --color-text-icon: #ff00d4;
@@ -145,11 +215,67 @@
     --grid-dot-color: rgba(34, 211, 238, 0.08);
   }
 
+  .theme-linear-algebra, .card-theme-linear-algebra {
+    --card-gradient-start: #ff0000;
+    --card-gradient-end: #ffd000;
+    --card-icon-hover: #fbff00;
+    --card-underline: #ff00003d;
+    --color-text-title: #ff00d4;
+    --color-text-header: #ff40e0;
+    --color-text-icon: #ff00d4;
+    --topic-symbol-color: rgba(255, 0, 212, 0.15);
+    --topic-blob-1: rgba(255, 255, 255, 0.37);
+    --topic-blob-2: rgb(204, 0, 153);
+    --grid-color: rgba(255, 0, 212, 0.08);
+  }
+
+  .theme-abstract-algebra, .card-theme-abstract-algebra {
+    --card-gradient-start: #00ffff;
+    --card-gradient-end: #0025cc;
+    --card-icon-hover: #8400ff;
+    --card-underline: #0066ff3d;
+    --color-text-title: #ff00d4;
+    --color-text-header: #ff40e0;
+    --color-text-icon: #ff00d4;
+    --topic-symbol-color: rgba(255, 0, 212, 0.15);
+    --topic-blob-1: rgba(255, 255, 255, 0.37);
+    --topic-blob-2: rgb(204, 0, 153);
+    --grid-color: rgba(255, 0, 212, 0.08);
+  }
+
   .theme-logic, .card-theme-logic {
-    --card-gradient-start: #00aaff;
-    --card-gradient-end: #0077cc;
+    --card-gradient-start: #77b5d4;
+    --card-gradient-end: #009ee7;
     --card-icon-hover: #00aaff;
-    --card-underline: #00aaffc2;
+    --card-underline: #00aaff3d;
+  }
+
+  .theme-systems-science, .card-theme-systems-science {
+    --card-gradient-start: #ae00ff;
+    --card-gradient-end: #1100ff;
+    --card-icon-hover: #00ffea;
+    --card-underline: #0084ff3d;
+  }
+
+  .theme-data-science, .card-theme-data-science {
+    --card-gradient-start: #fbff00;
+    --card-gradient-end: #ad9300;
+    --card-icon-hover: #ffee00;
+    --card-underline: #d9ff003d;
+  }
+
+  .theme-information-science, .card-theme-information-science {
+    --card-gradient-start: #00ff00;
+    --card-gradient-end: #96cc00;
+    --card-icon-hover: #bbfcee;
+    --card-underline: #ffffff3d;
+  }
+
+  .theme-computer-science, .card-theme-computer-science {
+    --card-gradient-start: #ffffff;
+    --card-gradient-end: #4b4b4b;
+    --card-icon-hover: #15ff00;
+    --card-underline: #1eff00;
   }
 
 /*---------------------------------------------------------------------------------------------------------------*/
@@ -173,13 +299,13 @@
     --card-gradient-end: rgb(255, 0, 0);
     --card-icon-hover: rgb(255, 251, 0);
     --card-underline: rgb(134, 0, 223);
-    --color-text-title: #22d3ee;
+    --color-text-title: #2f00ff;
     --color-text-header: #00e1ff;
     --color-text-icon: #09da14;
     --topic-symbol-color: rgba(0, 184, 83, 0.15);
-    --topic-blob-1: rgba(16, 185, 129, 0.25);
-    --topic-blob-2: rgba(0, 217, 250, 0.2);
-    --grid-dot-color: rgb(255, 238, 0);
+    --topic-blob-1: rgba(255, 0, 0, 0.25);
+    --topic-blob-2: rgba(0, 4, 250, 0.2);
+    --grid-dot-color: rgb(255, 255, 255);
   }
 
 .theme-classical-mechanics, .card-theme-classical-mechanics {

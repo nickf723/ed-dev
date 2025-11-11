@@ -94,6 +94,10 @@
     color: var(--text);
   }
 
+  .topic-card-wide {
+    @apply md:col-span-2;
+  }
+
   .topic-card::after {
     content: "";
     position: absolute;
@@ -138,7 +142,7 @@
 
 /* Formal Science Theme Enhancements */
 .theme-formal-science.topic-page {
-  --grid-dot-color: rgba(129, 140, 248, 0.15);
+  --grid-dot-color: rgba(255, 163, 147, 0.062);
   background-image: conic-gradient(
       from 90deg at 1px 1px,
       var(--grid-dot-color) 90deg,
@@ -165,7 +169,7 @@
   width: 300px;
   height: 300px;
   background: none;
-  border: 2px solid rgba(167, 139, 250, 0.2);
+  border: 2px solid rgba(170, 170, 170, 0.589);
   border-radius: 1rem;
   opacity: 0.5;
   filter: blur(1px);
@@ -179,11 +183,9 @@
   width: 400px;
   height: 400px;
   border-radius: 9999px;
-  background: radial-gradient(
-    circle,
-    rgba(129, 140, 248, 0.3) 0%,
-    transparent 60%
-  );
+  background: 
+    radial-gradient(circle, rgba(255, 136, 0, 0.575) 0%, transparent 60%),
+    radial-gradient(circle, rgba(247, 242, 179, 0.575) 0%, transparent 60%);
   filter: blur(20px);
   opacity: 0.6;
   animation: floatAround 45s ease-in-out infinite;
@@ -218,13 +220,12 @@
   width: 150px;
   height: 150px;
   border-radius: 50%;
-  background: radial-gradient(
-    circle,
-    var(--color-text-icon) 5%,
-    transparent 60%
-  );
+  background: 
+    radial-gradient(circle, rgb(0, 255, 255) 5%, transparent 60%),
+    radial-gradient(circle, rgb(0, 255, 242) 5%, transparent 60%),
+    radial-gradient(circle, rgb(0, 238, 255) 100%, transparent 60%);
   opacity: 0.2;
-  filter: blur(20px);
+  filter: blur(10px);
   will-change: transform, opacity;
   animation: floatAround 40s ease-in-out infinite alternate;
 }
@@ -233,11 +234,10 @@
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background-image: radial-gradient(
-    circle at 80% 20%,
-    var(--topic-blob-1) 0%,
-    transparent 70%
-  );
+  background-image: 
+    radial-gradient(circle at 80% 20%, green 0%, transparent 70%),
+    radial-gradient(circle at 5% 10%, blue 1%, transparent 70%),
+    radial-gradient(circle at 50% 80%, red 0%, transparent 70%);
   background-size: 100% 100%;
   background-position: 0 0;
   opacity: 0.15;
