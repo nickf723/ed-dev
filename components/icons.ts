@@ -94,6 +94,8 @@ export {
   Dna,
   Orbit,
   Mountain,
+  Waves,
+  GitMergeIcon,
   Link,
   Check,
 } from "lucide-react";

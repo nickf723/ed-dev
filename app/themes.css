@@ -182,6 +182,90 @@
     --grid-dot-color: rgb(255, 238, 0);
   }
 
+.theme-classical-mechanics, .card-theme-classical-mechanics {
+  --card-gradient-start: rgba(21, 255, 0, 0.815);
+  --card-gradient-end: rgb(251, 255, 0);
+  --card-icon-hover: rgb(255, 251, 0);
+  --card-underline: rgb(0, 223, 0);
+  --color-text-title: #22d3ee;
+  --color-text-header: #00e1ff;
+  --color-text-icon: #09da14;
+  --topic-symbol-color: rgba(0, 184, 83, 0.15);
+  --topic-blob-1: rgba(16, 185, 129, 0.25);
+  --topic-blob-2: rgba(0, 217, 250, 0.2);
+  --grid-dot-color: rgb(255, 238, 0);
+  }
+
+.theme-electromagnetism, .card-theme-electromagnetism {
+    --card-gradient-start: rgb(98, 0, 255);
+    --card-gradient-end: rgb(0, 4, 255);
+    --card-icon-hover: rgb(255, 251, 0);
+    --card-underline: rgb(223, 219, 0);
+    --color-text-title: #22d3ee;
+    --color-text-header: #00e1ff;
+    --color-text-icon: #09da14;
+    --topic-symbol-color: rgba(0, 184, 83, 0.15);
+    --topic-blob-1: rgba(16, 185, 129, 0.25);
+    --topic-blob-2: rgba(0, 217, 250, 0.2);
+    --grid-dot-color: rgb(255, 238, 0);
+  }
+
+.theme-thermodynamics, .card-theme-thermodynamics {
+    --card-gradient-start: rgb(255, 153, 0);
+    --card-gradient-end: rgb(255, 0, 0);
+    --card-icon-hover: rgb(255, 251, 0);
+    --card-underline: rgb(255, 153, 0);
+    --color-text-title: #22d3ee;
+    --color-text-header: #00e1ff;
+    --color-text-icon: #09da14;
+    --topic-symbol-color: rgba(0, 184, 83, 0.15);
+    --topic-blob-1: rgba(16, 185, 129, 0.25);
+    --topic-blob-2: rgba(0, 217, 250, 0.2);
+    --grid-dot-color: rgb(255, 238, 0);
+  }
+
+.theme-waves-optics, .card-theme-waves-optics {
+    --card-gradient-start: rgb(0, 255, 234);
+    --card-gradient-end: rgb(212, 0, 255);
+    --card-icon-hover: rgb(204, 0, 255);
+    --card-underline: rgb(134, 0, 223);
+    --color-text-title: #22d3ee;
+    --color-text-header: #00e1ff;
+    --color-text-icon: #09da14;
+    --topic-symbol-color: rgba(0, 184, 83, 0.15);
+    --topic-blob-1: rgba(16, 185, 129, 0.25);
+    --topic-blob-2: rgba(0, 217, 250, 0.2);
+    --grid-dot-color: rgb(255, 238, 0);
+  }
+
+.theme-quantum-mechanics, .card-theme-quantum-mechanics {
+    --card-gradient-start: rgb(175, 175, 175);
+    --card-gradient-end: rgb(41, 41, 41);
+    --card-icon-hover: rgb(0, 0, 0);
+    --card-underline: rgb(128, 128, 128);
+    --color-text-title: #22d3ee;
+    --color-text-header: #00e1ff;
+    --color-text-icon: #09da14;
+    --topic-symbol-color: rgba(0, 184, 83, 0.15);
+    --topic-blob-1: rgba(16, 185, 129, 0.25);
+    --topic-blob-2: rgba(0, 217, 250, 0.2);
+    --grid-dot-color: rgb(255, 238, 0);
+  }
+
+.theme-relativity, .card-theme-relativity {
+  --card-gradient-start: rgb(255, 0, 234);
+  --card-gradient-end: rgb(255, 0, 0);
+  --card-icon-hover: rgb(179, 16, 255);
+  --card-underline: rgb(134, 0, 223);
+  --color-text-title: #22d3ee;
+  --color-text-header: #00e1ff;
+  --color-text-icon: #09da14;
+  --topic-symbol-color: rgba(0, 184, 83, 0.15);
+  --topic-blob-1: rgba(16, 185, 129, 0.25);
+  --topic-blob-2: rgba(0, 217, 250, 0.2);
+  --grid-dot-color: rgb(255, 238, 0);
+}
+
 .theme-chemistry, .card-theme-chemistry {
   --card-gradient-start: rgb(255, 166, 0);
   --card-gradient-end: rgb(221, 2, 2);

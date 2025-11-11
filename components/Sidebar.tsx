@@ -17,7 +17,12 @@ import {
   Dna,
   Mountain,
   Orbit,
+  Waves,
+  Scale,
+  Zap,
+  TrendingUp,
   FunctionSquare,
+  GitMergeIcon,
 } from "@/components/icons";
 
 export default function Sidebar() {
@@ -51,6 +56,9 @@ export default function Sidebar() {
   );
   const [expandNatural, setExpandNatural] = useState(
     pathname.startsWith("/natural-science"),
+  );
+  const [expandPhysics, setExpandPhysics] = useState(
+    pathname.startsWith("/natural-science/physics")
   );
   const [expandSocial, setExpandSocial] = useState(
     pathname.startsWith("/social-science"),
@@ -205,13 +213,60 @@ export default function Sidebar() {
             active={pathname === "/natural-science"}
           >
             {/* Physics */}
-            <SidebarLink
-              href="/natural-science/physics"
+            <Dropdown
               label="Physics"
               icon={<Atom size={14} />}
-              active={pathname.startsWith("/natural-science/physics")}
+              expanded={expandPhysics}
+              setExpanded={setExpandPhysics}
+              href="/natural-science/physics"
+              active={pathname === "/natural-science/physics"}
               nested
-            />
+            >
+              {/* --- New Sub-links for Physics --- */}
+              <SidebarLink
+                href="/natural-science/physics/classical-mechanics"
+                label="Classical Mechanics"
+                icon={<TrendingUp size={14} />}
+                active={pathname.startsWith("/natural-science/physics/classical-mechanics")}
+                nested
+              />
+              <SidebarLink
+                href="/natural-science/physics/electromagnetism"
+                label="Electromagnetism"
+                icon={<Zap size={14} />}
+                active={pathname.startsWith("/natural-science/physics/electromagnetism")}
+                nested
+              />
+              <SidebarLink
+                href="/natural-science/physics/thermodynamics"
+                label="Thermodynamics"
+                icon={<Scale size={14} />}
+                active={pathname.startsWith("/natural-science/physics/thermodynamics")}
+                nested
+              />
+              <SidebarLink
+                href="/natural-science/physics/waves-optics"
+                label="Waves and Optics"
+                icon={<Waves size={14} />}
+                active={pathname.startsWith("/natural-science/physics/waves-optics")}
+                nested
+              />
+              <SidebarLink
+                href="/natural-science/physics/quantum-mechanics"
+                label="Quantum Mechanics"
+                icon={<Orbit size={14} />}
+                active={pathname.startsWith("/natural-science/physics/quantum-mechanics")}
+                nested
+              />
+              <SidebarLink
+                href="/natural-science/physics/relativity"
+                label="Relativity"
+                icon={<GitMergeIcon size={14} />}
+                active={pathname.startsWith("/natural-science/physics/relativity")}
+                nested
+              />
+            </Dropdown>
+
             {/* Chemistry */}
             <SidebarLink
               href="/natural-science/chemistry"
