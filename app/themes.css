@@ -60,8 +60,8 @@
     --theme-badge-border: rgba(129, 140, 248, 0.38);
     --theme-badge-text: #bebebe;
     --theme-blob-1: rgb(145, 7, 7);
-    --theme-blob-2: rgb(97, 44, 0);
-    --theme-grid-color: rgba(255, 163, 147, 0.062);
+    --theme-blob-2: rgb(73, 33, 0);
+    --theme-grid-color: rgba(80, 12, 0, 0.247);
   }
   
   .theme-natural-science {
@@ -134,6 +134,7 @@
     --theme-grid-color: rgba(216, 122, 0, 0.1);
   }
 /*----------------------------------------------------------------------------------------------------------*/
+
   .theme-math {
     --theme-gradient-start: #ff0037;
     --theme-gradient-end: #ff6600;
@@ -325,9 +326,9 @@
 
   .theme-data-science {
     --theme-gradient-start: #fbff00;
-    --theme-gradient-end: #ad9300;
+    --theme-gradient-end: #ad6200;
     --theme-icon-hover: #ffee00;
-    --theme-underline: #d9ff003d;
+    --theme-underline: #ff91003d;
     --theme-text-title: #fbff00;
     --theme-text-header: #ad9300;
     --theme-text-icon: var(--theme-text-title);
@@ -338,10 +339,10 @@
   }
 
   .theme-information-science {
-    --theme-gradient-start: #00ff00;
-    --theme-gradient-end: #96cc00;
-    --theme-icon-hover: #bbfcee;
-    --theme-underline: #ffffff3d;
+    --theme-gradient-start: #00fff2c0;
+    --theme-gradient-end: #e5ff00;
+    --theme-icon-hover: #00fff2;
+    --theme-underline: #00ffff3d;
     --theme-text-title: #00ff00;
     --theme-text-header: #96cc00;
     --theme-text-icon: var(--theme-text-title);
@@ -352,22 +353,22 @@
   }
 
   .theme-computer-science {
-    --theme-gradient-start: #ffffff;
-    --theme-gradient-end: #4b4b4b;
+    --theme-gradient-start: #3cff00;
+    --theme-gradient-end: #000000;
     --theme-icon-hover: #15ff00;
     --theme-underline: #1eff00;
     --theme-text-title: #ffffff;
     --theme-text-header: #4b4b4b;
     --theme-text-icon: var(--theme-text-title);
     --theme-symbol-color: rgba(255, 255, 255, 0.15);
-    --theme-blob-1: rgba(255, 255, 255, 0.25);
+    --theme-blob-1: rgb(255, 255, 255);
     --theme-blob-2: rgba(75, 75, 75, 0.2);
     --theme-grid-color: rgba(255, 255, 255, 0.08);
   }
 
 /*---------------------------------------------------------------------------------------------------------------*/
 
-.theme-astronomy {
+  .theme-astronomy {
     --theme-gradient-start: rgb(140, 0, 255);
     --theme-gradient-end: rgb(2, 0, 97);
     --theme-icon-hover: rgb(163, 0, 155);
@@ -381,7 +382,7 @@
     --theme-grid-color: rgba(13, 6, 20, 0.726);
   }
 
-.theme-physics {
+  .theme-physics {
     --theme-gradient-start: rgb(0, 0, 255);
     --theme-gradient-end: rgb(255, 0, 0);
     --theme-icon-hover: rgb(255, 251, 0);
@@ -395,7 +396,7 @@
     --theme-grid-color: rgb(255, 255, 255);
   }
 
-.theme-classical-mechanics {
+  .theme-classical-mechanics {
   --theme-gradient-start: rgba(21, 255, 0, 0.815);
   --theme-gradient-end: rgb(251, 255, 0);
   --theme-icon-hover: rgb(255, 251, 0);
@@ -409,7 +410,7 @@
   --theme-grid-color: rgb(255, 238, 0);
   }
 
-.theme-electromagnetism {
+  .theme-electromagnetism {
     --theme-gradient-start: rgb(98, 0, 255);
     --theme-gradient-end: rgb(0, 4, 255);
     --theme-icon-hover: rgb(255, 251, 0);
@@ -423,7 +424,7 @@
     --theme-grid-color: rgb(255, 238, 0);
   }
 
-.theme-thermodynamics {
+  .theme-thermodynamics {
     --theme-gradient-start: rgb(255, 153, 0);
     --theme-gradient-end: rgb(255, 0, 0);
     --theme-icon-hover: rgb(255, 251, 0);
@@ -437,7 +438,7 @@
     --theme-grid-color: rgb(255, 238, 0);
   }
 
-.theme-waves-optics {
+  .theme-waves-optics {
     --theme-gradient-start: rgb(0, 255, 234);
     --theme-gradient-end: rgb(212, 0, 255);
     --theme-icon-hover: rgb(204, 0, 255);
