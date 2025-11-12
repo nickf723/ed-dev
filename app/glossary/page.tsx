@@ -4,20 +4,19 @@
 import FloatingSymbols from "@/components/FloatingSymbols";
 import PageHeader from "@/components/PageHeader";
 import TopicCard from "@/components/TopicCard";
-import { BookMarked, Layers, Network } from "lucide-react";
+// NEW: Added Waypoints and Calculator
+import { BookMarked, Layers, Network, Waypoints, Calculator } from "lucide-react";
 import { glossaryTerms } from "@/lib/glossary-db"; // <-- IMPORT THE DB
 
 const knowledgeSymbols = [ "✦", "✧", "✹", "✺", "◇", "◆", "⌘",  "∞", "⚙", "⚛", "🜚", "🝗", ];
 
-// REWORKED: This array now just defines the *structure*
-// The definitions are pulled from the glossary-db.ts
+// REWORKED: Added new sections for math terms
 const glossarySections = [
   {
     id: "foundation",
     title: "Foundational Language",
     desc: "Core terminology that appears across subjects — perfect for quick refreshers before diving into lessons.",
     Icon: BookMarked,
-    // This array now just lists the *keys* from the database
     entries: ["Abstraction", "Model", "Heuristic"],
   },
   {
@@ -33,6 +32,51 @@ const glossarySections = [
     desc: "Terms that help you translate insights between math, computing, and real-world systems.",
     Icon: Network,
     entries: ["Feedback Loop", "Symmetry", "Optimization"],
+  },
+  // --- NEW SECTION ---
+  {
+    id: "number-systems",
+    title: "Number Systems",
+    desc: "The fundamental types of numbers, from simple counting to complex analysis.",
+    Icon: Waypoints,
+    entries: [
+      "Number System",
+      "Natural Numbers",
+      "Whole Numbers",
+      "Integers",
+      "Rational Numbers",
+      "Irrational Numbers",
+      "Real Numbers",
+      "Imaginary Unit",
+      "Complex Numbers",
+    ],
+  },
+  // --- NEW SECTION ---
+  {
+    id: "algebraic-ops",
+    title: "Algebraic Operations",
+    desc: "The core rules and concepts for manipulating numbers and variables.",
+    Icon: Calculator,
+    entries: [
+      "Commutative Property",
+      "Associative Property",
+      "Identity Property",
+      "Additive Identity",
+      "Multiplicative Identity",
+      "Inverse Property",
+      "Additive Inverse",
+      "Multiplicative Inverse",
+      "Distributive Property",
+      "Order of Operations",
+      "Absolute Value",
+      "Factor",
+      "Multiple",
+      "Greatest Common Factor",
+      "Least Common Multiple",
+      "Ratio",
+      "Rate",
+      "Percentage",
+    ],
   },
 ];
 
@@ -52,12 +96,13 @@ export default function GlossaryPage() {
         ))}
       </section>
 
-      <div className="grid w-full max-w-5xl gap-8 text-left lg:grid-cols-2">
+      {/* REWORKED: Adjusted grid columns for potentially 5 items */}
+      <div className="grid w-full max-w-7xl gap-8 text-left md:grid-cols-2 xl:grid-cols-3">
         {glossarySections.map(({ id, title, entries }) => (
           <article key={id} id={id} className="glass border border-white/10 p-8">
             <h2 className="text-xl font-semibold text-[var(--color-text-header)]">{title}</h2>
             <ul className="mt-6 space-y-4">
-              {/* REWORKED: Map over the entry keys and pull def from the imported db */}
+              {/* This part correctly reads from the DB */}
               {entries.map((term) => (
                 <li key={term} className="rounded-xl border border-white/5 bg-white/5 p-4">
                   <p className="text-sm font-semibold uppercase tracking-wide text-[var(--color-text-title)]">
