@@ -34,6 +34,7 @@ import {
   Lightbulb,
   BookCopy,
   Check,
+  AlertTriangle,
   X as XIcon,
   Key, // Added for new aside
   Link as LinkIcon, // Added for new aside
@@ -324,21 +325,23 @@ export default function NumbersAndOperationsPage() {
                     </li>
                   </ul>
                 </ExampleBlock>
-                <SideNote>
-                  Historically, the discovery of new number systems solved problems
-                  that were once thought impossible.
-                  <ul className="mt-2 list-disc pl-5">
-                    <li>
-                      <M>x + 5 = 2</M> is impossible with only <strong>Whole Numbers</strong>,
-                      but solvable with <strong>Integers</strong> (<M>x = -3</M>).
-                    </li>
-                    <li>
-                      <M>x^2 = 2</M> is impossible with only <strong>Rational Numbers</strong>,
-                      but solvable with <strong>Irrational Numbers</strong> (
-                      <M>x = \sqrt2</M>).
-                    </li>
-                  </ul>
-                </SideNote>
+                  <SideNote>
+                    <ContentP>
+                      Historically, the discovery of new number systems solved problems
+                      that were once thought impossible.
+                    </ContentP>
+                    <ul className="mt-2 list-disc pl-5">
+                      <li>
+                        <M>x + 5 = 2</M> is impossible with only <strong>Whole Numbers</strong>,
+                        but solvable with <strong>Integers</strong> (<M>x = -3</M>).
+                      </li>
+                      <li>
+                        <M>x^2 = 2</M> is impossible with only <strong>Rational Numbers</strong>,
+                        but solvable with <strong>Irrational Numbers</strong> (
+                        <M>x = \sqrt(2)</M>).
+                      </li>
+                    </ul>
+                  </SideNote>
               </CollapsibleTopic>
 
               <CollapsibleTopic title="1.4 Beyond the Real Line" icon={Sigma}>
@@ -360,9 +363,11 @@ export default function NumbersAndOperationsPage() {
                   </TermDefinition>
                 </div>
                 <SideNote>
-                  <strong>Complex Numbers</strong> are not just a mathematical curiosity!
-                  They are essential in advanced engineering, quantum mechanics, and
-                  electrical signal processing.
+                  <ContentP>
+                    <strong>Complex Numbers</strong> are not just a mathematical curiosity!
+                    They are essential in advanced engineering, quantum mechanics, and
+                    electrical signal processing.
+                  </ContentP>
                 </SideNote>
               </CollapsibleTopic>
             </div>
@@ -436,8 +441,8 @@ export default function NumbersAndOperationsPage() {
             </ContentP>
             <LessonImage
               src="/images/absolute-value.png"
-              
               caption="Both 5 and -5 are the same distance (5 units) from 0 on the number line."
+              bgColor="white"
             />
             <ExampleBlock>
               <p><M>|5| = 5</M> (5 is 5 units away from 0)</p>
@@ -543,6 +548,7 @@ export default function NumbersAndOperationsPage() {
         {/* --- Column 2: Aside/Sidebar --- */}
         <aside className="lg:col-span-1 text-left lg:sticky lg:top-24 h-min space-y-8">
           <KeyConceptsAside />
+          <CommonPitfallsAside/>
           <RelatedTopicsAside />
         </aside>
       </div>
@@ -550,7 +556,7 @@ export default function NumbersAndOperationsPage() {
   );
 }
 
-// --- NEW HELPER COMPONENT: Key Concepts Aside ---
+// --- Key Concepts Aside ---
 function KeyConceptsAside() {
   return (
     <div className="glass rounded-2xl border border-cyan-800/40 bg-cyan-900/20 p-6">
@@ -575,8 +581,7 @@ function KeyConceptsAside() {
     </div>
   );
 }
-
-// --- NEW HELPER COMPONENT: Related Topics Aside ---
+// --- Related Topics Aside ---
 function RelatedTopicsAside() {
   return (
     <div className="glass rounded-2xl border border-neutral-800/60 p-6">
@@ -599,8 +604,7 @@ function RelatedTopicsAside() {
     </div>
   );
 }
-
-// --- NEW HELPER COMPONENT: Aside Link ---
+// --- Aside Link ---
 function AsideLink({ href, title, description }: { href: string; title: string; description: string }) {
   const isPlanned = href === "#";
   return (
@@ -629,7 +633,31 @@ function AsideLink({ href, title, description }: { href: string; title: string; 
     </Link>
   );
 }
-
+// --- Pitfalls Aside ---
+function CommonPitfallsAside() {
+  return (
+    <div className="glass rounded-2xl border border-amber-800/40 bg-amber-900/20 p-6">
+      <h3 className="mb-4 flex items-center gap-2 text-lg font-semibold text-amber-300">
+        <AlertTriangle size={18} />
+        Common Pitfalls
+      </h3>
+      <ul className="list-disc space-y-2 pl-5 text-sm text-neutral-300">
+        <li>
+          <strong>PEMDAS errors:</strong> Forgetting to do Multiplication/Division *before* Addition/Subtraction.
+        </li>
+        <li>
+          <strong>Distributive Property:</strong> Forgetting to multiply the factor by *every* term inside the parentheses. E.g., <M>3(x+2)</M> becomes <M>3x+6</M>, not <M>3x+2</M>.
+        </li>
+        <li>
+          <strong>Dividing by Zero:</strong> This operation is undefined. Be careful with fractions where the denominator could become zero.
+        </li>
+        <li>
+          <strong>Negative Signs:</strong> Losing track of negative signs during subtraction or multiplication (e.g., <M>5 - (-2) = 7</M>, not 3).
+        </li>
+      </ul>
+    </div>
+  );
+}
 
 // --- HELPER COMPONENTS (MOVED FROM NUMBER-SYSTEMS.TSX) ---
 function NumberClassifierApplet() {

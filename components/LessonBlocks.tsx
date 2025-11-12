@@ -38,6 +38,13 @@ type CollapsibleTopicProps = {
   startOpen?: boolean;
 };
 
+//Lesson Image Component
+type LessonImageProps = {
+  src: string;
+  caption?: string;
+  bgColor?: string;
+};
+
 export default function LessonHeader({
   icon: Icon,
   title,
@@ -97,9 +104,8 @@ export function SideNote({ children }: { children: React.ReactNode }) {
     <aside className="my-4 rounded-lg border border-amber-700 bg-amber-900/30 p-4">
       <div className="flex gap-3">
         <Info size={18} className="mt-1 flex-shrink-0 text-amber-400" />
-        {/* REWORKED: Added space-y-2 for internal spacing */}
         <div className="text-sm text-amber-300 prose-p:!my-0 space-y-2">
-          <ContentP>{children}</ContentP>
+          {children}
         </div>
       </div>
     </aside>
@@ -107,11 +113,21 @@ export function SideNote({ children }: { children: React.ReactNode }) {
 }
 
 //Image Component
-export function LessonImage({src, caption}: {src: string; caption?: string;}) {
+export function LessonImage({ src, caption, bgColor }: LessonImageProps) {
   return (
+    // REWORKED: Added my-6 for spacing
     <figure className="my-6">
-      <img src={src} alt={caption || "Diagram"} className="mx-auto rounded-lg border border-neutral-800 shadow-lg"/>
-      {caption && (<figcaption className="mt-2 text-center text-sm text-neutral-400">{caption}</figcaption>)}
+      <img
+        src={src}
+        alt={caption || "Diagram"}
+        className="mx-auto rounded-lg border border-neutral-800 shadow-lg"
+        style={{ backgroundColor: bgColor }}
+      />
+      {caption && (
+        <figcaption className="mt-2 text-center text-sm text-neutral-400">
+          {caption}
+        </figcaption>
+      )}
     </figure>
   );
 }
