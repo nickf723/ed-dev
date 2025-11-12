@@ -3,7 +3,7 @@
 
 import Link from "next/link";
 import React, { useEffect, useRef } from "react";
-import { ChevronRight } from "@/components/icons"; // Import ChevronRight
+import { ChevronRight } from "@/components/icons";
 
 // --- Types ---
 type Unit = {
@@ -12,6 +12,7 @@ type Unit = {
   status: "In Progress" | "Planned" | "Complete";
 };
 
+//Properties
 type TopicCardProps = {
   href: string;
   title: string;
@@ -21,7 +22,7 @@ type TopicCardProps = {
   className?: string;
   difficulty?: string;
   units?: Unit[];
-  subtitle: string;
+  subtitle?: string;
 };
 
 // --- Helper Functions ---
@@ -77,7 +78,6 @@ export default function TopicCard(props: TopicCardProps) {
   }, []);
 
   const cardStyles = { ...style } as React.CSSProperties;
-  // Added flex flex-col to allow for units list at bottom
   const cardClasses = `topic-card tilt group card-accent ${className} flex flex-col`;
 
   // --- Reusable Inner Content ---
@@ -91,13 +91,11 @@ export default function TopicCard(props: TopicCardProps) {
             "linear-gradient(to top right, var(--card-gradient-start), var(--card-gradient-end))",
         }}
       />
-
       {/* Main Content Wrapper */}
       <div className="relative z-10">
         {Icon && (
           <Icon className="mb-2 h-10 w-10 text-neutral-500 transition-colors group-hover:[color:var(--card-icon-hover)]" />
         )}
-
         {/* Title (conditionally a Link) */}
         {units && units.length > 0 ? (
           <Link href={href} className="text-2xl font-semibold sm:text-3xl">
@@ -108,8 +106,7 @@ export default function TopicCard(props: TopicCardProps) {
                   "linear-gradient(to right, var(--card-gradient-start), var(--card-gradient-end))",
                 backgroundClip: "text",
                 WebkitBackgroundClip: "text",
-              }}
-            >
+              }}>
               {title}
             </h2>
           </Link>

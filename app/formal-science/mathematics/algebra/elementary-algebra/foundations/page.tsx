@@ -5,8 +5,8 @@ import FloatingSymbols from "@/components/FloatingSymbols";
 import TopicCard from "@/components/TopicCard";
 import {
   Calculator,
-  FunctionSquare,
-  Sparkles,
+  SquareFunction,
+  Sparkle,
   Shuffle,
 } from "@/components/icons";
 import React from "react";
@@ -33,16 +33,18 @@ const foundationsTopics = [
     href: "/formal-science/mathematics/algebra/elementary-algebra/foundations/num-ops",
     Icon: Calculator,
     description: "Explore number systems, properties, and the order of operations.",
-    className: "card-theme-elementary-algebra-foundations", // <-- FIXED
+    className: "card-theme-elementary-algebra-foundations",
     status: "In Progress",
+    subtitle: ""
   },
   {
     title: "Variables & Expressions",
     href: "#",
-    Icon: FunctionSquare,
+    Icon: SquareFunction,
     description: "Learn how symbols (variables) are used to represent unknown values.",
     className: "card-theme-elementary-algebra-foundations",
     status: "Planned",
+    subtitle: ""
   },
   {
     title: "Properties of Algebra",
@@ -51,6 +53,7 @@ const foundationsTopics = [
     description: "The core rules (commutative, associative, distributive) that govern algebra.",
     className: "card-theme-elementary-algebra-foundations",
     status: "Planned",
+    subtitle: ""
   },
 ];
 
@@ -74,6 +77,7 @@ export default function FoundationsPage() {
             Icon={topic.Icon}
             desc={topic.description}
             className={topic.className}
+            subtitle={topic.subtitle}
           />
         ))}
       </section>

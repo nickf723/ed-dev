@@ -37,8 +37,8 @@
     --topic-badge-bg: rgba(207, 110, 0, 0.699);
     --topic-badge-border: rgba(129, 140, 248, 0.38);
     --topic-badge-text: #bebebe;
-    --topic-blob-1: none;
-    --topic-blob-2: none;
+    --topic-blob-1: rgb(145, 7, 7);
+    --topic-blob-2: rgb(97, 44, 0);
   }
   
   .theme-natural-science, .card-theme-natural-science {

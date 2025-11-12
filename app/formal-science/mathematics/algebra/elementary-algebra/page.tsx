@@ -4,7 +4,7 @@ import PageHeader from "@/components/PageHeader";
 import FloatingSymbols from "@/components/FloatingSymbols";
 import TopicCard from "@/components/TopicCard";
 import {
-  Sparkles,
+  Sparkle,
   Equal,
   AreaChart,
   BookMarked,
@@ -34,7 +34,7 @@ const elementaryAlgebraUnits = [
   {
     title: "Foundations",
     href: "/formal-science/mathematics/algebra/elementary-algebra/foundations",
-    Icon: Sparkles,
+    Icon: Sparkle,
     description: "The basic building blocks: numbers, variables, and operations.",
     className: "card-theme-elementary-algebra-foundations",
   },
