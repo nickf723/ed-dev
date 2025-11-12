@@ -21,8 +21,8 @@ import {
   Scale,
   Zap,
   TrendingUp,
-  FunctionSquare,
-  GitMergeIcon,
+  SquareFunction,
+  GitMerge,
 } from "@/components/icons";
 
 export default function Sidebar() {
@@ -124,7 +124,7 @@ export default function Sidebar() {
               {/* Algebra Dropdown */}
               <Dropdown
                 label="Algebra"
-                icon={<FunctionSquare size={14} />}
+                icon={<SquareFunction size={14} />}
                 expanded={expandAlgebra}
                 setExpanded={setExpandAlgebra}
                 href="/formal-science/mathematics/algebra"
@@ -261,7 +261,7 @@ export default function Sidebar() {
               <SidebarLink
                 href="/natural-science/physics/relativity"
                 label="Relativity"
-                icon={<GitMergeIcon size={14} />}
+                icon={<GitMerge size={14} />}
                 active={pathname.startsWith("/natural-science/physics/relativity")}
                 nested
               />

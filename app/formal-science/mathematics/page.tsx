@@ -3,6 +3,7 @@
 import PageHeader from "@/components/PageHeader";
 import FloatingSymbols from "@/components/FloatingSymbols";
 import TopicCard from "@/components/TopicCard";
+import { TrendingUpDown, Network, Plus, Dices, Shapes, X } from "lucide-react";
 
 const mathSymbols = [
   "π", "∞", "√", "∑", "Δ", "θ", "φ", "Ω", "λ", "a²+b²=c²",
@@ -17,37 +18,42 @@ export default function MathPage() {
       title: "Algebra",
       desc: "The language of patterns and equations — where symbols reveal logic.",
       href: "/formal-science/mathematics/algebra",
-      Icon: undefined,
+      Icon: X,
       className: "theme-algebra"
     },
     {
       title: "Geometry and Trigonometry",
       desc: "Understanding shape, space, and proportion — mathematics made visual.",
       href: "/formal-science/mathematics/geometry",
+      Icon: Shapes,
       className: "theme-geometry topic-card-wide"
     },
     {
       title: "Calculus",
       desc: "Exploring motion and change — the mathematics of the universe’s flow.",
       href: "/formal-science/mathematics/calculus",
+      Icon: TrendingUpDown,
       className: "theme-calculus"
     },
     {
       title: "Statistics and Probability",
       desc: "Finding truth in data — probability, inference, and real-world meaning.",
       href: "/formal-science/mathematics/statistics",
+      Icon: Dices,
       className: "theme-statistics topic-card-wide"
     },
     {
       title: "Number Theory",
       desc: "Numbers and their hidden properties — the purest form of mathematical thought.",
       href: "/formal-science/mathematics/number-theory",
+      Icon: Plus,
       className: "theme-number-theory"
     },
     {
       title: "Discrete Mathematics",
       desc: "The study of countable structures — essential for computer science and combinatorics.",
       href: "/formal-science/mathematics/discrete-mathematics",
+      Icon: Network,
       className: "theme-discrete-math"
     },
   ];
