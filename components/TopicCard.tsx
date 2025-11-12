@@ -88,13 +88,13 @@ export default function TopicCard(props: TopicCardProps) {
         className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-50 blur-3xl"
         style={{
           background:
-            "linear-gradient(to top right, var(--card-gradient-start), var(--card-gradient-end))",
+            "linear-gradient(to top right, var(--theme-gradient-start), var(--theme-gradient-end))",
         }}
       />
       {/* Main Content Wrapper */}
       <div className="relative z-10">
         {Icon && (
-          <Icon className="mb-2 h-10 w-10 text-neutral-500 transition-colors group-hover:[color:var(--card-icon-hover)]" />
+          <Icon className="mb-2 h-10 w-10 text-neutral-500 transition-colors group-hover:[color:var(--theme-icon-hover)]" />
         )}
         {/* Title (conditionally a Link) */}
         {units && units.length > 0 ? (
@@ -103,7 +103,7 @@ export default function TopicCard(props: TopicCardProps) {
               className="bg-clip-text text-transparent"
               style={{
                 background:
-                  "linear-gradient(to right, var(--card-gradient-start), var(--card-gradient-end))",
+                  "linear-gradient(to right, var(--theme-gradient-start), var(--theme-gradient-end))",
                 backgroundClip: "text",
                 WebkitBackgroundClip: "text",
               }}>
@@ -115,7 +115,7 @@ export default function TopicCard(props: TopicCardProps) {
             className="bg-clip-text text-2xl font-semibold text-transparent sm:text-3xl"
             style={{
               background:
-                "linear-gradient(to right, var(--card-gradient-start), var(--card-gradient-end))",
+                "linear-gradient(to right, var(--theme-gradient-start), var(--theme-gradient-end))",
               backgroundClip: "text",
               WebkitBackgroundClip: "text",
             }}
@@ -128,7 +128,7 @@ export default function TopicCard(props: TopicCardProps) {
           <p className="bg-clip-text text-transparent"
           style={{
                 background:
-                  "linear-gradient(to right, var(--card-gradient-start), var(--card-gradient-end))",
+                  "linear-gradient(to right, var(--theme-gradient-start), var(--theme-gradient-end))",
                 backgroundClip: "text",
                 WebkitBackgroundClip: "text",
               }}>
@@ -187,7 +187,7 @@ export default function TopicCard(props: TopicCardProps) {
       {/* Underline accent */}
       <div
         className="absolute bottom-0 left-0 h-[25px] w-0 transition-all duration-1000 group-hover:w-full"
-        style={{ backgroundColor: "var(--card-underline)" }}
+        style={{ backgroundColor: "var(--theme-underline)" }}
       />
     </>
   );

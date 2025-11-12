@@ -4,31 +4,18 @@ import PageHeader from "@/components/PageHeader";
 import FloatingSymbols from "@/components/FloatingSymbols";
 import TopicCard from "@/components/TopicCard";
 import {
-  TrendingUp,
+  RollerCoaster,
   Zap,
   Waves,
-  Scale,
+  Flame,
   Orbit,
-  GitMerge,
+  Hourglass,
+
 } from "@/components/icons";
 
 // Symbols for the background
 const physicsSymbols = [
-  "F=ma",
-  "E=mc²",
-  "λ",
-  "v",
-  "c",
-  "ħ",
-  "G",
-  "k",
-  "Ω",
-  "μ₀",
-  "ε₀",
-  "T",
-  "S",
-  "Ψ",
-  "ΔxΔp ≥ ħ/2",
+  "F=ma","E=mc²","λ","v","c","ħ","G","k","Ω","μ₀","ε₀","T","S","Ψ","ΔxΔp ≥ ħ/2",
 ];
 
 export default function PhysicsPage() {
@@ -37,7 +24,7 @@ export default function PhysicsPage() {
       title: "Classical Mechanics",
       desc: "The study of motion, forces, and energy for macroscopic objects. (e.g., Kinematics, Dynamics, Statics)",
       href: "/natural-science/physics/classical-mechanics",
-      Icon: TrendingUp,
+      Icon: RollerCoaster,
       className: "theme-classical-mechanics topic-card-wide",
     },
     {
@@ -51,7 +38,7 @@ export default function PhysicsPage() {
       title: "Thermodynamics",
       desc: "The study of heat, work, temperature, and energy in physical systems.",
       href: "/natural-science/physics/thermodynamics",
-      Icon: Scale,
+      Icon: Flame,
       className: "theme-thermodynamics topic-card-wide",
     },
     {
@@ -72,7 +59,7 @@ export default function PhysicsPage() {
       title: "Relativity",
       desc: "The study of motion at high velocities and the nature of gravity and spacetime.",
       href: "/natural-science/physics/relativity",
-      Icon: GitMerge,
+      Icon: Hourglass,
       className: "theme-relativity topic-card-wide",
     },
   ];

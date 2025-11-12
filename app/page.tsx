@@ -1,13 +1,13 @@
 "use client";
 
 import {
-  Calculator,
-  BookOpen,
-  FlaskConical,
-  Users,
-  Building,
+  Pi,
+  BookText,
+  Atom,
+  Handshake,
+  Hammer,
   Palette,
-  GitMerge,
+  Link,
 } from "@/components/icons";
 import TopicCard from "@/components/TopicCard";
 
@@ -17,7 +17,7 @@ export default function Home() {
       title: "Formal Sciences",
       desc: "Study of abstract systems and logic.",
       href: "/formal-science",
-      Icon: Calculator,
+      Icon: Pi,
       className: "theme-formal-science"
     }
   ,
@@ -25,21 +25,21 @@ export default function Home() {
       title: "Natural Sciences",
       desc: "Study of the physical world.",
       href: "/natural-science",
-      Icon: FlaskConical,
+      Icon: Atom,
       className: "theme-natural-science"
     },
     {
       title: "Social Sciences",
       desc: "Study of societies and relationships.",
       href: "/social-science",
-      Icon: Users,
+      Icon: Handshake,
       className: "theme-social-science"
     },
     {
       title: "Applied Sciences",
       desc: "Study of practical applications.",
       href: "/applied-science",
-      Icon: Building,
+      Icon: Hammer,
       className: "theme-applied-science"
     },
     {
@@ -53,14 +53,14 @@ export default function Home() {
       title: "Interdisciplines",
       desc: "Connecting fields of study.",
       href: "/interdisciplines",
-      Icon: GitMerge,
+      Icon: Link,
       className: "theme-interdisciplines"
     },
     {
       title: "Glossary",
       desc: "Definitions and key terms.",
       href: "/glossary",
-      Icon: BookOpen,
+      Icon: BookText,
       className: "theme-glossary"
     },
   ];

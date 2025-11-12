@@ -1,36 +1,10 @@
 // app/formal-science/mathematics/algebra/elementary-algebra/foundations/num-ops/page.tsx
 "use client";
 import PageHeader from "@/components/PageHeader";
-import TopicCard from "@/components/TopicCard"
+import TopicCard from "@/components/TopicCard";
 import FloatingSymbols from "@/components/FloatingSymbols";
-import {
-  CollapsibleTopic,
-  ContentP,
-  ContentSubhead,
-  TermDefinition,
-  AppletContainer,
-  SideNote,
-  LessonImage,
-  ExampleBlock,
-  ContentTabs,
-  TabItem
-} from "@/components/LessonBlocks";
-import {
-  BookCopy,
-  Plus,
-  Minus,
-  Binary,
-  Percent,
-  Calculator,
-  ChevronRight,
-  Scale,
-  Component,
-  Shuffle,
-  ArrowRightLeft,
-  Parentheses,
-  Sigma,
-  Spline,
-} from "@/components/icons";
+import {CollapsibleTopic, ContentP, ContentSubhead, TermDefinition, AppletContainer, SideNote, LessonImage, ExampleBlock, ContentTabs, TabItem} from "@/components/LessonBlocks";
+import { Plus, SquareDivide, Binary, Percent, Calculator, ChevronRight, Pause, SquareX, Shuffle, ArrowRightLeft, Parentheses, Sigma, Spline,} from "@/components/icons";
 import React, { useState, useEffect } from "react";
 import { MBlock, M } from "@/components/Math";
   
@@ -190,10 +164,7 @@ export default function NumbersAndOperationsPage() {
       {/* Main content area for collapsible topics */}
       <div className="w-full max-w-6x1 text-left">
         {/* --- 1. NUMBER SYSTEMS --- */}
-        <CollapsibleTopic
-          title="1. Number Systems"
-          icon={Binary}
-          startOpen={true}>
+        <CollapsibleTopic title="1. Number Systems" icon={Binary} startOpen={false}>
           <ContentP>
             In algebra, we don't just work with "numbers"; we work with
             different **systems** of numbers. Each system is like a container
@@ -305,7 +276,7 @@ export default function NumbersAndOperationsPage() {
           </ExampleBlock>
         </CollapsibleTopic>
         {/* --- 4. ABSOLUTE VALUE --- */}
-        <CollapsibleTopic title="4. Absolute Value" icon={Scale}>
+        <CollapsibleTopic title="4. Absolute Value" icon={Pause}>
           <ContentP>
             The <strong>Absolute Value</strong> of a number is its distance
             from zero on the number line. Distance is always positive, so the
@@ -319,7 +290,7 @@ export default function NumbersAndOperationsPage() {
           </ExampleBlock>
         </CollapsibleTopic>
         {/* --- 5. FACTORS AND MULTIPLES --- */}
-        <CollapsibleTopic title="5. Factors and Multiples" icon={Component}>
+        <CollapsibleTopic title="5. Factors and Multiples" icon={SquareX}>
           <ContentP>
             These concepts are key to understanding fractions, division, and
             prime numbers.
@@ -367,7 +338,6 @@ export default function NumbersAndOperationsPage() {
             <p><strong>Dividing (Keep, Change, Flip):</strong> <M>{"\\frac{1}{2} \div \\frac{3}{4} = \\frac{1}{2} \times \\frac{4}{3} = \\frac{4}{6} = \\frac{2}{3}"}</M></p>
           </ExampleBlock>
         </CollapsibleTopic>
-
         {/* --- 7. PERCENTAGES, RATIOS, & RATES --- */}
         <CollapsibleTopic title="7. Percentages, Ratios, & Rates" icon={Percent}>
           <ContentP>
@@ -388,9 +358,8 @@ export default function NumbersAndOperationsPage() {
             </TermDefinition>
           </div>
          </CollapsibleTopic>
-
         {/* --- 8. FRACTIONS AND DECIMALS --- */}
-        <CollapsibleTopic title="8. Fractions and Decimals" icon={Minus}>
+        <CollapsibleTopic title="8. Fractions and Decimals" icon={SquareDivide}>
           <ContentP>
             Fractions and decimals are two different ways to represent the same
             rational numbers (parts of a whole).

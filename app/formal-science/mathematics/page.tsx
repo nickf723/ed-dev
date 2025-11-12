@@ -3,7 +3,7 @@
 import PageHeader from "@/components/PageHeader";
 import FloatingSymbols from "@/components/FloatingSymbols";
 import TopicCard from "@/components/TopicCard";
-import { TrendingUpDown, Network, Plus, Variable, Dices, Shapes, X } from "lucide-react";
+import { Tangent, Spline, SquarePlus, Variable, Dices, Shapes, X } from "lucide-react";
 
 const mathSymbols = [
   "π", "∞", "√", "∑", "Δ", "θ", "φ", "Ω", "λ", "a²+b²=c²",
@@ -34,7 +34,7 @@ export default function MathPage() {
       title: "Calculus",
       desc: "Exploring motion and change — the mathematics of the universe’s flow.",
       href: "/formal-science/mathematics/calculus",
-      Icon: TrendingUpDown,
+      Icon: Tangent,
       className: "theme-calculus",
       subtitle: ""
     },
@@ -50,7 +50,7 @@ export default function MathPage() {
       title: "Number Theory",
       desc: "Numbers and their hidden properties — the purest form of mathematical thought.",
       href: "/formal-science/mathematics/number-theory",
-      Icon: Plus,
+      Icon: SquarePlus,
       className: "theme-number-theory",
       subtitle: ""
     },
@@ -58,7 +58,7 @@ export default function MathPage() {
       title: "Discrete Mathematics",
       desc: "The study of countable structures — essential for computer science and combinatorics.",
       href: "/formal-science/mathematics/discrete-mathematics",
-      Icon: Network,
+      Icon: Spline,
       className: "theme-discrete-math",
       subtitle: ""
     },

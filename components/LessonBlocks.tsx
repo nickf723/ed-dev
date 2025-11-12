@@ -43,15 +43,15 @@ export default function LessonHeader({
   title,
 }: LessonHeaderProps) {
   return (
-    // 👇 UPDATED: Removed hard-coded text-cyan-300
+    // 👇 UPDATED: Use CSS variable
     <h2
       className="!mt-12 !mb-4 flex items-center gap-3 border-b border-neutral-800 pb-2 text-3xl font-bold"
-      style={{ color: "var(--color-text-header)" }} // Use CSS variable
+      style={{ color: "var(--theme-text-header)" }} 
     >
-      {/* 👇 UPDATED: Removed hard-coded text-cyan-400/70 */}
+      {/* 👇 UPDATED: Use CSS variable */}
       <Icon
         className="h-7 w-7 flex-shrink-0"
-        style={{ color: "var(--color-text-icon)" }} // Use CSS variable
+        style={{ color: "var(--theme-text-icon)" }} 
       />
       <span>{title}</span>
     </h2>
@@ -300,7 +300,7 @@ export function CollapsibleTopic({
         <div className="flex items-center gap-3">
           <Icon
             className="h-6 w-6 flex-shrink-0"
-            style={{ color: "var(--color-text-icon)" }}
+            style={{ color: "var(--theme-text-icon)" }} // UPDATED
           />
           <h2 className="!m-0 text-2xl font-bold text-neutral-100">
             {title}
@@ -356,8 +356,8 @@ export function ContentTabs({
             onClick={() => setActiveIndex(index)}
             className="flex items-center gap-2 rounded-t-md px-4 py-2.5 text-sm
                        font-medium text-neutral-400 transition-colors
-                       hover:text-neutral-100 data-[active=true]:text-[var(--color-text-title)]
-                       -mb-0.5 border-b-2 border-transparent data-[active=true]:border-[var(--color-text-icon)]"
+                       hover:text-neutral-100 data-[active=true]:text-[var(--theme-text-title)]
+                       -mb-0.5 border-b-2 border-transparent data-[active=true]:border-[var(--theme-text-icon)]"
             data-active={index === activeIndex}
           >
             {item.icon && <item.icon size={15} className="shrink-0" />}

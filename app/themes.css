@@ -22,422 +22,516 @@
       radial-gradient(circle at 0% 88%, #a200ffaf, transparent 40%);
   }
 
-  .theme-formal-science, .card-theme-formal-science {
-    --card-gradient-start: rgb(255, 0, 0);
-    --card-gradient-end: rgb(221, 82, 2);
-    --card-icon-hover: rgb(255, 0, 0);
-    --card-underline: rgb(223, 0, 0);;
-    --color-text-title: #ff0000;
-    --color-text-header: #ff8800c2;
-    --topic-symbol-color: rgba(216, 216, 216, 0.144);
-    --topic-surface: rgba(22, 18, 44, 0.65);
-    --topic-surface-border: rgba(128, 128, 128, 0);
-    --topic-card-shadow: rgba(255, 102, 0, 0.63);
-    --topic-card-sheen: rgba(255, 111, 111, 0.411);
-    --topic-badge-bg: rgba(207, 110, 0, 0.699);
-    --topic-badge-border: rgba(129, 140, 248, 0.38);
-    --topic-badge-text: #bebebe;
-    --topic-blob-1: rgb(145, 7, 7);
-    --topic-blob-2: rgb(97, 44, 0);
+  /* --- Standard Theme Variable Set ---
+    --theme-gradient-start: ...
+    --theme-gradient-end: ...
+    --theme-icon-hover: ...
+    --theme-underline: ...
+    --theme-text-title: ...
+    --theme-text-header: ...
+    --theme-text-icon: ...
+    --theme-symbol-color: ...
+    --theme-surface: ...
+    --theme-surface-border: ...
+    --theme-card-shadow: ...
+    --theme-card-sheen: ...
+    --theme-badge-bg: ...
+    --theme-badge-border: ...
+    --theme-badge-text: ...
+    --theme-blob-1: ...
+    --theme-blob-2: ...
+    --theme-grid-color: ...
+  */
+
+  .theme-formal-science {
+    --theme-gradient-start: rgb(255, 0, 0);
+    --theme-gradient-end: rgb(221, 82, 2);
+    --theme-icon-hover: rgb(255, 0, 0);
+    --theme-underline: rgb(223, 0, 0);;
+    --theme-text-title: #ff0000;
+    --theme-text-header: #ff8800c2;
+    --theme-text-icon: var(--theme-text-title);
+    --theme-symbol-color: rgba(216, 216, 216, 0.144);
+    --theme-surface: rgba(22, 18, 44, 0.65);
+    --theme-surface-border: rgba(128, 128, 128, 0);
+    --theme-card-shadow: rgba(255, 102, 0, 0.63);
+    --theme-card-sheen: rgba(255, 111, 111, 0.411);
+    --theme-badge-bg: rgba(207, 110, 0, 0.699);
+    --theme-badge-border: rgba(129, 140, 248, 0.38);
+    --theme-badge-text: #bebebe;
+    --theme-blob-1: rgb(145, 7, 7);
+    --theme-blob-2: rgb(97, 44, 0);
+    --theme-grid-color: rgba(255, 163, 147, 0.062);
   }
   
-  .theme-natural-science, .card-theme-natural-science {
-    --card-gradient-start: #00ff2aff;
-    --card-gradient-end: #02ddddff;
-    --card-icon-hover: #00ff5eff;
-    --card-underline: #00df52ff;
-    --color-text-title: #22d3ee;
-    --color-text-header: #00ff15;
-    --color-text-icon: #da0909;
-    --topic-symbol-color: rgba(177, 177, 177, 0.459);
-    --topic-blob-1: rgba(0, 231, 31, 0.527);
-    --topic-blob-2: rgba(34, 211, 238, 0.637);
-    --grid-dot-color: rgba(255, 251, 0, 0.1);
+  .theme-natural-science {
+    --theme-gradient-start: #00ff2aff;
+    --theme-gradient-end: #02ddddff;
+    --theme-icon-hover: #00ff5eff;
+    --theme-underline: #00df52ff;
+    --theme-text-title: #22d3ee;
+    --theme-text-header: #00ff15;
+    --theme-text-icon: #da0909; /* Was --color-text-icon */
+    --theme-symbol-color: rgba(177, 177, 177, 0.459);
+    --theme-blob-1: rgba(0, 231, 31, 0.527);
+    --theme-blob-2: rgba(34, 211, 238, 0.637);
+    --theme-grid-color: rgba(255, 251, 0, 0.1);
   }
   
-  .theme-social-science, .card-theme-social-science {
-    --card-gradient-start: #1519ffff;
-    --card-gradient-end: #5b04e7ff;
-    --card-icon-hover: #00c;
-    --card-underline: #2e0bf5c2;
+  .theme-social-science {
+    --theme-gradient-start: #1519ffff;
+    --theme-gradient-end: #5b04e7ff;
+    --theme-icon-hover: #00c;
+    --theme-underline: #2e0bf5c2;
+    --theme-text-title: #1519ffff;
+    --theme-text-header: #5b04e7ff;
+    --theme-text-icon: var(--theme-text-title);
+    --theme-symbol-color: rgba(177, 177, 177, 0.459);
+    --theme-blob-1: rgba(21, 25, 255, 0.527);
+    --theme-blob-2: rgba(91, 4, 231, 0.637);
+    --theme-grid-color: rgba(21, 25, 255, 0.1);
   }
 
-  .theme-applied-science, .card-theme-applied-science {
-    --card-gradient-start: rgb(162, 0, 255);
-    --card-gradient-end: #ff0055ff;
-    --card-icon-hover: #ff00aaff;
-    --card-underline: #ff0066c2;
+  .theme-applied-science {
+    --theme-gradient-start: rgb(162, 0, 255);
+    --theme-gradient-end: #ff0055ff;
+    --theme-icon-hover: #ff00aaff;
+    --theme-underline: #ff0066c2;
+    --theme-text-title: rgb(162, 0, 255);
+    --theme-text-header: #ff0055ff;
+    --theme-text-icon: var(--theme-text-title);
+    --theme-symbol-color: rgba(177, 177, 177, 0.459);
+    --theme-blob-1: rgba(162, 0, 255, 0.527);
+    --theme-blob-2: rgba(255, 0, 85, 0.637);
+    --theme-grid-color: rgba(162, 0, 255, 0.1);
   }
 
-  .theme-humanities, .card-theme-humanities {
-    --card-gradient-start: #fffb00ff;
-    --card-gradient-end: rgb(82, 255, 2);
-    --card-icon-hover: #e7eb00ff;
-    --card-underline: #fcf700bb;
+  .theme-humanities {
+    --theme-gradient-start: #fffb00ff;
+    --theme-gradient-end: rgb(82, 255, 2);
+    --theme-icon-hover: #e7eb00ff;
+    --theme-underline: #fcf700bb;
+    --theme-text-title: #fffb00ff;
+    --theme-text-header: rgb(82, 255, 2);
+    --theme-text-icon: var(--theme-text-title);
+    --theme-symbol-color: rgba(177, 177, 177, 0.459);
+    --theme-blob-1: rgba(255, 251, 0, 0.527);
+    --theme-blob-2: rgba(82, 255, 2, 0.637);
+    --theme-grid-color: rgba(255, 251, 0, 0.1);
   }
 
-  .theme-interdisciplines, .card-theme-interdisciplines {
-    --card-gradient-start: rgb(216, 122, 0);
-    --card-gradient-end: rgb(200, 214, 0);
-    --card-icon-hover: rgb(247, 202, 4);
-    --card-underline: rgb(255, 196, 0);
+  .theme-interdisciplines {
+    --theme-gradient-start: rgb(216, 122, 0);
+    --theme-gradient-end: rgb(200, 214, 0);
+    --theme-icon-hover: rgb(247, 202, 4);
+    --theme-underline: rgb(255, 196, 0);
+    --theme-text-title: rgb(216, 122, 0);
+    --theme-text-header: rgb(200, 214, 0);
+    --theme-text-icon: var(--theme-text-title);
+    --theme-symbol-color: rgba(177, 177, 177, 0.459);
+    --theme-blob-1: rgba(216, 122, 0, 0.527);
+    --theme-blob-2: rgba(200, 214, 0, 0.637);
+    --theme-grid-color: rgba(216, 122, 0, 0.1);
   }
 /*----------------------------------------------------------------------------------------------------------*/
-  .theme-math, .card-theme-math {
-    --card-gradient-start: #ff0037;
-    --card-gradient-end: #ff6600;
-    --card-icon-hover: #ff0000;
-    --card-underline: #ff00003d;
-    --color-text-title: #ff0000;
-    --color-text-header: #ff0037;
-    --topic-symbol-color: rgba(251, 146, 60, 0.22);
-    --topic-surface: rgba(25, 11, 23, 0.65);
-    --topic-surface-border: rgba(220, 38, 38, 0.28);
-    --topic-card-shadow: rgba(230, 0, 0, 0.23);
-    --topic-card-sheen: rgba(255, 87, 87, 0.22);
-    --topic-badge-bg: rgba(251, 146, 60, 0.18);
-    --topic-badge-border: rgba(251, 146, 60, 0.38);
-    --topic-badge-text: #fbc2a0;
-    --topic-blob-1: rgba(236, 72, 153, 0.36);
-    --topic-blob-2: rgba(249, 115, 22, 0.3);
-    --grid-color: rgba(255, 0, 55, 0.1);
+  .theme-math {
+    --theme-gradient-start: #ff0037;
+    --theme-gradient-end: #ff6600;
+    --theme-icon-hover: #ff0000;
+    --theme-underline: #ff00003d;
+    --theme-text-title: #ff0000;
+    --theme-text-header: #ff0037;
+    --theme-text-icon: var(--theme-text-title);
+    --theme-symbol-color: rgba(251, 146, 60, 0.22);
+    --theme-surface: rgba(25, 11, 23, 0.65);
+    --theme-surface-border: rgba(220, 38, 38, 0.28);
+    --theme-card-shadow: rgba(230, 0, 0, 0.23);
+    --theme-card-sheen: rgba(255, 87, 87, 0.22);
+    --theme-badge-bg: rgba(251, 146, 60, 0.18);
+    --theme-badge-border: rgba(251, 146, 60, 0.38);
+    --theme-badge-text: #fbc2a0;
+    --theme-blob-1: rgba(236, 72, 153, 0.36);
+    --theme-blob-2: rgba(249, 115, 22, 0.3);
+    --theme-grid-color: rgba(255, 0, 55, 0.1);
   }
   
-  .theme-algebra, .card-theme-algebra {
-    --card-gradient-start: #8400ff;
-    --card-gradient-end: #2d00cc;   
-    --card-icon-hover: #8400ff;
-    --card-underline: #7700ff3d;
-    --color-text-title: #a78bfa;
-    --color-text-header: #818cf8;
-    --color-text-icon: #a78bfa;
-    --topic-symbol-color: rgba(132, 0, 255, 0.15);
-    --topic-blob-1: rgba(132, 0, 255, 0.25);
-    --topic-blob-2: rgba(45, 0, 204, 0.2);
-    --grid-color: rgba(132, 0, 255, 0.08);
+  .theme-algebra {
+    --theme-gradient-start: #8400ff;
+    --theme-gradient-end: #2d00cc;   
+    --theme-icon-hover: #8400ff;
+    --theme-underline: #7700ff3d;
+    --theme-text-title: #a78bfa;
+    --theme-text-header: #818cf8;
+    --theme-text-icon: #a78bfa;
+    --theme-symbol-color: rgba(132, 0, 255, 0.15);
+    --theme-blob-1: rgba(132, 0, 255, 0.25);
+    --theme-blob-2: rgba(45, 0, 204, 0.2);
+    --theme-grid-color: rgba(132, 0, 255, 0.08);
   }
 
-  .theme-geometry, .card-theme-geometry {
-    --card-gradient-start: #1100ff;
-    --card-gradient-end: #00adcc;   
-    --card-icon-hover: #a200ff;
-    --card-underline: #1900ff3d;
-    --color-text-title: #a78bfa;
-    --color-text-header: #818cf8;
-    --color-text-icon: #a78bfa;
-    --topic-symbol-color: rgba(132, 0, 255, 0.15);
-    --topic-blob-1: rgba(132, 0, 255, 0.25);
-    --topic-blob-2: rgba(45, 0, 204, 0.2);
-    --grid-color: rgba(132, 0, 255, 0.925);
+  .theme-geometry {
+    --theme-gradient-start: #1100ff;
+    --theme-gradient-end: #00adcc;   
+    --theme-icon-hover: #a200ff;
+    --theme-underline: #1900ff3d;
+    --theme-text-title: #a78bfa;
+    --theme-text-header: #818cf8;
+    --theme-text-icon: #a78bfa;
+    --theme-symbol-color: rgba(132, 0, 255, 0.15);
+    --theme-blob-1: rgba(132, 0, 255, 0.25);
+    --theme-blob-2: rgba(45, 0, 204, 0.2);
+    --theme-grid-color: rgba(132, 0, 255, 0.925);
   }
 
-  .theme-calculus, .card-theme-calculus {
-    --card-gradient-start: #ff0000;
-    --card-gradient-end: #2d00cc;   
-    --card-icon-hover: #8400ff;
-    --card-underline: #ff00dd3d;
-    --color-text-title: #a78bfa;
-    --color-text-header: #818cf8;
-    --color-text-icon: #a78bfa;
-    --topic-symbol-color: rgba(132, 0, 255, 0.15);
-    --topic-blob-1: rgba(132, 0, 255, 0.25);
-    --topic-blob-2: rgba(45, 0, 204, 0.2);
-    --grid-color: rgba(132, 0, 255, 0.08);
+  .theme-calculus {
+    --theme-gradient-start: #ff0000;
+    --theme-gradient-end: #2d00cc;   
+    --theme-icon-hover: #8400ff;
+    --theme-underline: #ff00dd3d;
+    --theme-text-title: #a78bfa;
+    --theme-text-header: #818cf8;
+    --theme-text-icon: #a78bfa;
+    --theme-symbol-color: rgba(132, 0, 255, 0.15);
+    --theme-blob-1: rgba(132, 0, 255, 0.25);
+    --theme-blob-2: rgba(45, 0, 204, 0.2);
+    --theme-grid-color: rgba(132, 0, 255, 0.08);
   }
 
-  .theme-statistics, .card-theme-statistics {
-    --card-gradient-start: #ff9900;
-    --card-gradient-end: #cc00cc;   
-    --card-icon-hover: #8400ff;
-    --card-underline: #ff00ea3d;
-    --color-text-title: #a78bfa;
-    --color-text-header: #818cf8;
-    --color-text-icon: #a78bfa;
-    --topic-symbol-color: rgba(132, 0, 255, 0.15);
-    --topic-blob-1: rgba(132, 0, 255, 0.25);
-    --topic-blob-2: rgba(45, 0, 204, 0.2);
-    --grid-color: rgba(132, 0, 255, 0.08);
+  .theme-statistics {
+    --theme-gradient-start: #ff9900;
+    --theme-gradient-end: #cc00cc;   
+    --theme-icon-hover: #8400ff;
+    --theme-underline: #ff00ea3d;
+    --theme-text-title: #a78bfa;
+    --theme-text-header: #818cf8;
+    --theme-text-icon: #a78bfa;
+    --theme-symbol-color: rgba(132, 0, 255, 0.15);
+    --theme-blob-1: rgba(132, 0, 255, 0.25);
+    --theme-blob-2: rgba(45, 0, 204, 0.2);
+    --theme-grid-color: rgba(132, 0, 255, 0.08);
   }
 
-  .theme-number-theory, .card-theme-number-theory {
-    --card-gradient-start: #fbff00;
-    --card-gradient-end: #fdfdfdbb;   
-    --card-icon-hover: #ffc40033;
-    --card-underline: #eeff003d;
-    --color-text-title: #a78bfa;
-    --color-text-header: #818cf8;
-    --color-text-icon: #a78bfa;
-    --topic-symbol-color: rgba(132, 0, 255, 0.15);
-    --topic-blob-1: rgba(132, 0, 255, 0.25);
-    --topic-blob-2: rgba(45, 0, 204, 0.2);
-    --grid-color: rgba(132, 0, 255, 0.08);
+  .theme-number-theory {
+    --theme-gradient-start: #fbff00;
+    --theme-gradient-end: #fdfdfdbb;   
+    --theme-icon-hover: #ffc40033;
+    --theme-underline: #eeff003d;
+    --theme-text-title: #a78bfa;
+    --theme-text-header: #818cf8;
+    --theme-text-icon: #a78bfa;
+    --theme-symbol-color: rgba(132, 0, 255, 0.15);
+    --theme-blob-1: rgba(132, 0, 255, 0.25);
+    --theme-blob-2: rgba(45, 0, 204, 0.2);
+    --theme-grid-color: rgba(132, 0, 255, 0.08);
   }
 
-  .theme-discrete-math, .card-theme-discrete-math {
-    --card-gradient-start: #5eff00;
-    --card-gradient-end: #0a5500;   
-    --card-icon-hover: #8400ff;
-    --card-underline: #00ff2a3d;
-    --color-text-title: #a78bfa;
-    --color-text-header: #818cf8;
-    --color-text-icon: #a78bfa;
-    --topic-symbol-color: rgba(132, 0, 255, 0.15);
-    --topic-blob-1: rgba(132, 0, 255, 0.25);
-    --topic-blob-2: rgba(45, 0, 204, 0.2);
-    --grid-color: rgba(132, 0, 255, 0.08);
+  .theme-discrete-math {
+    --theme-gradient-start: #5eff00;
+    --theme-gradient-end: #0a5500;   
+    --theme-icon-hover: #8400ff;
+    --theme-underline: #00ff2a3d;
+    --theme-text-title: #a78bfa;
+    --theme-text-header: #818cf8;
+    --theme-text-icon: #a78bfa;
+    --theme-symbol-color: rgba(132, 0, 255, 0.15);
+    --theme-blob-1: rgba(132, 0, 255, 0.25);
+    --theme-blob-2: rgba(45, 0, 204, 0.2);
+    --theme-grid-color: rgba(132, 0, 255, 0.08);
   }
 
-  .theme-elementary-algebra, .card-theme-elementary-algebra {
-    --card-gradient-start: #ff00d4;
-    --card-gradient-end: #8100cc;
-    --card-icon-hover: #ff00d4;
-    --card-underline: #ff00c23d;
-    --color-text-title: #ff00d4;
-    --color-text-header: #ff40e0;
-    --color-text-icon: #ff00d4;
-    --topic-symbol-color: rgba(255, 0, 212, 0.15);
-    --topic-blob-1: rgba(255, 255, 255, 0.37);
-    --topic-blob-2: rgb(204, 0, 153);
-    --grid-color: rgba(255, 0, 212, 0.08);
+  .theme-elementary-algebra {
+    --theme-gradient-start: #ff00d4;
+    --theme-gradient-end: #8100cc;
+    --theme-icon-hover: #ff00d4;
+    --theme-underline: #ff00c23d;
+    --theme-text-title: #ff00d4;
+    --theme-text-header: #ff40e0;
+    --theme-text-icon: #ff00d4;
+    --theme-symbol-color: rgba(255, 0, 212, 0.15);
+    --theme-blob-1: rgba(255, 255, 255, 0.37);
+    --theme-blob-2: rgb(204, 0, 153);
+    --theme-grid-color: rgba(255, 0, 212, 0.08);
   }
 
-  .theme-elementary-algebra-foundations, .card-theme-elementary-algebra-foundations {
-    --card-gradient-start: #06b6d4;
-    --card-gradient-end: #0891b2; 
-    --card-icon-hover: #22d3ee;  
-    --card-underline: #06b6d4c2;
-    --color-text-title: #22d3ee;
-    --color-text-header: #67e8f9;
-    --color-text-icon: #22d3ee;
-    --topic-symbol-color: rgba(34, 211, 238, 0.15);
-    --topic-blob-1: rgba(34, 211, 238, 0.2);
-    --topic-blob-2: rgba(103, 232, 249, 0.15);
-    --grid-dot-color: rgba(34, 211, 238, 0.08);
+  .theme-elementary-algebra-foundations {
+    --theme-gradient-start: #06b6d4;
+    --theme-gradient-end: #0891b2; 
+    --theme-icon-hover: #22d3ee;  
+    --theme-underline: #06b6d4c2;
+    --theme-text-title: #22d3ee;
+    --theme-text-header: #67e8f9;
+    --theme-text-icon: #22d3ee;
+    --theme-symbol-color: rgba(34, 211, 238, 0.15);
+    --theme-blob-1: rgba(34, 211, 238, 0.2);
+    --theme-blob-2: rgba(103, 232, 249, 0.15);
+    --theme-grid-color: rgba(34, 211, 238, 0.08);
   }
 
-  .theme-linear-algebra, .card-theme-linear-algebra {
-    --card-gradient-start: #ff0000;
-    --card-gradient-end: #ffd000;
-    --card-icon-hover: #fbff00;
-    --card-underline: #ff00003d;
-    --color-text-title: #ff00d4;
-    --color-text-header: #ff40e0;
-    --color-text-icon: #ff00d4;
-    --topic-symbol-color: rgba(255, 0, 212, 0.15);
-    --topic-blob-1: rgba(255, 255, 255, 0.37);
-    --topic-blob-2: rgb(204, 0, 153);
-    --grid-color: rgba(255, 0, 212, 0.08);
+  .theme-linear-algebra {
+    --theme-gradient-start: #ff0000;
+    --theme-gradient-end: #ffd000;
+    --theme-icon-hover: #fbff00;
+    --theme-underline: #ff00003d;
+    --theme-text-title: #ff00d4;
+    --theme-text-header: #ff40e0;
+    --theme-text-icon: #ff00d4;
+    --theme-symbol-color: rgba(255, 0, 212, 0.15);
+    --theme-blob-1: rgba(255, 255, 255, 0.37);
+    --theme-blob-2: rgb(204, 0, 153);
+    --theme-grid-color: rgba(255, 0, 212, 0.08);
   }
 
-  .theme-abstract-algebra, .card-theme-abstract-algebra {
-    --card-gradient-start: #00ffff;
-    --card-gradient-end: #0025cc;
-    --card-icon-hover: #8400ff;
-    --card-underline: #0066ff3d;
-    --color-text-title: #ff00d4;
-    --color-text-header: #ff40e0;
-    --color-text-icon: #ff00d4;
-    --topic-symbol-color: rgba(255, 0, 212, 0.15);
-    --topic-blob-1: rgba(255, 255, 255, 0.37);
-    --topic-blob-2: rgb(204, 0, 153);
-    --grid-color: rgba(255, 0, 212, 0.08);
+  .theme-abstract-algebra {
+    --theme-gradient-start: #00ffff;
+    --theme-gradient-end: #0025cc;
+    --theme-icon-hover: #8400ff;
+    --theme-underline: #0066ff3d;
+    --theme-text-title: #ff00d4;
+    --theme-text-header: #ff40e0;
+    --theme-text-icon: #ff00d4;
+    --theme-symbol-color: rgba(255, 0, 212, 0.15);
+    --theme-blob-1: rgba(255, 255, 255, 0.37);
+    --theme-blob-2: rgb(204, 0, 153);
+    --theme-grid-color: rgba(255, 0, 212, 0.08);
   }
 
-  .theme-logic, .card-theme-logic {
-    --card-gradient-start: #77b5d4;
-    --card-gradient-end: #009ee7;
-    --card-icon-hover: #00aaff;
-    --card-underline: #00aaff3d;
+  .theme-logic {
+    --theme-gradient-start: #77b5d4;
+    --theme-gradient-end: #009ee7;
+    --theme-icon-hover: #00aaff;
+    --theme-underline: #00aaff3d;
+    --theme-text-title: #77b5d4;
+    --theme-text-header: #009ee7;
+    --theme-text-icon: var(--theme-text-title);
+    --theme-symbol-color: rgba(119, 181, 212, 0.15);
+    --theme-blob-1: rgba(119, 181, 212, 0.25);
+    --theme-blob-2: rgba(0, 158, 231, 0.2);
+    --theme-grid-color: rgba(0, 158, 231, 0.08);
   }
 
-  .theme-systems-science, .card-theme-systems-science {
-    --card-gradient-start: #ae00ff;
-    --card-gradient-end: #1100ff;
-    --card-icon-hover: #00ffea;
-    --card-underline: #0084ff3d;
+  .theme-systems-science {
+    --theme-gradient-start: #ae00ff;
+    --theme-gradient-end: #1100ff;
+    --theme-icon-hover: #00ffea;
+    --theme-underline: #0084ff3d;
+    --theme-text-title: #ae00ff;
+    --theme-text-header: #1100ff;
+    --theme-text-icon: var(--theme-text-title);
+    --theme-symbol-color: rgba(174, 0, 255, 0.15);
+    --theme-blob-1: rgba(174, 0, 255, 0.25);
+    --theme-blob-2: rgba(17, 0, 255, 0.2);
+    --theme-grid-color: rgba(174, 0, 255, 0.08);
   }
 
-  .theme-data-science, .card-theme-data-science {
-    --card-gradient-start: #fbff00;
-    --card-gradient-end: #ad9300;
-    --card-icon-hover: #ffee00;
-    --card-underline: #d9ff003d;
+  .theme-data-science {
+    --theme-gradient-start: #fbff00;
+    --theme-gradient-end: #ad9300;
+    --theme-icon-hover: #ffee00;
+    --theme-underline: #d9ff003d;
+    --theme-text-title: #fbff00;
+    --theme-text-header: #ad9300;
+    --theme-text-icon: var(--theme-text-title);
+    --theme-symbol-color: rgba(251, 255, 0, 0.15);
+    --theme-blob-1: rgba(251, 255, 0, 0.25);
+    --theme-blob-2: rgba(173, 147, 0, 0.2);
+    --theme-grid-color: rgba(251, 255, 0, 0.08);
   }
 
-  .theme-information-science, .card-theme-information-science {
-    --card-gradient-start: #00ff00;
-    --card-gradient-end: #96cc00;
-    --card-icon-hover: #bbfcee;
-    --card-underline: #ffffff3d;
+  .theme-information-science {
+    --theme-gradient-start: #00ff00;
+    --theme-gradient-end: #96cc00;
+    --theme-icon-hover: #bbfcee;
+    --theme-underline: #ffffff3d;
+    --theme-text-title: #00ff00;
+    --theme-text-header: #96cc00;
+    --theme-text-icon: var(--theme-text-title);
+    --theme-symbol-color: rgba(0, 255, 0, 0.15);
+    --theme-blob-1: rgba(0, 255, 0, 0.25);
+    --theme-blob-2: rgba(150, 204, 0, 0.2);
+    --theme-grid-color: rgba(0, 255, 0, 0.08);
   }
 
-  .theme-computer-science, .card-theme-computer-science {
-    --card-gradient-start: #ffffff;
-    --card-gradient-end: #4b4b4b;
-    --card-icon-hover: #15ff00;
-    --card-underline: #1eff00;
+  .theme-computer-science {
+    --theme-gradient-start: #ffffff;
+    --theme-gradient-end: #4b4b4b;
+    --theme-icon-hover: #15ff00;
+    --theme-underline: #1eff00;
+    --theme-text-title: #ffffff;
+    --theme-text-header: #4b4b4b;
+    --theme-text-icon: var(--theme-text-title);
+    --theme-symbol-color: rgba(255, 255, 255, 0.15);
+    --theme-blob-1: rgba(255, 255, 255, 0.25);
+    --theme-blob-2: rgba(75, 75, 75, 0.2);
+    --theme-grid-color: rgba(255, 255, 255, 0.08);
   }
 
 /*---------------------------------------------------------------------------------------------------------------*/
 
-.theme-astronomy, .card-theme-astronomy {
-    --card-gradient-start: rgb(140, 0, 255);
-    --card-gradient-end: rgb(2, 0, 97);
-    --card-icon-hover: rgb(163, 0, 155);
-    --card-underline: rgb(171, 0, 223);
-    --color-text-title: #a322ee;
-    --color-text-header: #00e1ff;
-    --color-text-icon: #5909da;
-    --topic-symbol-color: rgba(0, 255, 13, 0.966);
-    --topic-blob-1: rgba(117, 16, 185, 0.25);
-    --topic-blob-2: rgba(6, 27, 212, 0.664);
-    --grid-dot-color: rgba(13, 6, 20, 0.726);
+.theme-astronomy {
+    --theme-gradient-start: rgb(140, 0, 255);
+    --theme-gradient-end: rgb(2, 0, 97);
+    --theme-icon-hover: rgb(163, 0, 155);
+    --theme-underline: rgb(171, 0, 223);
+    --theme-text-title: #a322ee;
+    --theme-text-header: #00e1ff;
+    --theme-text-icon: #5909da;
+    --theme-symbol-color: rgba(0, 255, 13, 0.966);
+    --theme-blob-1: rgba(117, 16, 185, 0.25);
+    --theme-blob-2: rgba(6, 27, 212, 0.664);
+    --theme-grid-color: rgba(13, 6, 20, 0.726);
   }
 
-.theme-physics, .card-theme-pysics {
-    --card-gradient-start: rgb(0, 0, 255);
-    --card-gradient-end: rgb(255, 0, 0);
-    --card-icon-hover: rgb(255, 251, 0);
-    --card-underline: rgb(134, 0, 223);
-    --color-text-title: #2f00ff;
-    --color-text-header: #00e1ff;
-    --color-text-icon: #09da14;
-    --topic-symbol-color: rgba(0, 184, 83, 0.15);
-    --topic-blob-1: rgba(255, 0, 0, 0.25);
-    --topic-blob-2: rgba(0, 4, 250, 0.2);
-    --grid-dot-color: rgb(255, 255, 255);
+.theme-physics {
+    --theme-gradient-start: rgb(0, 0, 255);
+    --theme-gradient-end: rgb(255, 0, 0);
+    --theme-icon-hover: rgb(255, 251, 0);
+    --theme-underline: rgb(134, 0, 223);
+    --theme-text-title: #2f00ff;
+    --theme-text-header: #00e1ff;
+    --theme-text-icon: #09da14;
+    --theme-symbol-color: rgba(0, 184, 83, 0.15);
+    --theme-blob-1: rgba(255, 0, 0, 0.25);
+    --theme-blob-2: rgba(0, 4, 250, 0.2);
+    --theme-grid-color: rgb(255, 255, 255);
   }
 
-.theme-classical-mechanics, .card-theme-classical-mechanics {
-  --card-gradient-start: rgba(21, 255, 0, 0.815);
-  --card-gradient-end: rgb(251, 255, 0);
-  --card-icon-hover: rgb(255, 251, 0);
-  --card-underline: rgb(0, 223, 0);
-  --color-text-title: #22d3ee;
-  --color-text-header: #00e1ff;
-  --color-text-icon: #09da14;
-  --topic-symbol-color: rgba(0, 184, 83, 0.15);
-  --topic-blob-1: rgba(16, 185, 129, 0.25);
-  --topic-blob-2: rgba(0, 217, 250, 0.2);
-  --grid-dot-color: rgb(255, 238, 0);
+.theme-classical-mechanics {
+  --theme-gradient-start: rgba(21, 255, 0, 0.815);
+  --theme-gradient-end: rgb(251, 255, 0);
+  --theme-icon-hover: rgb(255, 251, 0);
+  --theme-underline: rgb(0, 223, 0);
+  --theme-text-title: #22d3ee;
+  --theme-text-header: #00e1ff;
+  --theme-text-icon: #09da14;
+  --theme-symbol-color: rgba(0, 184, 83, 0.15);
+  --theme-blob-1: rgba(16, 185, 129, 0.25);
+  --theme-blob-2: rgba(0, 217, 250, 0.2);
+  --theme-grid-color: rgb(255, 238, 0);
   }
 
-.theme-electromagnetism, .card-theme-electromagnetism {
-    --card-gradient-start: rgb(98, 0, 255);
-    --card-gradient-end: rgb(0, 4, 255);
-    --card-icon-hover: rgb(255, 251, 0);
-    --card-underline: rgb(223, 219, 0);
-    --color-text-title: #22d3ee;
-    --color-text-header: #00e1ff;
-    --color-text-icon: #09da14;
-    --topic-symbol-color: rgba(0, 184, 83, 0.15);
-    --topic-blob-1: rgba(16, 185, 129, 0.25);
-    --topic-blob-2: rgba(0, 217, 250, 0.2);
-    --grid-dot-color: rgb(255, 238, 0);
+.theme-electromagnetism {
+    --theme-gradient-start: rgb(98, 0, 255);
+    --theme-gradient-end: rgb(0, 4, 255);
+    --theme-icon-hover: rgb(255, 251, 0);
+    --theme-underline: rgb(223, 219, 0);
+    --theme-text-title: #22d3ee;
+    --theme-text-header: #00e1ff;
+    --theme-text-icon: #09da14;
+    --theme-symbol-color: rgba(0, 184, 83, 0.15);
+    --theme-blob-1: rgba(16, 185, 129, 0.25);
+    --theme-blob-2: rgba(0, 217, 250, 0.2);
+    --theme-grid-color: rgb(255, 238, 0);
   }
 
-.theme-thermodynamics, .card-theme-thermodynamics {
-    --card-gradient-start: rgb(255, 153, 0);
-    --card-gradient-end: rgb(255, 0, 0);
-    --card-icon-hover: rgb(255, 251, 0);
-    --card-underline: rgb(255, 153, 0);
-    --color-text-title: #22d3ee;
-    --color-text-header: #00e1ff;
-    --color-text-icon: #09da14;
-    --topic-symbol-color: rgba(0, 184, 83, 0.15);
-    --topic-blob-1: rgba(16, 185, 129, 0.25);
-    --topic-blob-2: rgba(0, 217, 250, 0.2);
-    --grid-dot-color: rgb(255, 238, 0);
+.theme-thermodynamics {
+    --theme-gradient-start: rgb(255, 153, 0);
+    --theme-gradient-end: rgb(255, 0, 0);
+    --theme-icon-hover: rgb(255, 251, 0);
+    --theme-underline: rgb(255, 153, 0);
+    --theme-text-title: #22d3ee;
+    --theme-text-header: #00e1ff;
+    --theme-text-icon: #09da14;
+    --theme-symbol-color: rgba(0, 184, 83, 0.15);
+    --theme-blob-1: rgba(16, 185, 129, 0.25);
+    --theme-blob-2: rgba(0, 217, 250, 0.2);
+    --theme-grid-color: rgb(255, 238, 0);
   }
 
-.theme-waves-optics, .card-theme-waves-optics {
-    --card-gradient-start: rgb(0, 255, 234);
-    --card-gradient-end: rgb(212, 0, 255);
-    --card-icon-hover: rgb(204, 0, 255);
-    --card-underline: rgb(134, 0, 223);
-    --color-text-title: #22d3ee;
-    --color-text-header: #00e1ff;
-    --color-text-icon: #09da14;
-    --topic-symbol-color: rgba(0, 184, 83, 0.15);
-    --topic-blob-1: rgba(16, 185, 129, 0.25);
-    --topic-blob-2: rgba(0, 217, 250, 0.2);
-    --grid-dot-color: rgb(255, 238, 0);
+.theme-waves-optics {
+    --theme-gradient-start: rgb(0, 255, 234);
+    --theme-gradient-end: rgb(212, 0, 255);
+    --theme-icon-hover: rgb(204, 0, 255);
+    --theme-underline: rgb(134, 0, 223);
+    --theme-text-title: #22d3ee;
+    --theme-text-header: #00e1ff;
+    --theme-text-icon: #09da14;
+    --theme-symbol-color: rgba(0, 184, 83, 0.15);
+    --theme-blob-1: rgba(16, 185, 129, 0.25);
+    --theme-blob-2: rgba(0, 217, 250, 0.2);
+    --theme-grid-color: rgb(255, 238, 0);
   }
 
-.theme-quantum-mechanics, .card-theme-quantum-mechanics {
-    --card-gradient-start: rgb(175, 175, 175);
-    --card-gradient-end: rgb(41, 41, 41);
-    --card-icon-hover: rgb(0, 0, 0);
-    --card-underline: rgb(128, 128, 128);
-    --color-text-title: #22d3ee;
-    --color-text-header: #00e1ff;
-    --color-text-icon: #09da14;
-    --topic-symbol-color: rgba(0, 184, 83, 0.15);
-    --topic-blob-1: rgba(16, 185, 129, 0.25);
-    --topic-blob-2: rgba(0, 217, 250, 0.2);
-    --grid-dot-color: rgb(255, 238, 0);
+.theme-quantum-mechanics {
+    --theme-gradient-start: rgb(175, 175, 175);
+    --theme-gradient-end: rgb(41, 41, 41);
+    --theme-icon-hover: rgb(0, 0, 0);
+    --theme-underline: rgb(128, 128, 128);
+    --theme-text-title: #22d3ee;
+    --theme-text-header: #00e1ff;
+    --theme-text-icon: #09da14;
+    --theme-symbol-color: rgba(0, 184, 83, 0.15);
+    --theme-blob-1: rgba(16, 185, 129, 0.25);
+    --theme-blob-2: rgba(0, 217, 250, 0.2);
+    --theme-grid-color: rgb(255, 238, 0);
   }
 
-.theme-relativity, .card-theme-relativity {
-  --card-gradient-start: rgb(255, 0, 234);
-  --card-gradient-end: rgb(255, 0, 0);
-  --card-icon-hover: rgb(179, 16, 255);
-  --card-underline: rgb(134, 0, 223);
-  --color-text-title: #22d3ee;
-  --color-text-header: #00e1ff;
-  --color-text-icon: #09da14;
-  --topic-symbol-color: rgba(0, 184, 83, 0.15);
-  --topic-blob-1: rgba(16, 185, 129, 0.25);
-  --topic-blob-2: rgba(0, 217, 250, 0.2);
-  --grid-dot-color: rgb(255, 238, 0);
+.theme-relativity {
+  --theme-gradient-start: rgb(255, 0, 234);
+  --theme-gradient-end: rgb(255, 0, 0);
+  --theme-icon-hover: rgb(179, 16, 255);
+  --theme-underline: rgb(134, 0, 223);
+  --theme-text-title: #22d3ee;
+  --theme-text-header: #00e1ff;
+  --theme-text-icon: #09da14;
+  --theme-symbol-color: rgba(0, 184, 83, 0.15);
+  --theme-blob-1: rgba(16, 185, 129, 0.25);
+  --theme-blob-2: rgba(0, 217, 250, 0.2);
+  --theme-grid-color: rgb(255, 238, 0);
 }
 
-.theme-chemistry, .card-theme-chemistry {
-  --card-gradient-start: rgb(255, 166, 0);
-  --card-gradient-end: rgb(221, 2, 2);
-  --card-icon-hover: rgb(0, 255, 0);
-  --card-underline: rgb(223, 208, 0);
-  --color-text-title: #22d3ee;
-  --color-text-header: #00e1ff;
-  --color-text-icon: #09da14;
-  --topic-symbol-color: rgba(0, 184, 83, 0.15);
-  --topic-blob-1: rgba(16, 185, 129, 0.25);
-  --topic-blob-2: rgba(34, 211, 238, 0.2);
-  --grid-dot-color: rgba(45, 212, 191, 0.1);
+.theme-chemistry {
+  --theme-gradient-start: rgb(255, 166, 0);
+  --theme-gradient-end: rgb(221, 2, 2);
+  --theme-icon-hover: rgb(0, 255, 0);
+  --theme-underline: rgb(223, 208, 0);
+  --theme-text-title: #22d3ee;
+  --theme-text-header: #00e1ff;
+  --theme-text-icon: #09da14;
+  --theme-symbol-color: rgba(0, 184, 83, 0.15);
+  --theme-blob-1: rgba(16, 185, 129, 0.25);
+  --theme-blob-2: rgba(34, 211, 238, 0.2);
+  --theme-grid-color: rgba(45, 212, 191, 0.1);
 }
 
-.theme-earth-science, .card-theme-earth-science {
-  --card-gradient-start: rgb(59, 39, 0);
-  --card-gradient-end: rgba(49, 247, 0, 0.685);
-  --card-icon-hover: rgb(255, 166, 0);
-  --card-underline: rgb(51, 51, 51);
-  --color-text-title: #22d3ee;
-  --color-text-header: #00e1ff;
-  --color-text-icon: #09da14;
-  --topic-symbol-color: rgba(0, 184, 83, 0.15);
-  --topic-blob-1: rgba(16, 185, 129, 0.25);
-  --topic-blob-2: rgba(34, 211, 238, 0.2);
-  --grid-dot-color: rgba(45, 212, 191, 0.1);
+.theme-earth-science {
+  --theme-gradient-start: rgb(59, 39, 0);
+  --theme-gradient-end: rgba(49, 247, 0, 0.685);
+  --theme-icon-hover: rgb(255, 166, 0);
+  --theme-underline: rgb(51, 51, 51);
+  --theme-text-title: #22d3ee;
+  --theme-text-header: #00e1ff;
+  --theme-text-icon: #09da14;
+  --theme-symbol-color: rgba(0, 184, 83, 0.15);
+  --theme-blob-1: rgba(16, 185, 129, 0.25);
+  --theme-blob-2: rgba(34, 211, 238, 0.2);
+  --theme-grid-color: rgba(45, 212, 191, 0.1);
 }
 
-.theme-biology, .card-theme-biology {
-  --card-gradient-start: rgb(0, 255, 42);
-  --card-gradient-end: rgb(206, 221, 2);
-  --card-icon-hover: rgb(0, 110, 255);
-  --card-underline: rgb(0, 223, 112);
-  --color-text-title: #22d3ee;
-  --color-text-header: #00e1ff;
-  --color-text-icon: #09da14;
-  --topic-symbol-color: rgba(0, 184, 83, 0.15);
-  --topic-blob-1: rgba(16, 185, 129, 0.25);
-  --topic-blob-2: rgba(34, 211, 238, 0.2);
-  --grid-dot-color: rgba(45, 212, 191, 0.1);
+.theme-biology {
+  --theme-gradient-start: rgb(0, 255, 42);
+  --theme-gradient-end: rgb(206, 221, 2);
+  --theme-icon-hover: rgb(0, 110, 255);
+  --theme-underline: rgb(0, 223, 112);
+  --theme-text-title: #22d3ee;
+  --theme-text-header: #00e1ff;
+  --theme-text-icon: #09da14;
+  --theme-symbol-color: rgba(0, 184, 83, 0.15);
+  --theme-blob-1: rgba(16, 185, 129, 0.25);
+  --theme-blob-2: rgba(34, 211, 238, 0.2);
+  --theme-grid-color: rgba(45, 212, 191, 0.1);
 }
 
-  .theme-glossary, .card-theme-glossary {
-    --card-gradient-start: #00f5f5;
-    --card-gradient-end: #6600ec;
-    --card-icon-hover: #00ffff;
-    --card-underline: #00f7ff;
+  .theme-glossary {
+    --theme-gradient-start: #00f5f5;
+    --theme-gradient-end: #6600ec;
+    --theme-icon-hover: #00ffff;
+    --theme-underline: #00f7ff;
+    --theme-text-title: #00f5f5;
+    --theme-text-header: #6600ec;
+    --theme-text-icon: var(--theme-text-title);
+    --theme-symbol-color: rgba(0, 245, 245, 0.15);
+    --theme-blob-1: rgba(0, 245, 245, 0.25);
+    --theme-blob-2: rgba(102, 0, 236, 0.2);
+    --theme-grid-color: rgba(0, 245, 245, 0.08);
   }
 }

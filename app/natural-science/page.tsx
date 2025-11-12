@@ -7,8 +7,8 @@ import {
   Atom,
   FlaskConical,
   Dna,
-  Mountain,
-  Orbit,
+  Earth,
+  MoonStar,
 } from "@/components/icons";
 
 // Symbols for the background
@@ -55,14 +55,14 @@ export default function NaturalSciencePage() {
       title: "Earth Science",
       desc: "The study of the Earth, its systems, and its history.",
       href: "/natural-science/earth-science",
-      Icon: Mountain,
+      Icon: Earth,
       className: "theme-earth-science topic-card-wide",
     },
     {
       title: "Astronomy",
       desc: "The study of celestial objects, space, and the universe.",
       href: "/natural-science/astronomy",
-      Icon: Orbit,
+      Icon: MoonStar,
       className: "theme-astronomy topic-card-wide",
     },
   ];

@@ -4,12 +4,7 @@ import PageHeader from "@/components/PageHeader";
 import FloatingSymbols from "@/components/FloatingSymbols";
 import TopicCard from "@/components/TopicCard";
 import {
-  Sparkle,
-  Equal,
-  AreaChart,
-  BookMarked,
-  ExternalLink,
-  ChevronRight,
+  X, Equal, LineChart, BookMarked, ExternalLink, ChevronRight,
 } from "@/components/icons"; // Using lucide icons via our icons file
 import Link from "next/link";
 import React from "react";
@@ -34,9 +29,9 @@ const elementaryAlgebraUnits = [
   {
     title: "Foundations",
     href: "/formal-science/mathematics/algebra/elementary-algebra/foundations",
-    Icon: Sparkle,
+    Icon: X,
     description: "The basic building blocks: numbers, variables, and operations.",
-    className: "card-theme-elementary-algebra-foundations",
+    className: "theme-elementary-algebra-foundations",
   },
   {
     title: "Solving Equations",
@@ -48,7 +43,7 @@ const elementaryAlgebraUnits = [
   {
     title: "Functions & Graphs",
     href: "#",
-    Icon: AreaChart,
+    Icon: LineChart,
     description: "Visualizing relationships between variables on the coordinate plane.",
     className: "card-theme-elementary-algebra",
   },

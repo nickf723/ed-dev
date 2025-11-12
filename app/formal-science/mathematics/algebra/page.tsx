@@ -5,7 +5,7 @@ import FloatingSymbols from "@/components/FloatingSymbols";
 import {
   SquareFunction,
   Grid3X3,
-  BrainCircuit,
+  CircleDotDashed,
 } from "@/components/icons";
 import React from "react";
 import TopicCard from "@/components/TopicCard";
@@ -71,7 +71,7 @@ const algebraBranches = [
   {
     title: "Abstract Algebra",
     href: "/formal-science/mathematics/algebra/abstract-algebra",
-    Icon: BrainCircuit,
+    Icon: CircleDotDashed,
     difficulty: "Advanced Undergraduate / Graduate Level",
     description:
       "The formal study of abstract algebraic structures like groups, rings, and fields. Explores the deep rules governing mathematics.",

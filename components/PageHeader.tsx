@@ -12,7 +12,7 @@ export default function PageHeader({ title, subtitle, eyebrow }: PageHeaderProps
         className="mb-4 text-4xl font-bold text-transparent sm:text-5xl lg:text-6xl"
         style={{
           backgroundImage:
-            "linear-gradient(120deg, var(--color-text-title), var(--color-text-header))",
+            "linear-gradient(120deg, var(--theme-text-title), var(--theme-text-header))",
           WebkitBackgroundClip: "text",
           backgroundClip: "text",
         }}

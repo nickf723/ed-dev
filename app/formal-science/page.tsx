@@ -5,10 +5,10 @@ import FloatingSymbols from "@/components/FloatingSymbols";
 import TopicCard from "@/components/TopicCard";
 import {
   Calculator,
-  BrainCircuit,
+  LockKeyholeOpen,
   Network,
   ChartScatter,
-  BookText,
+  Terminal,
   Binary,
 } from "@/components/icons";
 
@@ -43,7 +43,7 @@ export default function FormalSciencePage() {
       title: "Logic",
       desc: "The study of reasoning, inference, and validity.",
       href: "/formal-science/logic",
-      Icon: BrainCircuit,
+      Icon: LockKeyholeOpen,
       className: "theme-logic"
     },
     {
@@ -64,14 +64,14 @@ export default function FormalSciencePage() {
       title: "Information Science",
       desc: "The study of information processing, storage, and retrieval.",
       href: "/formal-science/information-science",
-      Icon: BookText,
+      Icon: Binary,
       className: "theme-information-science"
     },
     {
       title: "Computer Science",
       desc: "The study of computation, automation, and information.",
       href: "/formal-science/computer-science",
-      Icon: Binary,
+      Icon: Terminal,
       className: "theme-computer-science topic-card-wide"
     },
   ];

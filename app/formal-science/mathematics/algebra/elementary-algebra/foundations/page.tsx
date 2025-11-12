@@ -4,10 +4,7 @@ import PageHeader from "@/components/PageHeader";
 import FloatingSymbols from "@/components/FloatingSymbols";
 import TopicCard from "@/components/TopicCard";
 import {
-  Calculator,
-  SquareFunction,
-  Sparkle,
-  Shuffle,
+  SquareX, SquareFunction, Parentheses,
 } from "@/components/icons";
 import React from "react";
 
@@ -31,7 +28,7 @@ const foundationsTopics = [
   {
     title: "Numbers and Operations",
     href: "/formal-science/mathematics/algebra/elementary-algebra/foundations/num-ops",
-    Icon: Calculator,
+    Icon: SquareX,
     description: "Explore number systems, properties, and the order of operations.",
     className: "card-theme-elementary-algebra-foundations",
     status: "In Progress",
@@ -49,7 +46,7 @@ const foundationsTopics = [
   {
     title: "Properties of Algebra",
     href: "#",
-    Icon: Shuffle,
+    Icon: Parentheses,
     description: "The core rules (commutative, associative, distributive) that govern algebra.",
     className: "card-theme-elementary-algebra-foundations",
     status: "Planned",
