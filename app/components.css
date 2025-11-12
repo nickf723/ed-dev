@@ -132,6 +132,18 @@
     color: var(--text);    
   }
 
+  .term-highlight {
+    @apply relative cursor-help border-b border-dashed border-cyan-400/50 font-semibold text-cyan-300;
+  }
+  .term-highlight::after {
+    @apply absolute bottom-full left-1/2 z-10 mb-2 w-max max-w-xs -translate-x-1/2 scale-90 rounded-md border border-neutral-700 bg-neutral-900 p-3 text-sm font-medium text-neutral-200 opacity-0 shadow-lg transition-all;
+    content: attr(data-tooltip);
+    pointer-events: none;
+  }
+  .term-highlight:hover::after {
+    @apply scale-100 opacity-100;
+  }
+
   /* Lesson/app-specific helpers */
   .applet-card {
     @apply rounded-lg border border-neutral-800 bg-neutral-900/50 p-5 shadow-sm transition-colors;

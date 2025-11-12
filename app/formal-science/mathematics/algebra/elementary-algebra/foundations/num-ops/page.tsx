@@ -41,7 +41,8 @@ import {
 } from "@/components/icons";
 import React, { useState, useEffect } from "react";
 import { MBlock, M } from "@/components/Math";
-import Link from "next/link"; // Added for new aside
+import Link from "next/link"; 
+import GlossaryTerm from "@/components/GlossaryTerm";
 
 // Symbols for the background
 const numOpsSymbols = [
@@ -250,6 +251,11 @@ export default function NumbersAndOperationsPage() {
                   find on a number line. They are split into two main groups: Rational
                   and Irrational. But let's start from the very beginning.
                 </ContentP>
+                <ContentP>
+                  The <GlossaryTerm definition="All counting numbers (1, 2, 3...) and their negative opposites.">Integers (ℤ)</GlossaryTerm>{" "}
+                  are contained within{" "}
+                  <GlossaryTerm definition="Any number that can be written as a fraction a/b.">Rational Numbers (ℚ)</GlossaryTerm>.
+                </ContentP>
                 <ContentSubhead title="The Building Blocks" />
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                   <TermDefinition term="Natural Numbers (ℕ)">
@@ -364,10 +370,10 @@ export default function NumbersAndOperationsPage() {
                 </div>
                 <SideNote>
                   <ContentP>
-                    <strong>Complex Numbers</strong> are not just a mathematical curiosity!
-                    They are essential in advanced engineering, quantum mechanics, and
-                    electrical signal processing.
-                  </ContentP>
+                  <strong>Complex Numbers</strong> are not just a mathematical curiosity!
+                  They are essential in advanced engineering, quantum mechanics, and
+                  electrical signal processing.
+                </ContentP>
                 </SideNote>
               </CollapsibleTopic>
             </div>
