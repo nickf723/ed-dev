@@ -13,6 +13,7 @@ import {
   ContentTabs,
   TabItem,
   InternalLink,
+  LessonImage
 } from "@/components/LessonBlocks";
 import {
   Plus,
@@ -226,6 +227,10 @@ export default function NumbersAndOperationsPage() {
               <li>...which are contained within <strong>Integers (ℤ)</strong> (Whole numbers + negatives)</li>
               <li>...which are contained within <strong>Rational Numbers (ℚ)</strong> (Integers + fractions)</li>
             </ul>
+            <LessonImage
+              src="/images/number-systems-hierarchy.jpg" // (Remember to add this image to your /public/images folder)
+              caption="A visual representation of the hierarchy of number systems."
+            />
             <ContentP>
               Separately, you have <strong>Irrational Numbers (𝕀)</strong> (like <M>\pi</M>, <M>\sqrt2</M>), which cannot be written as simple fractions.
             </ContentP>
@@ -429,6 +434,11 @@ export default function NumbersAndOperationsPage() {
               absolute value is always positive (or zero). We use two vertical
               bars <M>| |</M> to denote it.
             </ContentP>
+            <LessonImage
+              src="/images/absolute-value.png"
+              
+              caption="Both 5 and -5 are the same distance (5 units) from 0 on the number line."
+            />
             <ExampleBlock>
               <p><M>|5| = 5</M> (5 is 5 units away from 0)</p>
               <p><M>|-5| = 5</M> (-5 is also 5 units away from 0)</p>
