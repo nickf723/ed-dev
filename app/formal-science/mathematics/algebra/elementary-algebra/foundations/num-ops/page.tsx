@@ -13,7 +13,7 @@ import {
   ContentTabs,
   TabItem,
   InternalLink,
-  LessonImage
+  LessonImage, // Added from previous step
 } from "@/components/LessonBlocks";
 import {
   Plus,
@@ -34,15 +34,15 @@ import {
   Lightbulb,
   BookCopy,
   Check,
-  AlertTriangle,
   X as XIcon,
-  Key, // Added for new aside
-  Link as LinkIcon, // Added for new aside
+  Key,
+  Link as LinkIcon,
+  AlertTriangle,
 } from "@/components/icons";
 import React, { useState, useEffect } from "react";
 import { MBlock, M } from "@/components/Math";
-import Link from "next/link"; 
-import GlossaryTerm from "@/components/GlossaryTerm";
+import Link from "next/link";
+import GlossaryTerm from "@/components/GlossaryTerm"
 
 // Symbols for the background
 const numOpsSymbols = [
@@ -58,7 +58,7 @@ const propertyTabs: TabItem[] = [
     content: (
       <>
         <ContentP>
-          The <strong>Commutative Property</strong> states that the order of
+          The <GlossaryTerm term="Commutative Property">Commutative Property</GlossaryTerm> states that the order of
           numbers does not matter for addition and multiplication. Think
           "commute," as in the numbers can move or swap places.
         </ContentP>
@@ -77,7 +77,7 @@ const propertyTabs: TabItem[] = [
           </p>
         </ExampleBlock>
         <SideNote>
-          This property does NOT apply to subtraction or division. <M>5 - 2 \neq 2 - 5</M>.
+          <ContentP>This property does NOT apply to subtraction or division. <M>5 - 2 \neq 2 - 5</M>.</ContentP>
         </SideNote>
       </>
     ),
@@ -88,7 +88,7 @@ const propertyTabs: TabItem[] = [
     content: (
       <>
         <ContentP>
-          The <strong>Associative Property</strong> states that the grouping of
+          The <GlossaryTerm term="Associative Property">Associative Property</GlossaryTerm> states that the grouping of
           numbers (using parentheses) does not matter for addition and
           multiplication. Think "associate," as in which numbers "group up"
           together first.
@@ -116,19 +116,19 @@ const propertyTabs: TabItem[] = [
     content: (
       <>
         <ContentP>
-          The <strong>Identity Property</strong> involves a number that, when
+          The <GlossaryTerm term="Identity Property">Identity Property</GlossaryTerm> involves a number that, when
           used in an operation, leaves the other number unchanged (it keeps its
           identity).
         </ContentP>
         <ExampleBlock>
           <p>
-            <strong>Additive Identity:</strong> The identity is <strong>0</strong>.
+            <strong><GlossaryTerm term="Additive Identity">Additive Identity</GlossaryTerm>:</strong> The identity is <strong>0</strong>.
           </p>
           <p>
             <M>a + 0 = a</M> (e.g., <M>9 + 0 = 9</M>)
           </p>
           <p className="mt-2">
-            <strong>Multiplicative Identity:</strong> The identity is <strong>1</strong>.
+            <strong><GlossaryTerm term="Multiplicative Identity">Multiplicative Identity</GlossaryTerm>:</strong> The identity is <strong>1</strong>.
           </p>
           <p>
             <M>a \times 1 = a</M> (e.g., <M>-6 \times 1 = -6</M>)
@@ -143,19 +143,19 @@ const propertyTabs: TabItem[] = [
     content: (
       <>
         <ContentP>
-          The <strong>Inverse Property</strong> involves finding a number that
+          The <GlossaryTerm term="Inverse Property">Inverse Property</GlossaryTerm> involves finding a number that
           "cancels out" another number, returning you to the identity (<M>0</M> for
           addition, <M>1</M> for multiplication).
         </ContentP>
         <ExampleBlock>
           <p>
-            <strong>Additive Inverse (Opposite):</strong>
+            <strong><GlossaryTerm term="Additive Inverse">Additive Inverse (Opposite)</GlossaryTerm>:</strong>
           </p>
           <p>
             <M>a + (-a) = 0</M> (e.g., <M>5 + (-5) = 0</M>)
           </p>
           <p className="mt-2">
-            <strong>Multiplicative Inverse (Reciprocal):</strong>
+            <strong><GlossaryTerm term="Multiplicative Inverse">Multiplicative Inverse (Reciprocal)</GlossaryTerm>:</strong>
           </p>
           <p>
             <M>{"a \\times \\frac{1}{a} = 1"}</M> (e.g., <M>{"7 \\times \\frac{1}{7} = 1"}</M>)
@@ -170,7 +170,7 @@ const propertyTabs: TabItem[] = [
     content: (
       <>
         <ContentP>
-          The <strong>Distributive Property</strong> is the one property that
+          The <GlossaryTerm term="Distributive Property">Distributive Property</GlossaryTerm> is the one property that
           links addition and multiplication. It describes how to
           "distribute" a factor to each term inside parentheses.
         </ContentP>
@@ -183,7 +183,7 @@ const propertyTabs: TabItem[] = [
           <M>25 = 25</M>
         </ExampleBlock>
         <SideNote>
-          This is the key to expanding expressions like <M>3(x + 4) = 3x + 12</M>.
+          <ContentP>This is the key to expanding expressions like <M>3(x + 4) = 3x + 12</M>.</ContentP>
         </SideNote>
       </>
     ),
@@ -200,12 +200,10 @@ export default function NumbersAndOperationsPage() {
         subtitle="Understanding the types of numbers that exist and the rules for how they interact. This is the bedrock of all mathematics."
       />
       
-      {/* --- NEW: Two-column layout container --- */}
       <div className="w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-12">
         
-        {/* --- Column 1: Main Content --- */}
         <div className="lg:col-span-2 text-left">
-          {/* --- 1. NUMBER SYSTEMS --- */}
+          
           <CollapsibleTopic
             title="1. Number Systems"
             icon={Waypoints}
@@ -213,7 +211,7 @@ export default function NumbersAndOperationsPage() {
           >
             <ContentP>
               In algebra, we don't just work with "numbers"; we work with
-              different <strong>systems</strong> of numbers. Each system is like a
+              different <GlossaryTerm term="Number System">systems of numbers</GlossaryTerm>. Each system is like a
               set of Russian nesting dolls—smaller, simpler systems are contained
               within larger, more complex ones.
             </ContentP>
@@ -224,37 +222,31 @@ export default function NumbersAndOperationsPage() {
 
             <ContentSubhead title="The Hierarchy" />
             <ul className="list-disc space-y-2 pl-6 text-neutral-300">
-              <li><strong>Natural Numbers (ℕ)</strong> (Counting numbers: 1, 2, 3...)</li>
-              <li>...are contained within <strong>Whole Numbers (𝕎)</strong> (Natural numbers + 0)</li>
-              <li>...which are contained within <strong>Integers (ℤ)</strong> (Whole numbers + negatives)</li>
-              <li>...which are contained within <strong>Rational Numbers (ℚ)</strong> (Integers + fractions)</li>
+              <li><strong><GlossaryTerm term="Natural Numbers">Natural Numbers (ℕ)</GlossaryTerm></strong> (Counting numbers: 1, 2, 3...)</li>
+              <li>...are contained within <strong><GlossaryTerm term="Whole Numbers">Whole Numbers (𝕎)</GlossaryTerm></strong> (Natural numbers + 0)</li>
+              <li>...which are contained within <strong><GlossaryTerm term="Integers">Integers (ℤ)</GlossaryTerm></strong> (Whole numbers + negatives)</li>
+              <li>...which are contained within <strong><GlossaryTerm term="Rational Numbers">Rational Numbers (ℚ)</GlossaryTerm></strong> (Integers + fractions)</li>
             </ul>
             <LessonImage
-              src="/images/number-systems-hierarchy.jpg" // (Remember to add this image to your /public/images folder)
+              src="/images/number-systems-hierarchy.jpg"
               caption="A visual representation of the hierarchy of number systems."
             />
             <ContentP>
-              Separately, you have <strong>Irrational Numbers (𝕀)</strong> (like <M>\pi</M>, <M>\sqrt2</M>), which cannot be written as simple fractions.
+              Separately, you have <strong><GlossaryTerm term="Irrational Numbers">Irrational Numbers (𝕀)</GlossaryTerm></strong> (like <M>\pi</M>, <M>\sqrt2</M>), which cannot be written as simple fractions.
             </ContentP>
             <ContentP>
-              Together, <strong>Rational</strong> and <strong>Irrational</strong> numbers make up the <strong>Real Numbers (ℝ)</strong>.
+              Together, <strong>Rational</strong> and <strong>Irrational</strong> numbers make up the <strong><GlossaryTerm term="Real Numbers">Real Numbers (ℝ)</GlossaryTerm></strong>.
             </ContentP>
             <ContentP>
-              Finally, all <strong>Real Numbers</strong> are part of the <strong>Complex Numbers (ℂ)</strong> (which include imaginary numbers).
+              Finally, all <strong>Real Numbers</strong> are part of the <strong><GlossaryTerm term="Complex Numbers">Complex Numbers (ℂ)</GlossaryTerm></strong> (which include imaginary numbers).
             </ContentP>
 
-            {/* This content is nested *within* the "Number Systems" topic */}
             <div className="ml-4 border-l border-neutral-800 pl-4">
               <CollapsibleTopic title="1.1 The Core Systems" icon={Grid3X3}>
                 <ContentP>
-                  The <strong>Real Numbers (ℝ)</strong> are all the numbers you can
+                  The <GlossaryTerm term="Real Numbers">Real Numbers (ℝ)</GlossaryTerm> are all the numbers you can
                   find on a number line. They are split into two main groups: Rational
                   and Irrational. But let's start from the very beginning.
-                </ContentP>
-                <ContentP>
-                  The <GlossaryTerm definition="All counting numbers (1, 2, 3...) and their negative opposites.">Integers (ℤ)</GlossaryTerm>{" "}
-                  are contained within{" "}
-                  <GlossaryTerm definition="Any number that can be written as a fraction a/b.">Rational Numbers (ℚ)</GlossaryTerm>.
                 </ContentP>
                 <ContentSubhead title="The Building Blocks" />
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -278,7 +270,7 @@ export default function NumbersAndOperationsPage() {
                 <ContentSubhead title="The Fractions and Gaps" />
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                   <TermDefinition term="Rational Numbers (ℚ)">
-                    Any number that can be written as a <strong>ratio</strong> (a
+                    Any number that can be written as a <GlossaryTerm term="Ratio">ratio</GlossaryTerm> (a
                     fraction) of two integers, <M>a/b</M>, where <M>b \neq 0</M>. This
                     includes all integers, terminating decimals, and repeating
                     decimals.
@@ -318,36 +310,36 @@ export default function NumbersAndOperationsPage() {
                   always apply to another.
                 </ContentP>
                 <ExampleBlock>
-                  Consider the equation <M>2x = 5</M>.
+                  <p>Consider the equation <M>2x = 5</M>.</p>
                   <ul className="mt-2 list-disc pl-5">
                     <li>
-                      If you are asked to "find the <strong>integer</strong> solution,"
+                      If you are asked to "find the <strong><GlossaryTerm term="Integers">integer</GlossaryTerm></strong> solution,"
                       the answer is: <strong>None</strong>. There is no integer <M>x</M>
                       that makes this true.
                     </li>
                     <li>
-                      If you are asked to "find the <strong>rational</strong> solution,"
+                      If you are asked to "find the <strong><GlossaryTerm term="Rational Numbers">rational</GlossaryTerm></strong> solution,"
                       the answer is: <M>x = 5/2</M> (or <M>2.5</M>).
                     </li>
                   </ul>
                 </ExampleBlock>
-                  <SideNote>
-                    <ContentP>
-                      Historically, the discovery of new number systems solved problems
-                      that were once thought impossible.
-                    </ContentP>
-                    <ul className="mt-2 list-disc pl-5">
-                      <li>
-                        <M>x + 5 = 2</M> is impossible with only <strong>Whole Numbers</strong>,
-                        but solvable with <strong>Integers</strong> (<M>x = -3</M>).
-                      </li>
-                      <li>
-                        <M>x^2 = 2</M> is impossible with only <strong>Rational Numbers</strong>,
-                        but solvable with <strong>Irrational Numbers</strong> (
-                        <M>x = \sqrt(2)</M>).
-                      </li>
-                    </ul>
-                  </SideNote>
+                <SideNote>
+                  <ContentP>
+                    Historically, the discovery of new number systems solved problems
+                    that were once thought impossible.
+                  </ContentP>
+                  <ul className="mt-2 list-disc pl-5">
+                    <li>
+                      <M>x + 5 = 2</M> is impossible with only <strong><GlossaryTerm term="Whole Numbers">Whole Numbers</GlossaryTerm></strong>,
+                      but solvable with <strong><GlossaryTerm term="Integers">Integers</GlossaryTerm></strong> (<M>x = -3</M>).
+                    </li>
+                    <li>
+                      <M>x^2 = 2</M> is impossible with only <strong><GlossaryTerm term="Rational Numbers">Rational Numbers</GlossaryTerm></strong>,
+                      but solvable with <strong><GlossaryTerm term="Irrational Numbers">Irrational Numbers</GlossaryTerm></strong> (
+                      <M>x = \sqrt2</M>).
+                    </li>
+                  </ul>
+                </SideNote>
               </CollapsibleTopic>
 
               <CollapsibleTopic title="1.4 Beyond the Real Line" icon={Sigma}>
@@ -370,16 +362,15 @@ export default function NumbersAndOperationsPage() {
                 </div>
                 <SideNote>
                   <ContentP>
-                  <strong>Complex Numbers</strong> are not just a mathematical curiosity!
-                  They are essential in advanced engineering, quantum mechanics, and
-                  electrical signal processing.
-                </ContentP>
+                    <strong><GlossaryTerm term="Complex Numbers">Complex Numbers</GlossaryTerm></strong> are not just a mathematical curiosity!
+                    They are essential in advanced engineering, quantum mechanics, and
+                    electrical signal processing.
+                  </ContentP>
                 </SideNote>
               </CollapsibleTopic>
             </div>
           </CollapsibleTopic>
 
-          {/* --- 2. ALGEBRAIC PROPERTIES (Renumbered) --- */}
           <CollapsibleTopic title="2. Algebraic Properties" icon={Shuffle}>
             <ContentP>
               Algebraic properties are the fundamental rules that govern how we
@@ -389,10 +380,9 @@ export default function NumbersAndOperationsPage() {
             <ContentTabs items={propertyTabs} />
           </CollapsibleTopic>
           
-          {/* --- 3. ORDER OF OPERATIONS (Renumbered) --- */}
           <CollapsibleTopic title="3. Order of Operations" icon={Calculator}>
             <ContentP>
-              The <strong>Order of Operations</strong> is a rule that tells us
+              The <strong><GlossaryTerm term="Order of Operations">Order of Operations</GlossaryTerm></strong> is a rule that tells us
               the sequence in which to perform operations in a mathematical
               expression. We often use the acronym <strong>PEMDAS</strong> (or
               BODMAS) to remember it.
@@ -417,30 +407,21 @@ export default function NumbersAndOperationsPage() {
               </ol>
             </div>
             <ExampleBlock>
-              Solve: <M>10 + (3 - 1)^2 \times 5</M>
-              <br />
-              1. <strong>P</strong>arentheses: <M>3 - 1 = 2</M>
-              <br />
-              Expression becomes: <M>10 + 2^2 \times 5</M>
-              <br />
-              2. <strong>E</strong>xponents: <M>2^2 = 4</M>
-              <br />
-              Expression becomes: <M>10 + 4 \times 5</M>
-              <br />
-              3. <strong>M</strong>ultiplication: <M>4 \times 5 = 20</M>
-              <br />
-              Expression becomes: <M>10 + 20</M>
-              <br />
-              4. <strong>A</strong>ddition: <M>10 + 20 = 30</M>
-              <br />
-              Final Answer: <strong>30</strong>
+              <p>Solve: <M>10 + (3 - 1)^2 \times 5</M></p>
+              <p>1. <strong>P</strong>arentheses: <M>3 - 1 = 2</M></p>
+              <p>Expression becomes: <M>10 + 2^2 \times 5</M></p>
+              <p>2. <strong>E</strong>xponents: <M>2^2 = 4</M></p>
+              <p>Expression becomes: <M>10 + 4 \times 5</M></p>
+              <p>3. <strong>M</strong>ultiplication: <M>4 \times 5 = 20</M></p>
+              <p>Expression becomes: <M>10 + 20</M></p>
+              <p>4. <strong>A</strong>ddition: <M>10 + 20 = 30</M></p>
+              <p>Final Answer: <strong>30</strong></p>
             </ExampleBlock>
           </CollapsibleTopic>
           
-          {/* --- 4. ABSOLUTE VALUE (Renumbered) --- */}
           <CollapsibleTopic title="4. Absolute Value" icon={Pause}>
             <ContentP>
-              The <strong>Absolute Value</strong> of a number is its distance
+              The <strong><GlossaryTerm term="Absolute Value">Absolute Value</GlossaryTerm></strong> of a number is its distance
               from zero on the number line. Distance is always positive, so the
               absolute value is always positive (or zero). We use two vertical
               bars <M>| |</M> to denote it.
@@ -457,7 +438,6 @@ export default function NumbersAndOperationsPage() {
             </ExampleBlock>
           </CollapsibleTopic>
           
-          {/* --- 5. FACTORS AND MULTIPLES (Renumbered) --- */}
           <CollapsibleTopic title="5. Factors and Multiples" icon={SquareX}>
             <ContentP>
               These concepts are key to understanding fractions, division, and
@@ -466,25 +446,24 @@ export default function NumbersAndOperationsPage() {
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <TermDefinition term="Factor">
                 Numbers that are multiplied together to get a product.{" "}
-                <strong>Example:</strong> The factors of 12 are 1, 2, 3, 4, 6,
+                <strong>Example:</strong> The <GlossaryTerm term="Factor">factors</GlossaryTerm> of 12 are 1, 2, 3, 4, 6,
                 and 12.
               </TermDefinition>
               <TermDefinition term="Multiple">
                 The result of multiplying a number by an integer.{" "}
-                <strong>Example:</strong> Multiples of 3 are 3, 6, 9, 12...
+                <strong>Example:</strong> <GlossaryTerm term="Multiple">Multiples</GlossaryTerm> of 3 are 3, 6, 9, 12...
               </TermDefinition>
               <TermDefinition term="Greatest Common Factor (GCF)">
-                The largest factor that two or more numbers share.{" "}
-                <strong>Example:</strong> The GCF of 12 and 18 is 6.
+                The largest <GlossaryTerm term="Factor">factor</GlossaryTerm> that two or more numbers share.{" "}
+                <strong>Example:</strong> The <GlossaryTerm term="Greatest Common Factor">GCF</GlossaryTerm> of 12 and 18 is 6.
               </TermDefinition>
               <TermDefinition term="Least Common Multiple (LCM)">
-                The smallest multiple that two or more numbers share.{" "}
-                <strong>Example:</strong> The LCM of 4 and 6 is 12.
+                The smallest <GlossaryTerm term="Multiple">multiple</GlossaryTerm> that two or more numbers share.{" "}
+                <strong>Example:</strong> The <GlossaryTerm term="Least Common Multiple">LCM</GlossaryTerm> of 4 and 6 is 12.
               </TermDefinition>
             </div>
           </CollapsibleTopic>
           
-          {/* --- 6. OPERATIONS WITH INTEGERS & RATIONALS (Renumbered) --- */}
           <CollapsibleTopic title="6. Operations with Integers & Rationals" icon={Plus}>
             <ContentP>
               This topic covers the rules for performing operations
@@ -508,7 +487,6 @@ export default function NumbersAndOperationsPage() {
             </ExampleBlock>
           </CollapsibleTopic>
           
-          {/* --- 7. PERCENTAGES, RATIOS, & RATES (Renumbered) --- */}
           <CollapsibleTopic title="7. Percentages, Ratios, & Rates" icon={Percent}>
             <ContentP>
               These are all ways of comparing numbers.
@@ -517,29 +495,28 @@ export default function NumbersAndOperationsPage() {
               <li>
                 <TermDefinition term="Ratio">
                   A comparison of two quantities. <strong>Example:</strong> The
-                  ratio of 3 apples to 4 oranges is <M>3:4</M> or <M>{"\\frac{3}{4}"}</M>.
+                  <GlossaryTerm term="Ratio">ratio</GlossaryTerm> of 3 apples to 4 oranges is <M>3:4</M> or <M>{"\\frac{3}{4}"}</M>.
                 </TermDefinition>
               </li>
               <li>
                 <TermDefinition term="Rate">
-                  A ratio that compares two quantities with different units.
+                  A <GlossaryTerm term="Ratio">ratio</GlossaryTerm> that compares two quantities with different units.
                   <strong>Example:</strong> 60 miles per 2 hours = 30 mph.
                 </TermDefinition>
               </li>
               <li>
                 <TermDefinition term="Percentage">
-                  A ratio where the second number is always 100. "Per cent" means
+                  A <GlossaryTerm term="Ratio">ratio</GlossaryTerm> where the second number is always 100. "Per cent" means
                   "per hundred." <strong>Example:</strong> <M>{"75\\% = \\frac{75}{100} = 0.75"}</M>
                 </TermDefinition>
               </li>
             </ul>
-          </CollapsibleTopic>
+           </CollapsibleTopic>
           
-          {/* --- 8. FRACTIONS AND DECIMALS (Renumbered) --- */}
           <CollapsibleTopic title="8. Fractions and Decimals" icon={SquareDivide}>
             <ContentP>
               Fractions and decimals are two different ways to represent the same
-              rational numbers (parts of a whole).
+              <GlossaryTerm term="Rational Numbers">rational numbers</GlossaryTerm> (parts of a whole).
             </ContentP>
             <ExampleBlock>
               <p><strong>Fraction to Decimal:</strong> Divide the numerator by the denominator.</p>
@@ -548,13 +525,13 @@ export default function NumbersAndOperationsPage() {
               <p><M>{"0.75 = \\frac{75}{100} = \\frac{3}{4}"}</M> (after simplifying)</p>
               <p><M>{"0.5 = \\frac{5}{10} = \\frac{1}{2}"}</M></p>
             </ExampleBlock>
-          </CollapsibleTopic>
+           </CollapsibleTopic>
         </div>
 
         {/* --- Column 2: Aside/Sidebar --- */}
         <aside className="lg:col-span-1 text-left lg:sticky lg:top-24 h-min space-y-8">
           <KeyConceptsAside />
-          <CommonPitfallsAside/>
+          <CommonPitfallsAside />
           <RelatedTopicsAside />
         </aside>
       </div>
@@ -562,7 +539,7 @@ export default function NumbersAndOperationsPage() {
   );
 }
 
-// --- Key Concepts Aside ---
+// --- NEW HELPER COMPONENT: Key Concepts Aside ---
 function KeyConceptsAside() {
   return (
     <div className="glass rounded-2xl border border-cyan-800/40 bg-cyan-900/20 p-6">
@@ -572,22 +549,49 @@ function KeyConceptsAside() {
       </h3>
       <ul className="list-disc space-y-2 pl-5 text-sm text-neutral-300">
         <li>
-          <strong>Number Systems:</strong> Numbers are classified in a hierarchy (e.g., Natural ⊂ Integers ⊂ Rationals ⊂ Reals).
+          <strong><GlossaryTerm term="Number System">Number Systems</GlossaryTerm>:</strong> Numbers are classified in a hierarchy (e.g., Natural ⊂ Integers ⊂ Rationals ⊂ Reals).
         </li>
         <li>
-          <strong>Properties:</strong> The rules that govern operations, like the Commutative, Associative, and Distributive properties.
+          <strong>Properties:</strong> The rules that govern operations, like the <GlossaryTerm term="Commutative Property">Commutative</GlossaryTerm>, <GlossaryTerm term="Associative Property">Associative</GlossaryTerm>, and <GlossaryTerm term="Distributive Property">Distributive</GlossaryTerm> properties.
         </li>
         <li>
-          <strong>PEMDAS:</strong> The order of operations (Parentheses, Exponents, Multiply/Divide, Add/Subtract) is crucial for correct answers.
+          <strong><GlossaryTerm term="Order of Operations">PEMDAS</GlossaryTerm>:</strong> The order of operations (Parentheses, Exponents, Multiply/Divide, Add/Subtract) is crucial for correct answers.
         </li>
         <li>
-          <strong>Rationals vs. Irrationals:</strong> A Rational number can be a fraction (like <M>1/2</M> or <M>7</M>); an Irrational number cannot (like <M>\pi</M>).
+          <strong>Rationals vs. Irrationals:</strong> A <GlossaryTerm term="Rational Numbers">Rational</GlossaryTerm> number can be a fraction (like <M>1/2</M> or <M>7</M>); an <GlossaryTerm term="Irrational Numbers">Irrational</GlossaryTerm> number cannot (like <M>\pi</M>).
         </li>
       </ul>
     </div>
   );
 }
-// --- Related Topics Aside ---
+
+// --- NEW HELPER COMPONENT: Common Pitfalls Aside ---
+function CommonPitfallsAside() {
+  return (
+    <div className="glass rounded-2xl border border-amber-800/40 bg-amber-900/20 p-6">
+      <h3 className="mb-4 flex items-center gap-2 text-lg font-semibold text-amber-300">
+        <AlertTriangle size={18} />
+        Common Pitfalls
+      </h3>
+      <ul className="list-disc space-y-2 pl-5 text-sm text-neutral-300">
+        <li>
+          <strong><GlossaryTerm term="Order of Operations">PEMDAS</GlossaryTerm> errors:</strong> Forgetting to do Multiplication/Division *before* Addition/Subtraction.
+        </li>
+        <li>
+          <strong><GlossaryTerm term="Distributive Property">Distributive Property</GlossaryTerm>:</strong> Forgetting to multiply the factor by *every* term inside the parentheses. E.g., <M>3(x+2)</M> becomes <M>3x+6</M>, not <M>3x+2</M>.
+        </li>
+        <li>
+          <strong>Dividing by Zero:</strong> This operation is undefined. Be careful with fractions where the denominator could become zero.
+        </li>
+        <li>
+          <strong>Negative Signs:</strong> Losing track of negative signs during subtraction or multiplication (e.g., <M>5 - (-2) = 7</M>, not 3).
+        </li>
+      </ul>
+    </div>
+  );
+}
+
+// --- NEW HELPER COMPONENT: Related Topics Aside ---
 function RelatedTopicsAside() {
   return (
     <div className="glass rounded-2xl border border-neutral-800/60 p-6">
@@ -610,7 +614,8 @@ function RelatedTopicsAside() {
     </div>
   );
 }
-// --- Aside Link ---
+
+// --- NEW HELPER COMPONENT: Aside Link ---
 function AsideLink({ href, title, description }: { href: string; title: string; description: string }) {
   const isPlanned = href === "#";
   return (
@@ -639,33 +644,9 @@ function AsideLink({ href, title, description }: { href: string; title: string; 
     </Link>
   );
 }
-// --- Pitfalls Aside ---
-function CommonPitfallsAside() {
-  return (
-    <div className="glass rounded-2xl border border-amber-800/40 bg-amber-900/20 p-6">
-      <h3 className="mb-4 flex items-center gap-2 text-lg font-semibold text-amber-300">
-        <AlertTriangle size={18} />
-        Common Pitfalls
-      </h3>
-      <ul className="list-disc space-y-2 pl-5 text-sm text-neutral-300">
-        <li>
-          <strong>PEMDAS errors:</strong> Forgetting to do Multiplication/Division *before* Addition/Subtraction.
-        </li>
-        <li>
-          <strong>Distributive Property:</strong> Forgetting to multiply the factor by *every* term inside the parentheses. E.g., <M>3(x+2)</M> becomes <M>3x+6</M>, not <M>3x+2</M>.
-        </li>
-        <li>
-          <strong>Dividing by Zero:</strong> This operation is undefined. Be careful with fractions where the denominator could become zero.
-        </li>
-        <li>
-          <strong>Negative Signs:</strong> Losing track of negative signs during subtraction or multiplication (e.g., <M>5 - (-2) = 7</M>, not 3).
-        </li>
-      </ul>
-    </div>
-  );
-}
 
-// --- HELPER COMPONENTS (MOVED FROM NUMBER-SYSTEMS.TSX) ---
+
+// --- HELPER COMPONENTS (NumberClassifierApplet, NumberSorterApplet) ---
 function NumberClassifierApplet() {
   const [inputValue, setInputValue] = useState("3.5");
   const [results, setResults] = useState<string[]>([]);
@@ -679,6 +660,11 @@ function NumberClassifierApplet() {
     if (str === "π" || str.toLowerCase() === "pi" || str.toLowerCase() === "e") {
       setResults(["Real", "Irrational"]);
       return;
+    }
+    // Updated to recognize complex numbers
+    if (str.includes("i")) {
+       setResults(["Complex", "Imaginary"]);
+       return;
     }
     if (str.includes("√") || str.toLowerCase().includes("sqrt")) {
       // Basic check, doesn't handle perfect squares, but good for demo
@@ -708,7 +694,7 @@ function NumberClassifierApplet() {
       return;
     }
 
-    let types: string[] = ["Real"];
+    let types: string[] = ["Real", "Complex"]; // All Reals are also Complex
 
     if (Number.isInteger(num)) {
       types.push("Rational");
@@ -743,7 +729,7 @@ function NumberClassifierApplet() {
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           className="flex-grow rounded-md border border-neutral-700 bg-neutral-900 px-3 py-2 text-neutral-100 focus:border-cyan-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/50"
-          placeholder="Enter a number (e.g., -5, 0, 3.5, 1/2, pi)"
+          placeholder="Enter a number (e.g., -5, 0, 3.5, 1/2, pi, 3+2i)"
         />
         <button
           type="submit"
@@ -772,12 +758,13 @@ function NumberClassifierApplet() {
 
 // --- Internal Component: New Number Sorter Applet ---
 const numbersToClassify = [
-  { num: "7", types: ["Natural", "Whole", "Integer", "Rational", "Real"] },
-  { num: "0", types: ["Whole", "Integer", "Rational", "Real"] },
-  { num: "-4", types: ["Integer", "Rational", "Real"] },
-  { num: "1/2", types: ["Rational", "Real"] },
-  { num: "√2", types: ["Irrational", "Real"] },
-  { num: "-1.5", types: ["Rational", "Readl"] },
+  { num: "7", types: ["Natural", "Whole", "Integer", "Rational", "Real", "Complex"] },
+  { num: "0", types: ["Whole", "Integer", "Rational", "Real", "Complex"] },
+  { num: "-4", types: ["Integer", "Rational", "Real", "Complex"] },
+  { num: "1/2", types: ["Rational", "Real", "Complex"] },
+  { num: "√2", types: ["Irrational", "Real", "Complex"] },
+  { num: "-1.5", types: ["Rational", "Real", "Complex"] },
+  { num: "3i", types: ["Imaginary", "Complex"] },
 ];
 const allTypes = [
   "Natural",
@@ -786,6 +773,8 @@ const allTypes = [
   "Rational",
   "Irrational",
   "Real",
+  "Imaginary",
+  "Complex",
 ];
 
 function NumberSorterApplet() {
