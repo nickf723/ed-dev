@@ -13,9 +13,10 @@ type GlossaryTermProps = {
  * The term prop must be a valid key from lib/glossary-db.ts
  */
 export default function GlossaryTerm({ term, children }: GlossaryTermProps) {
-  const definition = glossaryTerms[term];
+  // REWORKED: Pull the item object, not just the definition string
+  const item = glossaryTerms[term];
 
-  if (!definition) {
+  if (!item) {
     console.warn(`Glossary term "${term}" not found.`);
     return <>{children}</>;
   }
@@ -23,8 +24,9 @@ export default function GlossaryTerm({ term, children }: GlossaryTermProps) {
   return (
     <span
       className="term-highlight"
-      data-tooltip={definition}
-      aria-label={`Definition: ${definition}`} // for accessibility
+      // REWORKED: Read from item.definition
+      data-tooltip={item.definition}
+      aria-label={`Definition: ${item.definition}`} // for accessibility
     >
       {children}
     </span>
