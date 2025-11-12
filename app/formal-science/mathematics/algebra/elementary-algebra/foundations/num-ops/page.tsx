@@ -7,7 +7,7 @@ import {CollapsibleTopic, ContentP, ContentSubhead, TermDefinition, AppletContai
 import { Plus, SquareDivide, Binary, Percent, Calculator, ChevronRight, Pause, SquareX, Shuffle, ArrowRightLeft, Parentheses, Sigma, Spline,} from "@/components/icons";
 import React, { useState, useEffect } from "react";
 import { MBlock, M } from "@/components/Math";
-  
+import NumberSystemsPage from "../number-systems/page";
 // Symbols for the background
 const numOpsSymbols = [
   "1", "2", "3", "π", "√2", "-5", "0.5", "1/3", "i", "+", "-", "×", "÷", "=", "%", "±",
@@ -164,60 +164,7 @@ export default function NumbersAndOperationsPage() {
       {/* Main content area for collapsible topics */}
       <div className="w-full max-w-6x1 text-left">
         {/* --- 1. NUMBER SYSTEMS --- */}
-        <CollapsibleTopic title="1. Number Systems" icon={Binary} startOpen={false}>
-          <ContentP>
-            In algebra, we don't just work with "numbers"; we work with
-            different **systems** of numbers. Each system is like a container
-            that holds certain types of numbers and not others. Knowing which
-            system you're working in is crucial because it defines the "rules"
-            and tells you what kind of answers are possible.
-          </ContentP>
-              <div className="my-6 rounded-lg border border-neutral-700 bg-neutral-900 p-4 text-center">
-                <span className="text-sm italic text-neutral-400">
-                  [Image: Hierarchy of Number Systems]
-                </span>
-                <p className="mt-2 text-neutral-200">
-                  <M>{"\\mathbb{N} \\subset \\mathbb{W} \\subset \\mathbb{Z} \\subset \\mathbb{Q} \\subset \\mathbb{R}"}</M>
-                </p>
-              </div>
-          <ContentSubhead title="The Hierarchy of Real Numbers" />
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                      <TermDefinition term="Natural Numbers (ℕ)">
-                        The "counting numbers." <strong>Examples:</strong> <M>1, 2, 3...</M>
-                      </TermDefinition>
-                      <TermDefinition term="Whole Numbers (𝕎)">
-                        Natural numbers plus **zero**. <strong>Examples:</strong>{" "}
-                        <M>0, 1, 2, 3...</M>
-                      </TermDefinition>
-                      <TermDefinition term="Integers (ℤ)">
-                        Whole numbers and their **negative opposites**.{" "}
-                        <strong>Examples:</strong>
-                        <M>...-2, -1, 0, 1, 2...</M>
-                      </TermDefinition>
-                      <TermDefinition term="Rational Numbers (ℚ)">
-                        Any number that can be a **fraction** (ratio). Includes terminating
-                        and repeating decimals. <strong>Examples:</strong>{" "}
-                        <M>{"1/2, -3/4, 7, 0.5, 0.\\overline{3}"}</M>
-                      </TermDefinition>
-                      <TermDefinition term="Irrational Numbers (𝕀)">
-                        Numbers that **cannot** be a simple fraction. Their decimals are
-                        non-terminating and non-repeating. <strong>Examples:</strong>{" "}
-                        <M>{"\\pi, \\sqrt{2}, e"}</M>
-                      </TermDefinition>
-                      <TermDefinition term="Real Numbers (ℝ)">
-                        All rational and irrational numbers. Every point on the number
-                        line.
-                      </TermDefinition>
-                    </div>
-          <ContentSubhead title="Interactive Classifier" />
-          <NumberClassifierApplet />
-          <SideNote>
-            <strong>Why does this matter?</strong> When solving an equation, the
-            instructions might say "find the *integer* solution." This tells
-            you that if your answer is <M>1.5</M>, it's not a valid solution for that
-            problem.
-          </SideNote>
-        </CollapsibleTopic>
+        <NumberSystemsPage></NumberSystemsPage>
         {/* --- 2. ALGEBRAIC PROPERTIES --- */}
        <CollapsibleTopic title="2. Algebraic Properties" icon={Shuffle}>
           <ContentP>

@@ -35,6 +35,15 @@ const foundationsTopics = [
     subtitle: ""
   },
   {
+    title: "Number Systems",
+    href: "/formal-science/mathematics/algebra/elementary-algebra/foundations/number-systems",
+    Icon: SquareX,
+    description: "TBD",
+    className: "card-theme-elementary-algebra-foundations",
+    status: "In Progress",
+    subtitle: ""
+  },
+  {
     title: "Variables & Expressions",
     href: "#",
     Icon: SquareFunction,
