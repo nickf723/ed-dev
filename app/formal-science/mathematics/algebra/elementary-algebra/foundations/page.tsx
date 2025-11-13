@@ -36,11 +36,11 @@ const foundationsTopics = [
   },
   {
     title: "Variables & Expressions",
-    href: "#",
+    href: "/formal-science/mathematics/algebra/elementary-algebra/foundations/variables-expressions",
     Icon: SquareFunction,
     description: "Learn how symbols (variables) are used to represent unknown values.",
     className: "card-theme-elementary-algebra-foundations",
-    status: "Planned",
+    status: "In Progress",
     subtitle: ""
   },
   {
