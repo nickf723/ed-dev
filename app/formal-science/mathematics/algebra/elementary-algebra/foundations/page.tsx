@@ -45,11 +45,11 @@ const foundationsTopics = [
   },
   {
     title: "Properties of Algebra",
-    href: "#",
+    href: "/formal-science/mathematics/algebra/elementary-algebra/foundations/algebraic-properties",
     Icon: Parentheses,
     description: "The core rules (commutative, associative, distributive) that govern algebra.",
     className: "card-theme-elementary-algebra-foundations",
-    status: "Planned",
+    status: "In Progress",
     subtitle: ""
   },
 ];

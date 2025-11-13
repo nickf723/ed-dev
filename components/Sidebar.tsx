@@ -22,7 +22,7 @@ import {
   Zap,
   TrendingUp,
   SquareFunction,
-  GitMerge,
+  GitMerge, Shuffle
 } from "@/components/icons";
 
 export default function Sidebar() {
@@ -155,29 +155,25 @@ export default function Sidebar() {
                     }
                     nested
                   >
-                    {/* Numbers and Operations Dropdown */}
-                    <Dropdown
-                      label="Numbers and Operations"
-                      expanded={expandNumOps}
-                      setExpanded={setExpandNumOps}
-                      href="/formal-science/mathematics/algebra/elementary-algebra/foundations/num-ops"
-                      active={
-                        pathname ===
-                        "/formal-science/mathematics/algebra/elementary-algebra/foundations/num-ops"
-                      }
-                      nested
-                    >
-                      <span className="px-3 py-2 text-neutral-500 italic">
-                        <li>Number Systems</li>
-                        <li>Algebraic Properties</li>
-                        <li>Order of Operations</li>
-                        <li>Absolute Value</li>
-                        <li>Factors and Multiples</li>
-                        <li>Integers and Rationals</li>
-                        <li>Percentages / Ratios / Rates</li>
-                        <li>Fractions and Decimals</li>
-                      </span>
-                    </Dropdown>
+                    {/* Numbers and Operations */}
+                    <SidebarLink
+                        href="/formal-science/mathematics/algebra/elementary-algebra/foundations/num-ops"
+                        label="Numbers and Operations"
+                        icon={<Calculator size={14} />}
+                        active={pathname.startsWith(
+                          "/formal-science/mathematics/algebra/elementary-algebra/foundations/num-ops"
+                        )}
+                        nested
+                      />
+                      {/* Algebraic Properties */}
+                      <SidebarLink
+                        href="/formal-science/mathematics/algebra/elementary-algebra/foundations/algebraic-properties"
+                        label="Algebraic Properties"
+                        icon={<Shuffle size={14} />}
+                        active={pathname.startsWith(
+                          "/formal-science/mathematics/algebra/elementary-algebra/foundations/algebraic-properties"
+                        )}
+                        nested/>
                   </Dropdown>
                 </Dropdown>
               </Dropdown>
