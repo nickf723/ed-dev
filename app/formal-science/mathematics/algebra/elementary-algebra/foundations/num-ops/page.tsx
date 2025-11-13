@@ -190,6 +190,89 @@ const propertyTabs: TabItem[] = [
   },
 ];
 
+const problemTabs: TabItem[] = [
+  {
+    title: "Problem 1",
+    icon: XIcon,
+    content: (
+      <>
+        <ContentP>
+          <strong>Problem:</strong> <M>x + 5 = 2</M>
+        </ContentP>
+        <ExampleBlock>
+          <p>
+            <strong>System:</strong> <GlossaryTerm term="Whole Numbers">Whole Numbers (𝕎)</GlossaryTerm>
+          </p>
+          <p>
+            <strong>Result:</strong> <span className="text-red-400">Impossible.</span> There is no
+            whole number you can add to 5 to get 2.
+          </p>
+        </ExampleBlock>
+      </>
+    ),
+  },
+  {
+    title: "Solution 1",
+    icon: Check,
+    content: (
+      <>
+        <ContentP>
+          <strong>Solution:</strong> Invent <GlossaryTerm term="Integers">Integers (ℤ)</GlossaryTerm>
+        </ContentP>
+        <ExampleBlock>
+          <p>
+            By introducing negative numbers, we create a new system where this
+            problem is solvable.
+          </p>
+          <p>
+            <strong>Answer:</strong> <M>x = -3</M>
+          </p>
+        </ExampleBlock>
+      </>
+    ),
+  },
+  {
+    title: "Problem 2",
+    icon: XIcon,
+    content: (
+      <>
+        <ContentP>
+          <strong>Problem:</strong> <M>x^2 = 2</M>
+        </ContentP>
+        <ExampleBlock>
+          <p>
+            <strong>System:</strong> <GlossaryTerm term="Rational Numbers">Rational Numbers (ℚ)</GlossaryTerm>
+          </p>
+          <p>
+            <strong>Result:</strong> <span className="text-red-400">Impossible.</span> There is no
+            fraction that, when multiplied by itself, equals 2.
+          </p>
+        </ExampleBlock>
+      </>
+    ),
+  },
+  {
+    title: "Solution 2",
+    icon: Check,
+    content: (
+      <>
+        <ContentP>
+          <strong>Solution:</strong> Discover <GlossaryTerm term="Irrational Numbers">Irrational Numbers (𝕀)</GlossaryTerm>
+        </ContentP>
+        <ExampleBlock>
+          <p>
+            By acknowledging numbers with non-repeating decimals, we can solve
+            this.
+          </p>
+          <p>
+            <strong>Answer:</strong> <M>x = \sqrt2</M>
+          </p>
+        </ExampleBlock>
+      </>
+    ),
+  },
+];
+
 export default function NumbersAndOperationsPage() {
   return (
     <main className="topic-page theme-elementary-algebra-foundations lg:px-16">
@@ -204,11 +287,7 @@ export default function NumbersAndOperationsPage() {
         
         <div className="lg:col-span-2 text-left">
           
-          <CollapsibleTopic
-            title="1. Number Systems"
-            icon={Waypoints}
-            startOpen={true}
-          >
+          <CollapsibleTopic title="1. Number Systems" icon={Waypoints} startOpen={true}>
             <ContentP>
               In algebra, we don't just work with "numbers"; we work with
               different <GlossaryTerm term="Number System">systems of numbers</GlossaryTerm>. Each system is like a
@@ -292,14 +371,19 @@ export default function NumbersAndOperationsPage() {
                   <strong>Irrational</strong> numbers combined. They represent every
                   single point on the number line.
                 </TermDefinition>
+                <ContentSubhead title="Test Your Knowledge" />
+                  <ContentP>
+                    Use this classifier to see how the numbers you just learned about
+                    fit into the hierarchy.
+                  </ContentP>
+                  <NumberClassifierApplet />
               </CollapsibleTopic>
 
               <CollapsibleTopic title="1.2 Interactive Classifiers" icon={Puzzle}>
                 <ContentP>
-                  Let's put your knowledge to the test. Use these tools to see how
-                  different numbers fit into the systems.
+                  Now that you've seen the categories, test your understanding of
+                  the hierarchy. Remember, a number can belong to multiple sets!
                 </ContentP>
-                <NumberClassifierApplet />
                 <NumberSorterApplet />
               </CollapsibleTopic>
 
@@ -328,18 +412,8 @@ export default function NumbersAndOperationsPage() {
                     Historically, the discovery of new number systems solved problems
                     that were once thought impossible.
                   </ContentP>
-                  <ul className="mt-2 list-disc pl-5">
-                    <li>
-                      <M>x + 5 = 2</M> is impossible with only <strong><GlossaryTerm term="Whole Numbers">Whole Numbers</GlossaryTerm></strong>,
-                      but solvable with <strong><GlossaryTerm term="Integers">Integers</GlossaryTerm></strong> (<M>x = -3</M>).
-                    </li>
-                    <li>
-                      <M>x^2 = 2</M> is impossible with only <strong><GlossaryTerm term="Rational Numbers">Rational Numbers</GlossaryTerm></strong>,
-                      but solvable with <strong><GlossaryTerm term="Irrational Numbers">Irrational Numbers</GlossaryTerm></strong> (
-                      <M>x = \sqrt2</M>).
-                    </li>
-                  </ul>
                 </SideNote>
+                <ContentTabs items={problemTabs} />
               </CollapsibleTopic>
 
               <CollapsibleTopic title="1.4 Beyond the Real Line" icon={Sigma}>
@@ -758,13 +832,15 @@ function NumberClassifierApplet() {
 
 // --- Internal Component: New Number Sorter Applet ---
 const numbersToClassify = [
-  { num: "7", types: ["Natural", "Whole", "Integer", "Rational", "Real", "Complex"] },
-  { num: "0", types: ["Whole", "Integer", "Rational", "Real", "Complex"] },
-  { num: "-4", types: ["Integer", "Rational", "Real", "Complex"] },
-  { num: "1/2", types: ["Rational", "Real", "Complex"] },
-  { num: "√2", types: ["Irrational", "Real", "Complex"] },
-  { num: "-1.5", types: ["Rational", "Real", "Complex"] },
+  { num: "7", types: ["Natural", "Whole", "Integer", "Rational", "Real", ] },
+  { num: "0", types: ["Whole", "Integer", "Rational", "Real", ] },
+  { num: "-4", types: ["Integer", "Rational", "Real", ] },
+  { num: "1/2", types: ["Rational", "Real", ] },
+  { num: "√2", types: ["Irrational", "Real", ] },
+  { num: "-1.5", types: ["Rational", "Real", ] },
   { num: "3i", types: ["Imaginary", "Complex"] },
+  { num: "3 + 2i", types: ["Complex"] },
+  { num: "5i", types: ["Imaginary", "Complex"] },
 ];
 const allTypes = [
   "Natural",
