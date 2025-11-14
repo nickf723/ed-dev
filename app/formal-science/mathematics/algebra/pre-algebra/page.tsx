@@ -25,15 +25,17 @@ const foundationsSymbols = [
 
 // Data for the unit cards
 const foundationsTopics = [
-  {
-    title: "Numbers & Operations",
-    href: "/formal-science/mathematics/algebra/pre-algebra/num-ops",
-    Icon: SquareX,
-    description: "Explore number systems, properties, and the order of operations.",
-    className: "card-theme-elementary-algebra-foundations",
-    status: "In Progress",
-    subtitle: ""
-  },
+  // --- REMOVED THIS CARD ---
+  // {
+  //   title: "Numbers & Operations",
+  //   href: "/formal-science/mathematics/algebra/pre-algebra/num-ops",
+  //   Icon: SquareX,
+  //   description: "Explore number systems, properties, and the order of operations.",
+  //   className: "card-theme-elementary-algebra-foundations",
+  //   status: "In Progress",
+  //   subtitle: ""
+  // },
+  // -------------------------
   {
     title: "Variables & Expressions",
     href: "/formal-science/mathematics/algebra/pre-algebra/variables-expressions",

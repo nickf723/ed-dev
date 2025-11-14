@@ -148,7 +148,8 @@ export default function Sidebar() {
                   )}
                   nested
                 >
-                  <SidebarLink
+                  {/* --- REMOVED THIS LINK --- */}
+                  {/* <SidebarLink
                     href="/formal-science/mathematics/algebra/pre-algebra/num-ops"
                     label="Numbers and Operations"
                     icon={<Calculator size={14} />}
@@ -156,7 +157,7 @@ export default function Sidebar() {
                       "/formal-science/mathematics/algebra/pre-algebra/num-ops"
                     )}
                     nested
-                  />
+                  /> */}
                   <SidebarLink
                     href="/formal-science/mathematics/algebra/pre-algebra/variables-expressions"
                     label="Variables & Expressions"

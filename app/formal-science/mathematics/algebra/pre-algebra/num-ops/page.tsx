@@ -138,7 +138,7 @@ export default function NumbersAndOperationsPage() {
     <main className="topic-page theme-elementary-algebra-foundations lg:px-16">
       <FloatingSymbols symbols={numOpsSymbols} />
       <PageHeader
-        eyebrow="Pre-Algebra"
+        eyebrow="Number Theory" // CHANGED FROM "Pre-Algebra"
         title="Numbers and Operations"
         subtitle="Understanding the types of numbers that exist and the rules for how they interact. This is the bedrock of all mathematics."
       />
@@ -459,7 +459,26 @@ export default function NumbersAndOperationsPage() {
         <aside className="lg:col-span-1 text-left lg:sticky lg:top-24 h-min space-y-8">
           <KeyConceptsAside />
           <CommonPitfallsAside />
-          <RelatedTopicsAside />
+          {/* --- MODIFIED THIS SECTION --- */}
+          <div className="glass rounded-2xl border border-neutral-800/60 p-6">
+            <h3 className="mb-4 flex items-center gap-2 text-lg font-semibold text-neutral-100">
+              <BookCopy size={18} />
+              Related Topics
+            </h3>
+            <ul className="space-y-3">
+              <AsideLink
+                href="#"
+                title="Prime Factorization"
+                description="Break down numbers into their prime building blocks."
+              />
+              <AsideLink
+                href="#"
+                title="Modular Arithmetic"
+                description="The 'clock arithmetic' that forms the basis of number theory."
+              />
+            </ul>
+          </div>
+          {/* --------------------------- */}
         </aside>
       </div>
     </main>

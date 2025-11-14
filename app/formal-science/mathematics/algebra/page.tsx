@@ -43,11 +43,13 @@ const algebraBranches = [
     description:
       "The essential building blocks: numbers, operations, variables, and properties.",
     units: [
-      {
-        name: "Numbers and Operations",
-        href: "/formal-science/mathematics/algebra/pre-algebra/num-ops",
-        status: "In Progress",
-      },
+      // --- REMOVED THIS UNIT ---
+      // {
+      //   name: "Numbers and Operations",
+      //   href: "/formal-science/mathematics/algebra/pre-algebra/num-ops",
+      //   status: "In Progress",
+      // },
+      // -------------------------
       { name: "Variables & Expressions", href: "/formal-science/mathematics/algebra/pre-algebra/variables-expressions", status: "In Progress" },
       { name: "Algebraic Properties", href: "/formal-science/mathematics/algebra/pre-algebra/algebraic-properties", status: "In Progress" },
     ],

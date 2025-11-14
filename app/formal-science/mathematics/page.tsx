@@ -52,7 +52,16 @@ export default function MathPage() {
       href: "/formal-science/mathematics/number-theory",
       Icon: SquarePlus,
       className: "theme-number-theory",
-      subtitle: ""
+      subtitle: "",
+      // --- ADDED THIS UNITS ARRAY ---
+      units: [
+        {
+          name: "Number Systems & Operations",
+          href: "/formal-science/mathematics/algebra/pre-algebra/num-ops",
+          status: "In Progress",
+        },
+      ],
+      // ----------------------------
     },
     {
       title: "Discrete Mathematics",
@@ -82,6 +91,9 @@ export default function MathPage() {
             className={branch.className}
             Icon={branch.Icon}
             subtitle={branch.subtitle}
+            // --- ADDED THIS ---
+            units={branch.units as any}
+            // ------------------
           />
         ))}
       </section>
