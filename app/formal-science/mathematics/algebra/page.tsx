@@ -41,20 +41,17 @@ const algebraBranches = [
     Icon: BookMarked,
     difficulty: "Foundational",
     description:
-      "The essential building blocks: numbers, operations, variables, and properties.",
+      "The essential building blocks: symbolic reasoning, structure, and problem-solving logic.", // <-- UPDATED DESC
     units: [
-      // --- REMOVED THIS UNIT ---
-      // {
-      //   name: "Numbers and Operations",
-      //   href: "/formal-science/mathematics/algebra/pre-algebra/num-ops",
-      //   status: "In Progress",
-      // },
-      // -------------------------
       { name: "Variables & Expressions", href: "/formal-science/mathematics/algebra/pre-algebra/variables-expressions", status: "In Progress" },
       { name: "Algebraic Properties", href: "/formal-science/mathematics/algebra/pre-algebra/algebraic-properties", status: "In Progress" },
+      { name: "Ratios, Rates & Proportions", href: "/formal-science/mathematics/algebra/pre-algebra/ratios-rates-proportions", status: "Planned" },
+      { name: "Equations & Inequalities", href: "/formal-science/mathematics/algebra/pre-algebra/equations-inequalities", status: "Planned" },
+      { name: "Linear Reasoning", href: "/formal-science/mathematics/algebra/pre-algebra/linear-reasoning", status: "Planned" },
+      { name: "Structure & Logic", href: "/formal-science/mathematics/algebra/pre-algebra/structure-logic", status: "Planned" },
     ],
     className: "theme-elementary-algebra-foundations",
-    subtitle: "1 2 3 x y z",
+    subtitle: "x y z (a+b)",
   },
   {
     title: "Elementary Algebra",

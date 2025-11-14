@@ -266,8 +266,7 @@ function RelatedTopicsAside() {
       </h3>
       <ul className="space-y-3">
         <AsideLink
-          // --- UPDATED HREF ---
-          href="/formal-science/mathematics/number-theory/num-ops"
+          href="/formal-science/mathematics/number-theory/arithmetic/num-ops" // <-- UPDATED LINK
           title="Numbers & Operations"
           description="Review the numbers and operations used in expressions."
         />

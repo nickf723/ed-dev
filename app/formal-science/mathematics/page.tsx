@@ -55,8 +55,8 @@ export default function MathPage() {
       subtitle: "",
       units: [
         {
-          name: "Number Systems & Operations",
-          href: "/formal-science/mathematics/number-theory/num-ops",
+          name: "Arithmetic", // <-- UPDATED NAME
+          href: "/formal-science/mathematics/number-theory/arithmetic", // <-- UPDATED LINK
           status: "In Progress",
         },
       ],

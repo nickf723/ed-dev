@@ -348,7 +348,7 @@ function RelatedTopicsAside() {
       </h3>
       <ul className="space-y-3">
         <AsideLink
-          href="/formal-science/mathematics/algebra/pre-algebra/num-ops"
+          href="/formal-science/mathematics/number-theory/arithmetic/num-ops" // <-- UPDATED LINK
           title="Numbers & Operations"
           description="Review the number systems these properties apply to."
         />

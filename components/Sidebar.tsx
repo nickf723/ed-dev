@@ -27,7 +27,11 @@ import {
   BookMarked,
   Variable,
   Move,
-  SquarePlus, // <-- ADDED ICON
+  SquarePlus, // <-- IMPORTED
+  Percent,    // <-- IMPORTED
+  Equal,      // <-- IMPORTED
+  LineChart,  // <-- IMPORTED
+  Puzzle,     // <-- IMPORTED
 } from "@/components/icons";
 
 export default function Sidebar() {
@@ -43,11 +47,14 @@ export default function Sidebar() {
   const [expandAlgebra, setExpandAlgebra] = useState(
     pathname.startsWith("/formal-science/mathematics/algebra")
   );
-  // --- NEW STATE FOR NUMBER THEORY ---
+  // --- NEW STATE ---
   const [expandNumTheory, setExpandNumTheory] = useState(
     pathname.startsWith("/formal-science/mathematics/number-theory")
   );
-  // -----------------------------------
+  const [expandArithmetic, setExpandArithmetic] = useState(
+    pathname.startsWith("/formal-science/mathematics/number-theory/arithmetic")
+  );
+  // -----------------
   const [expandElemAlgebra, setExpandElemAlgebra] = useState(
     pathname.startsWith(
       "/formal-science/mathematics/algebra/elementary-algebra"
@@ -67,7 +74,6 @@ export default function Sidebar() {
   const [expandPhysics, setExpandPhysics] = useState(
     pathname.startsWith("/natural-science/physics")
   );
-  // --- NEW: State for Classical Mechanics dropdown ---
   const [expandMechanics, setExpandMechanics] = useState(
     pathname.startsWith("/natural-science/physics/classical-mechanics")
   );
@@ -172,6 +178,44 @@ export default function Sidebar() {
                     )}
                     nested
                   />
+                  {/* --- ADDED NEW PRE-ALGEBRA LINKS --- */}
+                  <SidebarLink
+                    href="/formal-science/mathematics/algebra/pre-algebra/ratios-rates-proportions"
+                    label="Ratios, Rates & Proportions"
+                    icon={<Percent size={14} />}
+                    active={pathname.startsWith(
+                      "/formal-science/mathematics/algebra/pre-algebra/ratios-rates-proportions"
+                    )}
+                    nested
+                  />
+                  <SidebarLink
+                    href="/formal-science/mathematics/algebra/pre-algebra/equations-inequalities"
+                    label="Equations & Inequalities"
+                    icon={<Equal size={14} />}
+                    active={pathname.startsWith(
+                      "/formal-science/mathematics/algebra/pre-algebra/equations-inequalities"
+                    )}
+                    nested
+                  />
+                  <SidebarLink
+                    href="/formal-science/mathematics/algebra/pre-algebra/linear-reasoning"
+                    label="Linear Reasoning"
+                    icon={<LineChart size={14} />}
+                    active={pathname.startsWith(
+                      "/formal-science/mathematics/algebra/pre-algebra/linear-reasoning"
+                    )}
+                    nested
+                  />
+                  <SidebarLink
+                    href="/formal-science/mathematics/algebra/pre-algebra/structure-logic"
+                    label="Structure & Logic"
+                    icon={<Puzzle size={14} />}
+                    active={pathname.startsWith(
+                      "/formal-science/mathematics/algebra/pre-algebra/structure-logic"
+                    )}
+                    nested
+                  />
+                  {/* ------------------------------------- */}
                 </Dropdown>
 
                 {/* Elementary Algebra Dropdown */}
@@ -192,7 +236,7 @@ export default function Sidebar() {
                 </Dropdown>
               </Dropdown>
               
-              {/* --- NEW NUMBER THEORY DROPDOWN --- */}
+              {/* --- UPDATED NUMBER THEORY DROPDOWN --- */}
               <Dropdown
                 label="Number Theory"
                 icon={<SquarePlus size={14} />}
@@ -204,15 +248,28 @@ export default function Sidebar() {
                 )}
                 nested
               >
-                <SidebarLink
-                  href="/formal-science/mathematics/number-theory/num-ops"
-                  label="Numbers & Operations"
+                {/* --- ADDED ARITHMETIC SUB-DROPDOWN --- */}
+                <Dropdown
+                  label="Arithmetic"
                   icon={<Calculator size={14} />}
+                  expanded={expandArithmetic}
+                  setExpanded={setExpandArithmetic}
+                  href="/formal-science/mathematics/number-theory/arithmetic"
                   active={pathname.startsWith(
-                    "/formal-science/mathematics/number-theory/num-ops"
+                    "/formal-science/mathematics/number-theory/arithmetic"
                   )}
                   nested
-                />
+                >
+                  <SidebarLink
+                    href="/formal-science/mathematics/number-theory/arithmetic/num-ops"
+                    label="Numbers & Operations"
+                    icon={<Calculator size={14} />}
+                    active={pathname.startsWith(
+                      "/formal-science/mathematics/number-theory/arithmetic/num-ops"
+                    )}
+                    nested
+                  />
+                </Dropdown>
               </Dropdown>
               {/* ---------------------------------- */}
               
@@ -254,7 +311,6 @@ export default function Sidebar() {
               active={pathname.startsWith("/natural-science/physics")}
               nested
             >
-              {/* --- UPDATED: Classical Mechanics is now a dropdown --- */}
               <Dropdown
                 label="Classical Mechanics"
                 icon={<TrendingUp size={14} />}
@@ -266,7 +322,6 @@ export default function Sidebar() {
                 )}
                 nested
               >
-                {/* --- NEW: Link to Kinematics --- */}
                 <SidebarLink
                   href="/natural-science/physics/classical-mechanics/kinematics"
                   label="Kinematics"
@@ -433,7 +488,9 @@ export default function Sidebar() {
   );
 }
 
+/* -------------------------------------- */
 /* 🔹 Reusable Sidebar Link Component */
+/* -------------------------------------- */
 function SidebarLink({
   href,
   label,
@@ -462,7 +519,9 @@ function SidebarLink({
   );
 }
 
+/* -------------------------------------- */
 /* 🔹 Dropdown Component (Updated) 🔹 */
+/* -------------------------------------- */
 function Dropdown({
   label,
   icon,
@@ -503,10 +562,12 @@ function Dropdown({
             <LabelContent />
           </Link>
         ) : (
+          // If no href, make it a non-interactive span but with same padding
           <span className={`${labelClasses} flex-grow cursor-default`}>
             <LabelContent />
           </span>
         )}
+        {/* Chevron button */}
         <button
           onClick={() => setExpanded(!expanded)}
           className="p-2 rounded-md text-neutral-400 transition hover:text-cyan-300"

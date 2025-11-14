@@ -1,4 +1,4 @@
-// app/formal-science/mathematics/algebra/pre-algebra/num-ops/page.tsx
+// app/formal-science/mathematics/number-theory/arithmetic/num-ops/page.tsx
 "use client";
 import PageHeader from "@/components/PageHeader";
 import FloatingSymbols from "@/components/FloatingSymbols";
@@ -13,7 +13,7 @@ import {
   ContentTabs,
   TabItem,
   InternalLink,
-  LessonImage, // Added from previous step
+  LessonImage,
 } from "@/components/LessonBlocks";
 import {
   Plus,
@@ -135,10 +135,10 @@ const problemTabs: TabItem[] = [
 
 export default function NumbersAndOperationsPage() {
   return (
-    <main className="topic-page theme-elementary-algebra-foundations lg:px-16">
+    <main className="topic-page theme-number-theory lg:px-16"> {/* THEME UPDATED */ }
       <FloatingSymbols symbols={numOpsSymbols} />
       <PageHeader
-        eyebrow="Number Theory" // CHANGED FROM "Pre-Algebra"
+        eyebrow="Arithmetic" // EYEBROW UPDATED
         title="Numbers and Operations"
         subtitle="Understanding the types of numbers that exist and the rules for how they interact. This is the bedrock of all mathematics."
       />
@@ -149,7 +149,7 @@ export default function NumbersAndOperationsPage() {
           
           <CollapsibleTopic title="1. Number Systems" icon={Waypoints} startOpen={true}>
             <ContentP>
-              In algebra, we don't just work with "numbers"; we work with
+              In mathematics, we don't just work with "numbers"; we work with
               different <GlossaryTerm term="Number System">systems of numbers</GlossaryTerm>. Each system is like a
               set of Russian nesting dolls—smaller, simpler systems are contained
               within larger, more complex ones.
@@ -459,7 +459,7 @@ export default function NumbersAndOperationsPage() {
         <aside className="lg:col-span-1 text-left lg:sticky lg:top-24 h-min space-y-8">
           <KeyConceptsAside />
           <CommonPitfallsAside />
-          {/* --- MODIFIED THIS SECTION --- */}
+          {/* --- UPDATED RelatedTopicsAside --- */}
           <div className="glass rounded-2xl border border-neutral-800/60 p-6">
             <h3 className="mb-4 flex items-center gap-2 text-lg font-semibold text-neutral-100">
               <BookCopy size={18} />
@@ -467,18 +467,18 @@ export default function NumbersAndOperationsPage() {
             </h3>
             <ul className="space-y-3">
               <AsideLink
+                href="/formal-science/mathematics/algebra/pre-algebra/algebraic-properties"
+                title="Algebraic Properties"
+                description="See how these number rules apply to variables."
+              />
+              <AsideLink
                 href="#"
                 title="Prime Factorization"
                 description="Break down numbers into their prime building blocks."
               />
-              <AsideLink
-                href="#"
-                title="Modular Arithmetic"
-                description="The 'clock arithmetic' that forms the basis of number theory."
-              />
             </ul>
           </div>
-          {/* --------------------------- */}
+          {/* --- END UPDATE --- */}
         </aside>
       </div>
     </main>
@@ -532,30 +532,6 @@ function CommonPitfallsAside() {
         <li>
           <strong>Negative Signs:</strong> Losing track of negative signs during subtraction or multiplication (e.g., <M>5 - (-2) = 7</M>, not 3).
         </li>
-      </ul>
-    </div>
-  );
-}
-
-// --- NEW HELPER COMPONENT: Related Topics Aside ---
-function RelatedTopicsAside() {
-  return (
-    <div className="glass rounded-2xl border border-neutral-800/60 p-6">
-      <h3 className="mb-4 flex items-center gap-2 text-lg font-semibold text-neutral-100">
-        <BookCopy size={18} />
-        Related Topics
-      </h3>
-      <ul className="space-y-3">
-        <AsideLink
-          href="/formal-science/mathematics/algebra/pre-algebra/variables-expressions"
-          title="Variables & Expressions"
-          description="Learn how to use symbols (like 'x') to represent unknown values."
-        />
-        <AsideLink
-          href="#"
-          title="Solving Equations"
-          description="Apply these rules to find the value of 'x' in an equation."
-        />
       </ul>
     </div>
   );
