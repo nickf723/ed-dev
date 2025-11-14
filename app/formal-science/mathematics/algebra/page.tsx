@@ -5,6 +5,7 @@ import FloatingSymbols from "@/components/FloatingSymbols";
 import {
   SquareFunction,
   Grid3X3,
+  BookMarked,
   CircleDotDashed,
 } from "@/components/icons";
 import React from "react";
@@ -35,6 +36,25 @@ const algebraSymbols = [
 // Data for the three branches
 const algebraBranches = [
   {
+    title: "Pre-Algebra",
+    href: "/formal-science/mathematics/algebra/pre-algebra",
+    Icon: BookMarked,
+    difficulty: "Foundational",
+    description:
+      "The essential building blocks: numbers, operations, variables, and properties.",
+    units: [
+      {
+        name: "Numbers and Operations",
+        href: "/formal-science/mathematics/algebra/pre-algebra/num-ops",
+        status: "In Progress",
+      },
+      { name: "Variables & Expressions", href: "/formal-science/mathematics/algebra/pre-algebra/variables-expressions", status: "In Progress" },
+      { name: "Algebraic Properties", href: "/formal-science/mathematics/algebra/pre-algebra/algebraic-properties", status: "In Progress" },
+    ],
+    className: "theme-elementary-algebra-foundations",
+    subtitle: "1 2 3 x y z",
+  },
+  {
     title: "Elementary Algebra",
     href: "/formal-science/mathematics/algebra/elementary-algebra",
     Icon: SquareFunction,
@@ -42,11 +62,6 @@ const algebraBranches = [
     description:
       "The foundational study of variables, expressions, equations, and functions. This is the language of problem-solving.",
     units: [
-      {
-        name: "Foundations",
-        href: "/formal-science/mathematics/algebra/elementary-algebra/foundations",
-        status: "In Progress",
-      },
       { name: "Solving Equations", href: "#", status: "Planned" },
       { name: "Functions & Graphs", href: "#", status: "Planned" },
     ],

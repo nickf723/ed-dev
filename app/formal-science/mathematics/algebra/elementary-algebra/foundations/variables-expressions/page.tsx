@@ -1,4 +1,4 @@
-// app/formal-science/mathematics/algebra/elementary-algebra/foundations/variables-expressions/page.tsx
+// app/formal-science/mathematics/algebra/pre-algebra/variables-expressions/page.tsx
 "use client";
 import PageHeader from "@/components/PageHeader";
 import FloatingSymbols from "@/components/FloatingSymbols";
@@ -42,7 +42,7 @@ export default function VariablesAndExpressionsPage() {
     <main className="topic-page theme-elementary-algebra-foundations lg:px-16">
       <FloatingSymbols symbols={varSymbols} />
       <PageHeader
-        eyebrow="Foundations of Algebra"
+        eyebrow="Pre-Algebra"
         title="Variables and Expressions"
         subtitle="Learn how letters like 'x' and 'y' are used to represent unknown numbers, forming the building blocks of algebra."
       />
@@ -266,12 +266,12 @@ function RelatedTopicsAside() {
       </h3>
       <ul className="space-y-3">
         <AsideLink
-          href="/formal-science/mathematics/algebra/elementary-algebra/foundations/num-ops"
+          href="/formal-science/mathematics/algebra/pre-algebra/num-ops"
           title="Numbers & Operations"
           description="Review the numbers and operations used in expressions."
         />
         <AsideLink
-          href="/formal-science/mathematics/algebra/elementary-algebra/foundations/algebraic-properties"
+          href="/formal-science/mathematics/algebra/pre-algebra/algebraic-properties"
           title="Algebraic Properties"
           description="The rules for how expressions can be simplified."
         />

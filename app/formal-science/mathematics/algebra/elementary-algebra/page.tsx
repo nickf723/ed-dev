@@ -27,13 +27,6 @@ const elemAlgebraSymbols = [
 // Data for the unit cards
 const elementaryAlgebraUnits = [
   {
-    title: "Foundations",
-    href: "/formal-science/mathematics/algebra/elementary-algebra/foundations",
-    Icon: X,
-    description: "The basic building blocks: numbers, variables, and operations.",
-    className: "theme-elementary-algebra-foundations",
-  },
-  {
     title: "Solving Equations",
     href: "#",
     Icon: Equal,

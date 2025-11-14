@@ -24,6 +24,7 @@ import {
   SquareFunction,
   GitMerge,
   Shuffle,
+  BookMarked,
   Variable, // Import the Variable icon
 } from "@/components/icons";
 
@@ -45,14 +46,9 @@ export default function Sidebar() {
       "/formal-science/mathematics/algebra/elementary-algebra"
     )
   );
-  const [expandFoundations, setExpandFoundations] = useState(
+  const [expandPreAlgebra, setExpandPreAlgebra] = useState(
     pathname.startsWith(
-      "/formal-science/mathematics/algebra/elementary-algebra/foundations"
-    )
-  );
-  const [expandNumOps, setExpandNumOps] = useState(
-    pathname.startsWith(
-      "/formal-science/mathematics/algebra/elementary-algebra/foundations/num-ops"
+      "/formal-science/mathematics/algebra/pre-algebra"
     )
   );
   const [expandLogic, setExpandLogic] = useState(
@@ -135,7 +131,51 @@ export default function Sidebar() {
                 active={pathname === "/formal-science/mathematics/algebra"}
                 nested
               >
-                {/* Elementary Algebra Dropdown */}
+                {/* NEW: Pre-Algebra Dropdown (Moved from Foundations) */}
+                <Dropdown
+                  label="Pre-Algebra"
+                  icon={<BookMarked size={14} />}
+                  expanded={expandPreAlgebra}
+                  setExpanded={setExpandPreAlgebra}
+                  href="/formal-science/mathematics/algebra/pre-algebra"
+                  active={pathname.startsWith(
+                    "/formal-science/mathematics/algebra/pre-algebra"
+                  )}
+                  nested
+                >
+                  {/* Numbers and Operations */}
+                  <SidebarLink
+                    href="/formal-science/mathematics/algebra/pre-algebra/num-ops"
+                    label="Numbers and Operations"
+                    icon={<Calculator size={14} />}
+                    active={pathname.startsWith(
+                      "/formal-science/mathematics/algebra/pre-algebra/num-ops"
+                    )}
+                    nested
+                  />
+                  {/* Variables & Expressions Link */}
+                  <SidebarLink
+                    href="/formal-science/mathematics/algebra/pre-algebra/variables-expressions"
+                    label="Variables & Expressions"
+                    icon={<Variable size={14} />}
+                    active={pathname.startsWith(
+                      "/formal-science/mathematics/algebra/pre-algebra/variables-expressions"
+                    )}
+                    nested
+                  />
+                  {/* Algebraic Properties */}
+                  <SidebarLink
+                    href="/formal-science/mathematics/algebra/pre-algebra/algebraic-properties"
+                    label="Algebraic Properties"
+                    icon={<Shuffle size={14} />}
+                    active={pathname.startsWith(
+                      "/formal-science/mathematics/algebra/pre-algebra/algebraic-properties"
+                    )}
+                    nested
+                  />
+                </Dropdown>
+
+                {/* Elementary Algebra Dropdown (now without Foundations) */}
                 <Dropdown
                   label="Elementary Algebra"
                   expanded={expandElemAlgebra}
@@ -147,48 +187,10 @@ export default function Sidebar() {
                   }
                   nested
                 >
-                  {/* Foundations Dropdown */}
-                  <Dropdown
-                    label="Foundations"
-                    expanded={expandFoundations}
-                    setExpanded={setExpandFoundations}
-                    href="/formal-science/mathematics/algebra/elementary-algebra/foundations"
-                    active={pathname.startsWith(
-                      "/formal-science/mathematics/algebra/elementary-algebra/foundations"
-                    )}
-                    nested
-                  >
-                    {/* Numbers and Operations */}
-                    <SidebarLink
-                      href="/formal-science/mathematics/algebra/elementary-algebra/foundations/num-ops"
-                      label="Numbers and Operations"
-                      icon={<Calculator size={14} />}
-                      active={pathname.startsWith(
-                        "/formal-science/mathematics/algebra/elementary-algebra/foundations/num-ops"
-                      )}
-                      nested
-                    />
-                    {/* NEW: Variables & Expressions Link */}
-                    <SidebarLink
-                      href="/formal-science/mathematics/algebra/elementary-algebra/foundations/variables-expressions"
-                      label="Variables & Expressions"
-                      icon={<Variable size={14} />}
-                      active={pathname.startsWith(
-                        "/formal-science/mathematics/algebra/elementary-algebra/foundations/variables-expressions"
-                      )}
-                      nested
-                    />
-                    {/* Algebraic Properties */}
-                    <SidebarLink
-                      href="/formal-science/mathematics/algebra/elementary-algebra/foundations/algebraic-properties"
-                      label="Algebraic Properties"
-                      icon={<Shuffle size={14} />}
-                      active={pathname.startsWith(
-                        "/formal-science/mathematics/algebra/elementary-algebra/foundations/algebraic-properties"
-                      )}
-                      nested
-                    />
-                  </Dropdown>
+                  {/* Placeholder for future links like 'Solving Equations' */}
+                  <span className="px-3 py-2 text-neutral-500 italic">
+                    (Coming Soon)
+                  </span>
                 </Dropdown>
               </Dropdown>
             </Dropdown>{" "}

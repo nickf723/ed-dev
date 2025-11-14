@@ -1,4 +1,4 @@
-// app/formal-science/mathematics/algebra/elementary-algebra/foundations/algebraic-properties/page.tsx
+// app/formal-science/mathematics/algebra/pre-algebra/algebraic-properties/page.tsx
 "use client";
 import PageHeader from "@/components/PageHeader";
 import FloatingSymbols from "@/components/FloatingSymbols";
@@ -170,7 +170,7 @@ export default function AlgebraicPropertiesPage() {
     <main className="topic-page theme-elementary-algebra-foundations lg:px-16">
       <FloatingSymbols symbols={propertiesSymbols} />
       <PageHeader
-        eyebrow="Foundations of Algebra"
+        eyebrow="Pre-Algebra"
         title="Properties of Algebra"
         subtitle="The fundamental rules that govern how we manipulate, combine, and simplify numbers and variables. Mastering these is the key to solving equations."
       />
@@ -348,12 +348,12 @@ function RelatedTopicsAside() {
       </h3>
       <ul className="space-y-3">
         <AsideLink
-          href="/formal-science/mathematics/algebra/elementary-algebra/foundations/num-ops"
+          href="/formal-science/mathematics/algebra/pre-algebra/num-ops"
           title="Numbers & Operations"
           description="Review the number systems these properties apply to."
         />
         <AsideLink
-          href="/formal-science/mathematics/algebra/elementary-algebra/foundations/variables-expressions"
+          href="/formal-science/mathematics/algebra/pre-algebra/variables-expressions"
           title="Variables & Expressions"
           description="Learn how to use symbols (like 'x') to represent unknown values."
         />
