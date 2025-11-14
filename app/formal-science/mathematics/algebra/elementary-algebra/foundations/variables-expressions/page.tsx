@@ -16,7 +16,7 @@ import {
   AlertTriangle,
   BookCopy,
   ChevronRight,
-  Variable,
+  Variable as VariableIcon, // Renamed to avoid conflict
   Puzzle,
   Calculator,
   Lightbulb,
@@ -52,11 +52,11 @@ export default function VariablesAndExpressionsPage() {
           
           <CollapsibleTopic
             title="1. What is a Variable?"
-            icon={Variable}
+            icon={VariableIcon}
             startOpen={true}
           >
             <ContentP>
-              A <strong>variable</strong> is a symbol, usually a letter, that
+              A <GlossaryTerm term="Variable">Variable</GlossaryTerm> is a symbol, usually a letter, that
               represents an unknown value or a value that can change.
               Think of it as a labeled box that can hold a number.
             </ContentP>
@@ -71,6 +71,11 @@ export default function VariablesAndExpressionsPage() {
                 <br />
                 <strong>Examples:</strong> <M>5, -10, \pi, 1/2</M>
               </TermDefinition>
+              <TermDefinition term="Coefficient">
+                A number multiplied by a variable.
+                <br />
+                <strong>Examples:</strong> <M>5</M> in <M>5x</M>, <M>4</M> in <M>4y^2</M>
+              </TermDefinition>
             </div>
             <ExampleBlock>
               <p>
@@ -78,14 +83,14 @@ export default function VariablesAndExpressionsPage() {
               </p>
               <ul className="mt-2 list-disc pl-5">
                 <li>
-                  <M>x</M> is the <strong>variable</strong>.
+                  <M>x</M> is the <strong><GlossaryTerm term="Variable">variable</GlossaryTerm></strong>.
                 </li>
                 <li>
-                  <M>2</M> is the <strong>coefficient</strong> (the number
+                  <M>2</M> is the <strong><GlossaryTerm term="Coefficient">coefficient</GlossaryTerm></strong> (the number
                   multiplied by the variable).
                 </li>
                 <li>
-                  <M>5</M> is the <strong>constant</strong>.
+                  <M>5</M> is the <strong><GlossaryTerm term="Constant">constant</GlossaryTerm></strong>.
                 </li>
               </ul>
             </ExampleBlock>
@@ -96,7 +101,7 @@ export default function VariablesAndExpressionsPage() {
             icon={Puzzle}
           >
             <ContentP>
-              An <strong>algebraic expression</strong> is a mathematical
+              An <strong><GlossaryTerm term="Expression">algebraic expression</GlossaryTerm></strong> is a mathematical
               phrase made of variables, constants, and operations
               (+, &minus;, &times;, &divide;).
             </ContentP>
@@ -109,14 +114,14 @@ export default function VariablesAndExpressionsPage() {
             </TermDefinition>
             <SideNote>
               <ContentP>
-                An <strong>equation</strong> is different. An equation sets
+                An <strong><GlossaryTerm term="Equation">equation</GlossaryTerm></strong> is different. An equation sets
                 two expressions equal to each other.
               </ContentP>
               <p>
-                <strong>Expression:</strong> <M>2x + 3</M>
+                <strong><GlossaryTerm term="Expression">Expression</GlossaryTerm>:</strong> <M>2x + 3</M>
               </p>
               <p>
-                <strong>Equation:</strong> <M>2x + 3 = 11</M>
+                <strong><GlossaryTerm term="Equation">Equation</GlossaryTerm>:</strong> <M>2x + 3 = 11</M>
               </p>
             </SideNote>
             <PracticeProblem
@@ -134,16 +139,16 @@ export default function VariablesAndExpressionsPage() {
             icon={Calculator}
           >
             <ContentP>
-              To <strong>evaluate</strong> an expression means to find its
+              To <GlossaryTerm term="Evaluate">evaluate</GlossaryTerm> an expression means to find its
               numerical value after replacing the variables with specific
-              numbers. This is also called <strong>substitution</strong>.
+              numbers. This is also called <GlossaryTerm term="Substitution">substitution</GlossaryTerm>.
             </ContentP>
             <ExampleBlock>
               <p>
                 Evaluate <M>3n - 5</M> when <M>n = 4</M>.
               </p>
               <p>
-                1. <strong>Substitute:</strong> Replace 'n' with '4'.
+                1. <strong><GlossaryTerm term="Substitution">Substitute</GlossaryTerm>:</strong> Replace 'n' with '4'.
               </p>
               <p className="pl-4">
                 <M>3(4) - 5</M>
@@ -203,23 +208,23 @@ function KeyConceptsAside() {
       </h3>
       <ul className="list-disc space-y-2 pl-5 text-sm text-neutral-300">
         <li>
-          A <strong>Variable</strong> (like <M>x</M>) is a placeholder for an
+          A <strong><GlossaryTerm term="Variable">Variable</GlossaryTerm></strong> (like <M>x</M>) is a placeholder for an
           unknown number.
         </li>
         <li>
-          A <strong>Constant</strong> (like <M>7</M>) is a number that
+          A <strong><GlossaryTerm term="Constant">Constant</GlossaryTerm></strong> (like <M>7</M>) is a number that
           doesn't change.
         </li>
         <li>
-          An <strong>Expression</strong> (like <M>x + 7</M>) is a math phrase
+          An <strong><GlossaryTerm term="Expression">Expression</GlossaryTerm></strong> (like <M>x + 7</M>) is a math phrase
           with no equals sign.
         </li>
         <li>
-          An <strong>Equation</strong> (like <M>x + 7 = 10</M>) sets two
+          An <strong><GlossaryTerm term="Equation">Equation</GlossaryTerm></strong> (like <M>x + 7 = 10</M>) sets two
           expressions equal.
         </li>
         <li>
-          <strong>Evaluate</strong> means to "plug in" a number for the
+          <strong><GlossaryTerm term="Evaluate">Evaluate</GlossaryTerm></strong> means to "plug in" a number for the
           variable and find the answer.
         </li>
       </ul>

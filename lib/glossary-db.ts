@@ -4,11 +4,11 @@
 // This allows <GlossaryTerm> and the main /glossary page
 // to pull from the same source of truth.
 
-// NEW: Define and export categories for tagging
 export const termCategories = {
   GENERAL: "General",
   MATH_FOUNDATIONS: "Math Foundations",
   NUMBER_SYSTEMS: "Number Systems",
+  ALGEBRA: "Algebra", // NEW CATEGORY
 };
 
 // REWORKED: The structure is now { definition: string, category: string }
@@ -191,6 +191,42 @@ export const glossaryTerms = {
     definition:
       "A ratio where the second number is always 100. 'Per cent' means 'per hundred'.",
     category: termCategories.MATH_FOUNDATIONS,
+  },
+
+  // --- NEW: Terms from variables-expressions page ---
+  Variable: {
+    definition:
+      "A symbol (usually a letter like x) that represents an unknown value or a value that can change.",
+    category: termCategories.ALGEBRA,
+  },
+  Constant: {
+    definition: "A fixed number whose value does not change (e.g., 5, -10, π).",
+    category: termCategories.ALGEBRA,
+  },
+  Coefficient: {
+    definition:
+      "The number multiplied by a variable in an algebraic term (e.g., the '2' in 2x).",
+    category: termCategories.ALGEBRA,
+  },
+  Expression: {
+    definition:
+      "A mathematical phrase made of variables, constants, and operations. It does not have an equals sign (e.g., 2x + 5).",
+    category: termCategories.ALGEBRA,
+  },
+  Equation: {
+    definition:
+      "A mathematical statement that sets two expressions equal to each other using an equals sign (e.g., 2x + 5 = 11).",
+    category: termCategories.ALGEBRA,
+  },
+  Evaluate: {
+    definition:
+      "To find the numerical value of an expression by replacing the variables with specific numbers.",
+    category: termCategories.ALGEBRA,
+  },
+  Substitution: {
+    definition:
+      "The act of replacing a variable with a specific number (e.g., replacing 'x' with '3').",
+    category: termCategories.ALGEBRA,
   },
 };
 

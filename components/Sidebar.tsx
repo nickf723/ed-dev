@@ -22,7 +22,9 @@ import {
   Zap,
   TrendingUp,
   SquareFunction,
-  GitMerge, Shuffle
+  GitMerge,
+  Shuffle,
+  Variable, // Import the Variable icon
 } from "@/components/icons";
 
 export default function Sidebar() {
@@ -30,47 +32,49 @@ export default function Sidebar() {
   const [open, setOpen] = useState(false);
 
   const [expandFormalScience, setExpandFormalScience] = useState(
-    pathname.startsWith("/formal-science"),
+    pathname.startsWith("/formal-science")
   );
   const [expandMath, setExpandMath] = useState(
-    pathname.startsWith("/formal-science/mathematics"),
+    pathname.startsWith("/formal-science/mathematics")
   );
   const [expandAlgebra, setExpandAlgebra] = useState(
-    pathname.startsWith("/formal-science/mathematics/algebra"),
+    pathname.startsWith("/formal-science/mathematics/algebra")
   );
   const [expandElemAlgebra, setExpandElemAlgebra] = useState(
-    pathname.startsWith("/formal-science/mathematics/algebra/elementary-algebra"),
+    pathname.startsWith(
+      "/formal-science/mathematics/algebra/elementary-algebra"
+    )
   );
   const [expandFoundations, setExpandFoundations] = useState(
     pathname.startsWith(
-      "/formal-science/mathematics/algebra/elementary-algebra/foundations",
-    ),
+      "/formal-science/mathematics/algebra/elementary-algebra/foundations"
+    )
   );
   const [expandNumOps, setExpandNumOps] = useState(
     pathname.startsWith(
-      "/formal-science/mathematics/algebra/elementary-algebra/foundations/num-ops",
-    ),
+      "/formal-science/mathematics/algebra/elementary-algebra/foundations/num-ops"
+    )
   );
   const [expandLogic, setExpandLogic] = useState(
-    pathname.startsWith("/formal-science/logic"),
+    pathname.startsWith("/formal-science/logic")
   );
   const [expandNatural, setExpandNatural] = useState(
-    pathname.startsWith("/natural-science"),
+    pathname.startsWith("/natural-science")
   );
   const [expandPhysics, setExpandPhysics] = useState(
     pathname.startsWith("/natural-science/physics")
   );
   const [expandSocial, setExpandSocial] = useState(
-    pathname.startsWith("/social-science"),
+    pathname.startsWith("/social-science")
   );
   const [expandApplied, setExpandApplied] = useState(
-    pathname.startsWith("/applied-science"),
+    pathname.startsWith("/applied-science")
   );
   const [expandHumanities, setExpandHumanities] = useState(
-    pathname.startsWith("/humanities"),
+    pathname.startsWith("/humanities")
   );
   const [expandInter, setExpandInter] = useState(
-    pathname.startsWith("/interdisciplines"),
+    pathname.startsWith("/interdisciplines")
   );
 
   return (
@@ -149,36 +153,46 @@ export default function Sidebar() {
                     expanded={expandFoundations}
                     setExpanded={setExpandFoundations}
                     href="/formal-science/mathematics/algebra/elementary-algebra/foundations"
-                    active={
-                      pathname ===
+                    active={pathname.startsWith(
                       "/formal-science/mathematics/algebra/elementary-algebra/foundations"
-                    }
+                    )}
                     nested
                   >
                     {/* Numbers and Operations */}
                     <SidebarLink
-                        href="/formal-science/mathematics/algebra/elementary-algebra/foundations/num-ops"
-                        label="Numbers and Operations"
-                        icon={<Calculator size={14} />}
-                        active={pathname.startsWith(
-                          "/formal-science/mathematics/algebra/elementary-algebra/foundations/num-ops"
-                        )}
-                        nested
-                      />
-                      {/* Algebraic Properties */}
-                      <SidebarLink
-                        href="/formal-science/mathematics/algebra/elementary-algebra/foundations/algebraic-properties"
-                        label="Algebraic Properties"
-                        icon={<Shuffle size={14} />}
-                        active={pathname.startsWith(
-                          "/formal-science/mathematics/algebra/elementary-algebra/foundations/algebraic-properties"
-                        )}
-                        nested/>
+                      href="/formal-science/mathematics/algebra/elementary-algebra/foundations/num-ops"
+                      label="Numbers and Operations"
+                      icon={<Calculator size={14} />}
+                      active={pathname.startsWith(
+                        "/formal-science/mathematics/algebra/elementary-algebra/foundations/num-ops"
+                      )}
+                      nested
+                    />
+                    {/* NEW: Variables & Expressions Link */}
+                    <SidebarLink
+                      href="/formal-science/mathematics/algebra/elementary-algebra/foundations/variables-expressions"
+                      label="Variables & Expressions"
+                      icon={<Variable size={14} />}
+                      active={pathname.startsWith(
+                        "/formal-science/mathematics/algebra/elementary-algebra/foundations/variables-expressions"
+                      )}
+                      nested
+                    />
+                    {/* Algebraic Properties */}
+                    <SidebarLink
+                      href="/formal-science/mathematics/algebra/elementary-algebra/foundations/algebraic-properties"
+                      label="Algebraic Properties"
+                      icon={<Shuffle size={14} />}
+                      active={pathname.startsWith(
+                        "/formal-science/mathematics/algebra/elementary-algebra/foundations/algebraic-properties"
+                      )}
+                      nested
+                    />
                   </Dropdown>
                 </Dropdown>
               </Dropdown>
-            </Dropdown> { /* End Mathematics Dropdown */}
-
+            </Dropdown>{" "}
+            {/* End Mathematics Dropdown */}
             {/* Logic Dropdown */}
             <Dropdown
               label="Logic"
@@ -193,12 +207,10 @@ export default function Sidebar() {
               <span className="px-3 py-2 text-neutral-500 italic">
                 (Coming Soon)
               </span>
-            </Dropdown> { /* End Logic Dropdown */}
-          </Dropdown> { /* End Formal Science Dropdown */}
-          
-
-
-
+            </Dropdown>{" "}
+            {/* End Logic Dropdown */}
+          </Dropdown>{" "}
+          {/* End Formal Science Dropdown */}
           {/* Natural Science */}
           <Dropdown
             label="Natural Science"
@@ -223,42 +235,54 @@ export default function Sidebar() {
                 href="/natural-science/physics/classical-mechanics"
                 label="Classical Mechanics"
                 icon={<TrendingUp size={14} />}
-                active={pathname.startsWith("/natural-science/physics/classical-mechanics")}
+                active={pathname.startsWith(
+                  "/natural-science/physics/classical-mechanics"
+                )}
                 nested
               />
               <SidebarLink
                 href="/natural-science/physics/electromagnetism"
                 label="Electromagnetism"
                 icon={<Zap size={14} />}
-                active={pathname.startsWith("/natural-science/physics/electromagnetism")}
+                active={pathname.startsWith(
+                  "/natural-science/physics/electromagnetism"
+                )}
                 nested
               />
               <SidebarLink
                 href="/natural-science/physics/thermodynamics"
                 label="Thermodynamics"
                 icon={<Scale size={14} />}
-                active={pathname.startsWith("/natural-science/physics/thermodynamics")}
+                active={pathname.startsWith(
+                  "/natural-science/physics/thermodynamics"
+                )}
                 nested
               />
               <SidebarLink
                 href="/natural-science/physics/waves-optics"
                 label="Waves and Optics"
                 icon={<Waves size={14} />}
-                active={pathname.startsWith("/natural-science/physics/waves-optics")}
+                active={pathname.startsWith(
+                  "/natural-science/physics/waves-optics"
+                )}
                 nested
               />
               <SidebarLink
                 href="/natural-science/physics/quantum-mechanics"
                 label="Quantum Mechanics"
                 icon={<Orbit size={14} />}
-                active={pathname.startsWith("/natural-science/physics/quantum-mechanics")}
+                active={pathname.startsWith(
+                  "/natural-science/physics/quantum-mechanics"
+                )}
                 nested
               />
               <SidebarLink
                 href="/natural-science/physics/relativity"
                 label="Relativity"
                 icon={<GitMerge size={14} />}
-                active={pathname.startsWith("/natural-science/physics/relativity")}
+                active={pathname.startsWith(
+                  "/natural-science/physics/relativity"
+                )}
                 nested
               />
             </Dropdown>
