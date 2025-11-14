@@ -25,12 +25,13 @@ import {
   GitMerge,
   Shuffle,
   BookMarked,
-  Variable, // Import the Variable icon
+  Variable,
+  Move, // <-- IMPORTED 'Move' for Dynamics (as placeholder)
 } from "@/components/icons";
 
 export default function Sidebar() {
   const pathname = usePathname();
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] =useState(false);
 
   const [expandFormalScience, setExpandFormalScience] = useState(
     pathname.startsWith("/formal-science")
@@ -59,6 +60,10 @@ export default function Sidebar() {
   );
   const [expandPhysics, setExpandPhysics] = useState(
     pathname.startsWith("/natural-science/physics")
+  );
+  // --- NEW: State for Classical Mechanics dropdown ---
+  const [expandMechanics, setExpandMechanics] = useState(
+    pathname.startsWith("/natural-science/physics/classical-mechanics")
   );
   const [expandSocial, setExpandSocial] = useState(
     pathname.startsWith("/social-science")
@@ -131,7 +136,7 @@ export default function Sidebar() {
                 active={pathname === "/formal-science/mathematics/algebra"}
                 nested
               >
-                {/* NEW: Pre-Algebra Dropdown (Moved from Foundations) */}
+                {/* Pre-Algebra Dropdown */}
                 <Dropdown
                   label="Pre-Algebra"
                   icon={<BookMarked size={14} />}
@@ -143,7 +148,6 @@ export default function Sidebar() {
                   )}
                   nested
                 >
-                  {/* Numbers and Operations */}
                   <SidebarLink
                     href="/formal-science/mathematics/algebra/pre-algebra/num-ops"
                     label="Numbers and Operations"
@@ -153,7 +157,6 @@ export default function Sidebar() {
                     )}
                     nested
                   />
-                  {/* Variables & Expressions Link */}
                   <SidebarLink
                     href="/formal-science/mathematics/algebra/pre-algebra/variables-expressions"
                     label="Variables & Expressions"
@@ -163,7 +166,6 @@ export default function Sidebar() {
                     )}
                     nested
                   />
-                  {/* Algebraic Properties */}
                   <SidebarLink
                     href="/formal-science/mathematics/algebra/pre-algebra/algebraic-properties"
                     label="Algebraic Properties"
@@ -175,7 +177,7 @@ export default function Sidebar() {
                   />
                 </Dropdown>
 
-                {/* Elementary Algebra Dropdown (now without Foundations) */}
+                {/* Elementary Algebra Dropdown */}
                 <Dropdown
                   label="Elementary Algebra"
                   expanded={expandElemAlgebra}
@@ -187,7 +189,6 @@ export default function Sidebar() {
                   }
                   nested
                 >
-                  {/* Placeholder for future links like 'Solving Equations' */}
                   <span className="px-3 py-2 text-neutral-500 italic">
                     (Coming Soon)
                   </span>
@@ -205,14 +206,12 @@ export default function Sidebar() {
               active={pathname === "/formal-science/logic"}
               nested
             >
-              {/* Placeholder for future links */}
               <span className="px-3 py-2 text-neutral-500 italic">
                 (Coming Soon)
               </span>
             </Dropdown>{" "}
-            {/* End Logic Dropdown */}
           </Dropdown>{" "}
-          {/* End Formal Science Dropdown */}
+          
           {/* Natural Science */}
           <Dropdown
             label="Natural Science"
@@ -229,19 +228,40 @@ export default function Sidebar() {
               expanded={expandPhysics}
               setExpanded={setExpandPhysics}
               href="/natural-science/physics"
-              active={pathname === "/natural-science/physics"}
+              active={pathname.startsWith("/natural-science/physics")}
               nested
             >
-              {/* --- New Sub-links for Physics --- */}
-              <SidebarLink
-                href="/natural-science/physics/classical-mechanics"
+              {/* --- UPDATED: Classical Mechanics is now a dropdown --- */}
+              <Dropdown
                 label="Classical Mechanics"
                 icon={<TrendingUp size={14} />}
+                expanded={expandMechanics}
+                setExpanded={setExpandMechanics}
+                href="/natural-science/physics/classical-mechanics"
                 active={pathname.startsWith(
                   "/natural-science/physics/classical-mechanics"
                 )}
                 nested
-              />
+              >
+                {/* --- NEW: Link to Kinematics --- */}
+                <SidebarLink
+                  href="/natural-science/physics/classical-mechanics/kinematics"
+                  label="Kinematics"
+                  icon={<TrendingUp size={14} />}
+                  active={pathname.startsWith(
+                    "/natural-science/physics/classical-mechanics/kinematics"
+                  )}
+                  nested
+                />
+                <SidebarLink
+                  href="#" // Placeholder
+                  label="Dynamics"
+                  icon={<Move size={14} />}
+                  active={false} // No active state yet
+                  nested
+                />
+              </Dropdown>
+
               <SidebarLink
                 href="/natural-science/physics/electromagnetism"
                 label="Electromagnetism"

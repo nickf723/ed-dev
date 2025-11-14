@@ -22,7 +22,7 @@ export default function ClassicalMechanicsPage() {
     {
       title: "Kinematics",
       desc: "The study of motion without considering its causes. (e.g., displacement, velocity, acceleration)",
-      href: "#", // Placeholder for /kinematics
+      href: "/natural-science/physics/classical-mechanics/kinematics", // Placeholder for /kinematics
       Icon: TrendingUp,
       className: "theme-classical-mechanics",
       subtitle: "Describing Motion"
@@ -30,7 +30,7 @@ export default function ClassicalMechanicsPage() {
     {
       title: "Dynamics (Newton's Laws)",
       desc: "The study of how forces cause motion and changes in motion.",
-      href: "#", // Placeholder for /dynamics
+      href: "/natural-science/physics/classical-mechanics/dynamics",
       Icon: Move,
       className: "theme-classical-mechanics topic-card-wide",
       subtitle: "Explaining Motion"
@@ -38,7 +38,7 @@ export default function ClassicalMechanicsPage() {
     {
       title: "Work and Energy",
       desc: "Using the concepts of work, kinetic energy, and potential energy to solve problems.",
-      href: "#", // Placeholder for /work-energy
+      href: "/natural-science/physics/classical-mechanics/work-energy",
       Icon: Zap,
       className: "theme-classical-mechanics topic-card-wide",
       subtitle: "The Conservation of Energy"
@@ -46,7 +46,7 @@ export default function ClassicalMechanicsPage() {
     {
       title: "Momentum and Collisions",
       desc: "The study of 'quantity of motion' and its conservation during interactions.",
-      href: "#", // Placeholder for /momentum
+      href: "/natural-science/physics/classical-mechanics/momentum-collisions",
       Icon: Replace,
       className: "theme-classical-mechanics",
       subtitle: "Conservation of Momentum"
@@ -54,7 +54,7 @@ export default function ClassicalMechanicsPage() {
     {
       title: "Rotational Motion",
       desc: "The study of objects that spin or rotate, including torque and angular momentum.",
-      href: "#", // Placeholder for /rotational-motion
+      href: "/natural-science/physics/classical-mechanics/rotational-motion",
       Icon: RotateCw,
       className: "theme-classical-mechanics",
       subtitle: "Spinning Objects"
@@ -62,7 +62,7 @@ export default function ClassicalMechanicsPage() {
     {
       title: "Gravitation",
       desc: "The study of the fundamental force of attraction between masses, from apples to planets.",
-      href: "#", // Placeholder for /gravitation
+      href: "/natural-science/physics/classical-mechanics/gravitation",
       Icon: Orbit,
       className: "theme-classical-mechanics",
       subtitle: "Universal Forces"
