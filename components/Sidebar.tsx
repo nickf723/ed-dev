@@ -26,7 +26,8 @@ import {
   Shuffle,
   BookMarked,
   Variable,
-  Move, // <-- IMPORTED 'Move' for Dynamics (as placeholder)
+  Move,
+  SquarePlus, // <-- ADDED ICON
 } from "@/components/icons";
 
 export default function Sidebar() {
@@ -42,6 +43,11 @@ export default function Sidebar() {
   const [expandAlgebra, setExpandAlgebra] = useState(
     pathname.startsWith("/formal-science/mathematics/algebra")
   );
+  // --- NEW STATE FOR NUMBER THEORY ---
+  const [expandNumTheory, setExpandNumTheory] = useState(
+    pathname.startsWith("/formal-science/mathematics/number-theory")
+  );
+  // -----------------------------------
   const [expandElemAlgebra, setExpandElemAlgebra] = useState(
     pathname.startsWith(
       "/formal-science/mathematics/algebra/elementary-algebra"
@@ -148,16 +154,6 @@ export default function Sidebar() {
                   )}
                   nested
                 >
-                  {/* --- REMOVED THIS LINK --- */}
-                  {/* <SidebarLink
-                    href="/formal-science/mathematics/algebra/pre-algebra/num-ops"
-                    label="Numbers and Operations"
-                    icon={<Calculator size={14} />}
-                    active={pathname.startsWith(
-                      "/formal-science/mathematics/algebra/pre-algebra/num-ops"
-                    )}
-                    nested
-                  /> */}
                   <SidebarLink
                     href="/formal-science/mathematics/algebra/pre-algebra/variables-expressions"
                     label="Variables & Expressions"
@@ -195,8 +191,34 @@ export default function Sidebar() {
                   </span>
                 </Dropdown>
               </Dropdown>
+              
+              {/* --- NEW NUMBER THEORY DROPDOWN --- */}
+              <Dropdown
+                label="Number Theory"
+                icon={<SquarePlus size={14} />}
+                expanded={expandNumTheory}
+                setExpanded={setExpandNumTheory}
+                href="/formal-science/mathematics/number-theory"
+                active={pathname.startsWith(
+                  "/formal-science/mathematics/number-theory"
+                )}
+                nested
+              >
+                <SidebarLink
+                  href="/formal-science/mathematics/number-theory/num-ops"
+                  label="Numbers & Operations"
+                  icon={<Calculator size={14} />}
+                  active={pathname.startsWith(
+                    "/formal-science/mathematics/number-theory/num-ops"
+                  )}
+                  nested
+                />
+              </Dropdown>
+              {/* ---------------------------------- */}
+              
             </Dropdown>{" "}
             {/* End Mathematics Dropdown */}
+            
             {/* Logic Dropdown */}
             <Dropdown
               label="Logic"
@@ -411,9 +433,7 @@ export default function Sidebar() {
   );
 }
 
-/* -------------------------------------- */
 /* 🔹 Reusable Sidebar Link Component */
-/* -------------------------------------- */
 function SidebarLink({
   href,
   label,
@@ -442,9 +462,7 @@ function SidebarLink({
   );
 }
 
-/* -------------------------------------- */
 /* 🔹 Dropdown Component (Updated) 🔹 */
-/* -------------------------------------- */
 function Dropdown({
   label,
   icon,
@@ -485,12 +503,10 @@ function Dropdown({
             <LabelContent />
           </Link>
         ) : (
-          // If no href, make it a non-interactive span but with same padding
           <span className={`${labelClasses} flex-grow cursor-default`}>
             <LabelContent />
           </span>
         )}
-        {/* Chevron button */}
         <button
           onClick={() => setExpanded(!expanded)}
           className="p-2 rounded-md text-neutral-400 transition hover:text-cyan-300"
