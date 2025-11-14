@@ -1,14 +1,95 @@
-// components/PageHeader.tsx
+// app/natural-science/physics/classical-mechanics/page.tsx
+"use client";
 import PageHeader from "@/components/PageHeader";
+import FloatingSymbols from "@/components/FloatingSymbols";
+import TopicCard from "@/components/TopicCard";
+import {
+  TrendingUp,
+  Move,
+  Replace,
+  RotateCw,
+  Orbit,
+  Zap, // Using Zap for Energy
+} from "@/components/icons";
 
-export default function PlaceholderPage() {
+// Symbols for the background
+const mechanicsSymbols = [
+  "F=ma", "p=mv", "KE=½mv²", "PE=mgh", "v", "a", "t", "d", "ω", "τ", "g", "W=Fd",
+];
+
+export default function ClassicalMechanicsPage() {
+  const topics = [
+    {
+      title: "Kinematics",
+      desc: "The study of motion without considering its causes. (e.g., displacement, velocity, acceleration)",
+      href: "#", // Placeholder for /kinematics
+      Icon: TrendingUp,
+      className: "theme-classical-mechanics",
+      subtitle: "Describing Motion"
+    },
+    {
+      title: "Dynamics (Newton's Laws)",
+      desc: "The study of how forces cause motion and changes in motion.",
+      href: "#", // Placeholder for /dynamics
+      Icon: Move,
+      className: "theme-classical-mechanics topic-card-wide",
+      subtitle: "Explaining Motion"
+    },
+    {
+      title: "Work and Energy",
+      desc: "Using the concepts of work, kinetic energy, and potential energy to solve problems.",
+      href: "#", // Placeholder for /work-energy
+      Icon: Zap,
+      className: "theme-classical-mechanics topic-card-wide",
+      subtitle: "The Conservation of Energy"
+    },
+    {
+      title: "Momentum and Collisions",
+      desc: "The study of 'quantity of motion' and its conservation during interactions.",
+      href: "#", // Placeholder for /momentum
+      Icon: Replace,
+      className: "theme-classical-mechanics",
+      subtitle: "Conservation of Momentum"
+    },
+    {
+      title: "Rotational Motion",
+      desc: "The study of objects that spin or rotate, including torque and angular momentum.",
+      href: "#", // Placeholder for /rotational-motion
+      Icon: RotateCw,
+      className: "theme-classical-mechanics",
+      subtitle: "Spinning Objects"
+    },
+    {
+      title: "Gravitation",
+      desc: "The study of the fundamental force of attraction between masses, from apples to planets.",
+      href: "#", // Placeholder for /gravitation
+      Icon: Orbit,
+      className: "theme-classical-mechanics",
+      subtitle: "Universal Forces"
+    },
+  ];
+
   return (
-    <main className="topic-page lg:px-16">
+    <main className="topic-page theme-classical-mechanics lg:px-16">
+      <FloatingSymbols symbols={mechanicsSymbols} />
       <PageHeader
-        eyebrow="Content Coming Soon"
-        title="Under Construction"
-        subtitle="This page is being built. Check back soon for new content!"
+        eyebrow="Physics"
+        title="Classical Mechanics"
+        subtitle="The study of the motion of macroscopic objects, from projectiles to planets. This branch of physics describes the physical world we experience every day using the foundational laws set forth by Newton."
       />
+      <section className="topic-grid">
+        {topics.map((topic) => (
+          <TopicCard
+            key={topic.href}
+            href={topic.href}
+            title={topic.title}
+            desc={topic.desc}
+            Icon={topic.Icon}
+            className={topic.className}
+            subtitle={topic.subtitle}
+          />
+        ))}
+      </section>
     </main>
   );
 }
