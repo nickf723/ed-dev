@@ -75,6 +75,8 @@ export {
       DollarSign, Euro, Bitcoin, CreditCard, HandCoins, PiggyBank, Banknote, BanknoteArrowUp, BanknoteArrowDown,
     //Law
       Gavel, Scale,
+    //Life
+      Baby,
 
   //Huamnities
       Palette,

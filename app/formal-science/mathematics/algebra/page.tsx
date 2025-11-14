@@ -13,24 +13,8 @@ import TopicCard from "@/components/TopicCard";
 
 // Symbols for the background
 const algebraSymbols = [
-  "x",
-  "y",
-  "ƒ(x)",
-  "a(b+c)",
-  "ax²+bx+c",
-  "β",
-  "γ",
-  "δ",
-  "v",
-  "w",
-  "A⁻¹",
-  "det(A)",
-  "V ⊕ W",
-  "ker(T)",
-  "Im(T)",
-  "G/H",
-  "R[x]",
-  "ℤ/nℤ",
+  "x", "y", "ƒ(x)", "a(b+c)", "ax²+bx+c", "β", "γ", "δ", "v", "w",
+  "A⁻¹", "det(A)", "V ⊕ W", "ker(T)", "Im(T)", "G/H", "R[x]", "ℤ/nℤ",
 ];
 
 // Data for the three branches
@@ -41,10 +25,9 @@ const algebraBranches = [
     Icon: BookMarked,
     difficulty: "Foundational",
     description:
-      "The essential building blocks: symbolic reasoning, structure, and problem-solving logic.", // <-- UPDATED DESC
+      "The essential building blocks: symbolic reasoning, structure, and problem-solving logic.",
     units: [
       { name: "Variables & Expressions", href: "/formal-science/mathematics/algebra/pre-algebra/variables-expressions", status: "In Progress" },
-      { name: "Algebraic Properties", href: "/formal-science/mathematics/algebra/pre-algebra/algebraic-properties", status: "In Progress" },
       { name: "Ratios, Rates & Proportions", href: "/formal-science/mathematics/algebra/pre-algebra/ratios-rates-proportions", status: "Planned" },
       { name: "Equations & Inequalities", href: "/formal-science/mathematics/algebra/pre-algebra/equations-inequalities", status: "Planned" },
       { name: "Linear Reasoning", href: "/formal-science/mathematics/algebra/pre-algebra/linear-reasoning", status: "Planned" },

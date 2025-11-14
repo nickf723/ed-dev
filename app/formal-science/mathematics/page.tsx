@@ -53,13 +53,7 @@ export default function MathPage() {
       Icon: SquarePlus,
       className: "theme-number-theory",
       subtitle: "",
-      units: [
-        {
-          name: "Arithmetic", // <-- UPDATED NAME
-          href: "/formal-science/mathematics/number-theory/arithmetic", // <-- UPDATED LINK
-          status: "In Progress",
-        },
-      ],
+      // --- REMOVED UNITS, as this now links to the main Tier page ---
     },
     {
       title: "Discrete Mathematics",
@@ -89,7 +83,7 @@ export default function MathPage() {
             className={branch.className}
             Icon={branch.Icon}
             subtitle={branch.subtitle}
-            units={branch.units as any}
+            //units={branch.units as any}
           />
         ))}
       </section>

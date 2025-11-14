@@ -27,44 +27,84 @@ import {
   BookMarked,
   Variable,
   Move,
-  SquarePlus, // <-- IMPORTED
-  Percent,    // <-- IMPORTED
-  Equal,      // <-- IMPORTED
-  LineChart,  // <-- IMPORTED
-  Puzzle,     // <-- IMPORTED
+  SquarePlus,
+  Percent,
+  Equal,
+  LineChart,
+  Puzzle,
+  Baby, // <-- Added
+  Network, // <-- Added
+  Sigma, // <-- Added
+  Brain, // <-- Added
+  Flame, // <-- Added
+  TreeDeciduous, // <-- Added
+  SquareDivide, // <-- Added
+  AlarmSmoke, // <-- Added
+  SquareRadical, // <-- Added
+  Tally5, // <-- Added
+  GitMerge as EuclideanIcon, // <-- Added alias
+  Lock, // <-- Added
+  HelpCircle,
+  Waypoints,
+  Spline,
+  Minus,
+  Plus,
+  SquareX,
+  Parentheses,
 } from "@/components/icons";
 
 export default function Sidebar() {
   const pathname = usePathname();
-  const [open, setOpen] =useState(false);
+  const [open, setOpen] = useState(false);
 
+  // --- EXPAND STATE ---
   const [expandFormalScience, setExpandFormalScience] = useState(
     pathname.startsWith("/formal-science")
   );
   const [expandMath, setExpandMath] = useState(
     pathname.startsWith("/formal-science/mathematics")
   );
+  
+  // --- Algebra States
   const [expandAlgebra, setExpandAlgebra] = useState(
     pathname.startsWith("/formal-science/mathematics/algebra")
   );
-  // --- NEW STATE ---
-  const [expandNumTheory, setExpandNumTheory] = useState(
-    pathname.startsWith("/formal-science/mathematics/number-theory")
+  const [expandPreAlgebra, setExpandPreAlgebra] = useState(
+    pathname.startsWith("/formal-science/mathematics/algebra/pre-algebra")
   );
-  const [expandArithmetic, setExpandArithmetic] = useState(
-    pathname.startsWith("/formal-science/mathematics/number-theory/arithmetic")
-  );
-  // -----------------
   const [expandElemAlgebra, setExpandElemAlgebra] = useState(
     pathname.startsWith(
       "/formal-science/mathematics/algebra/elementary-algebra"
     )
   );
-  const [expandPreAlgebra, setExpandPreAlgebra] = useState(
-    pathname.startsWith(
-      "/formal-science/mathematics/algebra/pre-algebra"
-    )
+
+  // --- Number Theory States
+  const [expandNumTheory, setExpandNumTheory] = useState(
+    pathname.startsWith("/formal-science/mathematics/number-theory")
   );
+  const [expandNTTier0, setExpandNTTier0] = useState(
+    pathname.startsWith("/formal-science/mathematics/number-theory/tier-0-foundations")
+  );
+  const [expandNTTier1, setExpandNTTier1] = useState(
+    pathname.startsWith("/formal-science/mathematics/number-theory/tier-1-elementary")
+  );
+  const [expandNTTier2, setExpandNTTier2] = useState(
+    pathname.startsWith("/formal-science/mathematics/number-theory/tier-2-middle")
+  );
+  const [expandNTTier3, setExpandNTTier3] = useState(
+    pathname.startsWith("/formal-science/mathematics/number-theory/tier-3-high-school")
+  );
+  const [expandNTTier4, setExpandNTTier4] = useState(
+    pathname.startsWith("/formal-science/mathematics/number-theory/tier-4-undergraduate")
+  );
+  const [expandNTTier5, setExpandNTTier5] = useState(
+    pathname.startsWith("/formal-science/mathematics/number-theory/tier-5-graduate")
+  );
+  const [expandNTTier6, setExpandNTTier6] = useState(
+    pathname.startsWith("/formal-science/mathematics/number-theory/tier-6-frontier")
+  );
+  
+  // --- Other States
   const [expandLogic, setExpandLogic] = useState(
     pathname.startsWith("/formal-science/logic")
   );
@@ -89,6 +129,7 @@ export default function Sidebar() {
   const [expandInter, setExpandInter] = useState(
     pathname.startsWith("/interdisciplines")
   );
+  // --- END EXPAND STATE ---
 
   return (
     <>
@@ -145,7 +186,7 @@ export default function Sidebar() {
                 expanded={expandAlgebra}
                 setExpanded={setExpandAlgebra}
                 href="/formal-science/mathematics/algebra"
-                active={pathname === "/formal-science/mathematics/algebra"}
+                active={pathname.startsWith("/formal-science/mathematics/algebra")}
                 nested
               >
                 {/* Pre-Algebra Dropdown */}
@@ -169,16 +210,6 @@ export default function Sidebar() {
                     )}
                     nested
                   />
-                  <SidebarLink
-                    href="/formal-science/mathematics/algebra/pre-algebra/algebraic-properties"
-                    label="Algebraic Properties"
-                    icon={<Shuffle size={14} />}
-                    active={pathname.startsWith(
-                      "/formal-science/mathematics/algebra/pre-algebra/algebraic-properties"
-                    )}
-                    nested
-                  />
-                  {/* --- ADDED NEW PRE-ALGEBRA LINKS --- */}
                   <SidebarLink
                     href="/formal-science/mathematics/algebra/pre-algebra/ratios-rates-proportions"
                     label="Ratios, Rates & Proportions"
@@ -215,7 +246,6 @@ export default function Sidebar() {
                     )}
                     nested
                   />
-                  {/* ------------------------------------- */}
                 </Dropdown>
 
                 {/* Elementary Algebra Dropdown */}
@@ -236,7 +266,7 @@ export default function Sidebar() {
                 </Dropdown>
               </Dropdown>
               
-              {/* --- UPDATED NUMBER THEORY DROPDOWN --- */}
+              {/* --- NEW NUMBER THEORY SECTION --- */}
               <Dropdown
                 label="Number Theory"
                 icon={<SquarePlus size={14} />}
@@ -248,30 +278,115 @@ export default function Sidebar() {
                 )}
                 nested
               >
-                {/* --- ADDED ARITHMETIC SUB-DROPDOWN --- */}
+                {/* Tier 0 */}
                 <Dropdown
-                  label="Arithmetic"
-                  icon={<Calculator size={14} />}
-                  expanded={expandArithmetic}
-                  setExpanded={setExpandArithmetic}
-                  href="/formal-science/mathematics/number-theory/arithmetic"
-                  active={pathname.startsWith(
-                    "/formal-science/mathematics/number-theory/arithmetic"
-                  )}
+                  label="Tier 0: Foundations"
+                  icon={<Baby size={14} />}
+                  expanded={expandNTTier0}
+                  setExpanded={setExpandNTTier0}
+                  href="/formal-science/mathematics/number-theory/tier-0-foundations"
+                  active={pathname.startsWith("/formal-science/mathematics/number-theory/tier-0-foundations")}
                   nested
                 >
-                  <SidebarLink
-                    href="/formal-science/mathematics/number-theory/arithmetic/num-ops"
-                    label="Numbers & Operations"
-                    icon={<Calculator size={14} />}
-                    active={pathname.startsWith(
-                      "/formal-science/mathematics/number-theory/arithmetic/num-ops"
-                    )}
-                    nested
-                  />
+                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-0-foundations/counting-cardinality" label="Counting & Cardinality" icon={<Tally5 size={14} />} active={pathname.includes("counting-cardinality")} nested />
+                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-0-foundations/early-number-concepts" label="Early Number Concepts" icon={<Tally5 size={14} />} active={pathname.includes("early-number-concepts")} nested />
+                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-0-foundations/early-operations" label="Early Operations" icon={<Plus size={14} />} active={pathname.includes("early-operations")} nested />
+                </Dropdown>
+                {/* Tier 1 */}
+                <Dropdown
+                  label="Tier 1: Elementary"
+                  icon={<Calculator size={14} />}
+                  expanded={expandNTTier1}
+                  setExpanded={setExpandNTTier1}
+                  href="/formal-science/mathematics/number-theory/tier-1-elementary"
+                  active={pathname.startsWith("/formal-science/mathematics/number-theory/tier-1-elementary")}
+                  nested
+                >
+                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-1-elementary/whole-number-arithmetic" label="Whole Number Arithmetic" icon={<Calculator size={14} />} active={pathname.includes("whole-number-arithmetic")} nested />
+                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-1-elementary/properties-of-operations" label="Properties of Operations" icon={<Parentheses size={14} />} active={pathname.includes("properties-of-operations")} nested />
+                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-1-elementary/factors-multiples" label="Factors & Multiples" icon={<SquareX size={14} />} active={pathname.includes("factors-multiples")} nested />
+                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-1-elementary/divisibility" label="Divisibility" icon={<Waves size={14} />} active={pathname.includes("divisibility")} nested />
+                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-1-elementary/patterns-sequences" label="Patterns & Sequences" icon={<Spline size={14} />} active={pathname.includes("patterns-sequences")} nested />
+                </Dropdown>
+                {/* Tier 2 */}
+                <Dropdown
+                  label="Tier 2: Middle School"
+                  icon={<Network size={14} />}
+                  expanded={expandNTTier2}
+                  setExpanded={setExpandNTTier2}
+                  href="/formal-science/mathematics/number-theory/tier-2-middle"
+                  active={pathname.startsWith("/formal-science/mathematics/number-theory/tier-2-middle")}
+                  nested
+                >
+                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-2-middle/integer-system" label="Integer System" icon={<Minus size={14} />} active={pathname.includes("integer-system")} nested />
+                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-2-middle/rational-number-structure" label="Rational Number Structure" icon={<SquareDivide size={14} />} active={pathname.includes("rational-number-structure")} nested />
+                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-2-middle/prime-factorization" label="Prime Factorization" icon={<TreeDeciduous size={14} />} active={pathname.includes("prime-factorization")} nested />
+                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-2-middle/modular-thinking-light" label="Modular Thinking (Light)" icon={<AlarmSmoke size={14} />} active={pathname.includes("modular-thinking-light")} nested />
+                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-2-middle/proportional-number-structures" label="Proportional Structures" icon={<Percent size={14} />} active={pathname.includes("proportional-number-structures")} nested />
+                </Dropdown>
+                {/* Tier 3 */}
+                <Dropdown
+                  label="Tier 3: High School"
+                  icon={<Sigma size={14} />}
+                  expanded={expandNTTier3}
+                  setExpanded={setExpandNTTier3}
+                  href="/formal-science/mathematics/number-theory/tier-3-high-school"
+                  active={pathname.startsWith("/formal-science/mathematics/number-theory/tier-3-high-school")}
+                  nested
+                >
+                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-3-high-school/modular-arithmetic-formal" label="Modular Arithmetic" icon={<Sigma size={14} />} active={pathname.includes("modular-arithmetic-formal")} nested />
+                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-3-high-school/diophantine-equations" label="Diophantine Equations" icon={<Equal size={14} />} active={pathname.includes("diophantine-equations")} nested />
+                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-3-high-school/advanced-prime-topics" label="Advanced Prime Topics" icon={<Atom size={14} />} active={pathname.includes("advanced-prime-topics")} nested />
+                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-3-high-school/irrational-numbers" label="Irrational Numbers" icon={<SquareRadical size={14} />} active={pathname.includes("irrational-numbers")} nested />
+                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-3-high-school/counting-combinatorics" label="Counting & Combinatorics" icon={<Tally5 size={14} />} active={pathname.includes("counting-combinatorics")} nested />
+                </Dropdown>
+                {/* Tier 4 */}
+                <Dropdown
+                  label="Tier 4: Undergraduate"
+                  icon={<FlaskConical size={14} />}
+                  expanded={expandNTTier4}
+                  setExpanded={setExpandNTTier4}
+                  href="/formal-science/mathematics/number-theory/tier-4-undergraduate"
+                  active={pathname.startsWith("/formal-science/mathematics/number-theory/tier-4-undergraduate")}
+                  nested
+                >
+                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-4-undergraduate/euclidean-structure" label="Euclidean Structure" icon={<EuclideanIcon size={14} />} active={pathname.includes("euclidean-structure")} nested />
+                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-4-undergraduate/congruence-classes-algebra" label="Congruence Classes" icon={<Network size={14} />} active={pathname.includes("congruence-classes-algebra")} nested />
+                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-4-undergraduate/multiplicative-number-theory" label="Multiplicative NT" icon={<Sigma size={14} />} active={pathname.includes("multiplicative-number-theory")} nested />
+                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-4-undergraduate/quadratic-residues" label="Quadratic Residues" icon={<Waves size={14} />} active={pathname.includes("quadratic-residues")} nested />
+                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-4-undergraduate/prime-distribution-theory" label="Prime Distribution" icon={<Waves size={14} />} active={pathname.includes("prime-distribution-theory")} nested />
+                </Dropdown>
+                {/* Tier 5 */}
+                <Dropdown
+                  label="Tier 5: Graduate"
+                  icon={<Brain size={14} />}
+                  expanded={expandNTTier5}
+                  setExpanded={setExpandNTTier5}
+                  href="/formal-science/mathematics/number-theory/tier-5-graduate"
+                  active={pathname.startsWith("/formal-science/mathematics/number-theory/tier-5-graduate")}
+                  nested
+                >
+                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-5-graduate/algebraic-number-theory" label="Algebraic NT" icon={<Brain size={14} />} active={pathname.includes("algebraic-number-theory")} nested />
+                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-5-graduate/analytic-number-theory" label="Analytic NT" icon={<Spline size={14} />} active={pathname.includes("analytic-number-theory")} nested />
+                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-5-graduate/modular-forms" label="Modular Forms" icon={<Network size={14} />} active={pathname.includes("modular-forms")} nested />
+                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-5-graduate/elliptic-curves" label="Elliptic Curves" icon={<Waypoints size={14} />} active={pathname.includes("elliptic-curves")} nested />
+                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-5-graduate/cryptographic-foundations" label="Cryptography" icon={<Lock size={14} />} active={pathname.includes("cryptographic-foundations")} nested />
+                </Dropdown>
+                {/* Tier 6 */}
+                <Dropdown
+                  label="Tier 6: Frontier"
+                  icon={<Flame size={14} />}
+                  expanded={expandNTTier6}
+                  setExpanded={setExpandNTTier6}
+                  href="/formal-science/mathematics/number-theory/tier-6-frontier"
+                  active={pathname.startsWith("/formal-science/mathematics/number-theory/tier-6-frontier")}
+                  nested
+                >
+                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-6-frontier/prime-problems" label="Prime Problems" icon={<Flame size={14} />} active={pathname.includes("prime-problems")} nested />
+                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-6-frontier/integer-mysteries" label="Integer Mysteries" icon={<HelpCircle size={14} />} active={pathname.includes("integer-mysteries")} nested />
                 </Dropdown>
               </Dropdown>
-              {/* ---------------------------------- */}
+              {/* --- END NUMBER THEORY SECTION --- */}
               
             </Dropdown>{" "}
             {/* End Mathematics Dropdown */}

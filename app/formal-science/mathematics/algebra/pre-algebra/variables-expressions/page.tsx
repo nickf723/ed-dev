@@ -257,6 +257,7 @@ function CommonPitfallsAside() {
   );
 }
 
+// --- UPDATED RELATED TOPICS ---
 function RelatedTopicsAside() {
   return (
     <div className="glass rounded-2xl border border-neutral-800/60 p-6">
@@ -266,24 +267,25 @@ function RelatedTopicsAside() {
       </h3>
       <ul className="space-y-3">
         <AsideLink
-          href="/formal-science/mathematics/number-theory/arithmetic/num-ops" // <-- UPDATED LINK
-          title="Numbers & Operations"
+          href="/formal-science/mathematics/number-theory/tier-1-elementary/whole-number-arithmetic"
+          title="Whole Number Arithmetic"
           description="Review the numbers and operations used in expressions."
         />
         <AsideLink
-          href="/formal-science/mathematics/algebra/pre-algebra/algebraic-properties"
-          title="Algebraic Properties"
+          href="/formal-science/mathematics/number-theory/tier-1-elementary/properties-of-operations"
+          title="Properties of Operations"
           description="The rules for how expressions can be simplified."
         />
         <AsideLink
-          href="#"
-          title="Solving Equations"
+          href="/formal-science/mathematics/algebra/pre-algebra/equations-inequalities"
+          title="Equations & Inequalities"
           description="The next step: using expressions to find the value of 'x'."
         />
       </ul>
     </div>
   );
 }
+// --- END UPDATE ---
 
 // --- NEW HELPER COMPONENT: Aside Link ---
 function AsideLink({
