@@ -1,4 +1,4 @@
-// app/formal-science/mathematics/number-theory/tier-0-foundations/page.tsx
+// app/formal-science/mathematics/number-theory/foundations/page.tsx
 "use client";
 import PageHeader from "@/components/PageHeader";
 import FloatingSymbols from "@/components/FloatingSymbols";
@@ -11,34 +11,34 @@ const symbols = ["1", "2", "3", "4", "5", "+", "-", "0"];
 const topics = [
   {
     title: "Counting & Cardinality",
-    href: "/formal-science/mathematics/number-theory/tier-0-foundations/counting-cardinality",
+    href: "/formal-science/mathematics/number-theory/foundations/counting-cardinality",
     Icon: Tally5,
     desc: "Counting objects, one-to-one correspondence, and cardinality.",
     className: "theme-number-theory",
   },
   {
     title: "Early Number Concepts",
-    href: "/formal-science/mathematics/number-theory/tier-0-foundations/early-number-concepts",
+    href: "/formal-science/mathematics/number-theory/foundations/early-number-concepts",
     Icon: CircleSlash,
     desc: "Reading/writing numbers, magnitude, and the concept of zero.",
     className: "theme-number-theory",
   },
   {
     title: "Early Operations",
-    href: "/formal-science/mathematics/number-theory/tier-0-foundations/early-operations",
+    href: "/formal-science/mathematics/number-theory/foundations/early-operations",
     Icon: CirclePlus,
     desc: "Conceptual addition, subtraction, and composition of numbers.",
     className: "theme-number-theory",
   },
 ];
 
-export default function Tier0Page() {
+export default function FoundationsPage() {
   return (
     <main className="topic-page theme-number-theory lg:px-16">
       <FloatingSymbols symbols={symbols} />
       <PageHeader
         eyebrow="Number Theory"
-        title="Tier 0: Pre-NT Foundations"
+        title="Pre-NT Foundations"
         subtitle="The raw ingredients before formal number theory: counting, comparing, and combining."
       />
       <section className="topic-grid">

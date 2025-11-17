@@ -63,6 +63,13 @@ export default function Home() {
       Icon: BookText,
       className: "theme-glossary"
     },
+    {
+      title: "Development Playground",
+      desc: "Testing new features and designs.",
+      href: "/dev-playground",
+      Icon: BookText,
+      className: "theme-dev-playground"
+    }
   ];
 
   return (

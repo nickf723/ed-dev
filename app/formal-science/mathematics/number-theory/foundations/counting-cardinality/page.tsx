@@ -5,8 +5,8 @@ export default function PlaceholderPage() {
   return (
     <main className="topic-page lg:px-16">
       <PageHeader
-        eyebrow="Tier 0: Pre-NT Foundations"
-        title="Counting & Cardinality (0.1)"
+        eyebrow="Pre-NT Foundations"
+        title="Counting & Cardinality"
         subtitle="This page is being built. Check back soon for new content!"
       />
     </main>

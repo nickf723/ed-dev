@@ -53,7 +53,6 @@ export default function MathPage() {
       Icon: SquarePlus,
       className: "theme-number-theory",
       subtitle: "",
-      // --- REMOVED UNITS, as this now links to the main Tier page ---
     },
     {
       title: "Discrete Mathematics",

@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+@layer components {
+
+.text-rainbow-smear {
+    text-shadow:
+      35px 35px 15px rgba(128, 0, 255, .726),  
+      30px 30px 15px rgba(0, 0, 255, 0.726),
+      25px 25px 15px rgba(0, 255, 255, 0.726),  
+      20px 20px 15px rgba(0, 255, 0, .726),  
+      15px 15px 15px rgba(255, 255, 0, 0.726),
+      10px 10px 15px rgba(255, 136, 0, .726),  
+      5px 5px 15px rgba(255, 0, 0, .726);
+}
+}

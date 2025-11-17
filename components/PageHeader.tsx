@@ -7,9 +7,9 @@ type PageHeaderProps = {
 
 export default function PageHeader({ title, subtitle, eyebrow }: PageHeaderProps) {
   return (
-    <section className="header relative z-10 mx-auto mb-16 max-w-3xl text-center">
+    <section className="header relative z-10 mx-auto mb-16 max-w-3xl text-left">
       <h1
-        className="mb-4 text-4xl font-bold text-transparent sm:text-5xl lg:text-6xl"
+        className="mb-5 text-4xl font-bold text-transparent sm:text-5xl lg:text-6xl"
         style={{
           backgroundImage:
             "linear-gradient(120deg, var(--theme-text-title), var(--theme-text-header))",
@@ -19,7 +19,7 @@ export default function PageHeader({ title, subtitle, eyebrow }: PageHeaderProps
       >
         {title}
       </h1>
-      <p className="leading-relaxed text-neutral-300 sm:text-lg">{subtitle}</p>
+      <p className="glass-sub leading-relaxed text-neutral-300 sm:text-lg">{subtitle}</p>
     </section>
   );
 }

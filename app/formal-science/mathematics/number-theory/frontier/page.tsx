@@ -10,29 +10,29 @@ const symbols = ["ζ(1/2 + it)", "p+q=2n", "3n+1", "P vs NP", "?"];
 
 const topics = [
   {
-    title: "Prime-Related Problems (6.1)",
-    href: "/formal-science/mathematics/number-theory/tier-6-frontier/prime-problems",
+    title: "Prime-Related Problems",
+    href: "/formal-science/mathematics/number-theory/frontier/prime-problems",
     Icon: Flame,
     desc: "Riemann Hypothesis, Goldbach’s Conjecture, Twin Prime Conjecture.",
     className: "theme-number-theory",
   },
   {
-    title: "Integer & Diophantine Mysteries (6.2)",
-    href: "/formal-science/mathematics/number-theory/tier-6-frontier/integer-mysteries",
+    title: "Integer & Diophantine Mysteries",
+    href: "/formal-science/mathematics/number-theory/frontier/integer-mysteries",
     Icon: HelpCircle,
     desc: "Collatz Conjecture, Perfect Cuboid Problem, Erdős–Straus Conjecture.",
     className: "theme-number-theory",
   },
   {
-    title: "Combinatorial & Additive NT (6.3)",
-    href: "/formal-science/mathematics/number-theory/tier-6-frontier/combinatorial-additive",
+    title: "Combinatorial & Additive NT",
+    href: "/formal-science/mathematics/number-theory/frontier/combinatorial-additive",
     Icon: Sigma,
     desc: "Erdős Distinct Distances Problem, Sumset problems, Partition function.",
     className: "theme-number-theory",
   },
   {
-    title: "Computational Complexity (6.4)",
-    href: "/formal-science/mathematics/number-theory/tier-6-frontier/computational-complexity",
+    title: "Computational Complexity",
+    href: "/formal-science/mathematics/number-theory/frontier/computational-complexity",
     Icon: Network,
     desc: "P vs NP, integer factorization, and the link between primes and randomness.",
     className: "theme-number-theory",
@@ -45,7 +45,7 @@ export default function Tier6Page() {
       <FloatingSymbols symbols={symbols} />
       <PageHeader
         eyebrow="Number Theory"
-        title="Tier 6: Frontier & Unsolved Problems"
+        title="Frontier & Unsolved Problems"
         subtitle="Humanity’s greatest unanswered number questions. These problems define the future of mathematics."
       />
       <section className="topic-grid">

@@ -10,36 +10,36 @@ const symbols = ["ζ(s)", "L(s, χ)", "E(τ)", "y²=x³+Ax+B", "RSA"];
 
 const topics = [
   {
-    title: "Algebraic Number Theory (5.1)",
-    href: "/formal-science/mathematics/number-theory/tier-5-graduate/algebraic-number-theory",
+    title: "Algebraic Number Theory",
+    href: "/formal-science/mathematics/number-theory/graduate/algebraic-number-theory",
     Icon: Brain,
     desc: "Number fields, rings of integers, and ideal theory.",
     className: "theme-number-theory",
   },
   {
-    title: "Analytic Number Theory (5.2)",
-    href: "/formal-science/mathematics/number-theory/tier-5-graduate/analytic-number-theory",
+    title: "Analytic Number Theory",
+    href: "/formal-science/mathematics/number-theory/graduate/analytic-number-theory",
     Icon: Spline,
     desc: "Zeta functions, Dirichlet characters, and L-functions.",
     className: "theme-number-theory",
   },
   {
-    title: "Modular Forms (5.3)",
-    href: "/formal-science/mathematics/number-theory/tier-5-graduate/modular-forms",
+    title: "Modular Forms",
+    href: "/formal-science/mathematics/number-theory/graduate/modular-forms",
     Icon: Network,
     desc: "Fourier expansions, Hecke operators, and modular curves.",
     className: "theme-number-theory",
   },
   {
-    title: "Elliptic Curves (5.4)",
-    href: "/formal-science/mathematics/number-theory/tier-5-graduate/elliptic-curves",
+    title: "Elliptic Curves",
+    href: "/formal-science/mathematics/number-theory/graduate/elliptic-curves",
     Icon: Waypoints,
     desc: "Group law, rational points, and torsion structure.",
     className: "theme-number-theory",
   },
   {
-    title: "Cryptographic Foundations (5.5)",
-    href: "/formal-science/mathematics/number-theory/tier-5-graduate/cryptographic-foundations",
+    title: "Cryptographic Foundations",
+    href: "/formal-science/mathematics/number-theory/graduate/cryptographic-foundations",
     Icon: Lock,
     desc: "RSA, Diffie-Hellman, discrete logarithms, and primality testing.",
     className: "theme-number-theory",
@@ -52,7 +52,7 @@ export default function Tier5Page() {
       <FloatingSymbols symbols={symbols} />
       <PageHeader
         eyebrow="Number Theory"
-        title="Tier 5: Graduate Number Theory"
+        title="Graduate Number Theory"
         subtitle="Deep structure: algebraic & analytic number theory, modular forms, and elliptic curves."
       />
       <section className="topic-grid">
