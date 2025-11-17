@@ -51,7 +51,14 @@ import {
   Waypoints,
   Spline,
   SquareX,
+  Wrench,
+  Earth,
+  Wifi,
+  Handshake,
+  Hammer,
+  Palette,
 } from "@/components/icons";
+import { Binary, LinkIcon } from "lucide-react";
 
 export default function Sidebar() {
   const pathname = usePathname();
@@ -163,7 +170,7 @@ export default function Sidebar() {
           {/* Formal Science */}
           <Dropdown
             label="Formal Science"
-            icon={<BookOpen size={16} />}
+            icon={<Binary size={16} />}
             expanded={expandFormalScience}
             setExpanded={setExpandFormalScience}
             href="/formal-science"
@@ -527,7 +534,7 @@ export default function Sidebar() {
           {/* Social Science */}
           <Dropdown
             label="Social Science"
-            icon={<BookOpen size={16} />}
+            icon={<Handshake size={16} />}
             expanded={expandSocial}
             setExpanded={setExpandSocial}
             href="/social-science"
@@ -541,7 +548,7 @@ export default function Sidebar() {
           {/* Applied Science */}
           <Dropdown
             label="Applied Science"
-            icon={<BookOpen size={16} />}
+            icon={<Hammer size={16} />}
             expanded={expandApplied}
             setExpanded={setExpandApplied}
             href="/applied-science"
@@ -555,7 +562,7 @@ export default function Sidebar() {
           {/* Humanities */}
           <Dropdown
             label="Humanities"
-            icon={<BookOpen size={16} />}
+            icon={<Palette size={16} />}
             expanded={expandHumanities}
             setExpanded={setExpandHumanities}
             href="/humanities"
@@ -569,7 +576,7 @@ export default function Sidebar() {
           {/* Interdisciplines */}
           <Dropdown
             label="Interdisciplines"
-            icon={<BookOpen size={16} />}
+            icon={<LinkIcon size={16} />}
             expanded={expandInter}
             setExpanded={setExpandInter}
             href="/interdisciplines"
@@ -588,6 +595,14 @@ export default function Sidebar() {
             label="Glossary"
             icon={<BookOpen size={16} />}
             active={pathname.startsWith("/glossary")}
+          />
+          
+          {/* Development Playground */}
+          <SidebarLink
+            href="/dev-playground"
+            label="Development Playground"
+            icon={<Wrench size={16} />}
+            active={pathname.startsWith("/dev-playground")}
           />
         </nav>
       </aside>

@@ -1,22 +1,19 @@
-import "../globals.css";
-import "../themes.css";
-import "../components.css";
-import "./dev.css";
-import Sidebar from "@/components/Sidebar";
-import "katex/dist/katex.min.css";
+import './dev.css'; // Import the stylesheet here
+import '../components.css';
+import '../globals.css';
 
-export const metadata = {
-  title: "Development Playground",
-  description: "A hub for learning anything, powered by interconnected concepts and clear explanations.",
-};
-
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function DevPlaygroundLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <html lang="en">
-      <body className="flex">
-        <Sidebar />
-        <div className="ml-[var(--sidebar-width)] flex-1">{children}</div>
-      </body>
-    </html>
+    <div className="playground-container glass">
+      <header className="playground-header glass">
+      </header>
+      <main className="playground-main glass">
+        {children}
+      </main>
+    </div>
   );
 }

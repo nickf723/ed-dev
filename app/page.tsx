@@ -8,6 +8,9 @@ import {
   Hammer,
   Palette,
   Link,
+  Wrench,
+  BookOpen,
+  Binary,
 } from "@/components/icons";
 import TopicCard from "@/components/TopicCard";
 
@@ -17,7 +20,7 @@ export default function Home() {
       title: "Formal Sciences",
       desc: "Study of abstract systems and logic.",
       href: "/formal-science",
-      Icon: Pi,
+      Icon: Binary,
       className: "theme-formal-science"
     }
   ,
@@ -60,14 +63,14 @@ export default function Home() {
       title: "Glossary",
       desc: "Definitions and key terms.",
       href: "/glossary",
-      Icon: BookText,
+      Icon: BookOpen,
       className: "theme-glossary"
     },
     {
       title: "Development Playground",
       desc: "Testing new features and designs.",
       href: "/dev-playground",
-      Icon: BookText,
+      Icon: Wrench,
       className: "theme-dev-playground"
     }
   ];

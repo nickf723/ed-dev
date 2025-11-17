@@ -7,7 +7,7 @@ type PageHeaderProps = {
 
 export default function PageHeader({ title, subtitle, eyebrow }: PageHeaderProps) {
   return (
-    <section className="header relative z-10 mx-auto mb-16 max-w-3xl text-left">
+    <section className="header relative mx-auto mb-16 max-w-3xl text-left">
       <h1
         className="mb-5 text-4xl font-bold text-transparent sm:text-5xl lg:text-6xl"
         style={{

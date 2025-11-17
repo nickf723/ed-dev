@@ -1,37 +1,12 @@
-// components/PageHeader.tsx
-import PageHeader from "@/components/PageHeader";
-import TopicCard from "@/components/TopicCard";
+"use client"; // Required for using React hooks (useState)
 
- const disciplines = [
-    {
-      title: "Mathematics and Statistics",
-      desc: "The study of quantity, structure, space, and change.",
-      href: "/formal-science/mathematics",
-      //Icon: Calculator,
-      className: "theme-math topic-card-wide"
-    },
-  ];
+import React, { useState } from 'react';
 
-
-export default function PlaceholderPage() {
+export default function DevPlaygroundPage() {
   return (
-    <main className="topic-page text-rainbow-smear lg:px-16">
-      <PageHeader
-        eyebrow="Content Coming Soon"
-        title="Under Construction"
-        subtitle="This page is being built. Check back soon for new content!"
-      />
-        <section className="topic-grid">
-            {disciplines.map((branch) => (
-            <TopicCard
-                key={branch.href}
-                href={branch.href}
-                title={branch.title}
-                desc={branch.desc}
-                //Icon={branch.Icon}
-                className={branch.className}
-            />
-            ))}
+    <main className="dev-playground-page theme-dev-playground glass p-8">
+        <section className="lesson-content glass p-6">
+        <h2 className="text-2xl font-bold mb-4">Dev Playground</h2>
         </section>
     </main>
   );

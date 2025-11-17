@@ -3,8 +3,35 @@
 @tailwind utilities;
 
 
+/* --- 1. Styles for layout.tsx --- */
 
-@layer components {
+.dev-playground-page {
+  min-height: window-height;
+  background-color: var(--bg-color-light);
+  color: var(--text-dark);
+  display: flex;
+  flex-direction: column;
+}
+
+.playground-header {
+  border-bottom: 2px solid var(--border-color);
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.playground-header h1 {
+  margin: 0;
+  color: var(--text-dark);
+}
+
+.playground-header p {
+  margin: 0.5rem 0 0 0;
+  color: var(--text-medium);
+}
+
+.playground-main {
+  padding: 1.5rem;
+}
 
 .text-rainbow-smear {
     text-shadow:
@@ -15,5 +42,4 @@
       15px 15px 15px rgba(255, 255, 0, 0.726),
       10px 10px 15px rgba(255, 136, 0, .726),  
       5px 5px 15px rgba(255, 0, 0, .726);
-}
 }
