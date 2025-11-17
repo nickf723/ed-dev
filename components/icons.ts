@@ -31,6 +31,7 @@ export {
   //Math
     Equal, EqualNot, EqualApproximately, Plus, Minus, X, SlashIcon, Diff, Pi, Percent, Parentheses, Dot,
     SquarePlus, SquareMinus, SquareX, SquareDivide, SquareRadical, SquarePercent, SquareEqual, SquareChevronUp, 
+    CirclePlus, CircleMinus, CircleX, CircleDivide, CirclePercent, CircleEqual, CircleChevronUp, CircleSlash,
     //Algebra
       SquareFunction, Sigma, Variable, TrendingDown, TrendingUpDown, TrendingUp, LineChart, Grid3X3, Grid2X2,
     //Geometry

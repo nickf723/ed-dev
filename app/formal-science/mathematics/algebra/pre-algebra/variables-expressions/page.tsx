@@ -268,17 +268,17 @@ function RelatedTopicsAside() {
       <ul className="space-y-3">
         <AsideLink
           href="/formal-science/mathematics/number-theory/tier-1-elementary/whole-number-arithmetic"
-          title="Whole Number Arithmetic"
+          title="Whole Number Arithmetic (1.1)"
           description="Review the numbers and operations used in expressions."
         />
         <AsideLink
           href="/formal-science/mathematics/number-theory/tier-1-elementary/properties-of-operations"
-          title="Properties of Operations"
+          title="Properties of Operations (1.2)"
           description="The rules for how expressions can be simplified."
         />
         <AsideLink
           href="/formal-science/mathematics/algebra/pre-algebra/equations-inequalities"
-          title="Equations & Inequalities"
+          title="Equations & Inequalities (3.1)"
           description="The next step: using expressions to find the value of 'x'."
         />
       </ul>

@@ -44,13 +44,13 @@ import {
   Tally5, // <-- Added
   GitMerge as EuclideanIcon, // <-- Added alias
   Lock, // <-- Added
-  HelpCircle,
+  HelpCircle, // <-- Added
+  Parentheses, // <-- Added
+  Minus, // <-- Added
+  Plus, // <-- Added
   Waypoints,
   Spline,
-  Minus,
-  Plus,
   SquareX,
-  Parentheses,
 } from "@/components/icons";
 
 export default function Sidebar() {
@@ -143,7 +143,7 @@ export default function Sidebar() {
 
       {/* Sidebar */}
       <aside
-        className={`glass fixed left-0 top-0 z-40 h-screen border-r border-neutral-800
+        className={`glass fixed left-0 top-0 z-40 h-screen overflow-y-auto border-r border-neutral-800
                   transition-all duration-300 ease-in-out
                   ${
                     open
@@ -151,7 +151,7 @@ export default function Sidebar() {
                       : "w-[var(--sidebar-width)] -translate-x-full md:translate-x-0"
                   }`}
       >
-        <nav className="flex flex-col gap-2 p-4 pt-16 text-sm font-medium text-neutral-300 md:pt-6">
+        <nav className="flex flex-col gap-2 p-4 pt-16 pb-24 text-sm font-medium text-neutral-300 md:pt-6">
           {/* Home */}
           <SidebarLink
             href="/"
@@ -176,7 +176,7 @@ export default function Sidebar() {
               expanded={expandMath}
               setExpanded={setExpandMath}
               href="/formal-science/mathematics"
-              active={pathname === "/formal-science/mathematics"}
+              active={pathname.startsWith("/formal-science/mathematics")}
               nested
             >
               {/* Algebra Dropdown */}
@@ -205,45 +205,35 @@ export default function Sidebar() {
                     href="/formal-science/mathematics/algebra/pre-algebra/variables-expressions"
                     label="Variables & Expressions"
                     icon={<Variable size={14} />}
-                    active={pathname.startsWith(
-                      "/formal-science/mathematics/algebra/pre-algebra/variables-expressions"
-                    )}
+                    active={pathname.includes("variables-expressions")}
                     nested
                   />
                   <SidebarLink
                     href="/formal-science/mathematics/algebra/pre-algebra/ratios-rates-proportions"
                     label="Ratios, Rates & Proportions"
                     icon={<Percent size={14} />}
-                    active={pathname.startsWith(
-                      "/formal-science/mathematics/algebra/pre-algebra/ratios-rates-proportions"
-                    )}
+                    active={pathname.includes("ratios-rates-proportions")}
                     nested
                   />
                   <SidebarLink
                     href="/formal-science/mathematics/algebra/pre-algebra/equations-inequalities"
                     label="Equations & Inequalities"
                     icon={<Equal size={14} />}
-                    active={pathname.startsWith(
-                      "/formal-science/mathematics/algebra/pre-algebra/equations-inequalities"
-                    )}
+                    active={pathname.includes("equations-inequalities")}
                     nested
                   />
                   <SidebarLink
                     href="/formal-science/mathematics/algebra/pre-algebra/linear-reasoning"
                     label="Linear Reasoning"
                     icon={<LineChart size={14} />}
-                    active={pathname.startsWith(
-                      "/formal-science/mathematics/algebra/pre-algebra/linear-reasoning"
-                    )}
+                    active={pathname.includes("linear-reasoning")}
                     nested
                   />
                   <SidebarLink
                     href="/formal-science/mathematics/algebra/pre-algebra/structure-logic"
                     label="Structure & Logic"
                     icon={<Puzzle size={14} />}
-                    active={pathname.startsWith(
-                      "/formal-science/mathematics/algebra/pre-algebra/structure-logic"
-                    )}
+                    active={pathname.includes("structure-logic")}
                     nested
                   />
                 </Dropdown>
@@ -288,9 +278,9 @@ export default function Sidebar() {
                   active={pathname.startsWith("/formal-science/mathematics/number-theory/tier-0-foundations")}
                   nested
                 >
-                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-0-foundations/counting-cardinality" label="Counting & Cardinality" icon={<Tally5 size={14} />} active={pathname.includes("counting-cardinality")} nested />
-                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-0-foundations/early-number-concepts" label="Early Number Concepts" icon={<Tally5 size={14} />} active={pathname.includes("early-number-concepts")} nested />
-                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-0-foundations/early-operations" label="Early Operations" icon={<Plus size={14} />} active={pathname.includes("early-operations")} nested />
+                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-0-foundations/counting-cardinality" label="0.1 Counting & Cardinality" icon={<Tally5 size={14} />} active={pathname.includes("counting-cardinality")} nested />
+                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-0-foundations/early-number-concepts" label="0.2 Early Number Concepts" icon={<Tally5 size={14} />} active={pathname.includes("early-number-concepts")} nested />
+                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-0-foundations/early-operations" label="0.3 Early Operations" icon={<Plus size={14} />} active={pathname.includes("early-operations")} nested />
                 </Dropdown>
                 {/* Tier 1 */}
                 <Dropdown
@@ -302,11 +292,11 @@ export default function Sidebar() {
                   active={pathname.startsWith("/formal-science/mathematics/number-theory/tier-1-elementary")}
                   nested
                 >
-                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-1-elementary/whole-number-arithmetic" label="Whole Number Arithmetic" icon={<Calculator size={14} />} active={pathname.includes("whole-number-arithmetic")} nested />
-                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-1-elementary/properties-of-operations" label="Properties of Operations" icon={<Parentheses size={14} />} active={pathname.includes("properties-of-operations")} nested />
-                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-1-elementary/factors-multiples" label="Factors & Multiples" icon={<SquareX size={14} />} active={pathname.includes("factors-multiples")} nested />
-                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-1-elementary/divisibility" label="Divisibility" icon={<Waves size={14} />} active={pathname.includes("divisibility")} nested />
-                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-1-elementary/patterns-sequences" label="Patterns & Sequences" icon={<Spline size={14} />} active={pathname.includes("patterns-sequences")} nested />
+                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-1-elementary/whole-number-arithmetic" label="1.1 Whole Number Arithmetic" icon={<Calculator size={14} />} active={pathname.includes("whole-number-arithmetic")} nested />
+                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-1-elementary/properties-of-operations" label="1.2 Properties of Operations" icon={<Parentheses size={14} />} active={pathname.includes("properties-of-operations")} nested />
+                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-1-elementary/factors-multiples" label="1.3 Factors & Multiples" icon={<SquareX size={14} />} active={pathname.includes("factors-multiples")} nested />
+                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-1-elementary/divisibility" label="1.4 Divisibility" icon={<Waves size={14} />} active={pathname.includes("divisibility")} nested />
+                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-1-elementary/patterns-sequences" label="1.5 Patterns & Sequences" icon={<Spline size={14} />} active={pathname.includes("patterns-sequences")} nested />
                 </Dropdown>
                 {/* Tier 2 */}
                 <Dropdown
@@ -318,11 +308,11 @@ export default function Sidebar() {
                   active={pathname.startsWith("/formal-science/mathematics/number-theory/tier-2-middle")}
                   nested
                 >
-                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-2-middle/integer-system" label="Integer System" icon={<Minus size={14} />} active={pathname.includes("integer-system")} nested />
-                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-2-middle/rational-number-structure" label="Rational Number Structure" icon={<SquareDivide size={14} />} active={pathname.includes("rational-number-structure")} nested />
-                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-2-middle/prime-factorization" label="Prime Factorization" icon={<TreeDeciduous size={14} />} active={pathname.includes("prime-factorization")} nested />
-                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-2-middle/modular-thinking-light" label="Modular Thinking (Light)" icon={<AlarmSmoke size={14} />} active={pathname.includes("modular-thinking-light")} nested />
-                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-2-middle/proportional-number-structures" label="Proportional Structures" icon={<Percent size={14} />} active={pathname.includes("proportional-number-structures")} nested />
+                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-2-middle/integer-system" label="2.1 Integer System" icon={<Minus size={14} />} active={pathname.includes("integer-system")} nested />
+                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-2-middle/rational-number-structure" label="2.2 Rational Structure" icon={<SquareDivide size={14} />} active={pathname.includes("rational-number-structure")} nested />
+                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-2-middle/prime-factorization" label="2.3 Prime Factorization" icon={<TreeDeciduous size={14} />} active={pathname.includes("prime-factorization")} nested />
+                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-2-middle/modular-thinking-light" label="2.4 Modular Thinking (Light)" icon={<AlarmSmoke size={14} />} active={pathname.includes("modular-thinking-light")} nested />
+                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-2-middle/proportional-number-structures" label="2.5 Proportional Structures" icon={<Percent size={14} />} active={pathname.includes("proportional-number-structures")} nested />
                 </Dropdown>
                 {/* Tier 3 */}
                 <Dropdown
@@ -334,11 +324,11 @@ export default function Sidebar() {
                   active={pathname.startsWith("/formal-science/mathematics/number-theory/tier-3-high-school")}
                   nested
                 >
-                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-3-high-school/modular-arithmetic-formal" label="Modular Arithmetic" icon={<Sigma size={14} />} active={pathname.includes("modular-arithmetic-formal")} nested />
-                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-3-high-school/diophantine-equations" label="Diophantine Equations" icon={<Equal size={14} />} active={pathname.includes("diophantine-equations")} nested />
-                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-3-high-school/advanced-prime-topics" label="Advanced Prime Topics" icon={<Atom size={14} />} active={pathname.includes("advanced-prime-topics")} nested />
-                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-3-high-school/irrational-numbers" label="Irrational Numbers" icon={<SquareRadical size={14} />} active={pathname.includes("irrational-numbers")} nested />
-                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-3-high-school/counting-combinatorics" label="Counting & Combinatorics" icon={<Tally5 size={14} />} active={pathname.includes("counting-combinatorics")} nested />
+                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-3-high-school/modular-arithmetic-formal" label="3.1 Modular Arithmetic" icon={<Sigma size={14} />} active={pathname.includes("modular-arithmetic-formal")} nested />
+                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-3-high-school/diophantine-equations" label="3.2 Diophantine Equations" icon={<Equal size={14} />} active={pathname.includes("diophantine-equations")} nested />
+                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-3-high-school/advanced-prime-topics" label="3.3 Advanced Prime Topics" icon={<Atom size={14} />} active={pathname.includes("advanced-prime-topics")} nested />
+                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-3-high-school/irrational-numbers" label="3.4 Irrational Numbers" icon={<SquareRadical size={14} />} active={pathname.includes("irrational-numbers")} nested />
+                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-3-high-school/counting-combinatorics" label="3.5 Counting & Combinatorics" icon={<Tally5 size={14} />} active={pathname.includes("counting-combinatorics")} nested />
                 </Dropdown>
                 {/* Tier 4 */}
                 <Dropdown
@@ -350,11 +340,11 @@ export default function Sidebar() {
                   active={pathname.startsWith("/formal-science/mathematics/number-theory/tier-4-undergraduate")}
                   nested
                 >
-                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-4-undergraduate/euclidean-structure" label="Euclidean Structure" icon={<EuclideanIcon size={14} />} active={pathname.includes("euclidean-structure")} nested />
-                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-4-undergraduate/congruence-classes-algebra" label="Congruence Classes" icon={<Network size={14} />} active={pathname.includes("congruence-classes-algebra")} nested />
-                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-4-undergraduate/multiplicative-number-theory" label="Multiplicative NT" icon={<Sigma size={14} />} active={pathname.includes("multiplicative-number-theory")} nested />
-                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-4-undergraduate/quadratic-residues" label="Quadratic Residues" icon={<Waves size={14} />} active={pathname.includes("quadratic-residues")} nested />
-                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-4-undergraduate/prime-distribution-theory" label="Prime Distribution" icon={<Waves size={14} />} active={pathname.includes("prime-distribution-theory")} nested />
+                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-4-undergraduate/euclidean-structure" label="4.1 Euclidean Structure" icon={<EuclideanIcon size={14} />} active={pathname.includes("euclidean-structure")} nested />
+                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-4-undergraduate/congruence-classes-algebra" label="4.2 Congruence Classes" icon={<Network size={14} />} active={pathname.includes("congruence-classes-algebra")} nested />
+                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-4-undergraduate/multiplicative-number-theory" label="4.3 Multiplicative NT" icon={<Sigma size={14} />} active={pathname.includes("multiplicative-number-theory")} nested />
+                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-4-undergraduate/quadratic-residues" label="4.4 Quadratic Residues" icon={<Waves size={14} />} active={pathname.includes("quadratic-residues")} nested />
+                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-4-undergraduate/prime-distribution-theory" label="4.5 Prime Distribution" icon={<Waves size={14} />} active={pathname.includes("prime-distribution-theory")} nested />
                 </Dropdown>
                 {/* Tier 5 */}
                 <Dropdown
@@ -366,11 +356,11 @@ export default function Sidebar() {
                   active={pathname.startsWith("/formal-science/mathematics/number-theory/tier-5-graduate")}
                   nested
                 >
-                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-5-graduate/algebraic-number-theory" label="Algebraic NT" icon={<Brain size={14} />} active={pathname.includes("algebraic-number-theory")} nested />
-                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-5-graduate/analytic-number-theory" label="Analytic NT" icon={<Spline size={14} />} active={pathname.includes("analytic-number-theory")} nested />
-                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-5-graduate/modular-forms" label="Modular Forms" icon={<Network size={14} />} active={pathname.includes("modular-forms")} nested />
-                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-5-graduate/elliptic-curves" label="Elliptic Curves" icon={<Waypoints size={14} />} active={pathname.includes("elliptic-curves")} nested />
-                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-5-graduate/cryptographic-foundations" label="Cryptography" icon={<Lock size={14} />} active={pathname.includes("cryptographic-foundations")} nested />
+                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-5-graduate/algebraic-number-theory" label="5.1 Algebraic NT" icon={<Brain size={14} />} active={pathname.includes("algebraic-number-theory")} nested />
+                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-5-graduate/analytic-number-theory" label="5.2 Analytic NT" icon={<Spline size={14} />} active={pathname.includes("analytic-number-theory")} nested />
+                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-5-graduate/modular-forms" label="5.3 Modular Forms" icon={<Network size={14} />} active={pathname.includes("modular-forms")} nested />
+                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-5-graduate/elliptic-curves" label="5.4 Elliptic Curves" icon={<Waypoints size={14} />} active={pathname.includes("elliptic-curves")} nested />
+                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-5-graduate/cryptographic-foundations" label="5.5 Cryptography" icon={<Lock size={14} />} active={pathname.includes("cryptographic-foundations")} nested />
                 </Dropdown>
                 {/* Tier 6 */}
                 <Dropdown
@@ -382,8 +372,10 @@ export default function Sidebar() {
                   active={pathname.startsWith("/formal-science/mathematics/number-theory/tier-6-frontier")}
                   nested
                 >
-                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-6-frontier/prime-problems" label="Prime Problems" icon={<Flame size={14} />} active={pathname.includes("prime-problems")} nested />
-                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-6-frontier/integer-mysteries" label="Integer Mysteries" icon={<HelpCircle size={14} />} active={pathname.includes("integer-mysteries")} nested />
+                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-6-frontier/prime-problems" label="6.1 Prime Problems" icon={<Flame size={14} />} active={pathname.includes("prime-problems")} nested />
+                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-6-frontier/integer-mysteries" label="6.2 Integer Mysteries" icon={<HelpCircle size={14} />} active={pathname.includes("integer-mysteries")} nested />
+                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-6-frontier/combinatorial-additive" label="6.3 Combinatorial/Additive" icon={<Sigma size={14} />} active={pathname.includes("combinatorial-additive")} nested />
+                  <SidebarLink href="/formal-science/mathematics/number-theory/tier-6-frontier/computational-complexity" label="6.4 Computational" icon={<Network size={14} />} active={pathname.includes("computational-complexity")} nested />
                 </Dropdown>
               </Dropdown>
               {/* --- END NUMBER THEORY SECTION --- */}

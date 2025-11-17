@@ -185,7 +185,7 @@ export default function AlgebraicPropertiesPage() {
             startOpen={true}
           >
             <ContentP>
-              These properties are the "rules of the road" for math. They
+              Algebraic properties are the "rules of the road" for math. They
               seem simple, but they are the bedrock that guarantees our
               methods for solving complex problems will work every time.
             </ContentP>
@@ -350,7 +350,7 @@ function RelatedTopicsAside() {
       <ul className="space-y-3">
         <AsideLink
           href="/formal-science/mathematics/number-theory/tier-1-elementary/whole-number-arithmetic"
-          title="Whole Number Arithmetic"
+          title="Whole Number Arithmetic (1.1)"
           description="Review the basic operations these properties apply to."
         />
         <AsideLink
@@ -360,7 +360,7 @@ function RelatedTopicsAside() {
         />
         <AsideLink
           href="/formal-science/mathematics/number-theory/tier-2-middle/integer-system"
-          title="Integer System"
+          title="Integer System (2.1)"
           description="Explore how these properties extend to negative numbers."
         />
       </ul>
