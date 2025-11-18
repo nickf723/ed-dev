@@ -330,162 +330,137 @@ export function VariableQuiz() {
   );
 }
 
-/**
- * Component for a 60-second explainer short on Variables & Expressions.
- * Uses hardcoded structure and colors for narrative clarity.
- */
-export function VariableShortAnimation() {
-  const commonClasses = "p-4 rounded-xl border-2 transition-all duration-700 ease-in-out";
+const compositionSteps = [
+  // Note: Term is steps 2 & 3. Expression is step 4.
+  { id: 1, text: "x", focus: "VARIABLE", term: "VARIABLE", color: "text-red-400", bg: "bg-red-800/20", border: "border-red-700", definition: "The unknown symbol. The starting point for all of algebra." },
+  { id: 2, text: "5x", focus: "COEFFICIENT", term: "COEFFICIENT", color: "text-orange-400", bg: "bg-orange-800/20", border: "border-orange-700", definition: "The multiplier of the variable. It creates a full Term with the variable." },
+  { id: 3, text: "5x^2", focus: "EXPONENT", term: "EXPONENT", color: "text-yellow-400", bg: "bg-yellow-800/20", border: "border-yellow-700", definition: "The power applied to the variable, indicating higher-order growth." },
+  { id: 4, text: "5x^2 + 10", focus: "CONSTANT", term: "CONSTANT", color: "text-green-400", bg: "bg-green-800/20", border: "border-green-700", definition: "A fixed number added to the Term. The entire phrase is an Expression." },
+  { id: 5, text: "5x^2 + 10 = 35", focus: "EQUATION", term: "EQUATION", color: "text-indigo-400", bg: "bg-indigo-800/20", border: "border-indigo-700", definition: "Two Expressions set equal with the '=' sign. This gives us a problem to solve!" },
+];
 
-  const TermBox = ({ title, definition, colorClass }: { title: string, definition: string, colorClass: string }) => (
-    <div className={`mt-4 ${commonClasses} ${colorClass} text-left`}>
-      <h3 className="text-xl font-bold mb-1 text-white">{title}</h3>
-      <p className="text-sm text-neutral-300">{definition}</p>
-    </div>
-  );
-  
-  // Custom Expression part to highlight different roles
-  const ExpressionDisplay = ({ highlight }: { highlight?: 'VARIABLE' | 'COEFFICIENT' | 'CONSTANT' | 'EXPRESSION' | 'EQUATION' }) => {
-      const colorMap = {
-          VARIABLE: 'text-yellow-400 bg-yellow-900/50 border-yellow-700',
-          COEFFICIENT: 'text-orange-400 bg-orange-900/50 border-orange-700',
-          CONSTANT: 'text-cyan-400 bg-cyan-900/50 border-cyan-700',
-          EXPRESSION: 'text-pink-400 bg-pink-900/50 border-pink-700',
-          EQUATION: 'text-red-400 bg-red-900/50 border-red-700',
-      };
-      
-      const defaultText = 'text-neutral-400';
-      const defaultBg = 'bg-transparent border-transparent';
+const TermDefinitionBox = ({ isVisible, step }: { isVisible: boolean, step: number }) => {
+    const isTermVisible = isVisible && (step === 2 || step === 3);
+    const isExpressionVisible = isVisible && step >= 4;
+    
+    const isTermTerm = step === 2 ? "5x" : "5x²";
+    const isExpressionTerm = "5x² + 10";
 
-      const getClass = (role: 'VARIABLE' | 'COEFFICIENT' | 'CONSTANT' | 'EXPRESSION' | 'EQUATION') => {
-          if (highlight === role) {
-              return colorMap[role];
-          }
-          if (highlight === 'EXPRESSION' && (role === 'VARIABLE' || role === 'COEFFICIENT' || role === 'CONSTANT')) {
-              return 'text-pink-400/80 ' + defaultBg;
-          }
-          if (highlight === 'EQUATION') {
-              return 'text-red-400/80 ' + defaultBg;
-          }
-          return defaultText + ' ' + defaultBg;
-      };
+    const termDefinition = "A single unit in an expression, typically a product of a coefficient, variable, and exponent.";
+    const expressionDefinition = "A mathematical phrase that combines one or more terms and constants with operations.";
 
-      const HighlightBox = ({ role, children }: { role: 'VARIABLE' | 'COEFFICIENT' | 'CONSTANT', children: React.ReactNode }) => (
-          <span className={`inline-block rounded-lg px-2 border ${getClass(role)}`}>
-              {children}
-          </span>
-      );
-
-      const ExpressionInner = () => (
-          <span className={`transition-all duration-700 ease-in-out ${highlight === 'EXPRESSION' ? colorMap['EXPRESSION'] + ' p-2 rounded-lg border' : ''}`}>
-              <HighlightBox role="COEFFICIENT">{highlight === 'COEFFICIENT' ? '3' : '3'}</HighlightBox>
-              <HighlightBox role="VARIABLE">{highlight === 'VARIABLE' ? 'x' : 'x'}</HighlightBox>
-              <span className="mx-1 text-neutral-400">+</span>
-              <HighlightBox role="CONSTANT">{highlight === 'CONSTANT' ? '5' : '5'}</HighlightBox>
-          </span>
-      );
-
-      return (
-        <div className="flex items-center justify-center space-x-2 text-6xl font-extrabold my-8">
-            <span className={`transition-all duration-700 ease-in-out ${highlight === 'EQUATION' ? colorMap['EQUATION'] + ' p-4 rounded-xl border' : ''}`}>
-              <ExpressionInner />
-              <span className="text-neutral-400 mx-3"><Equal size={48} /></span>
-              <span className="text-neutral-300">17</span>
-            </span>
+    const SubBox = ({ title, definition, color, isVisible, currentPiece }: { title: string, definition: string, color: string, isVisible: boolean, currentPiece: string }) => (
+        <div className={`transition-all duration-500 ease-in-out w-1/2 p-4 rounded-xl border-2 ${color} text-center overflow-hidden flex-shrink-0 ${isVisible ? 'opacity-100 h-full' : 'opacity-0 h-0'}`}>
+            <p className="text-xl font-bold uppercase text-white">{title}</p>
+            <p className="text-sm text-neutral-300 mt-1">{definition}</p>
+            {isVisible && <p className="text-xs mt-2 text-neutral-400">Example: <span className="font-mono text-lg text-white"><M>{currentPiece}</M></span></p>}
         </div>
-      );
-  };
+    );
 
-  const StepComponent = ({ title, content, term, definition, color, highlight, stepNumber }: { title: string, content: React.ReactNode, term: string, definition: string, color: string, highlight: 'VARIABLE' | 'COEFFICIENT' | 'CONSTANT' | 'EXPRESSION' | 'EQUATION', stepNumber: number }) => (
-    <div className="mb-12 p-8 rounded-2xl bg-neutral-900/40 border border-neutral-800 backdrop-blur-sm shadow-xl">
-        <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
-            <span className="bg-cyan-600 rounded-full w-8 h-8 flex items-center justify-center text-white text-lg">{stepNumber}</span>
-            {title}
-        </h2>
-        {content}
-        <ExpressionDisplay highlight={highlight} />
-        <TermBox 
-            title={term}
-            definition={definition}
-            colorClass={color}
-        />
-    </div>
-  );
-
-  return (
-    <div className="w-full max-w-4xl mx-auto space-y-12">
-        <PageHeader 
-            eyebrow="60-Second Short"
-            title="Algebra: The Language of Equations"
-            subtitle="A visual breakdown of the key components: Variables, Coefficients, Constants, Expressions, and Equations."
-        />
-        
-        <div className="mt-8 space-y-12">
-            
-            <StepComponent
-                stepNumber={1}
-                title="The Whole Picture: Equation"
-                content={<p className="text-lg text-neutral-300">
-                    An **Equation** uses an equals sign to state that two sides have the same value. This entire statement is what we aim to solve.
-                </p>}
-                term="Equation"
-                definition="A mathematical statement that sets two expressions equal to each other (e.g., 3x + 5 = 17)."
-                color="bg-red-800/20 border-red-700"
-                highlight="EQUATION"
-            />
-
-            <StepComponent
-                stepNumber={2}
-                title="The Phrase: Expression"
-                content={<p className="text-lg text-neutral-300">
-                    An **Expression** is a mathematical phrase made of numbers and symbols. It is a part of the equation, without the equals sign.
-                </p>}
-                term="Expression"
-                definition="A mathematical phrase combining numbers, variables, and operations, *without* an equals sign (e.g., 3x + 5)."
-                color="bg-pink-800/20 border-pink-700"
-                highlight="EXPRESSION"
-            />
-            
-            <StepComponent
-                stepNumber={3}
-                title="The Unknown: Variable"
-                content={<p className="text-lg text-neutral-300">
-                    The **Variable** ('x') is the symbol representing the unknown value. Think of it as a question mark waiting for an answer.
-                </p>}
-                term="Variable"
-                definition="A symbol (like x) that represents an unknown or changing quantity."
-                color="bg-yellow-800/20 border-yellow-700"
-                highlight="VARIABLE"
-            />
-
-            <StepComponent
-                stepNumber={4}
-                title="The Multiplier: Coefficient"
-                content={<p className="text-lg text-neutral-300">
-                    The **Coefficient** ('3') is the fixed number that tells you how many variables you have.
-                </p>}
-                term="Coefficient"
-                definition="The fixed number that is multiplied by the variable in an algebraic term (e.g., the '3' in 3x)."
+    return (
+        <div className="w-full mt-6 grid grid-cols-2 gap-4 flex-shrink-0" style={{ minHeight: '10rem' }}>
+            <SubBox 
+                title="Term"
+                definition={termDefinition}
                 color="bg-orange-800/20 border-orange-700"
-                highlight="COEFFICIENT"
+                isVisible={isTermVisible}
+                currentPiece={isTermTerm}
             />
+            <SubBox 
+                title="Expression"
+                definition={expressionDefinition}
+                color="bg-green-800/20 border-green-700"
+                isVisible={isExpressionVisible}
+                currentPiece={isExpressionTerm}
+            />
+        </div>
+    );
+};
 
-            <StepComponent
-                stepNumber={5}
-                title="The Fixed Value: Constant"
-                content={<p className="text-lg text-neutral-300">
-                    The **Constant** ('5') is a fixed number that stands alone and never changes its value.
-                </p>}
-                term="Constant"
-                definition="A numerical value that is fixed and does not change (e.g., 5, -10, π)."
-                color="bg-cyan-800/20 border-cyan-700"
-                highlight="CONSTANT"
-            />
-            
+function CompositionDisplay({ step }: { step: number }) {
+    // Defines what parts of the full equation are visible at each step (based on fullExpressionParts array below)
+    const visibleCount = [1, 2, 3, 5, 7][step - 1]; 
+    
+    // Defines all parts with their semantic role and index, in order
+    const fullExpressionParts = [
+        { char: '5', role: 'COEFFICIENT', index: 0 },
+        { char: 'x', role: 'VARIABLE', index: 1 },
+        { char: '^{2}', role: 'EXPONENT', index: 2 },
+        { char: '+', role: 'OPERATOR', index: 3 },
+        { char: '10', role: 'CONSTANT', index: 4 },
+        { char: '=', role: 'EQUALS', index: 5 },
+        { char: '35', role: 'RHS_CONSTANT', index: 6 },
+    ];
+
+    return (
+        <div className="flex items-center justify-center font-mono text-7xl font-extrabold h-[2.5em] transition-all duration-500 ease-out" style={{ minHeight: '1.5em' }}>
+            {fullExpressionParts.map((part, index) => {
+                const isVisible = index < visibleCount;
+                let colorClass = 'text-neutral-500'; 
+
+                // Set the specific highlight color for the current step's focus piece
+                if (step === 1 && part.role === 'VARIABLE') colorClass = compositionSteps[0].color.replace('text-', 'text-');
+                else if (step === 2 && part.role === 'COEFFICIENT') colorClass = compositionSteps[1].color.replace('text-', 'text-');
+                else if (step === 3 && part.role === 'EXPONENT') colorClass = compositionSteps[2].color.replace('text-', 'text-');
+                else if (step === 4 && part.role === 'CONSTANT') colorClass = compositionSteps[3].color.replace('text-', 'text-');
+                else if (step === 5 && (part.role === 'EQUALS' || part.role === 'RHS_CONSTANT')) colorClass = compositionSteps[4].color.replace('text-', 'text-');
+
+                // Mute color for non-focused but visible parts
+                else if (isVisible) colorClass = 'text-neutral-300';
+                
+                return (
+                    <span 
+                          key={index} 
+                          className={`transition-all duration-700 ease-out ${colorClass} ${isVisible ? 'opacity-100' : 'opacity-0'}`}
+                          // Use index delay for sequential reveal
+                          style={{ transitionDelay: `${index * 50}ms` }}> 
+                        <M>{part.char}</M>
+                    </span>
+                );
+            })}
         </div>
-        <div className="w-full h-20 text-center text-xl text-neutral-300 pt-10 border-t border-neutral-800">
-            <p>Master these concepts to unlock **all** of algebra! 🚀</p>
+    );
+}
+
+export function VariableShortAnimation2() {
+    const [step, setStep] = useState(1);
+    const currentStep = compositionSteps[step - 1];
+
+    const handleNext = () => setStep(prev => (prev % compositionSteps.length) + 1);
+
+    const commonClasses = "p-6 rounded-xl border-2 transition-all duration-700 ease-in-out w-full";
+    
+    return (
+        <div className="flex flex-col items-center p-12 bg-neutral-900 h-full w-full">
+            <h1 className="text-4xl font-bold text-cyan-400 mb-10">Building Algebra: From Variable to Equation</h1>
+
+            {/* Main Expression Animation Area */}
+            <CompositionDisplay step={step} />
+
+            {/* Vocab Box (Main Content - Dynamic) */}
+            <div className={`mt-10 ${currentStep.bg} ${currentStep.border} text-center flex-shrink-0 flex flex-col justify-between w-full p-8 rounded-xl border-2`}>
+                <p className="text-5xl font-extrabold uppercase text-white mb-4">{currentStep.term}</p>
+                <p className="text-2xl text-neutral-300">{currentStep.definition}</p>
+            </div>
+
+            {/* Supplementary Boxes for Term and Expression */}
+            <TermDefinitionBox isVisible={true} step={step} />
+
+            {/* Navigation/Progress */}
+            <div className="w-full mt-12 flex flex-col items-center flex-shrink-0">
+                <div className="flex space-x-2 mb-4">
+                    {compositionSteps.map((s, index) => (
+                        <div key={s.id} className={`w-4 h-4 rounded-full ${s.id === step ? 'bg-cyan-400' : 'bg-neutral-600'} transition-colors`} />
+                    ))}
+                </div>
+                <button
+                    onClick={handleNext}
+                    className="flex items-center justify-center gap-2 rounded-md bg-cyan-600 px-6 py-4 text-2xl font-semibold text-white transition-colors hover:bg-cyan-500 w-full"
+                >
+                    {step === compositionSteps.length ? 'Start Over (Step 1)' : `Next Concept: ${compositionSteps[(step % compositionSteps.length)].term}`}
+                    <ChevronRight size={28} />
+                </button>
+            </div>
         </div>
-    </div>
-  );
+    );
 }

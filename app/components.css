@@ -181,6 +181,14 @@
   .two-col {
     @apply grid gap-8 md:grid-cols-2 lg:gap-10;
   }
+
+  .video-short-container {
+    @apply mx-auto relative overflow-hidden;
+    width: 1080px;
+    height: 1920px;
+    transform: scale(.45) translateY(-55%);
+    transform-origion: top center;
+  }
 }
 
 /* Formal Science Theme Enhancements */
