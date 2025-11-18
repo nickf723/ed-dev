@@ -29,7 +29,7 @@ import { M, MBlock } from "@/components/Math";
 import GlossaryTerm from "@/components/GlossaryTerm";
 import {
   EvaluateApplet,
-  VariableQuiz,
+  VariableQuiz, VariableBoxApplet
 } from "@/components/VariableComponents";
 
 // Symbols for the background
@@ -135,7 +135,18 @@ export default function VariablesAndExpressionsPage() {
           </CollapsibleTopic>
 
           <CollapsibleTopic
-            title="3. Evaluating Expressions"
+            title="3. Visualizing Substitution"
+            icon={Replace} 
+            startOpen={false}
+          >
+            <ContentP>
+              The moment you replace a variable with a number is the core of algebra. Use this visual tool to see the "variable box" get filled by the number you choose.
+            </ContentP>
+            <VariableBoxApplet />
+          </CollapsibleTopic>
+
+          <CollapsibleTopic
+            title="4. Evaluating Expressions"
             icon={Calculator}
           >
             <ContentP>
@@ -176,7 +187,7 @@ export default function VariablesAndExpressionsPage() {
             />
           </CollapsibleTopic>
 
-          <CollapsibleTopic title="4. Test Your Knowledge" icon={Lightbulb}>
+          <CollapsibleTopic title="5. Test Your Knowledge" icon={Lightbulb}>
             <ContentP>
               See if you can answer these questions about variables and
               expressions.

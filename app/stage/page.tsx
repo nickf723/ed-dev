@@ -1,3 +1,4 @@
+// app/stage/page.tsx
 "use client";
 
 import {
@@ -13,20 +14,16 @@ import {
   Binary,
 } from "@/components/icons";
 import TopicCard from "@/components/TopicCard";
-import { Skull } from "lucide-react";
+import { Skull, Theater } from "lucide-react";
+import { VariableShortAnimation } from "@/components/VariableComponents"; // <--- NEW IMPORT
 
 export default function Home() {
 
-
   return (
     <main className="topic-page theme-variables-expressions flex min-h-screen items-center justify-center px-6 py-12">
-      <div className="glass w-full max-w-5xl border border-neutral-800/60 p-10 text-center shadow-2xl">
-        <div className="flex justify-center mb-4">
-        </div>
-        <h1 className="text-4xl font-bold text-cyan-400">Stage</h1>
-        <p className="mt-2 text-neutral-300 italic">Recording Studio</p>
-        <div className="mt-10 grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-3">
-        </div>
+      <div className="w-full max-w-5xl text-center">
+         {/* The VariableShortAnimation contains its own PageHeader now */}
+        <VariableShortAnimation /> 
       </div>
     </main>
   );
