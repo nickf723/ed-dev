@@ -58,7 +58,7 @@ import {
   Hammer,
   Palette,
 } from "@/components/icons";
-import { Binary, LinkIcon } from "lucide-react";
+import { Binary, LinkIcon, Skull, Theater } from "lucide-react";
 
 export default function Sidebar() {
   const pathname = usePathname();
@@ -595,14 +595,27 @@ export default function Sidebar() {
             label="Glossary"
             icon={<BookOpen size={16} />}
             active={pathname.startsWith("/glossary")}
-          />
-          
+          />         
           {/* Development Playground */}
           <SidebarLink
             href="/dev-playground"
             label="Development Playground"
             icon={<Wrench size={16} />}
             active={pathname.startsWith("/dev-playground")}
+          />
+          {/* Skeleton */}
+          <SidebarLink
+            href="/skeleton"
+            label="Skeleton Pages"
+            icon={<Skull size={16} />}
+            active={pathname.startsWith("/skeleton")}
+          />
+          {/* Stage */}
+          <SidebarLink
+            href="/stage"
+            label="Stage"
+            icon={<Theater size={16} />}
+            active={pathname.startsWith("/stage")}
           />
         </nav>
       </aside>

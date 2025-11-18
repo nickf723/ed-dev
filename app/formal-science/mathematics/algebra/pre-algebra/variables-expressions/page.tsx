@@ -39,7 +39,7 @@ const varSymbols = [
 
 export default function VariablesAndExpressionsPage() {
   return (
-    <main className="topic-page theme-elementary-algebra-foundations lg:px-16">
+    <main className="topic-page theme-variables-expressions lg:px-16">
       <FloatingSymbols symbols={varSymbols} />
       <PageHeader
         eyebrow="Pre-Algebra"

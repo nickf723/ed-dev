@@ -256,7 +256,7 @@
     --theme-grid-color: rgba(255, 0, 212, 0.08);
   }
 
-  .theme-elementary-algebra-foundations {
+  .theme-prealgebra {
     --theme-gradient-start: #06b6d4;
     --theme-gradient-end: #0891b2; 
     --theme-icon-hover: #22d3ee;  
@@ -268,6 +268,20 @@
     --theme-blob-1: rgba(34, 211, 238, 0.2);
     --theme-blob-2: rgba(103, 232, 249, 0.15);
     --theme-grid-color: rgba(34, 211, 238, 0.08);
+  }
+
+  .theme-variables-expressions {
+    --theme-gradient-start: #ff9900;
+    --theme-gradient-end: #ff6600; 
+    --theme-icon-hover: #ff7700;  
+    --theme-underline: #ff77003d;
+    --theme-text-title: #ff7700;
+    --theme-text-header: #ff9900;
+    --theme-text-icon: #ff7700;
+    --theme-symbol-color: rgba(255, 119, 0, 0.15);
+    --theme-blob-1: rgba(255, 119, 0, 0.2);
+    --theme-blob-2: rgba(255, 153, 0, 0.15);
+    --theme-grid-color: rgba(255, 119, 0, 0.08);
   }
 
   .theme-linear-algebra {
@@ -285,10 +299,10 @@
   }
 
   .theme-abstract-algebra {
-    --theme-gradient-start: #00ffff;
-    --theme-gradient-end: #0025cc;
-    --theme-icon-hover: #8400ff;
-    --theme-underline: #0066ff3d;
+    --theme-gradient-start: #ffe600;
+    --theme-gradient-end: #00cc0a;
+    --theme-icon-hover: #e5ff00;
+    --theme-underline: #5eff003d;
     --theme-text-title: #ff00d4;
     --theme-text-header: #ff40e0;
     --theme-text-icon: #ff00d4;
@@ -538,4 +552,46 @@
     --theme-grid-color: rgba(0, 245, 245, 0.08);
 }
 
+.theme-dev-playground {
+    --theme-gradient-start: #ffffff;
+    --theme-gradient-end: #ffffff;
+    --theme-icon-hover: #ffffff;
+    --theme-underline: #ffffff3d;
+    --theme-text-title: #ffffff;
+    --theme-text-header: #ffffff;
+    --theme-text-icon: var(--theme-text-title);
+    --theme-symbol-color: rgba(255, 255, 255, 0.315);
+    --theme-blob-1: rgba(0, 0, 0, 0.39);
+    --theme-blob-2: rgba(41, 41, 41, 0.877);
+    --theme-grid-color: rgba(255, 255, 255, 0.904);
+}
+
+.theme-skeleton {
+    --theme-gradient-start: #ff6ec4;
+    --theme-gradient-end: #7873f5;
+    --theme-icon-hover: #ff6ec4;
+    --theme-underline: #ff6ec43d;
+    --theme-text-title: #ff6ec4;
+    --theme-text-header: #7873f5;
+    --theme-text-icon: var(--theme-text-title);
+    --theme-symbol-color: rgba(255, 110, 196, 0.15);
+    --theme-blob-1: rgba(255, 110, 196, 0.25);
+    --theme-blob-2: rgba(120, 115, 245, 0.2);
+    --theme-grid-color: rgba(255, 110, 196, 0.08);
+}
+
+
+.theme-stage {
+    --theme-gradient-start: #ff9a00;
+    --theme-gradient-end: #ff0055;
+    --theme-icon-hover: #ff00aaff;
+    --theme-underline: #ff0066c2;
+    --theme-text-title: #ff9a00;
+    --theme-text-header: #ff0055;
+    --theme-text-icon: var(--theme-text-title);
+    --theme-symbol-color: rgba(255, 154, 0, 0.15);
+    --theme-blob-1: rgba(255, 154, 0, 0.25);
+    --theme-blob-2: rgba(255, 0, 85, 0.2);
+    --theme-grid-color: rgba(255, 154, 0, 0.08);
+}
 }

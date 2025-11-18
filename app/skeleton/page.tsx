@@ -31,7 +31,7 @@ const placeholderBranches = [
 // Main Page Component
 export default function placeholderPage() {
   return (
-    <main className="topic-page theme-math lg:px-16">
+    <main className="topic-page theme-skeleton lg:px-16">
       <FloatingSymbols symbols={placeholderSymbols} />
       <PageHeader
         eyebrow="Discipline Overview"

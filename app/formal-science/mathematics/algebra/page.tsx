@@ -33,7 +33,7 @@ const algebraBranches = [
       { name: "Linear Reasoning", href: "/formal-science/mathematics/algebra/pre-algebra/linear-reasoning", status: "Planned" },
       { name: "Structure & Logic", href: "/formal-science/mathematics/algebra/pre-algebra/structure-logic", status: "Planned" },
     ],
-    className: "theme-elementary-algebra-foundations",
+    className: "theme-prealgebra",
     subtitle: "x y z (a+b)",
   },
   {

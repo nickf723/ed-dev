@@ -15,62 +15,62 @@ import React from "react";
 
 // Symbols for the background
 const foundationsSymbols = [
-  "x", "y", "a+b", "a(b+c)", "3x+1", "+", "-", "=", "()", "<", ">",
+  "x", "y", "a+b", "a(b+c)", "3x+1", "+", "-", "=", "()", "<", ">", "%", "2x", "5y-3"
 ];
 
 // Data for the unit cards
 const foundationsTopics = [
   {
-    title: "Variables & Expressions (Unit 1)",
+    title: "Variables & Expressions",
     href: "/formal-science/mathematics/algebra/pre-algebra/variables-expressions",
     Icon: SquareFunction,
     description: "Learn how symbols (variables) are used to represent unknown values.",
-    className: "card-theme-elementary-algebra-foundations",
+    className: "theme-variables-expressions",
     status: "In Progress",
-    subtitle: "1.1-1.3"
+    subtitle: ""
   },
   {
-    title: "Ratios, Rates & Proportions (Unit 2)",
+    title: "Ratios, Rates & Proportions",
     href: "/formal-science/mathematics/algebra/pre-algebra/ratios-rates-proportions",
     Icon: Percent,
     description: "Using algebraic relationships to compare quantities and solve for unknowns.",
-    className: "card-theme-elementary-algebra-foundations",
+    className: "card-theme-prealgebra",
     status: "Planned",
-    subtitle: "2.1-2.3"
+    subtitle: ""
   },
   {
-    title: "Equations & Inequalities (Unit 3)",
+    title: "Equations & Inequalities",
     href: "/formal-science/mathematics/algebra/pre-algebra/equations-inequalities",
     Icon: Equal,
     description: "Using inverse operations to find the value of a variable.",
-    className: "card-theme-elementary-algebra-foundations",
+    className: "card-theme-prealgebra",
     status: "Planned",
-    subtitle: "3.1-3.3"
+    subtitle: ""
   },
   {
-    title: "Linear Reasoning Foundations (Unit 4)",
+    title: "Linear Reasoning Foundations",
     href: "/formal-science/mathematics/algebra/pre-algebra/linear-reasoning",
     Icon: LineChart,
     description: "Finding rules in patterns and plotting relationships on a graph.",
-    className: "card-theme-elementary-algebra-foundations",
+    className: "card-theme-prealgebra",
     status: "Planned",
-    subtitle: "4.1-4.3"
+    subtitle: ""
   },
   {
-    title: "Structure, Logic & Problem Solving (Unit 5)",
+    title: "Structure, Logic & Problem Solving",
     href: "/formal-science/mathematics/algebra/pre-algebra/structure-logic",
     Icon: Puzzle,
     description: "The reasoning habits and problem-solving strategies for algebra.",
-    className: "card-theme-elementary-algebra-foundations",
+    className: "card-theme-prealgebra",
     status: "Planned",
-    subtitle: "5.1-5.3"
+    subtitle: ""
   },
 ];
 
 // Main Page Component
 export default function FoundationsPage() {
   return (
-    <main className="topic-page theme-elementary-algebra-foundations lg:px-16">
+    <main className="topic-page theme-prealgebra lg:px-16">
       <FloatingSymbols symbols={foundationsSymbols} />
       <PageHeader
         eyebrow="Algebra"

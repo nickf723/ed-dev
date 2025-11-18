@@ -13,7 +13,7 @@ import {
   Binary,
 } from "@/components/icons";
 import TopicCard from "@/components/TopicCard";
-import { Skull } from "lucide-react";
+import { Skull, Theater } from "lucide-react";
 
 export default function Home() {
   const cards = [
@@ -80,6 +80,13 @@ export default function Home() {
       href: "/skeleton",
       Icon: Skull,
       className: "theme-skeleton"
+    },
+    {
+      title: "Stage",
+      desc: "Recording Studio",
+      href: "/stage",
+      Icon: Theater,
+      className: "theme-stage"
     }
   ];
 
