@@ -13,6 +13,7 @@ import {
   Binary,
 } from "@/components/icons";
 import TopicCard from "@/components/TopicCard";
+import { Skull } from "lucide-react";
 
 export default function Home() {
   const cards = [
@@ -72,6 +73,13 @@ export default function Home() {
       href: "/dev-playground",
       Icon: Wrench,
       className: "theme-dev-playground"
+    },
+    {
+      title: "Skeleton Pages",
+      desc: "Template pages for future content.",
+      href: "/skeleton",
+      Icon: Skull,
+      className: "theme-skeleton"
     }
   ];
 

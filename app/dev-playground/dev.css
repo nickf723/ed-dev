@@ -3,7 +3,6 @@
 @tailwind utilities;
 
 
-/* --- 1. Styles for layout.tsx --- */
 
 .dev-playground-page {
   min-height: window-height;
@@ -43,3 +42,43 @@
       10px 10px 15px rgba(255, 136, 0, .726),  
       5px 5px 15px rgba(255, 0, 0, .726);
 }
+
+.theme-dev-playground {
+    --theme-gradient-start: #8400ff;
+    --theme-gradient-end: #fc003f;
+    --theme-icon-hover: #fc00fc;
+    --theme-underline: #ff00ff3d;
+    --theme-text-title: #00ffff;
+    --theme-text-header: #1900ff;
+    --theme-text-icon: var(--theme-text-title);
+    --theme-symbol-color: rgba(255, 0, 255, 0.247);
+    --theme-blob-1: rgba(255, 0, 255, 0.39);
+    --theme-blob-2: rgba(204, 0, 255, 0.877);
+    --theme-grid-color: rgba(255, 0, 255, 0.904);
+    background-color:
+      radial-gradient( circle at 0% 0%, #ff00ff8f, transparent 50%),
+      radial-gradient(circle at 45% 15%, #ff00ffad, transparent 40%),
+}
+
+.effect-glow {
+    text-shadow:
+      0 0 5px var(--theme-text-title),
+      0 0 10px var(--theme-text-title),
+      0 0 20px var(--theme-text-title),
+      0 0 40px var(--theme-text-title);
+}
+
+.effect-glitch {
+  text-shadow:
+    2px 0 #00ff00,
+    -2px 0 #ff00ff,
+    0 2px #00ff00,
+    0 -2px #ff00ff;
+}
+
+.effect-cursor:hover {
+  text-transform: uppercase;
+  text-align: center;
+  text-decoration: wavy underline var(--theme-underline);
+}
+

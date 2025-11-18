@@ -538,25 +538,4 @@
     --theme-grid-color: rgba(0, 245, 245, 0.08);
 }
 
-.theme-dev-playground {
-    --theme-gradient-start: #ff00dd;
-    --theme-gradient-end: #fc003f;
-    --theme-icon-hover: #fc00fc;
-    --theme-underline: #ff00ff3d;
-    --theme-text-title: #ff00ff;
-    --theme-text-header: #00ffff;
-    --theme-text-icon: var(--theme-text-title);
-    --theme-symbol-color: rgba(255, 0, 255, 0.89);
-    --theme-blob-1: rgba(255, 0, 255, 0.904);
-    --theme-blob-2: rgba(0, 255, 255, 0.877);
-    --theme-grid-color: rgba(255, 0, 255, 0.904);
-    background-color:
-      radial-gradient( circle at 0% 0%, #ff00ff8f, transparent 50%),
-      radial-gradient(circle at 45% 15%, #ff00ffad, transparent 40%),
-      radial-gradient(circle at 105% -20%, #00ffffb7, transparent 40%),
-      radial-gradient(circle at 96% 89%, #00ffffad, transparent 40%),
-      radial-gradient(circle at 70% 70%, #ff00ffa8, transparent 40%),
-      radial-gradient(circle at 33% 60%, #00ffffb6, transparent 40%),
-      radial-gradient(circle at 0% 88%, #ff00ffaf, transparent 40%);
-}
 }
