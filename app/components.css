@@ -189,6 +189,31 @@
     transform: scale(.45) translateY(-55%);
     transform-origion: top center;
   }
+
+  .focus-glow-variable {
+      box-shadow: 0 0 15px 5px rgba(255, 119, 0, 0.4), inset 0 0 5px rgba(255, 119, 0, 0.9);
+      border-color: rgba(255, 119, 0, 0.8);
+      background-color: rgba(255, 119, 0, 0.1);
+  }
+  .focus-glow-coefficient {
+      box-shadow: 0 0 15px 5px rgba(255, 153, 0, 0.4), inset 0 0 5px rgba(255, 153, 0, 0.9);
+      border-color: rgba(255, 153, 0, 0.8);
+      background-color: rgba(255, 153, 0, 0.1);
+  }
+  .focus-glow-exponent, .focus-glow-constant {
+      box-shadow: 0 0 15px 5px rgba(34, 211, 238, 0.4), inset 0 0 5px rgba(34, 211, 238, 0.9);
+      border-color: rgba(34, 211, 238, 0.8);
+      background-color: rgba(34, 211, 238, 0.1);
+  }
+  .focus-glow-equation {
+      box-shadow: 0 0 15px 5px rgba(132, 0, 255, 0.4), inset 0 0 5px rgba(132, 0, 255, 0.9);
+      border-color: rgba(132, 0, 255, 0.8);
+      background-color: rgba(132, 0, 255, 0.1);
+  }
+
+  .text-glow-current {
+    text-shadow: 0 0 8px currentColor, 0 0 15px currentColor;
+  }
 }
 
 /* Formal Science Theme Enhancements */
