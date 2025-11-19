@@ -8,7 +8,8 @@ export const termCategories = {
   GENERAL: "General",
   MATH_FOUNDATIONS: "Math Foundations",
   NUMBER_SYSTEMS: "Number Systems",
-  ALGEBRA: "Algebra", // NEW CATEGORY
+  ALGEBRA: "Algebra",
+  PHYSICS: "Physics", // NEW CATEGORY
 };
 
 // REWORKED: The structure is now { definition: string, category: string }
@@ -193,7 +194,7 @@ export const glossaryTerms = {
     category: termCategories.MATH_FOUNDATIONS,
   },
 
-  // --- NEW: Terms from variables-expressions page ---
+  // --- Terms from variables-expressions page (ALGEBRA) ---
   Variable: {
     definition:
       "A symbol (usually a letter like x) that represents an unknown value or a value that can change.",
@@ -227,6 +228,53 @@ export const glossaryTerms = {
     definition:
       "The act of replacing a variable with a specific number (e.g., replacing 'x' with '3').",
     category: termCategories.ALGEBRA,
+  },
+  
+  // --- NEW: Terms for Dynamics (PHYSICS) ---
+  Kinematics: {
+    definition:
+      "The branch of mechanics that describes the motion of objects (displacement, velocity, acceleration) without reference to the forces causing the motion.",
+    category: termCategories.PHYSICS,
+  },
+  Dynamics: {
+    definition:
+      "The branch of classical mechanics concerned with the study of forces and torques and their effect on motion.",
+    category: termCategories.PHYSICS,
+  },
+  Force: {
+    definition:
+      "A push or a pull that can change the motion of an object (change its velocity). Measured in Newtons (N).",
+    category: termCategories.PHYSICS,
+  },
+  Mass: {
+    definition:
+      "The measure of an object's inertia (its resistance to acceleration). It is a fundamental property and is measured in kilograms (kg).",
+    category: termCategories.PHYSICS,
+  },
+  Inertia: {
+    definition:
+      "The tendency of an object to resist changes in its state of motion. The more mass an object has, the greater its inertia.",
+    category: termCategories.PHYSICS,
+  },
+  "Net Force": {
+    definition:
+      "The vector sum of all individual forces acting on an object. Often denoted as ΣF or F_net.",
+    category: termCategories.PHYSICS,
+  },
+  "Newton's First Law": {
+    definition:
+      "An object in motion stays in motion, and an object at rest stays at rest, unless acted upon by a net force.",
+    category: termCategories.PHYSICS,
+  },
+  "Newton's Second Law": {
+    definition:
+      "The acceleration of an object is directly proportional to the net force acting on it and inversely proportional to its mass (F = ma).",
+    category: termCategories.PHYSICS,
+  },
+  "Newton's Third Law": {
+    definition:
+      "For every action (force) there is a reaction force that is equal in magnitude and opposite in direction. Forces always occur in pairs.",
+    category: termCategories.PHYSICS,
   },
 };
 

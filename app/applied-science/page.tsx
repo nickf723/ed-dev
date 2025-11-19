@@ -1,14 +1,64 @@
-// components/PageHeader.tsx
+// app/applied-science/page.tsx
+"use client";
 import PageHeader from "@/components/PageHeader";
+import FloatingSymbols from "@/components/FloatingSymbols";
+import TopicCard from "@/components/TopicCard";
+import {
+  Hammer,
+  Wrench,
+  Syringe,
+  Binary,
+} from "@/components/icons";
 
-export default function PlaceholderPage() {
+const appliedScienceSymbols = [
+  "R&D", "CAD", "AI", "DNA", "CODE", "C", "H₂O", "J", "W", "P", "T",
+];
+
+export default function AppliedSciencePage() {
+  const disciplines = [
+    {
+      title: "Engineering",
+      desc: "Designing and building machines, structures, and systems to solve problems.",
+      href: "/applied-science/engineering",
+      Icon: Wrench,
+      className: "theme-applied-science"
+    },
+    {
+      title: "Medicine",
+      desc: "The science and practice of the diagnosis, treatment, and prevention of disease.",
+      href: "/applied-science/medicine",
+      Icon: Syringe,
+      className: "theme-applied-science"
+    },
+    {
+      title: "Computer Technology",
+      desc: "The practical use of computational hardware and software systems.",
+      href: "/applied-science/computer-technology",
+      Icon: Binary,
+      className: "theme-applied-science"
+    },
+  ];
+
   return (
-    <main className="topic-page lg:px-16">
+    <main className="topic-page theme-applied-science lg:px-16">
+      <FloatingSymbols symbols={appliedScienceSymbols} />
       <PageHeader
-        eyebrow="Content Coming Soon"
-        title="Under Construction"
-        subtitle="This page is being built. Check back soon for new content!"
+        eyebrow="Discipline Overview"
+        title="Applied Sciences"
+        subtitle="The practical application of scientific knowledge to solve real-world problems, develop technology, and drive innovation across all industries."
       />
+      <section className="topic-grid">
+        {disciplines.map((branch) => (
+          <TopicCard
+            key={branch.href}
+            href={branch.href}
+            title={branch.title}
+            desc={branch.desc}
+            Icon={branch.Icon}
+            className={branch.className}
+          />
+        ))}
+      </section>
     </main>
   );
 }

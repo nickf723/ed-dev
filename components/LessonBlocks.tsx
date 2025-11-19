@@ -76,7 +76,6 @@ export function ContentSubhead({ title }: { title: string }) {
 
 //Text Paragraph Component
 export function ContentP({ children }: { children: React.ReactNode }) {
-  // REWORKED: Added mb-4 for better paragraph spacing
   return (
     <p className="prose-p:!my-0 text-neutral-300 leading-relaxed mb-4 last:mb-0">{children}</p>
   );
@@ -85,13 +84,11 @@ export function ContentP({ children }: { children: React.ReactNode }) {
 //Term Definition Component
 export function TermDefinition({ term, children }: { term: string; children: React.ReactNode }) {
   return (
-      // REWORKED: Changed my-5 to my-4
       <div className="my-4 rounded-lg border border-indigo-800/40 bg-indigo-900/20 p-4">      
       <h4 className="!mt-0 !mb-2 flex items-center gap-2">
         <BookCopy size={16} className="text-indigo-400" />
          <span className="font-semibold text-indigo-300">{term} </span>
       </h4>
-      {/* REWORKED: Added mt-1 and leading-relaxed */}
       <p className="!my-0 text-sm text-indigo-100/80 mt-1 leading-relaxed">{children}</p>
     </div>
   );
@@ -100,7 +97,6 @@ export function TermDefinition({ term, children }: { term: string; children: Rea
 //Sidenote Component
 export function SideNote({ children }: { children: React.ReactNode }) {
   return (
-    // REWORKED: Changed my-5 to my-4
     <aside className="my-4 rounded-lg border border-amber-700 bg-amber-900/30 p-4">
       <div className="flex gap-3">
         <Info size={18} className="mt-1 flex-shrink-0 text-amber-400" />

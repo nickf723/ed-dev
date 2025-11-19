@@ -10,6 +10,7 @@ import {
   ExampleBlock,
   SideNote,
   PracticeProblem,
+  AppletContainer, // Added AppletContainer import
 } from "@/components/LessonBlocks";
 import {
   Key,
@@ -20,16 +21,88 @@ import {
   Move, // Displacement icon
   Gauge, // Velocity icon
   Rabbit, // Acceleration icon
+  Calculator, // For the applet
 } from "@/components/icons";
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { M, MBlock } from "@/components/Math";
 import GlossaryTerm from "@/components/GlossaryTerm";
 
 // Symbols for the background
 const kinematicsSymbols = [
-  "v = d/t", "Δx", "v₀", "a(t)", "v(t)", "x(t)", "g = 9.8m/s²", "v² = v₀² + 2ad", "d = v₀t + ½at²",
+  "v = d/t", "\\Delta x", "v_0", "a(t)", "v(t)", "x(t)", "g = 9.8\\text{m/s}^2", "v^2 = v_0^2 + 2a\\Delta d", "d = v_0t + \\frac{1}{2}at^2",
 ];
+
+
+function KinematicsCalculator() {
+  const [a, setA] = useState(4);
+  const [t, setT] = useState(5);
+  const [v0, setV0] = useState(0);
+  const [result, setResult] = useState(50.0); 
+
+  const calculateDistance = () => {
+    const calculatedD = v0 * t + 0.5 * a * t * t;
+    setResult(calculatedD);
+  };
+  
+  React.useEffect(() => {
+      calculateDistance();
+  }, [a, t, v0]);
+
+  return (
+    <AppletContainer title="Constant Acceleration Calculator">
+      <ContentP>
+        Use the core equation for displacement under constant acceleration: <M>{"d = v_0 t + \\frac{1}{2} a t^2"}</M>.
+      </ContentP>
+      <div className="mt-4 grid grid-cols-2 gap-4">
+        <div>
+          <label className="text-sm font-semibold text-neutral-400" htmlFor="accel">Acceleration (<M>{"a"}</M> in <M>{"\\text{m/s}^2"}</M>)</label>
+          <input
+            id="accel"
+            type="number"
+            value={a}
+            onChange={(e) => setA(Number(e.target.value))}
+            className="mt-1 w-full rounded-md border border-neutral-700 bg-neutral-900 px-3 py-2 text-neutral-100"
+          />
+        </div>
+        <div>
+          <label className="text-sm font-semibold text-neutral-400" htmlFor="time">Time (<M>{"t"}</M> in <M>{"s"}</M>)</label>
+          <input
+            id="time"
+            type="number"
+            value={t}
+            onChange={(e) => setT(Number(e.target.value))}
+            className="mt-1 w-full rounded-md border border-neutral-700 bg-neutral-900 px-3 py-2 text-neutral-100"
+          />
+        </div>
+        <div className="col-span-2">
+          <label className="text-sm font-semibold text-neutral-400" htmlFor="v0">Initial Velocity (<M>{"v_0"}</M> in <M>{"\\text{m/s}"}</M>)</label>
+          <input
+            id="v0"
+            type="number"
+            value={v0}
+            onChange={(e) => setV0(Number(e.target.value))}
+            className="mt-1 w-full rounded-md border border-neutral-700 bg-neutral-900 px-3 py-2 text-neutral-100"
+          />
+        </div>
+        <button
+          onClick={calculateDistance}
+          className="col-span-2 rounded-md bg-cyan-600 px-4 py-2 font-semibold text-white transition-colors hover:bg-cyan-500"
+        >
+          Calculate Displacement (<M>{"d"}</M>)
+        </button>
+      </div>
+      <div className="mt-4 rounded-lg bg-neutral-800 p-4 text-center">
+        <span className="text-sm font-semibold uppercase tracking-wider text-neutral-400">
+          Resulting Displacement (<M>{"d"}</M>)
+        </span>
+        <p className="font-mono text-3xl font-bold text-cyan-300">
+          <M>{"\\text{"+result.toFixed(2)+"} \\text{ m}"}</M>
+        </p>
+      </div>
+    </AppletContainer>
+  );
+}
 
 export default function KinematicsPage() {
   return (
@@ -50,7 +123,7 @@ export default function KinematicsPage() {
             startOpen={true}
           >
             <ContentP>
-              <strong>Kinematics</strong> is the branch of mechanics that provides the language and mathematical tools to describe motion. Before we can understand *why* a ball falls (which is Dynamics), we must first agree on how to describe its position, speed, and acceleration.
+              <GlossaryTerm term="Kinematics">Kinematics</GlossaryTerm> is the branch of mechanics that provides the language and mathematical tools to describe motion. Before we can understand *why* a ball falls (which is Dynamics), we must first agree on how to describe its position, speed, and acceleration.
             </ContentP>
             <SideNote>
               <ContentP>
@@ -64,7 +137,7 @@ export default function KinematicsPage() {
           </CollapsibleTopic>
 
           <CollapsibleTopic
-            title="2. Displacement (Δx)"
+            title="2. Displacement vs. Distance" 
             icon={Move}
           >
             <ContentP>
@@ -81,17 +154,17 @@ export default function KinematicsPage() {
             <ExampleBlock>
               <p>You walk 3 meters East, then 4 meters North.</p>
               <ul className="mt-2 list-disc pl-5">
-                <li><strong>Distance:</strong> <M>3\text(m) + 4\text(m) = 7\text(m)</M></li>
-                <li><strong>Displacement:</strong> The hypotenuse of the triangle. Using Pythagoras: <M>\sqrt(3^2 + 4^2) = 5\text(m)</M> (Northeast)</li>
+                <li><strong>Distance:</strong> <M>{"3\\text{m} + 4\\text{m} = 7\\text{m}"}</M></li>
+                <li><strong>Displacement:</strong> The hypotenuse of the triangle. Using Pythagoras: <M>{"\\sqrt{3^2 + 4^2} = 5\\text{m}"}</M> (Northeast)</li>
               </ul>
             </ExampleBlock>
             <ContentP>
-              Displacement is represented by <M>\Delta x</M> (read "delta-ex"), which means "change in x" or <M>x_(final) - x_(initial)</M>.
+              Displacement is represented by <M>{"\\Delta x"}</M> (read "delta-ex"), which means "change in x" or <M>{"x_{\\text{final}} - x_{\\text{initial}}"}</M>.
             </ContentP>
           </CollapsibleTopic>
 
           <CollapsibleTopic
-            title="3. Velocity (v)"
+            title="3. Velocity vs. Speed"
             icon={Gauge}
           >
             <ContentP>
@@ -101,12 +174,12 @@ export default function KinematicsPage() {
               <TermDefinition term="Speed (Scalar)">
                 How fast an object is moving. It's the rate of change of <strong>distance</strong>.
                 <br />
-                <M>\text(Average Speed) = \frac(\text(Total Distance))(\text(Total Time))</M>
+                <M>{"\\text{Average Speed} = \\frac{\\text{Total Distance}}{\\text{Total Time}}"}</M>
               </TermDefinition>
               <TermDefinition term="Velocity (Vector)">
                 How fast an object's <strong>position</strong> is changing. It includes direction.
                 <br />
-                <M>\vec(v)_(avg) = \frac(\Delta \vec(x))(\Delta t) = \frac(\text(Displacement))(\text(Time))</M>
+                <M>{"\\vec{v}_{\\text{avg}} = \\frac{\\Delta \\vec{x}}{\\Delta t} = \\frac{\\text{Displacement}}{\\text{Time}}"}</M>
               </TermDefinition>
             </div>
             <SideNote>
@@ -117,7 +190,7 @@ export default function KinematicsPage() {
           </CollapsibleTopic>
 
           <CollapsibleTopic
-            title="4. Acceleration (a)"
+            title="4. Acceleration"
             icon={Rabbit}
           >
             <ContentP>
@@ -126,11 +199,11 @@ export default function KinematicsPage() {
             <TermDefinition term="Acceleration (Vector)">
               The rate of change of <strong>velocity</strong> over time.
               <br />
-              <M>\vec(a)_(avg) = \frac(\Delta \vec(v))(\Delta t) = \frac(\vec(v)_(final) - \vec(v)_(initial))(\text(Time))</M>
+              <M>{"\\vec{a}_{\\text{avg}} = \\frac{\\Delta \\vec{v}}{\\Delta t} = \\frac{\\vec{v}_{\\text{final}} - \\vec{v}_{\\text{initial}}}{\\text{Time}}"}</M>
             </TermDefinition>
             <ExampleBlock>
               <p>A car speeds up from 0 m/s to 20 m/s in 5 seconds. Its acceleration is:</p>
-              <MBlock>a = \frac(20 \text( m/s) - 0 \text( m/s))(5 \text( s)) = 4 \text( m/s)^2</MBlock>
+              <MBlock>{"a = \\frac{20 \\text{ m/s} - 0 \\text{ m/s}}{5 \\text{ s}} = 4 \\text{ m/s}^2"}</MBlock>
               <p>This means for every second that passes, the car's velocity increases by 4 m/s.</p>
             </ExampleBlock>
             <SideNote>
@@ -138,9 +211,27 @@ export default function KinematicsPage() {
                 Slowing down is also acceleration, just in the opposite direction of motion. We often call this <strong>deceleration</strong>.
               </ContentP>
               <ContentP>
-                An object in free-fall near Earth's surface accelerates downwards at <M>g \approx 9.8 \text( m/s)^2</M>.
+                An object in free-fall near Earth's surface accelerates downwards at <M>{"g \\approx 9.8 \\text{ m/s}^2"}</M>.
               </ContentP>
             </SideNote>
+          </CollapsibleTopic>
+
+          <CollapsibleTopic
+            title="5. Kinematics Equations & Calculator"
+            icon={Calculator}
+          >
+            <ContentP>
+              When acceleration is constant, three main equations allow us to relate the five kinematic variables (<M>{"d, v_0, v_f, a, t"}</M>).
+            </ContentP>
+            <ExampleBlock>
+                <MBlock>{"v_f = v_0 + at"}</MBlock>
+                <MBlock>{"d = v_0 t + \\frac{1}{2} at^2"}</MBlock>
+                <MBlock>{"v_f^2 = v_0^2 + 2ad"}</MBlock>
+            </ExampleBlock>
+            <ContentP>
+              Use the calculator below to practice solving for displacement (<M>{"d"}</M>).
+            </ContentP>
+            <KinematicsCalculator />
           </CollapsibleTopic>
 
         </div>
@@ -167,19 +258,19 @@ function KeyConceptsAside() {
       </h3>
       <ul className="list-disc space-y-2 pl-5 text-sm text-neutral-300">
         <li>
-          <strong>Kinematics</strong> describes *how* objects move, not *why*.
+          <strong><GlossaryTerm term="Kinematics">Kinematics</GlossaryTerm></strong> describes *how* objects move, not *why*.
         </li>
         <li>
           <strong>Scalar vs. Vector:</strong> Scalars have magnitude only (like speed, 10 m/s). Vectors have magnitude *and* direction (like velocity, 10 m/s East).
         </li>
         <li>
-          <strong>Displacement (<M>\Delta x</M>):</strong> Change in position (a vector).
+          <strong>Displacement ($\Delta x$):</strong> Change in position (a vector).
         </li>
         <li>
-          <strong>Velocity (<M>v</M>):</strong> The rate of change of displacement (a vector).
+          <strong>Velocity ($v$):</strong> The rate of change of displacement (a vector).
         </li>
         <li>
-          <strong>Acceleration (<M>a</M>):</strong> The rate of change of velocity (a vector). You accelerate if you speed up, slow down, or change direction.
+          <strong>Acceleration ($a$):</strong> The rate of change of velocity (a vector). You accelerate if you speed up, slow down, or change direction.
         </li>
       </ul>
     </div>
@@ -225,7 +316,7 @@ function RelatedTopicsAside() {
           description="Return to the main hub for this topic."
         />
         <AsideLink
-          href="#"
+          href="/natural-science/physics/classical-mechanics/dynamics"
           title="Dynamics (Newton's Laws)"
           description="The next step: understanding *why* motion changes (Forces)."
         />
