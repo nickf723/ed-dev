@@ -231,7 +231,7 @@ export const glossaryTerms = {
   },
   
   // --- NEW: Terms for Dynamics (PHYSICS) ---
-  Kinematics: {
+ Kinematics: {
     definition:
       "The branch of mechanics that describes the motion of objects (displacement, velocity, acceleration) without reference to the forces causing the motion.",
     category: termCategories.PHYSICS,
@@ -239,6 +239,31 @@ export const glossaryTerms = {
   Dynamics: {
     definition:
       "The branch of classical mechanics concerned with the study of forces and torques and their effect on motion.",
+    category: termCategories.PHYSICS,
+  },
+  Distance: {
+    definition:
+      "A scalar quantity representing the total path length traveled by an object.",
+    category: termCategories.PHYSICS,
+  },
+  Displacement: {
+    definition:
+      "A vector quantity representing the change in an object's position, measured from the starting point to the ending point.",
+    category: termCategories.PHYSICS,
+  },
+  Speed: {
+    definition:
+      "A scalar quantity representing how fast an object is moving (rate of change of distance).",
+    category: termCategories.PHYSICS,
+  },
+  Velocity: {
+    definition:
+      "A vector quantity representing the rate of change of an object's displacement. It includes both speed and direction.",
+    category: termCategories.PHYSICS,
+  },
+  Acceleration: {
+    definition:
+      "A vector quantity representing the rate of change of an object's velocity. It occurs when an object speeds up, slows down, or changes direction.",
     category: termCategories.PHYSICS,
   },
   Force: {

@@ -123,7 +123,7 @@ export default function KinematicsPage() {
             startOpen={true}
           >
             <ContentP>
-              <GlossaryTerm term="Kinematics">Kinematics</GlossaryTerm> is the branch of mechanics that provides the language and mathematical tools to describe motion. Before we can understand *why* a ball falls (which is Dynamics), we must first agree on how to describe its position, speed, and acceleration.
+              <GlossaryTerm term="Kinematics">Kinematics</GlossaryTerm> is the branch of mechanics that provides the language and mathematical tools to describe motion. Before we can understand *why* a ball falls (which is Dynamics), we must first agree on how to describe its position, speed, and <GlossaryTerm term="Acceleration">acceleration</GlossaryTerm>.
             </ContentP>
             <SideNote>
               <ContentP>
@@ -141,13 +141,13 @@ export default function KinematicsPage() {
             icon={Move}
           >
             <ContentP>
-              We often use "distance" and "displacement" interchangeably in daily life, but in physics, they are very different.
+              We often use <GlossaryTerm term="Distance">"distance"</GlossaryTerm> and <GlossaryTerm term="Displacement">"displacement"</GlossaryTerm> interchangeably in daily life, but in physics, they are very different.
             </ContentP>
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-              <TermDefinition term="Distance (Scalar)">
+              <TermDefinition term="Distance">
                 The total path length traveled. If you run a 5km race and end where you started, you ran a distance of 5km.
               </TermDefinition>
-              <TermDefinition term="Displacement (Vector)">
+              <TermDefinition term="Displacement">
                 The change in <strong>position</strong>; a straight line from the start point to the end point. If you run a 5km race and end where you started, your displacement is <strong>0 km</strong>.
               </TermDefinition>
             </div>
@@ -159,7 +159,7 @@ export default function KinematicsPage() {
               </ul>
             </ExampleBlock>
             <ContentP>
-              Displacement is represented by <M>{"\\Delta x"}</M> (read "delta-ex"), which means "change in x" or <M>{"x_{\\text{final}} - x_{\\text{initial}}"}</M>.
+              <GlossaryTerm term="Displacement">Displacement</GlossaryTerm> is represented by <M>{"\\Delta x"}</M> (read "delta-ex"), which means "change in x" or <M>{"x_{\\text{final}} - x_{\\text{initial}}"}</M>.
             </ContentP>
           </CollapsibleTopic>
 
@@ -168,15 +168,15 @@ export default function KinematicsPage() {
             icon={Gauge}
           >
             <ContentP>
-              Similar to the previous topic, "speed" and "velocity" have distinct meanings in physics.
+              Similar to the previous topic, <GlossaryTerm term="Speed">"speed"</GlossaryTerm> and <GlossaryTerm term="Velocity">"velocity"</GlossaryTerm> have distinct meanings in physics.
             </ContentP>
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-              <TermDefinition term="Speed (Scalar)">
+              <TermDefinition term="Speed">
                 How fast an object is moving. It's the rate of change of <strong>distance</strong>.
                 <br />
                 <M>{"\\text{Average Speed} = \\frac{\\text{Total Distance}}{\\text{Total Time}}"}</M>
               </TermDefinition>
-              <TermDefinition term="Velocity (Vector)">
+              <TermDefinition term="Velocity">
                 How fast an object's <strong>position</strong> is changing. It includes direction.
                 <br />
                 <M>{"\\vec{v}_{\\text{avg}} = \\frac{\\Delta \\vec{x}}{\\Delta t} = \\frac{\\text{Displacement}}{\\text{Time}}"}</M>
@@ -184,7 +184,7 @@ export default function KinematicsPage() {
             </div>
             <SideNote>
               <ContentP>
-                A car driving in a perfect circle at a constant 50 km/h has a constant <strong>speed</strong>, but its <strong>velocity</strong> is constantly changing because its direction is always changing!
+                A car driving in a perfect circle at a constant 50 km/h has a constant <GlossaryTerm term="Speed">speed</GlossaryTerm>, but its <GlossaryTerm term="Velocity">velocity</GlossaryTerm> is constantly changing because its direction is always changing!
               </ContentP>
             </SideNote>
           </CollapsibleTopic>
@@ -194,9 +194,9 @@ export default function KinematicsPage() {
             icon={Rabbit}
           >
             <ContentP>
-              Acceleration is any change in <strong>velocity</strong>. You are accelerating if you speed up, slow down, or turn a corner.
+              <GlossaryTerm term="Acceleration">Acceleration</GlossaryTerm> is any change in <strong>velocity</strong>. You are accelerating if you speed up, slow down, or turn a corner.
             </ContentP>
-            <TermDefinition term="Acceleration (Vector)">
+            <TermDefinition term="Acceleration">
               The rate of change of <strong>velocity</strong> over time.
               <br />
               <M>{"\\vec{a}_{\\text{avg}} = \\frac{\\Delta \\vec{v}}{\\Delta t} = \\frac{\\vec{v}_{\\text{final}} - \\vec{v}_{\\text{initial}}}{\\text{Time}}"}</M>
@@ -204,11 +204,11 @@ export default function KinematicsPage() {
             <ExampleBlock>
               <p>A car speeds up from 0 m/s to 20 m/s in 5 seconds. Its acceleration is:</p>
               <MBlock>{"a = \\frac{20 \\text{ m/s} - 0 \\text{ m/s}}{5 \\text{ s}} = 4 \\text{ m/s}^2"}</MBlock>
-              <p>This means for every second that passes, the car's velocity increases by 4 m/s.</p>
+              <p>This means for every second that passes, the car's <GlossaryTerm term="Velocity">velocity</GlossaryTerm> increases by 4 m/s.</p>
             </ExampleBlock>
             <SideNote>
               <ContentP>
-                Slowing down is also acceleration, just in the opposite direction of motion. We often call this <strong>deceleration</strong>.
+                Slowing down is also <GlossaryTerm term="Acceleration">acceleration</GlossaryTerm>, just in the opposite direction of motion. We often call this <strong>deceleration</strong>.
               </ContentP>
               <ContentP>
                 An object in free-fall near Earth's surface accelerates downwards at <M>{"g \\approx 9.8 \\text{ m/s}^2"}</M>.
@@ -221,7 +221,7 @@ export default function KinematicsPage() {
             icon={Calculator}
           >
             <ContentP>
-              When acceleration is constant, three main equations allow us to relate the five kinematic variables (<M>{"d, v_0, v_f, a, t"}</M>).
+              When <GlossaryTerm term="Acceleration">acceleration</GlossaryTerm> is constant, three main equations allow us to relate the five kinematic variables (<M>{"d, v_0, v_f, a, t"}</M>).
             </ContentP>
             <ExampleBlock>
                 <MBlock>{"v_f = v_0 + at"}</MBlock>
@@ -229,7 +229,7 @@ export default function KinematicsPage() {
                 <MBlock>{"v_f^2 = v_0^2 + 2ad"}</MBlock>
             </ExampleBlock>
             <ContentP>
-              Use the calculator below to practice solving for displacement (<M>{"d"}</M>).
+              Use the calculator below to practice solving for <GlossaryTerm term="Displacement">displacement</GlossaryTerm> (<M>{"d"}</M>).
             </ContentP>
             <KinematicsCalculator />
           </CollapsibleTopic>
@@ -261,7 +261,7 @@ function KeyConceptsAside() {
           <strong><GlossaryTerm term="Kinematics">Kinematics</GlossaryTerm></strong> describes *how* objects move, not *why*.
         </li>
         <li>
-          <strong>Scalar vs. Vector:</strong> Scalars have magnitude only (like speed, 10 m/s). Vectors have magnitude *and* direction (like velocity, 10 m/s East).
+          <strong>Scalar vs. Vector:</strong> Scalars have magnitude only (like <GlossaryTerm term="Speed">speed</GlossaryTerm>, <GlossaryTerm term="Distance">distance</GlossaryTerm>). Vectors have magnitude *and* direction (like <GlossaryTerm term="Velocity">velocity</GlossaryTerm>, <GlossaryTerm term="Displacement">displacement</GlossaryTerm>, <GlossaryTerm term="Acceleration">acceleration</GlossaryTerm>).
         </li>
         <li>
           <strong>Displacement ($\Delta x$):</strong> Change in position (a vector).
@@ -286,16 +286,16 @@ function CommonPitfallsAside() {
       </h3>
       <ul className="list-disc space-y-2 pl-5 text-sm text-neutral-300">
         <li>
-          Confusing <strong>distance</strong> (total path) with <strong>displacement</strong> (start-to-end change).
+          Confusing <strong><GlossaryTerm term="Distance">distance</GlossaryTerm></strong> (total path) with <strong><GlossaryTerm term="Displacement">displacement</GlossaryTerm></strong> (start-to-end change).
         </li>
         <li>
-          Confusing <strong>speed</strong> (how fast) with <strong>velocity</strong> (how fast and in what direction).
+          Confusing <strong><GlossaryTerm term="Speed">speed</GlossaryTerm></strong> (how fast) with <strong><GlossaryTerm term="Velocity">velocity</GlossaryTerm></strong> (how fast and in what direction).
         </li>
         <li>
-          Thinking acceleration only means "speeding up". Slowing down (deceleration) is also acceleration.
+          Thinking <GlossaryTerm term="Acceleration">acceleration</GlossaryTerm> only means "speeding up". Slowing down (deceleration) is also acceleration.
         </li>
          <li>
-          Forgetting that turning (changing direction) is a change in velocity, and therefore is an acceleration, even if speed is constant.
+          Forgetting that turning (changing direction) is a change in <GlossaryTerm term="Velocity">velocity</GlossaryTerm>, and therefore is an <GlossaryTerm term="Acceleration">acceleration</GlossaryTerm>, even if speed is constant.
         </li>
       </ul>
     </div>
