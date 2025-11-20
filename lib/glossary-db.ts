@@ -5,6 +5,7 @@ export const termCategories = {
   NUMBER_SYSTEMS: "Number Systems",
   ALGEBRA: "Algebra",
   PHYSICS: "Physics",
+  CHEMISTRY: "Chemistry",
   SOCIAL_SCIENCE: "Social Science",
   APPLIED_SCIENCE: "Applied Science",
 };
@@ -233,7 +234,17 @@ export const glossaryTerms = {
       "The act of replacing a variable with a specific number (e.g., replacing 'x' with '3').",
     category: termCategories.ALGEBRA,
   },
-  
+  // --- Computer Science ---
+  Algorithm: {
+    definition:
+      "A precise, step-by-step sequence of instructions to solve a problem or perform a computation.",
+    category: termCategories.APPLIED_SCIENCE,
+  },
+  "Time Complexity": {
+    definition:
+      "A measure of how the runtime of an algorithm grows as the size of the input increases.",
+    category: termCategories.APPLIED_SCIENCE,
+  },
   // --- Physics ---
  Kinematics: {
     definition:
@@ -374,6 +385,18 @@ export const glossaryTerms = {
     definition:
       "The study of the motion of spacecraft, planets, and other celestial bodies under the influence of gravitational forces.",
     category: termCategories.PHYSICS,
+  },
+
+  // --- Chemistry ---
+  Mole: {
+    definition:
+      "A unit of measurement for amount of substance. One mole contains exactly 6.022 × 10²³ elementary entities (Avogadro's number).",
+    category: termCategories.CHEMISTRY,
+  },
+  "Conservation of Mass": {
+    definition:
+      "A fundamental principle stating that mass cannot be created or destroyed in a closed system through ordinary chemical reactions or physical transformations.",
+    category: termCategories.CHEMISTRY,
   },
 
   // --- Social Studies ---

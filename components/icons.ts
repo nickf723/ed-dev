@@ -12,7 +12,6 @@ export {
     //Common Symbols,
     Heart, Diamond, Spade, Club, Target, Goal, Trophy, Puzzle, Key, Lock, LockOpen, LockKeyhole, LockKeyholeOpen,
     Badge, Cross,
-            //ChessKing, ChessKnight, ChessPawn, ChessRook, ChessBishop, ChessQueen,
     //Directions
     ChevronUp, ChevronDown, ChevronLeft, ChevronRight, ChevronsUp, ChevronsDown, ChevronsRight, ChevronsLeft,
     ChevronsDownUp, ChevronsLeftRight, ChevronsRightLeft, ChevronsUpDown, 
@@ -23,7 +22,7 @@ export {
     //Supplies
     PencilRuler, Briefcase, PenBox, Paperclip, Pen, Pencil, Compass, Map, Notebook, Highlighter, Calculator, Ruler,
     //Media
-    Volume, Volume1, Volume2, VolumeOff, VolumeX, Tv, Play, Pause, /*Stop as Square*/ Mic, MicOff, Loader, LoaderCircle, Shuffle,
+    Volume, Volume1, Volume2, VolumeOff, VolumeX, Tv, Play, Pause, Mic, MicOff, Loader, LoaderCircle, Shuffle,
     ListPlus, ListMinus, ListStart, ListEnd,
     //Pizzaz
     Sparkle, Wand, WandSparkles,
@@ -66,7 +65,7 @@ export {
     //Household
       AirVent, AlarmSmoke, Fan, FireExtinguisher, Heater, HousePlug, Usb, SatelliteDish,
       HouseWifi, Router, Wifi,
-      Lamp, LampCeiling, LampDesk, LampFloor, LampWallDown, LampWallUp,
+      Lamp, LampCeiling, LampDesk, LampFloor, LampWallDown, LampWallUp, Clock,
       Microwave, Refrigerator, ShowerHead, Toilet, WashingMachine, Bath,
       Armchair, Bed, BedDouble, BedSingle, RockingChair, Sofa,
       Blinds, BrickWall, DoorClosed, DoorOpen, DoorClosedLocked as DoorLocked, Fence, 
