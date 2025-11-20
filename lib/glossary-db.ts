@@ -1,9 +1,4 @@
 // lib/glossary-db.ts
-
-// A central database for glossary terms
-// This allows <GlossaryTerm> and the main /glossary page
-// to pull from the same source of truth.
-
 export const termCategories = {
   GENERAL: "General",
   MATH_FOUNDATIONS: "Math Foundations",
@@ -11,9 +6,9 @@ export const termCategories = {
   ALGEBRA: "Algebra",
   PHYSICS: "Physics",
   SOCIAL_SCIENCE: "Social Science",
+  APPLIED_SCIENCE: "Applied Science",
 };
 
-// REWORKED: The structure is now { definition: string, category: string }
 export const glossaryTerms = {
   // --- General Terms (from /glossary page) ---
   Abstraction: {
@@ -61,7 +56,7 @@ export const glossaryTerms = {
     category: termCategories.GENERAL,
   },
 
-  // --- Terms from num-ops page ---
+  // --- Math ---
   "Number System": {
     definition:
       "A collection of numbers (e.g., Natural, Integers, Rationals) defined by a specific set of rules and properties.",
@@ -194,8 +189,16 @@ export const glossaryTerms = {
       "A ratio where the second number is always 100. 'Per cent' means 'per hundred'.",
     category: termCategories.MATH_FOUNDATIONS,
   },
-
-  // --- Terms from variables-expressions page (ALGEBRA) ---
+  Proportion: {
+    definition:
+      "A statement that two ratios are equal, usually written in fraction form (e.g., a/b = c/d).",
+    category: termCategories.MATH_FOUNDATIONS,
+  },
+  "Unit Rate": {
+    definition:
+      "A rate in which the second quantity (denominator) in the comparison is one unit (e.g., 60 miles per 1 hour).",
+    category: termCategories.MATH_FOUNDATIONS,
+  },
   Variable: {
     definition:
       "A symbol (usually a letter like x) that represents an unknown value or a value that can change.",
@@ -231,7 +234,7 @@ export const glossaryTerms = {
     category: termCategories.ALGEBRA,
   },
   
-  // --- NEW: Terms for Dynamics (PHYSICS) ---
+  // --- Physics ---
  Kinematics: {
     definition:
       "The branch of mechanics that describes the motion of objects (displacement, velocity, acceleration) without reference to the forces causing the motion.",
@@ -372,7 +375,8 @@ export const glossaryTerms = {
       "The study of the motion of spacecraft, planets, and other celestial bodies under the influence of gravitational forces.",
     category: termCategories.PHYSICS,
   },
-  // --- NEW SOCIAL SCIENCE TERMS ---
+
+  // --- Social Studies ---
   "Supply and Demand": {
     definition:
       "An economic model determining price in a market. Supply relates to quantity, and demand relates to consumer desire.",
@@ -447,6 +451,38 @@ export const glossaryTerms = {
     definition:
       "The set of rules, principles, and processes that govern the structure of sentences in a given language.",
     category: termCategories.SOCIAL_SCIENCE,
+  },
+
+  // --- Applied Science ---
+  Engineering: {
+    definition:
+      "The application of scientific, mathematical, and technical knowledge to design, build, and maintain structures, machines, and systems.",
+    category: termCategories.APPLIED_SCIENCE,
+  },
+  Biotechnology: {
+    definition:
+      "The use of living systems and organisms to develop or make products (e.g., medicine, food).",
+    category: termCategories.APPLIED_SCIENCE,
+  },
+  "Drug Development": {
+    definition:
+      "The process of bringing a new pharmaceutical drug to the market once a lead compound has been identified.",
+    category: termCategories.APPLIED_SCIENCE,
+  },
+  "Data Structures": {
+    definition:
+      "A specialized format for organizing, processing, retrieving, and storing data efficiently (e.g., arrays, linked lists, trees).",
+    category: termCategories.APPLIED_SCIENCE,
+  },
+  Thermodynamics: {
+    definition:
+      "The study of heat and its relation to other forms of energy and work, particularly in physical systems.",
+    category: termCategories.PHYSICS,
+  },
+  Metallurgy: {
+    definition:
+      "The branch of materials science that studies the physical and chemical behavior of metallic elements, their intermetallic compounds, and their mixtures, called alloys.",
+    category: termCategories.APPLIED_SCIENCE,
   },
 };
 
