@@ -109,31 +109,27 @@
   }
 
   .theme-humanities {
-    --theme-gradient-start: #fffb00ff;
-    --theme-gradient-end: rgb(82, 255, 2);
-    --theme-icon-hover: #e7eb00ff;
-    --theme-underline: #fcf700bb;
-    --theme-text-title: #fffb00ff;
-    --theme-text-header: rgb(82, 255, 2);
-    --theme-text-icon: var(--theme-text-title);
-    --theme-symbol-color: rgba(177, 177, 177, 0.459);
-    --theme-blob-1: rgba(255, 251, 0, 0.527);
-    --theme-blob-2: rgba(82, 255, 2, 0.637);
-    --theme-grid-color: rgba(255, 251, 0, 0.1);
+    --theme-gradient-start: #fbbf24;
+    --theme-gradient-end: #d97706; 
+    --theme-icon-hover: #fbed24;
+    --theme-underline: #d97706;
+    --theme-text-title: #fa6400;
+    --theme-text-header: #ffae00;
+    --theme-symbol-color: rgba(251, 190, 36, 0.171);
+    --theme-blob-1: rgba(251, 191, 36, 0.2);
+    --theme-blob-2: rgba(180, 83, 9, 0.2);
   }
 
   .theme-interdisciplines {
-    --theme-gradient-start: rgb(216, 122, 0);
-    --theme-gradient-end: rgb(200, 214, 0);
-    --theme-icon-hover: rgb(247, 202, 4);
-    --theme-underline: rgb(255, 196, 0);
-    --theme-text-title: rgb(216, 122, 0);
-    --theme-text-header: rgb(200, 214, 0);
-    --theme-text-icon: var(--theme-text-title);
-    --theme-symbol-color: rgba(177, 177, 177, 0.459);
-    --theme-blob-1: rgba(216, 122, 0, 0.527);
-    --theme-blob-2: rgba(200, 214, 0, 0.637);
-    --theme-grid-color: rgba(216, 122, 0, 0.1);
+    --theme-gradient-start: #a3e635;
+    --theme-gradient-end: #65a30d; 
+    --theme-icon-hover: #a3e635;
+    --theme-underline: #3f6212;
+    --theme-text-title: #bef264;
+    --theme-text-header: #f7fee7;
+    --theme-symbol-color: rgba(163, 230, 53, 0.1);
+    --theme-blob-1: rgba(54, 83, 20, 0.4);
+    --theme-blob-2: rgba(101, 163, 13, 0.2);
   }
 /*----------------------------------------------------------------------------------------------------------*/
 
