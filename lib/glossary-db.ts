@@ -9,7 +9,8 @@ export const termCategories = {
   MATH_FOUNDATIONS: "Math Foundations",
   NUMBER_SYSTEMS: "Number Systems",
   ALGEBRA: "Algebra",
-  PHYSICS: "Physics", // NEW CATEGORY
+  PHYSICS: "Physics",
+  SOCIAL_SCIENCE: "Social Science",
 };
 
 // REWORKED: The structure is now { definition: string, category: string }
@@ -300,6 +301,152 @@ export const glossaryTerms = {
     definition:
       "For every action (force) there is a reaction force that is equal in magnitude and opposite in direction. Forces always occur in pairs.",
     category: termCategories.PHYSICS,
+  },
+  Work: {
+    definition:
+      "The transfer of energy resulting from a force acting over a distance (W = Fd). Measured in Joules (J).",
+    category: termCategories.PHYSICS,
+  },
+  Energy: {
+    definition:
+      "The capacity to do work. It exists in many forms (e.g., kinetic, potential, thermal). Measured in Joules (J).",
+    category: termCategories.PHYSICS,
+  },
+  "Kinetic Energy": {
+    definition:
+      "The energy of motion (KE = 1/2 mv^2). An object must be moving to have kinetic energy.",
+    category: termCategories.PHYSICS,
+  },
+  "Potential Energy": {
+    definition:
+      "Stored energy based on an object's position, configuration, or state (e.g., gravitational potential energy, PE = mgh).",
+    category: termCategories.PHYSICS,
+  },
+  "Conservation of Energy": {
+    definition:
+      "The principle that the total energy of an isolated system remains constant; energy cannot be created or destroyed, only transformed.",
+    category: termCategories.PHYSICS,
+  },
+  Momentum: {
+    definition:
+      "A vector quantity defined as the product of an object's mass and velocity (p = mv). It measures the 'quantity of motion'.",
+    category: termCategories.PHYSICS,
+  },
+  Impulse: {
+    definition:
+      "A vector quantity equal to the change in an object's momentum, or the average net force multiplied by the time over which the force acts (J = FΔt).",
+    category: termCategories.PHYSICS,
+  },
+  "Conservation of Momentum": {
+    definition:
+      "The principle that the total momentum of a closed system remains constant, especially during collisions.",
+    category: termCategories.PHYSICS,
+  },
+  Torque: {
+    definition:
+      "The rotational equivalent of force, causing an object to rotate or change its rotational motion (τ = rF sinθ).",
+    category: termCategories.PHYSICS,
+  },
+  "Angular Momentum": {
+    definition:
+      "The rotational equivalent of linear momentum. A vector quantity (L = Iω).",
+    category: termCategories.PHYSICS,
+  },
+  Gravitation: {
+    definition:
+      "The fundamental force of attraction that exists between any two particles of mass in the universe.",
+    category: termCategories.PHYSICS,
+  },
+  "Gravitational Constant (G)": {
+    definition:
+      "The proportionality constant in Newton's Law of Gravitation (G ≈ 6.67 × 10⁻¹¹ N·m²/kg²).",
+    category: termCategories.PHYSICS,
+  },
+  "Universal Law": {
+    definition:
+      "The law stating that the gravitational force between two masses is proportional to the product of the masses and inversely proportional to the square of the distance between them.",
+    category: termCategories.PHYSICS,
+  },
+  "Orbital Mechanics": {
+    definition:
+      "The study of the motion of spacecraft, planets, and other celestial bodies under the influence of gravitational forces.",
+    category: termCategories.PHYSICS,
+  },
+  // --- NEW SOCIAL SCIENCE TERMS ---
+  "Supply and Demand": {
+    definition:
+      "An economic model determining price in a market. Supply relates to quantity, and demand relates to consumer desire.",
+    category: termCategories.SOCIAL_SCIENCE,
+  },
+  GDP: {
+    definition:
+      "Gross Domestic Product: The total monetary value of all finished goods and services made within a country during a specific period.",
+    category: termCategories.SOCIAL_SCIENCE,
+  },
+  Scarcity: {
+    definition:
+      "The fundamental economic problem of having seemingly unlimited human wants in a world of limited resources.",
+    category: termCategories.SOCIAL_SCIENCE,
+  },
+  Microeconomics: {
+    definition:
+      "The branch of economics that studies how individual households and firms make decisions and allocate resources.",
+    category: termCategories.SOCIAL_SCIENCE,
+  },
+  Macroeconomics: {
+    definition:
+      "The branch of economics that studies the behavior and performance of an economy as a whole (e.g., inflation, GDP, unemployment).",
+    category: termCategories.SOCIAL_SCIENCE,
+  },
+  Cognition: {
+    definition:
+      "The mental process of acquiring knowledge and understanding through thought, experience, and the senses.",
+    category: termCategories.SOCIAL_SCIENCE,
+  },
+  Behaviorism: {
+    definition:
+      "A psychological theory suggesting all behaviors are acquired through conditioning, emphasizing observable behavior over internal mental states.",
+    category: termCategories.SOCIAL_SCIENCE,
+  },
+  "Political System": {
+    definition:
+      "A system that comprises the formal and informal procedures for making authoritative public decisions and enforcing them (e.g., democracy, monarchy).",
+    category: termCategories.SOCIAL_SCIENCE,
+  },
+  Governance: {
+    definition:
+      "The process of decision-making and the process by which decisions are implemented (or not implemented).",
+    category: termCategories.SOCIAL_SCIENCE,
+  },
+  Culture: {
+    definition:
+      "The cumulative deposit of knowledge, experience, beliefs, values, attitudes, and meanings shared by a group of people.",
+    category: termCategories.SOCIAL_SCIENCE,
+  },
+  Ethnography: {
+    definition:
+      "The systematic study and recording of human cultures, often through fieldwork and participant observation.",
+    category: termCategories.SOCIAL_SCIENCE,
+  },
+  Geography: {
+    definition:
+      "The study of places and the relationships between people and their environments.",
+    category: termCategories.SOCIAL_SCIENCE,
+  },
+  GIS: {
+    definition:
+      "Geographic Information System: A computer system for capturing, storing, checking, and displaying data related to positions on Earth’s surface.",
+    category: termCategories.SOCIAL_SCIENCE,
+  },
+  Phonetics: {
+    definition:
+      "The branch of linguistics concerned with the production and perception of speech sounds.",
+    category: termCategories.SOCIAL_SCIENCE,
+  },
+  Syntax: {
+    definition:
+      "The set of rules, principles, and processes that govern the structure of sentences in a given language.",
+    category: termCategories.SOCIAL_SCIENCE,
   },
 };
 

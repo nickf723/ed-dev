@@ -9,40 +9,64 @@ import {
   BrainCog,
   Landmark,
   DollarSign,
+  Earth, // Added for Geography
+  BookText, // Added for Linguistics
 } from "@/components/icons";
+import React from "react";
 
 const socialScienceSymbols = [
-  "H₂O", "GDP", "NPS", "P-Value", "t-test", "R", "C", "E", "S",
+  "GDP", "NPS", "P\\text{-Value}", "t\\text{-test}", "R", "C", "E", "S", "\\Sigma",
 ];
 
 export default function SocialSciencePage() {
   const disciplines = [
     {
       title: "Sociology",
-      desc: "The study of social behavior, society, patterns of social relationships, social interaction, and culture.",
+      desc: "The scientific study of social behavior, society, patterns of social relationships, social interaction, and culture.",
       href: "/social-science/sociology",
       Icon: Users,
-      className: "theme-social-science topic-card-wide"
+      className: "theme-social-science"
     },
     {
       title: "Psychology",
-      desc: "The scientific study of the mind and behavior.",
+      desc: "The scientific study of the mind and behavior, exploring mental processes and social dynamics.",
       href: "/social-science/psychology",
       Icon: BrainCog,
       className: "theme-social-science"
     },
     {
       title: "Economics",
-      desc: "The study of how people interact with value, production, distribution, and consumption.",
+      desc: "The study of how people interact with value, production, distribution, and consumption of goods and services.",
       href: "/social-science/economics",
       Icon: DollarSign,
       className: "theme-social-science"
     },
     {
       title: "Political Science",
-      desc: "The systematic study of political systems, governance, and political behavior.",
+      desc: "The systematic study of political systems, governance, public policy, and political behavior.",
       href: "/social-science/political-science",
       Icon: Landmark,
+      className: "theme-social-science"
+    },
+    {
+      title: "Anthropology",
+      desc: "The comprehensive study of humankind, exploring human biology, language, culture, and societies, both past and present.",
+      href: "/social-science/anthropology",
+      Icon: Handshake,
+      className: "theme-social-science"
+    },
+    {
+      title: "Geography",
+      desc: "The study of places and the relationships between people and their environments (human and physical).",
+      href: "/social-science/geography",
+      Icon: Earth,
+      className: "theme-social-science"
+    },
+    {
+      title: "Linguistics",
+      desc: "The scientific study of language, its structure, meaning, and social context.",
+      href: "/social-science/linguistics",
+      Icon: BookText,
       className: "theme-social-science"
     },
   ];

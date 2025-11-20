@@ -9,6 +9,7 @@ import {
   Gavel,
   PenBox,
 } from "@/components/icons";
+import React from "react";
 
 const humanitiesSymbols = [
   "1815", "iamb", "ethos", "logos", "pietas", "veritas", "mos", "lex",
@@ -17,30 +18,30 @@ const humanitiesSymbols = [
 export default function HumanitiesPage() {
   const disciplines = [
     {
-      title: "History",
-      desc: "The study of the past, focusing on events, people, and changes in society.",
-      href: "/humanities/history",
-      Icon: PenBox,
-      className: "theme-humanities"
-    },
-    {
-      title: "Literature",
-      desc: "The study of written works, focusing on narrative, poetry, and dramatic texts.",
-      href: "/humanities/literature",
-      Icon: BookText,
-      className: "theme-humanities topic-card-wide"
-    },
-    {
       title: "Philosophy",
-      desc: "The study of general and fundamental problems concerning matters such as existence, knowledge, values, reason, mind, and language.",
+      desc: "The critical study of fundamental problems concerning existence, knowledge, values, and reason.",
       href: "/humanities/philosophy",
       Icon: Gavel,
       className: "theme-humanities"
     },
     {
-      title: "Art & Culture",
-      desc: "The study of visual arts, music, theatre, and the expression of human creativity.",
-      href: "/humanities/art-culture",
+      title: "History",
+      desc: "The analysis and interpretation of past events, providing context for human societies and change over time.",
+      href: "/humanities/history",
+      Icon: PenBox,
+      className: "theme-humanities"
+    },
+    {
+      title: "Literature & Language",
+      desc: "The study of written works, narrative structure, and the forms, functions, and evolution of human language.",
+      href: "/humanities/literature",
+      Icon: BookText,
+      className: "theme-humanities topic-card-wide"
+    },
+    {
+      title: "Arts & Aesthetics",
+      desc: "The study of visual arts, music, and the principles underlying beauty and artistic judgment in culture.",
+      href: "/humanities/arts-aesthetics",
       Icon: Palette,
       className: "theme-humanities"
     },
@@ -52,7 +53,7 @@ export default function HumanitiesPage() {
       <PageHeader
         eyebrow="Discipline Overview"
         title="Humanities"
-        subtitle="Disciplines that study aspects of human society and culture, exploring human experience through critical, speculative, and historical methods."
+        subtitle="Disciplines that study aspects of human society and culture, exploring human experience through critical, speculative, and historical methods. They examine what it means to be human."
       />
       <section className="topic-grid">
         {disciplines.map((branch) => (

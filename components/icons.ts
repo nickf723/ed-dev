@@ -48,7 +48,7 @@ export {
   //Science
     Atom, Zap, Waves, Microscope, Flame,
     Orbit, Eclipse, Rocket, Moon, MoonStar, Sun, Star, Telescope,
-    Dna, Biohazard, Radiation, 
+    Dna, Biohazard, Radiation, Skull,
     Sprout, Flower, Flower2, Rose, Leaf, Shrub, TreeDeciduous, TreePalm, TreePine, Trees,
     Bird, Birdhouse, Bug, Cat, Dog, Panda, PawPrint, Mouse, Snail, Shrimp, Shell, Squirrel, Turtle, Worm, Rabbit,
     Beaker, FlaskConical, FlaskRound, Pipette, TestTube, TestTubes,
