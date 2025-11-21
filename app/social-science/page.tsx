@@ -1,96 +1,214 @@
-// app/social-science/page.tsx
 "use client";
+import { useState } from "react";
 import PageHeader from "@/components/PageHeader";
-import FloatingSymbols from "@/components/FloatingSymbols";
 import TopicCard from "@/components/TopicCard";
+import SocialDynamicsBackground from "@/components/SocialDynamicsBackground";
+import AnalysisLens from "@/components/AnalysisLens"; // The new component
+import { motion } from "framer-motion";
 import {
-  Handshake,
+  BrainCircuit,
+  Speech,
+  TrendingUp,
+  Map,
   Users,
-  BrainCog,
+  Scale,
   Landmark,
-  DollarSign,
-  Earth, // Added for Geography
-  BookText, // Added for Linguistics
-} from "@/components/icons";
-import React from "react";
+  ScrollText,
+  Globe
+} from "lucide-react";
 
-const socialScienceSymbols = [
-  "GDP", "NPS", "P\\text{-Value}", "t\\text{-test}", "R", "C", "E", "S", "\\Sigma",
+// --- DATA: Disciplines ---
+// Analysis Levels: micro, meso, macro
+const sectors = [
+  {
+    name: "The Mind & The Self",
+    desc: "Internal processes and individual expression.",
+    color: "text-blue-400",
+    icon: BrainCircuit,
+    items: [
+      { 
+        id: "psychology", 
+        level: "micro", 
+        title: "Psychology", 
+        desc: "The study of mind, behavior, and cognitive processes.", 
+        href: "/social-science/psychology", 
+        Icon: BrainCircuit, 
+        className: "theme-psychology", 
+        subtitle: "Cognition & Behavior" 
+      },
+      { 
+        id: "linguistics", 
+        level: "micro", 
+        title: "Linguistics", 
+        desc: "The structure, meaning, and context of language.", 
+        href: "/social-science/linguistics", 
+        Icon: Speech, 
+        className: "theme-linguistics", 
+        subtitle: "Communication" 
+      }
+    ]
+  },
+  {
+    name: "Interaction & Exchange",
+    desc: "How individuals connect, trade, and inhabit space.",
+    color: "text-indigo-400",
+    icon: TrendingUp,
+    items: [
+      { 
+        id: "economics", 
+        level: "meso", 
+        title: "Economics", 
+        desc: "The production, distribution, and consumption of wealth.", 
+        href: "/social-science/economics", 
+        Icon: TrendingUp, 
+        className: "theme-economics", 
+        subtitle: "Value & Incentives" 
+      },
+      { 
+        id: "geography", 
+        level: "meso", 
+        title: "Geography", 
+        desc: "The relationship between people and their environments.", 
+        href: "/social-science/geography", 
+        Icon: Map, 
+        className: "theme-geography", 
+        subtitle: "Space & Place" 
+      }
+    ]
+  },
+  {
+    name: "Structure & Society",
+    desc: "Collective organizations, governance, and culture.",
+    color: "text-purple-400",
+    icon: Landmark,
+    items: [
+      { 
+        id: "sociology", 
+        level: "macro", 
+        title: "Sociology", 
+        desc: "The study of social life, change, and consequences.", 
+        href: "/social-science/sociology", 
+        Icon: Users, 
+        className: "theme-sociology", 
+        subtitle: "Social Structures" 
+      },
+      { 
+        id: "political-science", 
+        level: "macro", 
+        title: "Political Science", 
+        desc: "Systems of governance, power, and policy.", 
+        href: "/social-science/political-science", 
+        Icon: Scale, 
+        className: "theme-political-science", 
+        subtitle: "Power & Authority" 
+      },
+      { 
+        id: "anthropology", 
+        level: "macro", 
+        title: "Anthropology", 
+        desc: "The holistic study of humanity across time and space.", 
+        href: "/social-science/anthropology", 
+        Icon: Globe, 
+        className: "theme-anthropology", 
+        subtitle: "Culture & Evolution" 
+      }
+    ]
+  }
 ];
 
 export default function SocialSciencePage() {
-  const disciplines = [
-    {
-      title: "Sociology",
-      desc: "The scientific study of social behavior, society, patterns of social relationships, social interaction, and culture.",
-      href: "/social-science/sociology",
-      Icon: Users,
-      className: "theme-social-science"
-    },
-    {
-      title: "Psychology",
-      desc: "The scientific study of the mind and behavior, exploring mental processes and social dynamics.",
-      href: "/social-science/psychology",
-      Icon: BrainCog,
-      className: "theme-social-science"
-    },
-    {
-      title: "Economics",
-      desc: "The study of how people interact with value, production, distribution, and consumption of goods and services.",
-      href: "/social-science/economics",
-      Icon: DollarSign,
-      className: "theme-social-science"
-    },
-    {
-      title: "Political Science",
-      desc: "The systematic study of political systems, governance, public policy, and political behavior.",
-      href: "/social-science/political-science",
-      Icon: Landmark,
-      className: "theme-social-science"
-    },
-    {
-      title: "Anthropology",
-      desc: "The comprehensive study of humankind, exploring human biology, language, culture, and societies, both past and present.",
-      href: "/social-science/anthropology",
-      Icon: Handshake,
-      className: "theme-social-science"
-    },
-    {
-      title: "Geography",
-      desc: "The study of places and the relationships between people and their environments (human and physical).",
-      href: "/social-science/geography",
-      Icon: Earth,
-      className: "theme-social-science"
-    },
-    {
-      title: "Linguistics",
-      desc: "The scientific study of language, its structure, meaning, and social context.",
-      href: "/social-science/linguistics",
-      Icon: BookText,
-      className: "theme-social-science"
-    },
-  ];
+  const [activeLens, setActiveLens] = useState<string | null>(null);
+
+  const getVariant = (level: string) => {
+    if (!activeLens) return "default";
+    return activeLens === level ? "highlighted" : "dimmed";
+  };
 
   return (
-    <main className="topic-page theme-social-science lg:px-16">
-      <FloatingSymbols symbols={socialScienceSymbols} />
-      <PageHeader
-        eyebrow="Discipline Overview"
-        title="Social Sciences"
-        subtitle="The systematic study of human society and social relationships, exploring collective behavior, institutions, and the foundations of human culture."
-      />
-      <section className="topic-grid">
-        {disciplines.map((branch) => (
-          <TopicCard
-            key={branch.href}
-            href={branch.href}
-            title={branch.title}
-            desc={branch.desc}
-            Icon={branch.Icon}
-            className={branch.className}
-          />
-        ))}
-      </section>
+    <main className="relative min-h-screen overflow-hidden bg-neutral-950 lg:px-12">
+      
+      <SocialDynamicsBackground />
+      
+      <div className="relative z-10 mx-auto flex max-w-7xl flex-col py-10">
+        
+        <PageHeader
+          eyebrow="Domain 03"
+          title="Social Sciences"
+          subtitle="Deciphering the human web. We study the complex feedback loops between individual agency, social structures, and cultural evolution."
+        />
+
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 items-start">
+          
+          {/* MAIN CONTENT (9 cols) */}
+          <div className="lg:col-span-9 space-y-10">
+            {sectors.map((sector, idx) => (
+              <section key={sector.name}>
+                 <motion.div 
+                    initial={{ opacity: 0, x: -10 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.4, delay: idx * 0.1 }}
+                    className="mb-4 flex items-center gap-3"
+                 >
+                    <sector.icon className={sector.color} size={20} />
+                    <h2 className="text-lg font-bold text-white tracking-wide">{sector.name}</h2>
+                    <div className="h-[1px] flex-1 bg-white/10"></div>
+                 </motion.div>
+
+                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                    {sector.items.map((item, i) => (
+                        <motion.div
+                            key={item.title}
+                            initial={{ opacity: 0, y: 15 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.3, delay: 0.1 + (i * 0.05) }}
+                        >
+                            <TopicCard 
+                                {...item} 
+                                variant={getVariant(item.level)}
+                            />
+                        </motion.div>
+                    ))}
+                 </div>
+              </section>
+            ))}
+          </div>
+
+          {/* SIDEBAR (3 cols) */}
+          <div className="flex flex-col gap-6 lg:col-span-3 lg:sticky lg:top-6 h-fit pt-2">
+            
+            <motion.div 
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.4 }}
+            >
+               <AnalysisLens activeLens={activeLens} setActiveLens={setActiveLens} />
+            </motion.div>
+
+            <motion.div 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.6 }}
+                className="rounded-lg border border-indigo-500/20 bg-indigo-950/10 p-4 backdrop-blur-md"
+            >
+                <div className="flex items-start gap-3">
+                    <ScrollText size={18} className="text-indigo-400 shrink-0 mt-1"/>
+                    <div>
+                        <h4 className="text-xs font-bold uppercase text-indigo-400 mb-1">
+                            Qualitative & Quantitative
+                        </h4>
+                        <p className="text-[11px] text-neutral-400 leading-relaxed">
+                            Social science blends statistical data (demographics, economics) with interpretive analysis (culture, history).
+                        </p>
+                    </div>
+                </div>
+            </motion.div>
+
+          </div>
+
+        </div>
+      </div>
     </main>
   );
 }
