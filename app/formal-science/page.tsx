@@ -12,90 +12,111 @@ import {
   SquareFunction,
   Spline,
   ChevronUp,
-  BrainCog
+  BrainCog,
 } from "@/components/icons";
 import React from "react";
 import Link from "next/link";
-import GameOfLifeBackground from "@/components/GameOfLifeBackground"; // Import the new background
+import GameOfLifeBackground from "@/components/GameOfLifeBackground";
 import { motion } from "framer-motion";
+import { Cpu, Layers } from "lucide-react";
 
-// --- DATA: Disciplines ---
-const disciplines = [
+// --- Grouped Data ---
+const sectors = [
   {
-    title: "Mathematics",
-    desc: "The study of quantity, structure, space, and change. The universal language of patterns.",
-    href: "/formal-science/mathematics",
-    Icon: Calculator,
-    className: "theme-math",
-    subtitle: "The Language"
+    name: "Sector I: Foundations",
+    icon: Key,
+    color: "text-cyan-400",
+    desc: "The axioms and rules that define validity itself.",
+    items: [
+      {
+        title: "Logic",
+        desc: "The study of correct reasoning and valid inference.",
+        href: "/formal-science/logic",
+        Icon: Key,
+        className: "theme-logic",
+        subtitle: "The Rules of Reason"
+      },
+      {
+        title: "Mathematics",
+        desc: "The science of structure, order, and relation.",
+        href: "/formal-science/mathematics",
+        Icon: Calculator,
+        className: "theme-math",
+        subtitle: "The Universal Language"
+      }
+    ]
   },
   {
-    title: "Logic",
-    desc: "The rules of valid reasoning and inference that underpin mathematical proofs.",
-    href: "/formal-science/logic",
-    Icon: Key,
-    className: "theme-logic",
-    subtitle: "The Rules"
+    name: "Sector II: Systems & Information",
+    icon: Network,
+    color: "text-purple-400",
+    desc: "How parts form wholes and how information flows.",
+    items: [
+      {
+        title: "Systems Science",
+        desc: "Modeling complex behaviors and emergence.",
+        href: "/formal-science/systems-science",
+        Icon: Network,
+        className: "theme-systems-science",
+        subtitle: "Holistic Complexity"
+      },
+      {
+        title: "Information Science",
+        desc: "The properties and behavior of information itself.",
+        href: "/formal-science/information-science",
+        Icon: Binary,
+        className: "theme-information-science",
+        subtitle: "Signal & Noise"
+      }
+    ]
   },
   {
-    title: "Computer Science",
-    desc: "The theory of computation, algorithms, and the design of information systems.",
-    href: "/formal-science/computer-science",
-    Icon: Terminal,
-    className: "theme-computer-science",
-    subtitle: "The Process"
-  },
-  {
-    title: "Systems Science",
-    desc: "Modeling complex systems where the whole is greater than the sum of its parts.",
-    href: "/formal-science/systems-science",
-    Icon: Network,
-    className: "theme-systems-science",
-    subtitle: "The Whole"
-  },
-  {
-    title: "Information Science",
-    desc: "The lifecycle of information: creation, storage, retrieval, and dissemination.",
-    href: "/formal-science/information-science",
-    Icon: Binary,
-    className: "theme-information-science",
-    subtitle: "The Data"
-  },
-  {
-    title: "Data Science",
-    desc: "Extracting knowledge and insights from structured and unstructured data.",
-    href: "/formal-science/data-science",
-    Icon: Sigma,
-    className: "theme-data-science",
-    subtitle: "The Insight"
-  },
+    name: "Sector III: Computation & Data",
+    icon: Cpu,
+    color: "text-emerald-400",
+    desc: "Processing information to solve problems and gain insight.",
+    items: [
+      {
+        title: "Computer Science",
+        desc: "The theory and practice of computation.",
+        href: "/formal-science/computer-science",
+        Icon: Terminal,
+        className: "theme-computer-science",
+        subtitle: "Algorithmic Thinking"
+      },
+      {
+        title: "Data Science",
+        desc: "Extracting meaning from vast datasets.",
+        href: "/formal-science/data-science",
+        Icon: Sigma,
+        className: "theme-data-science",
+        subtitle: "Empirical Insight"
+      }
+    ]
+  }
 ];
 
-// --- DATA: Ladder of Abstraction ---
+// Sidebar Ladder Data
 const ladder = [
-  { title: "Logic", level: "Foundation", Icon: Key, desc: "Truth & Validity" },
-  { title: "Set Theory", level: "Structure", Icon: Tally5, desc: "Collections" },
-  { title: "Number Systems", level: "Quantity", Icon: Tally5, desc: "Counting" },
-  { title: "Algebra", level: "Generalization", Icon: SquareFunction, desc: "Symbols" },
-  { title: "Calculus", level: "Change", Icon: Spline, desc: "Limits" },
-  { title: "Computation", level: "Process", Icon: Terminal, desc: "Algorithms" },
+  { title: "Logic", level: "Foundation", Icon: Key },
+  { title: "Set Theory", level: "Structure", Icon: Tally5 },
+  { title: "Number Systems", level: "Quantity", Icon: Tally5 },
+  { title: "Algebra", level: "Generalization", Icon: SquareFunction },
+  { title: "Calculus", level: "Change", Icon: Spline },
+  { title: "Computation", level: "Process", Icon: Terminal },
 ];
 
-// --- COMPONENT: Ladder Step ---
 function LadderStep({ item, isLast }: { item: typeof ladder[0]; isLast: boolean }) {
   return (
-    <div className="relative flex items-center gap-4 group h-14">
-      {/* Connector Line */}
+    <div className="relative flex items-center gap-4 group h-12">
       {!isLast && (
-        <div className="absolute left-[19px] top-10 h-8 w-0.5 bg-neutral-800 group-hover:bg-red-500/30 transition-colors" />
+        <div className="absolute left-[15px] top-8 h-8 w-0.5 bg-neutral-800 group-hover:bg-red-500/30 transition-colors" />
       )}
-      
-      <div className="z-10 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-neutral-800 bg-neutral-950 text-neutral-500 transition-all duration-300 group-hover:border-red-500/50 group-hover:text-red-400 group-hover:scale-110 group-hover:shadow-[0_0_15px_rgba(220,38,38,0.3)]">
-        <item.Icon size={16} />
+      <div className="z-10 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-neutral-800 bg-neutral-950 text-neutral-500 transition-all duration-300 group-hover:border-red-500/50 group-hover:text-red-400 group-hover:shadow-[0_0_10px_rgba(220,38,38,0.3)]">
+        <item.Icon size={14} />
       </div>
-      
-      <div className="flex flex-col">
-        <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-neutral-600 group-hover:text-red-400/80 transition-colors">
+      <div className="flex items-baseline gap-2">
+        <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-neutral-600 group-hover:text-red-400/80 transition-colors w-24 text-right">
           {item.level}
         </span>
         <span className="text-sm font-medium text-neutral-300 group-hover:text-white transition-colors">
@@ -110,48 +131,59 @@ export default function FormalSciencePage() {
   return (
     <main className="relative min-h-screen overflow-hidden bg-neutral-950 lg:px-16">
       
-      {/* 1. Background */}
       <GameOfLifeBackground />
       
-      {/* 2. Content Wrapper */}
-      <div className="relative z-10 mx-auto flex max-w-7xl flex-col py-20">
+      <div className="relative z-10 mx-auto flex max-w-7xl flex-col py-12">
         
         <PageHeader
           eyebrow="Domain 01"
           title="Formal Sciences"
-          subtitle="The study of systems, logic, and abstract structures. These disciplines rely on deductive reasoning to define the rules that govern patterns, essentially creating the 'Operating System' of reality."
+          subtitle="The study of systems, logic, and abstract structures. These disciplines rely on deductive reasoning to define the rules that govern patterns, creating the 'Operating System' of reality."
         />
 
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-12">
           
           {/* MAIN CONTENT (8 cols) */}
-          <div className="lg:col-span-8">
-             <motion.div 
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.5 }}
-                className="mb-8 flex items-center gap-3 border-b border-red-500/20 pb-4"
-             >
-              <BrainCog className="text-red-500" size={28} />
-              <h2 className="text-2xl font-bold text-white tracking-wide">Fields of Study</h2>
-            </motion.div>
-            
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-              {disciplines.map((branch, i) => (
-                <motion.div
-                  key={branch.href}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.1 + (i * 0.05) }}
-                >
-                  <TopicCard {...branch} />
-                </motion.div>
-              ))}
-            </div>
+          <div className="lg:col-span-8 space-y-16">
+             
+             {sectors.map((sector, idx) => (
+               <section key={sector.name}>
+                 <motion.div 
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: idx * 0.1 }}
+                    className="mb-6"
+                 >
+                    <div className="flex items-center gap-3 mb-2">
+                        <sector.icon className={sector.color} size={24} />
+                        <h2 className="text-xl font-bold text-white tracking-wide">{sector.name}</h2>
+                    </div>
+                    <p className="text-sm text-neutral-400 border-l-2 border-white/10 pl-4 ml-1">
+                        {sector.desc}
+                    </p>
+                 </motion.div>
+
+                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                    {sector.items.map((item, i) => (
+                        <motion.div
+                            key={item.title}
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.4, delay: 0.2 + (i * 0.1) }}
+                        >
+                            <TopicCard {...item} />
+                        </motion.div>
+                    ))}
+                 </div>
+               </section>
+             ))}
+
           </div>
 
           {/* SIDEBAR (4 cols) */}
-          <div className="flex flex-col gap-8 lg:col-span-4 lg:sticky lg:top-24 h-fit">
+          <div className="flex flex-col gap-8 lg:col-span-4 lg:sticky lg:top-8 h-fit pt-4">
             
             {/* Ladder Widget */}
             <motion.div 
@@ -161,40 +193,28 @@ export default function FormalSciencePage() {
               className="glass p-6 rounded-2xl border border-red-900/20 bg-gradient-to-b from-neutral-900/80 to-neutral-950/80"
             >
                <div className="mb-6 flex items-center justify-between border-b border-white/5 pb-4">
-                 <h3 className="text-sm font-bold uppercase tracking-widest text-red-400 flex items-center gap-2">
-                  <ChevronUp size={16} /> Abstraction Stack
+                 <h3 className="text-xs font-bold uppercase tracking-widest text-red-400 flex items-center gap-2">
+                  <Layers size={14} /> Abstraction Stack
                 </h3>
-                <span className="h-2 w-2 rounded-full bg-red-500 animate-pulse" />
                </div>
                
-               <div className="space-y-1 pl-2">
+               <div className="space-y-1">
                 {ladder.map((step, index) => (
                   <LadderStep key={step.title} item={step} isLast={index === ladder.length - 1} />
                 ))}
                </div>
-
-               <div className="mt-8 p-4 rounded-lg bg-red-950/20 border border-red-900/30 text-xs text-red-200/60 font-mono leading-relaxed">
-                 <span className="text-red-400 font-bold">{`>`} SYSTEM_NOTE:</span> Formal systems are built recursively. Each layer relies on the axioms of the layer below it.
-               </div>
             </motion.div>
 
-            {/* Applied Link */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.6 }}
-              className="group rounded-xl border border-neutral-800 bg-neutral-900/40 p-5 transition-all hover:border-red-500/30 hover:bg-neutral-900/60"
-            >
-              <h4 className="font-bold text-neutral-200 mb-2 flex items-center gap-2">
-                Applied Formalism
-              </h4>
-              <p className="text-sm text-neutral-400 mb-4 leading-relaxed">
-                See how these abstract rules are used to build the physical world in Engineering and Technology.
-              </p>
-              <Link href="/applied-science" className="inline-flex items-center gap-2 text-sm font-bold text-red-400 group-hover:text-red-300 group-hover:translate-x-1 transition-all">
-                Go to Applied Sciences <ChevronUp className="rotate-90 h-4 w-4" />
-              </Link>
-            </motion.div>
+            {/* Context Box */}
+            <div className="p-5 rounded-xl border border-dashed border-white/10 bg-neutral-900/20">
+                <h4 className="text-sm font-bold text-neutral-200 mb-2 flex items-center gap-2">
+                    <BrainCog size={16} className="text-yellow-500"/> Deductive Reasoning
+                </h4>
+                <p className="text-xs text-neutral-400 leading-relaxed">
+                    Unlike Natural Sciences which rely on observation (Induction), Formal Sciences rely on definitions and rules (Deduction). <br/><br/>
+                    <span className="text-white/60 italic">"If P implies Q, and P is true, then Q must be true."</span>
+                </p>
+            </div>
 
           </div>
         </div>
