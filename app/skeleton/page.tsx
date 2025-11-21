@@ -3,10 +3,11 @@ import PageHeader from "@/components/PageHeader";
 import FloatingSymbols from "@/components/FloatingSymbols";
 import {
   Component,
-} from "@/components/icons"; // Assuming Image is exported or available from lucide-react
+  Scale
+} from "@/components/icons";
 import React from "react";
 import TopicCard from "@/components/TopicCard";
-import { Gamepad2Icon, ImageIcon, LayoutTemplate } from "lucide-react";
+import { Gamepad2, History, ImageIcon, LayoutDashboard, LayoutTemplate } from "lucide-react";
 
 const placeholderSymbols = ["?","!","{ }","< >"];
 
@@ -32,7 +33,7 @@ const placeholderBranches = [
   {
     title: "Interactive Template",
     href: "/skeleton/interactive-template",
-    Icon: Gamepad2Icon,
+    Icon: Gamepad2,
     difficulty: "Template",
     description: "Layout examples for applets, quizzes, tabs, and practice problems.",
     className: "theme-skeleton",
@@ -46,6 +47,33 @@ const placeholderBranches = [
     description: "A completely assembled dummy lesson showing how all pieces fit together in a real page structure.",
     className: "theme-skeleton",
     subtitle: "Page Structure",
+  },
+  {
+    title: "Timeline Layout",
+    href: "/skeleton/timeline-layout",
+    Icon: History,
+    difficulty: "Layout",
+    description: "A vertical chronological layout for displaying sequences, history, or step-by-step evolution.",
+    className: "theme-skeleton",
+    subtitle: "Sequential Data",
+  },
+  {
+    title: "Dashboard Hub",
+    href: "/skeleton/dashboard-layout",
+    Icon: LayoutDashboard,
+    difficulty: "Layout",
+    description: "A dense, information-rich hub with a main grid and sticky sidebar widgets (Concept Maps, Ladders).",
+    className: "theme-skeleton",
+    subtitle: "Topic Hub",
+  },
+  {
+    title: "Comparative Layout",
+    href: "/skeleton/comparative-layout",
+    Icon: Scale,
+    difficulty: "Layout",
+    description: "Side-by-side comparisons and 'Vs' cards to build intuition through contrast.",
+    className: "theme-skeleton",
+    subtitle: "Contrast & Intuition",
   },
 ];
 
