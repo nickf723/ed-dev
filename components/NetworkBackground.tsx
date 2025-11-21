@@ -12,12 +12,19 @@ export default function NetworkBackground() {
 
     let w = (canvas.width = window.innerWidth);
     let h = (canvas.height = window.innerHeight);
-    const particles: Particle[] = [];
-    const particleCount = 60; // Adjust for density
-    const connectionDist = 150;
-    const mouseDist = 200;
+    
+    const particleCount = 75; // Good balance of density
+    const connectionDist = 180;
+    const mouseDist = 250;
 
-    const mouse = { x: 0, y: 0 };
+    // Neon Cyber Palette
+    const colors = [
+      "#22d3ee", // Cyan
+      "#a78bfa", // Violet
+      "#f472b6", // Pink
+      "#34d399", // Emerald
+      "#fbbf24", // Amber
+    ];
 
     class Particle {
       x: number;
@@ -25,13 +32,15 @@ export default function NetworkBackground() {
       vx: number;
       vy: number;
       size: number;
+      color: string;
 
       constructor() {
         this.x = Math.random() * w;
         this.y = Math.random() * h;
-        this.vx = Math.random() * 0.5 - 0.25;
-        this.vy = Math.random() * 0.5 - 0.25;
-        this.size = Math.random() * 2 + 1;
+        this.vx = Math.random() * 0.6 - 0.3;
+        this.vy = Math.random() * 0.6 - 0.3;
+        this.size = Math.random() * 2 + 1.5;
+        this.color = colors[Math.floor(Math.random() * colors.length)];
       }
 
       update() {
@@ -47,15 +56,20 @@ export default function NetworkBackground() {
         if (!ctx) return;
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fillStyle = "rgba(100, 200, 255, 0.5)";
+        ctx.fillStyle = this.color;
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = this.color;
         ctx.fill();
+        ctx.shadowBlur = 0; // Reset to avoid performance hit on lines
       }
     }
 
-    // Init
+    const particles: Particle[] = [];
     for (let i = 0; i < particleCount; i++) {
       particles.push(new Particle());
     }
+
+    let mouse = { x: -1000, y: -1000 };
 
     const animate = () => {
       ctx.clearRect(0, 0, w, h);
@@ -65,7 +79,7 @@ export default function NetworkBackground() {
         p.draw();
 
         // Connect to other particles
-        for (let j = i; j < particles.length; j++) {
+        for (let j = i + 1; j < particles.length; j++) {
           const p2 = particles[j];
           const dx = p.x - p2.x;
           const dy = p.y - p2.y;
@@ -73,13 +87,18 @@ export default function NetworkBackground() {
 
           if (dist < connectionDist) {
             ctx.beginPath();
-            ctx.strokeStyle = `rgba(100, 200, 255, ${
-              1 - dist / connectionDist
-            })`;
-            ctx.lineWidth = 0.5;
+            const gradient = ctx.createLinearGradient(p.x, p.y, p2.x, p2.y);
+            gradient.addColorStop(0, p.color);
+            gradient.addColorStop(1, p2.color);
+            
+            ctx.strokeStyle = gradient;
+            ctx.lineWidth = 0.6;
+            // Opacity based on distance
+            ctx.globalAlpha = 1 - dist / connectionDist;
             ctx.moveTo(p.x, p.y);
             ctx.lineTo(p2.x, p2.y);
             ctx.stroke();
+            ctx.globalAlpha = 1;
           }
         }
 
@@ -90,11 +109,13 @@ export default function NetworkBackground() {
 
         if (mDist < mouseDist) {
             ctx.beginPath();
-            ctx.strokeStyle = `rgba(255, 100, 200, ${1 - mDist / mouseDist})`; // Pink/Purple highlight
-            ctx.lineWidth = 0.8;
+            ctx.strokeStyle = p.color;
+            ctx.lineWidth = 1;
+            ctx.globalAlpha = 1 - mDist / mouseDist;
             ctx.moveTo(p.x, p.y);
             ctx.lineTo(mouse.x, mouse.y);
             ctx.stroke();
+            ctx.globalAlpha = 1;
         }
       });
 
@@ -109,7 +130,7 @@ export default function NetworkBackground() {
     };
 
     const handleMouseMove = (e: MouseEvent) => {
-        mouse.x = e.clientX - 336; // Offset for sidebar width approx
+        mouse.x = e.clientX; 
         mouse.y = e.clientY;
     }
 
@@ -125,7 +146,7 @@ export default function NetworkBackground() {
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 pointer-events-none z-0 opacity-30"
+      className="fixed inset-0 pointer-events-none z-0 opacity-70 mix-blend-screen"
     />
   );
 }
