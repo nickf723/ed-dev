@@ -44,6 +44,11 @@ const disciplines = [
       Icon: Zap,
       className: "theme-chemistry"
     },
+    {title: "Titration Lab", 
+      desc: "Interactive lab on acid-base titrations and pH calculations.", 
+      href: "/natural-science/chemistry/titration-lab", 
+      Icon: FlaskConical, 
+      className: "theme-chemistry"},
   ];
 
 
