@@ -366,14 +366,14 @@
 
   .theme-computer-science {
     --theme-gradient-start: #3cff00;
-    --theme-gradient-end: #000000;
+    --theme-gradient-end: #2c2c2c;
     --theme-icon-hover: #15ff00;
     --theme-underline: #1eff00;
     --theme-text-title: #ffffff;
     --theme-text-header: #4b4b4b;
     --theme-text-icon: var(--theme-text-title);
-    --theme-symbol-color: rgba(255, 255, 255, 0.15);
-    --theme-blob-1: rgb(255, 255, 255);
+    --theme-symbol-color: rgba(255, 255, 255, 0.096);
+    --theme-blob-1: rgba(255, 255, 255, 0.274);
     --theme-blob-2: rgba(75, 75, 75, 0.2);
     --theme-grid-color: rgba(255, 255, 255, 0.08);
   }

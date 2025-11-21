@@ -53,14 +53,6 @@ const disciplines = [
     subtitle: "Theory of Computation"
   },
   {
-    title: "Statistics",
-    desc: "The science of collecting, analyzing, interpreting, and presenting empirical data.",
-    href: "/formal-science/mathematics/statistics",
-    Icon: ChartScatter,
-    className: "theme-statistics",
-    subtitle: "The Logic of Uncertainty"
-  },
-  {
     title: "Systems Science",
     desc: "The interdisciplinary study of complex systems, focusing on how parts interact to form wholes.",
     href: "/formal-science/systems-science",
@@ -75,6 +67,14 @@ const disciplines = [
     Icon: Binary,
     className: "theme-information-science",
     subtitle: "Data & Knowledge"
+  },
+  {
+    title: "Data Science",
+    desc: "The interdisciplinary field that uses scientific methods, processes, algorithms and systems to extract knowledge and insights from structured and unstructured data.",
+    href: "/formal-science/data-science",
+    Icon: Sigma,
+    className: "theme-data-science",
+    subtitle: "Insights from Data"
   },
 ];
 

@@ -14,7 +14,7 @@ import {
   Telescope,
   Beaker,
   ChevronDown,
-  HelpCircle, // Icon for Mysteries
+  HelpCircle,
   Zap
 } from "@/components/icons";
 import React from "react";
@@ -99,9 +99,7 @@ const frontiers = [
 function TopicCard({ item }: { item: typeof disciplines[0] }) {
   return (
     <Link href={item.href} className="group relative flex flex-col overflow-hidden rounded-3xl border border-white/10 bg-neutral-900/40 p-6 transition-all hover:border-white/20 hover:bg-neutral-900/60 hover:-translate-y-1">
-       {/* Hover Glow */}
        <div className={`absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-500 bg-gradient-to-br from-white/10 to-transparent`} />
-       
        <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-neutral-800 text-neutral-300 group-hover:scale-110 transition-transform duration-300">
          <item.Icon size={24} />
        </div>
