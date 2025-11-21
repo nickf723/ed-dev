@@ -84,7 +84,7 @@ export default function GameOfLifeBackground() {
       setTimeout(() => {
         update();
         animationId = requestAnimationFrame(loop);
-      }, 100); 
+      }, 1000); 
     };
 
     // Interaction
