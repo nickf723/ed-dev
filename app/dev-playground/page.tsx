@@ -6,8 +6,10 @@ import {
   LockKeyholeOpen,
   Zap,
   Ghost,
-  Sparkle
+  Sparkle,
+  ScanLine,
 } from "@/components/icons";
+import { BoxSelect } from "lucide-react";
 
 const devSymbols = [
   "CSS", "JS", "3D", "GL", "R3F"
@@ -21,6 +23,13 @@ export default function DevPlaygroundPage() {
       href: "#",
       Icon: Zap,
       className: "card-neon-pulse"
+    },
+    {
+      title: "Gradient Border",
+      desc: "Animated RGB gradient rotating around the card.",
+      href: "#",
+      Icon: BoxSelect,
+      className: "card-gradient-border"
     },
     {
       title: "Holographic",
@@ -37,18 +46,18 @@ export default function DevPlaygroundPage() {
       className: "card-frost"
     },
     {
+      title: "Data Stream",
+      desc: "CRT scanline animation for retro terminals.",
+      href: "#",
+      Icon: ScanLine,
+      className: "card-data-stream"
+    },
+    {
       title: "Glitch Text",
       desc: "RGB split animation for errors or tech themes.",
       href: "#",
       Icon: LockKeyholeOpen,
       className: "effect-glitch"
-    },
-    {
-      title: "Rainbow Smear",
-      desc: "Text shadow layering for retro vibes.",
-      href: "#",
-      Icon: LockKeyholeOpen,
-      className: "text-rainbow-smear"
     },
   ];
 
@@ -80,6 +89,7 @@ export default function DevPlaygroundPage() {
             <button className="btn-neon">Neon Action</button>
             <button className="btn-cyber">Cyber Press</button>
             <button className="btn-glass">Glass Click</button>
+            <button className="btn-shimmer">Shimmer</button>
         </div>
       </section>
     </main>

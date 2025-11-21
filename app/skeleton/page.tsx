@@ -2,12 +2,11 @@
 import PageHeader from "@/components/PageHeader";
 import FloatingSymbols from "@/components/FloatingSymbols";
 import {
-  BookMarked,
   Component,
-} from "@/components/icons";
+} from "@/components/icons"; // Assuming Image is exported or available from lucide-react
 import React from "react";
 import TopicCard from "@/components/TopicCard";
-import { Gamepad2, LayoutTemplate } from "lucide-react";
+import { Gamepad2Icon, ImageIcon, LayoutTemplate } from "lucide-react";
 
 const placeholderSymbols = ["?","!","{ }","< >"];
 
@@ -22,9 +21,18 @@ const placeholderBranches = [
     subtitle: "Static Blocks",
   },
   {
+    title: "Multimedia & Links",
+    href: "/skeleton/multimedia-gallery",
+    Icon: ImageIcon,
+    difficulty: "Reference",
+    description: "Showcase of visual media components, video embeds, and internal/external navigation links.",
+    className: "theme-skeleton",
+    subtitle: "Media Blocks",
+  },
+  {
     title: "Interactive Template",
     href: "/skeleton/interactive-template",
-    Icon: Gamepad2,
+    Icon: Gamepad2Icon,
     difficulty: "Template",
     description: "Layout examples for applets, quizzes, tabs, and practice problems.",
     className: "theme-skeleton",
