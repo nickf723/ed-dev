@@ -9,11 +9,15 @@ import LessonHeader, {
   ExampleBlock,
   StepByStepSolution,
   CollapsibleTopic,
+  BlockQuote,
+  Callout,
+  ProcedureList,
+  DataGrid
 } from "@/components/LessonBlocks";
 import {
   BookOpen,
   Palette,
-  Lightbulb
+  Lightbulb,
 } from "@/components/icons";
 
 export default function ComponentGalleryPage() {
@@ -86,6 +90,55 @@ export default function ComponentGalleryPage() {
                 It can contain any other component inside it!
             </SideNote>
           </CollapsibleTopic>
+        </section>
+
+        {/* NEW: Academic & Utility Blocks */}
+        <section>
+          <h2 className="text-xl font-bold text-pink-400 border-b border-pink-500/30 pb-2 mb-6 flex items-center gap-2">
+             4. Academic & Utility Blocks
+          </h2>
+          
+          <ContentSubhead title="Quotes & Citations (Humanities)" />
+          <BlockQuote author="René Descartes" source="Discourse on the Method">
+            I think, therefore I am.
+          </BlockQuote>
+
+          <ContentSubhead title="Alerts & Notifications (Universal)" />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+             <Callout type="info" title="Did You Know?">
+               Water expands when it freezes, which is why ice floats.
+             </Callout>
+             <Callout type="warning" title="Caution">
+               Always wear safety goggles when handling acids.
+             </Callout>
+             <Callout type="success" title="Correct!">
+               That is the right answer.
+             </Callout>
+             <Callout type="error" title="Common Mistake">
+               Do not confuse correlation with causation.
+             </Callout>
+          </div>
+
+          <ContentSubhead title="Procedures (Labs / CS)" />
+          <ProcedureList 
+            title="Titration Procedure"
+            steps={[
+                "Fill the burette with the titrant.",
+                "Add a known volume of analyte to the flask.",
+                "Add a few drops of indicator.",
+                "Slowly add titrant until color change occurs."
+            ]} 
+          />
+
+          <ContentSubhead title="Data Tables (Sciences)" />
+          <DataGrid 
+            headers={["Element", "Symbol", "Atomic Mass"]}
+            data={[
+                ["Hydrogen", "H", "1.008"],
+                ["Helium", "He", "4.0026"],
+                ["Lithium", "Li", "6.94"],
+            ]}
+          />
         </section>
 
       </div>
