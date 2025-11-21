@@ -2,68 +2,113 @@
 @tailwind components;
 @tailwind utilities;
 
-
-
 .dev-playground-page {
-  min-height: window-height;
-  background-color: var(--bg-color-light);
-  color: var(--text-dark);
-  display: flex;
-  flex-direction: column;
+  min-height: 100vh;
 }
 
-.playground-header {
-  border-bottom: 2px solid var(--border-color);
-  padding: 1.5rem;
-  margin-bottom: 1rem;
-}
-
-.playground-header h1 {
-  margin: 0;
-  color: var(--text-dark);
-}
-
-.playground-header p {
-  margin: 0.5rem 0 0 0;
-  color: var(--text-medium);
-}
-
-.playground-main {
-  padding: 1.5rem;
-}
-
+/* --- Text Effects --- */
 .text-rainbow-smear {
     text-shadow:
-      35px 35px 15px rgba(128, 0, 255, .726),  
-      30px 30px 15px rgba(0, 0, 255, 0.726),
-      25px 25px 15px rgba(0, 255, 255, 0.726),  
-      20px 20px 15px rgba(0, 255, 0, .726),  
-      15px 15px 15px rgba(255, 255, 0, 0.726),
-      10px 10px 15px rgba(255, 136, 0, .726),  
-      5px 5px 15px rgba(255, 0, 0, .726);
+      3px 3px 0px rgba(255, 0, 0, 0.7),
+      6px 6px 0px rgba(255, 165, 0, 0.7),
+      9px 9px 0px rgba(255, 255, 0, 0.7),
+      12px 12px 0px rgba(0, 128, 0, 0.7),
+      15px 15px 0px rgba(0, 0, 255, 0.7),
+      18px 18px 0px rgba(75, 0, 130, 0.7),
+      21px 21px 0px rgba(238, 130, 238, 0.7);
 }
 
-
-
-.effect-glow {
-    text-shadow:
-      0 0 5px var(--theme-text-title),
-      0 0 10px var(--theme-text-title),
-      0 0 20px var(--theme-text-title),
-      0 0 40px var(--theme-text-title);
+.effect-glitch:hover h2 {
+  animation: glitch 0.3s cubic-bezier(.25, .46, .45, .94) both infinite;
+  color: #fff;
 }
 
-.effect-glitch {
-  text-shadow:
-    2px 0 #00ff00,
-    -2px 0 #ff00ff,
-    0 2px #00ff00,
-    0 -2px #ff00ff;
+@keyframes glitch {
+  0% { transform: translate(0) }
+  20% { transform: translate(-2px, 2px) }
+  40% { transform: translate(-2px, -2px) }
+  60% { transform: translate(2px, 2px) }
+  80% { transform: translate(2px, -2px) }
+  100% { transform: translate(0) }
 }
 
-.effect-cursor:hover {
-  text-transform: uppercase;
-  text-align: center;
-  text-decoration: wavy underline var(--theme-underline);
+/* --- Card Variants --- */
+
+/* Neon Pulse */
+.card-neon-pulse {
+    border-color: #0ff;
+    box-shadow: 0 0 5px #0ff, inset 0 0 10px rgba(0, 255, 255, 0.1);
+}
+.card-neon-pulse:hover {
+    animation: pulse-neon 1.5s infinite alternate;
+}
+@keyframes pulse-neon {
+    from { box-shadow: 0 0 5px #0ff, inset 0 0 5px rgba(0, 255, 255, 0.1); }
+    to { box-shadow: 0 0 20px #0ff, inset 0 0 15px rgba(0, 255, 255, 0.3); }
 }
 
+/* Holographic */
+.card-holographic {
+    background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.05) 100%);
+    position: relative;
+    overflow: hidden;
+}
+.card-holographic:hover::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: conic-gradient(
+        from 0deg, 
+        transparent 0deg, 
+        rgba(255, 0, 0, 0.2) 60deg, 
+        rgba(0, 255, 0, 0.2) 120deg, 
+        rgba(0, 0, 255, 0.2) 180deg, 
+        transparent 240deg
+    );
+    animation: rotate-holo 4s linear infinite;
+    pointer-events: none;
+    mix-blend-mode: color-dodge;
+}
+@keyframes rotate-holo {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Frost */
+.card-frost {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(10px) contrast(120%) brightness(110%);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* --- Button Variants --- */
+.btn-neon {
+    @apply px-6 py-3 font-bold text-cyan-300 uppercase tracking-wider border-2 border-cyan-400 rounded bg-transparent transition-all;
+    text-shadow: 0 0 5px cyan;
+    box-shadow: 0 0 5px cyan, inset 0 0 5px cyan;
+}
+.btn-neon:hover {
+    background: cyan;
+    color: black;
+    box-shadow: 0 0 20px cyan, inset 0 0 10px cyan;
+}
+
+.btn-cyber {
+    @apply px-6 py-3 font-mono font-bold text-yellow-300 bg-neutral-900 border border-yellow-500 relative overflow-hidden transition-all;
+    clip-path: polygon(10% 0, 100% 0, 100% 70%, 90% 100%, 0 100%, 0 30%);
+}
+.btn-cyber:hover {
+    @apply bg-yellow-500 text-black;
+    transform: translate(-2px, -2px);
+    box-shadow: 4px 4px 0px rgba(255, 255, 255, 0.2);
+}
+
+.btn-glass {
+    @apply px-6 py-3 font-semibold text-white rounded-full border border-white/20 bg-white/5 backdrop-blur-md transition-all;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.2);
+}
+.btn-glass:hover {
+    @apply bg-white/10 border-white/40;
+    box-shadow: 0 0 15px rgba(255,255,255,0.1);
+}

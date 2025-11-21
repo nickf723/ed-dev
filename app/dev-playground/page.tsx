@@ -1,135 +1,69 @@
-// app/formal-science/page.tsx
 "use client";
 import PageHeader from "@/components/PageHeader";
 import FloatingSymbols from "@/components/FloatingSymbols";
 import TopicCard from "@/components/TopicCard";
 import {
-  Calculator,
   LockKeyholeOpen,
-  Network,
-  ChartScatter,
-  Terminal,
-  Binary,
+  Zap,
+  Ghost,
+  Sparkle
 } from "@/components/icons";
 
-const formalScienceSymbols = [
-  "{}",
-  "[]",
-  "λ",
-  "∀",
-  "∃",
-  "∈",
-  "σ",
-  "μ",
-  "()",
-  "⇒",
-  "⇔",
-  "∴",
-  "f(x)",
-  "0",
-  "1",
+const devSymbols = [
+  "CSS", "JS", "3D", "GL", "R3F"
 ];
 
-export default function FormalSciencePage() {
-  const disciplines = [
+export default function DevPlaygroundPage() {
+  const experiments = [
     {
-      title: "Rainbow Effect",
-      desc: "Placeholder text effect for demonstration purposes.",
-      href: "",
-      Icon: LockKeyholeOpen,
-      className: "text-rainbow-smear"
+      title: "Neon Pulse",
+      desc: "High-contrast glowing borders for emphasis.",
+      href: "#",
+      Icon: Zap,
+      className: "card-neon-pulse"
     },
     {
-      title: "Move Effect",
-      desc: "Placeholder text effect for demonstration purposes.",
-      href: "",
-      Icon: LockKeyholeOpen,
-      className: "effect-shift"
+      title: "Holographic",
+      desc: "Simulated iridescent foil effect on hover.",
+      href: "#",
+      Icon: Sparkle,
+      className: "card-holographic"
     },
     {
-      title: "Placeholder Effect",
-      desc: "Placeholder text effect for demonstration purposes.",
-      href: "",
-      Icon: LockKeyholeOpen,
-      className: ""
+      title: "Glass Frost",
+      desc: "Heavy blur and noise texture for a frosted look.",
+      href: "#",
+      Icon: Ghost,
+      className: "card-frost"
     },
-        {
-      title: "Glitch Effect",
-      desc: "Placeholder text effect for demonstration purposes.",
-      href: "",
+    {
+      title: "Glitch Text",
+      desc: "RGB split animation for errors or tech themes.",
+      href: "#",
       Icon: LockKeyholeOpen,
       className: "effect-glitch"
     },
-        {
-      title: "Placeholder Effect",
-      desc: "Placeholder text effect for demonstration purposes.",
-      href: "",
+    {
+      title: "Rainbow Smear",
+      desc: "Text shadow layering for retro vibes.",
+      href: "#",
       Icon: LockKeyholeOpen,
-      className: ""
-    },
-        {
-      title: "Placeholder Effect",
-      desc: "Placeholder text effect for demonstration purposes.",
-      href: "",
-      Icon: LockKeyholeOpen,
-      className: ""
-    },
-        {
-      title: "Glow Up Effect",
-      desc: "Placeholder text effect for demonstration purposes.",
-      href: "",
-      Icon: LockKeyholeOpen,
-      className: "effect-glow"
-    },
-        {
-      title: "Placeholder Effect",
-      desc: "Placeholder text effect for demonstration purposes.",
-      href: "",
-      Icon: LockKeyholeOpen,
-      className: ""
-    },
-        {
-      title: "Placeholder Effect",
-      desc: "Placeholder text effect for demonstration purposes.",
-      href: "",
-      Icon: LockKeyholeOpen,
-      className: ""
-    },
-        {
-      title: "Hover Effect",
-      desc: "Placeholder text effect for demonstration purposes.",
-      href: "",
-      Icon: LockKeyholeOpen,
-      className: "effect-cursor"
-    },
-        {
-      title: "Placeholder Effect",
-      desc: "Placeholder text effect for demonstration purposes.",
-      href: "",
-      Icon: LockKeyholeOpen,
-      className: ""
-    },
-        {
-      title: "Placeholder Effect",
-      desc: "Placeholder text effect for demonstration purposes.",
-      href: "",
-      Icon: LockKeyholeOpen,
-      className: ""
+      className: "text-rainbow-smear"
     },
   ];
 
   return (
     <main className="topic-page theme-dev-playground lg:px-16">
-      <FloatingSymbols symbols={formalScienceSymbols} />
+      <FloatingSymbols symbols={devSymbols} />
       <PageHeader
-        eyebrow="Discipline Overview"
-        title="Page Header"
-        subtitle="Subtitle that should be fairly long to show how it looks on multiple lines in this particular design."
+        eyebrow="Laboratory"
+        title="UI Playground"
+        subtitle="Experimental styles, animations, and component behaviors. A testing ground for the future of the interface."
       />
       <section className="topic-grid">
-        {disciplines.map((branch) => (
+        {experiments.map((branch) => (
           <TopicCard
-            key={branch.href}
+            key={branch.title}
             href={branch.href}
             title={branch.title}
             desc={branch.desc}
@@ -137,6 +71,16 @@ export default function FormalSciencePage() {
             className={branch.className}
           />
         ))}
+      </section>
+
+      {/* Button Lab */}
+      <section className="w-full max-w-7xl mt-16">
+        <h2 className="text-2xl font-bold text-white mb-8 border-b border-white/10 pb-4">Button Lab</h2>
+        <div className="flex flex-wrap gap-6 justify-center">
+            <button className="btn-neon">Neon Action</button>
+            <button className="btn-cyber">Cyber Press</button>
+            <button className="btn-glass">Glass Click</button>
+        </div>
       </section>
     </main>
   );
