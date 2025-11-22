@@ -1,718 +1,246 @@
-// components/Sidebar.tsx
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
-  Menu,
-  X,
+  Home,
   ChevronDown,
   ChevronRight,
-  Home,
-  BookOpen,
-  Calculator,
-  Ruler,
-  FlaskConical,
+  Menu,
+  X,
+  Binary,
   Atom,
-  Dna,
-  Mountain,
-  Orbit,
-  Waves,
-  Scale,
-  Zap,
-  TrendingUp,
-  SquareFunction,
-  GitMerge,
-  Shuffle,
-  BookMarked,
-  Variable,
-  Move,
-  SquarePlus,
-  Percent,
-  Equal,
-  LineChart,
-  Puzzle,
-  Baby, // <-- Added
-  Network, // <-- Added
-  Sigma, // <-- Added
-  Brain, // <-- Added
-  Flame, // <-- Added
-  TreeDeciduous, // <-- Added
-  SquareDivide, // <-- Added
-  AlarmSmoke, // <-- Added
-  SquareRadical, // <-- Added
-  Tally5, // <-- Added
-  GitMerge as EuclideanIcon, // <-- Added alias
-  Lock, // <-- Added
-  HelpCircle, // <-- Added
-  Parentheses, // <-- Added
-  Minus, // <-- Added
-  Plus, // <-- Added
-  Waypoints,
-  Spline,
-  SquareX,
-  Wrench,
-  Earth,
-  Wifi,
   Handshake,
   Hammer,
   Palette,
-} from "@/components/icons";
-import { Binary, LinkIcon, Skull, Theater } from "lucide-react";
+  Link as LinkIcon,
+  BookOpen,
+  Skull,
+  Theater,
+  Wrench,
+  Calculator,
+  Key,
+  Terminal,
+  Network,
+  Sigma,
+  Search,
+} from "@/components/icons"; // Ensure these exports exist in your icons.ts or lucide-react
+import { LayoutGrid } from "lucide-react";
+
+// Define the domain mapping for theming
+const getDomain = (path: string) => {
+  if (path.startsWith("/formal-science")) return "formal";
+  if (path.startsWith("/natural-science")) return "natural";
+  if (path.startsWith("/social-science")) return "social";
+  if (path.startsWith("/applied-science")) return "applied";
+  if (path.startsWith("/humanities")) return "humanities";
+  if (path.startsWith("/interdisciplines")) return "inter";
+  if (path.startsWith("/glossary")) return "meta";
+  if (path.startsWith("/skeleton")) return "meta";
+  if (path.startsWith("/dev-playground")) return "meta";
+  if (path.startsWith("/stage")) return "meta";
+  return "home";
+};
+
+// Theme colors for each domain (matching your themes.css variables roughly)
+const domainColors: Record<string, string> = {
+  formal: "text-red-400 border-red-500/30 bg-red-500/10",
+  natural: "text-cyan-400 border-cyan-500/30 bg-cyan-500/10",
+  social: "text-violet-400 border-violet-500/30 bg-violet-500/10",
+  applied: "text-orange-400 border-orange-500/30 bg-orange-500/10",
+  humanities: "text-amber-400 border-amber-500/30 bg-amber-500/10",
+  inter: "text-lime-400 border-lime-500/30 bg-lime-500/10",
+  meta: "text-neutral-200 border-white/20 bg-white/5",
+  home: "text-blue-400 border-blue-500/30 bg-blue-500/10",
+};
+
+// Hover colors (text only)
+const hoverColors: Record<string, string> = {
+  formal: "hover:text-red-300",
+  natural: "hover:text-cyan-300",
+  social: "hover:text-violet-300",
+  applied: "hover:text-orange-300",
+  humanities: "hover:text-amber-300",
+  inter: "hover:text-lime-300",
+  meta: "hover:text-white",
+  home: "hover:text-blue-300",
+};
 
 export default function Sidebar() {
   const pathname = usePathname();
-  const [open, setOpen] = useState(false);
-
-  // --- EXPAND STATE ---
-  const [expandFormalScience, setExpandFormalScience] = useState(
-    pathname.startsWith("/formal-science")
-  );
-  const [expandMath, setExpandMath] = useState(
-    pathname.startsWith("/formal-science/mathematics")
-  );
+  const [isOpen, setIsOpen] = useState(false);
+  const domain = getDomain(pathname);
   
-  // --- Algebra States
-  const [expandAlgebra, setExpandAlgebra] = useState(
-    pathname.startsWith("/formal-science/mathematics/algebra")
-  );
-  const [expandPreAlgebra, setExpandPreAlgebra] = useState(
-    pathname.startsWith("/formal-science/mathematics/algebra/pre-algebra")
-  );
-  const [expandElemAlgebra, setExpandElemAlgebra] = useState(
-    pathname.startsWith(
-      "/formal-science/mathematics/algebra/elementary-algebra"
-    )
-  );
-
-  // --- Number Theory States
-  const [expandNumTheory, setExpandNumTheory] = useState(
-    pathname.startsWith("/formal-science/mathematics/number-theory")
-  );
-  const [expandNTTier0, setExpandNTTier0] = useState(
-    pathname.startsWith("/formal-science/mathematics/number-theory/tier-0-foundations")
-  );
-  const [expandNTTier1, setExpandNTTier1] = useState(
-    pathname.startsWith("/formal-science/mathematics/number-theory/elementary")
-  );
-  const [expandNTTier2, setExpandNTTier2] = useState(
-    pathname.startsWith("/formal-science/mathematics/number-theory/middle-school")
-  );
-  const [expandNTTier3, setExpandNTTier3] = useState(
-    pathname.startsWith("/formal-science/mathematics/number-theory/high-school")
-  );
-  const [expandNTTier4, setExpandNTTier4] = useState(
-    pathname.startsWith("/formal-science/mathematics/number-theory/undergraduate")
-  );
-  const [expandNTTier5, setExpandNTTier5] = useState(
-    pathname.startsWith("/formal-science/mathematics/number-theory/graduate")
-  );
-  const [expandNTTier6, setExpandNTTier6] = useState(
-    pathname.startsWith("/formal-science/mathematics/number-theory/frontier")
-  );
+  // Auto-collapse functionality or persistent state could go here
+  // For now, we keep simple local state for sub-menus
   
-  // --- Other States
-  const [expandLogic, setExpandLogic] = useState(
-    pathname.startsWith("/formal-science/logic")
-  );
-  const [expandNatural, setExpandNatural] = useState(
-    pathname.startsWith("/natural-science")
-  );
-  const [expandPhysics, setExpandPhysics] = useState(
-    pathname.startsWith("/natural-science/physics")
-  );
-  const [expandMechanics, setExpandMechanics] = useState(
-    pathname.startsWith("/natural-science/physics/classical-mechanics")
-  );
-  const [expandSocial, setExpandSocial] = useState(
-    pathname.startsWith("/social-science")
-  );
-  const [expandApplied, setExpandApplied] = useState(
-    pathname.startsWith("/applied-science")
-  );
-  const [expandHumanities, setExpandHumanities] = useState(
-    pathname.startsWith("/humanities")
-  );
-  const [expandInter, setExpandInter] = useState(
-    pathname.startsWith("/interdisciplines")
-  );
-  // --- END EXPAND STATE ---
-
   return (
     <>
-      {/* Mobile toggle */}
+      {/* Mobile Toggle */}
       <button
-        onClick={() => setOpen(!open)}
-        className="fixed top-4 left-4 z-50 rounded-md border border-neutral-700 bg-neutral-900/80 p-2 text-neutral-300 transition hover:text-red-300 md:hidden"
+        onClick={() => setIsOpen(!isOpen)}
+        className="fixed top-4 left-4 z-50 rounded-lg border border-neutral-800 bg-neutral-950/80 p-2 text-neutral-400 backdrop-blur-md md:hidden"
       >
-        {open ? <X size={20} /> : <Menu size={20} />}
+        {isOpen ? <X size={20} /> : <Menu size={20} />}
       </button>
 
-      {/* Sidebar */}
+      {/* Sidebar Container */}
       <aside
-        className={`scroll-bar glass fixed left-0 top-0 z-40 h-screen overflow-y-auto border-r border-neutral-800
-                  transition-all duration-300 ease-in-out
-                  ${
-                    open
-                      ? "w-[var(--sidebar-width)] translate-x-0"
-                      : "w-[var(--sidebar-width)] -translate-x-full md:translate-x-0"
-                  }`}
+        className={`fixed inset-y-0 left-0 z-40 w-[var(--sidebar-width)] flex-col border-r border-white/5 bg-neutral-950/90 backdrop-blur-xl transition-transform duration-300 ease-in-out
+          ${isOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}
+        `}
       >
-        <nav className="flex flex-col gap-2 p-4 pt-16 pb-24 text-sm font-medium text-neutral-300 md:pt-6">
-          {/* Home */}
-          <SidebarLink
-            href="/"
-            label="Home"
-            icon={<Home size={16} />}
-            active={pathname === "/"}
-          />
+        {/* Logo / Header area */}
+        <div className="flex h-20 items-center px-6 border-b border-white/5">
+           <div className="flex items-center gap-3">
+             <div className={`flex h-8 w-8 items-center justify-center rounded-lg border bg-opacity-20 ${domainColors[domain].replace('text-', 'border-')}`}>
+                <LayoutGrid size={18} className={domainColors[domain].split(" ")[0]} />
+             </div>
+             <div>
+                <h1 className="text-sm font-bold tracking-wider text-white">KNOWLEDGE</h1>
+                <p className="text-[10px] font-mono text-neutral-500">NETWORK v2.0</p>
+             </div>
+           </div>
+        </div>
 
-          {/* Formal Science */}
-          <Dropdown
-            label="Formal Science"
-            icon={<Binary size={16} />}
-            expanded={expandFormalScience}
-            setExpanded={setExpandFormalScience}
-            href="/formal-science"
-            active={pathname === "/formal-science"}
-          >
-            {/* Mathematics Dropdown */}
-            <Dropdown
-              label="Mathematics"
-              icon={<Calculator size={14} />}
-              expanded={expandMath}
-              setExpanded={setExpandMath}
-              href="/formal-science/mathematics"
-              active={pathname.startsWith("/formal-science/mathematics")}
-              nested
-            >
-              {/* Algebra Dropdown */}
-              <Dropdown
-                label="Algebra"
-                icon={<SquareFunction size={14} />}
-                expanded={expandAlgebra}
-                setExpanded={setExpandAlgebra}
-                href="/formal-science/mathematics/algebra"
-                active={pathname.startsWith("/formal-science/mathematics/algebra")}
-                nested
-              >
-                {/* Pre-Algebra Dropdown */}
-                <Dropdown
-                  label="Pre-Algebra"
-                  icon={<BookMarked size={14} />}
-                  expanded={expandPreAlgebra}
-                  setExpanded={setExpandPreAlgebra}
-                  href="/formal-science/mathematics/algebra/pre-algebra"
-                  active={pathname.startsWith(
-                    "/formal-science/mathematics/algebra/pre-algebra"
-                  )}
-                  nested
-                >
-                  <SidebarLink
-                    href="/formal-science/mathematics/algebra/pre-algebra/variables-expressions"
-                    label="Variables & Expressions"
-                    icon={<Variable size={14} />}
-                    active={pathname.includes("variables-expressions")}
-                    nested
-                  />
-                  <SidebarLink
-                    href="/formal-science/mathematics/algebra/pre-algebra/ratios-rates-proportions"
-                    label="Ratios, Rates & Proportions"
-                    icon={<Percent size={14} />}
-                    active={pathname.includes("ratios-rates-proportions")}
-                    nested
-                  />
-                  <SidebarLink
-                    href="/formal-science/mathematics/algebra/pre-algebra/equations-inequalities"
-                    label="Equations & Inequalities"
-                    icon={<Equal size={14} />}
-                    active={pathname.includes("equations-inequalities")}
-                    nested
-                  />
-                  <SidebarLink
-                    href="/formal-science/mathematics/algebra/pre-algebra/linear-reasoning"
-                    label="Linear Reasoning"
-                    icon={<LineChart size={14} />}
-                    active={pathname.includes("linear-reasoning")}
-                    nested
-                  />
-                  <SidebarLink
-                    href="/formal-science/mathematics/algebra/pre-algebra/structure-logic"
-                    label="Structure & Logic"
-                    icon={<Puzzle size={14} />}
-                    active={pathname.includes("structure-logic")}
-                    nested
-                  />
-                </Dropdown>
-
-                {/* Elementary Algebra Dropdown */}
-                <Dropdown
-                  label="Elementary Algebra"
-                  expanded={expandElemAlgebra}
-                  setExpanded={setExpandElemAlgebra}
-                  href="/formal-science/mathematics/algebra/elementary-algebra"
-                  active={
-                    pathname ===
-                    "/formal-science/mathematics/algebra/elementary-algebra"
-                  }
-                  nested
-                >
-                  <span className="px-3 py-2 text-neutral-500 italic">
-                    (Coming Soon)
-                  </span>
-                </Dropdown>
-              </Dropdown>
-              
-              {/* --- NEW NUMBER THEORY SECTION --- */}
-              <Dropdown
-                label="Number Theory"
-                icon={<SquarePlus size={14} />}
-                expanded={expandNumTheory}
-                setExpanded={setExpandNumTheory}
-                href="/formal-science/mathematics/number-theory"
-                active={pathname.startsWith(
-                  "/formal-science/mathematics/number-theory"
-                )}
-                nested
-              >
-                {/* Tier 0 */}
-                <Dropdown
-                  label="Foundations"
-                  icon={<Baby size={14} />}
-                  expanded={expandNTTier0}
-                  setExpanded={setExpandNTTier0}
-                  href="/formal-science/mathematics/number-theory/foundations"
-                  active={pathname.startsWith("/formal-science/mathematics/number-theory/foundations")}
-                  nested
-                >
-                  <SidebarLink href="/formal-science/mathematics/number-theory/foundations/counting-cardinality" label="Counting & Cardinality" icon={<Tally5 size={14} />} active={pathname.includes("counting-cardinality")} nested />
-                  <SidebarLink href="/formal-science/mathematics/number-theory/foundations/early-number-concepts" label="Early Number Concepts" icon={<Tally5 size={14} />} active={pathname.includes("early-number-concepts")} nested />
-                  <SidebarLink href="/formal-science/mathematics/number-theory/foundations/early-operations" label="Early Operations" icon={<Plus size={14} />} active={pathname.includes("early-operations")} nested />
-                </Dropdown>
-                {/* Tier 1 */}
-                <Dropdown
-                  label="Elementary"
-                  icon={<Calculator size={14} />}
-                  expanded={expandNTTier1}
-                  setExpanded={setExpandNTTier1}
-                  href="/formal-science/mathematics/number-theory/elementary"
-                  active={pathname.startsWith("/formal-science/mathematics/number-theory/elementary")}
-                  nested
-                >
-                  <SidebarLink href="/formal-science/mathematics/number-theory/elementary/whole-number-arithmetic" label="Whole Number Arithmetic" icon={<Calculator size={14} />} active={pathname.includes("whole-number-arithmetic")} nested />
-                  <SidebarLink href="/formal-science/mathematics/number-theory/elementary/properties-of-operations" label="Properties of Operations" icon={<Parentheses size={14} />} active={pathname.includes("properties-of-operations")} nested />
-                  <SidebarLink href="/formal-science/mathematics/number-theory/elementary/factors-multiples" label="Factors & Multiples" icon={<SquareX size={14} />} active={pathname.includes("factors-multiples")} nested />
-                  <SidebarLink href="/formal-science/mathematics/number-theory/elementary/divisibility" label="Divisibility" icon={<Waves size={14} />} active={pathname.includes("divisibility")} nested />
-                  <SidebarLink href="/formal-science/mathematics/number-theory/elementary/patterns-sequences" label="Patterns & Sequences" icon={<Spline size={14} />} active={pathname.includes("patterns-sequences")} nested />
-                </Dropdown>
-                {/* Tier 2 */}
-                <Dropdown
-                  label="Middle School"
-                  icon={<Network size={14} />}
-                  expanded={expandNTTier2}
-                  setExpanded={setExpandNTTier2}
-                  href="/formal-science/mathematics/number-theory/middle-school"
-                  active={pathname.startsWith("/formal-science/mathematics/number-theory/middle-school")}
-                  nested
-                >
-                  <SidebarLink href="/formal-science/mathematics/number-theory/middle-school/integer-system" label="Integer System" icon={<Minus size={14} />} active={pathname.includes("integer-system")} nested />
-                  <SidebarLink href="/formal-science/mathematics/number-theory/middle-school/rational-number-structure" label="Rational Structure" icon={<SquareDivide size={14} />} active={pathname.includes("rational-number-structure")} nested />
-                  <SidebarLink href="/formal-science/mathematics/number-theory/middle-school/prime-factorization" label="Prime Factorization" icon={<TreeDeciduous size={14} />} active={pathname.includes("prime-factorization")} nested />
-                  <SidebarLink href="/formal-science/mathematics/number-theory/middle-school/modular-thinking-light" label="Modular Thinking (Light)" icon={<AlarmSmoke size={14} />} active={pathname.includes("modular-thinking-light")} nested />
-                  <SidebarLink href="/formal-science/mathematics/number-theory/middle-school/proportional-number-structures" label="Proportional Structures" icon={<Percent size={14} />} active={pathname.includes("proportional-number-structures")} nested />
-                </Dropdown>
-                {/* Tier 3 */}
-                <Dropdown
-                  label="High School"
-                  icon={<Sigma size={14} />}
-                  expanded={expandNTTier3}
-                  setExpanded={setExpandNTTier3}
-                  href="/formal-science/mathematics/number-theory/high-school"
-                  active={pathname.startsWith("/formal-science/mathematics/number-theory/high-school")}
-                  nested
-                >
-                  <SidebarLink href="/formal-science/mathematics/number-theory/high-school/modular-arithmetic-formal" label="Modular Arithmetic" icon={<Sigma size={14} />} active={pathname.includes("modular-arithmetic-formal")} nested />
-                  <SidebarLink href="/formal-science/mathematics/number-theory/high-school/diophantine-equations" label="Diophantine Equations" icon={<Equal size={14} />} active={pathname.includes("diophantine-equations")} nested />
-                  <SidebarLink href="/formal-science/mathematics/number-theory/high-school/advanced-prime-topics" label="Advanced Prime Topics" icon={<Atom size={14} />} active={pathname.includes("advanced-prime-topics")} nested />
-                  <SidebarLink href="/formal-science/mathematics/number-theory/high-school/irrational-numbers" label="Irrational Numbers" icon={<SquareRadical size={14} />} active={pathname.includes("irrational-numbers")} nested />
-                  <SidebarLink href="/formal-science/mathematics/number-theory/high-school/counting-combinatorics" label="Counting & Combinatorics" icon={<Tally5 size={14} />} active={pathname.includes("counting-combinatorics")} nested />
-                </Dropdown>
-                {/* Tier 4 */}
-                <Dropdown
-                  label="Undergraduate"
-                  icon={<FlaskConical size={14} />}
-                  expanded={expandNTTier4}
-                  setExpanded={setExpandNTTier4}
-                  href="/formal-science/mathematics/number-theory/undergraduate"
-                  active={pathname.startsWith("/formal-science/mathematics/number-theory/undergraduate")}
-                  nested
-                >
-                  <SidebarLink href="/formal-science/mathematics/number-theory/undergraduate/euclidean-structure" label="Euclidean Structure" icon={<EuclideanIcon size={14} />} active={pathname.includes("euclidean-structure")} nested />
-                  <SidebarLink href="/formal-science/mathematics/number-theory/undergraduate/congruence-classes-algebra" label="Congruence Classes" icon={<Network size={14} />} active={pathname.includes("congruence-classes-algebra")} nested />
-                  <SidebarLink href="/formal-science/mathematics/number-theory/undergraduate/multiplicative-number-theory" label="Multiplicative NT" icon={<Sigma size={14} />} active={pathname.includes("multiplicative-number-theory")} nested />
-                  <SidebarLink href="/formal-science/mathematics/number-theory/undergraduate/quadratic-residues" label="Quadratic Residues" icon={<Waves size={14} />} active={pathname.includes("quadratic-residues")} nested />
-                  <SidebarLink href="/formal-science/mathematics/number-theory/undergraduate/prime-distribution-theory" label="Prime Distribution" icon={<Waves size={14} />} active={pathname.includes("prime-distribution-theory")} nested />
-                </Dropdown>
-                {/* Tier 5 */}
-                <Dropdown
-                  label="Graduate"
-                  icon={<Brain size={14} />}
-                  expanded={expandNTTier5}
-                  setExpanded={setExpandNTTier5}
-                  href="/formal-science/mathematics/number-theory/graduate"
-                  active={pathname.startsWith("/formal-science/mathematics/number-theory/graduate")}
-                  nested
-                >
-                  <SidebarLink href="/formal-science/mathematics/number-theory/graduate/algebraic-number-theory" label="Algebraic NT" icon={<Brain size={14} />} active={pathname.includes("algebraic-number-theory")} nested />
-                  <SidebarLink href="/formal-science/mathematics/number-theory/graduate/analytic-number-theory" label="Analytic NT" icon={<Spline size={14} />} active={pathname.includes("analytic-number-theory")} nested />
-                  <SidebarLink href="/formal-science/mathematics/number-theory/graduate/modular-forms" label="Modular Forms" icon={<Network size={14} />} active={pathname.includes("modular-forms")} nested />
-                  <SidebarLink href="/formal-science/mathematics/number-theory/graduate/elliptic-curves" label="Elliptic Curves" icon={<Waypoints size={14} />} active={pathname.includes("elliptic-curves")} nested />
-                  <SidebarLink href="/formal-science/mathematics/number-theory/graduate/cryptographic-foundations" label="Cryptography" icon={<Lock size={14} />} active={pathname.includes("cryptographic-foundations")} nested />
-                </Dropdown>
-                {/* Tier 6 */}
-                <Dropdown
-                  label="Frontier"
-                  icon={<Flame size={14} />}
-                  expanded={expandNTTier6}
-                  setExpanded={setExpandNTTier6}
-                  href="/formal-science/mathematics/number-theory/frontier"
-                  active={pathname.startsWith("/formal-science/mathematics/number-theory/frontier")}
-                  nested
-                >
-                  <SidebarLink href="/formal-science/mathematics/number-theory/frontier/prime-problems" label="Prime Problems" icon={<Flame size={14} />} active={pathname.includes("prime-problems")} nested />
-                  <SidebarLink href="/formal-science/mathematics/number-theory/frontier/integer-mysteries" label="Integer Mysteries" icon={<HelpCircle size={14} />} active={pathname.includes("integer-mysteries")} nested />
-                  <SidebarLink href="/formal-science/mathematics/number-theory/frontier/combinatorial-additive" label="Combinatorial/Additive" icon={<Sigma size={14} />} active={pathname.includes("combinatorial-additive")} nested />
-                  <SidebarLink href="/formal-science/mathematics/number-theory/frontier/computational-complexity" label="omputational" icon={<Network size={14} />} active={pathname.includes("computational-complexity")} nested />
-                </Dropdown>
-              </Dropdown>
-              {/* --- END NUMBER THEORY SECTION --- */}
-              
-            </Dropdown>{" "}
-            {/* End Mathematics Dropdown */}
-            
-            {/* Logic Dropdown */}
-            <Dropdown
-              label="Logic"
-              icon={<Calculator size={14} />}
-              expanded={expandLogic}
-              setExpanded={setExpandLogic}
-              href="/formal-science/logic"
-              active={pathname === "/formal-science/logic"}
-              nested
-            >
-              <span className="px-3 py-2 text-neutral-500 italic">
-                (Coming Soon)
-              </span>
-            </Dropdown>{" "}
-          </Dropdown>{" "}
+        {/* Scrollable Nav Area */}
+        <nav className="flex-1 overflow-y-auto p-4 space-y-8 scroll-bar">
           
-          {/* Natural Science */}
-          <Dropdown
-            label="Natural Science"
-            icon={<FlaskConical size={16} />}
-            expanded={expandNatural}
-            setExpanded={setExpandNatural}
-            href="/natural-science"
-            active={pathname === "/natural-science"}
-          >
-            {/* Physics */}
-            <Dropdown
-              label="Physics"
-              icon={<Atom size={14} />}
-              expanded={expandPhysics}
-              setExpanded={setExpandPhysics}
-              href="/natural-science/physics"
-              active={pathname.startsWith("/natural-science/physics")}
-              nested
-            >
-              <Dropdown
-                label="Classical Mechanics"
-                icon={<TrendingUp size={14} />}
-                expanded={expandMechanics}
-                setExpanded={setExpandMechanics}
-                href="/natural-science/physics/classical-mechanics"
-                active={pathname.startsWith(
-                  "/natural-science/physics/classical-mechanics"
-                )}
-                nested
-              >
-                <SidebarLink
-                  href="/natural-science/physics/classical-mechanics/kinematics"
-                  label="Kinematics"
-                  icon={<TrendingUp size={14} />}
-                  active={pathname.startsWith(
-                    "/natural-science/physics/classical-mechanics/kinematics"
-                  )}
-                  nested
-                />
-                <SidebarLink
-                  href="#" // Placeholder
-                  label="Dynamics"
-                  icon={<Move size={14} />}
-                  active={false} // No active state yet
-                  nested
-                />
-              </Dropdown>
+          {/* CORE DOMAINS */}
+          <Section title="Domains">
+            <NavItem href="/formal-science" icon={Binary} label="Formal Science" domain="formal" currentPath={pathname}>
+               <SubLink href="/formal-science/mathematics" label="Mathematics" currentPath={pathname} />
+               <SubLink href="/formal-science/logic" label="Logic" currentPath={pathname} />
+               <SubLink href="/formal-science/computer-science" label="Computer Science" currentPath={pathname} />
+               <SubLink href="/formal-science/systems-science" label="Systems Science" currentPath={pathname} />
+            </NavItem>
 
-              <SidebarLink
-                href="/natural-science/physics/electromagnetism"
-                label="Electromagnetism"
-                icon={<Zap size={14} />}
-                active={pathname.startsWith(
-                  "/natural-science/physics/electromagnetism"
-                )}
-                nested
-              />
-              <SidebarLink
-                href="/natural-science/physics/thermodynamics"
-                label="Thermodynamics"
-                icon={<Scale size={14} />}
-                active={pathname.startsWith(
-                  "/natural-science/physics/thermodynamics"
-                )}
-                nested
-              />
-              <SidebarLink
-                href="/natural-science/physics/waves-optics"
-                label="Waves and Optics"
-                icon={<Waves size={14} />}
-                active={pathname.startsWith(
-                  "/natural-science/physics/waves-optics"
-                )}
-                nested
-              />
-              <SidebarLink
-                href="/natural-science/physics/quantum-mechanics"
-                label="Quantum Mechanics"
-                icon={<Orbit size={14} />}
-                active={pathname.startsWith(
-                  "/natural-science/physics/quantum-mechanics"
-                )}
-                nested
-              />
-              <SidebarLink
-                href="/natural-science/physics/relativity"
-                label="Relativity"
-                icon={<GitMerge size={14} />}
-                active={pathname.startsWith(
-                  "/natural-science/physics/relativity"
-                )}
-                nested
-              />
-            </Dropdown>
+            <NavItem href="/natural-science" icon={Atom} label="Natural Science" domain="natural" currentPath={pathname}>
+               <SubLink href="/natural-science/physics" label="Physics" currentPath={pathname} />
+               <SubLink href="/natural-science/chemistry" label="Chemistry" currentPath={pathname} />
+               <SubLink href="/natural-science/biology" label="Biology" currentPath={pathname} />
+               <SubLink href="/natural-science/astronomy" label="Astronomy" currentPath={pathname} />
+               <SubLink href="/natural-science/earth-science" label="Earth Science" currentPath={pathname} />
+            </NavItem>
 
-            {/* Chemistry */}
-            <SidebarLink
-              href="/natural-science/chemistry"
-              label="Chemistry"
-              icon={<FlaskConical size={14} />}
-              active={pathname.startsWith("/natural-science/chemistry")}
-              nested
-            />
-            <SidebarLink
-              href="/natural-science/biology"
-              label="Biology"
-              icon={<Dna size={14} />}
-              active={pathname.startsWith("/natural-science/biology")}
-              nested
-            />
-            <SidebarLink
-              href="/natural-science/earth-science"
-              label="Earth Science"
-              icon={<Mountain size={14} />}
-              active={pathname.startsWith("/natural-science/earth-science")}
-              nested
-            />
-            <SidebarLink
-              href="/natural-science/astronomy"
-              label="Astronomy"
-              icon={<Orbit size={14} />}
-              active={pathname.startsWith("/natural-science/astronomy")}
-              nested
-            />
-          </Dropdown>
-          {/* Social Science */}
-          <Dropdown
-            label="Social Science"
-            icon={<Handshake size={16} />}
-            expanded={expandSocial}
-            setExpanded={setExpandSocial}
-            href="/social-science"
-            active={pathname === "/social-science"}
-          >
-            {/* Placeholder for future links */}
-            <span className="px-3 py-2 text-neutral-500 italic">
-              (Coming Soon)
-            </span>
-          </Dropdown>
-          {/* Applied Science */}
-          <Dropdown
-            label="Applied Science"
-            icon={<Hammer size={16} />}
-            expanded={expandApplied}
-            setExpanded={setExpandApplied}
-            href="/applied-science"
-            active={pathname === "/applied-science"}
-          >
-            {/* Placeholder for future links */}
-            <span className="px-3 py-2 text-neutral-500 italic">
-              (Coming Soon)
-            </span>
-          </Dropdown>
-          {/* Humanities */}
-          <Dropdown
-            label="Humanities"
-            icon={<Palette size={16} />}
-            expanded={expandHumanities}
-            setExpanded={setExpandHumanities}
-            href="/humanities"
-            active={pathname === "/humanities"}
-          >
-            {/* Placeholder for future links */}
-            <span className="px-3 py-2 text-neutral-500 italic">
-              (Coming Soon)
-            </span>
-          </Dropdown>
-          {/* Interdisciplines */}
-          <Dropdown
-            label="Interdisciplines"
-            icon={<LinkIcon size={16} />}
-            expanded={expandInter}
-            setExpanded={setExpandInter}
-            href="/interdisciplines"
-            active={pathname === "/interdisciplines"}
-          >
-            {/* Placeholder for future links */}
-            <span className="px-3 py-2 text-neutral-500 italic">
-              (Coming Soon)
-            </span>
-          </Dropdown>
-          {/* === END: New Nested Structure === */}
+            <NavItem href="/social-science" icon={Handshake} label="Social Science" domain="social" currentPath={pathname}>
+               <SubLink href="/social-science/psychology" label="Psychology" currentPath={pathname} />
+               <SubLink href="/social-science/sociology" label="Sociology" currentPath={pathname} />
+               <SubLink href="/social-science/economics" label="Economics" currentPath={pathname} />
+               <SubLink href="/social-science/political-science" label="Political Science" currentPath={pathname} />
+            </NavItem>
 
-          {/* Glossary */}
-          <SidebarLink
-            href="/glossary"
-            label="Glossary"
-            icon={<BookOpen size={16} />}
-            active={pathname.startsWith("/glossary")}
-          />         
-          {/* Development Playground */}
-          <SidebarLink
-            href="/dev-playground"
-            label="Development Playground"
-            icon={<Wrench size={16} />}
-            active={pathname.startsWith("/dev-playground")}
-          />
-          {/* Skeleton */}
-          <SidebarLink
-            href="/skeleton"
-            label="Skeleton Pages"
-            icon={<Skull size={16} />}
-            active={pathname.startsWith("/skeleton")}
-          />
-          {/* Stage */}
-          <SidebarLink
-            href="/stage"
-            label="Stage"
-            icon={<Theater size={16} />}
-            active={pathname.startsWith("/stage")}
-          />
+            <NavItem href="/applied-science" icon={Hammer} label="Applied Science" domain="applied" currentPath={pathname}>
+               <SubLink href="/applied-science/engineering" label="Engineering" currentPath={pathname} />
+               <SubLink href="/applied-science/medicine" label="Medicine" currentPath={pathname} />
+               <SubLink href="/applied-science/computer-technology" label="Technology" currentPath={pathname} />
+            </NavItem>
+
+            <NavItem href="/humanities" icon={Palette} label="Humanities" domain="humanities" currentPath={pathname}>
+               <SubLink href="/humanities/philosophy" label="Philosophy" currentPath={pathname} />
+               <SubLink href="/humanities/history" label="History" currentPath={pathname} />
+               <SubLink href="/humanities/literature" label="Literature" currentPath={pathname} />
+               <SubLink href="/humanities/arts-aesthetics" label="Arts" currentPath={pathname} />
+            </NavItem>
+
+            <NavItem href="/interdisciplines" icon={LinkIcon} label="Interdisciplines" domain="inter" currentPath={pathname} />
+          </Section>
+
+          {/* SYSTEM TOOLS */}
+          <Section title="System">
+             <NavItem href="/glossary" icon={BookOpen} label="Glossary" domain="meta" currentPath={pathname} />
+             <NavItem href="/skeleton" icon={Skull} label="Skeleton" domain="meta" currentPath={pathname} />
+             <NavItem href="/dev-playground" icon={Wrench} label="Playground" domain="meta" currentPath={pathname} />
+             <NavItem href="/stage" icon={Theater} label="Stage" domain="meta" currentPath={pathname} />
+          </Section>
         </nav>
+        
+        {/* Footer Status */}
+        <div className="p-4 border-t border-white/5">
+            <div className="rounded-lg bg-white/5 p-3 flex items-center gap-3">
+                <div className={`w-2 h-2 rounded-full animate-pulse ${domainColors[domain].split(" ")[0].replace("text-", "bg-")}`} />
+                <div className="flex-1">
+                    <p className="text-[10px] uppercase font-bold text-neutral-400">Status</p>
+                    <p className="text-xs font-mono text-neutral-300">CONNECTED</p>
+                </div>
+                <span className="text-[10px] font-mono text-neutral-600">0.14s</span>
+            </div>
+        </div>
+
       </aside>
     </>
   );
 }
 
-/* -------------------------------------- */
-/* 🔹 Reusable Sidebar Link Component */
-/* -------------------------------------- */
-function SidebarLink({
-  href,
-  label,
-  icon,
-  active,
-  nested = false,
-}: {
-  href: string;
-  label: string;
-  icon?: React.ReactNode;
-  active: boolean;
-  nested?: boolean;
-}) {
-  return (
-    <Link
-      href={href}
-      className={`flex items-center gap-2 rounded-md px-3 py-2 transition-colors ${
-        active
-          ? "bg-cyan-500/20 text-cyan-300"
-          : "text-neutral-300 hover:text-cyan-200"
-      } ${nested ? "ml-4" : ""}`}
-    >
-      {icon && <span className="text-cyan-400">{icon}</span>}
-      {label}
-    </Link>
-  );
+// --- Helper Components ---
+
+function Section({ title, children }: { title: string; children: React.ReactNode }) {
+    return (
+        <div className="space-y-2">
+            <h3 className="px-4 text-[10px] font-bold uppercase tracking-widest text-neutral-600">{title}</h3>
+            <div className="space-y-0.5">{children}</div>
+        </div>
+    );
 }
 
-/* -------------------------------------- */
-/* 🔹 Dropdown Component (Updated) 🔹 */
-/* -------------------------------------- */
-function Dropdown({
-  label,
-  icon,
-  expanded,
-  setExpanded,
-  children,
-  nested = false,
-  href,
-  active,
-}: {
-  label: string;
-  icon?: React.ReactNode;
-  expanded: boolean;
-  setExpanded: (value: boolean) => void;
-  children: React.ReactNode;
-  nested?: boolean;
-  href?: string;
-  active?: boolean;
-}) {
-  const LabelContent = () => (
-    <>
-      {icon && <span className="text-cyan-400">{icon}</span>}
-      {label}
-    </>
-  );
+function NavItem({ href, icon: Icon, label, domain, currentPath, children }: any) {
+    const isActive = currentPath === href || currentPath.startsWith(href + "/");
+    const [expanded, setExpanded] = useState(isActive);
+    
+    // Auto-expand if active
+    useEffect(() => {
+        if (isActive) setExpanded(true);
+    }, [isActive]);
 
-  const labelClasses = `flex items-center gap-2 p-2 rounded-md transition-colors ${
-    active
-      ? "bg-cyan-500/20 text-cyan-300"
-      : "text-neutral-300 hover:text-cyan-200"
-  }`;
+    const activeClass = isActive ? domainColors[domain] : "text-neutral-400 hover:bg-white/5 hover:text-neutral-200";
 
-  return (
-    <div className={`transition-all ${nested ? "ml-2" : ""}`}>
-      <div className="group flex w-full items-center justify-between">
-        {href ? (
-          <Link href={href} className={`${labelClasses} flex-grow`}>
-            <LabelContent />
-          </Link>
-        ) : (
-          // If no href, make it a non-interactive span but with same padding
-          <span className={`${labelClasses} flex-grow cursor-default`}>
-            <LabelContent />
-          </span>
-        )}
-        {/* Chevron button */}
-        <button
-          onClick={() => setExpanded(!expanded)}
-          className="p-2 rounded-md text-neutral-400 transition hover:text-cyan-300"
-          aria-label={expanded ? `Collapse ${label}` : `Expand ${label}`}
+    return (
+        <div>
+            <div className={`group flex items-center justify-between px-3 py-2 rounded-lg transition-all cursor-pointer mx-2 ${activeClass}`}>
+                <Link href={href} className="flex flex-1 items-center gap-3">
+                    <Icon size={16} className={isActive ? "opacity-100" : "opacity-70 group-hover:opacity-100"} />
+                    <span className="text-sm font-medium">{label}</span>
+                </Link>
+                {children && (
+                    <button onClick={(e) => { e.preventDefault(); setExpanded(!expanded); }} className="p-1 rounded hover:bg-black/20">
+                        <ChevronDown size={14} className={`transition-transform ${expanded ? "rotate-180" : ""}`} />
+                    </button>
+                )}
+            </div>
+            
+            <AnimatePresence>
+                {expanded && children && (
+                    <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        className="overflow-hidden pl-10 pr-2 space-y-0.5"
+                    >
+                        <div className="py-1 border-l border-white/10 space-y-0.5">
+                            {children}
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+        </div>
+    );
+}
+
+function SubLink({ href, label, currentPath }: { href: string; label: string; currentPath: string }) {
+    const isActive = currentPath === href;
+    const domain = getDomain(href);
+    
+    return (
+        <Link 
+            href={href} 
+            className={`block pl-4 py-1.5 text-xs border-l-2 transition-colors
+                ${isActive 
+                    ? `border-current ${domainColors[domain].split(" ")[0]} font-semibold` 
+                    : "border-transparent text-neutral-500 hover:text-neutral-300"}
+            `}
         >
-          {expanded ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
-        </button>
-      </div>
-
-      {expanded && <div className="ml-2 flex flex-col gap-1">{children}</div>}
-    </div>
-  );
+            {label}
+        </Link>
+    );
 }
