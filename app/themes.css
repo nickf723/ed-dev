@@ -534,6 +534,183 @@
   --theme-grid-color: rgba(45, 212, 191, 0.1);
 }
 
+/* ... existing themes ... */
+
+/* --- SOCIAL SCIENCES --- */
+
+.theme-psychology {
+  /* Mind / Cognition: Violet & Pink */
+  --theme-gradient-start: #8b5cf6;
+  --theme-gradient-end: #ec4899;
+  --theme-icon-hover: #d8b4fe;
+  --theme-underline: #a855f7;
+  --theme-text-title: #e9d5ff;
+  --theme-text-header: #f0abfc;
+  --theme-text-icon: #c084fc;
+  --theme-card-shadow: rgba(139, 92, 246, 0.25);
+}
+
+.theme-sociology {
+  /* Groups / Structure: Cyan & Teal */
+  --theme-gradient-start: #06b6d4;
+  --theme-gradient-end: #14b8a6;
+  --theme-icon-hover: #67e8f9;
+  --theme-underline: #0891b2;
+  --theme-text-title: #cffafe;
+  --theme-text-header: #99f6e4;
+  --theme-text-icon: #22d3ee;
+  --theme-card-shadow: rgba(6, 182, 212, 0.25);
+}
+
+.theme-economics {
+  /* Value / Growth: Emerald & Gold */
+  --theme-gradient-start: #10b981;
+  --theme-gradient-end: #fbbf24;
+  --theme-icon-hover: #34d399;
+  --theme-underline: #059669;
+  --theme-text-title: #d1fae5;
+  --theme-text-header: #fde68a;
+  --theme-text-icon: #34d399;
+  --theme-card-shadow: rgba(16, 185, 129, 0.25);
+}
+
+.theme-political-science {
+  /* Power / Governance: Red & Purple */
+  --theme-gradient-start: #dc2626;
+  --theme-gradient-end: #7c3aed;
+  --theme-icon-hover: #f87171;
+  --theme-underline: #b91c1c;
+  --theme-text-title: #fecaca;
+  --theme-text-header: #ddd6fe;
+  --theme-text-icon: #f87171;
+  --theme-card-shadow: rgba(220, 38, 38, 0.25);
+}
+
+.theme-anthropology {
+  /* Human History / Earth: Amber & Stone */
+  --theme-gradient-start: #d97706;
+  --theme-gradient-end: #78350f;
+  --theme-icon-hover: #fbbf24;
+  --theme-underline: #b45309;
+  --theme-text-title: #fde68a;
+  --theme-text-header: #fed7aa;
+  --theme-text-icon: #fbbf24;
+  --theme-card-shadow: rgba(217, 119, 6, 0.25);
+}
+
+.theme-geography {
+  /* Earth / Space: Blue & Green */
+  --theme-gradient-start: #2563eb;
+  --theme-gradient-end: #16a34a;
+  --theme-icon-hover: #60a5fa;
+  --theme-underline: #1d4ed8;
+  --theme-text-title: #dbeafe;
+  --theme-text-header: #bbf7d0;
+  --theme-text-icon: #60a5fa;
+  --theme-card-shadow: rgba(37, 99, 235, 0.25);
+}
+
+.theme-linguistics {
+  /* Speech / Code: Lime & Yellow */
+  --theme-gradient-start: #84cc16;
+  --theme-gradient-end: #eab308;
+  --theme-icon-hover: #a3e635;
+  --theme-underline: #4d7c0f;
+  --theme-text-title: #ecfccb;
+  --theme-text-header: #fef08a;
+  --theme-text-icon: #a3e635;
+  --theme-card-shadow: rgba(132, 204, 22, 0.25);
+}
+
+/* --- APPLIED SCIENCES --- */
+
+.theme-engineering {
+  /* Construction / Industry: Orange & Slate */
+  --theme-gradient-start: #f97316;
+  --theme-gradient-end: #64748b;
+  --theme-icon-hover: #fdba74;
+  --theme-underline: #c2410c;
+  --theme-text-title: #ffedd5;
+  --theme-text-header: #cbd5e1;
+  --theme-text-icon: #fb923c;
+  --theme-card-shadow: rgba(249, 115, 22, 0.25);
+}
+
+.theme-medicine {
+  /* Health / Life: Rose & Teal */
+  --theme-gradient-start: #f43f5e;
+  --theme-gradient-end: #14b8a6;
+  --theme-icon-hover: #fda4af;
+  --theme-underline: #be123c;
+  --theme-text-title: #ffe4e6;
+  --theme-text-header: #ccfbf1;
+  --theme-text-icon: #fb7185;
+  --theme-card-shadow: rgba(244, 63, 94, 0.25);
+}
+
+/* --- INTERDISCIPLINES --- */
+
+.theme-biochemistry {
+  /* Bio (Green) + Chem (Orange) -> Lime/Amber */
+  --theme-gradient-start: #84cc16;
+  --theme-gradient-end: #f59e0b;
+  --theme-icon-hover: #bef264;
+  --theme-underline: #65a30d;
+  --theme-text-title: #ecfccb;
+  --theme-text-header: #fde68a;
+  --theme-text-icon: #a3e635;
+  --theme-card-shadow: rgba(132, 204, 22, 0.25);
+}
+
+.theme-biophysics {
+  /* Bio (Green) + Physics (Blue) -> Teal/Cyan */
+  --theme-gradient-start: #10b981;
+  --theme-gradient-end: #3b82f6;
+  --theme-icon-hover: #34d399;
+  --theme-underline: #059669;
+  --theme-text-title: #d1fae5;
+  --theme-text-header: #bfdbfe;
+  --theme-text-icon: #34d399;
+  --theme-card-shadow: rgba(16, 185, 129, 0.25);
+}
+
+.theme-cognitive-science {
+  /* Mind (Purple) + Tech (Cyan) -> Indigo/Sky */
+  --theme-gradient-start: #8b5cf6;
+  --theme-gradient-end: #06b6d4;
+  --theme-icon-hover: #a78bfa;
+  --theme-underline: #7c3aed;
+  --theme-text-title: #ede9fe;
+  --theme-text-header: #cffafe;
+  --theme-text-icon: #a78bfa;
+  --theme-card-shadow: rgba(139, 92, 246, 0.25);
+}
+
+.theme-astrophysics {
+  /* Space (Dark Blue) + Physics (Red/Blue) -> Deep Indigo */
+  --theme-gradient-start: #4338ca;
+  --theme-gradient-end: #db2777;
+  --theme-icon-hover: #818cf8;
+  --theme-underline: #3730a3;
+  --theme-text-title: #e0e7ff;
+  --theme-text-header: #fbcfe8;
+  --theme-text-icon: #6366f1;
+  --theme-card-shadow: rgba(67, 56, 202, 0.4);
+}
+
+.theme-geophysics {
+  /* Earth (Green) + Physics (Blue) -> Emerald/Blue */
+  --theme-gradient-start: #059669;
+  --theme-gradient-end: #1e40af;
+  --theme-icon-hover: #34d399;
+  --theme-underline: #047857;
+  --theme-text-title: #d1fae5;
+  --theme-text-header: #dbeafe;
+  --theme-text-icon: #10b981;
+  --theme-card-shadow: rgba(5, 150, 105, 0.25);
+}
+
+
 .theme-glossary {
     --theme-gradient-start: #00f5f5;
     --theme-gradient-end: #6600ec;

@@ -25,7 +25,7 @@ const sectors = [
         desc: "The application of math and science to design complex structures and machines.", 
         href: "/applied-science/engineering", 
         Icon: Hammer, 
-        className: "theme-applied-science", // Using generic theme for now or create theme-engineering
+        className: "theme-engineering", // Using generic theme for now or create theme-engineering
         subtitle: "Design & Build" 
       },
       { 
@@ -71,7 +71,7 @@ const sectors = [
         desc: "The science and practice of caring for the patient.", 
         href: "/applied-science/medicine", 
         Icon: Stethoscope, 
-        className: "theme-biology", // Borrowing bio theme
+        className: "theme-medicine", // Borrowing bio theme
         subtitle: "Human Health" 
       }
     ]
