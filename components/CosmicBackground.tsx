@@ -13,130 +13,80 @@ export default function CosmicBackground() {
     let w = (canvas.width = window.innerWidth);
     let h = (canvas.height = window.innerHeight);
     
-    const stars: Star[] = [];
-    const starCount = 150; // Lots of small stars
-    const mouse = { x: w / 2, y: h / 2 };
-
-    // Space Palette
-    const colors = ["#ffffff", "#a5f3fc", "#c4b5fd", "#fcd34d"]; 
-
-    class Star {
-      x: number;
-      y: number;
-      size: number;
-      baseSize: number;
-      color: string;
-      vx: number;
-      vy: number;
-      friction: number;
-      gravity: number;
-
-      constructor() {
-        this.x = Math.random() * w;
-        this.y = Math.random() * h;
-        this.baseSize = Math.random() * 1.5;
-        this.size = this.baseSize;
-        this.color = colors[Math.floor(Math.random() * colors.length)];
-        this.vx = (Math.random() - 0.5) * 0.2; // Very slow drift
-        this.vy = (Math.random() - 0.5) * 0.2;
-        this.friction = 0.98;
-        this.gravity = 0.05;
-      }
-
-      update() {
-        // Gravitational pull to mouse (subtle)
-        const dx = mouse.x - this.x;
-        const dy = mouse.y - this.y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        
-        // Only pull if reasonably close (simulate local gravity well)
-        if (dist < 300) {
-            const force = (300 - dist) / 300;
-            const angle = Math.atan2(dy, dx);
-            const fx = Math.cos(angle) * force * this.gravity;
-            const fy = Math.sin(angle) * force * this.gravity;
-            
-            this.vx += fx;
-            this.vy += fy;
-        }
-
-        // Apply velocity
-        this.x += this.vx;
-        this.y += this.vy;
-
-        // Apply friction to prevent uncontrolled acceleration
-        // But keep a minimum drift
-        if (Math.abs(this.vx) > 0.5) this.vx *= this.friction;
-        if (Math.abs(this.vy) > 0.5) this.vy *= this.friction;
-
-        // Screen wrap
-        if (this.x < 0) this.x = w;
-        if (this.x > w) this.x = 0;
-        if (this.y < 0) this.y = h;
-        if (this.y > h) this.y = 0;
-
-        // Twinkle effect
-        if (Math.random() > 0.95) {
-            this.size = this.baseSize * (Math.random() * 1.5 + 0.5);
-        }
-      }
-
-      draw() {
-        if (!ctx) return;
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fillStyle = this.color;
-        ctx.globalAlpha = Math.random() * 0.5 + 0.5; // Flicker
-        ctx.shadowBlur = this.size * 2;
-        ctx.shadowColor = this.color;
-        ctx.fill();
-        ctx.shadowBlur = 0;
-        ctx.globalAlpha = 1;
-      }
+    // Stars
+    const stars: {x: number, y: number, size: number, alpha: number}[] = [];
+    for(let i=0; i<200; i++) {
+        stars.push({
+            x: Math.random() * w,
+            y: Math.random() * h,
+            size: Math.random() * 1.5,
+            alpha: Math.random()
+        });
     }
 
-    for (let i = 0; i < starCount; i++) {
-      stars.push(new Star());
-    }
+    // Nebula Clouds (Large moving gradients)
+    const clouds = [
+        { x: w*0.2, y: h*0.2, r: 400, color: "rgba(76, 29, 149, 0.1)", vx: 0.2, vy: 0.1 }, // Indigo
+        { x: w*0.8, y: h*0.8, r: 500, color: "rgba(6, 182, 212, 0.1)", vx: -0.1, vy: -0.2 }, // Cyan
+        { x: w*0.5, y: h*0.5, r: 300, color: "rgba(236, 72, 153, 0.05)", vx: 0.1, vy: 0.1 }, // Pink
+    ];
 
     const animate = () => {
-      // Trail effect for movement
-      ctx.fillStyle = "rgba(10, 10, 15, 0.2)"; 
-      ctx.fillRect(0, 0, w, h);
+      ctx.clearRect(0, 0, w, h);
 
-      stars.forEach(star => {
-        star.update();
-        star.draw();
+      // 1. Draw Stars (Background)
+      ctx.fillStyle = "white";
+      stars.forEach(s => {
+          ctx.globalAlpha = s.alpha * 0.8; // Twinkle base
+          ctx.beginPath();
+          ctx.arc(s.x, s.y, s.size, 0, Math.PI*2);
+          ctx.fill();
+          
+          // Slow drift
+          s.y -= 0.05; 
+          if(s.y < 0) s.y = h;
       });
+
+      // 2. Draw Nebula (Foreground Volumetrics)
+      // Using lighter composite operation for glow
+      ctx.globalCompositeOperation = "screen";
+      
+      clouds.forEach(c => {
+          c.x += c.vx; 
+          c.y += c.vy;
+          // Bounce clouds
+          if(c.x < 0 || c.x > w) c.vx *= -1;
+          if(c.y < 0 || c.y > h) c.vy *= -1;
+
+          const g = ctx.createRadialGradient(c.x, c.y, 0, c.x, c.y, c.r);
+          g.addColorStop(0, c.color);
+          g.addColorStop(1, "transparent");
+          
+          ctx.fillStyle = g;
+          ctx.beginPath();
+          ctx.arc(c.x, c.y, c.r, 0, Math.PI*2);
+          ctx.fill();
+      });
+
+      ctx.globalCompositeOperation = "source-over";
+      ctx.globalAlpha = 1;
 
       requestAnimationFrame(animate);
     };
 
     animate();
-
-    const handleResize = () => {
-      w = canvas.width = window.innerWidth;
-      h = canvas.height = window.innerHeight;
-    };
-
-    const handleMouseMove = (e: MouseEvent) => {
-        mouse.x = e.clientX;
-        mouse.y = e.clientY;
-    };
-
+    
+    const handleResize = () => { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; };
     window.addEventListener("resize", handleResize);
-    window.addEventListener("mousemove", handleMouseMove);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-      window.removeEventListener("mousemove", handleMouseMove);
-    };
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   return (
-    <canvas
-      ref={canvasRef}
-      className="fixed inset-0 pointer-events-none z-0 opacity-80 mix-blend-screen"
-    />
+    <>
+        <canvas ref={canvasRef} className="fixed inset-0 pointer-events-none z-0 opacity-60" />
+        <div className="hd-vignette" />
+        {/* Subtle color grade overlay */}
+        <div className="fixed inset-0 z-0 pointer-events-none bg-indigo-950/10 mix-blend-overlay" />
+    </>
   );
 }

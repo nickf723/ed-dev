@@ -13,18 +13,14 @@ export default function NetworkBackground() {
     let w = (canvas.width = window.innerWidth);
     let h = (canvas.height = window.innerHeight);
     
-    const particleCount = 75; // Good balance of density
+    const particleCount = 80;
     const connectionDist = 180;
-    const mouseDist = 250;
-
+    
+    // We track mouse for the "Searchlight" effect
+    const mouse = { x: w/2, y: h/2 };
+    
     // Neon Cyber Palette
-    const colors = [
-      "#22d3ee", // Cyan
-      "#a78bfa", // Violet
-      "#f472b6", // Pink
-      "#34d399", // Emerald
-      "#fbbf24", // Amber
-    ];
+    const colors = ["#22d3ee", "#a78bfa", "#f472b6", "#34d399", "#fbbf24"];
 
     class Particle {
       x: number;
@@ -37,85 +33,81 @@ export default function NetworkBackground() {
       constructor() {
         this.x = Math.random() * w;
         this.y = Math.random() * h;
-        this.vx = Math.random() * 0.6 - 0.3;
-        this.vy = Math.random() * 0.6 - 0.3;
-        this.size = Math.random() * 2 + 1.5;
+        this.vx = Math.random() * 0.4 - 0.2;
+        this.vy = Math.random() * 0.4 - 0.2;
+        this.size = Math.random() * 2 + 1;
         this.color = colors[Math.floor(Math.random() * colors.length)];
       }
 
       update() {
         this.x += this.vx;
         this.y += this.vy;
-
-        // Bounce off edges
         if (this.x < 0 || this.x > w) this.vx *= -1;
         if (this.y < 0 || this.y > h) this.vy *= -1;
       }
 
       draw() {
+        // Distance to mouse (Searchlight Logic)
+        const dx = this.x - mouse.x;
+        const dy = this.y - mouse.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        const lightRadius = 400;
+
+        // Brightness falls off with distance from mouse
+        let alpha = 0.1; // Base dimness
+        if (dist < lightRadius) {
+            alpha += (1 - dist / lightRadius) * 0.9;
+        }
+
         if (!ctx) return;
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
         ctx.fillStyle = this.color;
-        ctx.shadowBlur = 10;
-        ctx.shadowColor = this.color;
+        ctx.globalAlpha = alpha;
         ctx.fill();
-        ctx.shadowBlur = 0; // Reset to avoid performance hit on lines
+        ctx.globalAlpha = 1;
+        
+        // Draw connections only if bright enough
+        if (alpha > 0.2) return alpha; // Return alpha for line drawing
+        return 0;
       }
     }
 
     const particles: Particle[] = [];
-    for (let i = 0; i < particleCount; i++) {
-      particles.push(new Particle());
-    }
-
-    let mouse = { x: -1000, y: -1000 };
+    for (let i = 0; i < particleCount; i++) particles.push(new Particle());
 
     const animate = () => {
       ctx.clearRect(0, 0, w, h);
 
       particles.forEach((p, i) => {
         p.update();
-        p.draw();
+        const pAlpha = p.draw() || 0;
 
-        // Connect to other particles
-        for (let j = i + 1; j < particles.length; j++) {
-          const p2 = particles[j];
-          const dx = p.x - p2.x;
-          const dy = p.y - p2.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
+        // Connect
+        if (pAlpha > 0.2) {
+            for (let j = i + 1; j < particles.length; j++) {
+                const p2 = particles[j];
+                const dx = p.x - p2.x;
+                const dy = p.y - p2.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
 
-          if (dist < connectionDist) {
-            ctx.beginPath();
-            const gradient = ctx.createLinearGradient(p.x, p.y, p2.x, p2.y);
-            gradient.addColorStop(0, p.color);
-            gradient.addColorStop(1, p2.color);
-            
-            ctx.strokeStyle = gradient;
-            ctx.lineWidth = 0.6;
-            // Opacity based on distance
-            ctx.globalAlpha = 1 - dist / connectionDist;
-            ctx.moveTo(p.x, p.y);
-            ctx.lineTo(p2.x, p2.y);
-            ctx.stroke();
-            ctx.globalAlpha = 1;
-          }
-        }
-
-        // Connect to mouse
-        const mdx = p.x - mouse.x;
-        const mdy = p.y - mouse.y;
-        const mDist = Math.sqrt(mdx * mdx + mdy * mdy);
-
-        if (mDist < mouseDist) {
-            ctx.beginPath();
-            ctx.strokeStyle = p.color;
-            ctx.lineWidth = 1;
-            ctx.globalAlpha = 1 - mDist / mouseDist;
-            ctx.moveTo(p.x, p.y);
-            ctx.lineTo(mouse.x, mouse.y);
-            ctx.stroke();
-            ctx.globalAlpha = 1;
+                if (dist < connectionDist) {
+                    ctx.beginPath();
+                    const gradient = ctx.createLinearGradient(p.x, p.y, p2.x, p2.y);
+                    // Fade lines out at edges of spotlight
+                    const lineAlpha = Math.min(pAlpha, 1 - dist/connectionDist);
+                    
+                    gradient.addColorStop(0, p.color.replace(')', `, ${lineAlpha})`).replace('rgb', 'rgba').replace('#', '')); // Simple hack or just use globalAlpha
+                    
+                    ctx.globalAlpha = lineAlpha;
+                    ctx.strokeStyle = "white"; // Use white to let colors pop via blend mode
+                    ctx.lineWidth = 0.5;
+                    ctx.moveTo(p.x, p.y);
+                    ctx.lineTo(p2.x, p2.y);
+                    ctx.stroke();
+                    ctx.globalAlpha = 1;
+                }
+            }
         }
       });
 
@@ -124,29 +116,20 @@ export default function NetworkBackground() {
 
     animate();
 
-    const handleResize = () => {
-      w = canvas.width = window.innerWidth;
-      h = canvas.height = window.innerHeight;
-    };
-
-    const handleMouseMove = (e: MouseEvent) => {
-        mouse.x = e.clientX; 
-        mouse.y = e.clientY;
-    }
+    const handleResize = () => { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; };
+    const handleMouseMove = (e: MouseEvent) => { mouse.x = e.clientX; mouse.y = e.clientY; };
 
     window.addEventListener("resize", handleResize);
     window.addEventListener("mousemove", handleMouseMove);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-      window.removeEventListener("mousemove", handleMouseMove);
-    };
+    return () => { window.removeEventListener("resize", handleResize); window.removeEventListener("mousemove", handleMouseMove); };
   }, []);
 
   return (
-    <canvas
-      ref={canvasRef}
-      className="fixed inset-0 pointer-events-none z-0 opacity-70 mix-blend-screen"
-    />
+    <>
+        <canvas ref={canvasRef} className="fixed inset-0 pointer-events-none z-0" />
+        {/* HD-2D Layers */}
+        <div className="hd-vignette" />
+        <div className="hd-noise" />
+    </>
   );
 }
