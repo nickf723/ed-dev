@@ -6,7 +6,8 @@ import SynthesisBackground from "@/components/SynthesisBackground";
 import FusionReactor from "@/components/FusionReactor";
 import { motion } from "framer-motion";
 import {
-  Dna, Cpu, Brain, Rocket, Atom, FlaskConical, Globe, Leaf, Network
+  Dna, Cpu, Brain, Rocket, Atom, FlaskConical, Globe, Leaf, Network, 
+  Sprout, Binary, Landmark, Map, Users
 } from "lucide-react";
 
 // --- DATA ---
@@ -23,7 +24,7 @@ const sectors = [
         desc: "The chemical processes within and related to living organisms.", 
         href: "/interdisciplines/biochemistry", 
         Icon: FlaskConical, 
-        className: "theme-chemistry", // Inherits chem colors
+        className: "theme-biochemistry", 
         subtitle: "Life + Chemistry" 
       },
       { 
@@ -32,7 +33,7 @@ const sectors = [
         desc: "Applying theories and methods of physics to biological systems.", 
         href: "/interdisciplines/biophysics", 
         Icon: Atom, 
-        className: "theme-physics", // Inherits physics colors
+        className: "theme-biophysics", 
         subtitle: "Life + Physics" 
       }
     ]
@@ -49,7 +50,7 @@ const sectors = [
         desc: "The application of engineering principles to biology and medicine.", 
         href: "/interdisciplines/bioengineering", 
         Icon: Dna, 
-        className: "theme-applied-science",
+        className: "theme-engineering",
         subtitle: "Bio + Tech" 
       },
       { 
@@ -58,14 +59,23 @@ const sectors = [
         desc: "The interdisciplinary study of mind and intelligence.", 
         href: "/interdisciplines/cognitive-science", 
         Icon: Brain, 
-        className: "theme-psychology",
+        className: "theme-cognitive-science",
         subtitle: "Mind + Machine" 
+      },
+      {
+        id: "bioinformatics",
+        title: "Bioinformatics",
+        desc: "Analyzing complex biological data (genomes) using computer science.",
+        href: "/interdisciplines/bioinformatics",
+        Icon: Binary,
+        className: "theme-data-science",
+        subtitle: "Bio + Code"
       }
     ]
   },
   {
     name: "Cosmic & Global",
-    desc: "Large scale integration of space, time, and society.",
+    desc: "Large scale integration of space, time, and biosphere.",
     color: "text-purple-400",
     icon: Globe,
     items: [
@@ -75,7 +85,7 @@ const sectors = [
         desc: "Using physics and chemistry to explain the birth and death of stars.", 
         href: "/interdisciplines/astrophysics", 
         Icon: Rocket, 
-        className: "theme-astronomy",
+        className: "theme-astrophysics",
         subtitle: "Space + Physics" 
       },
       { 
@@ -84,9 +94,44 @@ const sectors = [
         desc: "The physics of the Earth and its environment in space.", 
         href: "/interdisciplines/geophysics", 
         Icon: Globe, 
-        className: "theme-earth-science",
+        className: "theme-geophysics",
         subtitle: "Earth + Physics" 
+      },
+      {
+        id: "astrobiology",
+        title: "Astrobiology",
+        desc: "The search for life in the universe and the study of its origins.",
+        href: "/interdisciplines/astrobiology",
+        Icon: Sprout,
+        className: "theme-biology",
+        subtitle: "Space + Life"
       }
+    ]
+  },
+  {
+    name: "Social Synthesis",
+    desc: "Merging economics, politics, and geography.",
+    color: "text-amber-500",
+    icon: Users,
+    items: [
+        {
+            id: "political-economy",
+            title: "Political Economy",
+            desc: "How political institutions and economic systems interact.",
+            href: "/interdisciplines/political-economy",
+            Icon: Landmark,
+            className: "theme-political-science",
+            subtitle: "Politics + Econ"
+        },
+        {
+            id: "urban-studies",
+            title: "Urban Studies",
+            desc: "The study of cities, covering their geography, sociology, and design.",
+            href: "/interdisciplines/urban-studies",
+            Icon: Map,
+            className: "theme-sociology",
+            subtitle: "Society + Space"
+        }
     ]
   }
 ];

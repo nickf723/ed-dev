@@ -195,6 +195,17 @@
     --theme-blob-2: rgba(88, 0, 204, 0.2);
     --theme-grid-color: rgba(132, 0, 255, 0.08);
   }
+  .theme-integration {
+    --theme-gradient-start: #6366f1; /* Indigo-500 */
+    --theme-gradient-end: #a855f7;   /* Purple-500 */
+    --theme-icon-hover: #818cf8;
+    --theme-underline: #4f46e5;
+    --theme-text-title: #e0e7ff;
+    --theme-text-header: #c7d2fe;
+    --theme-text-icon: #818cf8;
+    --theme-card-shadow: rgba(99, 102, 241, 0.25);
+  }
+
 
   .theme-statistics {
     --theme-gradient-start: #ff9900;
