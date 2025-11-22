@@ -12,85 +12,86 @@ export default function WireframeBackground() {
 
     let w = (canvas.width = window.innerWidth);
     let h = (canvas.height = window.innerHeight);
+    let animId: number;
     
-    let angle = 0;
-    const points: {x: number, y: number, z: number}[] = [];
-    const r = 300; // Radius
+    let angleX = 0;
+    let angleY = 0;
+    
+    // Configuration
+    const r = 400; // Radius
+    const numPoints = 80; // Reduced slightly for aesthetics
+    const basePoints: {x: number, y: number, z: number}[] = [];
 
-    // Generate points on a sphere (Fibonacci Sphere algorithm for even distribution)
-    const numPoints = 100;
+    // Initialize Points on a Sphere (Fibonacci Sphere)
     const phi = Math.PI * (3 - Math.sqrt(5)); 
-
     for (let i = 0; i < numPoints; i++) {
         const y = 1 - (i / (numPoints - 1)) * 2; 
         const radius = Math.sqrt(1 - y * y);
         const theta = phi * i;
         const x = Math.cos(theta) * radius;
         const z = Math.sin(theta) * radius;
-        points.push({ x: x * r, y: y * r, z: z * r });
+        basePoints.push({ x: x * r, y: y * r, z: z * r });
     }
 
     const animate = () => {
       ctx.clearRect(0, 0, w, h);
-      ctx.strokeStyle = "rgba(100, 100, 100, 0.15)";
-      ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
-      ctx.lineWidth = 1;
-
       const cx = w / 2;
       const cy = h / 2;
 
-      // Rotate and Project
-      points.forEach((p, i) => {
-        // Rotation around Y
-        const x1 = p.x * Math.cos(angle) - p.z * Math.sin(angle);
-        const z1 = p.z * Math.cos(angle) + p.x * Math.sin(angle);
-        
-        // Rotation around X
-        const y2 = p.y * Math.cos(angle * 0.5) - z1 * Math.sin(angle * 0.5);
-        const z2 = z1 * Math.cos(angle * 0.5) + p.y * Math.sin(angle * 0.5);
-
-        // Perspective projection
-        const scale = 600 / (600 + z2);
-        const x2D = x1 * scale + cx;
-        const y2D = y2 * scale + cy;
-
-        // Draw Point
-        ctx.beginPath();
-        ctx.arc(x2D, y2D, 2 * scale, 0, Math.PI * 2);
-        ctx.fill();
-
-        // Connect to nearest neighbors (simple triangulation effect)
-        for(let j = i + 1; j < points.length; j++) {
-            const p2 = points[j];
-            // Calculate rotated p2
-            const p2x1 = p2.x * Math.cos(angle) - p2.z * Math.sin(angle);
-            const p2z1 = p2.z * Math.cos(angle) + p2.x * Math.sin(angle);
-            const p2y2 = p2.y * Math.cos(angle * 0.5) - p2z1 * Math.sin(angle * 0.5);
-            const p2z2 = p2z1 * Math.cos(angle * 0.5) + p2.y * Math.sin(angle * 0.5);
-            
-            const dist = Math.sqrt(Math.pow(x1 - p2x1, 2) + Math.pow(y2 - p2y2, 2) + Math.pow(z2 - p2z2, 2));
-            
-            // If close enough, draw line
-            if(dist < 100) {
-                const p2scale = 600 / (600 + p2z2);
-                const p2x2D = p2x1 * p2scale + cx;
-                const p2y2D = p2y2 * p2scale + cy;
-                
-                ctx.beginPath();
-                ctx.moveTo(x2D, y2D);
-                ctx.lineTo(p2x2D, p2y2D);
-                ctx.globalAlpha = 1 - (dist / 100); // Fade out
-                ctx.stroke();
-                ctx.globalAlpha = 1;
-            }
-        }
+      // Pre-calculate rotated points
+      const rotatedPoints = basePoints.map(p => {
+        // Rotate Y
+        const x1 = p.x * Math.cos(angleY) - p.z * Math.sin(angleY);
+        const z1 = p.z * Math.cos(angleY) + p.x * Math.sin(angleY);
+        // Rotate X
+        const y2 = p.y * Math.cos(angleX) - z1 * Math.sin(angleX);
+        const z2 = z1 * Math.cos(angleX) + p.y * Math.sin(angleX);
+        return { x: x1, y: y2, z: z2 };
       });
 
-      angle += 0.002;
-      requestAnimationFrame(animate);
+      // Draw Connections
+      ctx.lineWidth = 1;
+      ctx.strokeStyle = "rgba(100, 100, 100, 0.1)";
+
+      // We check distance between projected points to draw lines
+      // This is O(N^2) but N=80 is very fast (3200 pairs)
+      for (let i = 0; i < rotatedPoints.length; i++) {
+        const p1 = rotatedPoints[i];
+        const scale1 = 800 / (800 + p1.z);
+        const x1 = p1.x * scale1 + cx;
+        const y1 = p1.y * scale1 + cy;
+
+        // Draw Node
+        ctx.fillStyle = "rgba(255, 255, 255, 0.3)";
+        ctx.beginPath();
+        ctx.arc(x1, y1, 2 * scale1, 0, Math.PI * 2);
+        ctx.fill();
+
+        for (let j = i + 1; j < rotatedPoints.length; j++) {
+            const p2 = rotatedPoints[j];
+            
+            // 3D Distance check (connect neighbors on the sphere)
+            const d3 = Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2) + Math.pow(p1.z - p2.z, 2));
+
+            if (d3 < 150) { // Connection threshold
+                const scale2 = 800 / (800 + p2.z);
+                const x2 = p2.x * scale2 + cx;
+                const y2 = p2.y * scale2 + cy;
+
+                ctx.beginPath();
+                ctx.moveTo(x1, y1);
+                ctx.lineTo(x2, y2);
+                ctx.stroke();
+            }
+        }
+      }
+
+      angleY += 0.001;
+      angleX += 0.0005;
+      animId = requestAnimationFrame(animate);
     };
 
-    const animId = requestAnimationFrame(animate);
+    animate();
 
     const handleResize = () => {
       w = canvas.width = window.innerWidth;

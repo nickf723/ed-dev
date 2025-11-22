@@ -80,7 +80,7 @@ export default function SkeletonPage() {
       
       {/* 1. Wireframe Background */}
       <WireframeBackground />
-      
+    
       <div className="relative z-10 mx-auto flex max-w-7xl flex-col py-10">
         
         <PageHeader

@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import { Sliders, Zap, RotateCcw } from "lucide-react";
+import { Sliders, Zap } from "lucide-react";
 
 const PRESETS = [
   { name: "Neon Cyber", primary: "#06b6d4", secondary: "#d946ef", bg: "#000000" },
@@ -13,7 +13,6 @@ export default function ThemeController() {
   const [primary, setPrimary] = useState("#ffffff");
   const [secondary, setSecondary] = useState("#ffffff");
   
-  // Update CSS variables on change
   useEffect(() => {
     const root = document.documentElement;
     root.style.setProperty("--theme-icon-hover", primary);
@@ -37,7 +36,6 @@ export default function ThemeController() {
         <Zap size={14} className="text-yellow-400 animate-pulse" />
       </div>
 
-      {/* Manual Controls */}
       <div className="space-y-4 mb-8">
         <div>
             <label className="block text-[10px] font-mono uppercase text-neutral-500 mb-2">Primary Token</label>
@@ -65,7 +63,6 @@ export default function ThemeController() {
         </div>
       </div>
 
-      {/* Presets */}
       <div>
         <label className="block text-[10px] font-mono uppercase text-neutral-500 mb-3">Quick Load</label>
         <div className="grid grid-cols-2 gap-2">

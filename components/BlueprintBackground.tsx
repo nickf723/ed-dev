@@ -16,40 +16,34 @@ export default function BlueprintBackground() {
     
     let offset = 0;
     const speed = 0.5;
-    
-    // Configuration
-    const gridSize = 40; // Base width of vertical columns
+    const gridSize = 40;
     
     const draw = () => {
       ctx.clearRect(0, 0, w, h);
-      
-      // 1. Background (Deep Blueprint)
-      ctx.fillStyle = "#020617"; // Slate-950
+      ctx.fillStyle = "#020617"; 
       ctx.fillRect(0, 0, w, h);
 
       const cx = w / 2;
-      const cy = h / 2; // Horizon line
+      const cy = h / 2; 
       
-      // 2. Horizon Line (Glowing)
+      // Horizon
       ctx.beginPath();
-      ctx.strokeStyle = "rgba(6, 182, 212, 0.5)"; // Cyan-500
+      ctx.strokeStyle = "rgba(6, 182, 212, 0.5)"; 
       ctx.lineWidth = 2;
       ctx.moveTo(0, cy);
       ctx.lineTo(w, cy);
       ctx.stroke();
-      
       ctx.lineWidth = 1;
 
-      // 3. Floor Lines (Horizontal) - Perspective Effect
-      // We start slightly below the horizon to avoid the Z=0 infinite loop issue
+      // FLOOR LINES (The Fix is here)
       ctx.beginPath();
       ctx.strokeStyle = "rgba(6, 182, 212, 0.15)"; 
       
+      // Start 5px below horizon to avoid Z=0 issues
       let y = cy + 5; 
+      
       while (y < h) {
          const dist = y - cy;
-         // Parallax: Lines move slower near horizon
-         // We add (offset % 20) scaled by distance to create movement
          const moveY = y + (offset % 40) * (dist / h); 
          
          if (moveY < h) {
@@ -57,13 +51,13 @@ export default function BlueprintBackground() {
             ctx.lineTo(w, moveY);
          }
          
-         // SAFETY FIX: Ensure we always increment by at least 2 pixels
-         // The (dist * 0.15) creates the exponential spacing (perspective)
+         // CRITICAL FIX: Always increment by at least 2 pixels
+         // The original code allowed this to be 0, causing the freeze
          y += Math.max(2, dist * 0.15); 
       }
       ctx.stroke();
 
-      // 4. Ceiling Lines (Mirror of Floor)
+      // CEILING LINES
       ctx.beginPath();
       y = cy - 5;
       while (y > 0) {
@@ -74,21 +68,16 @@ export default function BlueprintBackground() {
             ctx.moveTo(0, moveY);
             ctx.lineTo(w, moveY);
          }
-         
-         // SAFETY FIX
-         y -= Math.max(2, dist * 0.15);
+         y -= Math.max(2, dist * 0.15); // CRITICAL FIX
       }
       ctx.stroke();
 
-      // 5. Vertical Fanning Lines (Vanishing Point)
+      // Vertical Lines
       ctx.beginPath();
       ctx.strokeStyle = "rgba(6, 182, 212, 0.05)";
-      // We draw extra lines off-screen so they don't "pop" in when moving
       for (let x = -w; x < w * 2; x += gridSize * 3) {
-          // Floor vertical
           ctx.moveTo(x, h);
           ctx.lineTo(cx, cy);
-          // Ceiling vertical
           ctx.moveTo(x, 0);
           ctx.lineTo(cx, cy);
       }
@@ -98,7 +87,6 @@ export default function BlueprintBackground() {
       animationFrameId = requestAnimationFrame(draw);
     };
 
-    // Start loop
     draw();
 
     const handleResize = () => {
@@ -107,8 +95,6 @@ export default function BlueprintBackground() {
     };
 
     window.addEventListener("resize", handleResize);
-    
-    // Cleanup: Properly cancels the ongoing loop
     return () => {
       window.removeEventListener("resize", handleResize);
       cancelAnimationFrame(animationFrameId);

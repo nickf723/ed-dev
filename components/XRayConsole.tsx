@@ -1,40 +1,52 @@
 "use client";
 import { useState, useEffect } from "react";
-import { Scan, Layers, Component, LayoutTemplate, Activity } from "lucide-react";
+import { Scan, Layers, Activity } from "lucide-react";
 
 export default function XRayConsole() {
   const [active, setActive] = useState(false);
   const [domCount, setDomCount] = useState(0);
 
-  // Inject Debug CSS when active
+  // Manual Style Injection
   useEffect(() => {
+    const styleId = "x-ray-styles";
+    let styleTag = document.getElementById(styleId);
+
     if (active) {
-      document.body.classList.add("x-ray-active");
+        if (!styleTag) {
+            styleTag = document.createElement("style");
+            styleTag.id = styleId;
+            styleTag.innerHTML = `
+                *:not(html):not(body):not(script):not(style) {
+                    outline: 1px dashed rgba(0, 255, 255, 0.3) !important;
+                    background: rgba(0, 255, 255, 0.02) !important;
+                }
+                *:not(html):not(body):hover {
+                    outline: 1px solid rgba(255, 0, 255, 0.8) !important;
+                    background: rgba(255, 0, 255, 0.05) !important;
+                    cursor: crosshair !important;
+                }
+            `;
+            document.head.appendChild(styleTag);
+        }
     } else {
-      document.body.classList.remove("x-ray-active");
+        if (styleTag) {
+            styleTag.remove();
+        }
+    }
+
+    return () => {
+        // Cleanup on unmount
+        const tag = document.getElementById(styleId);
+        if (tag) tag.remove();
     }
   }, [active]);
 
-  // Count DOM elements just for fun stats
   useEffect(() => {
     setDomCount(document.getElementsByTagName("*").length);
   }, []);
 
   return (
     <div className="glass overflow-hidden rounded-xl border border-white/10 bg-neutral-900/80 backdrop-blur-xl">
-      {/* Inject Styles locally */}
-      <style jsx global>{`
-        .x-ray-active * {
-          outline: 1px dashed rgba(0, 255, 255, 0.3) !important;
-          background: rgba(0, 255, 255, 0.02) !important;
-        }
-        .x-ray-active div:hover {
-          outline: 1px solid rgba(255, 0, 255, 0.8) !important;
-          background: rgba(255, 0, 255, 0.05) !important;
-          cursor: crosshair;
-        }
-      `}</style>
-
       <div className="border-b border-white/5 px-5 py-4 flex justify-between items-center">
         <h3 className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-neutral-300">
           <Scan size={14} className="text-emerald-400" /> Structure Scan
@@ -57,7 +69,6 @@ export default function XRayConsole() {
             </span>
         </button>
 
-        {/* Live Stats */}
         <div className="mt-6 space-y-3">
             <div className="flex justify-between text-[10px] font-mono text-neutral-500 border-b border-white/5 pb-2">
                 <span>DOM_NODES</span>
