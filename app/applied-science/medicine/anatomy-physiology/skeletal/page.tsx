@@ -1,102 +1,94 @@
 "use client";
 import PageHeader from "@/components/PageHeader";
 import TopicCard from "@/components/TopicCard";
-import PulseBackground from "@/components/PulseBackground";
-import AnatomyWidget from "@/components/AnatomyWidget";
+import XRayBackground from "@/components/XRayBackground";
+import JointWidget from "@/components/JointWidget";
 import { motion } from "framer-motion";
 import {
-  Syringe, Dna, Beaker, BrainCog, HeartPulse, Microscope, Activity, Stethoscope
+  Bone, Shield, Activity, Hammer, Divide
 } from "lucide-react";
 
 // --- DATA ---
 const sectors = [
   {
-    name: "Foundations of the Body",
-    desc: "Understanding the structure and function of the human machine.",
-    color: "text-red-400",
-    icon: HeartPulse,
+    name: "The Axial Skeleton",
+    desc: "The central core. Protection for vital organs (Brain, Heart, Lungs).",
+    color: "text-amber-200",
+    icon: Shield,
     items: [
       { 
-        title: "Anatomy & Physiology", 
-        desc: "The map of the body. How structures (bones, organs) support functions (movement, digestion).", 
-        href: "/applied-science/medicine/anatomy-physiology", 
+        title: "The Skull", 
+        desc: "22 bones fused together to protect the brain and form the face.", 
+        href: "/applied-science/medicine/anatomy-physiology/skeletal/skull", 
+        Icon: Bone, 
+        className: "theme-medicine",
+        subtitle: "Cranial Vault" 
+      },
+      { 
+        title: "Vertebral Column", 
+        desc: "33 vertebrae providing support, protection for the spinal cord, and flexibility.", 
+        href: "/applied-science/medicine/anatomy-physiology/skeletal/spine", 
         Icon: Activity, 
         className: "theme-medicine",
-        subtitle: "Structure" 
-      },
-      { 
-        title: "Pathology", 
-        desc: "The study of disease. How systems fail and the mechanisms of injury.", 
-        href: "/applied-science/medicine/pathology", 
-        Icon: Microscope, 
-        className: "theme-medicine",
-        subtitle: "Disease" 
+        subtitle: "The Spine" 
       }
     ]
   },
   {
-    name: "Therapeutics & Intervention",
-    desc: "The tools and techniques used to restore health.",
-    color: "text-teal-400",
-    icon: Stethoscope,
+    name: "The Appendicular Skeleton",
+    desc: "The limbs and girdles. Built for movement, leverage, and interaction.",
+    color: "text-blue-300",
+    icon: Hammer,
     items: [
       { 
-        title: "Pharmacology", 
-        desc: "The chemistry of healing. How drugs interact with biological systems.", 
-        href: "/applied-science/medicine/pharmacology", 
-        Icon: Beaker, 
+        title: "Upper Limb", 
+        desc: "Humerus, Radius, Ulna, and the intricate bones of the hand for manipulation.", 
+        href: "/applied-science/medicine/anatomy-physiology/skeletal/upper-limb", 
+        Icon: Bone, 
         className: "theme-medicine",
-        subtitle: "Chemistry" 
+        subtitle: "Manipulation" 
       },
       { 
-        title: "Surgery & Procedure", 
-        desc: "Direct physical intervention to repair or remove damaged tissues.", 
-        href: "/applied-science/medicine/surgery", 
-        Icon: Syringe, 
+        title: "Lower Limb", 
+        desc: "Femur, Tibia, Fibula. Massive bones designed for weight bearing and locomotion.", 
+        href: "/applied-science/medicine/anatomy-physiology/skeletal/lower-limb", 
+        Icon: Bone, 
         className: "theme-medicine",
-        subtitle: "Intervention" 
+        subtitle: "Locomotion" 
       }
     ]
   },
   {
-    name: "Frontiers of Health",
-    desc: "Pushing the boundaries of biology with technology.",
-    color: "text-blue-400",
-    icon: Dna,
+    name: "Physiology & Microstructure",
+    desc: "Bone is living tissue. How it grows, repairs, and stores minerals.",
+    color: "text-red-300",
+    icon: Divide, // Represents cellular division/structure
     items: [
       { 
-        title: "Biotechnology", 
-        desc: "Engineering biological systems for medical diagnostics and therapies.", 
-        href: "/applied-science/medicine/biotechnology", 
-        Icon: Dna, 
+        title: "Bone Remodeling", 
+        desc: "The cycle of Osteoblasts (builders) and Osteoclasts (recyclers).", 
+        href: "/applied-science/medicine/anatomy-physiology/skeletal/remodeling", 
+        Icon: Activity, 
         className: "theme-medicine",
-        subtitle: "Engineering Life" 
-      },
-      { 
-        title: "Neuroscience", 
-        desc: "The final frontier. Mapping the brain and treating cognitive disorders.", 
-        href: "/applied-science/medicine/neuroscience", 
-        Icon: BrainCog, 
-        className: "theme-medicine",
-        subtitle: "The Mind" 
+        subtitle: "Metabolism" 
       }
     ]
   }
 ];
 
-export default function MedicinePage() {
+export default function SkeletalSystemPage() {
   return (
     <main className="relative min-h-screen overflow-hidden bg-neutral-950 lg:px-12">
       
-      {/* 1. Pulse Background */}
-      <PulseBackground />
+      {/* 1. X-Ray Background */}
+      <XRayBackground />
       
       <div className="relative z-10 mx-auto flex max-w-7xl flex-col py-10">
         
         <PageHeader
-          eyebrow="Applied Science"
-          title="Medicine"
-          subtitle="The maintenance of the human machine. We combine deep biological knowledge with chemical and mechanical intervention to diagnose, treat, and prevent disease."
+          eyebrow="Anatomy & Physiology"
+          title="The Skeletal System"
+          subtitle="The biological chassis. 206 bones act as levers for muscles, armor for organs, and warehouses for minerals. It is engineering at its most elegant."
         />
 
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 items-start">
@@ -137,22 +129,22 @@ export default function MedicinePage() {
           {/* SIDEBAR (3 cols) */}
           <div className="flex flex-col gap-6 lg:col-span-3 lg:sticky lg:top-6 h-fit pt-2">
             
-            {/* Anatomy Widget */}
+            {/* Joint Widget */}
             <motion.div 
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.4 }}
             >
-               <AnatomyWidget />
+               <JointWidget />
             </motion.div>
 
-            {/* Hippocratic Oath Box */}
+            {/* Wolff's Law Box */}
             <div className="p-5 rounded-xl border border-dashed border-neutral-700 bg-neutral-900/40">
-                <h4 className="text-xs font-bold uppercase text-teal-400 mb-2 flex items-center gap-2">
-                    <Activity size={14} /> Primum Non Nocere
+                <h4 className="text-xs font-bold uppercase text-blue-200 mb-2 flex items-center gap-2">
+                    <Hammer size={14} /> Wolff's Law
                 </h4>
                 <p className="text-[11px] text-neutral-500 leading-relaxed">
-                    "First, do no harm." The guiding principle of medicine is to weigh the risk of intervention against the benefit of the cure.
+                    "Form follows function." Bones will adapt to the loads under which they are placed. If loading increases, the bone will remodel itself over time to become stronger.
                 </p>
             </div>
 
