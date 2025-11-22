@@ -16,10 +16,9 @@ export default function NetworkBackground() {
     const particleCount = 80;
     const connectionDist = 180;
     
-    // We track mouse for the "Searchlight" effect
     const mouse = { x: w/2, y: h/2 };
     
-    // Neon Cyber Palette
+    // Neon Cyber Palette (Hex Codes)
     const colors = ["#22d3ee", "#a78bfa", "#f472b6", "#34d399", "#fbbf24"];
 
     class Particle {
@@ -47,29 +46,28 @@ export default function NetworkBackground() {
       }
 
       draw() {
-        // Distance to mouse (Searchlight Logic)
+        // Searchlight Logic
         const dx = this.x - mouse.x;
         const dy = this.y - mouse.y;
         const dist = Math.sqrt(dx * dx + dy * dy);
         const lightRadius = 400;
 
-        // Brightness falls off with distance from mouse
-        let alpha = 0.1; // Base dimness
+        // Calculate Alpha based on distance
+        let alpha = 0.1;
         if (dist < lightRadius) {
             alpha += (1 - dist / lightRadius) * 0.9;
         }
 
-        if (!ctx) return;
+        if (!ctx) return 0;
+        
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
         ctx.fillStyle = this.color;
-        ctx.globalAlpha = alpha;
+        ctx.globalAlpha = alpha; // Apply transparency
         ctx.fill();
-        ctx.globalAlpha = 1;
+        ctx.globalAlpha = 1; // Reset
         
-        // Draw connections only if bright enough
-        if (alpha > 0.2) return alpha; // Return alpha for line drawing
-        return 0;
+        return alpha;
       }
     }
 
@@ -83,7 +81,7 @@ export default function NetworkBackground() {
         p.update();
         const pAlpha = p.draw() || 0;
 
-        // Connect
+        // Draw Connections
         if (pAlpha > 0.2) {
             for (let j = i + 1; j < particles.length; j++) {
                 const p2 = particles[j];
@@ -92,20 +90,27 @@ export default function NetworkBackground() {
                 const dist = Math.sqrt(dx * dx + dy * dy);
 
                 if (dist < connectionDist) {
-                    ctx.beginPath();
-                    const gradient = ctx.createLinearGradient(p.x, p.y, p2.x, p2.y);
-                    // Fade lines out at edges of spotlight
+                    // Calculate line transparency
                     const lineAlpha = Math.min(pAlpha, 1 - dist/connectionDist);
                     
-                    gradient.addColorStop(0, p.color.replace(')', `, ${lineAlpha})`).replace('rgb', 'rgba').replace('#', '')); // Simple hack or just use globalAlpha
-                    
+                    // Set styles
                     ctx.globalAlpha = lineAlpha;
-                    ctx.strokeStyle = "white"; // Use white to let colors pop via blend mode
+                    
+                    // Create gradient between the two particle colors
+                    const gradient = ctx.createLinearGradient(p.x, p.y, p2.x, p2.y);
+                    gradient.addColorStop(0, p.color);
+                    gradient.addColorStop(1, p2.color);
+                    
+                    ctx.strokeStyle = gradient;
                     ctx.lineWidth = 0.5;
+                    
+                    // Draw
+                    ctx.beginPath();
                     ctx.moveTo(p.x, p.y);
                     ctx.lineTo(p2.x, p2.y);
                     ctx.stroke();
-                    ctx.globalAlpha = 1;
+                    
+                    ctx.globalAlpha = 1; // Reset immediately
                 }
             }
         }
@@ -127,7 +132,6 @@ export default function NetworkBackground() {
   return (
     <>
         <canvas ref={canvasRef} className="fixed inset-0 pointer-events-none z-0" />
-        {/* HD-2D Layers */}
         <div className="hd-vignette" />
         <div className="hd-noise" />
     </>

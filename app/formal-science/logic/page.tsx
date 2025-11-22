@@ -1,135 +1,144 @@
 "use client";
 import PageHeader from "@/components/PageHeader";
-import FloatingSymbols from "@/components/FloatingSymbols";
 import TopicCard from "@/components/TopicCard";
+import LogicBackground from "@/components/LogicBackground";
+import SymbolTranslator from "@/components/SymbolTranslator";
+import { motion } from "framer-motion";
 import {
   LockKeyholeOpen,
   Binary,
   GitMerge,
   BookText,
-  HelpCircle,
-  AlertTriangle,
+  Scale,
   CheckCircle
-} from "@/components/icons";
-import React from "react";
-import Link from "next/link";
+} from "@/components/icons"; // Ensure icons are exported from your icon file
 
-const logicSymbols = [
-  "\\forall", "\\exists", "\\land", "\\lor", "\\neg", "\\to", "\\iff", "\\therefore",
-];
-
-const branches = [
+// --- DATA ---
+const sectors = [
   {
-    title: "Propositional Logic",
-    desc: "The study of simple statements and the connectives (AND, OR, NOT) that combine them into complex truths.",
-    href: "/formal-science/logic/propositional-logic",
-    Icon: LockKeyholeOpen,
-    className: "theme-logic",
+    name: "Formal Systems",
+    desc: "The structural rules for constructing valid statements.",
+    color: "text-cyan-400",
+    icon: Binary,
+    items: [
+      { 
+        title: "Propositional Logic", 
+        desc: "The logic of simple statements and truth connectives (AND, OR, NOT).", 
+        href: "/formal-science/logic/propositional-logic", 
+        Icon: LockKeyholeOpen, 
+        className: "theme-logic",
+        subtitle: "Boolean Algebra"
+      },
+      { 
+        title: "Predicate Logic", 
+        desc: "Quantifiers and variables. The foundation of mathematical proof.", 
+        href: "/formal-science/logic/predicate-logic", 
+        Icon: Binary, 
+        className: "theme-logic",
+        subtitle: "Quantification"
+      }
+    ]
   },
   {
-    title: "Predicate Logic",
-    desc: "Extending logic to include quantifiers (for all, there exists) and variables, allowing for mathematical proof.",
-    href: "/formal-science/logic/predicate-logic",
-    Icon: Binary,
-    className: "theme-logic",
-  },
-  {
-    title: "Argument & Fallacies",
-    desc: "Analyzing the structure of natural language arguments to identify validity, soundness, and errors.",
-    href: "/formal-science/logic/argument-structure",
-    Icon: BookText,
-    className: "theme-logic",
-  },
-  {
-    title: "Modal & Non-Classical",
-    desc: "Logics that deal with possibility, necessity, time, and fuzzy truths beyond simple True/False.",
-    href: "/formal-science/logic/modal-logics",
-    Icon: GitMerge,
-    className: "theme-logic",
-  },
-];
-
-// --- DATA: Paradoxes ---
-const paradoxes = [
-  {
-    title: "The Liar Paradox",
-    desc: "\"This statement is false.\" If it's true, it's false. If it's false, it's true.",
-    tag: "Self-Reference"
-  },
-  {
-    title: "Sorites Paradox",
-    desc: "If you remove one grain of sand from a heap, is it still a heap? When does it stop being one?",
-    tag: "Vagueness"
-  },
-  {
-    title: "Raven Paradox",
-    desc: "Observing a green apple increases the probability that all ravens are black. (Logically equivalent!)",
-    tag: "Induction"
+    name: "Applied Reasoning",
+    desc: "Analyzing arguments and non-standard truths.",
+    color: "text-blue-400",
+    icon: Scale,
+    items: [
+      { 
+        title: "Argument & Fallacies", 
+        desc: "Identifying validity, soundness, and errors in natural language.", 
+        href: "/formal-science/logic/argument-structure", 
+        Icon: BookText, 
+        className: "theme-logic",
+        subtitle: "Critical Thinking"
+      },
+      { 
+        title: "Modal & Non-Classical", 
+        desc: "Logic involving possibility, necessity, time, and fuzzy truths.", 
+        href: "/formal-science/logic/modal-logics", 
+        Icon: GitMerge, 
+        className: "theme-logic",
+        subtitle: "Beyond True/False"
+      }
+    ]
   }
 ];
 
-function ParadoxCard({ item }: { item: typeof paradoxes[0] }) {
-  return (
-    <div className="p-4 rounded-xl border border-neutral-800 bg-neutral-900/30 hover:border-blue-500/30 transition-colors group">
-      <div className="flex justify-between items-start mb-2">
-        <h4 className="font-bold text-neutral-200 text-sm group-hover:text-blue-300 transition-colors">{item.title}</h4>
-        <span className="text-[10px] uppercase font-bold text-blue-500/70 bg-blue-900/10 px-1.5 py-0.5 rounded border border-blue-900/30">
-          {item.tag}
-        </span>
-      </div>
-      <p className="text-xs text-neutral-400 leading-relaxed">{item.desc}</p>
-    </div>
-  );
-}
-
 export default function LogicPage() {
   return (
-    <main className="topic-page theme-logic lg:px-16">
-      <FloatingSymbols symbols={logicSymbols} />
-      <PageHeader
-        eyebrow="Formal Science"
-        title="Logic"
-        subtitle="The study of correct reasoning. It provides the universal, formal framework for constructing valid arguments and determining truth."
-      />
-
-      <div className="grid w-full max-w-7xl grid-cols-1 gap-12 lg:grid-cols-12">
+    <main className="relative min-h-screen overflow-hidden bg-neutral-950 lg:px-12">
+      
+      <LogicBackground />
+      
+      <div className="relative z-10 mx-auto flex max-w-7xl flex-col py-10">
         
-        <div className="lg:col-span-8">
-           <div className="mb-8 flex items-center gap-2 border-b border-neutral-800 pb-4">
-            <CheckCircle className="text-blue-400" />
-            <h2 className="text-2xl font-bold text-neutral-100">Branches of Logic</h2>
-          </div>
-          <section className="grid grid-cols-1 gap-6 md:grid-cols-2">
-            {branches.map((branch) => (
-              <TopicCard key={branch.href} {...branch} />
+        <PageHeader
+          eyebrow="Formal Science"
+          title="Logic"
+          subtitle="The calculus of truth. Logic provides the rigorous framework for distinguishing valid inference from fallacy, forming the bedrock of all rational inquiry."
+        />
+
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 items-start">
+          
+          {/* MAIN CONTENT (8 cols) */}
+          <div className="lg:col-span-9 space-y-10">
+             {sectors.map((sector, idx) => (
+              <section key={sector.name}>
+                 <motion.div 
+                    initial={{ opacity: 0, x: -10 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.4, delay: idx * 0.1 }}
+                    className="mb-4 flex items-center gap-3"
+                 >
+                    <sector.icon className={sector.color} size={20} />
+                    <h2 className="text-lg font-bold text-white tracking-wide">{sector.name}</h2>
+                    <div className="h-[1px] flex-1 bg-white/10"></div>
+                 </motion.div>
+
+                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                    {sector.items.map((item, i) => (
+                        <motion.div
+                            key={item.title}
+                            initial={{ opacity: 0, y: 15 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.3, delay: 0.1 + (i * 0.05) }}
+                        >
+                            <TopicCard {...item} />
+                        </motion.div>
+                    ))}
+                 </div>
+              </section>
             ))}
-          </section>
-        </div>
-
-        <div className="flex flex-col gap-8 lg:col-span-4 lg:sticky lg:top-24 h-fit">
-          {/* Paradoxes */}
-          <div className="glass p-1 rounded-2xl border border-blue-900/20 bg-gradient-to-b from-neutral-900/80 to-neutral-950/80">
-             <div className="p-4 border-b border-white/5">
-               <h3 className="text-sm font-bold uppercase tracking-widest text-blue-400 flex items-center gap-2">
-                 <HelpCircle size={16} /> Famous Paradoxes
-               </h3>
-             </div>
-             <div className="p-2 flex flex-col gap-1">
-               {paradoxes.map((p) => (
-                 <ParadoxCard key={p.title} item={p} />
-               ))}
-             </div>
           </div>
 
-          {/* Validity vs Truth */}
-          <div className="p-5 rounded-xl border border-dashed border-neutral-700/50 bg-neutral-900/20">
-            <h4 className="text-sm font-bold text-neutral-300 flex items-center gap-2 mb-2">
-               <AlertTriangle size={16} className="text-amber-500" /> Validity ≠ Truth
-            </h4>
-            <p className="text-xs text-neutral-400 leading-relaxed">
-              In logic, an argument is <strong>valid</strong> if the conclusion follows from the premises. It can be valid even if the premises are false!
-            </p>
+          {/* SIDEBAR (3 cols) */}
+          <div className="flex flex-col gap-6 lg:col-span-3 lg:sticky lg:top-6 h-fit pt-2">
+            
+            {/* Translator Widget */}
+            <motion.div 
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.4 }}
+            >
+               <SymbolTranslator />
+            </motion.div>
+
+            {/* Info Box */}
+            <div className="p-4 rounded-lg border border-dashed border-neutral-700 bg-neutral-900/40">
+                <div className="flex items-center gap-2 mb-2 text-neutral-300">
+                    <CheckCircle size={14} className="text-green-500" />
+                    <span className="text-xs font-bold uppercase">Soundness</span>
+                </div>
+                <p className="text-[11px] text-neutral-500 leading-relaxed">
+                    An argument is <strong>Sound</strong> only if it is both Valid (correct structure) AND its premises are actually true.
+                </p>
+            </div>
+
           </div>
+
         </div>
       </div>
     </main>

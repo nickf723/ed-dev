@@ -25,7 +25,7 @@ import {
   Network,
   Sigma,
   Search,
-} from "@/components/icons"; // Ensure these exports exist in your icons.ts or lucide-react
+} from "@/components/icons";
 import { LayoutGrid } from "lucide-react";
 
 // Define the domain mapping for theming
@@ -43,7 +43,7 @@ const getDomain = (path: string) => {
   return "home";
 };
 
-// Theme colors for each domain (matching your themes.css variables roughly)
+// Theme colors for each domain
 const domainColors: Record<string, string> = {
   formal: "text-red-400 border-red-500/30 bg-red-500/10",
   natural: "text-cyan-400 border-cyan-500/30 bg-cyan-500/10",
@@ -55,25 +55,10 @@ const domainColors: Record<string, string> = {
   home: "text-blue-400 border-blue-500/30 bg-blue-500/10",
 };
 
-// Hover colors (text only)
-const hoverColors: Record<string, string> = {
-  formal: "hover:text-red-300",
-  natural: "hover:text-cyan-300",
-  social: "hover:text-violet-300",
-  applied: "hover:text-orange-300",
-  humanities: "hover:text-amber-300",
-  inter: "hover:text-lime-300",
-  meta: "hover:text-white",
-  home: "hover:text-blue-300",
-};
-
 export default function Sidebar() {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const domain = getDomain(pathname);
-  
-  // Auto-collapse functionality or persistent state could go here
-  // For now, we keep simple local state for sub-menus
   
   return (
     <>
@@ -91,18 +76,18 @@ export default function Sidebar() {
           ${isOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}
         `}
       >
-        {/* Logo / Header area */}
-        <div className="flex h-20 items-center px-6 border-b border-white/5">
+        {/* LOGO / HOME LINK */}
+        <Link href="/" className="group flex h-20 items-center px-6 border-b border-white/5 hover:bg-white/5 transition-colors">
            <div className="flex items-center gap-3">
-             <div className={`flex h-8 w-8 items-center justify-center rounded-lg border bg-opacity-20 ${domainColors[domain].replace('text-', 'border-')}`}>
+             <div className={`flex h-8 w-8 items-center justify-center rounded-lg border bg-opacity-20 transition-colors ${domainColors[domain].replace('text-', 'border-')}`}>
                 <LayoutGrid size={18} className={domainColors[domain].split(" ")[0]} />
              </div>
              <div>
-                <h1 className="text-sm font-bold tracking-wider text-white">KNOWLEDGE</h1>
+                <h1 className="text-sm font-bold tracking-wider text-white group-hover:text-cyan-400 transition-colors">KNOWLEDGE</h1>
                 <p className="text-[10px] font-mono text-neutral-500">NETWORK v2.0</p>
              </div>
            </div>
-        </div>
+        </Link>
 
         {/* Scrollable Nav Area */}
         <nav className="flex-1 overflow-y-auto p-4 space-y-8 scroll-bar">
@@ -188,7 +173,6 @@ function NavItem({ href, icon: Icon, label, domain, currentPath, children }: any
     const isActive = currentPath === href || currentPath.startsWith(href + "/");
     const [expanded, setExpanded] = useState(isActive);
     
-    // Auto-expand if active
     useEffect(() => {
         if (isActive) setExpanded(true);
     }, [isActive]);
