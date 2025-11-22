@@ -1,0 +1,78 @@
+"use client";
+import { useState, useEffect } from "react";
+import { Scan, Layers, Component, LayoutTemplate, Activity } from "lucide-react";
+
+export default function XRayConsole() {
+  const [active, setActive] = useState(false);
+  const [domCount, setDomCount] = useState(0);
+
+  // Inject Debug CSS when active
+  useEffect(() => {
+    if (active) {
+      document.body.classList.add("x-ray-active");
+    } else {
+      document.body.classList.remove("x-ray-active");
+    }
+  }, [active]);
+
+  // Count DOM elements just for fun stats
+  useEffect(() => {
+    setDomCount(document.getElementsByTagName("*").length);
+  }, []);
+
+  return (
+    <div className="glass overflow-hidden rounded-xl border border-white/10 bg-neutral-900/80 backdrop-blur-xl">
+      {/* Inject Styles locally */}
+      <style jsx global>{`
+        .x-ray-active * {
+          outline: 1px dashed rgba(0, 255, 255, 0.3) !important;
+          background: rgba(0, 255, 255, 0.02) !important;
+        }
+        .x-ray-active div:hover {
+          outline: 1px solid rgba(255, 0, 255, 0.8) !important;
+          background: rgba(255, 0, 255, 0.05) !important;
+          cursor: crosshair;
+        }
+      `}</style>
+
+      <div className="border-b border-white/5 px-5 py-4 flex justify-between items-center">
+        <h3 className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-neutral-300">
+          <Scan size={14} className="text-emerald-400" /> Structure Scan
+        </h3>
+        <Activity size={14} className="text-neutral-600" />
+      </div>
+
+      <div className="p-6">
+        <button
+            onClick={() => setActive(!active)}
+            className={`w-full py-4 rounded-lg border flex flex-col items-center justify-center gap-2 transition-all duration-300
+                ${active 
+                    ? "bg-emerald-500/10 border-emerald-500/50 text-emerald-400 shadow-[0_0_20px_rgba(16,185,129,0.2)]" 
+                    : "bg-neutral-900 border-neutral-700 text-neutral-500 hover:border-neutral-500 hover:text-neutral-300"}
+            `}
+        >
+            <Layers size={24} />
+            <span className="text-xs font-bold uppercase tracking-widest">
+                {active ? "X-Ray Online" : "Enable X-Ray"}
+            </span>
+        </button>
+
+        {/* Live Stats */}
+        <div className="mt-6 space-y-3">
+            <div className="flex justify-between text-[10px] font-mono text-neutral-500 border-b border-white/5 pb-2">
+                <span>DOM_NODES</span>
+                <span className="text-white">{domCount}</span>
+            </div>
+            <div className="flex justify-between text-[10px] font-mono text-neutral-500 border-b border-white/5 pb-2">
+                <span>RENDER_MODE</span>
+                <span className="text-emerald-400">CSR</span>
+            </div>
+            <div className="flex justify-between text-[10px] font-mono text-neutral-500 pb-2">
+                <span>STATUS</span>
+                <span className="text-white">OPTIMAL</span>
+            </div>
+        </div>
+      </div>
+    </div>
+  );
+}
