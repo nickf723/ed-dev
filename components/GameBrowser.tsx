@@ -3,7 +3,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
-  Dices, Sword, Users, Gamepad2, Filter, Beaker, ArrowRight 
+  Dices, Sword, Users, Gamepad2, Filter, Beaker, ArrowRight, Layers 
 } from "lucide-react";
 
 const GAMES = [
@@ -15,7 +15,7 @@ const GAMES = [
     color: "text-amber-400",
     tags: ["Resource Management", "Combinatorial Logic", "Metagaming"],
     desc: "The grandmother of all trading card games. Players are planeswalkers dueling with spells.",
-    href: "/interdisciplines/game-studies/library/magic-the-gathering" // The destination!
+    href: "/interdisciplines/game-studies/library/magic-the-gathering" 
   },
   {
     id: "dnd",
@@ -59,9 +59,6 @@ const GAMES = [
   }
 ];
 
-// Import helper
-import { Layers } from "lucide-react";
-
 export default function GameBrowser() {
   const [filter, setFilter] = useState("All");
 
@@ -73,7 +70,7 @@ export default function GameBrowser() {
     <div className="w-full space-y-8">
       
       {/* Filter Bar */}
-      <div className="flex items-center gap-4 overflow-x-auto pb-2 no-scrollbar">
+      <div className="flex items-center gap-4 overflow-x-auto pb-2 scrollbar-hide">
         <Filter size={16} className="text-neutral-500 shrink-0" />
         {["All", "TCG", "RPG", "Board Game", "Video Game"].map((cat) => (
             <button
@@ -136,9 +133,11 @@ export default function GameBrowser() {
                         
                         <Link 
                             href={game.href}
-                            className="flex items-center justify-between w-full mt-4 px-4 py-2 rounded-lg bg-white/5 hover:bg-purple-600 hover:text-white text-neutral-400 text-xs font-bold uppercase tracking-wider transition-all"
+                            className={`flex items-center justify-between w-full mt-4 px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all
+                                ${game.href !== "#" ? "bg-purple-600 text-white hover:bg-purple-500 hover:shadow-[0_0_15px_rgba(168,85,247,0.4)]" : "bg-white/5 text-neutral-500 cursor-not-allowed"}
+                            `}
                         >
-                            {game.href !== "#" ? "Enter Simulation" : "Coming Soon"}
+                            {game.href !== "#" ? "Analyze System" : "Data Pending"}
                             <ArrowRight size={14} />
                         </Link>
                     </div>
