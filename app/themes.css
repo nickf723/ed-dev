@@ -593,7 +593,6 @@
 }
 
 .theme-economics {
-  /* Value / Growth: Emerald & Gold */
   --theme-gradient-start: #10b981;
   --theme-gradient-end: #fbbf24;
   --theme-icon-hover: #34d399;
@@ -605,7 +604,6 @@
 }
 
 .theme-political-science {
-  /* Power / Governance: Red & Purple */
   --theme-gradient-start: #dc2626;
   --theme-gradient-end: #7c3aed;
   --theme-icon-hover: #f87171;
@@ -617,7 +615,6 @@
 }
 
 .theme-anthropology {
-  /* Human History / Earth: Amber & Stone */
   --theme-gradient-start: #d97706;
   --theme-gradient-end: #78350f;
   --theme-icon-hover: #fbbf24;
@@ -629,7 +626,6 @@
 }
 
 .theme-geography {
-  /* Earth / Space: Blue & Green */
   --theme-gradient-start: #2563eb;
   --theme-gradient-end: #16a34a;
   --theme-icon-hover: #60a5fa;
@@ -641,7 +637,6 @@
 }
 
 .theme-linguistics {
-  /* Speech / Code: Lime & Yellow */
   --theme-gradient-start: #84cc16;
   --theme-gradient-end: #eab308;
   --theme-icon-hover: #a3e635;
@@ -667,7 +662,6 @@
 }
 
 .theme-medicine {
-  /* Health / Life: Rose & Teal */
   --theme-gradient-start: #f43f5e;
   --theme-gradient-end: #14b8a6;
   --theme-icon-hover: #fda4af;
@@ -681,7 +675,6 @@
 /* --- INTERDISCIPLINES --- */
 
 .theme-biochemistry {
-  /* Bio (Green) + Chem (Orange) -> Lime/Amber */
   --theme-gradient-start: #84cc16;
   --theme-gradient-end: #f59e0b;
   --theme-icon-hover: #bef264;
@@ -693,7 +686,6 @@
 }
 
 .theme-biophysics {
-  /* Bio (Green) + Physics (Blue) -> Teal/Cyan */
   --theme-gradient-start: #10b981;
   --theme-gradient-end: #3b82f6;
   --theme-icon-hover: #34d399;
@@ -705,7 +697,6 @@
 }
 
 .theme-cognitive-science {
-  /* Mind (Purple) + Tech (Cyan) -> Indigo/Sky */
   --theme-gradient-start: #8b5cf6;
   --theme-gradient-end: #06b6d4;
   --theme-icon-hover: #a78bfa;
@@ -717,7 +708,6 @@
 }
 
 .theme-astrophysics {
-  /* Space (Dark Blue) + Physics (Red/Blue) -> Deep Indigo */
   --theme-gradient-start: #4338ca;
   --theme-gradient-end: #db2777;
   --theme-icon-hover: #818cf8;
@@ -729,7 +719,6 @@
 }
 
 .theme-geophysics {
-  /* Earth (Green) + Physics (Blue) -> Emerald/Blue */
   --theme-gradient-start: #059669;
   --theme-gradient-end: #1e40af;
   --theme-icon-hover: #34d399;
@@ -740,6 +729,16 @@
   --theme-card-shadow: rgba(5, 150, 105, 0.25);
 }
 
+.theme-game-studies {
+  --theme-gradient-start: #9333ea; /* Purple-600 */
+  --theme-gradient-end: #facc15;   /* Yellow-400 */
+  --theme-icon-hover: #d8b4fe;
+  --theme-underline: #a855f7;
+  --theme-text-title: #fef08a;     /* Yellow-200 */
+  --theme-text-header: #e9d5ff;    /* Purple-200 */
+  --theme-text-icon: #facc15;      /* Yellow-400 */
+  --theme-card-shadow: rgba(147, 51, 234, 0.3);
+}
 
 .theme-glossary {
     --theme-gradient-start: #00f5f5;

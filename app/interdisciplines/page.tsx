@@ -7,7 +7,9 @@ import FusionReactor from "@/components/FusionReactor";
 import { motion } from "framer-motion";
 import {
   Dna, Cpu, Brain, Rocket, Atom, FlaskConical, Globe, Leaf, Network, 
-  Sprout, Binary, Landmark, Map, Users
+  Sprout, Binary, Landmark, Map, Users,
+  Dices,
+  Puzzle
 } from "lucide-react";
 
 // --- DATA ---
@@ -131,6 +133,23 @@ const sectors = [
             Icon: Map,
             className: "theme-sociology",
             subtitle: "Society + Space"
+        }
+    ]
+  },
+  {
+    name: "Ludology & Play",
+    desc: "The study of games, rules, and interactive systems.",
+    color: "text-fuchsia-400",
+    icon: Dices, // Make sure Dices is imported from lucide-react
+    items: [
+        {
+            id: "game-studies",
+            title: "Game Studies",
+            desc: "The critical analysis of games, players, and the culture surrounding them.",
+            href: "/interdisciplines/game-studies",
+            Icon: Puzzle, // Import Puzzle
+            className: "theme-game-studies",
+            subtitle: "Rules & Play"
         }
     ]
   }
