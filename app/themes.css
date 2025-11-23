@@ -181,6 +181,16 @@
     --theme-blob-2: rgba(0, 180, 204, 0.2);
     --theme-grid-color: rgba(132, 0, 255, 0.925);
   }
+  .theme-topology {
+    --theme-gradient-start: #7c3aed; /* Violet-600 */
+    --theme-gradient-end: #4f46e5;   /* Indigo-600 */
+    --theme-icon-hover: #a78bfa;     /* Violet-400 */
+    --theme-underline: #6d28d9;      /* Violet-700 */
+    --theme-text-title: #ddd6fe;     /* Violet-100 */
+    --theme-text-header: #c4b5fd;    /* Violet-300 */
+    --theme-text-icon: #8b5cf6;      /* Violet-500 */
+    --theme-card-shadow: rgba(124, 58, 237, 0.25);
+  }
 
   .theme-calculus {
     --theme-gradient-start: #ff0000;
@@ -388,7 +398,16 @@
     --theme-blob-2: rgba(75, 75, 75, 0.2);
     --theme-grid-color: rgba(255, 255, 255, 0.08);
   }
-
+  .theme-artificial-intelligence {
+    --theme-gradient-start: #7c3aed; /* Violet-600 */
+    --theme-gradient-end: #22d3ee;   /* Cyan-400 */
+    --theme-icon-hover: #a78bfa;
+    --theme-underline: #8b5cf6;
+    --theme-text-title: #e9d5ff;
+    --theme-text-header: #c4b5fd;
+    --theme-text-icon: #22d3ee;
+    --theme-card-shadow: rgba(124, 58, 237, 0.3);
+  }
 /*---------------------------------------------------------------------------------------------------------------*/
 
   .theme-astronomy {
