@@ -408,6 +408,16 @@
     --theme-text-icon: #22d3ee;
     --theme-card-shadow: rgba(124, 58, 237, 0.3);
   }
+  .theme-cryptography {
+    --theme-gradient-start: #10b981; /* Emerald-500 */
+    --theme-gradient-end: #0f172a;   /* Slate-900 */
+    --theme-icon-hover: #34d399;     /* Emerald-400 */
+    --theme-underline: #059669;      /* Emerald-600 */
+    --theme-text-title: #d1fae5;     /* Emerald-100 */
+    --theme-text-header: #6ee7b7;    /* Emerald-300 */
+    --theme-text-icon: #10b981;      /* Emerald-500 */
+    --theme-card-shadow: rgba(16, 185, 129, 0.25);
+  }
 /*---------------------------------------------------------------------------------------------------------------*/
 
   .theme-astronomy {
@@ -523,17 +533,14 @@
 }
 
 .theme-chemistry {
-  --theme-gradient-start: rgb(255, 166, 0);
-  --theme-gradient-end: rgb(221, 2, 2);
-  --theme-icon-hover: rgb(0, 255, 0);
-  --theme-underline: rgb(223, 208, 0);
-  --theme-text-title: #22d3ee;
-  --theme-text-header: #00e1ff;
-  --theme-text-icon: #09da14;
-  --theme-symbol-color: rgba(0, 184, 83, 0.15);
-  --theme-blob-1: rgba(185, 106, 16, 0.25);
-  --theme-blob-2: rgba(34, 54, 238, 0.534);
-  --theme-grid-color: rgba(45, 212, 191, 0.1);
+  --theme-gradient-start: #84cc16; /* Lime-500 */
+  --theme-gradient-end: #f97316;   /* Orange-500 */
+  --theme-icon-hover: #bef264;     /* Lime-300 */
+  --theme-underline: #65a30d;      /* Lime-700 */
+  --theme-text-title: #ecfccb;     /* Lime-100 */
+  --theme-text-header: #fdba74;    /* Orange-300 */
+  --theme-text-icon: #84cc16;      /* Lime-500 */
+  --theme-card-shadow: rgba(132, 204, 22, 0.25);
 }
 
 .theme-earth-science {
@@ -797,7 +804,17 @@
     --theme-grid-color: rgba(255, 154, 0, 0.08);
 }
 
-
+/* --- FUN THEMES --- */
+.theme-media {
+  --theme-gradient-start: #ec4899; /* Pink-500 */
+  --theme-gradient-end: #06b6d4;   /* Cyan-500 */
+  --theme-icon-hover: #f472b6;     /* Pink-400 */
+  --theme-underline: #be123c;      /* Pink-700 */
+  --theme-text-title: #fce7f3;     /* Pink-100 */
+  --theme-text-header: #a5f3fc;    /* Cyan-200 */
+  --theme-text-icon: #22d3ee;      /* Cyan-400 */
+  --theme-card-shadow: rgba(236, 72, 153, 0.3);
+}
 
 
 

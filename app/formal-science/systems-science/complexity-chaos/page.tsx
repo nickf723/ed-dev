@@ -1,94 +1,86 @@
 "use client";
 import PageHeader from "@/components/PageHeader";
 import TopicCard from "@/components/TopicCard";
-import OrbitalBackground from "@/components/OrbitalBackground";
-import MoleculeViewer from "@/components/MoleculeViewer";
+import AttractorBackground from "@/components/AttractorBackground";
+import PendulumWidget from "@/components/PendulumWidget";
 import { motion } from "framer-motion";
 import {
-  Atom, FlaskConical, Box, Layers, Scale, Zap
+  Activity, Wind, Snowflake, Fingerprint, GitMerge, RefreshCcw
 } from "lucide-react";
 
 // --- DATA ---
 const sectors = [
   {
-    name: "The Building Blocks",
-    desc: "The fundamental components of matter.",
-    color: "text-lime-400",
-    icon: Atom,
+    name: "Deterministic Chaos",
+    desc: "Systems that are governed by laws but impossible to predict.",
+    color: "text-violet-400",
+    icon: Wind,
     items: [
       { 
-        title: "Periodic Table", 
-        desc: "The master key to chemistry. Organized by atomic structure and electron configuration.", 
-        href: "/natural-science/chemistry/periodic-table", 
-        Icon: Layers, 
-        className: "theme-chemistry",
-        subtitle: "The Elements" 
+        title: "The Butterfly Effect", 
+        desc: "Sensitive dependence on initial conditions. A butterfly flapping its wings in Brazil can cause a tornado in Texas.", 
+        href: "/formal-science/systems-science/complexity-chaos/butterfly-effect", 
+        Icon: GitMerge, 
+        className: "theme-systems-science",
+        subtitle: "Sensitivity" 
       },
       { 
-        title: "Atomic Structure", 
-        desc: "Protons, Neutrons, and Electrons. The quantum cloud model.", 
-        href: "/natural-science/chemistry/atomic-structure", 
-        Icon: Atom, 
-        className: "theme-chemistry",
-        subtitle: "The Atom" 
+        title: "Attractors", 
+        desc: "States toward which a system tends to evolve. Strange attractors have fractal structures.", 
+        href: "/formal-science/systems-science/complexity-chaos/attractors", 
+        Icon: RefreshCcw, 
+        className: "theme-systems-science",
+        subtitle: "Orbits" 
       }
     ]
   },
   {
-    name: "Quantitative Chemistry",
-    desc: "Measuring and calculating chemical quantities.",
-    color: "text-orange-400",
-    icon: Scale,
+    name: "Fractal Geometry",
+    desc: "The geometry of nature. Self-similarity at every scale.",
+    color: "text-blue-400",
+    icon: Snowflake,
     items: [
       { 
-        title: "Stoichiometry", 
-        desc: "The math of reactions. Calculating mass, moles, and yield.", 
-        href: "/natural-science/chemistry/stoichiometry", 
-        Icon: Scale, 
-        className: "theme-chemistry",
-        subtitle: "The Math" 
-      },
-      { 
-        title: "Titration Lab", 
-        desc: "Determining concentration through controlled neutralization.", 
-        href: "/natural-science/chemistry/titration-lab", 
-        Icon: FlaskConical, 
-        className: "theme-chemistry",
-        subtitle: "Simulation" 
+        title: "Mandelbrot Set", 
+        desc: "The most famous object in modern mathematics. Infinite complexity from a simple formula.", 
+        href: "/formal-science/systems-science/complexity-chaos/fractals", 
+        Icon: Snowflake, 
+        className: "theme-systems-science",
+        subtitle: "Recursion" 
       }
     ]
   },
   {
-    name: "States & Changes",
-    desc: "How matter transforms.",
+    name: "Emergence",
+    desc: "Order arising from chaos without central control.",
     color: "text-cyan-400",
-    icon: Box,
+    icon: Fingerprint,
     items: [
       { 
-        title: "Thermodynamics", 
-        desc: "Heat, entropy, and spontaneity in chemical reactions.", 
-        href: "/natural-science/physics/thermodynamics", // Cross-link
-        Icon: Zap, 
-        className: "theme-physics",
-        subtitle: "Energy" 
+        title: "Self-Organization", 
+        desc: "How flocks of birds, ant colonies, and economies organize themselves spontaneously.", 
+        href: "/formal-science/systems-science/complexity-chaos/emergence", 
+        Icon: Activity, 
+        className: "theme-biology", // Cross-link
+        subtitle: "Collective" 
       }
     ]
   }
 ];
 
-export default function ChemistryPage() {
+export default function ChaosPage() {
   return (
     <main className="relative min-h-screen overflow-hidden bg-neutral-950 lg:px-12">
       
-      {/* 1. Background */}
-      <OrbitalBackground />
+      {/* 1. Attractor Background */}
+      <AttractorBackground />
       
       <div className="relative z-10 mx-auto flex max-w-7xl flex-col py-10">
         
         <PageHeader
-          eyebrow="Natural Science"
-          title="Chemistry"
-          subtitle="The central science. Chemistry explains how atoms bond to form molecules, and how molecules react to create the substance of the universe."
+          eyebrow="Systems Science"
+          title="Complexity & Chaos"
+          subtitle="The study of the unpredictable. Chaos theory deals with nonlinear things that are effectively impossible to predict or control, like turbulence, weather, the stock market, and our brain states."
         />
 
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 items-start">
@@ -129,22 +121,22 @@ export default function ChemistryPage() {
           {/* SIDEBAR (3 cols) */}
           <div className="flex flex-col gap-6 lg:col-span-3 lg:sticky lg:top-6 h-fit pt-2">
             
-            {/* Molecule Widget */}
+            {/* Pendulum Widget */}
             <motion.div 
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.4 }}
             >
-               <MoleculeViewer />
+               <PendulumWidget />
             </motion.div>
 
             {/* Quote */}
             <div className="p-5 rounded-xl border border-dashed border-neutral-700 bg-neutral-900/40">
-                <h4 className="text-xs font-bold uppercase text-orange-400 mb-2 flex items-center gap-2">
-                    <Atom size={14} /> Molecular Geometry
+                <h4 className="text-xs font-bold uppercase text-blue-400 mb-2 flex items-center gap-2">
+                    <Activity size={14} /> Prediction Horizon
                 </h4>
                 <p className="text-[11px] text-neutral-500 leading-relaxed">
-                    VSEPR Theory: Electron pairs repel each other. This simple rule forces molecules into specific 3D shapes, which determines their chemical properties.
+                    Because of chaos, we can never predict the weather more than about two weeks out. The errors in our data eventually swallow the signal. This limit is called the <strong>Lyapunov Time</strong>.
                 </p>
             </div>
 

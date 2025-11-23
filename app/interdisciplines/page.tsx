@@ -9,7 +9,8 @@ import {
   Dna, Cpu, Brain, Rocket, Atom, FlaskConical, Globe, Leaf, Network, 
   Sprout, Binary, Landmark, Map, Users,
   Dices,
-  Puzzle
+  Puzzle,
+  Eye
 } from "lucide-react";
 
 // --- DATA ---
@@ -150,6 +151,23 @@ const sectors = [
             Icon: Puzzle, // Import Puzzle
             className: "theme-game-studies",
             subtitle: "Rules & Play"
+        }
+    ]
+  },
+  {
+    name: "Mind & Matter",
+    desc: "The interface of consciousness and reality.",
+    color: "text-fuchsia-400",
+    icon: Brain,
+    items: [
+        {
+            id: "psychedelics",
+            title: "Psychedelics",
+            desc: "The study of altered states, neuroplasticity, and the chemical basis of consciousness.",
+            href: "/interdisciplines/psychedelics",
+            Icon: Eye,
+            className: "theme-psychedelics",
+            subtitle: "Consciousness"
         }
     ]
   }
