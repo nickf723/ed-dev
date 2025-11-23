@@ -2,243 +2,212 @@
 
 import { useState } from "react";
 import {
-  Atom, Handshake, Hammer, Palette, Link as LinkIcon, Wrench, BookOpen, Binary, Search,
+  Atom, Handshake, Hammer, Palette, Link as LinkIcon, 
+  Binary, Gamepad2, BookOpen, FlaskConical, LayoutGrid,
+  Skull, Theater, Terminal
 } from "@/components/icons";
-import TopicCard from "@/components/TopicCard";
-import { Skull, Theater, Search as SearchIcon, LayoutGrid, Settings } from "lucide-react";
+import { Search as SearchIcon, ArrowRight, Link } from "lucide-react";
 import NetworkBackground from "@/components/NetworkBackground";
+import { BentoGrid, BentoItem } from "@/components/BentoGrid";
+import NavMenu from "@/components/NavMenu";
 import { motion } from "framer-motion";
 
-// 1. Separate Data
-const mainDisciplines = [
+// --- ACADEMIC DOMAINS ---
+const academicDomains = [
   {
     title: "Formal Sciences",
-    desc: "Logic, Mathematics, Systems Theory, and the abstract languages of the universe.",
+    desc: "The language of structure. Logic, Mathematics, and Systems Theory.",
     href: "/formal-science",
     Icon: Binary,
-    className: "theme-formal-science",
-    tags: ["math", "logic", "cs"]
+    color: "text-red-500",
+    tags: ["Logic", "Math", "Systems"]
   },
   {
     title: "Natural Sciences",
-    desc: "Physics, Chemistry, Biology, and the study of the physical world.",
+    desc: "The study of the physical universe. Physics, Biology, and Chemistry.",
     href: "/natural-science",
     Icon: Atom,
-    className: "theme-natural-science",
-    tags: ["physics", "bio", "chem", "space"]
+    color: "text-cyan-400",
+    tags: ["Physics", "Biology", "Chemistry"]
   },
   {
     title: "Social Sciences",
-    desc: "Sociology, Psychology, Economics, and the complex web of human interaction.",
+    desc: "The web of human interaction. Psychology, Sociology, and Economics.",
     href: "/social-science",
     Icon: Handshake,
-    className: "theme-social-science",
-    tags: ["people", "society", "mind"]
+    color: "text-violet-400",
+    tags: ["Psychology", "Sociology", "Economics"]
   },
   {
     title: "Applied Sciences",
-    desc: "Engineering, Medicine, Technology, and putting knowledge to work.",
+    desc: "Knowledge in action. Engineering, Medicine, and Technology.",
     href: "/applied-science",
     Icon: Hammer,
-    className: "theme-applied-science",
-    tags: ["tech", "build", "health"]
+    color: "text-orange-400",
+    tags: ["Engineering", "Medicine", "Tech"]
   },
   {
     title: "Humanities",
-    desc: "Philosophy, History, Arts, and the exploration of the human condition.",
+    desc: "The human condition. Art, History, Philosophy, and Literature.",
     href: "/humanities",
     Icon: Palette,
-    className: "theme-humanities",
-    tags: ["art", "history", "thought"]
+    color: "text-amber-400",
+    tags: ["Philosophy", "History", "Arts"]
   },
   {
     title: "Interdisciplines",
-    desc: "Bioengineering, Astrophysics, and fields that bridge the gaps.",
+    desc: "The spaces between. Astrobiology, Game Studies, and AI.",
     href: "/interdisciplines",
     Icon: LinkIcon,
-    className: "theme-interdisciplines",
-    tags: ["mix", "bridge"]
+    color: "text-lime-400",
+    tags: ["Astrobiology", "Game Studies", "AI"]
   },
-];
-
-const metaTools = [
-  {
-    title: "Glossary",
-    desc: "Definitions & Key Terms.",
-    href: "/glossary",
-    Icon: BookOpen,
-    className: "theme-glossary",
-    tags: ["words", "definitions"]
-  },
-  {
-    title: "Dev Playground",
-    desc: "UI Experiments & Tests.",
-    href: "/dev-playground",
-    Icon: Wrench,
-    className: "theme-dev-playground",
-    tags: ["code", "test"]
-  },
-  {
-    title: "Skeleton Pages",
-    desc: "Design Templates.",
-    href: "/skeleton",
-    Icon: Skull,
-    className: "theme-skeleton",
-    tags: ["layout", "design"]
-  },
-  {
-    title: "Stage",
-    desc: "Presentation Studio.",
-    href: "/stage",
-    Icon: Theater,
-    className: "theme-stage",
-    tags: ["video", "demo"]
-  }
 ];
 
 export default function Home() {
-  const [search, setSearch] = useState("");
-
-  const filterList = (list: any[]) => list.filter((c) => 
-    c.title.toLowerCase().includes(search.toLowerCase()) ||
-    c.desc.toLowerCase().includes(search.toLowerCase()) ||
-    c.tags.some((t: string) => t.includes(search.toLowerCase()))
-  );
-
-  const filteredMain = filterList(mainDisciplines);
-  const filteredMeta = filterList(metaTools);
+  const openSearch = () => {
+      document.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', metaKey: true }));
+  };
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-neutral-950 selection:bg-cyan-500/30">
+    <main className="relative min-h-screen w-full overflow-x-hidden bg-[#050505] selection:bg-cyan-500/30 pb-20">
       
-      {/* --- Atmospheric Background Blobs --- */}
-      <div className="fixed inset-0 z-0 pointer-events-none">
-        <div className="absolute top-[-20%] left-[-10%] w-[50vw] h-[50vw] bg-blue-600/20 rounded-full blur-[120px] animate-blob-slow" />
-        <div className="absolute bottom-[-20%] right-[-10%] w-[50vw] h-[50vw] bg-purple-600/20 rounded-full blur-[120px] animate-blob-medium" />
-        <div className="absolute top-[40%] left-[30%] w-[30vw] h-[30vw] bg-cyan-500/10 rounded-full blur-[100px] animate-blob-fast" />
-      </div>
-
-      {/* Interactive Network Canvas */}
+      {/* Backgrounds */}
       <NetworkBackground />
+      <div className="fixed inset-0 z-0 pointer-events-none bg-[radial-gradient(circle_at_50%_0%,rgba(30,30,40,0.5),#050505_80%)]" />
 
-      <div className="relative z-10 mx-auto flex max-w-7xl flex-col items-center px-6 py-20">
+      <div className="relative z-10 mx-auto flex max-w-7xl flex-col px-6 py-16">
         
-        {/* --- Hero Section --- */}
+        {/* --- HEADER --- */}
+        <header className="flex justify-between items-center mb-24">
+            <div className="flex items-center gap-3">
+                <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center shadow-[0_0_15px_rgba(255,255,255,0.3)]">
+                    <LayoutGrid className="text-black" size={20} />
+                </div>
+                <span className="font-bold tracking-[0.2em] uppercase text-xs text-white">Knowledge Network</span>
+            </div>
+            <button 
+                onClick={openSearch}
+                className="hidden sm:flex items-center gap-3 px-4 py-2 rounded-full border border-white/10 bg-white/5 hover:bg-white/10 transition-colors text-xs font-medium text-neutral-400 group"
+            >
+                <SearchIcon size={14} className="group-hover:text-white transition-colors" />
+                <span>Command Palette</span>
+                <kbd className="bg-white/10 px-1.5 rounded text-[10px] font-mono text-neutral-500 group-hover:text-white">⌘K</kbd>
+            </button>
+        </header>
+        
+        {/* --- HERO --- */}
         <motion.div 
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="mb-24 text-center max-w-4xl"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="mb-32 max-w-4xl"
         >
-          <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-xs font-medium uppercase tracking-[0.2em] text-cyan-300 shadow-[0_0_15px_rgba(34,211,238,0.2)] backdrop-blur-md">
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-cyan-400 opacity-75"></span>
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-cyan-500"></span>
-            </span>
-            System Online
-          </div>
-          
-          <h1 className="mb-8 text-6xl font-extrabold tracking-tighter text-white sm:text-8xl lg:text-9xl drop-shadow-2xl">
-            KNOWLEDGE<br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 animate-text">
-              NETWORK
-            </span>
-          </h1>
-          
-          <p className="mx-auto max-w-2xl text-xl text-neutral-300/80 font-light leading-relaxed">
-            Navigating the archives of human understanding. <br className="hidden sm:block" />
-            Connect the dots across science, humanities, and technology.
-          </p>
+             <h1 className="text-7xl sm:text-8xl md:text-9xl font-black tracking-tighter text-white mb-8 leading-[0.85]">
+                THE <br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 animate-text">
+                    NEXUS
+                </span>
+            </h1>
+            <p className="text-xl text-neutral-400 max-w-2xl leading-relaxed mb-10 font-light">
+                An interactive archive of human understanding. From the logic of code to the philosophy of art, mapped and simulated.
+            </p>
 
-          {/* Omnibar Search */}
-          <div className="mx-auto mt-12 flex max-w-lg items-center gap-4 rounded-full border border-white/10 bg-neutral-900/60 px-6 py-4 shadow-2xl backdrop-blur-xl transition-all focus-within:border-cyan-500/50 focus-within:bg-neutral-900/90 focus-within:shadow-[0_0_30px_rgba(34,211,238,0.15)] group">
-            <SearchIcon className="h-6 w-6 text-neutral-500 group-focus-within:text-cyan-400 transition-colors" />
-            <input 
-              type="text"
-              placeholder="Search the network..."
-              className="flex-1 bg-transparent text-lg text-neutral-100 placeholder-neutral-600 outline-none"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
-          </div>
+            <div className="flex flex-wrap gap-4">
+                <button onClick={openSearch} className="px-8 py-4 bg-white text-black rounded-full font-bold uppercase tracking-widest hover:bg-neutral-200 transition-colors flex items-center gap-2 shadow-[0_0_30px_rgba(255,255,255,0.2)]">
+                    Start Exploring <ArrowRight size={16} />
+                </button>
+                <Link href="/arcade" className="px-8 py-4 bg-white/5 text-white border border-white/10 rounded-full font-bold uppercase tracking-widest hover:bg-white/10 transition-colors backdrop-blur-md">
+                    Enter Arcade
+                </Link>
+            </div>
         </motion.div>
 
-        {/* --- Main Content: Domains --- */}
-        {filteredMain.length > 0 && (
-          <section className="w-full mb-20">
-            <motion.div 
-              initial={{ opacity: 0 }} 
-              animate={{ opacity: 1 }} 
-              transition={{ delay: 0.2 }}
-              className="flex items-center gap-3 mb-8 border-b border-white/10 pb-4"
-            >
-              <LayoutGrid className="text-cyan-400" />
-              <h2 className="text-2xl font-bold text-neutral-100 tracking-wide">Core Domains</h2>
-            </motion.div>
+        {/* --- BENTO GRID (The Hubs) --- */}
+        <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="mb-32"
+        >
+            <SectionTitle title="System Modules" icon={Terminal} />
+            
+            <BentoGrid>
+                {/* 1. The Arcade (Big Feature) */}
+                <BentoItem 
+                    title="The Arcade"
+                    desc="Interactive simulations. Game Theory, Magic: The Gathering, and Logic Gates."
+                    href="/arcade"
+                    Icon={Gamepad2}
+                    className="md:col-span-2 md:row-span-2 min-h-[300px]"
+                    bgClass="bg-gradient-to-br from-purple-900/40 to-purple-900/10 border-purple-500/30"
+                    colorClass="text-purple-400"
+                />
+                
+                {/* 2. The Library */}
+                <BentoItem 
+                    title="The Library"
+                    desc="Reference archives. Glossary & Rules."
+                    href="/library"
+                    Icon={BookOpen}
+                    bgClass="bg-gradient-to-br from-cyan-900/40 to-cyan-900/10 border-cyan-500/30"
+                    colorClass="text-cyan-400"
+                />
 
-            <div className="grid w-full grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-              {filteredMain.map((card, i) => (
-                <motion.div
-                  key={card.href}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, delay: 0.1 + (i * 0.05) }}
-                >
-                  <TopicCard
-                    href={card.href}
-                    title={card.title}
-                    desc={card.desc}
-                    Icon={card.Icon}
-                    className={`${card.className} h-full border-opacity-50 bg-opacity-40 hover:bg-opacity-60 backdrop-blur-sm`}
-                  />
-                </motion.div>
-              ))}
-            </div>
-          </section>
-        )}
+                {/* 3. The Lab */}
+                <BentoItem 
+                    title="The Lab"
+                    desc="Experimental UI components."
+                    href="/dev-playground"
+                    Icon={FlaskConical}
+                    bgClass="bg-gradient-to-br from-emerald-900/40 to-emerald-900/10 border-emerald-500/30"
+                    colorClass="text-emerald-400"
+                />
 
-        {/* --- Secondary Content: Meta/Tools --- */}
-        {filteredMeta.length > 0 && (
-          <section className="w-full">
-            <motion.div 
-              initial={{ opacity: 0 }} 
-              animate={{ opacity: 1 }} 
-              transition={{ delay: 0.4 }}
-              className="flex items-center gap-3 mb-8 border-b border-white/10 pb-4"
-            >
-              <Settings className="text-purple-400" />
-              <h2 className="text-2xl font-bold text-neutral-100 tracking-wide">System & Meta</h2>
-            </motion.div>
+                {/* 4. The Stage (New!) */}
+                 <BentoItem 
+                    title="The Stage"
+                    desc="Content production studio."
+                    href="/stage"
+                    Icon={Theater}
+                    bgClass="bg-gradient-to-br from-rose-900/40 to-rose-900/10 border-rose-500/30"
+                    colorClass="text-rose-400"
+                />
 
-            <div className="grid w-full grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-              {filteredMeta.map((card, i) => (
-                <motion.div
-                  key={card.href}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, delay: 0.3 + (i * 0.05) }}
-                >
-                  {/* Smaller, more compact cards for tools */}
-                  <TopicCard
-                    href={card.href}
-                    title={card.title}
-                    desc={card.desc}
-                    Icon={card.Icon}
-                    className={`${card.className} h-full !p-6 !min-h-0 border-opacity-30 bg-opacity-20`}
-                  />
-                </motion.div>
-              ))}
-            </div>
-          </section>
-        )}
+                {/* 5. Skeleton (New!) */}
+                <BentoItem 
+                    title="Blueprints"
+                    desc="Layout patterns."
+                    href="/skeleton"
+                    Icon={Skull}
+                    bgClass="bg-gradient-to-br from-neutral-800/60 to-neutral-900/40 border-white/10"
+                    colorClass="text-neutral-400"
+                />
+            </BentoGrid>
+        </motion.div>
 
-        {filteredMain.length === 0 && filteredMeta.length === 0 && (
-            <div className="mt-12 text-neutral-500 italic">
-                Signal lost. No nodes found matching "{search}".
-            </div>
-        )}
+        {/* --- NAV MENU (The Graph) --- */}
+        <motion.div
+             initial={{ opacity: 0 }}
+             whileInView={{ opacity: 1 }}
+             viewport={{ once: true }}
+             transition={{ duration: 0.6 }}
+        >
+            <SectionTitle title="Academic Graph" icon={Binary} />
+            <NavMenu items={academicDomains} />
+        </motion.div>
 
       </div>
     </main>
   );
+}
+
+function SectionTitle({ title, icon: Icon }: any) {
+    return (
+        <div className="flex items-center gap-3 mb-8 pl-2">
+            <Icon className="text-neutral-500" size={20} />
+            <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-neutral-500">{title}</h2>
+        </div>
+    );
 }

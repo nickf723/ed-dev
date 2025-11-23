@@ -3,30 +3,12 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import CommandPalette from "@/components/CommandPalette"; // Import new component
 import {
-  Home,
-  ChevronDown,
-  ChevronRight,
-  Menu,
-  X,
-  Binary,
-  Atom,
-  Handshake,
-  Hammer,
-  Palette,
-  Link as LinkIcon,
-  BookOpen,
-  Skull,
-  Theater,
-  Wrench,
-  Calculator,
-  Key,
-  Terminal,
-  Network,
-  Sigma,
-  Search,
-} from "@/components/icons";
-import { LayoutGrid } from "lucide-react";
+  ChevronDown, Menu, X, LayoutGrid, Search,
+  Binary, Atom, Handshake, Hammer, Palette, Link as LinkIcon,
+  BookOpen, Gamepad2, FlaskConical
+} from "lucide-react";
 
 // Define the domain mapping for theming
 const getDomain = (path: string) => {
@@ -36,6 +18,8 @@ const getDomain = (path: string) => {
   if (path.startsWith("/applied-science")) return "applied";
   if (path.startsWith("/humanities")) return "humanities";
   if (path.startsWith("/interdisciplines")) return "inter";
+  if (path.startsWith("/library")) return "meta"; // New Hub
+  if (path.startsWith("/arcade")) return "meta"; // New Hub
   if (path.startsWith("/glossary")) return "meta";
   if (path.startsWith("/skeleton")) return "meta";
   if (path.startsWith("/dev-playground")) return "meta";
@@ -43,7 +27,7 @@ const getDomain = (path: string) => {
   return "home";
 };
 
-// Theme colors for each domain
+// Theme colors
 const domainColors: Record<string, string> = {
   formal: "text-red-400 border-red-500/30 bg-red-500/10",
   natural: "text-cyan-400 border-cyan-500/30 bg-cyan-500/10",
@@ -62,6 +46,9 @@ export default function Sidebar() {
   
   return (
     <>
+      {/* Mount the Command Palette Globally */}
+      <CommandPalette />
+
       {/* Mobile Toggle */}
       <button
         onClick={() => setIsOpen(!isOpen)}
@@ -84,7 +71,7 @@ export default function Sidebar() {
              </div>
              <div>
                 <h1 className="text-sm font-bold tracking-wider text-white group-hover:text-cyan-400 transition-colors">KNOWLEDGE</h1>
-                <p className="text-[10px] font-mono text-neutral-500">NETWORK v2.0</p>
+                <p className="text-[10px] font-mono text-neutral-500">NETWORK v2.1</p>
              </div>
            </div>
         </Link>
@@ -92,8 +79,15 @@ export default function Sidebar() {
         {/* Scrollable Nav Area */}
         <nav className="flex-1 overflow-y-auto p-4 space-y-8 scroll-bar">
           
-          {/* CORE DOMAINS */}
-          <Section title="Domains">
+          {/* THE NEXUS (New High-Level Hubs) */}
+          <Section title="The Nexus">
+             <NavItem href="/library" icon={BookOpen} label="The Library" domain="meta" currentPath={pathname} />
+             <NavItem href="/arcade" icon={Gamepad2} label="The Arcade" domain="meta" currentPath={pathname} />
+             <NavItem href="/dev-playground" icon={FlaskConical} label="The Lab" domain="meta" currentPath={pathname} />
+          </Section>
+
+          {/* CORE DOMAINS (Knowledge Graph) */}
+          <Section title="Knowledge Graph">
             <NavItem href="/formal-science" icon={Binary} label="Formal Science" domain="formal" currentPath={pathname}>
                <SubLink href="/formal-science/mathematics" label="Mathematics" currentPath={pathname} />
                <SubLink href="/formal-science/logic" label="Logic" currentPath={pathname} />
@@ -106,51 +100,40 @@ export default function Sidebar() {
                <SubLink href="/natural-science/chemistry" label="Chemistry" currentPath={pathname} />
                <SubLink href="/natural-science/biology" label="Biology" currentPath={pathname} />
                <SubLink href="/natural-science/astronomy" label="Astronomy" currentPath={pathname} />
-               <SubLink href="/natural-science/earth-science" label="Earth Science" currentPath={pathname} />
             </NavItem>
 
             <NavItem href="/social-science" icon={Handshake} label="Social Science" domain="social" currentPath={pathname}>
                <SubLink href="/social-science/psychology" label="Psychology" currentPath={pathname} />
                <SubLink href="/social-science/sociology" label="Sociology" currentPath={pathname} />
                <SubLink href="/social-science/economics" label="Economics" currentPath={pathname} />
-               <SubLink href="/social-science/political-science" label="Political Science" currentPath={pathname} />
             </NavItem>
 
             <NavItem href="/applied-science" icon={Hammer} label="Applied Science" domain="applied" currentPath={pathname}>
                <SubLink href="/applied-science/engineering" label="Engineering" currentPath={pathname} />
                <SubLink href="/applied-science/medicine" label="Medicine" currentPath={pathname} />
-               <SubLink href="/applied-science/computer-technology" label="Technology" currentPath={pathname} />
             </NavItem>
 
             <NavItem href="/humanities" icon={Palette} label="Humanities" domain="humanities" currentPath={pathname}>
                <SubLink href="/humanities/philosophy" label="Philosophy" currentPath={pathname} />
                <SubLink href="/humanities/history" label="History" currentPath={pathname} />
-               <SubLink href="/humanities/literature" label="Literature" currentPath={pathname} />
-               <SubLink href="/humanities/arts-aesthetics" label="Arts" currentPath={pathname} />
             </NavItem>
 
             <NavItem href="/interdisciplines" icon={LinkIcon} label="Interdisciplines" domain="inter" currentPath={pathname} />
           </Section>
-
-          {/* SYSTEM TOOLS */}
-          <Section title="System">
-             <NavItem href="/glossary" icon={BookOpen} label="Glossary" domain="meta" currentPath={pathname} />
-             <NavItem href="/skeleton" icon={Skull} label="Skeleton" domain="meta" currentPath={pathname} />
-             <NavItem href="/dev-playground" icon={Wrench} label="Playground" domain="meta" currentPath={pathname} />
-             <NavItem href="/stage" icon={Theater} label="Stage" domain="meta" currentPath={pathname} />
-          </Section>
         </nav>
         
-        {/* Footer Status */}
+        {/* Footer / Search Trigger */}
         <div className="p-4 border-t border-white/5">
-            <div className="rounded-lg bg-white/5 p-3 flex items-center gap-3">
-                <div className={`w-2 h-2 rounded-full animate-pulse ${domainColors[domain].split(" ")[0].replace("text-", "bg-")}`} />
-                <div className="flex-1">
-                    <p className="text-[10px] uppercase font-bold text-neutral-400">Status</p>
-                    <p className="text-xs font-mono text-neutral-300">CONNECTED</p>
+            <button 
+                className="w-full rounded-lg bg-white/5 p-3 flex items-center gap-3 hover:bg-white/10 transition-colors border border-transparent hover:border-white/10 group"
+                onClick={() => document.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', metaKey: true }))}
+            >
+                <Search size={16} className="text-neutral-500 group-hover:text-white" />
+                <div className="flex-1 text-left">
+                    <p className="text-xs font-medium text-neutral-400 group-hover:text-white">Search</p>
                 </div>
-                <span className="text-[10px] font-mono text-neutral-600">0.14s</span>
-            </div>
+                <span className="text-[10px] font-mono text-neutral-600 border border-neutral-700 px-1 rounded bg-black/20">⌘K</span>
+            </button>
         </div>
 
       </aside>
@@ -159,7 +142,6 @@ export default function Sidebar() {
 }
 
 // --- Helper Components ---
-
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
     return (
         <div className="space-y-2">
