@@ -1,6 +1,5 @@
 "use client";
-import PageHeader from "@/components/PageHeader";
-import FloatingSymbols from "@/components/FloatingSymbols";
+import StandardLessonLayout from "@/components/layouts/StandardLessonLayout"; // The new component
 import LessonHeader, {
   ContentP,
   ContentSubhead,
@@ -11,25 +10,29 @@ import LessonHeader, {
   QuizContainer,
   CollapsibleTopic
 } from "@/components/LessonBlocks";
-import { M, MBlock } from "@/components/Math";
-import { Atom, BookOpen } from "@/components/icons";
-import { Activity } from "lucide-react";
+import { M } from "@/components/Math";
+import { Atom, BookOpen, Key, AlertTriangle, BookCopy, Activity } from "@/components/icons";
 
 export default function FullLessonPage() {
   return (
-    <main className="topic-page theme-skeleton lg:px-16">
-      <FloatingSymbols symbols={["v", "t", "a", "F"]} />
-      <PageHeader
-        eyebrow="Physics 101"
-        title="Kinematics: The Basics"
-        subtitle="A sample lesson demonstrating how to structure a complete educational unit."
-      />
-
-      <div className="w-full max-w-4xl mx-auto text-left pb-24">
-        
+    <StandardLessonLayout
+      eyebrow="Physics 101"
+      title="Kinematics: The Basics"
+      subtitle="A sample lesson demonstrating how to structure a complete educational unit."
+      symbols={["v", "t", "a", "F"]}
+      theme="theme-skeleton"
+      // THE SIDEBAR CONTENT GOES HERE
+      aside={
+        <>
+           <KeyConceptsStub />
+           <RelatedTopicsStub />
+        </>
+      }
+    >
+        {/* MAIN LESSON CONTENT */}
         <LessonHeader icon={Atom} title="1. Introduction to Motion" />
         <ContentP>
-            Kinematics is the branch of mechanics that describes the motion of points, bodies (objects), and systems of bodies (groups of objects) without considering the forces that cause them to move.
+            Kinematics is the branch of mechanics that describes the motion of points...
         </ContentP>
 
         <ContentSubhead title="Position and Displacement" />
@@ -38,29 +41,22 @@ export default function FullLessonPage() {
         </ContentP>
         
         <TermDefinition term="Displacement">
-            The vector difference between the final and initial position of a point. It represents the shortest distance between two points.
+            The vector difference between the final and initial position...
         </TermDefinition>
 
         <SideNote>
-            <p><strong>Note:</strong> Displacement is not the same as distance traveled. If you run a full lap around a track and end up where you started, your displacement is zero!</p>
+            <p><strong>Note:</strong> Displacement is not the same as distance traveled...</p>
         </SideNote>
 
         <LessonHeader icon={Activity} title="2. Velocity vs. Speed" />
-        <ContentP>
-            Velocity is a vector quantity, meaning it has both magnitude and direction. The average velocity is defined as:
-        </ContentP>
-
         <ExampleBlock>
             <p><strong>Calculating Velocity:</strong></p>
-            <p>A car travels from position <M>x_i = 0</M> m to <M>x_f = 100</M> m in 5 seconds.</p>
-            <p className="mt-2 font-mono text-green-200/80">
-                v = (100 - 0) / 5 = 20 m/s
-            </p>
+            <p>A car travels from position <M>x_i = 0</M> m to <M>x_f = 100</M> m...</p>
         </ExampleBlock>
 
         <CollapsibleTopic title="Deep Dive: Instantaneous Velocity" icon={BookOpen}>
             <ContentP>
-                If we shrink the time interval <M>\Delta t</M> to nearly zero, we get the instantaneous velocity. This requires calculus limits:
+                If we shrink the time interval <M>\Delta t</M> to nearly zero...
             </ContentP>
         </CollapsibleTopic>
 
@@ -72,16 +68,35 @@ export default function FullLessonPage() {
         </AppletContainer>
 
         <QuizContainer title="Check Your Understanding">
-            <div className="space-y-4">
-                <p className="text-neutral-300">1. Is velocity a scalar or a vector?</p>
-                <div className="flex gap-4">
-                    <button className="px-4 py-2 rounded border border-neutral-700 hover:bg-neutral-800 text-neutral-400">Scalar</button>
-                    <button className="px-4 py-2 rounded border border-neutral-700 hover:bg-indigo-900/50 hover:border-indigo-500 text-neutral-400 hover:text-indigo-300">Vector</button>
-                </div>
-            </div>
+             <div className="h-24 rounded bg-neutral-900/50">{/* Quiz content placeholder */}</div>
         </QuizContainer>
 
-      </div>
-    </main>
+    </StandardLessonLayout>
   );
+}
+
+// --- Reusable Sidebar Stubs for the Skeleton ---
+function KeyConceptsStub() {
+    return (
+        <div className="glass rounded-2xl border border-neutral-800/60 p-6">
+            <h3 className="mb-4 flex items-center gap-2 text-lg font-semibold text-neutral-100">
+                <Key size={18} /> Key Concepts
+            </h3>
+            <div className="h-32 rounded bg-neutral-900/50 animate-pulse" />
+        </div>
+    )
+}
+
+function RelatedTopicsStub() {
+    return (
+        <div className="glass rounded-2xl border border-neutral-800/60 p-6">
+            <h3 className="mb-4 flex items-center gap-2 text-lg font-semibold text-neutral-100">
+                <BookCopy size={18} /> Related Topics
+            </h3>
+            <div className="space-y-3">
+                <div className="h-12 rounded bg-neutral-900/50" />
+                <div className="h-12 rounded bg-neutral-900/50" />
+            </div>
+        </div>
+    )
 }

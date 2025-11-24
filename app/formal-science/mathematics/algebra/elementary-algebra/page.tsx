@@ -28,7 +28,7 @@ const elemAlgebraSymbols = [
 const elementaryAlgebraUnits = [
   {
     title: "Solving Equations",
-    href: "#",
+    href: "/formal-science/mathematics/algebra/elementary-algebra/solving-equations",
     Icon: Equal,
     description: "Finding the value of 'x' in linear and simple equations.",
     className: "card-theme-elementary-algebra",
@@ -46,6 +46,8 @@ const elementaryAlgebraUnits = [
 export default function ElementaryAlgebraPage() {
   return (
     <main className="topic-page theme-elementary-algebra lg:px-16">
+      <title>Elementary Algebra | Knowledge Network</title>
+      <meta name="description" content="Master the basics of variables, expressions, and linear equations in this interactive algebra module." />
       <FloatingSymbols symbols={elemAlgebraSymbols} />
       <PageHeader
         eyebrow="Algebra"

@@ -2,7 +2,7 @@
 "use client";
 
 export {
-  LayoutGrid, Gamepad2, 
+  LayoutGrid, Gamepad2, Activity,
   //Standard
   ListCheck, RotateCcw, RotateCw, RefreshCcw, RefreshCw, AlertTriangle, CheckSquare, ExternalLink, SlidersHorizontal,
   Link, Check, Component, HelpCircle, ScanLine,
