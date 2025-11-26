@@ -53,7 +53,7 @@ export default function AxiomExplorer() {
 }
 
 // --- INTERNAL COMPONENT: The Interactive Card ---
-function AxiomCard({ axiom }: { axiom: AxiomEntry }) {
+export function AxiomCard({ axiom }: { axiom: AxiomEntry }) {
     // Initialize state with defaults
     const [values, setValues] = useState<number[]>(
         axiom.variables ? axiom.variables.map(v => v.default) : []

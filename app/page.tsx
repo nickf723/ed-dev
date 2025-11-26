@@ -11,6 +11,8 @@ import NetworkBackground from "@/components/NetworkBackground";
 import { BentoGrid, BentoItem } from "@/components/BentoGrid";
 import NavMenu from "@/components/NavMenu";
 import { motion } from "framer-motion";
+import HomeDashboard from "@/components/HomeDashboard";
+import DomainExplorer from "@/components/DomainExplorer";
 
 // --- ACADEMIC DOMAINS ---
 const academicDomains = [
@@ -65,10 +67,6 @@ const academicDomains = [
 ];
 
 export default function Home() {
-  const openSearch = () => {
-      document.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', metaKey: true }));
-  };
-
   return (
     <main className="relative min-h-screen w-full overflow-x-hidden bg-[#050505] selection:bg-cyan-500/30 pb-20">
       
@@ -76,137 +74,26 @@ export default function Home() {
       <NetworkBackground />
       <div className="fixed inset-0 z-0 pointer-events-none bg-[radial-gradient(circle_at_50%_0%,rgba(30,30,40,0.5),#050505_80%)]" />
 
-      <div className="relative z-10 mx-auto flex max-w-7xl flex-col px-6 py-16">
+      <div className="relative z-10 px-6 py-10">
         
-        {/* --- HEADER --- */}
-        <header className="flex justify-between items-center mb-24">
-            <div className="flex items-center gap-3">
-                <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center shadow-[0_0_15px_rgba(255,255,255,0.3)]">
-                    <LayoutGrid className="text-black" size={20} />
+       
+
+        {/* 2. THE ACADEMIC GRAPH (Navigation) */}
+        <div className="max-w-7xl mx-auto mt-32">
+            <div className="flex items-center gap-3 mb-8 pl-2 border-b border-white/10 pb-4">
+                <Binary className="text-neutral-500" size={20} />
+                <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-neutral-500">Full Directory</h2>
+            </div>
+            <div className="max-w-7xl mx-auto mt-32">
+                <div className="flex items-center gap-3 mb-12 pl-2 border-b border-white/10 pb-4">
+                    <Binary className="text-neutral-500" size={20} />
+                    <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-neutral-500">Sector Analysis</h2>
                 </div>
-                <span className="font-bold tracking-[0.2em] uppercase text-xs text-white">Knowledge Network</span>
+                <DomainExplorer />
             </div>
-            <button 
-                onClick={openSearch}
-                className="hidden sm:flex items-center gap-3 px-4 py-2 rounded-full border border-white/10 bg-white/5 hover:bg-white/10 transition-colors text-xs font-medium text-neutral-400 group"
-            >
-                <SearchIcon size={14} className="group-hover:text-white transition-colors" />
-                <span>Command Palette</span>
-                <kbd className="bg-white/10 px-1.5 rounded text-[10px] font-mono text-neutral-500 group-hover:text-white">⌘K</kbd>
-            </button>
-        </header>
-        
-        {/* --- HERO --- */}
-        <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="mb-32 max-w-4xl"
-        >
-             <h1 className="text-7xl sm:text-8xl md:text-9xl font-black tracking-tighter text-white mb-8 leading-[0.85]">
-                THE <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 animate-text">
-                    NEXUS
-                </span>
-            </h1>
-            <p className="text-xl text-neutral-400 max-w-2xl leading-relaxed mb-10 font-light">
-                An interactive archive of human understanding. From the logic of code to the philosophy of art, mapped and simulated.
-            </p>
-
-            <div className="flex flex-wrap gap-4">
-                <button onClick={openSearch} className="px-8 py-4 bg-white text-black rounded-full font-bold uppercase tracking-widest hover:bg-neutral-200 transition-colors flex items-center gap-2 shadow-[0_0_30px_rgba(255,255,255,0.2)]">
-                    Start Exploring <ArrowRight size={16} />
-                </button>
-                <Link href="/arcade" className="px-8 py-4 bg-white/5 text-white border border-white/10 rounded-full font-bold uppercase tracking-widest hover:bg-white/10 transition-colors backdrop-blur-md">
-                    Enter Arcade
-                </Link>
-            </div>
-        </motion.div>
-
-        {/* --- BENTO GRID (The Hubs) --- */}
-        <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="mb-32"
-        >
-            <SectionTitle title="System Modules" icon={Terminal} />
-            
-            <BentoGrid>
-                {/* 1. The Arcade (Big Feature) */}
-                <BentoItem 
-                    title="The Arcade"
-                    desc="Interactive simulations. Game Theory, Magic: The Gathering, and Logic Gates."
-                    href="/arcade"
-                    Icon={Gamepad2}
-                    className="md:col-span-2 md:row-span-2 min-h-[300px]"
-                    bgClass="bg-gradient-to-br from-purple-900/40 to-purple-900/10 border-purple-500/30"
-                    colorClass="text-purple-400"
-                />
-                
-                {/* 2. The Library */}
-                <BentoItem 
-                    title="The Library"
-                    desc="Reference archives. Glossary & Rules."
-                    href="/library"
-                    Icon={BookOpen}
-                    bgClass="bg-gradient-to-br from-cyan-900/40 to-cyan-900/10 border-cyan-500/30"
-                    colorClass="text-cyan-400"
-                />
-
-                {/* 3. The Lab */}
-                <BentoItem 
-                    title="The Lab"
-                    desc="Experimental UI components."
-                    href="/dev-playground"
-                    Icon={FlaskConical}
-                    bgClass="bg-gradient-to-br from-emerald-900/40 to-emerald-900/10 border-emerald-500/30"
-                    colorClass="text-emerald-400"
-                />
-
-                {/* 4. The Stage (New!) */}
-                 <BentoItem 
-                    title="The Stage"
-                    desc="Content production studio."
-                    href="/stage"
-                    Icon={Theater}
-                    bgClass="bg-gradient-to-br from-rose-900/40 to-rose-900/10 border-rose-500/30"
-                    colorClass="text-rose-400"
-                />
-
-                {/* 5. Skeleton (New!) */}
-                <BentoItem 
-                    title="Blueprints"
-                    desc="Layout patterns."
-                    href="/skeleton"
-                    Icon={Skull}
-                    bgClass="bg-gradient-to-br from-neutral-800/60 to-neutral-900/40 border-white/10"
-                    colorClass="text-neutral-400"
-                />
-
-                {/* Nexus */}
-                <BentoItem 
-                    title="The Atlas"
-                    desc="Geographic data visualizations."
-                    href="/nexus/map"
-                    Icon={Globe}
-                    bgClass="bg-gradient-to-br from-blue-900/40 to-blue-900/10 border-blue-500/30"
-                    colorClass="text-blue-400"
-                />
-            </BentoGrid>
-        </motion.div>
-
-        {/* --- NAV MENU (The Graph) --- */}
-        <motion.div
-             initial={{ opacity: 0 }}
-             whileInView={{ opacity: 1 }}
-             viewport={{ once: true }}
-             transition={{ duration: 0.6 }}
-        >
-            <SectionTitle title="Academic Graph" icon={Binary} />
-            <NavMenu items={academicDomains} />
-        </motion.div>
+        </div>
+         {/* 1. THE DASHBOARD */}
+        <HomeDashboard />
 
       </div>
     </main>
