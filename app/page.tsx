@@ -6,7 +6,7 @@ import {
   Binary, Gamepad2, BookOpen, FlaskConical, LayoutGrid,
   Skull, Theater, Terminal
 } from "@/components/icons";
-import { Search as SearchIcon, ArrowRight, Link } from "lucide-react";
+import { Search as SearchIcon, ArrowRight, Link, Globe } from "lucide-react";
 import NetworkBackground from "@/components/NetworkBackground";
 import { BentoGrid, BentoItem } from "@/components/BentoGrid";
 import NavMenu from "@/components/NavMenu";
@@ -183,6 +183,16 @@ export default function Home() {
                     Icon={Skull}
                     bgClass="bg-gradient-to-br from-neutral-800/60 to-neutral-900/40 border-white/10"
                     colorClass="text-neutral-400"
+                />
+
+                {/* Nexus */}
+                <BentoItem 
+                    title="The Atlas"
+                    desc="Geographic data visualizations."
+                    href="/nexus/map"
+                    Icon={Globe}
+                    bgClass="bg-gradient-to-br from-blue-900/40 to-blue-900/10 border-blue-500/30"
+                    colorClass="text-blue-400"
                 />
             </BentoGrid>
         </motion.div>

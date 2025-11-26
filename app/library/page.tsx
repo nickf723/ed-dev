@@ -1,108 +1,146 @@
 "use client";
 import PageHeader from "@/components/PageHeader";
-import LibraryBackground from "@/components/LibraryBackground";
+import LibraryBackground from "@/components/LibraryBackground"; // Use your existing background
 import Link from "next/link";
-import { BookOpen, Dices, Database, Search, Archive, Gamepad2, Sword } from "lucide-react";
+import { 
+  BookOpen, Globe, Scale, Hourglass, Image as ImageIcon, Wifi, 
+  Search, ArrowRight, Database, 
+  PenTool
+} from "lucide-react";
+import DailyNexus from "@/components/DailyNexus";
+
+const LIBRARY_MODULES = [
+  {
+    title: "Glossary",
+    href: "/glossary",
+    icon: BookOpen,
+    color: "text-cyan-400",
+    bg: "bg-cyan-500/10 border-cyan-500/20",
+    desc: "The Dictionary. Definitions of terms, jargon, and concepts."
+  },
+  {
+    title: "Universal Index",
+    href: "/library/browse",
+    icon: Globe,
+    color: "text-emerald-400",
+    bg: "bg-emerald-500/10 border-emerald-500/20",
+    desc: "The Encyclopedia. A multilingual inventory of objects and ideas."
+  },
+  {
+    title: "Axiom Archive",
+    href: "/library/axioms",
+    icon: Scale,
+    color: "text-violet-400",
+    bg: "bg-violet-500/10 border-violet-500/20",
+    desc: "The Rulebook. Immutable laws of physics, logic, and economics."
+  },
+  {
+    title: "The Chronicle",
+    href: "/library/chronicle",
+    icon: Hourglass,
+    color: "text-amber-400",
+    bg: "bg-amber-500/10 border-amber-500/20",
+    desc: "The Timeline. A linear history of the cosmos from Big Bang to AI."
+  },
+  {
+    title: "Asset Gallery",
+    href: "/library/gallery",
+    icon: ImageIcon,
+    color: "text-pink-400",
+    bg: "bg-pink-500/10 border-pink-500/20",
+    desc: "The Museum. Interactive models, simulations, and visualizations."
+  },
+  {
+    title: "External Portal",
+    href: "/library/portal",
+    icon: Wifi,
+    color: "text-blue-400",
+    bg: "bg-blue-500/10 border-blue-500/20",
+    desc: "The Uplink. Live data and open-source media from the web."
+  },
+  {
+    title: "Toolbox",
+    href: "/library/toolbox",
+    icon: PenTool,
+    color: "text-green-400",
+    bg: "bg-green-500/10 border-green-500/20",
+    desc: "The Utility Belt. Calculators, converters, and productivity aids."
+  }
+];
 
 export default function LibraryHub() {
   return (
-    <main className="relative min-h-screen overflow-hidden bg-neutral-950 lg:px-12">
+    <main className="relative min-h-screen w-full overflow-x-hidden bg-[#050505] lg:px-12 pb-20">
+      
+      {/* Background */}
       <LibraryBackground />
+
       <div className="relative z-10 mx-auto flex max-w-7xl flex-col py-10">
         
         <PageHeader
           eyebrow="The Nexus"
           title="The Grand Library"
-          subtitle="The central repository of all definitions, rulesets, and reference materials. Here knowledge is static, indexed, and ready for retrieval."
+          subtitle="The central repository of human knowledge. Access static definitions, dynamic simulations, and live data streams from a single point of entry."
         />
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
-            
-            {/* Glossary */}
-            <Link href="/glossary" className="group p-8 rounded-2xl border border-white/10 bg-neutral-900/60 hover:bg-neutral-900/80 hover:border-cyan-500/50 transition-all">
-                <div className="mb-4 p-3 w-fit rounded-xl bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 group-hover:scale-110 transition-transform">
-                    <BookOpen size={32} />
+        <DailyNexus />
+        {/* Search Header */}
+        <div className="w-full max-w-2xl mb-12 relative group">
+            <div className="absolute inset-0 bg-cyan-500/20 blur-xl rounded-full opacity-0 group-hover:opacity-20 transition-opacity duration-500" />
+            <div className="relative flex items-center bg-neutral-900/80 border border-white/10 rounded-full px-6 py-4 shadow-2xl backdrop-blur-md">
+                <Search className="text-neutral-500 mr-4" />
+                <input 
+                    type="text" 
+                    placeholder="Search the entire network..." 
+                    className="bg-transparent border-none focus:outline-none text-white w-full placeholder-neutral-500"
+                />
+                <div className="hidden sm:flex items-center gap-2 text-[10px] font-mono text-neutral-600 border border-white/5 px-2 py-1 rounded bg-black/20">
+                    <span>CTRL</span><span>K</span>
                 </div>
-                <h2 className="text-2xl font-bold text-white mb-2">System Glossary</h2>
-                <p className="text-sm text-neutral-400 mb-6">
-                    A master index of all terms, axioms, and definitions used across the network.
-                </p>
-                <span className="text-cyan-400 text-xs font-bold uppercase tracking-widest">Access Archives →</span>
-            </Link>
-
-            {/* Vocabulary Database */}
-            <Link href="/library/browse" className="group p-8 rounded-2xl border border-white/10 bg-neutral-900/60 hover:bg-neutral-900/80 hover:border-green-500/50 transition-all">
-                <div className="mb-4 p-3 w-fit rounded-xl bg-green-500/20 text-green-400 border border-green-500/30 group-hover:scale-110 transition-transform">
-                    <Database size={32} />
-                </div>
-                <h2 className="text-2xl font-bold text-white mb-2">Vocabulary Database</h2>
-                <p className="text-sm text-neutral-400 mb-6">
-                    An extensive collection of concepts, objects, and ideas across languages and cultures.
-                </p>
-                <span className="text-green-400 text-xs font-bold uppercase tracking-widest">Browse Inventory →</span>
-            </Link>
-
-            {/* Chronicle Timeline */}
-            <Link href="/library/chronicle" className="group p-8 rounded-2xl border border-white/10 bg-neutral-900/60 hover:bg-neutral-900/80 hover:border-blue-500/50 transition-all">
-                <div className="mb-4 p-3 w-fit rounded-xl bg-blue-500/20 text-blue-400 border border-blue-500/30 group-hover:scale-110 transition-transform">
-                    <Search size={32} />
-                </div>
-                <h2 className="text-2xl font-bold text-white mb-2">Chronicle Timeline</h2>
-                <p className="text-sm text-neutral-400 mb-6">
-                    Explore the historical timeline of knowledge development and key events.
-                </p>
-                <span className="text-blue-400 text-xs font-bold uppercase tracking-widest">View Timeline →</span>
-            </Link>
-
-            {/* Asset Gallery */}
-            <Link href="/library/gallery" className="group p-8 rounded-2xl border border-white/10 bg-neutral-900/60 hover:bg-neutral-900/80 hover:border-teal-500/50 transition-all">
-                <div className="mb-4 p-3 w-fit rounded-xl bg-teal-500/20 text-teal-400 border border-teal-500/30 group-hover:scale-110 transition-transform">
-                    <Gamepad2 size={32} />
-                </div>
-                <h2 className="text-2xl font-bold text-white mb-2">Asset Gallery</h2>
-                <p className="text-sm text-neutral-400 mb-6">
-                    A curated collection of multimedia assets including simulations, 3D models, and interactive diagrams.
-                </p>
-                <span className="text-teal-400 text-xs font-bold uppercase tracking-widest">Explore Assets →</span>
-            </Link>
-
-            {/* Game Rules (Ludarium) */}
-            <Link href="/interdisciplines/game-studies/library" className="group p-8 rounded-2xl border border-white/10 bg-neutral-900/60 hover:bg-neutral-900/80 hover:border-amber-500/50 transition-all">
-                <div className="mb-4 p-3 w-fit rounded-xl bg-amber-500/20 text-amber-400 border border-amber-500/30 group-hover:scale-110 transition-transform">
-                    <Dices size={32} />
-                </div>
-                <h2 className="text-2xl font-bold text-white mb-2">The Ludarium</h2>
-                <p className="text-sm text-neutral-400 mb-6">
-                    Rulebooks and guides for interactive systems. Learn how to play Magic, D&D, and more.
-                </p>
-                <span className="text-amber-400 text-xs font-bold uppercase tracking-widest">Enter Library →</span>
-            </Link>
-
-            {/* Axiom Archive */}
-            <Link href="/library/axioms" className="group p-8 rounded-2xl border border-white/10 bg-neutral-900/60 hover:bg-neutral-900/80 hover:border-purple-500/50 transition-all">
-                <div className="mb-4 p-3 w-fit rounded-xl bg-purple-500/20 text-purple-400 border border-purple-500/30 group-hover:scale-110 transition-transform">
-                    <Archive size={32} />
-                </div>
-                <h2 className="text-2xl font-bold text-white mb-2">Axiom Archive</h2>
-                <p className="text-sm text-neutral-400 mb-6">
-                    A curated collection of fundamental truths and principles that underpin our knowledge systems.
-                </p>
-                <span className="text-purple-400 text-xs font-bold uppercase tracking-widest">Explore Axioms →</span>
-            </Link>
-
-            {/* Card Database (Direct Shortcut) */}
-            <Link href="/interdisciplines/game-studies/library/magic-the-gathering" className="group p-8 rounded-2xl border border-white/10 bg-neutral-900/60 hover:bg-neutral-900/80 hover:border-purple-500/50 transition-all">
-                <div className="mb-4 p-3 w-fit rounded-xl bg-purple-500/20 text-purple-400 border border-purple-500/30 group-hover:scale-110 transition-transform">
-                    <Sword size={32} />
-                </div>
-                <h2 className="text-2xl font-bold text-white mb-2">MTG Oracle</h2>
-                <p className="text-sm text-neutral-400 mb-6">
-                    Direct access to the card fetcher, rules engine, and battlefield simulator.
-                </p>
-                <span className="text-purple-400 text-xs font-bold uppercase tracking-widest">Open Database →</span>
-            </Link>
-
+            </div>
         </div>
+
+        {/* The Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {LIBRARY_MODULES.map((mod) => (
+                <Link 
+                    key={mod.title} 
+                    href={mod.href}
+                    className={`group relative p-8 rounded-2xl border transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl overflow-hidden ${mod.bg}`}
+                >
+                    {/* Hover Glow */}
+                    <div className={`absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity bg-gradient-to-br ${mod.color.replace('text', 'from')} to-transparent`} />
+
+                    <div className="relative z-10 flex flex-col h-full justify-between">
+                        <div>
+                            <div className={`mb-6 p-3 w-fit rounded-xl bg-neutral-950/50 border border-white/5 ${mod.color} shadow-inner`}>
+                                <mod.icon size={32} />
+                            </div>
+                            <h2 className="text-2xl font-bold text-white mb-3 group-hover:underline decoration-white/20 underline-offset-4">
+                                {mod.title}
+                            </h2>
+                            <p className="text-sm text-neutral-300 leading-relaxed">
+                                {mod.desc}
+                            </p>
+                        </div>
+                        
+                        <div className={`mt-8 flex items-center gap-2 text-xs font-bold uppercase tracking-widest ${mod.color}`}>
+                            <span>Access</span>
+                            <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
+                        </div>
+                    </div>
+                </Link>
+            ))}
+        </div>
+
+        {/* Footer / Stats */}
+        <div className="mt-16 pt-8 border-t border-white/5 flex justify-between items-center text-xs text-neutral-500 font-mono">
+            <div className="flex gap-6">
+                <span className="flex items-center gap-2"><Database size={12} /> 4 Databases</span>
+                <span className="flex items-center gap-2"><Globe size={12} /> 2 Live APIs</span>
+            </div>
+            <span>System Status: ONLINE</span>
+        </div>
+
       </div>
     </main>
   );
