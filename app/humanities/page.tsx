@@ -100,6 +100,16 @@ const sectors = [
         Icon: Palette, 
         className: "theme-humanities",
         subtitle: "Visual Culture" 
+      },
+      {
+        id: "language",
+        mode: "expression",
+        title: "Languages",
+        desc: "The system of communication through spoken or written words.",
+        href: "/humanities/languages",
+        Icon: Library,
+        className: "theme-humanities",
+        subtitle: "Communication"
       }
     ]
   }

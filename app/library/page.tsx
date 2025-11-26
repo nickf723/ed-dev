@@ -30,6 +30,42 @@ export default function LibraryHub() {
                 <span className="text-cyan-400 text-xs font-bold uppercase tracking-widest">Access Archives →</span>
             </Link>
 
+            {/* Vocabulary Database */}
+            <Link href="/library/browse" className="group p-8 rounded-2xl border border-white/10 bg-neutral-900/60 hover:bg-neutral-900/80 hover:border-green-500/50 transition-all">
+                <div className="mb-4 p-3 w-fit rounded-xl bg-green-500/20 text-green-400 border border-green-500/30 group-hover:scale-110 transition-transform">
+                    <Database size={32} />
+                </div>
+                <h2 className="text-2xl font-bold text-white mb-2">Vocabulary Database</h2>
+                <p className="text-sm text-neutral-400 mb-6">
+                    An extensive collection of concepts, objects, and ideas across languages and cultures.
+                </p>
+                <span className="text-green-400 text-xs font-bold uppercase tracking-widest">Browse Inventory →</span>
+            </Link>
+
+            {/* Chronicle Timeline */}
+            <Link href="/library/chronicle" className="group p-8 rounded-2xl border border-white/10 bg-neutral-900/60 hover:bg-neutral-900/80 hover:border-blue-500/50 transition-all">
+                <div className="mb-4 p-3 w-fit rounded-xl bg-blue-500/20 text-blue-400 border border-blue-500/30 group-hover:scale-110 transition-transform">
+                    <Search size={32} />
+                </div>
+                <h2 className="text-2xl font-bold text-white mb-2">Chronicle Timeline</h2>
+                <p className="text-sm text-neutral-400 mb-6">
+                    Explore the historical timeline of knowledge development and key events.
+                </p>
+                <span className="text-blue-400 text-xs font-bold uppercase tracking-widest">View Timeline →</span>
+            </Link>
+
+            {/* Asset Gallery */}
+            <Link href="/library/gallery" className="group p-8 rounded-2xl border border-white/10 bg-neutral-900/60 hover:bg-neutral-900/80 hover:border-teal-500/50 transition-all">
+                <div className="mb-4 p-3 w-fit rounded-xl bg-teal-500/20 text-teal-400 border border-teal-500/30 group-hover:scale-110 transition-transform">
+                    <Gamepad2 size={32} />
+                </div>
+                <h2 className="text-2xl font-bold text-white mb-2">Asset Gallery</h2>
+                <p className="text-sm text-neutral-400 mb-6">
+                    A curated collection of multimedia assets including simulations, 3D models, and interactive diagrams.
+                </p>
+                <span className="text-teal-400 text-xs font-bold uppercase tracking-widest">Explore Assets →</span>
+            </Link>
+
             {/* Game Rules (Ludarium) */}
             <Link href="/interdisciplines/game-studies/library" className="group p-8 rounded-2xl border border-white/10 bg-neutral-900/60 hover:bg-neutral-900/80 hover:border-amber-500/50 transition-all">
                 <div className="mb-4 p-3 w-fit rounded-xl bg-amber-500/20 text-amber-400 border border-amber-500/30 group-hover:scale-110 transition-transform">
@@ -40,6 +76,18 @@ export default function LibraryHub() {
                     Rulebooks and guides for interactive systems. Learn how to play Magic, D&D, and more.
                 </p>
                 <span className="text-amber-400 text-xs font-bold uppercase tracking-widest">Enter Library →</span>
+            </Link>
+
+            {/* Axiom Archive */}
+            <Link href="/library/axioms" className="group p-8 rounded-2xl border border-white/10 bg-neutral-900/60 hover:bg-neutral-900/80 hover:border-purple-500/50 transition-all">
+                <div className="mb-4 p-3 w-fit rounded-xl bg-purple-500/20 text-purple-400 border border-purple-500/30 group-hover:scale-110 transition-transform">
+                    <Archive size={32} />
+                </div>
+                <h2 className="text-2xl font-bold text-white mb-2">Axiom Archive</h2>
+                <p className="text-sm text-neutral-400 mb-6">
+                    A curated collection of fundamental truths and principles that underpin our knowledge systems.
+                </p>
+                <span className="text-purple-400 text-xs font-bold uppercase tracking-widest">Explore Axioms →</span>
             </Link>
 
             {/* Card Database (Direct Shortcut) */}

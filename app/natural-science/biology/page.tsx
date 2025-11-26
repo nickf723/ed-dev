@@ -3,6 +3,7 @@ import PageHeader from "@/components/PageHeader";
 import TopicCard from "@/components/TopicCard";
 import DnaBackground from "@/components/DnaBackground";
 import CellInspector from "@/components/CellInspector";
+import TaxonomyTree from "@/components/TaxonomyTree"; // NEW COMPONENT
 import { motion } from "framer-motion";
 import {
   Dna, Microscope, Sprout, Globe, Fingerprint, GitFork, Bug, Flower
@@ -145,7 +146,16 @@ export default function BiologyPage() {
           {/* SIDEBAR (3 cols) */}
           <div className="flex flex-col gap-6 lg:col-span-3 lg:sticky lg:top-6 h-fit pt-2">
             
-            {/* Cell Widget */}
+            {/* WIDGET 1: Taxonomy Tree (NEW) */}
+            <motion.div 
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.3 }}
+            >
+               <TaxonomyTree />
+            </motion.div>
+
+            {/* WIDGET 2: Cell Inspector */}
             <motion.div 
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
