@@ -1,89 +1,179 @@
-// app/natural-science/physics/page.tsx
 "use client";
 import PageHeader from "@/components/PageHeader";
-import FloatingSymbols from "@/components/FloatingSymbols";
 import TopicCard from "@/components/TopicCard";
+import OrbitalBackground from "@/components/OrbitalBackground"; // UPGRADE: Dynamic background
+import PendulumWidget from "@/components/PendulumWidget";       // UPGRADE: Sidebar widget
+import { motion } from "framer-motion";
 import {
-  RollerCoaster,
-  Zap,
-  Waves,
-  Flame,
-  Orbit,
-  Hourglass,
-
+  RollerCoaster, Zap, Waves, Flame, Orbit, Hourglass, 
+  Atom, Scale, Microscope
 } from "@/components/icons";
 
-// Symbols for the background
-const physicsSymbols = [
-  "F=ma","E=mc²","λ","v","c","ħ","G","k","Ω","μ₀","ε₀","T","S","Ψ","ΔxΔp ≥ ħ/2",
+// --- DATA STRUCTURE ---
+const sectors = [
+  {
+    name: "Macroscopic World",
+    desc: "The physics of the visible. Motion, energy, and heat.",
+    color: "text-orange-400",
+    icon: RollerCoaster,
+    items: [
+      {
+        title: "Classical Mechanics",
+        desc: "Motion, forces, and energy (Kinematics, Dynamics).",
+        href: "/natural-science/physics/classical-mechanics",
+        Icon: RollerCoaster,
+        className: "theme-classical-mechanics",
+        subtitle: "Newton's Laws"
+      },
+      {
+        title: "Thermodynamics",
+        desc: "Heat, work, entropy, and energy systems.",
+        href: "/natural-science/physics/thermodynamics",
+        Icon: Flame,
+        className: "theme-thermodynamics",
+        subtitle: "Energy & Entropy"
+      }
+    ]
+  },
+  {
+    name: "Fields & Waves",
+    desc: "The physics of the invisible. Light, electricity, and magnetism.",
+    color: "text-cyan-400",
+    icon: Zap,
+    items: [
+      {
+        title: "Electromagnetism",
+        desc: "Electric and magnetic fields and their interactions.",
+        href: "/natural-science/physics/electromagnetism",
+        Icon: Zap,
+        className: "theme-electromagnetism",
+        subtitle: "Maxwell's Eq."
+      },
+      {
+        title: "Waves & Optics",
+        desc: "Oscillations, sound, and the behavior of light.",
+        href: "/natural-science/physics/waves-optics",
+        Icon: Waves,
+        className: "theme-waves-optics",
+        subtitle: "Light & Sound"
+      }
+    ]
+  },
+  {
+    name: "Modern Physics",
+    desc: "The physics of the extreme. The very small and the very fast.",
+    color: "text-violet-400",
+    icon: Atom,
+    items: [
+      {
+        title: "Quantum Mechanics",
+        desc: "The probabilistic behavior of particles at the atomic scale.",
+        href: "/natural-science/physics/quantum-mechanics",
+        Icon: Orbit,
+        className: "theme-quantum-mechanics",
+        subtitle: "Uncertainty"
+      },
+      {
+        title: "Relativity",
+        desc: "Gravity, spacetime, and motion near the speed of light.",
+        href: "/natural-science/physics/relativity",
+        Icon: Hourglass,
+        className: "theme-relativity",
+        subtitle: "Spacetime"
+      }
+    ]
+  }
 ];
 
 export default function PhysicsPage() {
-  const branches = [
-    {
-      title: "Classical Mechanics",
-      desc: "The study of motion, forces, and energy for macroscopic objects. (e.g., Kinematics, Dynamics, Statics)",
-      href: "/natural-science/physics/classical-mechanics",
-      Icon: RollerCoaster,
-      className: "theme-classical-mechanics topic-card-wide",
-    },
-    {
-      title: "Electromagnetism",
-      desc: "The study of electric and magnetic fields and their interaction with matter.",
-      href: "/natural-science/physics/electromagnetism",
-      Icon: Zap,
-      className: "theme-electromagnetism topic-card-wide",
-    },
-    {
-      title: "Thermodynamics",
-      desc: "The study of heat, work, temperature, and energy in physical systems.",
-      href: "/natural-science/physics/thermodynamics",
-      Icon: Flame,
-      className: "theme-thermodynamics topic-card-wide",
-    },
-    {
-      title: "Waves and Optics",
-      desc: "The study of oscillations, wave propagation, and the behavior of light.",
-      href: "/natural-science/physics/waves-optics",
-      Icon: Waves,
-      className: "theme-waves-optics topic-card-wide",
-    },
-    {
-      title: "Quantum Mechanics",
-      desc: "The study of physics at the atomic and subatomic level, where particles behave in probabilistic ways.",
-      href: "/natural-science/physics/quantum-mechanics",
-      Icon: Orbit,
-      className: "theme-quantum-mechanics topic-card-wide",
-    },
-    {
-      title: "Relativity",
-      desc: "The study of motion at high velocities and the nature of gravity and spacetime.",
-      href: "/natural-science/physics/relativity",
-      Icon: Hourglass,
-      className: "theme-relativity topic-card-wide",
-    },
-  ];
-
   return (
-    <main className="topic-page theme-physics lg:px-16">
-      <FloatingSymbols symbols={physicsSymbols} />
-      <PageHeader
-        eyebrow="Natural Science"
-        title="Physics"
-        subtitle="The fundamental study of matter, energy, motion, and force, and how they interact on every scale, from the subatomic to the cosmic."
-      />
-      <section className="topic-grid">
-        {branches.map((branch) => (
-          <TopicCard
-            key={branch.href}
-            href={branch.href}
-            title={branch.title}
-            desc={branch.desc}
-            Icon={branch.Icon}
-            className={branch.className}
-          />
-        ))}
-      </section>
+    <main className="relative min-h-screen overflow-hidden bg-neutral-950 lg:px-12">
+      
+      {/* 1. VISUAL ENGINE: Orbital Simulation */}
+      <OrbitalBackground />
+      
+      <div className="relative z-10 mx-auto flex max-w-7xl flex-col py-10">
+        
+        <PageHeader
+          eyebrow="Natural Science"
+          title="Physics"
+          subtitle="The fundamental study of matter, energy, motion, and force. From the subatomic dance of quarks to the cosmic ballet of galaxies."
+        />
+
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 items-start">
+          
+          {/* MAIN CONTENT AREA (9 Cols) */}
+          <div className="lg:col-span-9 space-y-12">
+            {sectors.map((sector, idx) => (
+              <section key={sector.name}>
+                 {/* Section Header */}
+                 <motion.div 
+                    initial={{ opacity: 0, x: -10 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.4, delay: idx * 0.1 }}
+                    className="mb-6 flex items-center gap-3"
+                 >
+                    <sector.icon className={sector.color} size={24} />
+                    <div>
+                        <h2 className="text-xl font-bold text-white tracking-wide">{sector.name}</h2>
+                        <p className="text-xs text-neutral-500">{sector.desc}</p>
+                    </div>
+                    <div className="h-[1px] flex-1 bg-white/10 ml-4"></div>
+                 </motion.div>
+
+                 {/* Grid of Cards */}
+                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-2">
+                    {sector.items.map((item, i) => (
+                        <motion.div
+                            key={item.title}
+                            initial={{ opacity: 0, y: 15 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.3, delay: 0.1 + (i * 0.05) }}
+                        >
+                            <TopicCard {...item} />
+                        </motion.div>
+                    ))}
+                 </div>
+              </section>
+            ))}
+          </div>
+
+          {/* SIDEBAR WIDGET AREA (3 Cols) */}
+          <div className="flex flex-col gap-6 lg:col-span-3 lg:sticky lg:top-6 h-fit pt-2">
+            
+            {/* WIDGET: Double Pendulum (Chaos) */}
+            <motion.div 
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.4 }}
+            >
+               <PendulumWidget />
+            </motion.div>
+
+            {/* WIDGET: Quote */}
+            <motion.div 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.6 }}
+                className="rounded-lg border border-orange-500/20 bg-orange-950/10 p-5 backdrop-blur-md"
+            >
+                <div className="flex flex-col gap-3">
+                    <Scale size={20} className="text-orange-400"/>
+                    <p className="text-xs text-neutral-300 leading-relaxed italic">
+                        "Nature and Nature's laws lay hid in night: God said, Let Newton be! and all was light."
+                    </p>
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-orange-500 text-right">
+                        — Alexander Pope
+                    </p>
+                </div>
+            </motion.div>
+
+          </div>
+
+        </div>
+      </div>
     </main>
   );
 }
