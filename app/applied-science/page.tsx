@@ -6,11 +6,10 @@ import CircuitBackground from "@/components/CircuitBackground";
 import TechStackWidget from "@/components/TechStackWidget";
 import { motion } from "framer-motion";
 import {
-  Hammer, Cpu, Stethoscope, Microscope, Monitor, HardHat, Pickaxe, HeartPulse
+  Hammer, Cpu, Stethoscope, Monitor, HardHat, Pickaxe, HeartPulse
 } from "lucide-react";
 
 // --- DATA ---
-// Stacks: hardware, software, wetware
 const sectors = [
   {
     name: "Constructing Reality",
@@ -25,7 +24,7 @@ const sectors = [
         desc: "The application of math and science to design complex structures and machines.", 
         href: "/applied-science/engineering", 
         Icon: Hammer, 
-        className: "theme-engineering", // Using generic theme for now or create theme-engineering
+        className: "theme-engineering", 
         subtitle: "Design & Build" 
       },
       { 
@@ -35,7 +34,7 @@ const sectors = [
         desc: "Discovering and designing new materials with specific properties.", 
         href: "/applied-science/materials-science", 
         Icon: Pickaxe, 
-        className: "theme-chemistry", // Borrowing chem theme as it fits
+        className: "theme-chemistry", 
         subtitle: "Matter Design" 
       }
     ]
@@ -71,7 +70,7 @@ const sectors = [
         desc: "The science and practice of caring for the patient.", 
         href: "/applied-science/medicine", 
         Icon: Stethoscope, 
-        className: "theme-medicine", // Borrowing bio theme
+        className: "theme-medicine", 
         subtitle: "Human Health" 
       }
     ]
@@ -150,7 +149,7 @@ export default function AppliedSciencePage() {
                <TechStackWidget activeStack={activeStack} setActiveStack={setActiveStack} />
             </motion.div>
 
-            {/* "The Goal" Box */}
+            {/* Utility Quote */}
             <motion.div 
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}

@@ -6,18 +6,10 @@ import GlyphBackground from "@/components/GlyphBackground";
 import InquiryWidget from "@/components/InquiryWidget";
 import { motion } from "framer-motion";
 import {
-  Lightbulb,
-  Scale,
-  Hourglass,
-  ScrollText,
-  Palette,
-  BookOpen,
-  Library,
-  Feather
+  Lightbulb, Scale, Hourglass, ScrollText, Palette, BookOpen, Library, Feather
 } from "lucide-react";
 
 // --- DATA ---
-// Modes: reason, memory, expression
 const sectors = [
   {
     name: "Philosophy & Thought",
@@ -32,13 +24,13 @@ const sectors = [
         desc: "The pursuit of wisdom through logical reasoning.", 
         href: "/humanities/philosophy", 
         Icon: Lightbulb, 
-        className: "theme-humanities", // Generic humanities theme fits well
+        className: "theme-humanities", 
         subtitle: "The Search for Truth" 
       },
       { 
         id: "ethics", 
         mode: "reason", 
-        title: "Ethics", // Conceptual link
+        title: "Ethics", 
         desc: "Moral principles that govern a person's behavior.", 
         href: "/humanities/philosophy", 
         Icon: Scale, 
@@ -60,7 +52,7 @@ const sectors = [
         desc: "The systematic record and interpretation of past human activity.", 
         href: "/humanities/history", 
         Icon: Hourglass, 
-        className: "theme-humanities", // Using history theme if available, else generic
+        className: "theme-humanities", 
         subtitle: "The Record" 
       },
       { 
@@ -70,7 +62,7 @@ const sectors = [
         desc: "The transition to new manufacturing processes in Europe and the US.", 
         href: "/humanities/history/industrial-revolution", 
         Icon: ScrollText, 
-        className: "theme-applied-science", // Borrowing applied theme for industry contrast
+        className: "theme-applied-science", 
         subtitle: "Turning Point" 
       }
     ]
@@ -187,7 +179,7 @@ export default function HumanitiesPage() {
                <InquiryWidget activeMode={activeMode} setActiveMode={setActiveMode} />
             </motion.div>
 
-            {/* Supplemental Quote Box */}
+            {/* Quote Box */}
             <motion.div 
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -206,11 +198,6 @@ export default function HumanitiesPage() {
                     </div>
                 </div>
             </motion.div>
-
-            {/* Decorative Element */}
-            <div className="flex justify-center opacity-20">
-                <Feather size={48} className="text-white" />
-            </div>
 
           </div>
 

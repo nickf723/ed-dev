@@ -6,11 +6,8 @@ import Rule30Background from "@/components/Rule30Background";
 import LogicGateWidget from "@/components/LogicGateWidget";
 import { motion } from "framer-motion";
 import {
-  Terminal, BrainCog, Network, Lock, Database, Zap, Server, Shield
-} from "@/components/icons"; 
-// Note: Using your icon mapping file + direct imports if needed
-import { Code, Cpu, LayoutTemplate } from "lucide-react";
-
+  Terminal, BrainCog, Network, Lock, Server, Shield, Cpu, Code
+} from "lucide-react";
 
 const sectors = [
   {
@@ -91,7 +88,7 @@ export default function ComputerSciencePage() {
   return (
     <main className="relative min-h-screen overflow-hidden bg-neutral-950 lg:px-12">
       
-      {/* 1. Background */}
+      {/* 1. Cellular Automata Background */}
       <Rule30Background />
       
       <div className="relative z-10 mx-auto flex max-w-7xl flex-col py-10">
@@ -104,7 +101,7 @@ export default function ComputerSciencePage() {
 
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 items-start">
           
-          {/* MAIN CONTENT (8 cols) */}
+          {/* MAIN CONTENT (9 cols) */}
           <div className="lg:col-span-9 space-y-10">
              {sectors.map((sector, idx) => (
               <section key={sector.name}>
@@ -149,13 +146,13 @@ export default function ComputerSciencePage() {
                <LogicGateWidget />
             </motion.div>
 
-            {/* Quote Box */}
+            {/* Abstraction Quote */}
             <div className="p-5 rounded-xl border border-dashed border-neutral-700 bg-neutral-900/40">
                 <h4 className="text-xs font-bold uppercase text-green-500 mb-2 flex items-center gap-2">
-                    <LayoutTemplate size={14} /> Abstraction
+                    <Code size={14} /> Abstraction Layer
                 </h4>
                 <p className="text-[11px] text-neutral-500 leading-relaxed">
-                    Computer Science is the art of building layers. Logic gates build CPUs. CPUs run kernels. Kernels run operating systems. We stand on a tower of abstractions.
+                    "Computer Science is no more about computers than astronomy is about telescopes." — Edsger Dijkstra. It is about the formal structure of process.
                 </p>
             </div>
 

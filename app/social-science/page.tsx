@@ -3,22 +3,13 @@ import { useState } from "react";
 import PageHeader from "@/components/PageHeader";
 import TopicCard from "@/components/TopicCard";
 import SocialDynamicsBackground from "@/components/SocialDynamicsBackground";
-import AnalysisLens from "@/components/AnalysisLens"; // The new component
+import AnalysisLens from "@/components/AnalysisLens";
 import { motion } from "framer-motion";
 import {
-  BrainCircuit,
-  Speech,
-  TrendingUp,
-  Map,
-  Users,
-  Scale,
-  Landmark,
-  ScrollText,
-  Globe
+  BrainCircuit, Speech, TrendingUp, Map, Users, Scale, Landmark, ScrollText, Globe
 } from "lucide-react";
 
 // --- DATA: Disciplines ---
-// Analysis Levels: micro, meso, macro
 const sectors = [
   {
     name: "The Mind & The Self",
@@ -139,7 +130,7 @@ export default function SocialSciencePage() {
 
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 items-start">
           
-          {/* MAIN CONTENT (9 cols) */}
+          {/* MAIN CONTENT */}
           <div className="lg:col-span-9 space-y-10">
             {sectors.map((sector, idx) => (
               <section key={sector.name}>
@@ -175,7 +166,7 @@ export default function SocialSciencePage() {
             ))}
           </div>
 
-          {/* SIDEBAR (3 cols) */}
+          {/* SIDEBAR */}
           <div className="flex flex-col gap-6 lg:col-span-3 lg:sticky lg:top-6 h-fit pt-2">
             
             <motion.div 
@@ -196,10 +187,10 @@ export default function SocialSciencePage() {
                     <ScrollText size={18} className="text-indigo-400 shrink-0 mt-1"/>
                     <div>
                         <h4 className="text-xs font-bold uppercase text-indigo-400 mb-1">
-                            Qualitative & Quantitative
+                            Methodology
                         </h4>
                         <p className="text-[11px] text-neutral-400 leading-relaxed">
-                            Social science blends statistical data (demographics, economics) with interpretive analysis (culture, history).
+                            A blend of statistical data (quantitative) and interpretive analysis (qualitative).
                         </p>
                     </div>
                 </div>

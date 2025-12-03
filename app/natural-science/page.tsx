@@ -6,7 +6,7 @@ import CosmicBackground from "@/components/CosmicBackground";
 import ScaleSlider from "@/components/ScaleSlider";
 import { motion } from "framer-motion";
 import {
-  Atom, FlaskConical, Dna, Earth, Orbit, Zap, Waves, Flame, Microscope, Telescope
+  Atom, FlaskConical, Dna, Earth, Orbit, Zap, Waves, Flame, Telescope
 } from "@/components/icons";
 
 // --- DATA: Disciplines ---
@@ -133,7 +133,6 @@ export default function NaturalSciencePage() {
       
       <div className="relative z-10 mx-auto flex max-w-7xl flex-col py-10">
         
-        {/* Compact Header */}
         <PageHeader
           eyebrow="Domain 02"
           title="Natural Sciences"
@@ -142,8 +141,7 @@ export default function NaturalSciencePage() {
 
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 items-start">
           
-          {/* MAIN CONTENT (8 cols) */}
-          {/* Reduced gap-y to bring sections closer */}
+          {/* MAIN CONTENT */}
           <div className="lg:col-span-9 space-y-10">
             {sectors.map((sector, idx) => (
               <section key={sector.name}>
@@ -159,7 +157,6 @@ export default function NaturalSciencePage() {
                     <div className="h-[1px] flex-1 bg-white/10"></div>
                  </motion.div>
 
-                 {/* Denser Grid: gap-4 instead of gap-6 */}
                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                     {sector.items.map((item, i) => (
                         <motion.div
@@ -180,7 +177,7 @@ export default function NaturalSciencePage() {
             ))}
           </div>
 
-          {/* SIDEBAR (3 cols) - Made it narrower to give content more room */}
+          {/* SIDEBAR */}
           <div className="flex flex-col gap-6 lg:col-span-3 lg:sticky lg:top-6 h-fit pt-2">
             
             <motion.div 
@@ -201,7 +198,7 @@ export default function NaturalSciencePage() {
                     <FlaskConical size={18} className="text-emerald-400 shrink-0 mt-1"/>
                     <div>
                         <h4 className="text-xs font-bold uppercase text-emerald-400 mb-1">
-                            Methodology
+                            Scientific Method
                         </h4>
                         <p className="text-[11px] text-neutral-400 leading-relaxed">
                             Observation ➔ Hypothesis ➔ Experiment ➔ Theory.

@@ -1,7 +1,6 @@
 "use client";
 import PageHeader from "@/components/PageHeader";
 import FloatingSymbols from "@/components/FloatingSymbols";
-import AxiomExplorer from "@/components/AxiomExplorer";
 
 export default function AxiomArchivePage() {
   return (
@@ -20,7 +19,6 @@ export default function AxiomArchivePage() {
 
         {/* The Application */}
         <div className="mx-auto w-full max-w-5xl">
-            <AxiomExplorer />
         </div>
 
       </div>

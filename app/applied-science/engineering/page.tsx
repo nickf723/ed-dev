@@ -2,14 +2,14 @@
 import { useState } from "react";
 import PageHeader from "@/components/PageHeader";
 import TopicCard from "@/components/TopicCard";
-import BlueprintBackground from "@/components/BlueprintBackground"; // UPGRADE: CAD Grid
-import TechStackWidget from "@/components/TechStackWidget";       // UPGRADE: Hierarchy Tool
+import BlueprintBackground from "@/components/BlueprintBackground"; 
+import TechStackWidget from "@/components/TechStackWidget";       
 import { motion } from "framer-motion";
 import {
   Wrench, Zap, Hammer, CircuitBoard, Building2, Ruler
-} from "@/components/icons";
+} from "lucide-react";
 
-// --- DATA SECTORS ---
+// --- DATA ---
 const sectors = [
   {
     name: "Infrastructure & Mechanics",
@@ -71,7 +71,7 @@ export default function EngineeringPage() {
   return (
     <main className="relative min-h-screen overflow-hidden bg-neutral-950 lg:px-12">
       
-      {/* 1. VISUAL ENGINE: Infinite Blueprint Grid */}
+      {/* 1. Blueprint Grid */}
       <BlueprintBackground />
       
       <div className="relative z-10 mx-auto flex max-w-7xl flex-col py-10">
@@ -107,7 +107,7 @@ export default function EngineeringPage() {
                  {/* Card Grid */}
                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-2">
                     {sector.items.map((item, i) => {
-                        // INTERACTIVITY: Highlight cards based on the Sidebar Widget
+                        // Highlight logic based on sidebar widget
                         const isDimmed = activeStack && item.stack !== activeStack;
                         
                         return (
@@ -139,7 +139,6 @@ export default function EngineeringPage() {
           <div className="flex flex-col gap-6 lg:col-span-3 lg:sticky lg:top-6 h-fit pt-2">
             
             {/* WIDGET: Tech Stack Hierarchy */}
-            {/* Hovering over items here will dim unrelated cards in the main grid */}
             <motion.div 
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -148,7 +147,7 @@ export default function EngineeringPage() {
                <TechStackWidget activeStack={activeStack} setActiveStack={setActiveStack} />
             </motion.div>
 
-            {/* WIDGET: Quote Box */}
+            {/* Quote Box */}
             <div className="rounded-xl border border-cyan-500/20 bg-cyan-950/10 p-5 backdrop-blur-md">
                 <div className="flex flex-col gap-3">
                     <Ruler size={20} className="text-cyan-400"/>
