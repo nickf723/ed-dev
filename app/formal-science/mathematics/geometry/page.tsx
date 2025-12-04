@@ -2,7 +2,6 @@
 import PageHeader from "@/components/PageHeader";
 import TopicCard from "@/components/TopicCard";
 import GeometryBackground from "@/components/GeometryBackground";
-import PythagorasWidget from "@/components/PythagorasWidget";
 import { motion } from "framer-motion";
 import {
   Square, Network, Tangent, GitMerge, 
@@ -156,7 +155,6 @@ export default function GeometryPage() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.4 }}
             >
-               <PythagorasWidget />
             </motion.div>
 
             {/* Quote Box */}

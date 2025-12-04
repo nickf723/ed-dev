@@ -17,7 +17,6 @@ import {
   Shuffle,
   Clock, // Assuming Clock is available or use Watch/Timer, otherwise fallback to Terminal
 } from "@/components/icons"; // Ensure Clock/Watch is imported or substituted
-import { M, MBlock } from "@/components/Math";
 import GlossaryTerm from "@/components/GlossaryTerm";
 
 const algoSymbols = [

@@ -3,7 +3,6 @@ import { useState } from "react";
 import PageHeader from "@/components/PageHeader";
 import TopicCard from "@/components/TopicCard";
 import RiemannBackground from "@/components/RiemannBackground";
-import IntegrationWidget from "@/components/IntegrationWidget";
 import { motion } from "framer-motion";
 import {
   Sigma, Layers, RotateCw, Box, Divide, 
@@ -153,7 +152,6 @@ export default function IntegralCalculusPage() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.4 }}
             >
-               <IntegrationWidget />
             </motion.div>
 
             {/* Quote */}

@@ -15,144 +15,157 @@ export default function AlgebraBackground() {
     let time = 0;
 
     // --- CONFIGURATION ---
-    const GRID_LINES = 20; // Number of lines from center
-    const SPACING = 60;    // Base spacing units
+    const GRID_SIZE = 80; // Distance between lines
+    const GRID_COLS = Math.ceil(w / GRID_SIZE) + 5;
+    const GRID_ROWS = Math.ceil(h / GRID_SIZE) + 5;
 
-    // Floating constants for texture
-    const SYMBOLS = ["x", "y", "z", "α", "β", "λ", "θ", "π", "∑", "∫"];
-    const particles = Array.from({ length: 25 }, () => ({
+    // Floating Variables (kept for texture, but subtle)
+    const SYMBOLS = ["x", "y", "z", "A", "b", "λ", "det"];
+    const particles = Array.from({ length: 20 }, () => ({
       x: Math.random() * w,
       y: Math.random() * h,
       char: SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)],
-      color: ["#FDE047", "#67E8F9", "#F472B6"][Math.floor(Math.random() * 3)], // Yellow, Cyan, Pink
-      size: Math.random() * 14 + 10,
-      opacity: Math.random() * 0.5 + 0.1,
-      vx: (Math.random() - 0.5) * 0.3,
-      vy: (Math.random() - 0.5) * 0.3
+      opacity: Math.random() * 0.3 + 0.05,
+      vx: (Math.random() - 0.5) * 0.1,
+      vy: (Math.random() - 0.5) * 0.1
     }));
 
     const animate = () => {
-      // 0. Setup
       ctx.clearRect(0, 0, w, h);
       
-      // Deep Background (Navy Void)
+      // 1. Background (Deep Space)
       const grad = ctx.createRadialGradient(w/2, h/2, 0, w/2, h/2, w);
-      grad.addColorStop(0, "#020617"); // Slate 950
+      grad.addColorStop(0, "#020617");
       grad.addColorStop(1, "#000000");
       ctx.fillStyle = grad;
       ctx.fillRect(0, 0, w, h);
 
-      // --- 1. CALCULATE BASIS VECTORS ---
-      // We animate i_hat and j_hat directly to define the coordinate space.
+      // --- 2. TRANSFORMATION MATRIX CALCULATION ---
       
-      // Time factors for smooth oscillation
-      const t1 = time * 0.2;
-      const t2 = time * 0.3;
-
-      // i_hat: Generally points Right (1, 0), but rotates and scales
-      // Angle oscillates slightly around 0
-      const angI = Math.cos(t1) * 0.2; 
-      const lenI = 1 + Math.sin(t2) * 0.2; // Scale X
-      const i_x = Math.cos(angI) * lenI * SPACING;
-      const i_y = Math.sin(angI) * lenI * SPACING;
-
-      // j_hat: Generally points Down (0, 1), but shears independently
-      // Angle oscillates around PI/2 (90 deg). Deviating from PI/2 creates SHEAR.
-      const shearFactor = Math.sin(time * 0.15) * 0.5; // Significant shear
-      const angJ = (Math.PI / 2) + shearFactor; 
-      const lenJ = 1 + Math.cos(t1) * 0.2; // Scale Y
-      const j_x = Math.cos(angJ) * lenJ * SPACING;
-      const j_y = Math.sin(angJ) * lenJ * SPACING;
-
-      // Center of the screen is the Origin (0,0)
-      const cx = w / 2;
-      const cy = h / 2;
-
-      // --- 2. DRAW GRID (TRANSFORMED) ---
+      // We oscillate the parameters smoothly
+      const t = time * 0.5;
       
-      // Helper to project grid coordinates (u, v) into screen space (px, py)
-      // P = Origin + u*i_hat + v*j_hat
-      const project = (u: number, v: number) => ({
-          x: cx + u * i_x + v * j_x,
-          y: cy + u * i_y + v * j_y
-      });
+      // SHEAR: This is the key "slant" factor
+      // A pure horizontal shear moves x based on y.
+      const k = Math.sin(t * 0.3) * 0.8; // Oscilates between -0.8 and 0.8
+      
+      // ROTATION: Slowly tumbling the whole view
+      const theta = time * 0.05;
+      const cos = Math.cos(theta);
+      const sin = Math.sin(theta);
 
+      // SCALE: Breathing effect
+      const s = 1 + Math.sin(t * 0.2) * 0.1;
+
+      // The Transformation Function
+      // Applies Scale -> Shear -> Rotation -> Translation
+      const transform = (x: number, y: number) => {
+          // 1. Scale
+          let tx = x * s;
+          let ty = y * s;
+
+          // 2. Shear (Horizontal: x' = x + ky)
+          tx = tx + k * ty;
+
+          // 3. Rotate
+          const rx = tx * cos - ty * sin;
+          const ry = tx * sin + ty * cos;
+
+          // 4. Translate to Center
+          return {
+              x: rx + w/2,
+              y: ry + h/2
+          };
+      };
+
+      // --- 3. DRAW THE GRID ---
+      
+      const drawGridLayer = (color: string, offsetFactor: number) => {
+          ctx.beginPath();
+          ctx.strokeStyle = color;
+          
+          // Draw Vertical Lines
+          for (let i = -GRID_COLS; i <= GRID_COLS; i++) {
+              const xBase = i * GRID_SIZE;
+              // Start far top, end far bottom to cover rotation
+              const start = transform(xBase, -GRID_ROWS * GRID_SIZE * 1.5);
+              const end = transform(xBase, GRID_ROWS * GRID_SIZE * 1.5);
+              
+              ctx.moveTo(start.x + offsetFactor, start.y + offsetFactor);
+              ctx.lineTo(end.x + offsetFactor, end.y + offsetFactor);
+          }
+
+          // Draw Horizontal Lines
+          for (let j = -GRID_ROWS; j <= GRID_ROWS; j++) {
+              const yBase = j * GRID_SIZE;
+              const start = transform(-GRID_COLS * GRID_SIZE * 1.5, yBase);
+              const end = transform(GRID_COLS * GRID_SIZE * 1.5, yBase);
+              
+              ctx.moveTo(start.x + offsetFactor, start.y + offsetFactor);
+              ctx.lineTo(end.x + offsetFactor, end.y + offsetFactor);
+          }
+          ctx.stroke();
+      };
+
+      // Layer 1: Cyan (Main)
       ctx.lineWidth = 1;
-      // Add 'Add' blend mode for glowing overlapping lines
-      ctx.globalCompositeOperation = "lighter"; 
+      ctx.globalCompositeOperation = "screen"; // Additive blending
+      ctx.shadowBlur = 8;
+      ctx.shadowColor = "rgba(34, 211, 238, 0.5)"; // Cyan Glow
+      drawGridLayer("rgba(34, 211, 238, 0.2)", 0);
 
-      // Draw "Vertical" lines (lines of constant u, varying v)
-      // These follow the direction of j_hat
-      ctx.strokeStyle = "rgba(34, 211, 238, 0.15)"; // Cyan Neon
-      for (let u = -GRID_LINES; u <= GRID_LINES; u++) {
-          ctx.beginPath();
-          const start = project(u, -GRID_LINES);
-          const end = project(u, GRID_LINES);
-          ctx.moveTo(start.x, start.y);
-          ctx.lineTo(end.x, end.y);
-          ctx.stroke();
-      }
+      // Layer 2: Magenta (Offset for Chromatic Effect)
+      // We apply the same transform but slightly offset pixels to create 'vibration'
+      ctx.shadowColor = "rgba(232, 121, 249, 0.5)"; // Pink Glow
+      drawGridLayer("rgba(232, 121, 249, 0.15)", 2);
 
-      // Draw "Horizontal" lines (lines of constant v, varying u)
-      // These follow the direction of i_hat
-      ctx.strokeStyle = "rgba(232, 121, 249, 0.15)"; // Fuchsia Neon
-      for (let v = -GRID_LINES; v <= GRID_LINES; v++) {
-          ctx.beginPath();
-          const start = project(-GRID_LINES, v);
-          const end = project(GRID_LINES, v);
-          ctx.moveTo(start.x, start.y);
-          ctx.lineTo(end.x, end.y);
-          ctx.stroke();
-      }
+      ctx.shadowBlur = 0;
+      ctx.globalCompositeOperation = "source-over";
 
-      // --- 3. DRAW BASIS VECTORS (HIGHLIGHT) ---
-      ctx.lineWidth = 3;
-      ctx.shadowBlur = 15;
+      // --- 4. DRAW ORIGIN & INTERSECTIONS ---
+      // Highlight the center (0,0) and a few points
+      const origin = transform(0, 0);
       
-      // Draw i_hat vector (The X Axis)
-      ctx.strokeStyle = "#22d3ee"; // Cyan
-      ctx.shadowColor = "#22d3ee";
+      // Center Point
+      ctx.fillStyle = "#ffffff";
+      ctx.shadowColor = "#ffffff";
+      ctx.shadowBlur = 20;
       ctx.beginPath();
-      ctx.moveTo(cx, cy);
-      const tipI = project(1, 0);
+      ctx.arc(origin.x, origin.y, 4, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.shadowBlur = 0;
+
+      // Draw Basis Vectors from Origin
+      ctx.lineWidth = 3;
+      
+      // Basis i (1, 0)
+      const tipI = transform(GRID_SIZE, 0);
+      ctx.strokeStyle = "#4ade80"; // Green
+      ctx.beginPath();
+      ctx.moveTo(origin.x, origin.y);
       ctx.lineTo(tipI.x, tipI.y);
       ctx.stroke();
 
-      // Draw j_hat vector (The Y Axis)
-      ctx.strokeStyle = "#e879f9"; // Fuchsia
-      ctx.shadowColor = "#e879f9";
+      // Basis j (0, 1)
+      const tipJ = transform(0, GRID_SIZE);
+      ctx.strokeStyle = "#fb7185"; // Red
       ctx.beginPath();
-      ctx.moveTo(cx, cy);
-      const tipJ = project(0, 1);
+      ctx.moveTo(origin.x, origin.y);
       ctx.lineTo(tipJ.x, tipJ.y);
       ctx.stroke();
 
-      // Draw Origin Dot
-      ctx.fillStyle = "#ffffff";
-      ctx.shadowColor = "#ffffff";
-      ctx.beginPath();
-      ctx.arc(cx, cy, 4, 0, Math.PI * 2);
-      ctx.fill();
-
-      // Reset blending and shadow
-      ctx.globalCompositeOperation = "source-over";
-      ctx.shadowBlur = 0;
-
-      // --- 4. FLOATING PARTICLES ---
-      ctx.font = 'italic 16px "Times New Roman"';
+      // --- 5. PARTICLES ---
+      ctx.font = '14px "Courier New"';
+      ctx.fillStyle = "rgba(255, 255, 255, 0.3)";
       particles.forEach(p => {
           p.x += p.vx;
           p.y += p.vy;
-          
-          if (p.x > w) p.x = 0; if (p.x < 0) p.x = w;
-          if (p.y > h) p.y = 0; if (p.y < 0) p.y = h;
-
-          ctx.fillStyle = p.color;
-          ctx.globalAlpha = p.opacity;
+          if(p.x > w) p.x = 0; if(p.x < 0) p.x = w;
+          if(p.y > h) p.y = 0; if(p.y < 0) p.y = h;
           ctx.fillText(p.char, p.x, p.y);
       });
 
-      time += 0.005;
+      time += 0.01;
       requestAnimationFrame(animate);
     };
 
@@ -165,8 +178,7 @@ export default function AlgebraBackground() {
   return (
     <>
         <canvas ref={canvasRef} className="fixed inset-0 pointer-events-none z-0" />
-        {/* Subtle Vignette */}
-        <div className="fixed inset-0 pointer-events-none z-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.5)_100%)]" />
+        <div className="fixed inset-0 pointer-events-none z-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.6)_100%)]" />
     </>
   );
 }
