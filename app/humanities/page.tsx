@@ -3,7 +3,7 @@ import { useState } from "react";
 import PageHeader from "@/components/PageHeader";
 import TopicCard from "@/components/TopicCard";
 import GlyphBackground from "@/components/GlyphBackground";
-import InquiryWidget from "@/components/InquiryWidget";
+import InquiryWidget from "@/app/humanities/InquiryWidget";
 import { motion } from "framer-motion";
 import {
   Lightbulb, Scale, Hourglass, ScrollText, Palette, BookOpen, Library, Feather
@@ -28,15 +28,15 @@ const sectors = [
         subtitle: "The Search for Truth" 
       },
       { 
-        id: "ethics", 
-        mode: "reason", 
-        title: "Ethics", 
-        desc: "Moral principles that govern a person's behavior.", 
-        href: "/humanities/philosophy", 
-        Icon: Scale, 
+        id: "religion", 
+        mode: "belief",
+        title: "Religion & Spirituality", 
+        desc: "Systems of faith and worship that explore the divine and sacred.", 
+        href: "/humanities/religion",
+        Icon: Feather,
         className: "theme-humanities",
-        subtitle: "Right & Wrong" 
-      }
+        subtitle: "Belief Systems" 
+      },
     ]
   },
   {
@@ -55,16 +55,6 @@ const sectors = [
         className: "theme-humanities", 
         subtitle: "The Record" 
       },
-      { 
-        id: "industrial-rev", 
-        mode: "memory", 
-        title: "Industrial Revolution", 
-        desc: "The transition to new manufacturing processes in Europe and the US.", 
-        href: "/humanities/history/industrial-revolution", 
-        Icon: ScrollText, 
-        className: "theme-applied-science", 
-        subtitle: "Turning Point" 
-      }
     ]
   },
   {
@@ -92,6 +82,16 @@ const sectors = [
         Icon: Palette, 
         className: "theme-humanities",
         subtitle: "Visual Culture" 
+      },
+      {
+        id: "music",
+        mode: "expression",
+        title: "Music",
+        desc: "The art of arranging sounds in time through melody, harmony, and rhythm.",
+        href: "/humanities/music",
+        Icon: ScrollText,
+        className: "theme-humanities",
+        subtitle: "Sound"
       },
       {
         id: "language",

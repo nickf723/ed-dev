@@ -18,12 +18,6 @@ const getDomain = (path: string) => {
   if (path.startsWith("/applied-science")) return "applied";
   if (path.startsWith("/humanities")) return "humanities";
   if (path.startsWith("/interdisciplines")) return "inter";
-  if (path.startsWith("/library")) return "meta"; // New Hub
-  if (path.startsWith("/arcade")) return "meta"; // New Hub
-  if (path.startsWith("/glossary")) return "meta";
-  if (path.startsWith("/skeleton")) return "meta";
-  if (path.startsWith("/dev-playground")) return "meta";
-  if (path.startsWith("/stage")) return "meta";
   return "home";
 };
 
@@ -86,29 +80,49 @@ export default function Sidebar() {
                <SubLink href="/formal-science/logic" label="Logic" currentPath={pathname} />
                <SubLink href="/formal-science/computer-science" label="Computer Science" currentPath={pathname} />
                <SubLink href="/formal-science/systems-science" label="Systems Science" currentPath={pathname} />
+               <SubLink href="/formal-science/information-science" label="Information Science" currentPath={pathname} />
+               <SubLink href="/formal-science/data-science" label="Data Science" currentPath={pathname} />
             </NavItem>
 
             <NavItem href="/natural-science" icon={Atom} label="Natural Science" domain="natural" currentPath={pathname}>
                <SubLink href="/natural-science/physics" label="Physics" currentPath={pathname} />
                <SubLink href="/natural-science/chemistry" label="Chemistry" currentPath={pathname} />
                <SubLink href="/natural-science/biology" label="Biology" currentPath={pathname} />
+                <SubLink href="/natural-science/earth-science" label="Earth Science" currentPath={pathname} />
                <SubLink href="/natural-science/astronomy" label="Astronomy" currentPath={pathname} />
             </NavItem>
 
             <NavItem href="/social-science" icon={Handshake} label="Social Science" domain="social" currentPath={pathname}>
                <SubLink href="/social-science/psychology" label="Psychology" currentPath={pathname} />
+               <SubLink href="/social-science/political-science" label="Political Science" currentPath={pathname} />
+               <SubLink href="/social-science/anthropology" label="Anthropology" currentPath={pathname} />
                <SubLink href="/social-science/sociology" label="Sociology" currentPath={pathname} />
                <SubLink href="/social-science/economics" label="Economics" currentPath={pathname} />
+               <SubLink href="/social-science/geography" label="Geography" currentPath={pathname} />
+               <SubLink href="/social-science/linguistics" label="Linguistics" currentPath={pathname} />
             </NavItem>
 
             <NavItem href="/applied-science" icon={Hammer} label="Applied Science" domain="applied" currentPath={pathname}>
-               <SubLink href="/applied-science/engineering" label="Engineering" currentPath={pathname} />
-               <SubLink href="/applied-science/medicine" label="Medicine" currentPath={pathname} />
+              <SubLink href="/applied-science/engineering" label="Engineering" currentPath={pathname} />
+              <SubLink href="/applied-science/medicine" label="Medicine" currentPath={pathname} />
+              <SubLink href="/applied-science/computer-engineering" label="Computer Engineering" currentPath={pathname} />
+              <SubLink href="/applied-science/architecture" label="Architecture" currentPath={pathname} />
+              <SubLink href="/applied-science/agriculture" label="Agriculture" currentPath={pathname} />
+              <SubLink href="/applied-science/environmental-science" label="Environmental Science" currentPath={pathname} />
+              <SubLink href="/applied-science/military-science" label="Military Science" currentPath={pathname} />
+              <SubLink href="/applied-science/forensic-science" label="Forensic Science" currentPath={pathname} />
+              <SubLink href="/applied-science/health-science" label="Health Science" currentPath={pathname} />
+              <SubLink href="/applied-science/transportation-science" label="Transportation Science" currentPath={pathname} />
             </NavItem>
 
             <NavItem href="/humanities" icon={Palette} label="Humanities" domain="humanities" currentPath={pathname}>
                <SubLink href="/humanities/philosophy" label="Philosophy" currentPath={pathname} />
                <SubLink href="/humanities/history" label="History" currentPath={pathname} />
+               <SubLink href="/humanities/literature" label="Literature" currentPath={pathname} />
+               <SubLink href="/humanities/religion" label="Religion" currentPath={pathname} />
+               <SubLink href="/humanities/arts" label="Arts" currentPath={pathname} />
+               <SubLink href="/humanities/music" label="Music" currentPath={pathname} />
+               <SubLink href="/humanities/languages" label="Languages" currentPath={pathname} />
             </NavItem>
 
             <NavItem href="/interdisciplines" icon={LinkIcon} label="Interdisciplines" domain="inter" currentPath={pathname} />

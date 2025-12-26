@@ -52,14 +52,6 @@ const sectors = [
     icon: Theater,
     items: [
       { 
-        title: "Music & Theory", 
-        desc: "The art of arranging sounds in time through melody, harmony, and rhythm.", 
-        href: "/humanities/arts-aesthetics/music", 
-        Icon: Music, 
-        className: "theme-humanities",
-        subtitle: "Sound" 
-      },
-      { 
         title: "Film & Media", 
         desc: "Storytelling through moving images, editing, and sound design.", 
         href: "/humanities/arts-aesthetics/film", 
