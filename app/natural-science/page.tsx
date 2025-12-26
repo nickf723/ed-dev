@@ -37,36 +37,6 @@ const sectors = [
         className: "theme-astronomy", 
         subtitle: "The Cosmos" 
       },
-      {
-        id: "relativity",
-        scales: ["cosmic"],
-        title: "Relativity",
-        desc: "Gravity as spacetime curvature.",
-        href: "/natural-science/physics/relativity",
-        Icon: Orbit,
-        className: "theme-relativity", 
-        subtitle: "Spacetime"
-      },
-      {
-        id: "quantum-mech",
-        scales: ["quantum"],
-        title: "Quantum Mechanics",
-        desc: "Physics at the atomic scale.",
-        href: "/natural-science/physics/quantum-mechanics",
-        Icon: Waves,
-        className: "theme-quantum-mechanics",
-        subtitle: "Subatomic"
-      },
-      {
-        id: "thermodynamics",
-        scales: ["macro", "micro"],
-        title: "Thermodynamics",
-        desc: "Heat, work, and entropy.",
-        href: "/natural-science/physics/thermodynamics",
-        Icon: Flame,
-        className: "theme-thermodynamics",
-        subtitle: "Energy Systems"
-      }
     ]
   },
   {

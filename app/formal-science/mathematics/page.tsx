@@ -83,6 +83,23 @@ const LAYERS = [
   },
   {
     id: "M1",
+    label: "Logic",
+    title: "Discrete Mathematics",
+    subtitle: "The Math of Distinction",
+    desc: "The study of countable, distinct elements. It forms the foundation of computer science, focusing on combinatorics, graph theory, and the theory of computation.",
+    href: "/formal-science/mathematics/discrete-mathematics",
+    icon: Box,
+    color: "text-green-400",
+    bg: "bg-green-950/30",
+    border: "border-green-500/50",
+    visual: "P ≠ NP ?",
+    visualLabel: "P vs NP Problem",
+    titan: "George Boole",
+    frontier: "Quantum Computing",
+    apps: ["Algorithms", "Network Theory", "Data Structures"]
+  },
+  {
+    id: "M0",
     label: "Quantity",
     title: "Number Theory",
     subtitle: "The Queen of Mathematics",

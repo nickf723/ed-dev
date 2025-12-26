@@ -78,13 +78,6 @@ export default function Sidebar() {
 
         {/* Scrollable Nav Area */}
         <nav className="flex-1 overflow-y-auto p-4 space-y-8 scroll-bar">
-          
-          {/* THE NEXUS (New High-Level Hubs) */}
-          <Section title="The Nexus">
-             <NavItem href="/library" icon={BookOpen} label="The Library" domain="meta" currentPath={pathname} />
-             <NavItem href="/arcade" icon={Gamepad2} label="The Arcade" domain="meta" currentPath={pathname} />
-             <NavItem href="/dev-playground" icon={FlaskConical} label="The Lab" domain="meta" currentPath={pathname} />
-          </Section>
 
           {/* CORE DOMAINS (Knowledge Graph) */}
           <Section title="Knowledge Graph">
