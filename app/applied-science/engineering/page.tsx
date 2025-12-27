@@ -2,8 +2,8 @@
 import { useState } from "react";
 import PageHeader from "@/components/PageHeader";
 import TopicCard from "@/components/TopicCard";
-import BlueprintBackground from "@/components/BlueprintBackground"; 
-import TechStackWidget from "@/components/TechStackWidget";       
+import BlueprintBackground from "@/app/applied-science/engineering/BlueprintBackground"; 
+import TechStackWidget from "@/app/applied-science/engineering/TechStackWidget";       
 import { motion } from "framer-motion";
 import {
   Wrench, Zap, Hammer, CircuitBoard, Building2, Ruler

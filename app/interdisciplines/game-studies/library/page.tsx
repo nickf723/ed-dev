@@ -1,7 +1,7 @@
 "use client";
 import PageHeader from "@/components/PageHeader";
-import GameBrowser from "@/components/GameBrowser";
-import LudologyBackground from "@/components/LudologyBackground";
+import GameBrowser from "@/app/interdisciplines/game-studies/library/GameBrowser";
+import LudologyBackground from "@/app/interdisciplines/game-studies/LudologyBackground";
 
 export default function GameLibraryPage() {
   return (

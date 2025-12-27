@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import MathBackground from "@/components/MathBackground";
+import MathBackground from "@/app/formal-science/mathematics/MathBackground";
 import { 
   Calculator, Variable, Shapes, Spline, ChartScatter, Tally5, 
   ArrowRight, Sigma, ShieldQuestion, User, Globe, Cpu, Lightbulb, 
@@ -13,7 +13,7 @@ import {
 // --- DATA: THE MATHEMATICAL STACK ---
 const LAYERS = [
   {
-    id: "M5",
+    id: "M6",
     label: "Uncertainty",
     title: "Statistics & Probability",
     subtitle: "The Science of Risk",
@@ -25,13 +25,12 @@ const LAYERS = [
     border: "border-amber-500/50",
     visual: "P(A|B) = [P(B|A)P(A)] / P(B)",
     visualLabel: "Bayes' Theorem",
-    // NEW CONTENT
     titan: "Thomas Bayes",
     frontier: "Artificial General Intelligence",
     apps: ["Machine Learning", "Finance", "Thermodynamics"]
   },
   {
-    id: "M4",
+    id: "M5",
     label: "Change",
     title: "Calculus",
     subtitle: "The Mathematics of Motion",
@@ -48,7 +47,7 @@ const LAYERS = [
     apps: ["Physics Engines", "Aerodynamics", "Economics"]
   },
   {
-    id: "M3",
+    id: "M4",
     label: "Space",
     title: "Geometry & Topology",
     subtitle: "The Structure of Shape",
@@ -65,7 +64,7 @@ const LAYERS = [
     apps: ["Computer Graphics", "General Relativity", "Robotics"]
   },
   {
-    id: "M2",
+    id: "M3",
     label: "Structure",
     title: "Algebra",
     subtitle: "The Grammar of Logic",
@@ -82,7 +81,7 @@ const LAYERS = [
     apps: ["Cryptography", "Coding Theory", "Search Algorithms"]
   },
   {
-    id: "M1",
+    id: "M2",
     label: "Logic",
     title: "Discrete Mathematics",
     subtitle: "The Math of Distinction",
@@ -99,7 +98,7 @@ const LAYERS = [
     apps: ["Algorithms", "Network Theory", "Data Structures"]
   },
   {
-    id: "M0",
+    id: "M1",
     label: "Quantity",
     title: "Number Theory",
     subtitle: "The Queen of Mathematics",
@@ -114,6 +113,23 @@ const LAYERS = [
     titan: "Carl Friedrich Gauss",
     frontier: "Prime Distribution",
     apps: ["RSA Encryption", "Hash Functions", "Quantum Computing"]
+  },
+  {
+    id: "M0",
+    label: "Basics",
+    title: "Foundations",
+    subtitle: "The Building Blocks of Math",
+    desc: "The basic operations and properties of numbers. It establishes the rules for addition, subtraction, multiplication, and division that underpin all higher mathematics.",
+    href: "/formal-science/mathematics/foundations",
+    icon: Lightbulb,
+    color: "text-yellow-400",
+    bg: "bg-yellow-950/30",
+    border: "border-yellow-500/50",
+    visual: "a + b = b + a",
+    visualLabel: "Commutative Property",
+    titan: "Pythagoras",
+    frontier: "Formal Systems",
+    apps: ["Basic Computing", "Financial Calculations", "Measurement Systems"]
   }
 ];
 

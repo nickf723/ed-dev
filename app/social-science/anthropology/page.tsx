@@ -1,8 +1,8 @@
 "use client";
 import PageHeader from "@/components/PageHeader";
 import TopicCard from "@/components/TopicCard";
-import PaleoBackground from "@/components/PaleoBackground";
-import SkullTimeline from "@/components/SkullTimeline";
+import PaleoBackground from "@/app/social-science/anthropology/PaleoBackground";
+import SkullTimeline from "@/app/social-science/anthropology/SkullTimeline";
 import { motion } from "framer-motion";
 import {
   Skull, Hammer, BookOpen, Users, Globe, Footprints, Search, Shovel

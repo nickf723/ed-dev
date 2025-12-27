@@ -1,8 +1,8 @@
 "use client";
 import PageHeader from "@/components/PageHeader";
 import TopicCard from "@/components/TopicCard";
-import XRayBackground from "@/components/XRayBackground";
-import JointWidget from "@/components/JointWidget";
+import XRayBackground from "@/app/applied-science/medicine/anatomy-physiology/skeletal/XRayBackground";
+import JointWidget from "@/app/applied-science/medicine/anatomy-physiology/skeletal/JointWidget";
 import { motion } from "framer-motion";
 import {
   Bone, Shield, Activity, Hammer, Divide

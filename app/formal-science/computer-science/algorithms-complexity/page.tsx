@@ -18,6 +18,7 @@ import {
   Clock, // Assuming Clock is available or use Watch/Timer, otherwise fallback to Terminal
 } from "@/components/icons"; // Ensure Clock/Watch is imported or substituted
 import GlossaryTerm from "@/components/GlossaryTerm";
+import { M } from "@/components/Math";
 
 const algoSymbols = [
   "O(n)", "O(1)", "O(\\log n)", "P \\neq NP", "\\text{sort()}", "0110", "\\text{if/else}",
@@ -77,7 +78,7 @@ export default function AlgorithmsPage() {
                 Very efficient. Doubling data only adds one extra step. (e.g., Binary Search).
               </TermDefinition>
             </div>
-            <MBlock>{"T(n) = O(n^2) \\quad \\text{vs} \\quad T(n) = O(n \\log n)"}</MBlock>
+            <M>{"T(n) = O(n^2) \\quad \\text{vs} \\quad T(n) = O(n \\log n)"}</M>
           </CollapsibleTopic>
 
           <CollapsibleTopic

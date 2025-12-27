@@ -2,8 +2,8 @@
 import { useState } from "react";
 import PageHeader from "@/components/PageHeader";
 import TopicCard from "@/components/TopicCard";
-import Rule30Background from "@/components/Rule30Background";
-import LogicGateWidget from "@/components/LogicGateWidget";
+import Rule30Background from "@/app/formal-science/computer-science/Rule30Background";
+import LogicGateWidget from "@/app/formal-science/computer-science/LogicGateWidget";
 import { motion } from "framer-motion";
 import {
   Terminal, BrainCog, Network, Lock, Server, Shield, Cpu, Code

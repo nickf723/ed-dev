@@ -2,8 +2,8 @@
 
 import React, { useState, useMemo } from "react";
 import PageHeader from "@/components/PageHeader";
-import MatrixBackground from "@/components/MatrixBackground";
-import FlashcardWidget from "@/components/FlashcardWidget";
+import MatrixBackground from "@/app/glossary/MatrixBackground";
+import FlashcardWidget from "@/app/glossary/FlashcardWidget";
 import { glossaryTerms, termCategories, GlossaryTermKey } from "@/lib/glossary-db";
 import { Search, Database, Filter } from "lucide-react";
 import { motion } from "framer-motion";

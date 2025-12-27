@@ -2,8 +2,8 @@
 import { useState } from "react";
 import PageHeader from "@/components/PageHeader";
 import TopicCard from "@/components/TopicCard";
-import StardustBackground from "@/components/StardustBackground";
-import DrakeWidget from "@/components/DrakeWidget";
+import StardustBackground from "@/app/interdisciplines/astrobiology/StardustBackground";
+import DrakeWidget from "@/app/interdisciplines/astrobiology/DrakeWidget";
 import { motion } from "framer-motion";
 import {
   Rocket, Dna, Globe, Microscope, Radio, Search, Sprout, FlaskConical

@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import DiscreteBackground from "@/components/DiscreteBackground"; 
-import ModularClockWidget from "@/components/ModularClockWidget";
-import LagrangeWidget from "@/components/LagrangeWidget";
+import DiscreteBackground from "@/app/formal-science/mathematics/algebra/abstract-algebra/group-theory/finite-groups/DiscreteBackground"; 
+import ModularClockWidget from "@/app/formal-science/mathematics/algebra/abstract-algebra/group-theory/finite-groups/ModularClockWidget";
+import LagrangeWidget from "@/app/formal-science/mathematics/algebra/abstract-algebra/group-theory/finite-groups/LagrangeWidget";
 import { 
   Grid, Circle, Shuffle, Crown, Hash, Layers, 
   BookOpen, ChevronRight, Binary, LayoutGrid, ArrowRight,

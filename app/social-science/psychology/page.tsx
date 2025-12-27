@@ -2,8 +2,8 @@
 import { useState } from "react";
 import PageHeader from "@/components/PageHeader";
 import TopicCard from "@/components/TopicCard";
-import InkblotBackground from "@/components/InkblotBackground";
-import MaslowWidget from "@/components/MaslowWidget";
+import InkblotBackground from "@/app/social-science/psychology/InkblotBackground";
+import MaslowWidget from "@/app/social-science/psychology/MaslowWidget";
 import { motion } from "framer-motion";
 import {
   Brain, Heart, Users, Microscope, Activity, Zap, Smile, Frown

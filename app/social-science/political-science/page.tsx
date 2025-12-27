@@ -1,9 +1,9 @@
 "use client";
 import PageHeader from "@/components/PageHeader";
 import TopicCard from "@/components/TopicCard";
-import HexMapBackground from "@/components/HexMapBackground"; // NEW BACKGROUND
-import PoliticalCompassWidget from "@/components/PoliticalCompassWidget"; 
-import ParliamentWidget from "@/components/ParliamentWidget"; // NEW WIDGET
+import HexMapBackground from "@/app/social-science/political-science/HexMapBackground"; // NEW BACKGROUND
+import PoliticalCompassWidget from "@/app/social-science/political-science/PoliticalCompassWidget"; 
+import ParliamentWidget from "@/app/social-science/political-science/ParliamentWidget"; // NEW WIDGET
 import { motion } from "framer-motion";
 import {
   Landmark, Gavel, Users, Earth, Scale, BookOpen, Shield, Speech

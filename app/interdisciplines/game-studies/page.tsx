@@ -1,6 +1,6 @@
 "use client";
 import PageHeader from "@/components/PageHeader";
-import LudologyBackground from "@/components/LudologyBackground";
+import LudologyBackground from "@/app/interdisciplines/game-studies/LudologyBackground";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Dices, Microscope, ArrowRight } from "lucide-react";

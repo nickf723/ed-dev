@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import GameOfLifeBackground from "@/components/GameOfLifeBackground";
+import GameOfLifeBackground from "@/app/formal-science/GameOfLifeBackground";
 import { 
   Binary, Key, Calculator, Network, Terminal, 
   ArrowRight, Cpu, Infinity, ShieldCheck, 

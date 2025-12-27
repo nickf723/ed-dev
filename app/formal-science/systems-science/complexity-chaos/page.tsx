@@ -1,8 +1,8 @@
 "use client";
 import PageHeader from "@/components/PageHeader";
 import TopicCard from "@/components/TopicCard";
-import AttractorBackground from "@/components/AttractorBackground";
-import PendulumWidget from "@/components/PendulumWidget";
+import AttractorBackground from "@/app/formal-science/systems-science/complexity-chaos/AttractorBackground";
+import PendulumWidget from "@/app/formal-science/systems-science/complexity-chaos/PendulumWidget";
 import { motion } from "framer-motion";
 import {
   Activity, Wind, Snowflake, Fingerprint, GitMerge, RefreshCcw

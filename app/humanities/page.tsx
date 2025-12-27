@@ -2,7 +2,7 @@
 import { useState } from "react";
 import PageHeader from "@/components/PageHeader";
 import TopicCard from "@/components/TopicCard";
-import GlyphBackground from "@/components/GlyphBackground";
+import GlyphBackground from "@/app/humanities/GlyphBackground";
 import InquiryWidget from "@/app/humanities/InquiryWidget";
 import { motion } from "framer-motion";
 import {

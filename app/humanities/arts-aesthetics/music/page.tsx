@@ -1,8 +1,8 @@
 "use client";
 import PageHeader from "@/components/PageHeader";
 import TopicCard from "@/components/TopicCard";
-import WaveformBackground from "@/components/WaveformBackground";
-import CircleOfFifths from "@/components/CircleOfFifths";
+import WaveformBackground from "@/app/humanities/arts-aesthetics/music/WaveformBackground";
+import CircleOfFifths from "@/app/humanities/arts-aesthetics/music/CircleOfFifths";
 import { motion } from "framer-motion";
 import {
   Music, Mic2, Radio, Disc, Speaker, Volume2, FileAudio, Sliders

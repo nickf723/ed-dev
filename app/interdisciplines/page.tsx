@@ -2,8 +2,8 @@
 import { useState } from "react";
 import PageHeader from "@/components/PageHeader";
 import TopicCard from "@/components/TopicCard";
-import SynthesisBackground from "@/components/SynthesisBackground";
-import FusionReactor from "@/components/FusionReactor";
+import SynthesisBackground from "@/app/interdisciplines/SynthesisBackground";
+import FusionReactor from "@/app/interdisciplines/FusionReactor";
 import { motion } from "framer-motion";
 import {
   Dna, Brain, Rocket, Atom, FlaskConical, Globe, Leaf, Network, 

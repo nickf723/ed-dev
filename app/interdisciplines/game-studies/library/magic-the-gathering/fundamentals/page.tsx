@@ -1,8 +1,8 @@
 "use client";
 import PageHeader from "@/components/PageHeader";
 import TopicCard from "@/components/TopicCard";
-import CardAnatomyWidget from "@/components/CardAnatomyWidget";
-import FormatCompass from "@/components/FormatCompass";
+import CardAnatomyWidget from "@/app/interdisciplines/game-studies/library/magic-the-gathering/fundamentals/CardAnatomyWidget";
+import FormatCompass from "@/app/interdisciplines/game-studies/library/magic-the-gathering/fundamentals/FormatCompass";
 import { motion } from "framer-motion";
 import {
   Layers, Zap, Shield, Sword, Clock, RotateCcw, Box, Users

@@ -1,9 +1,9 @@
 "use client";
 import PageHeader from "@/components/PageHeader";
 import TopicCard from "@/components/TopicCard";
-import LeylineBackground from "@/components/LeylineBackground";
-import ArchetypeTriangle from "@/components/ArchetypeTriangle";
-import ManaCurveWidget from "@/components/ManaCurveWidget";
+import LeylineBackground from "@/app/interdisciplines/game-studies/library/magic-the-gathering/strategy/LeylineBackground";
+import ArchetypeTriangle from "@/app/interdisciplines/game-studies/library/magic-the-gathering/ArchetypeTriangle";
+import ManaCurveWidget from "@/app/interdisciplines/game-studies/library/magic-the-gathering/strategy/ManaCurveWidget";
 import { motion } from "framer-motion";
 import {
   Swords, Shield, Hourglass, Layers, Zap, Crown, Scale, Gauge

@@ -2,9 +2,9 @@
 import { useState } from "react";
 import PageHeader from "@/components/PageHeader";
 import TopicCard from "@/components/TopicCard";
-import OrbitalBackground from "@/components/OrbitalBackground"; // Keeping the atomic theme
-import MoleculeViewer from "@/components/MoleculeViewer";
-import PeriodicTable from "@/components/PeriodicTable"; // New integration
+import OrbitalBackground from "@/app/natural-science/chemistry/OrbitalBackground"; // Keeping the atomic theme
+import MoleculeViewer from "@/app/natural-science/chemistry/MoleculeViewer";
+import PeriodicTable from "@/app/natural-science/chemistry/PeriodicTable"; // New integration
 import { motion } from "framer-motion";
 import {
   Atom, FlaskConical, Box, Layers, Scale, Zap, Microscope, Beaker

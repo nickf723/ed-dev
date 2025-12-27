@@ -1,8 +1,8 @@
 "use client";
 import PageHeader from "@/components/PageHeader";
 import TopicCard from "@/components/TopicCard";
-import SynesthesiaBackground from "@/components/SynesthesiaBackground";
-import SensoryMapperWidget from "@/components/SensoryMapperWidget";
+import SynesthesiaBackground from "@/app/interdisciplines/psychedelics/synesthesia/SynesthesiaBackground";
+import SensoryMapperWidget from "@/app/interdisciplines/psychedelics/synesthesia/SensoryMapperWidget";
 import { motion } from "framer-motion";
 import {
   Eye, Music, Brain, Palette, Sparkles, Type, Network, Mic2, Activity

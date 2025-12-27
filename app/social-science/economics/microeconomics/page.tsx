@@ -16,7 +16,7 @@ import {
   Users,
 } from "@/components/icons";
 import React from "react";
-import { M, MBlock } from "@/components/Math";
+import { M, } from "@/components/Math";
 import GlossaryTerm from "@/components/GlossaryTerm";
 
 const microSymbols = [
@@ -69,7 +69,7 @@ export default function MicroeconomicsPage() {
             <ContentP>
               Elasticity measures responsiveness. If the price of pizza goes up by 10%, do people buy 10% less pizza? Or do they keep buying it anyway?
             </ContentP>
-            <MBlock>{"E_d = \\frac{\\% \\Delta Q_d}{\\% \\Delta P}"}</MBlock>
+            <M>{"E_d = \\frac{\\% \\Delta Q_d}{\\% \\Delta P}"}</M>
             <PracticeProblem 
               question="If the price of insulin doubles, diabetics will likely continue to buy nearly the same amount. Is this demand elastic or inelastic?"
               solution="Inelastic. The quantity demanded does not change much in response to price, because it is a necessity."

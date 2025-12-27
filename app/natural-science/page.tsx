@@ -2,8 +2,8 @@
 import { useState } from "react";
 import PageHeader from "@/components/PageHeader";
 import TopicCard from "@/components/TopicCard";
-import CosmicBackground from "@/components/CosmicBackground";
-import ScaleSlider from "@/components/ScaleSlider";
+import CosmicBackground from "@/app/natural-science/CosmicBackground";
+import ScaleSlider from "@/app/natural-science/ScaleSlider";
 import { motion } from "framer-motion";
 import {
   Atom, FlaskConical, Dna, Earth, Orbit, Zap, Waves, Flame, Telescope

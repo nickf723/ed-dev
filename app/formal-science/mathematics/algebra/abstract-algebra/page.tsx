@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import SymmetryBackground from "@/components/SymmetryBackground";
+import SymmetryBackground from "@/app/formal-science/mathematics/algebra/abstract-algebra/SymmetryBackground";
 import { 
   BoxSelect, RefreshCw, FlipHorizontal, ArrowRight, 
   Hexagon, Circle, Square, Grid, ShieldQuestion, BrainCircuit, Workflow

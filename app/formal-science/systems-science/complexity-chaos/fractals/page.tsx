@@ -1,8 +1,8 @@
 "use client";
 import PageHeader from "@/components/PageHeader";
 import TopicCard from "@/components/TopicCard";
-import MandelbrotBackground from "@/components/MandelbrotBackground";
-import FractalExplorer from "@/components/FractalExplorer";
+import MandelbrotBackground from "@/app/formal-science/systems-science/complexity-chaos/fractals/MandelbrotBackground";
+import FractalExplorer from "@/app/formal-science/systems-science/complexity-chaos/fractals/FractalExplorer";
 import { motion } from "framer-motion";
 import {
   Snowflake, Activity, GitMerge, Maximize, Scale, Globe, Map

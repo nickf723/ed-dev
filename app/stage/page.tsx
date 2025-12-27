@@ -1,6 +1,6 @@
 "use client";
 import PageHeader from "@/components/PageHeader";
-import FourierLesson from "@/components/FourierLesson";
+import FourierLesson from "@/app/stage/FourierLesson";
 import { Clapperboard } from "lucide-react";
 
 export default function StagePage() {

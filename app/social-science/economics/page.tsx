@@ -1,8 +1,8 @@
 "use client";
 import PageHeader from "@/components/PageHeader";
 import TopicCard from "@/components/TopicCard";
-import MarketFlowBackground from "@/components/MarketFlowBackground"; // NEW BACKGROUND
-import SupplyDemandWidget from "@/components/SupplyDemandWidget";     // NEW WIDGET
+import MarketFlowBackground from "@/app/social-science/economics/MarketFlowBackground"; // NEW BACKGROUND
+import SupplyDemandWidget from "@/app/social-science/economics/SupplyDemandWidget";     // NEW WIDGET
 import { motion } from "framer-motion";
 import {
   DollarSign, LineChart, Target, Network, Scale, Globe, Briefcase, TrendingUp

@@ -2,8 +2,8 @@
 import { useState } from "react";
 import PageHeader from "@/components/PageHeader";
 import TopicCard from "@/components/TopicCard";
-import BiologicalBackground from "@/components/BiologicalBackground";
-import SystemScanner from "@/components/SystemScanner";
+import BiologicalBackground from "@/app/applied-science/medicine/anatomy-physiology/BiologicalBackground";
+import SystemScanner from "@/app/applied-science/medicine/anatomy-physiology/SystemScanner";
 import { motion } from "framer-motion";
 import {
   Microscope, Activity, Heart, Bone, Brain, Wind, Droplet, Zap

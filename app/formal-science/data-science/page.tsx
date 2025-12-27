@@ -1,8 +1,8 @@
 "use client";
 import PageHeader from "@/components/PageHeader";
 import TopicCard from "@/components/TopicCard";
-import ClusterBackground from "@/components/ClusterBackground";
-import DistributionWidget from "@/components/DistributionWidget";
+import ClusterBackground from "@/app/formal-science/data-science/ClusterBackground";
+import DistributionWidget from "@/app/formal-science/data-science/DistributionWidget";
 import { motion } from "framer-motion";
 import {
   ChartScatter,

@@ -1,8 +1,8 @@
 "use client";
 import PageHeader from "@/components/PageHeader";
 import TopicCard from "@/components/TopicCard";
-import SyntaxBackground from "@/components/SyntaxBackground";
-import GrammarWidget from "@/components/GrammarWidget";
+import SyntaxBackground from "@/app/social-science/linguistics/SyntaxBackground";
+import GrammarWidget from "@/app/social-science/linguistics/GrammarWidget";
 import { motion } from "framer-motion";
 import {
   Speech, BookText, Network, BrainCog, Terminal, Languages, Mic, Code2

@@ -1,8 +1,8 @@
 "use client";
 import PageHeader from "@/components/PageHeader";
 import TopicCard from "@/components/TopicCard";
-import PsychedelicBackground from "@/components/PsychedelicBackground";
-import BrainStateWidget from "@/components/BrainStateWidget";
+import PsychedelicBackground from "@/app/interdisciplines/psychedelics/PsychedelicBackground";
+import BrainStateWidget from "@/app/interdisciplines/psychedelics/BrainStateWidget";
 import { motion } from "framer-motion";
 import {
   FlaskConical, Brain, Sparkles, Eye, Activity, Globe, Flower

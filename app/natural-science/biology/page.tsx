@@ -1,9 +1,9 @@
 "use client";
 import PageHeader from "@/components/PageHeader";
 import TopicCard from "@/components/TopicCard";
-import DnaBackground from "@/components/DnaBackground";
-import CellInspector from "@/components/CellInspector";
-import TaxonomyTree from "@/components/TaxonomyTree"; // NEW COMPONENT
+import DnaBackground from "@/app/natural-science/biology/DnaBackground";
+import CellInspector from "@/app/natural-science/biology/CellInspector";
+import TaxonomyTree from "@/app/natural-science/biology/TaxonomyTree"; // NEW COMPONENT
 import { motion } from "framer-motion";
 import {
   Dna, Microscope, Sprout, Globe, Fingerprint, GitFork, Bug, Flower

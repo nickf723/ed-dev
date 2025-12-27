@@ -2,11 +2,14 @@
 import { useState } from "react";
 import PageHeader from "@/components/PageHeader";
 import TopicCard from "@/components/TopicCard";
-import CircuitBackground from "@/components/CircuitBackground";
-import TechStackWidget from "@/components/TechStackWidget";
+import CircuitBackground from "@/app/applied-science/CircuitBackground";
+import TechStackWidget from "@/app/applied-science/engineering/TechStackWidget";
 import { motion } from "framer-motion";
 import {
-  Hammer, Cpu, Stethoscope, Monitor, HardHat, Pickaxe, HeartPulse
+  Hammer, Cpu, Stethoscope, Monitor, HardHat, Pickaxe, HeartPulse,
+  TreeDeciduous,
+  Building,
+  Globe2
 } from "lucide-react";
 
 // --- DATA ---
@@ -36,6 +39,16 @@ const sectors = [
         Icon: Pickaxe, 
         className: "theme-chemistry", 
         subtitle: "Matter Design" 
+      },
+      {
+        id: "architecture",
+        stack: "hardware",
+        title: "Architecture",
+        desc: "The art and science of designing buildings and physical spaces.",
+        href: "/applied-science/architecture",
+        Icon: Building,
+        className: "theme-architecture",
+        subtitle: "Built Environments"
       }
     ]
   },
@@ -72,6 +85,26 @@ const sectors = [
         Icon: Stethoscope, 
         className: "theme-medicine", 
         subtitle: "Human Health" 
+      },
+      {
+        id: "environmental-science",
+        stack: "wetware",
+        title: "Environmental Science",
+        desc: "The study and application of knowledge to protect and sustain natural ecosystems.",
+        href: "/applied-science/environmental-science",
+        Icon: Globe2,
+        className: "theme-environmental-science",
+        subtitle: "Ecosystem Management"
+      },
+      {
+        id: "horticulture",
+        stack: "wetware",
+        title: "Horticulture",
+        desc: "The art and science of cultivating plants for food, medicine, and aesthetics.",
+        href: "/applied-science/horticulture",
+        Icon: TreeDeciduous,
+        className: "theme-biology",
+        subtitle: "Plant Cultivation"
       }
     ]
   }

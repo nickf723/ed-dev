@@ -2,8 +2,8 @@
 import { useState } from "react";
 import PageHeader from "@/components/PageHeader";
 import TopicCard from "@/components/TopicCard";
-import SystemsBackground from "@/components/SystemsBackground";
-import FeedbackWidget from "@/components/FeedbackWidget";
+import SystemsBackground from "@/app/formal-science/systems-science/SystemsBackground";
+import FeedbackWidget from "@/app/formal-science/systems-science/FeedbackWidget";
 import { motion } from "framer-motion";
 import {
   Network,

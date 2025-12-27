@@ -1,8 +1,8 @@
 "use client";
 import PageHeader from "@/components/PageHeader";
 import TopicCard from "@/components/TopicCard";
-import NeuralNetworkBackground from "@/components/NeuralNetworkBackground";
-import PerceptronWidget from "@/components/PerceptronWidget";
+import NeuralNetworkBackground from "@/app/formal-science/computer-science/artificial-intelligence/NeuralNetworkBackground";
+import PerceptronWidget from "@/app/formal-science/computer-science/artificial-intelligence/PerceptronWidget";
 import { motion } from "framer-motion";
 import {
   Brain, Bot, Sparkles, Network, Search, MessageSquare, Cpu, Terminal

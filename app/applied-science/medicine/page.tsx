@@ -2,7 +2,7 @@
 import PageHeader from "@/components/PageHeader";
 import TopicCard from "@/components/TopicCard";
 import PulseBackground from "@/components/PulseBackground";
-import AnatomyWidget from "@/components/AnatomyWidget";
+import AnatomyWidget from "@/app/applied-science/medicine/AnatomyWidget";
 import { motion } from "framer-motion";
 import {
   Syringe, Dna, Beaker, BrainCog, HeartPulse, Microscope, Activity, Stethoscope

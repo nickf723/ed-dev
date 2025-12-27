@@ -6,18 +6,18 @@ import { Search, Box, Activity, Map, FileImage, X, Maximize2 } from "lucide-reac
 
 // --- COMPONENT IMPORTS ---
 // We dynamically map the strings in the DB to these imports
-import CellInspector from "@/components/CellInspector";
-import PendulumWidget from "@/components/PendulumWidget";
-import PoliticalCompassWidget from "@/components/PoliticalCompassWidget";
-import ParliamentWidget from "@/components/ParliamentWidget";
-import SupplyDemandWidget from "@/components/SupplyDemandWidget";
-import MaslowWidget from "@/components/MaslowWidget";
-import TechStackWidget from "@/components/TechStackWidget";
-import RosettaWidget from "@/components/RosettaWidget";
-import MoleculeViewer from "@/components/MoleculeViewer";
+import CellInspector from "@/app/natural-science/biology/CellInspector";
+import PendulumWidget from "@/app/formal-science/systems-science/complexity-chaos/PendulumWidget";
+import PoliticalCompassWidget from "@/app/social-science/political-science/PoliticalCompassWidget";
+import ParliamentWidget from "@/app/social-science/political-science/ParliamentWidget";
+import SupplyDemandWidget from "@/app/social-science/economics/SupplyDemandWidget";
+import MaslowWidget from "@/app/social-science/psychology/MaslowWidget";
+import TechStackWidget from "@/app/applied-science/engineering/TechStackWidget";
+import RosettaWidget from "@/app/humanities/languages/RosettaWidget";
+import MoleculeViewer from "@/app/natural-science/chemistry/MoleculeViewer";
 // For "Backgrounds" used as widgets, we might need a wrapper to contain them
-import DnaBackground from "@/components/DnaBackground"; 
-import OrbitalBackground from "@/components/OrbitalBackground";
+import DnaBackground from "@/app/natural-science/biology/DnaBackground"; 
+import OrbitalBackground from "@/app/natural-science/chemistry/OrbitalBackground";
 
 // Helper to render the component by key
 const AssetRenderer = ({ assetKey }: { assetKey: string }) => {

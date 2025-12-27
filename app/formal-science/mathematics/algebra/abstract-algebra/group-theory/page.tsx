@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import PermutationBackground from "@/components/PermutationBackground"; // NEW BACKGROUND
-import GroupCalculator from "@/components/GroupCalculator";
+import PermutationBackground from "@/app/formal-science/mathematics/algebra/abstract-algebra/group-theory/PermutationBackground"; // NEW BACKGROUND
+import GroupCalculator from "@/app/formal-science/mathematics/algebra/abstract-algebra/group-theory/GroupCalculator";
 import { 
   Hexagon, RefreshCw, Layers, Shield,
   ArrowRight, Grid, Circle, Shuffle, Orbit

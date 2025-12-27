@@ -2,7 +2,7 @@
 import { useState } from "react";
 import PageHeader from "@/components/PageHeader";
 import TopicCard from "@/components/TopicCard";
-import RiemannBackground from "@/components/RiemannBackground";
+import RiemannBackground from "@/app/formal-science/mathematics/calculus/integral-calculus/RiemannBackground";
 import { motion } from "framer-motion";
 import {
   Sigma, Layers, RotateCw, Box, Divide, 

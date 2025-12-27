@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import AlgebraBackground from "@/components/AlgebraBackground"; 
+import AlgebraBackground from "@/app/formal-science/mathematics/algebra/AlgebraBackground"; 
 import { 
   Variable, Scale, BoxSelect, ArrowRight, 
   Grid3X3, Divide, Braces, User, ShieldQuestion, Cpu, 

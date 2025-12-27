@@ -1,8 +1,8 @@
 "use client";
 import PageHeader from "@/components/PageHeader";
 import TopicCard from "@/components/TopicCard";
-import OrbitalBackground from "@/components/OrbitalBackground"; // UPGRADE: Dynamic background
-import PendulumWidget from "@/components/PendulumWidget";       // UPGRADE: Sidebar widget
+import OrbitalBackground from "@/app/natural-science/chemistry/OrbitalBackground"; // UPGRADE: Dynamic background
+import PendulumWidget from "@/app/formal-science/systems-science/complexity-chaos/PendulumWidget";       // UPGRADE: Sidebar widget
 import { motion } from "framer-motion";
 import {
   RollerCoaster, Zap, Waves, Flame, Orbit, Hourglass, 

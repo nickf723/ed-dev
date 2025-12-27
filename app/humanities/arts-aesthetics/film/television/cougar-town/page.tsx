@@ -1,7 +1,7 @@
 "use client";
 import PageHeader from "@/components/PageHeader";
-import PennyCanGame from "@/components/PennyCanGame";
-import WineGlassWidget from "@/components/WineGlassWidget";
+import PennyCanGame from "@/app/humanities/arts-aesthetics/film/television/cougar-town/PennyCanGame";
+import WineGlassWidget from "@/app/humanities/arts-aesthetics/film/television/cougar-town/WineGlassWidget";
 import { motion } from "framer-motion";
 import { Wine, Users, MapPin, Film } from "lucide-react";
 

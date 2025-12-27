@@ -1,8 +1,8 @@
 "use client";
 import { useState } from "react";
 import PageHeader from "@/components/PageHeader";
-import OrbitalBackground from "@/components/OrbitalBackground";
-import PeriodicTable from "@/components/PeriodicTable";
+import OrbitalBackground from "@/app/natural-science/chemistry/OrbitalBackground";
+import PeriodicTable from "@/app/natural-science/chemistry/PeriodicTable";
 import ElementInspector from "@/components/ElementInspector";
 import { motion } from "framer-motion";
 

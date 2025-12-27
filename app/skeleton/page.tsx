@@ -1,8 +1,8 @@
 "use client";
 import PageHeader from "@/components/PageHeader";
 import TopicCard from "@/components/TopicCard";
-import WireframeBackground from "@/components/WireframeBackground";
-import XRayConsole from "@/components/XRayConsole";
+import WireframeBackground from "@/app/skeleton/WireframeBackground";
+import XRayConsole from "@/app/skeleton/XRayConsole";
 import { motion } from "framer-motion";
 import {
   LayoutDashboard,

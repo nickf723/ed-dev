@@ -1,8 +1,8 @@
 "use client";
 import PageHeader from "@/components/PageHeader";
 import TopicCard from "@/components/TopicCard";
-import LogicBackground from "@/components/LogicBackground";
-import SymbolTranslator from "@/components/SymbolTranslator";
+import LogicBackground from "@/app/formal-science/logic/LogicBackground";
+import SymbolTranslator from "@/app/formal-science/logic/SymbolTranslator";
 import { motion } from "framer-motion";
 import {
   LockKeyholeOpen,

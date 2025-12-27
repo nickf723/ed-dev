@@ -1,8 +1,8 @@
 "use client";
 import PageHeader from "@/components/PageHeader";
 import TopicCard from "@/components/TopicCard";
-import BinaryOceanBackground from "@/components/BinaryOceanBackground";
-import EntropyWidget from "@/components/EntropyWidget";
+import BinaryOceanBackground from "@/app/formal-science/information-science/BinaryOceanBackground";
+import EntropyWidget from "@/app/formal-science/information-science/EntropyWidget";
 import { motion } from "framer-motion";
 import {
   Binary, Database, ChartScatter, Lock, Server, Radio, Eye, FileText

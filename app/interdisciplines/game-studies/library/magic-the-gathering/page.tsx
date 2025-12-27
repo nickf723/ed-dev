@@ -1,9 +1,9 @@
 "use client";
 import PageHeader from "@/components/PageHeader";
 import TopicCard from "@/components/TopicCard";
-import ManaBackground from "@/components/ManaBackground";
-import MtgBattleSimulator from "@/components/MtgBattleSimulator";
-import MtgCardFetcher from "@/components/MtgCardFetcher";
+import ManaBackground from "@/app/interdisciplines/game-studies/library/magic-the-gathering/ManaBackground";
+import MtgBattleSimulator from "@/app/interdisciplines/game-studies/library/magic-the-gathering/MtgBattleSimulator";
+import MtgCardFetcher from "@/app/interdisciplines/game-studies/library/magic-the-gathering/MtgCardFetcher";
 import { motion } from "framer-motion";
 import {
   Sword, BookOpen, Brain, Trophy, Palette, Zap, Dices, Layers

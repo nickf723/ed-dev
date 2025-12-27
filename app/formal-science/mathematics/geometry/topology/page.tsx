@@ -1,8 +1,8 @@
 "use client";
 import PageHeader from "@/components/PageHeader";
 import TopicCard from "@/components/TopicCard";
-import ManifoldBackground from "@/components/ManifoldBackground";
-import EulerWidget from "@/components/EulerWidget";
+import ManifoldBackground from "@/app/formal-science/mathematics/geometry/topology/manifolds/ManifoldBackground";
+import EulerWidget from "@/app/formal-science/mathematics/geometry/topology/manifolds/EulerWidget";
 import { motion } from "framer-motion";
 import {
   GitMerge, Globe, Repeat, Minimize, Maximize, Combine, Network

@@ -1,7 +1,7 @@
 "use client";
 import PageHeader from "@/components/PageHeader";
 import TopicCard from "@/components/TopicCard";
-import GeometryBackground from "@/components/GeometryBackground";
+import GeometryBackground from "@/app/formal-science/mathematics/geometry/GeometryBackground";
 import { motion } from "framer-motion";
 import {
   Square, Network, Tangent, GitMerge, 

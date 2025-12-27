@@ -1,8 +1,8 @@
 "use client";
 import PageHeader from "@/components/PageHeader";
 import TopicCard from "@/components/TopicCard";
-import LudologyBackground from "@/components/LudologyBackground";
-import GameTheoryWidget from "@/components/GameTheoryWidget";
+import LudologyBackground from "@/app/interdisciplines/game-studies/LudologyBackground";
+import GameTheoryWidget from "@/app/interdisciplines/game-studies/science/GameTheoryWidget";
 import { motion } from "framer-motion";
 import {
   Dices, Puzzle, Scroll, Users, Hexagon, Trophy, Layers

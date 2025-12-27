@@ -1,8 +1,8 @@
 "use client";
 import PageHeader from "@/components/PageHeader";
 import TopicCard from "@/components/TopicCard";
-import GlyphBackground from "@/components/GlyphBackground"; // NEW BACKGROUND
-import RosettaWidget from "@/components/RosettaWidget";     // NEW WIDGET
+import GlyphBackground from "@/app/humanities/GlyphBackground"; // NEW BACKGROUND
+import RosettaWidget from "@/app/humanities/languages/RosettaWidget";     // NEW WIDGET
 import { motion } from "framer-motion";
 import {
   Globe, BookOpen, PenTool, Mic, Ear, Hand, MessageSquare, Sparkles

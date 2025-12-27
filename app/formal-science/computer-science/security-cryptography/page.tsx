@@ -1,8 +1,8 @@
 "use client";
 import PageHeader from "@/components/PageHeader";
 import TopicCard from "@/components/TopicCard";
-import CipherBackground from "@/components/CipherBackground";
-import EnigmaWidget from "@/components/EnigmaWidget";
+import CipherBackground from "@/app/formal-science/computer-science/security-cryptography/CipherBackground";
+import EnigmaWidget from "@/app/formal-science/computer-science/security-cryptography/EnigmaWidget";
 import { motion } from "framer-motion";
 import {
   Lock, Key, Shield, FileKey, Hash, Fingerprint, Globe, Server, ScanFace

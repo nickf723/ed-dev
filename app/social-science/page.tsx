@@ -2,8 +2,8 @@
 import { useState } from "react";
 import PageHeader from "@/components/PageHeader";
 import TopicCard from "@/components/TopicCard";
-import SocialDynamicsBackground from "@/components/SocialDynamicsBackground";
-import AnalysisLens from "@/components/AnalysisLens";
+import SocialDynamicsBackground from "@/app/social-science/SocialDynamicsBackground";
+import AnalysisLens from "@/app/social-science/AnalysisLens";
 import { motion } from "framer-motion";
 import {
   BrainCircuit, Speech, TrendingUp, Map, Users, Scale, Landmark, ScrollText, Globe

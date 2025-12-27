@@ -2,8 +2,8 @@
 import { useState } from "react";
 import PageHeader from "@/components/PageHeader";
 import TopicCard from "@/components/TopicCard";
-import LivingCanvasBackground from "@/components/LivingCanvasBackground";
-import ColorTheoryWidget from "@/components/ColorTheoryWidget";
+import LivingCanvasBackground from "@/app/humanities/arts-aesthetics/LivingCanvasBackground";
+import ColorTheoryWidget from "@/app/humanities/arts-aesthetics/ColorTheoryWidget";
 import { motion } from "framer-motion";
 import {
   Palette, Eye, Brush, Box,

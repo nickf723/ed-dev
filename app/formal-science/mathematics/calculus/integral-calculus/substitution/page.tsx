@@ -1,7 +1,7 @@
 "use client";
 import PageHeader from "@/components/PageHeader";
-import USubstitutionBackground from "@/components/USubstitutionBackground";
-import USubstitutionWidget from "@/components/USubstitutionWidget";
+import USubstitutionBackground from "@/app/formal-science/mathematics/calculus/integral-calculus/substitution/USubstitutionBackground";
+import USubstitutionWidget from "@/app/formal-science/mathematics/calculus/integral-calculus/substitution/USubstitutionWidget";
 import { motion } from "framer-motion";
 import {
   CollapsibleTopic,
@@ -11,7 +11,7 @@ import {
   SideNote,
   StepByStepSolution
 } from "@/components/LessonBlocks";
-import { M, MBlock } from "@/components/Math";
+import { M, } from "@/components/Math";
 import { Divide, Layers, ArrowRightLeft, AlertTriangle } from "lucide-react";
 
 export default function USubstitutionPage() {
@@ -39,7 +39,7 @@ export default function USubstitutionPage() {
                 <ContentP>
                     When we differentiate a composite function <M>f(g(x))</M>, we use the <strong>Chain Rule</strong>:
                 </ContentP>
-                <MBlock>{"\\frac{d}{dx} f(g(x)) = f'(g(x)) \\cdot g'(x)"}</MBlock>
+                <M>{"\\frac{d}{dx} f(g(x)) = f'(g(x)) \\cdot g'(x)"}</M>
                 <ContentP>
                     Integration by Substitution is simply running this process in reverse. We look for an integrand that fits the pattern <M>{"f(g(x)) \\cdot g'(x)"}</M>. If we can find that inner function <M>g(x)</M> and its derivative <M>g'(x)</M>, we can swap them out for a single variable <M>u</M>.
                 </ContentP>
