@@ -11,6 +11,7 @@ import {
   Bone,
   Theater
 } from "lucide-react";
+import XRayConsole from "@/components/XRayConsole";
 
 // Define the domain mapping for theming
 const getDomain = (path: string) => {
@@ -132,23 +133,13 @@ export default function Sidebar() {
           </Section>
           <Section title="Meta">
             <NavItem href="/glossary" icon={BookOpen} label="Glossary" domain="meta" currentPath={pathname}/>
-            <NavItem href="/skeleton" icon={Bone} label="Skeleton" domain="meta" currentPath={pathname}/>
             <NavItem href="/stage" icon={Theater} label="Stage" domain="meta" currentPath={pathname}/>
           </Section>
         </nav>
         
         {/* Footer / Search Trigger */}
         <div className="p-4 border-t border-white/5">
-            <button 
-                className="w-full rounded-lg bg-white/5 p-3 flex items-center gap-3 hover:bg-white/10 transition-colors border border-transparent hover:border-white/10 group"
-                onClick={() => document.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', metaKey: true }))}
-            >
-                <Search size={16} className="text-neutral-500 group-hover:text-white" />
-                <div className="flex-1 text-left">
-                    <p className="text-xs font-medium text-neutral-400 group-hover:text-white">Search</p>
-                </div>
-                <span className="text-[10px] font-mono text-neutral-600 border border-neutral-700 px-1 rounded bg-black/20">⌘K</span>
-            </button>
+            <XRayConsole />
         </div>
 
       </aside>

@@ -10,7 +10,7 @@ export default function GameOfLifeBackground() {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    const cellSize = 20;
+    const cellSize = 10;
     let cols = 0;
     let rows = 0;
     let grid: number[][] = [];
