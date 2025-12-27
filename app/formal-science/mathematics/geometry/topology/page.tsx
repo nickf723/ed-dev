@@ -1,7 +1,7 @@
 "use client";
 import PageHeader from "@/components/PageHeader";
 import TopicCard from "@/components/TopicCard";
-import ManifoldBackground from "@/app/formal-science/mathematics/geometry/topology/manifolds/ManifoldBackground";
+import ManifoldBackground from "@/app/formal-science/mathematics/geometry/topology/ManifoldBackground";
 import EulerWidget from "@/app/formal-science/mathematics/geometry/topology/manifolds/EulerWidget";
 import { motion } from "framer-motion";
 import {

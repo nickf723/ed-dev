@@ -7,7 +7,9 @@ import CommandPalette from "@/components/CommandPalette"; // Import new componen
 import {
   ChevronDown, Menu, X, LayoutGrid, Search,
   Binary, Atom, Handshake, Hammer, Palette, Link as LinkIcon,
-  BookOpen, Gamepad2, FlaskConical
+  BookOpen, Gamepad2, FlaskConical,
+  Bone,
+  Theater
 } from "lucide-react";
 
 // Define the domain mapping for theming
@@ -18,6 +20,7 @@ const getDomain = (path: string) => {
   if (path.startsWith("/applied-science")) return "applied";
   if (path.startsWith("/humanities")) return "humanities";
   if (path.startsWith("/interdisciplines")) return "inter";
+  if (path.startsWith("/skeleton")) return "meta";
   return "home";
 };
 
@@ -126,6 +129,11 @@ export default function Sidebar() {
             </NavItem>
 
             <NavItem href="/interdisciplines" icon={LinkIcon} label="Interdisciplines" domain="inter" currentPath={pathname} />
+          </Section>
+          <Section title="Meta">
+            <NavItem href="/glossary" icon={BookOpen} label="Glossary" domain="meta" currentPath={pathname}/>
+            <NavItem href="/skeleton" icon={Bone} label="Skeleton" domain="meta" currentPath={pathname}/>
+            <NavItem href="/stage" icon={Theater} label="Stage" domain="meta" currentPath={pathname}/>
           </Section>
         </nav>
         

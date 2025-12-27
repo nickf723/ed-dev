@@ -1,8 +1,8 @@
 "use client";
 import PageHeader from "@/components/PageHeader";
 import TopicCard from "@/components/TopicCard";
-import WaveformBackground from "@/app/humanities/arts-aesthetics/music/WaveformBackground";
-import CircleOfFifths from "@/app/humanities/arts-aesthetics/music/CircleOfFifths";
+import WaveformBackground from "@/app/humanities/music/WaveformBackground";
+import CircleOfFifths from "@/app/humanities/music/CircleOfFifths";
 import { motion } from "framer-motion";
 import {
   Music, Mic2, Radio, Disc, Speaker, Volume2, FileAudio, Sliders
@@ -27,7 +27,7 @@ const sectors = [
       { 
         title: "Melody & Harmony", 
         desc: "The arrangement of pitch. Scales, intervals, chords, and counterpoint.", 
-        href: "/humanities/arts-aesthetics/music/harmony", 
+        href: "/humanities/music/harmony", 
         Icon: Music, 
         className: "theme-humanities",
         subtitle: "Pitch" 

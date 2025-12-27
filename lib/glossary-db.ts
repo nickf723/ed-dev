@@ -1,3 +1,5 @@
+import { M } from "@/components/Math";
+
 // lib/glossary-db.ts
 export const termCategories = {
   GENERAL: "General",
@@ -8,6 +10,9 @@ export const termCategories = {
   CHEMISTRY: "Chemistry",
   SOCIAL_SCIENCE: "Social Science",
   APPLIED_SCIENCE: "Applied Science",
+  MATH: "Mathematics",
+  COMPUTER_SCIENCE: "Computer Science",
+  
 };
 
 export const glossaryTerms = {

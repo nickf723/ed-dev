@@ -2,8 +2,8 @@
 import { useState } from "react";
 import PageHeader from "@/components/PageHeader";
 import TopicCard from "@/components/TopicCard";
-import PianoRollBackground from "@/app/humanities/arts-aesthetics/music/harmony/PianoRollBackground";
-import IntervalWidget from "@/app/humanities/arts-aesthetics/music/harmony/IntervalWidget";
+import PianoRollBackground from "@/app/humanities/music/harmony/PianoRollBackground";
+import IntervalWidget from "@/app/humanities/music/harmony/IntervalWidget";
 import { motion } from "framer-motion";
 import {
   Music, Activity, ListMusic, AlignVerticalJustifyCenter, Layers, ArrowRight, Mic2

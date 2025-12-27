@@ -11,6 +11,9 @@ import {
   Globe,          // Interdisciplinary
   ArrowRight
 } from 'lucide-react';
+import LibraryBackground from '@/app/HomepageBackground';
+import NetworkBackground from '@/app/NetworkBackground';
+import VectorFieldBackground from '@/app/formal-science/mathematics/calculus/VectorFieldBackground';
 
 // --- CONFIGURATION ---
 const DOMAINS = [
@@ -81,25 +84,17 @@ const container = {
 
 const item = {
   hidden: { y: 20, opacity: 0, scale: 0.95 },
-  show: { y: 0, opacity: 1, scale: 1, transition: { type: "spring", stiffness: 50 } }
+  show: { y: 0, opacity: 1, scale: 1, transition: { type: "spring" as const, stiffness: 50 } }
 };
 
 export default function Home() {
   return (
     <main className="min-h-screen bg-[#020617] text-slate-200 relative selection:bg-cyan-500/30 flex items-center justify-center p-6">
       
-      {/* --- BACKGROUND FX --- */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden">
-        {/* Abstract "Network" Lines */}
-        <div className="absolute inset-0 opacity-[0.03]" 
-             style={{ backgroundImage: 'linear-gradient(45deg, #fff 1px, transparent 1px)', backgroundSize: '60px 60px' }} />
-        
-        {/* Central Glow */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-cyan-900/10 rounded-full blur-[120px]" />
-      </div>
+      <NetworkBackground />
+      <LibraryBackground />
 
-      <div className="relative z-10 w-full max-w-6xl space-y-12">
-        
+      <div className="relative z-10 w-full max-w-6xl space-y-12">       
         {/* --- HEADER --- */}
         <motion.header 
           initial={{ opacity: 0, y: -20 }} 

@@ -1,14 +1,14 @@
 "use client";
 import PageHeader from "@/components/PageHeader";
-import AtlasBackground from "@/components/AtlasBackground";
-import GluingWidget from "@/components/GluingWidget";
+import AtlasBackground from "@/app/formal-science/mathematics/geometry/topology/manifolds/AtlasBackground";
+import GluingWidget from "@/app/formal-science/mathematics/geometry/topology/manifolds/GluingWidget";
 import { motion } from "framer-motion";
 import {
   CollapsibleTopic,
   ContentP,
   ExampleBlock,
 } from "@/components/LessonBlocks";
-import { M, MBlock } from "@/components/Math";
+import { M } from "@/components/Math";
 import { Globe, Map, Maximize } from "lucide-react";
 
 export default function ManifoldsPage() {

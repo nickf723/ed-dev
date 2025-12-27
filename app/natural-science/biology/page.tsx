@@ -42,9 +42,9 @@ const sectors = [
     icon: Microscope,
     items: [
       { 
-        title: "Cell Biology", 
+        title: "Cytology", 
         desc: "The study of the cell as the fundamental unit of life.", 
-        href: "/natural-science/biology/cell-biology", 
+        href: "/natural-science/biology/cytology", 
         Icon: Microscope, 
         className: "theme-biology",
         subtitle: "Structure" 
@@ -87,7 +87,23 @@ const sectors = [
         href: "/natural-science/biology/botany",
         Icon: Flower,
         className: "theme-biology",
-        subtitle: "Plant Life"
+        subtitle: "Flora"
+      },
+      {
+        title: "Mycology",
+        desc: "The branch of biology concerned with the study of fungi, including their genetic and biochemical properties.",
+        href: "/natural-science/biology/mycology",
+        Icon: Microscope,
+        className: "theme-biology",
+        subtitle: "Fungi"
+      },
+      {
+        title: "Zoology",
+        desc: "The scientific study of animals, including their biology, behavior, and classification.",
+        href: "/natural-science/biology/zoology",
+        Icon: Bug,
+        className: "theme-biology",
+        subtitle: "Fauna"
       }
     ]
   }

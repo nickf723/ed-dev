@@ -7,133 +7,11 @@ import {
   Infinity, Scale, Divide, Zap, Globe, Rocket, 
   Layers, Box, Activity, Hash, FunctionSquare, Scaling, Orbit
 } from "lucide-react";
+import VectorFieldBackground from "./VectorFieldBackground";
+import CalculusBackground from "./CalculusBackground";
+import DerivativeWidget from "./DerivativeWidget";
+import IntegrationWidget from "./IntegrationWidget";
 
-// --- INTERNAL COMPONENTS (Background & Widgets) ---
-
-// 1. THE "SICK" BACKGROUND (Sedated Flow)
-function CalculusBackground() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    let w = (canvas.width = window.innerWidth);
-    let h = (canvas.height = window.innerHeight);
-    let time = 0;
-
-    const animate = () => {
-      ctx.fillStyle = "rgba(5, 5, 5, 0.1)"; 
-      ctx.fillRect(0, 0, w, h);
-
-      ctx.lineWidth = 2;
-      const lines = 8;
-      
-      for (let i = 0; i < lines; i++) {
-          ctx.beginPath();
-          const yBase = h / 2 + (i - lines/2) * 60;
-          const hue = 340 + i * 5; 
-          ctx.strokeStyle = `hsla(${hue}, 80%, 60%, 0.15)`;
-
-          for (let x = 0; x <= w; x += 10) {
-              const y = yBase + 
-                        Math.sin(x * 0.003 + time * 0.01 + i * 0.5) * 50 + 
-                        Math.cos(x * 0.005 - time * 0.005) * 30;
-              if (x === 0) ctx.moveTo(x, y);
-              else ctx.lineTo(x, y);
-          }
-          ctx.stroke();
-      }
-      time++;
-      requestAnimationFrame(animate);
-    };
-
-    const animId = requestAnimationFrame(animate);
-    const handleResize = () => { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; };
-    window.addEventListener("resize", handleResize);
-    return () => { window.removeEventListener("resize", handleResize); cancelAnimationFrame(animId); };
-  }, []);
-
-  return (
-    <>
-        <canvas ref={canvasRef} className="fixed inset-0 pointer-events-none z-0" />
-        <div className="fixed inset-0 pointer-events-none z-0 bg-[radial-gradient(circle_at_center,transparent_0%,#000000_90%)]" />
-    </>
-  );
-}
-
-// 2. DERIVATIVE WIDGET
-function DerivativeWidget() {
-  const [xVal, setXVal] = useState(2); 
-  const f = (x: number) => 0.2 * x * x;
-  const df = (x: number) => 0.4 * x;
-  const width = 300; const height = 150; const scale = 30; 
-  const originX = width / 2; const originY = height - 20;
-  const currentX = xVal; const currentY = -f(currentX); const slope = -df(currentX);   
-  const x1 = currentX - 3; const y1 = currentY - 3 * slope;
-  const x2 = currentX + 3; const y2 = currentY + 3 * slope;
-
-  return (
-    <div className="w-full bg-neutral-900/60 border border-red-500/30 rounded-2xl p-6 backdrop-blur-md shadow-xl">
-      <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-2 text-red-400">
-              <Spline size={16} />
-              <h3 className="text-xs font-bold uppercase tracking-widest">Slope Visualizer</h3>
-          </div>
-          <div className="text-[10px] font-mono text-neutral-500">f(x) = 0.2x²</div>
-      </div>
-      <div className="relative h-32 w-full bg-black/40 rounded-xl border border-white/5 overflow-hidden mb-4">
-          <svg className="absolute inset-0 w-full h-full overflow-visible">
-              <line x1="0" y1={originY} x2={width} y2={originY} stroke="#333" strokeWidth="1" />
-              <line x1={originX} y1="0" x2={originX} y2={height} stroke="#333" strokeWidth="1" />
-              <path d={`M ${Array.from({length: width}, (_, i) => {
-                    const x = (i - originX) / scale; return `${i},${-f(x) * scale + originY}`;
-                }).join(" L ")}`} fill="none" stroke="#525252" strokeWidth="2" />
-              <line x1={x1 * scale + originX} y1={y1 * scale + originY} x2={x2 * scale + originX} y2={y2 * scale + originY} stroke="#f87171" strokeWidth="2" />
-              <circle cx={currentX * scale + originX} cy={currentY * scale + originY} r="4" fill="white" />
-          </svg>
-      </div>
-      <div className="flex items-center gap-4">
-          <input type="range" min="-4" max="4" step="0.1" value={xVal} onChange={(e) => setXVal(parseFloat(e.target.value))} className="w-full accent-red-500 h-1 bg-white/10 rounded appearance-none cursor-pointer" />
-          <div className="text-xs font-mono text-red-300 w-16 text-right">m = {df(xVal).toFixed(1)}</div>
-      </div>
-    </div>
-  );
-}
-
-// 3. INTEGRAL WIDGET
-function IntegrationWidget() {
-  const [rects, setRects] = useState(4); 
-  const f = (x: number) => -(Math.pow(x - 2, 2)) + 5;
-  const width = 300; const height = 150; const scaleX = width / 5; const scaleY = height / 6;
-  const dx = 4 / rects;
-  const totalArea = Array.from({length: rects}, (_, i) => f(i * dx) * dx).reduce((a, b) => a + b, 0);
-
-  return (
-    <div className="w-full bg-neutral-900/60 border border-red-500/30 rounded-2xl p-6 backdrop-blur-md shadow-xl">
-      <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-2 text-red-400">
-              <AreaChart size={16} />
-              <h3 className="text-xs font-bold uppercase tracking-widest">Riemann Sums</h3>
-          </div>
-          <div className="text-[10px] font-mono text-neutral-500">n = {rects}</div>
-      </div>
-      <div className="relative h-32 w-full bg-black/40 rounded-xl border border-white/5 overflow-hidden mb-4 flex items-end px-4">
-          <svg className="absolute inset-0 w-full h-full overflow-visible">
-             {Array.from({length: rects}).map((_, i) => (
-                 <rect key={i} x={(i * dx) * scaleX} y={height - f(i * dx) * scaleY} width={dx * scaleX - 1} height={f(i * dx) * scaleY} fill="rgba(248, 113, 113, 0.2)" stroke="rgba(248, 113, 113, 0.5)" />
-             ))}
-             <path d={`M ${Array.from({length: 100}, (_, i) => { const x = (i / 100) * 5; return `${x * scaleX},${height - (f(x) * scaleY)}`; }).join(" L ")}`} fill="none" stroke="white" strokeWidth="2" strokeOpacity="0.5" />
-          </svg>
-      </div>
-      <input type="range" min="2" max="50" step="1" value={rects} onChange={(e) => setRects(parseInt(e.target.value))} className="w-full accent-red-500 h-1 bg-white/10 rounded appearance-none cursor-pointer" />
-    </div>
-  );
-}
-
-// --- MAIN PAGE COMPONENT ---
 
 const LEVELS = [
   { id: "pre", title: "0.0 Preparation" },
@@ -155,7 +33,8 @@ export default function CalculusPage() {
     <main className="relative min-h-screen w-full overflow-hidden bg-[#050505] text-white selection:bg-red-500/30 font-sans">
       
       {/* 1. Background */}
-      <CalculusBackground /> 
+      <CalculusBackground />
+      <VectorFieldBackground />
       
       <div className="relative z-10 w-full min-h-screen flex flex-col lg:flex-row max-w-[1600px] mx-auto">
         
