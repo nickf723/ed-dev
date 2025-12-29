@@ -1,186 +1,151 @@
 "use client";
-import { useState } from "react";
-import PageHeader from "@/components/PageHeader";
-import TopicCard from "@/components/TopicCard";
-import CosmicBackground from "@/app/natural-science/CosmicBackground";
-import ScaleSlider from "@/app/natural-science/ScaleSlider";
-import { motion } from "framer-motion";
-import {
-  Atom, FlaskConical, Dna, Earth, Orbit, Zap, Waves, Flame, Telescope
-} from "lucide-react";
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import ScaleNavigator from "@/app/natural-science/ScaleNavigator";
+import DomainHUD, { DomainData } from "@/app/natural-science/DomainHUD";
+import { 
+  AstronomySimulation, 
+  EarthSimulation, 
+  BiologySimulation, 
+  ChemistrySimulation, 
+  PhysicsSimulation 
+} from "@/app/natural-science/ScienceSimulations";
 
-// --- DATA: Disciplines ---
-const sectors = [
-  {
-    name: "The Physical Fabric",
-    desc: "Fundamental laws of matter, energy, space, and time.",
-    color: "text-indigo-400",
-    icon: Zap,
-    items: [
-      { 
-        id: "physics", 
-        scales: ["quantum", "macro", "cosmic"], 
-        title: "Physics", 
-        desc: "The study of matter, motion, and energy.", 
-        href: "/natural-science/physics", 
-        Icon: Atom, 
-        className: "theme-physics", 
-        subtitle: "Fundamental Laws" 
-      },
-      { 
-        id: "astronomy", 
-        scales: ["planetary", "cosmic"], 
-        title: "Astronomy", 
-        desc: "Celestial bodies and the cosmos.", 
-        href: "/natural-science/astronomy", 
-        Icon: Telescope, 
-        className: "theme-astronomy", 
-        subtitle: "The Cosmos" 
-      },
-    ]
+// --- CONTENT DATA ---
+// This is the "Generic Content" mapped to specific domains
+const domainContent: Record<string, DomainData> = {
+  astronomy: {
+    id: "astronomy",
+    title: "Astronomy",
+    subtitle: "Macrocosm",
+    description: "The study of everything beyond Earth's atmosphere, from the moon to the edge of the visible universe.",
+    question: "How did the universe begin, and how will it end?",
+    subdomains: ["Cosmology", "Astrophysics", "Planetary Science"],
+    tools: ["Radio Telescopes", "Spectroscopy", "Gravitational Waves"],
+    metricLabel: "OBSERVABLE RADIUS",
+    metricValue: "46.5B LY",
+    color: "text-amber-400",
+    buttonColor: "bg-amber-600"
   },
-  {
-    name: "Matter & Earth",
-    desc: "Substances and our planetary home.",
+  "earth-science": {
+    id: "earth-science",
+    title: "Earth Science",
+    subtitle: "Planetary Systems",
+    description: "A unified study of the lithosphere, atmosphere, hydrosphere, and biosphere of our home planet.",
+    question: "How do Earth's systems interact to sustain a habitable environment?",
+    subdomains: ["Geology", "Meteorology", "Oceanography"],
+    tools: ["Seismographs", "Satellites", "Core Samples"],
+    metricLabel: "ATMOSPHERIC CO2",
+    metricValue: "420 PPM",
     color: "text-emerald-400",
-    icon: Earth,
-    items: [
-      { 
-        id: "chemistry", 
-        scales: ["atomic", "micro"], 
-        title: "Chemistry", 
-        desc: "Substances and transformations.", 
-        href: "/natural-science/chemistry", 
-        Icon: FlaskConical, 
-        className: "theme-chemistry", 
-        subtitle: "Reactions" 
-      },
-      { 
-        id: "earth-science", 
-        scales: ["macro", "planetary"], 
-        title: "Earth Science", 
-        desc: "The physical constitution of Earth.", 
-        href: "/natural-science/earth-science", 
-        Icon: Earth, 
-        className: "theme-earth-science", 
-        subtitle: "Planetary" 
-      }
-    ]
+    buttonColor: "bg-emerald-600"
   },
-  {
-    name: "Life",
-    desc: "Living organisms and ecosystems.",
-    color: "text-teal-400",
-    icon: Dna,
-    items: [
-      { 
-        id: "biology", 
-        scales: ["micro", "macro"], 
-        title: "Biology", 
-        desc: "The scientific study of life.", 
-        href: "/natural-science/biology", 
-        Icon: Dna, 
-        className: "theme-biology", 
-        subtitle: "Living Systems" 
-      }
-    ]
+  biology: {
+    id: "biology",
+    title: "Biology",
+    subtitle: "Living Matter",
+    description: "The science of life. Examining the structure, function, growth, origin, evolution, and distribution of living things.",
+    question: "What distinguishes living matter from non-living matter?",
+    subdomains: ["Genetics", "Ecology", "Cell Biology"],
+    tools: ["Microscopes", "PCR", "Field Studies"],
+    metricLabel: "KNOWN SPECIES",
+    metricValue: "8.7 MILLION",
+    color: "text-pink-400",
+    buttonColor: "bg-pink-600"
+  },
+  chemistry: {
+    id: "chemistry",
+    title: "Chemistry",
+    subtitle: "Molecular interactions",
+    description: "The study of the properties, composition, and structure of elements and compounds, and the energy released or absorbed when they change.",
+    question: "How do atoms combine to form the infinite variety of matter?",
+    subdomains: ["Organic", "Inorganic", "Physical Chem"],
+    tools: ["Chromatography", "Spectrometers", "Bunsen Burners"],
+    metricLabel: "ELEMENTS",
+    metricValue: "118 TYPES",
+    color: "text-sky-400",
+    buttonColor: "bg-sky-600"
+  },
+  physics: {
+    id: "physics",
+    title: "Physics",
+    subtitle: "Fundamental Laws",
+    description: "The natural science that studies matter, its fundamental constituents, its motion and behavior through space and time.",
+    question: "What are the fundamental forces that govern the universe?",
+    subdomains: ["Quantum Mechanics", "Relativity", "Thermodynamics"],
+    tools: ["Colliders", "Lasers", "Mathematics"],
+    metricLabel: "LIGHT SPEED",
+    metricValue: "299,792 km/s",
+    color: "text-indigo-400",
+    buttonColor: "bg-indigo-600"
   }
-];
+};
 
 export default function NaturalSciencePage() {
-  const [activeScale, setActiveScale] = useState<string | null>(null);
+  const [activeSection, setActiveSection] = useState("astronomy");
 
-  const getVariant = (itemScales: string[]) => {
-    if (!activeScale) return "default";
-    if (itemScales.includes(activeScale)) return "highlighted";
-    return "dimmed";
-  };
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) setActiveSection(entry.target.id);
+        });
+      },
+      { threshold: 0.5 }
+    );
+    document.querySelectorAll("section").forEach((s) => observer.observe(s));
+    return () => observer.disconnect();
+  }, []);
 
   return (
-    <main className="relative min-h-screen overflow-hidden bg-neutral-950 lg:px-12">
+    <main className="h-screen w-full overflow-y-scroll snap-y snap-mandatory scroll-smooth bg-black text-white">
       
-      <CosmicBackground />
-      
-      <div className="relative z-10 mx-auto flex max-w-7xl flex-col py-10">
-        
-        <PageHeader
-          eyebrow="Domain 02"
-          title="Natural Sciences"
-          subtitle="From quantum foam to galactic clusters: we observe, hypothesize, and test to understand the physical universe."
-        />
-
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 items-start">
-          
-          {/* MAIN CONTENT */}
-          <div className="lg:col-span-9 space-y-10">
-            {sectors.map((sector, idx) => (
-              <section key={sector.name}>
-                 <motion.div 
-                    initial={{ opacity: 0, x: -10 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.4, delay: idx * 0.1 }}
-                    className="mb-4 flex items-center gap-3"
-                 >
-                    <sector.icon className={sector.color} size={20} />
-                    <h2 className="text-lg font-bold text-white tracking-wide">{sector.name}</h2>
-                    <div className="h-[1px] flex-1 bg-white/10"></div>
-                 </motion.div>
-
-                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                    {sector.items.map((item, i) => (
-                        <motion.div
-                            key={item.title}
-                            initial={{ opacity: 0, y: 15 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.3, delay: 0.1 + (i * 0.05) }}
-                        >
-                            <TopicCard 
-                                {...item} 
-                                variant={getVariant(item.scales)}
-                            />
-                        </motion.div>
-                    ))}
-                 </div>
-              </section>
-            ))}
-          </div>
-
-          {/* SIDEBAR */}
-          <div className="flex flex-col gap-6 lg:col-span-3 lg:sticky lg:top-6 h-fit pt-2">
-            
-            <motion.div 
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.4 }}
-            >
-               <ScaleSlider activeScale={activeScale} setActiveScale={setActiveScale} />
-            </motion.div>
-
-            <motion.div 
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.6 }}
-                className="rounded-lg border border-emerald-500/20 bg-emerald-950/10 p-4 backdrop-blur-md"
-            >
-                <div className="flex items-start gap-3">
-                    <FlaskConical size={18} className="text-emerald-400 shrink-0 mt-1"/>
-                    <div>
-                        <h4 className="text-xs font-bold uppercase text-emerald-400 mb-1">
-                            Scientific Method
-                        </h4>
-                        <p className="text-[11px] text-neutral-400 leading-relaxed">
-                            Observation ➔ Hypothesis ➔ Experiment ➔ Theory.
-                        </p>
-                    </div>
-                </div>
-            </motion.div>
-
-          </div>
-
+      {/* Navigation & Header Overlay */}
+      <div className="fixed top-0 left-0 w-full z-50 p-6 pointer-events-none flex justify-between items-start">
+        <div className="pointer-events-auto">
+           <Link href="/" className="text-xs font-mono opacity-50 hover:opacity-100 tracking-widest bg-black/50 px-3 py-1 rounded-full border border-white/10">
+             ← HUB
+           </Link>
         </div>
       </div>
+
+      <ScaleNavigator currentSection={activeSection} />
+
+      {/* 1. ASTRONOMY */}
+      <section id="astronomy" className="h-screen w-full relative snap-start flex items-center justify-center overflow-hidden">
+         <div className="absolute inset-0 bg-neutral-900/10" />
+         <AstronomySimulation />
+         <DomainHUD data={domainContent.astronomy} />
+      </section>
+
+      {/* 2. EARTH SCIENCE */}
+      <section id="earth-science" className="h-screen w-full relative snap-start flex items-center justify-center overflow-hidden">
+         <div className="absolute inset-0 bg-emerald-950/20" />
+         <EarthSimulation />
+         <DomainHUD data={domainContent["earth-science"]} />
+      </section>
+
+      {/* 3. BIOLOGY */}
+      <section id="biology" className="h-screen w-full relative snap-start flex items-center justify-center overflow-hidden">
+         <div className="absolute inset-0 bg-pink-950/20" />
+         <BiologySimulation />
+         <DomainHUD data={domainContent.biology} />
+      </section>
+
+      {/* 4. CHEMISTRY */}
+      <section id="chemistry" className="h-screen w-full relative snap-start flex items-center justify-center overflow-hidden">
+         <div className="absolute inset-0 bg-sky-950/30" />
+         <ChemistrySimulation />
+         <DomainHUD data={domainContent.chemistry} />
+      </section>
+
+      {/* 5. PHYSICS */}
+      <section id="physics" className="h-screen w-full relative snap-start flex items-center justify-center overflow-hidden">
+         <div className="absolute inset-0 bg-indigo-950/30" />
+         <PhysicsSimulation />
+         <DomainHUD data={domainContent.physics} />
+      </section>
+
     </main>
   );
 }

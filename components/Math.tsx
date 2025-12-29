@@ -1,22 +1,18 @@
 import React from "react";
+import katex from "katex";
 
 export function M({ children }: { children: string }) {
-    function renderMath(children: string): string | TrustedHTML {
-        try {
-            if (typeof window !== "undefined" && (window as any).MathJax) {
-                const output = (window as any).MathJax.tex2svg(children);
-                return output.innerHTML;
-            }
-            return children;
-        } catch {
-            return children;
-        }
-    }
+  // Render LaTeX to an HTML string
+  const html = katex.renderToString(children, {
+    throwOnError: false, // Prevents crashing on invalid LaTeX
+    displayMode: false,  // Renders inline (use 'true' for block/centered math)
+    globalGroup: true,   // Allows defining macros globally if needed
+  });
 
   return (
     <span
-      className="math-renderer"
-      dangerouslySetInnerHTML={{ __html: renderMath(children) }}
+      className="katex-renderer"
+      dangerouslySetInnerHTML={{ __html: html }}
     />
   );
 }

@@ -10,10 +10,8 @@ import {
   Sigma,
 } from "lucide-react";
 import React from "react";
+import CosmicBackground from "./CosmicBackground";
 
-const astronomySymbols = [
-  "\\text{AU}", "\\text{ly}", "\\text{M}_{\odot}", "\\text{Gyr}", "\\text{kpc}", "\\text{pc}", "\\lambda", "\\nu",
-];
 
 const disciplines = [
     {
@@ -50,7 +48,7 @@ const disciplines = [
 export default function AstronomyPage() {
   return (
     <main className="topic-page theme-astronomy lg:px-16">
-      <FloatingSymbols symbols={astronomySymbols} />
+      <CosmicBackground />
       <PageHeader
         eyebrow="Natural Science"
         title="Astronomy"

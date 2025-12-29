@@ -197,3 +197,11 @@
   50% { opacity: 0.22; transform: scale(1.05); }
 }
 
+@keyframes scanline {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.animate-scanline {
+  animation: scanline 1.5s ease-in-out infinite;
+}

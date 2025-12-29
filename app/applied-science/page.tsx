@@ -1,210 +1,208 @@
 "use client";
 import { useState } from "react";
-import PageHeader from "@/components/PageHeader";
-import TopicCard from "@/components/TopicCard";
-import CircuitBackground from "@/app/applied-science/CircuitBackground";
-import TechStackWidget from "@/app/applied-science/engineering/TechStackWidget";
-import { motion } from "framer-motion";
+import Link from "next/link";
+import InfrastructureBackground from "@/app/applied-science/InfrastructureBackground";
+import { motion, AnimatePresence } from "framer-motion";
 import {
-  Hammer, Cpu, Stethoscope, Monitor, HardHat, Pickaxe, HeartPulse,
-  TreeDeciduous,
-  Building,
-  Globe2
+  Hammer, Cpu, Stethoscope, HardHat, Pickaxe, HeartPulse,
+  TreeDeciduous, Building, Globe2, ArrowRight, Layers,
+  Terminal, Dna, Box
 } from "lucide-react";
 
 // --- DATA ---
-const sectors = [
+const categories = [
   {
-    name: "Constructing Reality",
-    desc: "Building the physical infrastructure of civilization.",
+    id: "hardware",
+    label: "HARDWARE",
+    icon: Box,
+    desc: "The Physical Layer. Manipulating matter and energy to build structure.",
     color: "text-orange-400",
-    icon: HardHat,
+    bg: "bg-orange-500",
+    border: "border-orange-500",
     items: [
       { 
-        id: "engineering", 
-        stack: "hardware", 
         title: "Engineering", 
-        desc: "The application of math and science to design complex structures and machines.", 
+        role: "Design & Build", 
         href: "/applied-science/engineering", 
-        Icon: Hammer, 
-        className: "theme-engineering", 
-        subtitle: "Design & Build" 
+        icon: Hammer,
+        desc: "Designing complex systems, structures, and machines."
       },
       { 
-        id: "materials", 
-        stack: "hardware", 
+        title: "Architecture", 
+        role: "Spatial Design", 
+        href: "/applied-science/architecture", 
+        icon: Building,
+        desc: "The art and science of designing built environments."
+      },
+      { 
         title: "Materials Science", 
-        desc: "Discovering and designing new materials with specific properties.", 
+        role: "Matter Engineering", 
         href: "/applied-science/materials-science", 
-        Icon: Pickaxe, 
-        className: "theme-chemistry", 
-        subtitle: "Matter Design" 
-      },
-      {
-        id: "architecture",
-        stack: "hardware",
-        title: "Architecture",
-        desc: "The art and science of designing buildings and physical spaces.",
-        href: "/applied-science/architecture",
-        Icon: Building,
-        className: "theme-architecture",
-        subtitle: "Built Environments"
+        icon: Pickaxe,
+        desc: "Creating new materials with novel properties."
       }
     ]
   },
   {
-    name: "Computing & Intelligence",
-    desc: "Processing information and simulating reality.",
+    id: "software",
+    label: "SOFTWARE",
+    icon: Terminal,
+    desc: "The Digital Layer. Processing information and simulating reality.",
     color: "text-sky-400",
-    icon: Monitor,
+    bg: "bg-sky-500",
+    border: "border-sky-500",
     items: [
       { 
-        id: "computer-tech", 
-        stack: "software", 
         title: "Computer Technology", 
-        desc: "The development of hardware and software to process information.", 
+        role: "Computation", 
         href: "/applied-science/computer-technology", 
-        Icon: Cpu, 
-        className: "theme-computer-science", 
-        subtitle: "Digital Systems" 
+        icon: Cpu,
+        desc: "Hardware and software systems that power the information age."
       }
     ]
   },
   {
-    name: "Health & Augmentation",
-    desc: "Healing, repairing, and enhancing biological systems.",
+    id: "wetware",
+    label: "WETWARE",
+    icon: Dna,
+    desc: "The Biological Layer. Healing, sustaining, and augmenting life.",
     color: "text-emerald-400",
-    icon: HeartPulse,
+    bg: "bg-emerald-500",
+    border: "border-emerald-500",
     items: [
       { 
-        id: "medicine", 
-        stack: "wetware", 
         title: "Medicine", 
-        desc: "The science and practice of caring for the patient.", 
+        role: "Human Health", 
         href: "/applied-science/medicine", 
-        Icon: Stethoscope, 
-        className: "theme-medicine", 
-        subtitle: "Human Health" 
+        icon: Stethoscope,
+        desc: "Diagnosis, treatment, and prevention of disease."
       },
-      {
-        id: "environmental-science",
-        stack: "wetware",
-        title: "Environmental Science",
-        desc: "The study and application of knowledge to protect and sustain natural ecosystems.",
-        href: "/applied-science/environmental-science",
-        Icon: Globe2,
-        className: "theme-environmental-science",
-        subtitle: "Ecosystem Management"
+      { 
+        title: "Environmental Science", 
+        role: "Planetary Health", 
+        href: "/applied-science/environmental-science", 
+        icon: Globe2,
+        desc: "Protecting and sustaining natural ecosystems."
       },
-      {
-        id: "horticulture",
-        stack: "wetware",
-        title: "Horticulture",
-        desc: "The art and science of cultivating plants for food, medicine, and aesthetics.",
-        href: "/applied-science/horticulture",
-        Icon: TreeDeciduous,
-        className: "theme-biology",
-        subtitle: "Plant Cultivation"
+      { 
+        title: "Horticulture", 
+        role: "Cultivation", 
+        href: "/applied-science/horticulture", 
+        icon: TreeDeciduous,
+        desc: "The science of growing plants for food and utility."
       }
     ]
   }
 ];
 
 export default function AppliedSciencePage() {
-  const [activeStack, setActiveStack] = useState<string | null>(null);
-
-  const getVariant = (stack: string) => {
-    if (!activeStack) return "default";
-    return activeStack === stack ? "highlighted" : "dimmed";
-  };
+  const [activeTab, setActiveTab] = useState("hardware");
+  const activeCategory = categories.find(c => c.id === activeTab) || categories[0];
 
   return (
-    <main className="relative min-h-screen overflow-hidden bg-neutral-950 lg:px-12">
+    <main className="relative min-h-screen bg-neutral-950 text-white overflow-hidden selection:bg-orange-500/30 font-sans">
       
-      {/* 1. Circuit Background */}
-      <CircuitBackground />
+      {/* 1. VISUAL ENGINE */}
+      <InfrastructureBackground />
       
-      <div className="relative z-10 mx-auto flex max-w-7xl flex-col py-10">
+      {/* OVERLAY */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_bottom,transparent_0%,#020617_100%)] pointer-events-none z-0" />
+      <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10 pointer-events-none z-0" />
+
+      {/* 2. DASHBOARD UI */}
+      <div className="relative z-10 container mx-auto px-6 py-12 min-h-screen flex flex-col">
         
-        <PageHeader
-          eyebrow="Domain 04"
-          title="Applied Sciences"
-          subtitle="Knowledge in action. We take the laws of physics, the logic of code, and the patterns of biology to build tools, cure diseases, and engineer the future."
-        />
+        {/* HEADER */}
+        <header className="mb-16">
+             <div className="flex items-center gap-2 text-xs font-mono text-orange-500 mb-4 uppercase tracking-widest">
+                <Layers size={14} /> Domain_04 // Applied_Sciences
+             </div>
+             <div className="max-w-4xl">
+                 <h1 className="text-6xl md:text-8xl font-black text-white mb-6 tracking-tighter drop-shadow-2xl">
+                    APPLIED<br/>SCIENCE
+                 </h1>
+                 <p className="text-slate-400 text-lg md:text-xl leading-relaxed max-w-2xl border-l-4 border-orange-500 pl-6">
+                    Knowledge in action. We take the laws of physics, the logic of code, and the patterns of biology to build tools, cure diseases, and engineer the future.
+                 </p>
+             </div>
+        </header>
 
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 items-start">
-          
-          {/* MAIN CONTENT (9 cols) */}
-          <div className="lg:col-span-9 space-y-10">
-            {sectors.map((sector, idx) => (
-              <section key={sector.name}>
-                 <motion.div 
-                    initial={{ opacity: 0, x: -10 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.4, delay: idx * 0.1 }}
-                    className="mb-4 flex items-center gap-3"
-                 >
-                    <sector.icon className={sector.color} size={20} />
-                    <h2 className="text-lg font-bold text-white tracking-wide">{sector.name}</h2>
-                    <div className="h-[1px] flex-1 bg-white/10"></div>
-                 </motion.div>
-
-                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                    {sector.items.map((item, i) => (
-                        <motion.div
-                            key={item.title}
-                            initial={{ opacity: 0, y: 15 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.3, delay: 0.1 + (i * 0.05) }}
-                        >
-                            <TopicCard 
-                                {...item} 
-                                variant={getVariant(item.stack)}
-                            />
-                        </motion.div>
-                    ))}
-                 </div>
-              </section>
+        {/* 3. STACK SWITCHER */}
+        <div className="flex flex-wrap gap-4 mb-12">
+            {categories.map((cat) => (
+                <button
+                    key={cat.id}
+                    onClick={() => setActiveTab(cat.id)}
+                    className={`
+                        px-6 py-4 rounded-xl border flex items-center gap-3 transition-all duration-300
+                        ${activeTab === cat.id 
+                            ? `bg-slate-800 ${cat.border} text-white shadow-[0_0_20px_rgba(0,0,0,0.5)] scale-105` 
+                            : "bg-slate-900/50 border-white/10 text-slate-500 hover:bg-slate-800 hover:text-slate-300"
+                        }
+                    `}
+                >
+                    <cat.icon size={20} className={activeTab === cat.id ? cat.color : ""} />
+                    <span className="font-bold tracking-wide text-sm">{cat.label}</span>
+                </button>
             ))}
-          </div>
-
-          {/* SIDEBAR (3 cols) */}
-          <div className="flex flex-col gap-6 lg:col-span-3 lg:sticky lg:top-6 h-fit pt-2">
-            
-            {/* Tech Stack Filter */}
-            <motion.div 
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.4 }}
-            >
-               <TechStackWidget activeStack={activeStack} setActiveStack={setActiveStack} />
-            </motion.div>
-
-            {/* Utility Quote */}
-            <motion.div 
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.6 }}
-                className="rounded-lg border border-orange-500/20 bg-orange-950/10 p-4 backdrop-blur-md"
-            >
-                <div className="flex items-start gap-3">
-                    <HardHat size={18} className="text-orange-400 shrink-0 mt-1"/>
-                    <div>
-                        <h4 className="text-xs font-bold uppercase text-orange-400 mb-1">
-                            The Goal: Utility
-                        </h4>
-                        <p className="text-[11px] text-neutral-400 leading-relaxed">
-                            Unlike pure science which seeks to <em>know</em>, applied science seeks to <em>do</em>. It is judged by effectiveness, not just truth.
-                        </p>
-                    </div>
-                </div>
-            </motion.div>
-
-          </div>
-
         </div>
+
+        {/* 4. CONTENT GRID */}
+        <div className="flex-1">
+            <AnimatePresence mode="wait">
+                <motion.div
+                    key={activeTab}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    transition={{ duration: 0.3 }}
+                >
+                    {/* Category Description */}
+                    <div className="mb-8 flex items-center gap-4">
+                        <div className={`h-px flex-1 bg-gradient-to-r from-transparent via-white/20 to-transparent`} />
+                        <span className={`font-mono text-xs uppercase tracking-widest ${activeCategory.color}`}>
+                            {activeCategory.desc}
+                        </span>
+                        <div className={`h-px flex-1 bg-gradient-to-r from-transparent via-white/20 to-transparent`} />
+                    </div>
+
+                    {/* Cards */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {activeCategory.items.map((item) => (
+                            <Link 
+                                href={item.href} 
+                                key={item.title}
+                                className="group relative bg-slate-900/60 backdrop-blur-md border border-white/10 rounded-2xl p-8 hover:border-white/30 transition-all hover:-translate-y-1 overflow-hidden"
+                            >
+                                {/* Hover Glow */}
+                                <div className={`absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-500 ${activeCategory.bg}`} />
+                                
+                                <div className="relative z-10">
+                                    <div className="flex justify-between items-start mb-6">
+                                        <div className={`p-3 rounded-xl bg-white/5 border border-white/10 group-hover:scale-110 transition-transform duration-300 ${activeCategory.color}`}>
+                                            <item.icon size={28} />
+                                        </div>
+                                        <ArrowRight className="text-slate-600 group-hover:text-white transition-colors" />
+                                    </div>
+                                    
+                                    <div className="mb-1">
+                                        <span className={`text-[10px] font-bold uppercase tracking-widest px-2 py-1 rounded bg-white/5 ${activeCategory.color}`}>
+                                            {item.role}
+                                        </span>
+                                    </div>
+                                    
+                                    <h3 className="text-2xl font-bold text-white mb-3">{item.title}</h3>
+                                    <p className="text-sm text-slate-400 leading-relaxed">
+                                        {item.desc}
+                                    </p>
+                                </div>
+                            </Link>
+                        ))}
+                    </div>
+                </motion.div>
+            </AnimatePresence>
+        </div>
+
       </div>
     </main>
   );
