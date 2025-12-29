@@ -1,226 +1,119 @@
 "use client";
-import PageHeader from "@/components/PageHeader";
-import FloatingSymbols from "@/components/FloatingSymbols";
-import {
-  BookOpen,
-  Pen,
-  VenetianMask,
-  Lightbulb,
-  Speech,
-  Globe,
-  BookText,
-  Sparkle,
-  Zap,
-  Coffee,
-  Search,
-  Mic,
-  Flower2,
-  Factory,
-  ChevronRight,
-} from "@/components/icons";
-import React from "react";
 import Link from "next/link";
-import { Feather, Monitor, TypeIcon } from "lucide-react";
-
-const litSymbols = [
-  "Metaphor", "Simile", "Haiku", "Iambic", "Prose", "Syntax", "Theme", "Motif",
-];
-
-// --- DATA: Chronological Movements ---
-const movements = [
-  {
-    title: "Classical & Mythic",
-    range: "800 BC – 400 AD",
-    desc: "The foundations of Western storytelling: Epic poetry, tragedy, and the hero's journey (Homer, Sophocles).",
-    href: "/humanities/literature/classical",
-    Icon: BookOpen, // Represents the 'source'
-  },
-  {
-    title: "Medieval & Renaissance",
-    range: "400 – 1600",
-    desc: "Chivalric romance, spiritual allegory, and the rebirth of humanism (Dante, Chaucer, Shakespeare).",
-    href: "/humanities/literature/renaissance",
-    Icon: Feather, // Quill pen era
-  },
-  {
-    title: "Enlightenment & Romanticism",
-    range: "1600 – 1850",
-    desc: "The tension between reason, satire, and the explosion of emotion and nature (Voltaire, Austen, Shelley).",
-    href: "/humanities/literature/romanticism",
-    Icon: Flower2, // Nature/Emotion
-  },
-  {
-    title: "Realism & Victorian",
-    range: "1850 – 1900",
-    desc: "Depicting life as it actually is, focusing on social issues and the industrial world (Dickens, Tolstoy).",
-    href: "/humanities/literature/realism",
-    Icon: Factory, 
-  },
-  {
-    title: "Modernism",
-    range: "1900 – 1945",
-    desc: "Breaking traditional forms. Stream of consciousness, fragmentation, and disillusionment (Woolf, Joyce).",
-    href: "/humanities/literature/modernism",
-    Icon: Zap, 
-  },
-  {
-    title: "Postmodern & Contemporary",
-    range: "1945 – Present",
-    desc: "Metafiction, unreliability, magical realism, and the digital age (Morrison, Rushdie).",
-    href: "/humanities/literature/contemporary",
-    Icon: Monitor, 
-  },
-];
-
-// --- DATA: Literary Forms (Themes) ---
-const forms = [
-  { title: "Poetry & Poetics", href: "/humanities/literature/poetry", Icon: Sparkle },
-  { title: "The Novel", href: "/humanities/literature/novel", Icon: BookText },
-  { title: "Drama & Performance", href: "/humanities/literature/drama", Icon: VenetianMask },
-  { title: "Short Story", href: "/humanities/literature/short-story", Icon: Coffee },
-  { title: "Screenwriting", href: "/humanities/literature/screenwriting", Icon: Monitor },
-  { title: "Non-Fiction & Essays", href: "/humanities/literature/non-fiction", Icon: Pen },
-];
-
-// --- DATA: Methodology ---
-const methodology = [
-  {
-    title: "Literary Theory",
-    desc: "The critical lenses used to analyze text (Structuralism, Feminism, Marxist theory).",
-    href: "/humanities/literature/theory",
-    Icon: Search,
-  },
-  {
-    title: "Comparative Literature",
-    desc: "Studying literature across cultural, linguistic, and national borders.",
-    href: "/humanities/literature/comparative",
-    Icon: Globe,
-  },
-  {
-    title: "Rhetoric",
-    desc: "The art of persuasion and effective speaking or writing.",
-    href: "/humanities/literature/rhetoric",
-    Icon: Speech,
-  },
-  {
-    title: "Linguistics",
-    desc: "The scientific study of language structure, grammar, and evolution.",
-    href: "/humanities/literature/linguistics",
-    Icon: TypeIcon,
-  }
-];
-
-// --- COMPONENT: Timeline Era Card ---
-function TimelineEra({ era, isLast }: { era: typeof movements[0]; isLast: boolean }) {
-  return (
-    <div className="relative flex gap-6 pb-12 group">
-      {!isLast && (
-        <div className="absolute left-[23px] top-12 bottom-0 w-0.5 bg-neutral-800 group-hover:bg-amber-900/50 transition-colors duration-500" />
-      )}
-      <div className="relative z-10 flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-neutral-700 bg-neutral-900 shadow-md transition-all duration-300 group-hover:border-amber-500/50 group-hover:bg-amber-950/30 group-hover:shadow-[0_0_15px_rgba(245,158,11,0.3)]">
-        <era.Icon className="h-5 w-5 text-neutral-400 group-hover:text-amber-400 transition-colors" />
-      </div>
-      <Link href={era.href} className="flex-1 block">
-        <div className="glass p-5 rounded-xl border border-white/5 hover:border-amber-500/30 transition-all duration-300 hover:-translate-y-1">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2">
-            <h3 className="text-xl font-bold text-neutral-100 group-hover:text-amber-200 transition-colors">
-              {era.title}
-            </h3>
-            <span className="text-xs font-mono font-semibold text-amber-500/80 bg-amber-900/10 px-2 py-1 rounded uppercase tracking-wider">
-              {era.range}
-            </span>
-          </div>
-          <p className="text-sm text-neutral-400 leading-relaxed">{era.desc}</p>
-        </div>
-      </Link>
-    </div>
-  );
-}
-
-// --- COMPONENT: Theme Pill ---
-function ThemePill({ item }: { item: typeof forms[0] }) {
-  return (
-    <Link
-      href={item.href}
-      className="flex items-center gap-3 rounded-lg border border-neutral-800 bg-neutral-900/40 p-4 transition-all hover:bg-neutral-800 hover:border-amber-500/20 hover:shadow-lg group"
-    >
-      <div className="flex h-8 w-8 items-center justify-center rounded-md bg-neutral-800 text-neutral-400 group-hover:text-amber-400 group-hover:bg-amber-950/30 transition-colors">
-        <item.Icon size={16} />
-      </div>
-      <span className="text-sm font-medium text-neutral-300 group-hover:text-neutral-100">
-        {item.title}
-      </span>
-    </Link>
-  );
-}
-
-// --- COMPONENT: Compact Card ---
-function CompactCard({ item }: { item: typeof methodology[0] }) {
-  return (
-    <Link
-      href={item.href}
-      className="block rounded-xl border border-neutral-800 bg-neutral-900/20 p-5 transition-all hover:bg-neutral-800/50 hover:border-neutral-700"
-    >
-      <div className="flex items-start gap-4">
-        <item.Icon className="mt-1 h-5 w-5 text-neutral-500" />
-        <div>
-          <h3 className="font-semibold text-neutral-200 mb-1">{item.title}</h3>
-          <p className="text-xs text-neutral-400">{item.desc}</p>
-        </div>
-      </div>
-    </Link>
-  );
-}
+import TextBackground from "@/app/humanities/literature/TextBackground";
+import HeroJourney from "@/app/humanities/literature/HeroJourney";
+import { 
+  ArrowLeft, Feather, BookOpen, Scroll, PenTool, 
+  Library, Languages, Quote 
+} from "lucide-react";
 
 export default function LiteraturePage() {
   return (
-    <main className="topic-page theme-humanities lg:px-16">
-      <FloatingSymbols symbols={litSymbols} />
-      <PageHeader
-        eyebrow="Humanities"
-        title="Literature & Language"
-        subtitle="The written and spoken word. Explore the evolution of storytelling from ancient epics to digital narratives, and the structures of language itself."
-      />
+    <main className="relative min-h-screen bg-[#1a0f0d] text-stone-200 overflow-hidden selection:bg-amber-500/30 font-serif">
+      
+      {/* 1. VISUAL ENGINE */}
+      <TextBackground />
+      
+      {/* OVERLAY: Paper Texture */}
+      <div className="absolute inset-0 bg-[url('/noise.png')] opacity-[0.08] pointer-events-none z-0 mix-blend-overlay" />
+      <div className="absolute inset-0 bg-radial-vignette opacity-60 pointer-events-none z-0" />
 
-      <div className="grid w-full max-w-7xl grid-cols-1 gap-16 lg:grid-cols-12">
-        {/* LEFT: Movements Timeline */}
-        <div className="lg:col-span-7">
-          <h2 className="mb-8 flex items-center gap-2 text-2xl font-bold text-neutral-100 border-b border-neutral-800 pb-4">
-            <Feather className="text-amber-400" /> Literary Movements
-          </h2>
-          <div className="pl-2">
-            {movements.map((era, index) => (
-              <TimelineEra key={era.title} era={era} isLast={index === movements.length - 1} />
-            ))}
-          </div>
-        </div>
+      {/* 2. DASHBOARD */}
+      <div className="relative z-10 container mx-auto px-6 py-12 min-h-screen flex flex-col pointer-events-none">
+        
+        {/* HEADER */}
+        <header className="mb-16 pointer-events-auto text-center md:text-left">
+             <Link href="/humanities/arts" className="inline-flex items-center gap-2 text-xs font-mono text-amber-700 hover:text-amber-600 transition-colors mb-4 uppercase tracking-widest">
+                <ArrowLeft size={12} /> Arts // Literature
+             </Link>
+             <div className="flex flex-col md:flex-row items-center gap-4">
+                 <div className="p-4 bg-[#271c19] border border-amber-900/50 rounded-sm shadow-xl">
+                    <Feather size={40} className="text-amber-600" />
+                 </div>
+                 <div>
+                    <h1 className="text-5xl md:text-7xl font-black text-[#e7e5e4] tracking-tighter drop-shadow-xl font-serif">
+                        LITERATURE
+                    </h1>
+                    <p className="text-amber-700 text-lg font-light tracking-wide italic">
+                        The written record of the human imagination.
+                    </p>
+                 </div>
+             </div>
+        </header>
 
-        {/* RIGHT: Forms & Methods */}
-        <div className="flex flex-col gap-12 lg:col-span-5 lg:sticky lg:top-24 h-fit">
-          
-          {/* Forms */}
-          <section>
-            <h2 className="mb-6 flex items-center gap-2 text-xl font-bold text-neutral-100">
-              <BookText className="text-blue-400" /> Forms & Genres
-            </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {forms.map((item) => (
-                <ThemePill key={item.title} item={item} />
-              ))}
+        
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 flex-1 pointer-events-auto">
+            
+            {/* LEFT: FORMS & GENRES */}
+            <div className="lg:col-span-7 space-y-12">
+                
+                {/* THE CANON */}
+                <div className="bg-[#271c19]/80 backdrop-blur-md border border-amber-900/30 p-8 rounded-sm relative overflow-hidden group">
+                    <div className="absolute -right-6 -top-6 text-amber-900/10 rotate-12 transition-transform group-hover:rotate-6">
+                        <BookOpen size={140} />
+                    </div>
+                    
+                    <h2 className="text-2xl font-bold text-amber-100 mb-6 flex items-center gap-3 relative z-10">
+                        <Library size={20} className="text-amber-600" /> Major Forms
+                    </h2>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 relative z-10">
+                        <div className="p-4 bg-black/20 border-l-2 border-amber-700">
+                            <h3 className="font-bold text-white text-lg mb-1">Prose</h3>
+                            <p className="text-xs text-stone-400 leading-relaxed">
+                                Ordinary language. Novels, short stories, and essays. Defined by narrative structure and character.
+                            </p>
+                        </div>
+                        <div className="p-4 bg-black/20 border-l-2 border-amber-700">
+                            <h3 className="font-bold text-white text-lg mb-1">Poetry</h3>
+                            <p className="text-xs text-stone-400 leading-relaxed">
+                                Aesthetic and rhythmic qualities of language. Sonnets, haikus, and free verse.
+                            </p>
+                        </div>
+                        <div className="p-4 bg-black/20 border-l-2 border-amber-700">
+                            <h3 className="font-bold text-white text-lg mb-1">Drama</h3>
+                            <p className="text-xs text-stone-400 leading-relaxed">
+                                Written to be performed. Tragedy, comedy, and the interplay of dialogue.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                {/* LITERARY DEVICES */}
+                <div className="bg-[#271c19]/80 backdrop-blur-md border border-amber-900/30 p-8 rounded-sm">
+                    <h2 className="text-2xl font-bold text-amber-100 mb-6 flex items-center gap-3">
+                        <PenTool size={20} className="text-amber-600" /> The Writer's Toolkit
+                    </h2>
+                    <div className="flex flex-wrap gap-2">
+                        {["Metaphor", "Simile", "Allegory", "Irony", "Foreshadowing", "Alliteration", "Symbolism", "Hyperbole"].map(term => (
+                            <span key={term} className="px-3 py-1 bg-[#1a0f0d] border border-stone-800 text-stone-400 text-xs rounded hover:border-amber-700 hover:text-amber-500 transition-colors cursor-help">
+                                {term}
+                            </span>
+                        ))}
+                    </div>
+                </div>
+
             </div>
-          </section>
 
-          {/* Methodology */}
-          <section>
-            <h2 className="mb-6 flex items-center gap-2 text-xl font-bold text-neutral-100">
-              <Search className="text-emerald-400" /> Critical Analysis
-            </h2>
-            <div className="space-y-3">
-              {methodology.map((method) => (
-                <CompactCard key={method.title} item={method} />
-              ))}
+
+            {/* RIGHT: INTERACTIVE STORYTELLING */}
+            <div className="lg:col-span-5 space-y-8">
+                
+                {/* WIDGET */}
+                <HeroJourney />
+
+                {/* QUOTE CARD */}
+                <div className="bg-[#271c19]/80 border border-amber-900/30 rounded-xl p-8 text-center relative">
+                    <Quote size={32} className="absolute top-4 left-4 text-amber-900 opacity-50" />
+                    <p className="text-lg text-amber-100/90 font-serif italic leading-relaxed mb-4">
+                        "A reader lives a thousand lives before he dies. The man who never reads lives only one."
+                    </p>
+                    <div className="text-xs font-mono text-amber-600 uppercase tracking-widest">— George R.R. Martin</div>
+                </div>
+
             </div>
-          </section>
+
         </div>
       </div>
     </main>

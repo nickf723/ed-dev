@@ -21,15 +21,15 @@ const archives = [
     border: "border-amber-500",
     items: [
       { 
-        title: "Ancient History", 
-        href: "/humanities/history/ancient", 
+        title: "History", 
+        href: "/humanities/history/", 
         icon: Landmark,
-        desc: "The rise of civilizations: Mesopotamia, Egypt, Greece, and Rome."
+        desc: "Our story: the chronicles of human civilization."
       },
       { 
         title: "Archaeology", 
-        href: "/humanities/history/archaeology", 
-        icon: SearchIcon, // Custom icon below
+        href: "/humanities/archaeology", 
+        icon: SearchIcon,
         desc: "Uncovering the material remains of past human life."
       }
     ]
@@ -68,15 +68,27 @@ const archives = [
     items: [
       { 
         title: "Literature", 
-        href: "/humanities/arts/literature", 
+        href: "/humanities/literature", 
         icon: BookOpen,
         desc: "Written works of lasting artistic merit."
       },
       { 
         title: "Visual Arts", 
-        href: "/humanities/arts/visual-arts", 
+        href: "/humanities/visual-arts", 
         icon: Palette,
         desc: "Painting, sculpture, and the visual aesthetics of culture."
+      },
+      {
+        title: "Performing Arts",
+        href: "/humanities/performing-arts",
+        icon: Scroll,
+        desc: "Theater, dance, and music as live artistic expression."
+      },
+      {
+        title: "Music",
+        href: "/humanities/music",
+        icon: PenTool,
+        desc: "The theory and history of music as an art form."
       }
     ]
   }

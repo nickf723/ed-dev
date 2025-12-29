@@ -1,175 +1,135 @@
 "use client";
-import PageHeader from "@/components/PageHeader";
-import TopicCard from "@/components/TopicCard";
-import WaveformBackground from "@/app/humanities/music/WaveformBackground";
-import CircleOfFifths from "@/app/humanities/music/CircleOfFifths";
-import { motion } from "framer-motion";
-import {
-  Music, Mic2, Radio, Disc, Speaker, Volume2, FileAudio, Sliders
+import Link from "next/link";
+import StringBackground from "@/app/humanities/music/StringBackground";
+import HarmonyEngine from "@/app/humanities/music/HarmonyEngine";
+import { 
+  ArrowLeft, Music, Mic2, Radio, Speaker, ListMusic, 
+  Piano, Guitar, Activity 
 } from "lucide-react";
 
-// --- DATA ---
-const sectors = [
-  {
-    name: "Elements of Music",
-    desc: "The building blocks of sound and composition.",
-    color: "text-rose-400",
-    icon: Music,
-    items: [
-      { 
-        title: "Rhythm & Meter", 
-        desc: "The organization of time in music. Tempo, time signatures, and polyrhythms.", 
-        href: "/humanities/arts-aesthetics/music/rhythm", 
-        Icon: Clock, // Need to import or map
-        className: "theme-humanities",
-        subtitle: "Time" 
-      },
-      { 
-        title: "Melody & Harmony", 
-        desc: "The arrangement of pitch. Scales, intervals, chords, and counterpoint.", 
-        href: "/humanities/music/harmony", 
-        Icon: Music, 
-        className: "theme-humanities",
-        subtitle: "Pitch" 
-      }
-    ]
-  },
-  {
-    name: "Sonic Physics",
-    desc: "The science of acoustics and sound production.",
-    color: "text-amber-400",
-    icon: Speaker,
-    items: [
-      { 
-        title: "Acoustics", 
-        desc: "The physics of vibration, resonance, and wave propagation.", 
-        href: "/humanities/arts-aesthetics/music/acoustics", 
-        Icon: Volume2, 
-        className: "theme-physics", // Cross-discipline link!
-        subtitle: "Physics" 
-      },
-      { 
-        title: "Timbre & Texture", 
-        desc: "The 'color' of sound. Overtones, envelopes, and orchestration.", 
-        href: "/humanities/arts-aesthetics/music/timbre", 
-        Icon: Sliders, 
-        className: "theme-humanities",
-        subtitle: "Color" 
-      }
-    ]
-  },
-  {
-    name: "History & Genre",
-    desc: "The evolution of musical expression across cultures.",
-    color: "text-orange-400",
-    icon: Disc,
-    items: [
-      { 
-        title: "Music History", 
-        desc: "From Gregorian Chant to Modernism. The timeline of western art music.", 
-        href: "/humanities/arts-aesthetics/music/history", 
-        Icon: FileAudio, 
-        className: "theme-humanities",
-        subtitle: "Heritage" 
-      },
-      { 
-        title: "Ethnomusicology", 
-        desc: "The study of music in its social and cultural context globally.", 
-        href: "/humanities/arts-aesthetics/music/ethnomusicology", 
-        Icon: Globe, // Need import
-        className: "theme-anthropology", // Cross-discipline link!
-        subtitle: "Culture" 
-      }
-    ]
-  }
-];
-
-// Helper for missing icons
-import { Clock, Globe } from "lucide-react";
-
-export default function MusicTheoryPage() {
+export default function MusicPage() {
   return (
-    <main className="relative min-h-screen overflow-hidden bg-neutral-950 lg:px-12">
+    <main className="relative min-h-screen bg-[#020617] text-slate-200 overflow-hidden selection:bg-amber-500/30 font-sans">
       
-      {/* 1. Waveform Background */}
-      <WaveformBackground />
+      {/* 1. VISUAL ENGINE */}
+      <StringBackground />
       
-      <div className="relative z-10 mx-auto flex max-w-7xl flex-col py-10">
+      {/* OVERLAY */}
+      <div className="absolute inset-0 bg-[url('/noise.png')] opacity-[0.03] pointer-events-none z-0" />
+      <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-slate-950 pointer-events-none z-0" />
+
+      {/* 2. DASHBOARD */}
+      <div className="relative z-10 container mx-auto px-6 py-12 min-h-screen flex flex-col pointer-events-none">
         
-        <PageHeader
-          eyebrow="Arts & Aesthetics"
-          title="Music & Theory"
-          subtitle="The organized movement of sound through time. We explore the mathematical relationships between frequencies that evoke emotion, drive movement, and tell stories without words."
-        />
-
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 items-start">
-          
-          {/* MAIN CONTENT (9 cols) */}
-          <div className="lg:col-span-9 space-y-10">
-             {sectors.map((sector, idx) => (
-              <section key={sector.name}>
-                 <motion.div 
-                    initial={{ opacity: 0, x: -10 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.4, delay: idx * 0.1 }}
-                    className="mb-4 flex items-center gap-3"
-                 >
-                    <sector.icon className={sector.color} size={20} />
-                    <h2 className="text-lg font-bold text-white tracking-wide">{sector.name}</h2>
-                    <div className="h-[1px] flex-1 bg-white/10"></div>
-                 </motion.div>
-
-                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                    {sector.items.map((item, i) => (
-                        <motion.div
-                            key={item.title}
-                            initial={{ opacity: 0, y: 15 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.3, delay: 0.1 + (i * 0.05) }}
-                        >
-                            <TopicCard {...item} />
-                        </motion.div>
-                    ))}
+        {/* HEADER */}
+        <header className="mb-16 pointer-events-auto text-center md:text-left">
+             <Link href="/humanities" className="inline-flex items-center gap-2 text-xs font-mono text-amber-600 hover:text-amber-500 transition-colors mb-4 uppercase tracking-widest">
+                <ArrowLeft size={12} /> Humanities // Arts
+             </Link>
+             <div className="flex flex-col md:flex-row items-center gap-4">
+                 <div className="p-4 bg-slate-900 border border-amber-500/30 rounded-full shadow-[0_0_30px_rgba(245,158,11,0.1)]">
+                    <Music size={40} className="text-amber-500" />
                  </div>
-              </section>
-            ))}
-          </div>
+                 <div>
+                    <h1 className="text-5xl md:text-7xl font-black text-white tracking-tighter drop-shadow-xl font-serif">
+                        MUSIC
+                    </h1>
+                    <p className="text-amber-500/60 text-lg font-light tracking-wide italic">
+                        The art of arranging sound in time.
+                    </p>
+                 </div>
+             </div>
+        </header>
 
-          {/* SIDEBAR (3 cols) */}
-          <div className="flex flex-col gap-6 lg:col-span-3 lg:sticky lg:top-6 h-fit pt-2">
+        
+
+[Image of musical notation]
+
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 flex-1 pointer-events-auto">
             
-            {/* Circle of Fifths Widget */}
-            <motion.div 
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.4 }}
-            >
-               <CircleOfFifths />
-            </motion.div>
-
-            {/* Quote Box */}
-            <motion.div 
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.6 }}
-                className="rounded-lg border border-rose-500/20 bg-rose-950/10 p-4 backdrop-blur-md"
-            >
-                <div className="flex items-start gap-3">
-                    <Mic2 size={18} className="text-rose-400 shrink-0 mt-1"/>
-                    <div>
-                        <h4 className="text-xs font-bold uppercase text-rose-400 mb-1">
-                            Pythagoras
-                        </h4>
-                        <p className="text-[11px] text-neutral-400 leading-relaxed">
-                            "There is geometry in the humming of the strings, there is music in the spacing of the spheres."
+            {/* LEFT: THE ELEMENTS OF MUSIC */}
+            <div className="lg:col-span-7 space-y-12">
+                
+                {/* CORE PILLARS */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div className="bg-slate-900/80 border border-slate-700 p-6 rounded-xl hover:border-amber-500/50 transition-colors group">
+                        <Activity className="text-amber-500 mb-4 group-hover:scale-110 transition-transform" />
+                        <h3 className="font-bold text-white mb-2">Rhythm</h3>
+                        <p className="text-xs text-slate-400 leading-relaxed">
+                            The placement of sounds in time. Beat, Tempo, and Meter.
+                        </p>
+                    </div>
+                    <div className="bg-slate-900/80 border border-slate-700 p-6 rounded-xl hover:border-amber-500/50 transition-colors group">
+                        <ListMusic className="text-amber-500 mb-4 group-hover:scale-110 transition-transform" />
+                        <h3 className="font-bold text-white mb-2">Melody</h3>
+                        <p className="text-xs text-slate-400 leading-relaxed">
+                            A sequence of single notes that is musically satisfying.
+                        </p>
+                    </div>
+                    <div className="bg-slate-900/80 border border-slate-700 p-6 rounded-xl hover:border-amber-500/50 transition-colors group">
+                        <Mic2 className="text-amber-500 mb-4 group-hover:scale-110 transition-transform" />
+                        <h3 className="font-bold text-white mb-2">Harmony</h3>
+                        <p className="text-xs text-slate-400 leading-relaxed">
+                            The combination of simultaneously sounded musical notes (Chords).
                         </p>
                     </div>
                 </div>
-            </motion.div>
 
-          </div>
+                {/* INSTRUMENT FAMILIES */}
+                <div className="bg-slate-900/80 backdrop-blur-md border border-slate-700 rounded-xl p-8">
+                    <h2 className="text-2xl font-bold text-white mb-6 font-serif">Instrument Families</h2>
+                    <div className="space-y-4">
+                        <div className="flex items-center gap-4 border-b border-white/5 pb-4">
+                            <div className="p-3 bg-white/5 rounded"><Guitar size={20} className="text-slate-300"/></div>
+                            <div>
+                                <div className="font-bold text-amber-100">Strings</div>
+                                <div className="text-xs text-slate-500">Violin, Guitar, Cello. Sound via vibrating strings.</div>
+                            </div>
+                        </div>
+                        <div className="flex items-center gap-4 border-b border-white/5 pb-4">
+                            <div className="p-3 bg-white/5 rounded"><Radio size={20} className="text-slate-300"/></div>
+                            <div>
+                                <div className="font-bold text-amber-100">Woodwind & Brass</div>
+                                <div className="text-xs text-slate-500">Flute, Saxophone, Trumpet. Sound via vibrating air columns.</div>
+                            </div>
+                        </div>
+                        <div className="flex items-center gap-4">
+                            <div className="p-3 bg-white/5 rounded"><Piano size={20} className="text-slate-300"/></div>
+                            <div>
+                                <div className="font-bold text-amber-100">Percussion & Keys</div>
+                                <div className="text-xs text-slate-500">Drums, Piano, Xylophone. Sound via impact.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+            {/* RIGHT: INTERACTIVE HARMONY */}
+            <div className="lg:col-span-5 space-y-8">
+                
+                {/* WIDGET */}
+                <HarmonyEngine />
+
+                {/* ACOUSTICS CARD */}
+                <div className="bg-slate-900/80 border border-slate-700 rounded-xl p-6">
+                    <h3 className="font-bold text-white mb-2 flex items-center gap-2">
+                        <Speaker size={18} className="text-amber-500" /> The Physics of Sound
+                    </h3>
+                    <p className="text-xs text-slate-400 leading-relaxed mb-4">
+                        Music is math. Pitch is frequency (Hz). A440 is the standard tuning pitch. Octaves are a doubling of frequency (440Hz -{">"} 880Hz).
+                    </p>
+                    {/* Visual: Sine Wave */}
+                    <div className="h-12 w-full flex items-center justify-center opacity-50">
+                        <svg width="100%" height="40" viewBox="0 0 200 40" preserveAspectRatio="none">
+                            <path d="M0 20 Q 25 40, 50 20 T 100 20 T 150 20 T 200 20" fill="none" stroke="currentColor" strokeWidth="2" className="text-amber-500" />
+                        </svg>
+                    </div>
+                </div>
+
+            </div>
 
         </div>
       </div>
