@@ -55,6 +55,16 @@ const sectors = [
         className: "theme-humanities", 
         subtitle: "The Record" 
       },
+      {
+        id: "futurology",
+        mode: "speculation",
+        title: "Futurology",
+        desc: "The study and prediction of future possibilities based on current trends.",
+        href: "/humanities/futurology",
+        Icon: Scale,
+        className: "theme-humanities",
+        subtitle: "The Possible"
+      }
     ]
   },
   {

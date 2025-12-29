@@ -8,7 +8,7 @@ import {
   Scale,
   HelpCircle,
   Gavel, // For Ethics/Justice
-} from "@/components/icons";
+} from "lucide-react";
 import React from "react";
 
 const philosophySymbols = [

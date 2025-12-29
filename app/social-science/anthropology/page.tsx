@@ -6,7 +6,7 @@ import SkullTimeline from "@/app/social-science/anthropology/SkullTimeline";
 import { motion } from "framer-motion";
 import {
   Skull, Hammer, BookOpen, Users, Globe, Footprints, Search, Shovel
-} from "lucide-react"; // Ensure shovel/pickaxe/hammer maps correctly
+} from "lucide-react"; 
 
 // --- DATA ---
 const sectors = [

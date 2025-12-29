@@ -6,7 +6,7 @@ import SupplyDemandWidget from "@/app/social-science/economics/SupplyDemandWidge
 import { motion } from "framer-motion";
 import {
   DollarSign, LineChart, Target, Network, Scale, Globe, Briefcase, TrendingUp
-} from "@/components/icons";
+} from "lucide-react";
 
 // --- DATA SECTORS ---
 const sectors = [

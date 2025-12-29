@@ -8,7 +8,7 @@ import {
   Waves,
   Cloud,
   Sprout,
-} from "@/components/icons";
+} from "lucide-react";
 import React from "react";
 
 const earthScienceSymbols = [
@@ -21,6 +21,13 @@ const disciplines = [
       desc: "The study of the Earth's solid material, its history, composition, and structure, including rocks, soil, and landforms.",
       href: "/natural-science/earth-science/geology",
       Icon: Mountain,
+      className: "theme-earth-science"
+    },
+    {
+      title: "Hydrology",
+      desc: "The study of the movement, distribution, and quality of water on Earth, including the water cycle and aquatic systems.",
+      href: "/natural-science/earth-science/hydrology",
+      Icon: Cloud,
       className: "theme-earth-science"
     },
     {

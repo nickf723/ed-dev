@@ -8,7 +8,7 @@ import {
   ChartScatter,
   TreeDeciduous,
   Mountain,
-} from "@/components/icons";
+} from "lucide-react";
 import React from "react";
 
 const geographySymbols = [

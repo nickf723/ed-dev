@@ -13,63 +13,57 @@ import {
 } from 'lucide-react';
 import LibraryBackground from '@/app/HomepageBackground';
 import NetworkBackground from '@/app/NetworkBackground';
-import VectorFieldBackground from '@/app/formal-science/mathematics/calculus/VectorFieldBackground';
 
 // --- CONFIGURATION ---
 const DOMAINS = [
   {
     id: 'formal',
     title: 'Formal Sciences',
-    subtitle: 'Mathematics, Logic, Systems',
+    subtitle: 'Logic & Structures',
     href: '/formal-science',
     icon: Sigma,
     color: 'rose',
-    active: true, // This is the one we are working on!
   },
   {
     id: 'natural',
     title: 'Natural Sciences',
-    subtitle: 'Physics, Chemistry, Biology',
+    subtitle: 'Nature & Physical World',
     href: '/natural-science',
     icon: Atom,
     color: 'emerald',
-    active: false,
-  },
-  {
-    id: 'applied',
-    title: 'Applied Sciences',
-    subtitle: 'Engineering, Medicine, Tech',
-    href: '/applied-science',
-    icon: Cpu,
-    color: 'violet',
-    active: false,
   },
   {
     id: 'social',
     title: 'Social Sciences',
-    subtitle: 'Psychology, Sociology, Econ',
+    subtitle: 'People & Societies',
     href: '/social-science',
     icon: Users,
     color: 'cyan',
-    active: false,
   },
+  {
+    id: 'applied',
+    title: 'Applied Sciences',
+    subtitle: 'Innovation & Design',
+    href: '/applied-science',
+    icon: Cpu,
+    color: 'violet',
+  },
+
   {
     id: 'humanities',
     title: 'Humanities',
-    subtitle: 'History, Philosophy, Arts',
+    subtitle: 'Culture & Expression',
     href: '/humanities',
     icon: BookOpen,
     color: 'amber',
-    active: false,
   },
   {
-    id: 'interdisciplinary',
+    id: 'interdisciplines',
     title: 'Interdisciplines',
-    subtitle: 'Complexity, Area Studies',
+    subtitle: 'Connections & Synthesis',
     href: '/interdisciplines',
     icon: Globe,
-    color: 'slate',
-    active: false,
+    color: 'indigo',
   },
 ];
 
@@ -136,7 +130,7 @@ export default function Home() {
 
 // --- CARD COMPONENT ---
 function DomainCard({ data }: { data: typeof DOMAINS[0] }) {
-  const { title, subtitle, icon: Icon, color, active, href } = data;
+  const { title, subtitle, icon: Icon, color, href } = data;
   
   // Color mappings for dynamic styling
   const colorMap: any = {
@@ -145,7 +139,8 @@ function DomainCard({ data }: { data: typeof DOMAINS[0] }) {
     violet:  { border: "group-hover:border-violet-500/50", glow: "group-hover:shadow-violet-500/20", icon: "text-violet-400", bg: "bg-violet-950/30" },
     amber:   { border: "group-hover:border-amber-500/50", glow: "group-hover:shadow-amber-500/20", icon: "text-amber-400", bg: "bg-amber-950/30" },
     rose:    { border: "group-hover:border-rose-500/50", glow: "group-hover:shadow-rose-500/20", icon: "text-rose-400", bg: "bg-rose-950/30" },
-    slate:   { border: "group-hover:border-slate-500/50", glow: "group-hover:shadow-slate-500/20", icon: "text-slate-400", bg: "bg-slate-900/30" },
+    purple: { border: "group-hover:border-purple-500/50", glow: "group-hover:shadow-purple-500/20", icon: "text-purple-400", bg: "bg-purple-950/30" },
+    indigo:     { border: "group-hover:border-indigo-500/50", glow: "group-hover:shadow-indigo-500/20", icon: "text-indigo-400", bg: "bg-indigo-950/30" },
   };
 
   const theme = colorMap[color];
@@ -163,13 +158,7 @@ function DomainCard({ data }: { data: typeof DOMAINS[0] }) {
           hover:-translate-y-1
         `}>
           
-          {/* Active Status Indicator */}
-          {active && (
-            <div className="absolute top-4 right-4 flex items-center gap-2">
-               <span className="text-[10px] font-mono font-bold text-cyan-400 tracking-wider">ACTIVE</span>
-               <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
-            </div>
-          )}
+          
 
           <div className="h-full flex flex-col justify-between relative z-10">
             {/* Header */}

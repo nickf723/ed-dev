@@ -13,7 +13,7 @@ import {
   GitMerge,
   Target,
   Globe
-} from "@/components/icons";
+} from "lucide-react";
 import { Activity } from "lucide-react";
 
 // --- DATA ---

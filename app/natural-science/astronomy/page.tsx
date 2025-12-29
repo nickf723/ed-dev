@@ -8,7 +8,7 @@ import {
   Telescope,
   Atom,
   Sigma,
-} from "@/components/icons";
+} from "lucide-react";
 import React from "react";
 
 const astronomySymbols = [

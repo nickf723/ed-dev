@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Atom, Brain, Cpu, Dna, Globe, Zap, RefreshCcw, Plus, ArrowRight } from "lucide-react";
+import { Atom, Brain, Cpu, Dna, Globe, Zap, RefreshCcw, Plus, ArrowRight, Satellite } from "lucide-react";
 
 // Elements available to mix
 const ELEMENTS = [
@@ -11,6 +11,7 @@ const ELEMENTS = [
   { id: "physics", label: "Physics", Icon: Atom, color: "text-indigo-400", bg: "bg-indigo-500/20" },
   { id: "society", label: "Society", Icon: Globe, color: "text-blue-400", bg: "bg-blue-500/20" },
   { id: "chem", label: "Chemistry", Icon: Zap, color: "text-yellow-400", bg: "bg-yellow-500/20" },
+  { id: "astro", label: "Astronomy", Icon: Satellite, color: "text-purple-400", bg: "bg-purple-500/20" },
 ];
 
 // Recipes for synthesis
@@ -30,11 +31,17 @@ const RECIPES: Record<string, { name: string; desc: string }> = {
   "society-mind": { name: "Social Psych", desc: "Group behavior & influence." },
   "mind-society": { name: "Social Psych", desc: "Group behavior & influence." },
 
-  "physics-tech": { name: "Engineering", desc: "Applied physics." }, // Base overlap
+  "physics-tech": { name: "Engineering", desc: "Applied physics." }, 
   "tech-physics": { name: "Engineering", desc: "Applied physics." },
   
   "physics-chem": { name: "Physical Chem", desc: "Atomic/Subatomic behavior." },
   "chem-physics": { name: "Physical Chem", desc: "Atomic/Subatomic behavior." },
+
+  "astro-physics": { name: "Astrophysics", desc: "Physics of the cosmos." },
+  "physics-astro": { name: "Astrophysics", desc: "Physics of the cosmos." },
+
+  "astro-bio": { name: "Astrobiology", desc: "Life in the universe." },
+  "bio-astro": { name: "Astrobiology", desc: "Life in the universe." },
 };
 
 export default function FusionReactor() {

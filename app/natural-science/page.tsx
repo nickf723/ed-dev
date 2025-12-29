@@ -7,7 +7,7 @@ import ScaleSlider from "@/app/natural-science/ScaleSlider";
 import { motion } from "framer-motion";
 import {
   Atom, FlaskConical, Dna, Earth, Orbit, Zap, Waves, Flame, Telescope
-} from "@/components/icons";
+} from "lucide-react";
 
 // --- DATA: Disciplines ---
 const sectors = [

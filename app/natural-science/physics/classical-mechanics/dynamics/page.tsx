@@ -21,10 +21,10 @@ import {
   Equal, // F=ma icon
   Replace, // Action/Reaction icon
   Calculator,
-} from "@/components/icons";
+} from "lucide-react";
 import React, { useState } from "react";
 import Link from "next/link";
-import { M, MBlock } from "@/components/Math";
+import { M } from "@/components/Math";
 import GlossaryTerm from "@/components/GlossaryTerm";
 
 // Symbols for the background
@@ -160,7 +160,7 @@ export default function DynamicsPage() {
             <TermDefinition term="Newton's Second Law">
               The acceleration (<M>{"\\vec{a}"}</M>) of an object is directly proportional to the net force (<M>{"\\Sigma \\vec{F}"}</M>) acting on it and inversely proportional to its mass (<M>{"m"}</M>).
             </TermDefinition>
-            <MBlock>{"\\Sigma \\vec{F} = m \\vec{a}"}</MBlock> 
+            <M>{"\\Sigma \\vec{F} = m \\vec{a}"}</M> 
             <ContentP>
               This is the most powerful equation in classical physics. It quantifies *how* a force changes motion.
             </ContentP>
@@ -172,7 +172,7 @@ export default function DynamicsPage() {
               <p>
                 A <M>{"2\\text{ kg}"}</M> mass is pushed by a <M>{"10\\text{ N}"}</M> force. What is its acceleration?
               </p>
-              <MBlock>{"\\vec{a} = \\frac{\\Sigma \\vec{F}}{m} = \\frac{10 \\text{ N}}{2 \\text{ kg}} = 5 \\text{ m/s}^2"}</MBlock>
+              <M>{"\\vec{a} = \\frac{\\Sigma \\vec{F}}{m} = \\frac{10 \\text{ N}}{2 \\text{ kg}} = 5 \\text{ m/s}^2"}</M>
             </ExampleBlock>
             <ContentP>
               Use the calculator below to practice solving for acceleration.

@@ -8,7 +8,7 @@ import {
   Network,
   Scale,
   BrainCog,
-} from "@/components/icons";
+} from "lucide-react";
 import React from "react";
 
 const sociologySymbols = [

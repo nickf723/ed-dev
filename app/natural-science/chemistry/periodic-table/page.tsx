@@ -3,7 +3,7 @@ import { useState } from "react";
 import PageHeader from "@/components/PageHeader";
 import OrbitalBackground from "@/app/natural-science/chemistry/OrbitalBackground";
 import PeriodicTable from "@/app/natural-science/chemistry/PeriodicTable";
-import ElementInspector from "@/components/ElementInspector";
+import ElementInspector from "@/app/natural-science/chemistry/ElementInspector";
 import { motion } from "framer-motion";
 
 type ElementType = {

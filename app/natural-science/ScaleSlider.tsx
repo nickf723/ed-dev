@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { Atom, Microscope,  Earth, Telescope, } from "@/components/icons";
+import { Atom, Microscope,  Earth, Telescope, } from "lucide-react";
 import { User, ZoomIn } from "lucide-react";
 
 // Scale definitions

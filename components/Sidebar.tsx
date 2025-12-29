@@ -3,7 +3,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import CommandPalette from "@/components/CommandPalette"; // Import new component
 import {
   ChevronDown, Menu, X, LayoutGrid, Search,
   Binary, Atom, Handshake, Hammer, Palette, Link as LinkIcon,
@@ -44,9 +43,6 @@ export default function Sidebar() {
   
   return (
     <>
-      {/* Mount the Command Palette Globally */}
-      <CommandPalette />
-
       {/* Mobile Toggle */}
       <button
         onClick={() => setIsOpen(!isOpen)}

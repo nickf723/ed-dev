@@ -32,15 +32,7 @@ const sectors = [
         Icon: Fingerprint, 
         className: "theme-biology",
         subtitle: "Central Dogma" 
-      }
-    ]
-  },
-  {
-    name: "The Unit of Life",
-    desc: "Structure and function at the microscopic scale.",
-    color: "text-teal-400",
-    icon: Microscope,
-    items: [
+      },
       { 
         title: "Cytology", 
         desc: "The study of the cell as the fundamental unit of life.", 
@@ -48,20 +40,12 @@ const sectors = [
         Icon: Microscope, 
         className: "theme-biology",
         subtitle: "Structure" 
-      },
-      { 
-        title: "Microbiology", 
-        desc: "The study of microscopic organisms: bacteria, viruses, and fungi.", 
-        href: "/natural-science/biology/microbiology", 
-        Icon: Bug, 
-        className: "theme-biology",
-        subtitle: "Microbes" 
       }
     ]
   },
   {
-    name: "Systems & Change",
-    desc: "How life adapts and interacts over time.",
+    name: "Life's Journey",
+    desc: "The processes that sustain and propagate life.",
     color: "text-emerald-400",
     icon: Globe,
     items: [
@@ -80,6 +64,14 @@ const sectors = [
         Icon: Sprout, 
         className: "theme-biology",
         subtitle: "Interconnection" 
+      },
+      { 
+        title: "Microbiology", 
+        desc: "The study of microscopic organisms: bacteria, viruses, and fungi.", 
+        href: "/natural-science/biology/microbiology", 
+        Icon: Bug, 
+        className: "theme-biology",
+        subtitle: "Microbes" 
       },
       {
         title: "Botany",

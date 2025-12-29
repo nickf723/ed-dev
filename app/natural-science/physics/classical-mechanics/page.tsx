@@ -10,7 +10,7 @@ import {
   RotateCw,
   Orbit,
   Zap, // Using Zap for Energy
-} from "@/components/icons";
+} from "lucide-react";
 
 // Symbols for the background
 const mechanicsSymbols = [

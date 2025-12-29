@@ -7,7 +7,7 @@ import ParliamentWidget from "@/app/social-science/political-science/ParliamentW
 import { motion } from "framer-motion";
 import {
   Landmark, Gavel, Users, Earth, Scale, BookOpen, Shield, Speech
-} from "@/components/icons";
+} from "lucide-react";
 
 // --- DATA SECTORS ---
 const sectors = [

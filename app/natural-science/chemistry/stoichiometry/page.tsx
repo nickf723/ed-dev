@@ -13,7 +13,7 @@ import {
   Scale,
   Beaker,
   Calculator, // For mole calculations
-} from "@/components/icons";
+} from "lucide-react";
 import React from "react";
 import { M } from "@/components/Math";
 import GlossaryTerm from "@/components/GlossaryTerm";

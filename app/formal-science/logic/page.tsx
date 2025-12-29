@@ -11,7 +11,7 @@ import {
   BookText,
   Scale,
   CheckCircle
-} from "@/components/icons"; // Ensure icons are exported from your icon file
+} from "lucide-react"; // Ensure icons are exported from your icon file
 
 // --- DATA ---
 const sectors = [

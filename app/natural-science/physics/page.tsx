@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 import {
   RollerCoaster, Zap, Waves, Flame, Orbit, Hourglass, 
   Atom, Scale, Microscope
-} from "@/components/icons";
+} from "lucide-react";
 
 // --- DATA STRUCTURE ---
 const sectors = [
@@ -65,6 +65,14 @@ const sectors = [
     color: "text-violet-400",
     icon: Atom,
     items: [
+      {
+        title: "Atomic & Nuclear Physics",
+        desc: "Structure of the atom, radioactivity, and nuclear reactions.",
+        href: "/natural-science/physics/atomic-nuclear-physics",
+        Icon: Microscope,
+        className: "theme-atomic-nuclear-physics",
+        subtitle: "The Atom"
+      },
       {
         title: "Quantum Mechanics",
         desc: "The probabilistic behavior of particles at the atomic scale.",

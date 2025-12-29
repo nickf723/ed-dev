@@ -10,7 +10,7 @@ import {
   TermDefinition,
   CollapsibleTopic
 } from "@/components/LessonBlocks";
-import { FlaskConical, AlertTriangle, ListCheck, Table } from "@/components/icons";
+import { FlaskConical, AlertTriangle, ListCheck, Table } from "lucide-react";
 
 export default function TitrationLabPage() {
   return (

@@ -1,12 +1,13 @@
 "use client";
 import { motion } from "framer-motion";
-import { Lightbulb, PenTool, Hourglass, BookOpen } from "lucide-react";
+import { Lightbulb, PenTool, Hourglass, BookOpen, Scale } from "lucide-react";
 
 export const MODES = [
   { id: "reason", label: "Reason", desc: "Logic & Ethics", Icon: Lightbulb, color: "text-amber-400" },
   { id: "expression", label: "Expression", desc: "Art & Literature", Icon: PenTool, color: "text-orange-400" },
   { id: "memory", label: "Memory", desc: "History & Record", Icon: Hourglass, color: "text-yellow-600" },
   { id: "belief", label: "Belief", desc: "Faith & Spirituality", Icon: BookOpen, color: "text-purple-400" },
+  { id: "speculation", label: "Speculation", desc: "Tomorrow & Possibility", Icon: Scale, color: "text-green-400" },
 ];
 
 type InquiryWidgetProps = {
@@ -80,6 +81,7 @@ export default function InquiryWidget({ activeMode, setActiveMode }: InquiryWidg
             {activeMode === 'expression' && "\"Art is the lie that enables us to realize the truth.\""}
             {activeMode === 'memory' && "\"Those who cannot remember the past are condemned to repeat it.\""}
             {activeMode === 'belief' && "\"Faith is taking the first step even when you don't see the whole staircase.\""}
+            {activeMode === 'speculation' && "\"The best way to predict the future is to invent it.\""}
             {!activeMode && "Select a lens to view the human condition."}
         </p>
       </div>
