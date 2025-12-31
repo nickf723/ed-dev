@@ -1,261 +1,253 @@
 "use client";
-import { useState } from "react";
-import PageHeader from "@/components/PageHeader";
-import TopicCard from "@/components/TopicCard";
-import SynthesisBackground from "@/app/interdisciplines/SynthesisBackground";
-import FusionReactor from "@/app/interdisciplines/FusionReactor";
-import { motion } from "framer-motion";
-import {
-  Dna, Brain, Rocket, Atom, FlaskConical, Globe, Leaf, Network, 
-  Sprout, Binary, Landmark, Map, Users, Puzzle, Eye
-} from "lucide-react";
-
-// --- DATA ---
-const sectors = [
-  {
-    name: "Natural Synthesis",
-    desc: "Where physical and biological systems merge.",
-    color: "text-lime-400",
-    icon: Leaf,
-    items: [
-      { 
-        id: "biochemistry", 
-        title: "Biochemistry", 
-        desc: "The chemical processes within and related to living organisms.", 
-        href: "/interdisciplines/biochemistry", 
-        Icon: FlaskConical, 
-        className: "theme-biochemistry", 
-        subtitle: "Life + Chemistry" 
-      },
-      { 
-        id: "biophysics", 
-        title: "Biophysics", 
-        desc: "Applying theories and methods of physics to biological systems.", 
-        href: "/interdisciplines/biophysics", 
-        Icon: Atom, 
-        className: "theme-biophysics", 
-        subtitle: "Life + Physics" 
-      }
-    ]
-  },
-  {
-    name: "Technological Fusion",
-    desc: "The bridge between biology, intelligence, and engineering.",
-    color: "text-cyan-400",
-    icon: Network,
-    items: [
-      { 
-        id: "bioengineering", 
-        title: "Bioengineering", 
-        desc: "The application of engineering principles to biology and medicine.", 
-        href: "/interdisciplines/bioengineering", 
-        Icon: Dna, 
-        className: "theme-engineering",
-        subtitle: "Bio + Tech" 
-      },
-      { 
-        id: "cognitive-science", 
-        title: "Cognitive Science", 
-        desc: "The interdisciplinary study of mind and intelligence.", 
-        href: "/interdisciplines/cognitive-science", 
-        Icon: Brain, 
-        className: "theme-cognitive-science",
-        subtitle: "Mind + Machine" 
-      },
-      {
-        id: "bioinformatics",
-        title: "Bioinformatics",
-        desc: "Analyzing complex biological data (genomes) using computer science.",
-        href: "/interdisciplines/bioinformatics",
-        Icon: Binary,
-        className: "theme-data-science",
-        subtitle: "Bio + Code"
-      }
-    ]
-  },
-  {
-    name: "Cosmic & Global",
-    desc: "Large scale integration of space, time, and biosphere.",
-    color: "text-purple-400",
-    icon: Globe,
-    items: [
-      { 
-        id: "astrophysics", 
-        title: "Astrophysics", 
-        desc: "Using physics and chemistry to explain the birth and death of stars.", 
-        href: "/interdisciplines/astrophysics", 
-        Icon: Rocket, 
-        className: "theme-astrophysics",
-        subtitle: "Space + Physics" 
-      },
-      { 
-        id: "geophysics", 
-        title: "Geophysics", 
-        desc: "The physics of the Earth and its environment in space.", 
-        href: "/interdisciplines/geophysics", 
-        Icon: Globe, 
-        className: "theme-geophysics",
-        subtitle: "Earth + Physics" 
-      },
-      {
-        id: "astrobiology",
-        title: "Astrobiology",
-        desc: "The search for life in the universe and the study of its origins.",
-        href: "/interdisciplines/astrobiology",
-        Icon: Sprout,
-        className: "theme-biology",
-        subtitle: "Space + Life"
-      }
-    ]
-  },
-  {
-    name: "Social Synthesis",
-    desc: "Merging economics, politics, and geography.",
-    color: "text-amber-500",
-    icon: Users,
-    items: [
-        {
-            id: "political-economy",
-            title: "Political Economy",
-            desc: "How political institutions and economic systems interact.",
-            href: "/interdisciplines/political-economy",
-            Icon: Landmark,
-            className: "theme-political-science",
-            subtitle: "Politics + Econ"
-        },
-        {
-            id: "urban-studies",
-            title: "Urban Studies",
-            desc: "The study of cities, covering their geography, sociology, and design.",
-            href: "/interdisciplines/urban-studies",
-            Icon: Map,
-            className: "theme-sociology",
-            subtitle: "Society + Space"
-        }
-    ]
-  },
-  {
-    name: "Ludology & Play",
-    desc: "The study of games, rules, and interactive systems.",
-    color: "text-fuchsia-400",
-    icon: Puzzle,
-    items: [
-        {
-            id: "game-studies",
-            title: "Game Studies",
-            desc: "The critical analysis of games, players, and the culture surrounding them.",
-            href: "/interdisciplines/game-studies",
-            Icon: Puzzle,
-            className: "theme-game-studies",
-            subtitle: "Rules & Play"
-        }
-    ]
-  },
-  {
-    name: "Mind & Matter",
-    desc: "The interface of consciousness and reality.",
-    color: "text-fuchsia-400",
-    icon: Brain,
-    items: [
-        {
-            id: "psychedelics",
-            title: "Psychedelics",
-            desc: "The study of altered states, neuroplasticity, and the chemical basis of consciousness.",
-            href: "/interdisciplines/psychedelics",
-            Icon: Eye,
-            className: "theme-psychedelics",
-            subtitle: "Consciousness"
-        }
-    ]
-  }
-];
+import { useState, Fragment, useRef, useEffect } from "react";
+import Link from "next/link";
+import ColliderBackground from "@/app/interdisciplines/ColliderBackground";
+import { AXES, COMBINATIONS } from "@/app/interdisciplines/data";
+import { ArrowLeft, Network, Hexagon, XCircle, GitMerge, ExternalLink, Plus } from "lucide-react";
 
 export default function InterdisciplinesPage() {
+  const [activeCombo, setActiveCombo] = useState<string | null>(null);
+  const [locked, setLocked] = useState(false); // Click to lock selection
+  
+  // Refs for tracking positions for laser lines
+  const gridRef = useRef<HTMLDivElement>(null);
+  const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
+
+  // Handle Selection
+  const handleInteraction = (id1: string, id2: string, isClick: boolean) => {
+    const key = [id1, id2].sort().join("-");
+    if (COMBINATIONS[key]) {
+        if (isClick) {
+            setLocked(!locked); // Toggle lock
+            setActiveCombo(key);
+        } else if (!locked) {
+            setActiveCombo(key);
+        }
+    }
+  };
+
+  const currentData = activeCombo ? COMBINATIONS[activeCombo] : null;
+  
+  // Derived parents
+  const parentA = activeCombo ? AXES.find(a => a.id === activeCombo.split("-")[0]) : null;
+  const parentB = activeCombo ? AXES.find(a => a.id === activeCombo.split("-")[1]) : null;
+
   return (
-    <main className="relative min-h-screen overflow-hidden bg-neutral-950 lg:px-12">
+    <main className="relative h-screen w-screen bg-zinc-950 text-white overflow-hidden selection:bg-purple-500/30 font-sans flex flex-col">
       
-      {/* 1. Synthesis Background */}
-      <SynthesisBackground />
+      {/* 1. VISUAL ENGINE */}
+      <ColliderBackground />
       
-      <div className="relative z-10 mx-auto flex max-w-7xl flex-col py-10">
-        
-        <PageHeader
-          eyebrow="Domain 06"
-          title="Interdisciplines"
-          subtitle="The edges of the map. Real-world problems rarely fit into neat categories. These fields exist at the intersection of domains, weaving distinct threads of knowledge into new fabrics of understanding."
-        />
+      {/* OVERLAY */}
+      <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.03] pointer-events-none z-0" />
+      <div className="absolute inset-0 bg-radial-vignette opacity-70 pointer-events-none z-0" />
 
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 items-start">
-          
-          {/* MAIN CONTENT (9 cols) */}
-          <div className="lg:col-span-9 space-y-10">
-            {sectors.map((sector, idx) => (
-              <section key={sector.name}>
-                 <motion.div 
-                    initial={{ opacity: 0, x: -10 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.4, delay: idx * 0.1 }}
-                    className="mb-4 flex items-center gap-3"
-                 >
-                    <sector.icon className={sector.color} size={20} />
-                    <h2 className="text-lg font-bold text-white tracking-wide">{sector.name}</h2>
-                    <div className="h-[1px] flex-1 bg-white/10"></div>
-                 </motion.div>
+      {/* 2. COMPACT HEADER */}
+      <header className="relative z-20 flex items-center justify-between px-8 py-4 border-b border-white/5 bg-zinc-950/50 backdrop-blur-sm shrink-0">
+         <div className="flex items-center gap-6">
+             <Link href="/" className="flex items-center gap-2 text-xs font-mono text-zinc-500 hover:text-white transition-colors uppercase tracking-widest">
+                <ArrowLeft size={12} /> Nexus
+             </Link>
+             <div className="h-4 w-px bg-white/10" />
+             <div className="flex items-center gap-3">
+                 <Network size={18} className="text-white" />
+                 <h1 className="text-lg font-black text-white tracking-tight">THE MATRIX</h1>
+             </div>
+         </div>
+         <div className="text-[10px] font-mono text-zinc-600 uppercase tracking-widest hidden md:block">
+            {locked ? "SELECTION LOCKED" : "INTERACTIVE MODE"}
+         </div>
+      </header>
 
-                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                    {sector.items.map((item, i) => (
-                        <motion.div
-                            key={item.title}
-                            initial={{ opacity: 0, y: 15 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.3, delay: 0.1 + (i * 0.05) }}
-                        >
-                            <TopicCard {...item} />
-                        </motion.div>
-                    ))}
-                 </div>
-              </section>
-            ))}
-          </div>
-
-          {/* SIDEBAR (3 cols) */}
-          <div className="flex flex-col gap-6 lg:col-span-3 lg:sticky lg:top-6 h-fit pt-2">
+      {/* 3. MAIN WORKSPACE (Centered & Scalable) */}
+      <div className="relative z-10 flex-1 flex items-center justify-center p-4 overflow-hidden">
             
-            {/* Fusion Reactor Widget */}
-            <motion.div 
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.4 }}
+            <div 
+                ref={gridRef}
+                className="bg-zinc-900/40 backdrop-blur-md border border-white/5 p-6 rounded-3xl shadow-2xl relative max-h-full overflow-auto custom-scrollbar"
             >
-               <FusionReactor />
-            </motion.div>
-
-            {/* Emergence Quote */}
-            <motion.div 
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.6 }}
-                className="rounded-lg border border-lime-500/20 bg-lime-950/10 p-4 backdrop-blur-md"
-            >
-                <div className="flex items-start gap-3">
-                    <Network size={18} className="text-lime-400 shrink-0 mt-1"/>
-                    <div>
-                        <h4 className="text-xs font-bold uppercase text-lime-400 mb-1">
-                            Emergence
-                        </h4>
-                        <p className="text-[11px] text-neutral-400 leading-relaxed">
-                            New properties appear when systems interact. Water is wet, but hydrogen and oxygen are not. Interdisciplines study these emergent properties.
-                        </p>
+                
+                {/* GRID CONTAINER */}
+                <div 
+                    className="grid gap-1"
+                    style={{ gridTemplateColumns: `40px repeat(${AXES.length}, minmax(40px, 60px))` }}
+                >
+                    
+                    {/* Top Left Corner */}
+                    <div className="col-start-1 flex items-center justify-center text-zinc-700 opacity-50">
+                        <Hexagon size={16} strokeWidth={1} />
                     </div>
+
+                    {/* TOP HEADERS (X-Axis) */}
+                    {AXES.map((col) => (
+                        <div key={`head-${col.id}`} className={`flex flex-col items-center justify-end pb-2 transition-opacity duration-300 ${activeCombo?.includes(col.id) ? "opacity-100 scale-110" : "opacity-40"}`}>
+                            <col.icon size={16} className={`${col.color} mb-1`} />
+                            <span className="text-[8px] font-bold uppercase tracking-wider text-zinc-500 hidden md:block">{col.label.substring(0,3)}</span>
+                            {/* Laser Target Dot */}
+                            {activeCombo?.includes(col.id) && <div className="h-1 w-1 bg-white rounded-full absolute bottom-0 shadow-[0_0_10px_white]" />}
+                        </div>
+                    ))}
+
+                    {/* ROWS */}
+                    {AXES.map((row, rIndex) => (
+                        <Fragment key={`row-${row.id}`}>
+                            
+                            {/* ROW HEADER (Y-Axis) */}
+                            <div className={`flex items-center justify-end pr-2 transition-opacity duration-300 ${activeCombo?.includes(row.id) ? "opacity-100 scale-110" : "opacity-40"}`}>
+                                <span className="text-[8px] font-bold uppercase tracking-wider text-zinc-500 hidden md:block mr-2">{row.label.substring(0,3)}</span>
+                                <row.icon size={16} className={`${row.color}`} />
+                                {/* Laser Target Dot */}
+                                {activeCombo?.includes(row.id) && <div className="h-1 w-1 bg-white rounded-full absolute right-0 shadow-[0_0_10px_white]" />}
+                            </div>
+
+                            {/* CELLS */}
+                            {AXES.map((col, cIndex) => {
+                                // Lower Triangle Logic
+                                if (cIndex > rIndex) return <div key={`empty-${row.id}-${col.id}`} className="invisible" />;
+
+                                const key = [row.id, col.id].sort().join("-");
+                                const data = COMBINATIONS[key];
+                                const isActive = activeCombo === key;
+                                const isPure = row.id === col.id;
+
+                                return (
+                                    <button
+                                        key={`cell-${key}`}
+                                        onMouseEnter={() => handleInteraction(row.id, col.id, false)}
+                                        onClick={() => handleInteraction(row.id, col.id, true)}
+                                        disabled={!data}
+                                        className={`
+                                            aspect-square rounded border transition-all duration-200 relative group overflow-hidden
+                                            ${isActive 
+                                                ? "bg-white/10 border-white z-20 scale-125 shadow-[0_0_30px_rgba(255,255,255,0.3)] ring-1 ring-white" 
+                                                : "bg-black/40 border-white/5"
+                                            }
+                                            ${data 
+                                                ? "hover:bg-white/10 hover:border-white/30 cursor-pointer" 
+                                                : "opacity-10 cursor-not-allowed grayscale"
+                                            }
+                                        `}
+                                    >
+                                        {/* Row/Col Highlighter (The Crosshair Effect) */}
+                                        {isActive && (
+                                            <>
+                                                {/* Beams handled by CSS pseudo elements or external SVG, 
+                                                    but for simplicity, we use absolute divs here */}
+                                                <div className={`absolute inset-0 bg-${row.color.split("-")[1]}-500/20`} />
+                                            </>
+                                        )}
+
+                                        {isPure && <div className={`absolute inset-0 opacity-20 ${row.bg}`} />}
+                                        
+                                        <div className="absolute inset-0 flex items-center justify-center">
+                                            {data ? (
+                                                <data.icon 
+                                                    size={isActive ? 20 : 14} 
+                                                    className={`transition-all duration-300 ${isActive ? "text-white drop-shadow-[0_0_5px_rgba(255,255,255,0.8)]" : isPure ? row.color : "text-zinc-600 group-hover:text-zinc-400"}`} 
+                                                />
+                                            ) : (
+                                                <div className="w-1 h-1 rounded-full bg-zinc-800" />
+                                            )}
+                                        </div>
+                                    </button>
+                                );
+                            })}
+                        </Fragment>
+                    ))}
                 </div>
-            </motion.div>
-
-          </div>
-
-        </div>
+            </div>
       </div>
+
+
+      {/* 4. THE FUSION REACTOR (Bottom HUD) */}
+      <div className="relative z-30 h-40 bg-[#09090b]/95 backdrop-blur-xl border-t border-white/10 flex items-center justify-center shrink-0 shadow-[0_-10px_40px_rgba(0,0,0,0.5)]">
+            
+            {/* Top Accent Line */}
+            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+
+            <div className="container mx-auto px-4 lg:px-8 h-full flex items-center justify-between gap-4">
+                
+                {currentData && parentA && parentB ? (
+                    <>
+                        {/* FUSION VISUALIZER (Left Side) */}
+                        <div className="hidden lg:flex items-center gap-6 flex-1 justify-end pr-12 border-r border-white/5">
+                            
+                            {/* INPUT A */}
+                            <div className="flex flex-col items-center gap-2 opacity-60 group hover:opacity-100 transition-opacity">
+                                <div className={`w-10 h-10 rounded-full bg-zinc-900 border border-white/10 flex items-center justify-center shadow-lg ${parentA.color}`}>
+                                    <parentA.icon size={18} />
+                                </div>
+                                <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">{parentA.label}</span>
+                            </div>
+
+                            {/* FUSE ANIMATION */}
+                            <div className="relative w-24 h-8 flex items-center justify-center">
+                                <div className="absolute inset-0 flex items-center">
+                                    <div className="w-full h-px bg-gradient-to-r from-transparent via-zinc-700 to-transparent" />
+                                </div>
+                                <div className="relative z-10 w-8 h-8 bg-zinc-950 border border-white/10 rounded-full flex items-center justify-center">
+                                    <Plus size={12} className="text-zinc-600" />
+                                </div>
+                                {/* Animated Particles */}
+                                <div className="absolute w-2 h-2 bg-white rounded-full blur-[2px] animate-[ping_1.5s_infinite]" />
+                            </div>
+
+                            {/* INPUT B */}
+                            <div className="flex flex-col items-center gap-2 opacity-60 group hover:opacity-100 transition-opacity">
+                                <div className={`w-10 h-10 rounded-full bg-zinc-900 border border-white/10 flex items-center justify-center shadow-lg ${parentB.color}`}>
+                                    <parentB.icon size={18} />
+                                </div>
+                                <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">{parentB.label}</span>
+                            </div>
+                        </div>
+
+                        {/* RESULT CARD (Center/Right) */}
+                        <div className="flex-[2] flex items-center gap-8 pl-4 lg:pl-0">
+                            
+                            {/* Big Icon */}
+                            <div className="flex-shrink-0 w-24 h-24 bg-zinc-900 border border-white/10 rounded-2xl flex items-center justify-center relative overflow-hidden shadow-2xl group cursor-help">
+                                <div className="absolute inset-0 bg-[url('/noise.png')] opacity-20" />
+                                <div className="absolute inset-0 bg-gradient-to-tr from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                                <currentData.icon size={48} className="text-white relative z-10 drop-shadow-[0_0_15px_rgba(255,255,255,0.3)] group-hover:scale-110 transition-transform duration-500" />
+                            </div>
+
+                            {/* Text Info */}
+                            <div className="flex flex-col justify-center gap-1 max-w-xl">
+                                <div className="flex items-center gap-3">
+                                    <h2 className="text-3xl font-black text-white tracking-tight leading-none">{currentData.title}</h2>
+                                    {locked && <span className="text-[10px] bg-red-500/20 text-red-400 px-2 py-0.5 rounded border border-red-500/30">LOCKED</span>}
+                                </div>
+                                
+                                <span className="text-xs font-mono text-zinc-500 uppercase tracking-widest mb-2 flex items-center gap-2">
+                                    <GitMerge size={12} /> {currentData.field || "Interdisciplinary Field"}
+                                </span>
+                                
+                                <p className="text-zinc-400 text-sm leading-snug line-clamp-2">
+                                    {currentData.desc}
+                                </p>
+                            </div>
+
+                            {/* Action Button */}
+                            {currentData.href && (
+                                <Link 
+                                    href={currentData.href}
+                                    className="hidden xl:flex h-12 px-6 bg-white text-black font-bold text-xs uppercase tracking-wider rounded-lg hover:bg-zinc-200 active:scale-95 transition-all items-center justify-center gap-2 shadow-[0_0_20px_rgba(255,255,255,0.1)] whitespace-nowrap ml-auto"
+                                >
+                                    Launch Module <ExternalLink size={14} />
+                                </Link>
+                            )}
+                        </div>
+                    </>
+                ) : (
+                    <div className="w-full flex flex-col items-center justify-center gap-2 text-zinc-700">
+                        <XCircle size={32} strokeWidth={1} />
+                        <span className="font-mono text-sm tracking-[0.2em]">INITIATE SEQUENCE: SELECT NODES</span>
+                    </div>
+                )}
+
+            </div>
+      </div>
+
     </main>
   );
 }

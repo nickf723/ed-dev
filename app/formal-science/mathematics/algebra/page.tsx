@@ -1,247 +1,129 @@
 "use client";
-
-import { useState } from "react";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
-import AlgebraBackground from "@/app/formal-science/mathematics/algebra/AlgebraBackground"; 
+import AlgebraBackground from "@/app/formal-science/mathematics/algebra/AlgebraBackground";
+import QuadraticLab from "@/app/formal-science/mathematics/algebra/QuadraticLab";
 import { 
-  Variable, Scale, BoxSelect, ArrowRight, 
-  Grid3X3, Divide, Braces, User, ShieldQuestion, Cpu, 
-  ChevronRight, Calculator
+  ArrowLeft, Variable, Scale, Box, Grid 
 } from "lucide-react";
 
-// --- DATA: ALGEBRAIC STRUCTURES ---
-const SECTORS = [
-  {
-    id: "linear",
-    title: "Linear Algebra",
-    subtitle: "The Science of Space",
-    desc: "The study of vectors and linear transformations. It describes how multi-dimensional space shears, rotates, and maps.",
-    href: "/formal-science/mathematics/algebra/linear-algebra",
-    icon: Grid3X3,
-    color: "text-cyan-400",
-    bg: "bg-cyan-950/40",
-    border: "border-cyan-500/50",
-    visual: "T(u + v) = T(u) + T(v)",
-    visualLabel: "Linearity Property",
-    titan: "Hermann Grassmann",
-    frontier: "Quantum Gates",
-    apps: ["Neural Networks", "3D Graphics", "Robotics"]
-  },
-  {
-    id: "abstract",
-    title: "Abstract Algebra",
-    subtitle: "The Science of Symmetry",
-    desc: "Generalized structures like groups, rings, and fields. Stripping away numbers to study the pure architecture of symmetry.",
-    href: "/formal-science/mathematics/algebra/abstract-algebra",
-    icon: BoxSelect,
-    color: "text-violet-400",
-    bg: "bg-violet-950/40",
-    border: "border-violet-500/50",
-    visual: "a • (b • c) = (a • b) • c",
-    visualLabel: "Associativity",
-    titan: "Emmy Noether",
-    frontier: "Langlands Program",
-    apps: ["Cryptography", "Particle Physics", "Crystallography"]
-  },
-  {
-    id: "elementary",
-    title: "Elementary Algebra",
-    subtitle: "The Science of Balance",
-    desc: "The basic arithmetic of unknown quantities. Introducing variables to generalize specific arithmetic into universal formulas.",
-    href: "/formal-science/mathematics/algebra/elementary-algebra",
-    icon: Variable,
-    color: "text-blue-400",
-    bg: "bg-blue-950/40",
-    border: "border-blue-500/50",
-    visual: "x = [-b ± √(b² - 4ac)] / 2a",
-    visualLabel: "Quadratic Formula",
-    titan: "Al-Khwarizmi",
-    frontier: "Polynomial Complexity",
-    apps: ["Economics", "Ballistics", "Optimization"]
-  },
-  {
-    id: "pre",
-    title: "Pre-Algebra",
-    subtitle: "The Bridge",
-    desc: "The transition from arithmetic to symbolic reasoning. Integers, fractions, and the fundamental rules of operations.",
-    href: "/formal-science/mathematics/algebra/pre-algebra",
-    icon: Divide,
-    color: "text-emerald-400",
-    bg: "bg-emerald-950/40",
-    border: "border-emerald-500/50",
-    visual: "a(b + c) = ab + ac",
-    visualLabel: "Distributive Law",
-    titan: "Diophantus",
-    frontier: "Pedagogy",
-    apps: ["Logic", "Programming", "Finance"]
-  }
-];
-
 export default function AlgebraPage() {
-  const [activeSector, setActiveSector] = useState<string>("linear");
-
-  // Helper to find current sector data
-  const current = SECTORS.find(s => s.id === activeSector) || SECTORS[0];
-
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#050505] text-white selection:bg-blue-500/30 font-sans">
+    <main className="relative min-h-screen bg-[#18181b] text-zinc-200 overflow-hidden font-sans selection:bg-amber-500/30">
       
-      {/* 1. Background Engine (Shearing Grid) */}
-      <AlgebraBackground /> 
+      {/* 1. VISUAL ENGINE */}
+      <AlgebraBackground />
       
-      <div className="relative z-10 w-full min-h-screen flex flex-col p-6 md:p-12 pointer-events-none">
-        
-        {/* --- HEADER (Top Left) --- */}
-        <header className="pointer-events-auto flex items-start justify-between">
-            <div>
-                <div className="flex items-center gap-3 mb-2">
-                    <Braces className="text-blue-500" size={32} />
-                    <h1 className="text-4xl font-black tracking-tight text-white">Algebra</h1>
-                </div>
-                <p className="text-sm text-neutral-400 font-mono ml-11">
-                    DOMAIN_01.2.1 // STRUCTURE_&_RELATION
-                </p>
-            </div>
-            
-            {/* Context Widget (Top Right) */}
-            <div className="hidden md:flex items-center gap-4 px-6 py-3 rounded-full bg-black/40 border border-white/10 backdrop-blur-md">
-                <div className="flex flex-col items-end">
-                    <span className="text-[10px] font-bold uppercase text-neutral-500">Transform</span>
-                    <span className="text-xs font-mono text-cyan-400">AFFINE</span>
-                </div>
-                <div className="h-8 w-[1px] bg-white/10" />
-                <Calculator size={18} className="text-white" />
-            </div>
-        </header>
+      {/* OVERLAY */}
+      <div className="absolute inset-0 bg-radial-vignette opacity-70 pointer-events-none z-0" />
 
-        {/* --- MAIN STAGE (Middle Layer) --- */}
-        <div className="flex-1 flex items-center justify-center relative">
-            
-            {/* FLOATING EQUATION (Center) - No Card Background to show Vectors */}
-            <AnimatePresence mode="wait">
-                <motion.div
-                    key={current.id}
-                    initial={{ opacity: 0, scale: 0.8, y: 20 }}
-                    animate={{ opacity: 1, scale: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 1.1, y: -20 }}
-                    transition={{ duration: 0.4 }}
-                    className="text-center"
-                >
-                    <span className="inline-block text-[10px] font-bold uppercase tracking-[0.3em] text-neutral-500 mb-4 bg-black/60 px-3 py-1 rounded-full backdrop-blur-sm border border-white/5">
-                        {current.visualLabel}
-                    </span>
-                    <div className={`font-serif italic text-5xl md:text-8xl ${current.color} text-shadow-glow`}>
-                        {current.visual}
-                    </div>
-                </motion.div>
-            </AnimatePresence>
+      {/* 2. HEADER */}
+      <header className="relative z-20 flex items-center justify-between px-8 py-6 border-b border-white/10 bg-[#18181b]/90 backdrop-blur-md sticky top-0">
+         <div className="flex items-center gap-6">
+             <Link href="/formal-science/mathematics" className="flex items-center gap-2 text-xs font-mono text-amber-500 hover:text-amber-400 transition-colors uppercase tracking-widest">
+                <ArrowLeft size={12} /> Mathematics
+             </Link>
+             <div className="h-4 w-px bg-white/10" />
+             <div className="flex items-center gap-3">
+                 <div className="p-1.5 bg-zinc-900 border border-amber-500/50 rounded">
+                    <Variable size={18} className="text-amber-500" />
+                 </div>
+                 <h1 className="text-xl font-bold text-white tracking-tight">
+                    ALGEBRA
+                 </h1>
+             </div>
+         </div>
+         <div className="hidden md:block text-[10px] font-mono text-amber-500/50 uppercase tracking-widest">
+            The Restoration
+         </div>
+      </header>
 
-        </div>
-
-        {/* --- CONTROL DECK (Bottom) --- */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-end pointer-events-auto">
-            
-            {/* NAVIGATION RAIL (Bottom Left) */}
-            <div className="lg:col-span-4 flex flex-col gap-2">
-                <span className="text-[10px] font-bold uppercase text-neutral-600 pl-2 mb-2 block">
-                    Select Module
-                </span>
-                {SECTORS.map((sector) => {
-                    const isActive = activeSector === sector.id;
-                    return (
-                        <button 
-                            key={sector.id}
-                            onMouseEnter={() => setActiveSector(sector.id)}
-                            className={`
-                                group flex items-center justify-between px-6 py-4 rounded-xl border transition-all duration-300 w-full text-left
-                                ${isActive ? `bg-neutral-900/80 border-white/20 ${sector.color} shadow-lg` : "bg-black/40 border-white/5 hover:bg-neutral-900/60 hover:border-white/10 text-neutral-400"}
-                            `}
-                        >
-                            <div className="flex items-center gap-4">
-                                <sector.icon size={18} className={isActive ? "opacity-100" : "opacity-50 group-hover:opacity-100"} />
-                                <span className="font-bold text-sm tracking-wide">{sector.title}</span>
-                            </div>
-                            {isActive && <ChevronRight size={14} className="animate-pulse" />}
-                        </button>
-                    );
-                })}
-            </div>
-
-            {/* INFO HUD (Bottom Right) */}
-            <div className="lg:col-span-8 flex justify-end">
-                <AnimatePresence mode="wait">
-                    <motion.div
-                        key={current.id}
-                        initial={{ opacity: 0, x: 20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: -20 }}
-                        transition={{ duration: 0.3 }}
-                        className="w-full max-w-3xl rounded-3xl bg-black/60 border border-white/10 backdrop-blur-xl p-8 shadow-2xl relative overflow-hidden"
-                    >
-                        {/* Decorative Top Line */}
-                        <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-${current.color.split('-')[1]}-500 to-transparent opacity-50`} />
-
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                            
-                            {/* Description Column */}
-                            <div>
-                                <h2 className={`text-2xl font-black text-white mb-2 ${current.color}`}>
-                                    {current.title}
-                                </h2>
-                                <p className="text-sm text-neutral-300 leading-relaxed mb-6">
-                                    {current.desc}
-                                </p>
-                                <Link 
-                                    href={current.href}
-                                    className={`inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest ${current.color} hover:text-white transition-colors`}
-                                >
-                                    <span>Initialize Module</span>
-                                    <ArrowRight size={14} />
-                                </Link>
-                            </div>
-
-                            {/* Stats Grid Column */}
-                            <div className="grid grid-cols-2 gap-3">
-                                {/* Titan */}
-                                <div className="p-3 rounded-lg bg-white/5 border border-white/5">
-                                    <div className="flex items-center gap-2 mb-1 text-neutral-500">
-                                        <User size={12} />
-                                        <span className="text-[9px] font-bold uppercase tracking-wider">Titan</span>
-                                    </div>
-                                    <div className="text-xs font-medium text-white">{current.titan}</div>
+      {/* 3. CONTENT GRID */}
+      <div className="relative z-10 container mx-auto p-6 md:p-8">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                
+                {/* LEFT: THE CONCEPTS */}
+                <div className="lg:col-span-7 space-y-6">
+                    
+                    {/* HERO CARD */}
+                    <div className="bg-zinc-900/60 backdrop-blur-md border border-white/10 rounded-2xl p-8 relative overflow-hidden group">
+                        <div className="absolute top-0 right-0 p-24 bg-amber-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
+                        
+                        <div className="relative z-10">
+                            <h2 className="text-3xl font-bold text-white mb-4">The Great Balancer</h2>
+                            <p className="text-sm text-zinc-300 leading-relaxed mb-6">
+                                The word comes from the Arabic <em>al-jabr</em>, meaning "restoration" or "completion." It is the art of manipulating symbols to solve for unknowns. If Arithmetic is about computing with numbers, Algebra is about reasoning with structures.
+                            </p>
+                            <div className="flex gap-4">
+                                <div className="flex items-center gap-2 px-3 py-1.5 bg-black/30 rounded border border-white/5">
+                                    <Scale size={14} className="text-amber-400" />
+                                    <span className="text-xs font-mono">Equation</span>
                                 </div>
-                                {/* Frontier */}
-                                <div className="p-3 rounded-lg bg-white/5 border border-white/5">
-                                    <div className="flex items-center gap-2 mb-1 text-neutral-500">
-                                        <ShieldQuestion size={12} />
-                                        <span className="text-[9px] font-bold uppercase tracking-wider">Frontier</span>
-                                    </div>
-                                    <div className="text-xs font-medium text-white">{current.frontier}</div>
-                                </div>
-                                {/* Apps */}
-                                <div className="col-span-2 p-3 rounded-lg bg-white/5 border border-white/5">
-                                    <div className="flex items-center gap-2 mb-1 text-neutral-500">
-                                        <Cpu size={12} />
-                                        <span className="text-[9px] font-bold uppercase tracking-wider">Applications</span>
-                                    </div>
-                                    <div className="flex flex-wrap gap-1">
-                                        {current.apps.map(app => (
-                                            <span key={app} className="text-[10px] px-2 py-0.5 rounded-full bg-white/10 text-neutral-300">
-                                                {app}
-                                            </span>
-                                        ))}
-                                    </div>
+                                <div className="flex items-center gap-2 px-3 py-1.5 bg-black/30 rounded border border-white/5">
+                                    <Grid size={14} className="text-amber-400" />
+                                    <span className="text-xs font-mono">Function</span>
                                 </div>
                             </div>
-
                         </div>
-                    </motion.div>
-                </AnimatePresence>
+                    </div>
+
+                    
+
+[Image of polynomial graphs]
+
+
+                    {/* DOMAINS GRID */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        
+                        <div className="bg-zinc-900/40 border border-white/5 p-5 rounded-xl hover:border-amber-500/30 transition-colors group">
+                            <div className="flex items-center gap-3 mb-2">
+                                <Variable className="text-amber-500" size={20} />
+                                <h3 className="font-bold text-white">Elementary Algebra</h3>
+                            </div>
+                            <p className="text-xs text-zinc-400">
+                                Solving for $x$. Polynomials, factoring, and graphing functions.
+                            </p>
+                        </div>
+
+                        <div className="bg-zinc-900/40 border border-white/5 p-5 rounded-xl hover:border-amber-500/30 transition-colors group">
+                            <div className="flex items-center gap-3 mb-2">
+                                <Grid className="text-amber-500" size={20} />
+                                <h3 className="font-bold text-white">Linear Algebra</h3>
+                            </div>
+                            <p className="text-xs text-zinc-400">
+                                Vectors and Matrices. The language of modern computing and 3D graphics.
+                            </p>
+                        </div>
+                        
+                        <div className="bg-zinc-900/40 border border-white/5 p-5 rounded-xl hover:border-amber-500/30 transition-colors group">
+                            <div className="flex items-center gap-3 mb-2">
+                                <Box className="text-amber-500" size={20} />
+                                <h3 className="font-bold text-white">Abstract Algebra</h3>
+                            </div>
+                            <p className="text-xs text-zinc-400">
+                                Studying structures like Groups, Rings, and Fields. The symmetry of math.
+                            </p>
+                        </div>
+
+                    </div>
+                </div>
+
+                {/* RIGHT: INTERACTIVE LAB */}
+                <div className="lg:col-span-5 space-y-6 flex flex-col items-center">
+                    
+                    {/* WIDGET */}
+                    <QuadraticLab />
+
+                    {/* HISTORY CARD */}
+                    <div className="bg-zinc-900/60 border border-white/10 rounded-xl p-6 w-full">
+                        <h3 className="font-bold text-white mb-2">Al-Khwarizmi</h3>
+                        <p className="text-xs text-zinc-400 leading-relaxed mb-3">
+                            The 9th-century Persian mathematician who literally wrote the book on Algebra (<em>The Compendious Book on Calculation by Completion and Balancing</em>). He introduced the systematic solution of linear and quadratic equations.
+                        </p>
+                    </div>
+
+                </div>
+
             </div>
-
-        </div>
-
       </div>
     </main>
   );
