@@ -11,7 +11,7 @@ import {
   Target,
   Database,
   Eye,
-} from "@/components/icons"; 
+} from "lucide-react"; 
 
 // Helper for icons if needed
 import { BarChart, Filter, Layers, Network } from "lucide-react";

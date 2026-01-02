@@ -85,11 +85,11 @@ const categories = [
         desc: "Protecting and sustaining natural ecosystems."
       },
       { 
-        title: "Horticulture", 
+        title: "Agriculture", 
         role: "Cultivation", 
-        href: "/applied-science/horticulture", 
+        href: "/applied-science/agriculture", 
         icon: TreeDeciduous,
-        desc: "The science of growing plants for food and utility."
+        desc: "The science and practice of farming and food production."
       }
     ]
   }

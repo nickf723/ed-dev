@@ -1,145 +1,149 @@
 "use client";
-import PageHeader from "@/components/PageHeader";
-import TopicCard from "@/components/TopicCard";
+import Link from "next/link";
 import LogicBackground from "@/app/formal-science/logic/LogicBackground";
-import SymbolTranslator from "@/app/formal-science/logic/SymbolTranslator";
-import { motion } from "framer-motion";
-import {
-  LockKeyholeOpen,
-  Binary,
-  GitMerge,
-  BookText,
-  Scale,
-  CheckCircle
-} from "lucide-react"; // Ensure icons are exported from your icon file
+import TruthMachine from "@/app/formal-science/logic/TruthMachine";
+import { 
+  ArrowLeft, BrainCircuit, Scale, Network, 
+  Binary, FileText, ShieldQuestion, Quote
+} from "lucide-react";
 
-// --- DATA ---
-const sectors = [
+// --- CONFIG: SUB-DOMAINS ---
+const DISCIPLINES = [
   {
-    name: "Formal Systems",
-    desc: "The structural rules for constructing valid statements.",
-    color: "text-cyan-400",
-    icon: Binary,
-    items: [
-      { 
-        title: "Propositional Logic", 
-        desc: "The logic of simple statements and truth connectives (AND, OR, NOT).", 
-        href: "/formal-science/logic/propositional-logic", 
-        Icon: LockKeyholeOpen, 
-        className: "theme-logic",
-        subtitle: "Boolean Algebra"
-      },
-      { 
-        title: "Predicate Logic", 
-        desc: "Quantifiers and variables. The foundation of mathematical proof.", 
-        href: "/formal-science/logic/predicate-logic", 
-        Icon: Binary, 
-        className: "theme-logic",
-        subtitle: "Quantification"
-      }
-    ]
+    id: "propositional", title: "Propositional Logic", icon: Binary,
+    desc: "The logic of statements and connectives (AND, OR, NOT). Zero-order logic.",
+    color: "text-amber-400", border: "border-amber-500/20"
   },
   {
-    name: "Applied Reasoning",
-    desc: "Analyzing arguments and non-standard truths.",
-    color: "text-blue-400",
-    icon: Scale,
-    items: [
-      { 
-        title: "Argument & Fallacies", 
-        desc: "Identifying validity, soundness, and errors in natural language.", 
-        href: "/formal-science/logic/argument-structure", 
-        Icon: BookText, 
-        className: "theme-logic",
-        subtitle: "Critical Thinking"
-      },
-      { 
-        title: "Modal & Non-Classical", 
-        desc: "Logic involving possibility, necessity, time, and fuzzy truths.", 
-        href: "/formal-science/logic/modal-logics", 
-        Icon: GitMerge, 
-        className: "theme-logic",
-        subtitle: "Beyond True/False"
-      }
-    ]
+    id: "predicate", title: "Predicate Logic", icon: Network,
+    desc: "Quantifiers (For All, There Exists) and variables. First-order logic.",
+    color: "text-cyan-400", border: "border-cyan-500/20"
+  },
+  {
+    id: "modal", title: "Modal Logic", icon: FileText,
+    desc: "The logic of necessity and possibility. 'It must be true' vs 'It might be true'.",
+    color: "text-purple-400", border: "border-purple-500/20"
+  },
+  {
+    id: "informal", title: "Informal Logic", icon: ShieldQuestion,
+    desc: "The study of natural language arguments, critical thinking, and fallacies.",
+    color: "text-rose-400", border: "border-rose-500/20"
   }
 ];
 
 export default function LogicPage() {
   return (
-    <main className="relative min-h-screen overflow-hidden bg-neutral-950 lg:px-12">
+    <main className="relative min-h-screen bg-[#09090b] text-zinc-200 overflow-hidden font-serif selection:bg-amber-500/30">
       
+      {/* 1. VISUAL ENGINE */}
       <LogicBackground />
       
-      <div className="relative z-10 mx-auto flex max-w-7xl flex-col py-10">
-        
-        <PageHeader
-          eyebrow="Formal Science"
-          title="Logic"
-          subtitle="The calculus of truth. Logic provides the rigorous framework for distinguishing valid inference from fallacy, forming the bedrock of all rational inquiry."
-        />
+      {/* OVERLAY */}
+      <div className="absolute inset-0 bg-radial-vignette opacity-80 pointer-events-none z-0" />
 
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 items-start">
-          
-          {/* MAIN CONTENT (8 cols) */}
-          <div className="lg:col-span-9 space-y-10">
-             {sectors.map((sector, idx) => (
-              <section key={sector.name}>
-                 <motion.div 
-                    initial={{ opacity: 0, x: -10 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.4, delay: idx * 0.1 }}
-                    className="mb-4 flex items-center gap-3"
-                 >
-                    <sector.icon className={sector.color} size={20} />
-                    <h2 className="text-lg font-bold text-white tracking-wide">{sector.name}</h2>
-                    <div className="h-[1px] flex-1 bg-white/10"></div>
-                 </motion.div>
-
-                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                    {sector.items.map((item, i) => (
-                        <motion.div
-                            key={item.title}
-                            initial={{ opacity: 0, y: 15 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.3, delay: 0.1 + (i * 0.05) }}
-                        >
-                            <TopicCard {...item} />
-                        </motion.div>
-                    ))}
+      {/* 2. HEADER */}
+      <header className="relative z-20 flex items-center justify-between px-8 py-6 border-b border-white/5 bg-[#09090b]/90 backdrop-blur-md sticky top-0">
+         <div className="flex items-center gap-6">
+             <Link href="/formal-science" className="flex items-center gap-2 text-xs font-mono text-amber-600 hover:text-amber-500 transition-colors uppercase tracking-widest">
+                <ArrowLeft size={12} /> Formal Science
+             </Link>
+             <div className="h-4 w-px bg-white/10" />
+             <div className="flex items-center gap-3">
+                 <div className="p-1.5 bg-zinc-900 border border-amber-500/30 rounded">
+                    <Scale size={18} className="text-amber-500" />
                  </div>
-              </section>
-            ))}
-          </div>
+                 <h1 className="text-xl font-black text-white tracking-tight font-sans">
+                    LOGIC
+                 </h1>
+             </div>
+         </div>
+         <div className="hidden md:block text-[10px] font-mono text-amber-500/50 uppercase tracking-widest">
+            The Structure of Reason
+         </div>
+      </header>
 
-          {/* SIDEBAR (3 cols) */}
-          <div className="flex flex-col gap-6 lg:col-span-3 lg:sticky lg:top-6 h-fit pt-2">
-            
-            {/* Translator Widget */}
-            <motion.div 
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.4 }}
-            >
-               <SymbolTranslator />
-            </motion.div>
+      {/* 3. CONTENT GRID */}
+      <div className="relative z-10 container mx-auto p-6 md:p-8">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+                
+                {/* LEFT: THE DISCIPLINES */}
+                <div className="lg:col-span-7 space-y-8">
+                    
+                    {/* HERO CARD */}
+                    <div className="bg-zinc-900/60 backdrop-blur-md border border-white/10 rounded-2xl p-8 relative overflow-hidden group shadow-2xl">
+                        <div className="absolute top-0 right-0 p-32 bg-amber-500/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
+                        
+                        <div className="relative z-10">
+                            <h2 className="text-3xl font-bold text-white mb-4">The Axioms of Thought</h2>
+                            <p className="text-sm text-zinc-400 leading-relaxed mb-6 font-sans">
+                                Logic is the study of the principles of valid inference and correct reasoning. It is the tool we use to distinguish truth from falsehood, and valid arguments from fallacies. It underpins all of mathematics and computer science.
+                            </p>
+                            <div className="flex gap-4">
+                                <div className="flex items-center gap-2 px-3 py-1.5 bg-black/30 rounded border border-white/5">
+                                    <BrainCircuit size={14} className="text-amber-400" />
+                                    <span className="text-xs font-mono">Deduction</span>
+                                </div>
+                                <div className="flex items-center gap-2 px-3 py-1.5 bg-black/30 rounded border border-white/5">
+                                    <Scale size={14} className="text-amber-400" />
+                                    <span className="text-xs font-mono">Validity</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-            {/* Info Box */}
-            <div className="p-4 rounded-lg border border-dashed border-neutral-700 bg-neutral-900/40">
-                <div className="flex items-center gap-2 mb-2 text-neutral-300">
-                    <CheckCircle size={14} className="text-green-500" />
-                    <span className="text-xs font-bold uppercase">Soundness</span>
+                    
+
+[Image of Venn diagram logical sets]
+
+
+                    {/* DYNAMIC DISCIPLINES GRID */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {DISCIPLINES.map((d) => (
+                            <Link 
+                                key={d.id} 
+                                href={`/formal-science/logic/${d.id}`}
+                                className={`
+                                    group flex flex-col p-5 rounded-xl border bg-zinc-900/40 hover:bg-zinc-900/80 transition-all duration-300 
+                                    ${d.border}
+                                `}
+                            >
+                                <div className="flex items-center gap-3 mb-3">
+                                    <d.icon className={d.color} size={20} />
+                                    <h3 className="font-bold text-zinc-200 text-sm font-sans">{d.title}</h3>
+                                </div>
+                                <p className="text-xs text-zinc-500 leading-relaxed font-sans">
+                                    {d.desc}
+                                </p>
+                            </Link>
+                        ))}
+                    </div>
+
                 </div>
-                <p className="text-[11px] text-neutral-500 leading-relaxed">
-                    An argument is <strong>Sound</strong> only if it is both Valid (correct structure) AND its premises are actually true.
-                </p>
+
+                {/* RIGHT: INTERACTIVE LAB */}
+                <div className="lg:col-span-5 space-y-8 flex flex-col items-center">
+                    
+                    {/* WIDGET */}
+                    <TruthMachine />
+
+                    {/* SYLLOGISM CARD */}
+                    <div className="bg-zinc-900/60 border border-white/10 rounded-xl p-6 w-full font-serif">
+                        <h3 className="font-bold text-white mb-4 flex items-center gap-2 font-sans">
+                            <Quote size={16} className="text-zinc-500" /> The Classic Syllogism
+                        </h3>
+                        <div className="space-y-2 text-sm pl-4 border-l-2 border-amber-500/30">
+                            <p className="text-zinc-300"><strong className="text-amber-500">P1:</strong> All men are mortal.</p>
+                            <p className="text-zinc-300"><strong className="text-amber-500">P2:</strong> Socrates is a man.</p>
+                            <p className="text-white font-bold mt-2 pt-2 border-t border-white/5">
+                                <span className="text-amber-500 mr-2">∴</span> Socrates is mortal.
+                            </p>
+                        </div>
+                        
+                    </div>
+
+                </div>
+
             </div>
-
-          </div>
-
-        </div>
       </div>
     </main>
   );

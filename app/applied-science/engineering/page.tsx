@@ -1,168 +1,188 @@
 "use client";
-import { useState } from "react";
-import PageHeader from "@/components/PageHeader";
-import TopicCard from "@/components/TopicCard";
-import BlueprintBackground from "@/app/applied-science/engineering/BlueprintBackground"; 
-import TechStackWidget from "@/app/applied-science/engineering/TechStackWidget";       
-import { motion } from "framer-motion";
-import {
-  Wrench, Zap, Hammer, CircuitBoard, Building2, Ruler
+import Link from "next/link";
+import BlueprintBackground from "@/app/applied-science/engineering/BlueprintBackground";
+import GearMechanic from "@/app/applied-science/engineering/GearMechanic";
+import { 
+  ArrowLeft, Hammer, PenTool, Cpu, Zap, 
+  FlaskConical, Rocket, Wrench, Building2, 
+  Settings, ArrowUpRight, Code
 } from "lucide-react";
 
-// --- DATA ---
-const sectors = [
+// --- CONFIGURATION: EDIT DISCIPLINES HERE ---
+const DISCIPLINES = [
   {
-    name: "Infrastructure & Mechanics",
-    desc: "The physical foundation of civilization. Moving mass and managing forces.",
-    color: "text-orange-400",
-    icon: Hammer,
-    items: [
-      {
-        title: "Civil & Structural",
-        desc: "Designing the built environment: bridges, roads, dams, and skylines.",
-        href: "/applied-science/engineering/civil-structural",
-        Icon: Building2,
-        className: "theme-engineering",
-        subtitle: "Built World",
-        stack: "hardware"
-      },
-      {
-        title: "Mechanical Engineering",
-        desc: "The study of kinetic energy, thermodynamics, and complex machinery.",
-        href: "/applied-science/engineering/mechanical",
-        Icon: Wrench,
-        className: "theme-engineering",
-        subtitle: "Kinetic Systems",
-        stack: "hardware"
-      }
-    ]
+    id: "civil",
+    title: "Civil Engineering",
+    icon: Building2,
+    desc: "The design and construction of public works: bridges, dams, and infrastructure.",
+    color: "text-yellow-400",
+    bg: "bg-yellow-500/10",
+    border: "border-yellow-500/20"
   },
   {
-    name: "Power & Logic",
-    desc: "The nervous system of modern society. Energy and information flow.",
-    color: "text-cyan-400",
+    id: "mechanical",
+    title: "Mechanical Eng.",
+    icon: Settings, // or Hammer
+    desc: "The branch involving machinery, thermodynamics, and mechanical systems.",
+    color: "text-orange-400",
+    bg: "bg-orange-500/10",
+    border: "border-orange-500/20"
+  },
+  {
+    id: "electrical",
+    title: "Electrical Eng.",
     icon: Zap,
-    items: [
-      {
-        title: "Electrical & Electronics",
-        desc: "Circuits, power grids, and the manipulation of electrons.",
-        href: "/applied-science/engineering/electrical",
-        Icon: Zap,
-        className: "theme-engineering",
-        subtitle: "Power & Signals",
-        stack: "hardware"
-      },
-      {
-        title: "Software Engineering",
-        desc: "Building the digital brains and logic that control physical systems.",
-        href: "/applied-science/engineering/software",
-        Icon: CircuitBoard,
-        className: "theme-engineering",
-        subtitle: "Digital Logic",
-        stack: "software"
-      }
-    ]
+    desc: "The study of electricity, electronics, and electromagnetism.",
+    color: "text-cyan-400",
+    bg: "bg-cyan-500/10",
+    border: "border-cyan-500/20"
+  },
+  {
+    id: "aerospace",
+    title: "Aerospace Eng.",
+    icon: Rocket,
+    desc: "The development of aircraft and spacecraft.",
+    color: "text-indigo-400",
+    bg: "bg-indigo-500/10",
+    border: "border-indigo-500/20"
+  },
+  {
+    id: "chemical",
+    title: "Chemical Eng.",
+    icon: FlaskConical,
+    desc: "Turning raw materials into useful products through chemical processes.",
+    color: "text-emerald-400",
+    bg: "bg-emerald-500/10",
+    border: "border-emerald-500/20"
+  },
+  {
+    id: "software",
+    title: "Software Eng.",
+    icon: Code,
+    desc: "The systematic application of engineering approaches to software development.",
+    color: "text-pink-400",
+    bg: "bg-pink-500/10",
+    border: "border-pink-500/20"
   }
 ];
 
 export default function EngineeringPage() {
-  const [activeStack, setActiveStack] = useState<string | null>(null);
-
   return (
-    <main className="relative min-h-screen overflow-hidden bg-neutral-950 lg:px-12">
+    <main className="relative min-h-screen bg-[#172554] text-zinc-200 overflow-hidden font-sans selection:bg-orange-500/30">
       
-      {/* 1. Blueprint Grid */}
+      {/* 1. VISUAL ENGINE */}
       <BlueprintBackground />
       
-      <div className="relative z-10 mx-auto flex max-w-7xl flex-col py-10">
-        
-        <PageHeader
-          eyebrow="Applied Science"
-          title="Engineering"
-          subtitle="The application of scientific principles to design, build, and maintain the complex systems that power our civilization. We turn theory into reality."
-        />
+      {/* OVERLAY */}
+      <div className="absolute inset-0 bg-radial-vignette opacity-80 pointer-events-none z-0" />
+      <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.05] pointer-events-none z-0" />
 
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 items-start">
-          
-          {/* MAIN CONTENT (9 Cols) */}
-          <div className="lg:col-span-9 space-y-12">
-            {sectors.map((sector, idx) => (
-              <section key={sector.name}>
-                 {/* Sector Header */}
-                 <motion.div 
-                    initial={{ opacity: 0, x: -10 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.4, delay: idx * 0.1 }}
-                    className="mb-6 flex items-center gap-3"
-                 >
-                    <sector.icon className={sector.color} size={24} />
-                    <div>
-                        <h2 className="text-xl font-bold text-white tracking-wide">{sector.name}</h2>
-                        <p className="text-xs text-neutral-500">{sector.desc}</p>
-                    </div>
-                    <div className="h-[1px] flex-1 bg-white/10 ml-4"></div>
-                 </motion.div>
-
-                 {/* Card Grid */}
-                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-2">
-                    {sector.items.map((item, i) => {
-                        // Highlight logic based on sidebar widget
-                        const isDimmed = activeStack && item.stack !== activeStack;
-                        
-                        return (
-                            <motion.div
-                                key={item.title}
-                                initial={{ opacity: 0, y: 15 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ duration: 0.3, delay: 0.1 + (i * 0.05) }}
-                                animate={{ 
-                                    opacity: isDimmed ? 0.3 : 1, 
-                                    scale: isDimmed ? 0.98 : 1,
-                                    filter: isDimmed ? "grayscale(100%)" : "grayscale(0%)"
-                                }}
-                            >
-                                <TopicCard 
-                                    {...item} 
-                                    variant={isDimmed ? "dimmed" : "default"} 
-                                />
-                            </motion.div>
-                        )
-                    })}
+      {/* 2. HEADER */}
+      <header className="relative z-20 flex items-center justify-between px-8 py-6 border-b border-white/10 bg-[#172554]/90 backdrop-blur-md sticky top-0">
+         <div className="flex items-center gap-6">
+             {/* Back to Parent (Applied Science) */}
+             <Link href="/applied-science" className="flex items-center gap-2 text-xs font-mono text-blue-300/50 hover:text-white transition-colors uppercase tracking-widest">
+                <ArrowLeft size={12} /> Applied Science
+             </Link>
+             <div className="h-4 w-px bg-white/10" />
+             <div className="flex items-center gap-3">
+                 <div className="p-1.5 bg-blue-900 border border-white/10 rounded">
+                    <Hammer size={18} className="text-white" />
                  </div>
-              </section>
-            ))}
-          </div>
+                 <h1 className="text-xl font-bold text-white tracking-tight font-sans">
+                    ENGINEERING
+                 </h1>
+             </div>
+         </div>
+         <div className="hidden md:block text-[10px] font-mono text-blue-300/50 uppercase tracking-widest">
+            The Application of Science
+         </div>
+      </header>
 
-          {/* SIDEBAR (3 Cols) */}
-          <div className="flex flex-col gap-6 lg:col-span-3 lg:sticky lg:top-6 h-fit pt-2">
-            
-            {/* WIDGET: Tech Stack Hierarchy */}
-            <motion.div 
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.4 }}
-            >
-               <TechStackWidget activeStack={activeStack} setActiveStack={setActiveStack} />
-            </motion.div>
+      {/* 3. CONTENT GRID */}
+      <div className="relative z-10 container mx-auto p-6 md:p-8">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                
+                {/* LEFT: THE DISCIPLINES GRID */}
+                <div className="lg:col-span-7 space-y-6">
+                    
+                    {/* HERO CARD */}
+                    <div className="bg-blue-900/60 backdrop-blur-md border border-white/10 rounded-2xl p-8 relative overflow-hidden group">
+                        <div className="absolute top-0 right-0 p-24 bg-orange-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
+                        
+                        <div className="relative z-10">
+                            <h2 className="text-3xl font-bold text-white mb-4">Building the World</h2>
+                            <p className="text-sm text-blue-200 leading-relaxed mb-6">
+                                Scientists ask "Why?" Engineers ask "How?" <br/>
+                                This is the rigorous application of scientific principles to design, build, and maintain the systems that power modern civilization.
+                            </p>
+                            <div className="flex gap-4">
+                                <div className="flex items-center gap-2 px-3 py-1.5 bg-black/30 rounded border border-white/5">
+                                    <PenTool size={14} className="text-orange-400" />
+                                    <span className="text-xs font-mono">Design</span>
+                                </div>
+                                <div className="flex items-center gap-2 px-3 py-1.5 bg-black/30 rounded border border-white/5">
+                                    <Wrench size={14} className="text-orange-400" />
+                                    <span className="text-xs font-mono">Build</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-            {/* Quote Box */}
-            <div className="rounded-xl border border-cyan-500/20 bg-cyan-950/10 p-5 backdrop-blur-md">
-                <div className="flex flex-col gap-3">
-                    <Ruler size={20} className="text-cyan-400"/>
-                    <p className="text-xs text-neutral-300 leading-relaxed italic">
-                        "Scientists study the world as it is, engineers create the world that never has been."
-                    </p>
-                    <p className="text-[10px] font-bold uppercase tracking-widest text-cyan-500 text-right">
-                        — Theodore von Kármán
-                    </p>
+                    {/* DYNAMIC DISCIPLINES GRID */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {DISCIPLINES.map((discipline) => (
+                            <Link 
+                                key={discipline.id} 
+                                href={`/applied-science/engineering/${discipline.id}`}
+                                className={`
+                                    group flex flex-col p-5 rounded-xl border backdrop-blur-sm bg-blue-900/40 transition-all duration-300 
+                                    hover:-translate-y-1 hover:shadow-xl hover:bg-blue-900/60
+                                    ${discipline.border}
+                                `}
+                            >
+                                <div className="flex justify-between items-start mb-3">
+                                    <div className="flex items-center gap-3">
+                                        <discipline.icon className={discipline.color} size={20} />
+                                        <h3 className="font-bold text-white text-sm">{discipline.title}</h3>
+                                    </div>
+                                    <ArrowUpRight size={16} className="text-blue-400 opacity-0 group-hover:opacity-100 transition-opacity" />
+                                </div>
+                                <p className="text-xs text-blue-200/60 leading-relaxed">
+                                    {discipline.desc}
+                                </p>
+                            </Link>
+                        ))}
+                    </div>
+
                 </div>
+
+                {/* RIGHT: INTERACTIVE LAB */}
+                <div className="lg:col-span-5 space-y-6 flex flex-col items-center">
+                    
+                    {/* WIDGET */}
+                    <GearMechanic />
+
+                    {/* ENGINEERING METHOD CARD */}
+                    <div className="bg-blue-900/60 border border-white/10 rounded-xl p-6 w-full">
+                        <h3 className="font-bold text-white mb-2">The Design Process</h3>
+                        
+
+[Image of engineering design cycle]
+
+                        <ol className="text-xs text-blue-200/70 space-y-2 list-decimal list-inside font-mono">
+                            <li>Define the Problem</li>
+                            <li>Do Background Research</li>
+                            <li>Specify Requirements</li>
+                            <li>Brainstorm Solutions</li>
+                            <li>Prototype & Test</li>
+                            <li>Iterate</li>
+                        </ol>
+                    </div>
+
+                </div>
+
             </div>
-
-          </div>
-
-        </div>
       </div>
     </main>
   );

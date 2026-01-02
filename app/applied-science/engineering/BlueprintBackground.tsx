@@ -7,104 +7,121 @@ export default function BlueprintBackground() {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
+    const ctx = canvas.getContext("2d")!;
 
     let w = (canvas.width = window.innerWidth);
     let h = (canvas.height = window.innerHeight);
-    let animationFrameId: number;
-    
-    let offset = 0;
-    const speed = 0.5;
-    const gridSize = 40;
-    
-    const draw = () => {
-      ctx.clearRect(0, 0, w, h);
-      ctx.fillStyle = "#020617"; 
+    let time = 0;
+
+    // Drawing Agents (The "Draftsmen")
+    class Drafter {
+        x: number;
+        y: number;
+        targetX: number;
+        targetY: number;
+        state: 'moving' | 'drawing' | 'measuring';
+        progress: number;
+        life: number;
+
+        constructor() {
+            this.x = Math.random() * w;
+            this.y = Math.random() * h;
+            this.targetX = this.x;
+            this.targetY = this.y;
+            this.state = 'moving';
+            this.progress = 0;
+            this.life = 0;
+            this.pickNewTarget();
+        }
+
+        pickNewTarget() {
+            // Snap to grid (50px)
+            this.targetX = Math.round((Math.random() * w) / 50) * 50;
+            this.targetY = Math.round((Math.random() * h) / 50) * 50;
+            this.state = Math.random() > 0.5 ? 'drawing' : 'measuring';
+            this.progress = 0;
+            this.life = 100; // Frames to persist
+        }
+
+        update() {
+            if (this.progress < 1) this.progress += 0.05;
+            else {
+                this.life--;
+                if (this.life <= 0) {
+                    this.x = this.targetX;
+                    this.y = this.targetY;
+                    this.pickNewTarget();
+                }
+            }
+        }
+
+        draw() {
+            ctx.strokeStyle = "rgba(255, 255, 255, 0.1)";
+            ctx.lineWidth = 1;
+            
+            const curX = this.x + (this.targetX - this.x) * this.progress;
+            const curY = this.y + (this.targetY - this.y) * this.progress;
+
+            if (this.state === 'drawing') {
+                ctx.beginPath();
+                ctx.moveTo(this.x, this.y);
+                ctx.lineTo(curX, curY);
+                ctx.stroke();
+                
+                // Endpoints
+                ctx.fillStyle = "#3b82f6";
+                ctx.fillRect(curX - 2, curY - 2, 4, 4);
+            } else if (this.state === 'measuring') {
+                // Draw Arc
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, Math.abs(this.targetX - this.x), 0, Math.PI * 2 * this.progress);
+                ctx.stroke();
+            }
+
+            // Crosshair at active point
+            if (this.life > 90) {
+                ctx.strokeStyle = "rgba(249, 115, 22, 0.4)"; // Orange
+                ctx.beginPath();
+                ctx.moveTo(curX - 5, curY); ctx.lineTo(curX + 5, curY);
+                ctx.moveTo(curX, curY - 5); ctx.lineTo(curX, curY + 5);
+                ctx.stroke();
+            }
+        }
+    }
+
+    const drafters = Array.from({ length: 8 }, () => new Drafter());
+
+    const animate = () => {
+      // Deep Blueprint Blue
+      ctx.fillStyle = "#172554"; 
       ctx.fillRect(0, 0, w, h);
-
-      const cx = w / 2;
-      const cy = h / 2; 
       
-      // Horizon
-      ctx.beginPath();
-      ctx.strokeStyle = "rgba(6, 182, 212, 0.5)"; 
-      ctx.lineWidth = 2;
-      ctx.moveTo(0, cy);
-      ctx.lineTo(w, cy);
-      ctx.stroke();
+      // Draw Grid
+      ctx.strokeStyle = "rgba(255,255,255,0.03)";
       ctx.lineWidth = 1;
-
-      // FLOOR LINES (The Fix is here)
       ctx.beginPath();
-      ctx.strokeStyle = "rgba(6, 182, 212, 0.15)"; 
-      
-      // Start 5px below horizon to avoid Z=0 issues
-      let y = cy + 5; 
-      
-      while (y < h) {
-         const dist = y - cy;
-         const moveY = y + (offset % 40) * (dist / h); 
-         
-         if (moveY < h) {
-            ctx.moveTo(0, moveY);
-            ctx.lineTo(w, moveY);
-         }
-         
-         // CRITICAL FIX: Always increment by at least 2 pixels
-         // The original code allowed this to be 0, causing the freeze
-         y += Math.max(2, dist * 0.15); 
-      }
+      for(let x=0; x<=w; x+=50) { ctx.moveTo(x,0); ctx.lineTo(x,h); }
+      for(let y=0; y<=h; y+=50) { ctx.moveTo(0,y); ctx.lineTo(w,y); }
       ctx.stroke();
 
-      // CEILING LINES
-      ctx.beginPath();
-      y = cy - 5;
-      while (y > 0) {
-         const dist = cy - y;
-         const moveY = y - (offset % 40) * (dist / h);
-         
-         if (moveY > 0) {
-            ctx.moveTo(0, moveY);
-            ctx.lineTo(w, moveY);
-         }
-         y -= Math.max(2, dist * 0.15); // CRITICAL FIX
-      }
-      ctx.stroke();
+      // Update Drafters
+      drafters.forEach(d => {
+          d.update();
+          d.draw();
+      });
 
-      // Vertical Lines
-      ctx.beginPath();
-      ctx.strokeStyle = "rgba(6, 182, 212, 0.05)";
-      for (let x = -w; x < w * 2; x += gridSize * 3) {
-          ctx.moveTo(x, h);
-          ctx.lineTo(cx, cy);
-          ctx.moveTo(x, 0);
-          ctx.lineTo(cx, cy);
-      }
-      ctx.stroke();
-
-      offset += speed;
-      animationFrameId = requestAnimationFrame(draw);
+      requestAnimationFrame(animate);
     };
 
-    draw();
-
-    const handleResize = () => {
-      w = canvas.width = window.innerWidth;
-      h = canvas.height = window.innerHeight;
-    };
-
+    const animId = requestAnimationFrame(animate);
+    const handleResize = () => { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; };
     window.addEventListener("resize", handleResize);
+
     return () => {
-      window.removeEventListener("resize", handleResize);
-      cancelAnimationFrame(animationFrameId);
+        window.removeEventListener("resize", handleResize);
+        cancelAnimationFrame(animId);
     };
   }, []);
 
-  return (
-    <canvas
-      ref={canvasRef}
-      className="fixed inset-0 pointer-events-none z-0"
-    />
-  );
+  return <canvas ref={canvasRef} className="fixed inset-0 z-0 pointer-events-none" />;
 }

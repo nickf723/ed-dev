@@ -1,164 +1,151 @@
 "use client";
-import { useState } from "react";
-import PageHeader from "@/components/PageHeader";
-import TopicCard from "@/components/TopicCard";
-import Rule30Background from "@/app/formal-science/computer-science/Rule30Background";
-import LogicGateWidget from "@/app/formal-science/computer-science/LogicGateWidget";
-import { motion } from "framer-motion";
-import {
-  Terminal, BrainCog, Network, Lock, Server, Shield, Cpu, Code
+import Link from "next/link";
+import CircuitBackground from "@/app/formal-science/computer-science/CircuitBackground";
+import TuringMachine from "@/app/formal-science/computer-science/TuringMachine";
+import { 
+  ArrowLeft, Terminal, Cpu, BrainCircuit, 
+  Code2, Network, Binary, ArrowUpRight
 } from "lucide-react";
 
-const sectors = [
+// --- CONFIG: DISCIPLINES ---
+const DISCIPLINES = [
   {
-    name: "Theoretical Foundation",
-    desc: "The mathematical logic and algorithms that make computation possible.",
-    color: "text-green-400",
-    icon: Terminal,
-    items: [
-      { 
-        title: "Algorithms & Complexity", 
-        desc: "The study of efficient problem-solving. Big O, P vs NP, and Computability.", 
-        href: "/formal-science/computer-science/algorithms-complexity", 
-        Icon: Terminal, 
-        className: "theme-computer-science", 
-        subtitle: "The Recipe" 
-      },
-      { 
-        title: "Artificial Intelligence", 
-        desc: "Designing agents that perceive, learn, and act. From Logic to Neural Nets.", 
-        href: "/formal-science/computer-science/artificial-intelligence", 
-        Icon: BrainCog, 
-        className: "theme-computer-science", 
-        subtitle: "Synthetic Mind" 
-      }
-    ]
+    id: "software", title: "Software", icon: Code2,
+    desc: "The construction of virtual systems. Operating systems, compilers, and applications.",
+    color: "text-blue-400", border: "border-blue-500/20", bg: "bg-blue-500/10"
   },
   {
-    name: "Systems & Infrastructure",
-    desc: "The architecture of machines and the networks that connect them.",
-    color: "text-blue-400",
-    icon: Server,
-    items: [
-      { 
-        title: "Systems & Architecture", 
-        desc: "How hardware executes software. OS, Compilers, and Memory management.", 
-        href: "/formal-science/computer-science/systems", 
-        Icon: Cpu, 
-        className: "theme-computer-science", 
-        subtitle: "The Machine" 
-      },
-      { 
-        title: "Networks & Distributed", 
-        desc: "Protocols for communication. The Internet, Cloud, and Blockchain.", 
-        href: "/formal-science/computer-science/networking", 
-        Icon: Network, 
-        className: "theme-computer-science", 
-        subtitle: "The Web" 
-      }
-    ]
+    id: "hardware", title: "Hardware", icon: Cpu,
+    desc: "The physical substrate. Computer architecture, logic gates, and circuits.",
+    color: "text-orange-400", border: "border-orange-500/20", bg: "bg-orange-500/10"
   },
   {
-    name: "Engineering & Defense",
-    desc: "Building robust software and protecting it from adversaries.",
-    color: "text-purple-400",
-    icon: Shield,
-    items: [
-      { 
-        title: "Software Engineering", 
-        desc: "The discipline of designing, building, and maintaining large-scale software.", 
-        href: "/formal-science/computer-science/software-engineering", 
-        Icon: Code, 
-        className: "theme-computer-science", 
-        subtitle: "Construction" 
-      },
-      { 
-        title: "Security & Cryptography", 
-        desc: "Protecting data integrity and privacy. Encryption and secure protocol design.", 
-        href: "/formal-science/computer-science/security-cryptography", 
-        Icon: Lock, 
-        className: "theme-computer-science", 
-        subtitle: "Defense" 
-      }
-    ]
+    id: "theory", title: "Theory", icon: Binary, // or Sigma
+    desc: "The mathematical foundations. Algorithms, complexity classes (P vs NP), and cryptography.",
+    color: "text-purple-400", border: "border-purple-500/20", bg: "bg-purple-500/10"
+  },
+  {
+    id: "ai", title: "Artificial Intelligence", icon: BrainCircuit,
+    desc: "Agents that perceive and act. Machine Learning, Neural Networks, and NLP.",
+    color: "text-green-400", border: "border-green-500/20", bg: "bg-green-500/10"
   }
 ];
 
 export default function ComputerSciencePage() {
   return (
-    <main className="relative min-h-screen overflow-hidden bg-neutral-950 lg:px-12">
+    <main className="relative min-h-screen bg-[#0f172a] text-slate-300 overflow-hidden font-sans selection:bg-green-500/30">
       
-      {/* 1. Cellular Automata Background */}
-      <Rule30Background />
+      {/* 1. VISUAL ENGINE */}
+      <CircuitBackground />
       
-      <div className="relative z-10 mx-auto flex max-w-7xl flex-col py-10">
-        
-        <PageHeader
-          eyebrow="Formal Science"
-          title="Computer Science"
-          subtitle="The study of computation, automation, and information. We build abstract machines out of logic and electricity to extend the capabilities of the human mind."
-        />
+      {/* OVERLAY */}
+      <div className="absolute inset-0 bg-radial-vignette opacity-80 pointer-events-none z-0" />
+      <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.05] pointer-events-none z-0" />
 
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 items-start">
-          
-          {/* MAIN CONTENT (9 cols) */}
-          <div className="lg:col-span-9 space-y-10">
-             {sectors.map((sector, idx) => (
-              <section key={sector.name}>
-                 <motion.div 
-                    initial={{ opacity: 0, x: -10 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.4, delay: idx * 0.1 }}
-                    className="mb-4 flex items-center gap-3"
-                 >
-                    <sector.icon className={sector.color} size={20} />
-                    <h2 className="text-lg font-bold text-white tracking-wide">{sector.name}</h2>
-                    <div className="h-[1px] flex-1 bg-white/10"></div>
-                 </motion.div>
-
-                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                    {sector.items.map((item, i) => (
-                        <motion.div
-                            key={item.title}
-                            initial={{ opacity: 0, y: 15 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.3, delay: 0.1 + (i * 0.05) }}
-                        >
-                            <TopicCard {...item} />
-                        </motion.div>
-                    ))}
+      {/* 2. HEADER */}
+      <header className="relative z-20 flex items-center justify-between px-8 py-6 border-b border-white/10 bg-[#0f172a]/90 backdrop-blur-md sticky top-0">
+         <div className="flex items-center gap-6">
+             <Link href="/formal-science" className="flex items-center gap-2 text-xs font-mono text-green-500 hover:text-green-400 transition-colors uppercase tracking-widest">
+                <ArrowLeft size={12} /> Formal Science
+             </Link>
+             <div className="h-4 w-px bg-white/10" />
+             <div className="flex items-center gap-3">
+                 <div className="p-1.5 bg-slate-900 border border-green-500/50 rounded">
+                    <Terminal size={18} className="text-green-500" />
                  </div>
-              </section>
-            ))}
-          </div>
+                 <h1 className="text-xl font-bold text-white tracking-tight font-sans">
+                    COMPUTER_SCIENCE
+                 </h1>
+             </div>
+         </div>
+         <div className="hidden md:block text-[10px] font-mono text-green-500/50 uppercase tracking-widest">
+            The Study of Information
+         </div>
+      </header>
 
-          {/* SIDEBAR (3 cols) */}
-          <div className="flex flex-col gap-6 lg:col-span-3 lg:sticky lg:top-6 h-fit pt-2">
-            
-            {/* Logic Gate Widget */}
-            <motion.div 
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.4 }}
-            >
-               <LogicGateWidget />
-            </motion.div>
+      {/* 3. CONTENT GRID */}
+      <div className="relative z-10 container mx-auto p-6 md:p-8">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                
+                {/* LEFT: THE DISCIPLINES */}
+                <div className="lg:col-span-7 space-y-6">
+                    
+                    {/* HERO CARD */}
+                    <div className="bg-slate-900/60 backdrop-blur-md border border-white/10 rounded-2xl p-8 relative overflow-hidden group">
+                        <div className="absolute top-0 right-0 p-24 bg-green-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
+                        
+                        <div className="relative z-10">
+                            <h2 className="text-3xl font-bold text-white mb-4">The Universal Machine</h2>
+                            <p className="text-sm text-slate-400 leading-relaxed mb-6 font-mono">
+                                Computer Science is not just about programming. It is the study of what can be computed (Theory), how to compute it efficiently (Algorithms), and how to build the machines to do it (Hardware).
+                            </p>
+                            <div className="flex gap-4">
+                                <div className="flex items-center gap-2 px-3 py-1.5 bg-black/30 rounded border border-white/5">
+                                    <Binary size={14} className="text-blue-400" />
+                                    <span className="text-xs font-mono">0s & 1s</span>
+                                </div>
+                                <div className="flex items-center gap-2 px-3 py-1.5 bg-black/30 rounded border border-white/5">
+                                    <Network size={14} className="text-green-400" />
+                                    <span className="text-xs font-mono">Systems</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-            {/* Abstraction Quote */}
-            <div className="p-5 rounded-xl border border-dashed border-neutral-700 bg-neutral-900/40">
-                <h4 className="text-xs font-bold uppercase text-green-500 mb-2 flex items-center gap-2">
-                    <Code size={14} /> Abstraction Layer
-                </h4>
-                <p className="text-[11px] text-neutral-500 leading-relaxed">
-                    "Computer Science is no more about computers than astronomy is about telescopes." — Edsger Dijkstra. It is about the formal structure of process.
-                </p>
+                    
+
+[Image of von Neumann architecture diagram]
+
+
+                    {/* DYNAMIC DISCIPLINES GRID */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {DISCIPLINES.map((d) => (
+                            <Link 
+                                key={d.id} 
+                                href={`/formal-science/computer-science/${d.id}`}
+                                className={`
+                                    group flex flex-col p-5 rounded-xl border backdrop-blur-sm bg-slate-900/40 transition-all duration-300 
+                                    hover:-translate-y-1 hover:shadow-lg hover:bg-slate-900/60
+                                    ${d.border}
+                                `}
+                            >
+                                <div className="flex justify-between items-start mb-3">
+                                    <div className="flex items-center gap-3">
+                                        <div className={`p-2 rounded-lg ${d.bg}`}>
+                                            <d.icon className={d.color} size={18} />
+                                        </div>
+                                        <h3 className="font-bold text-white text-sm font-sans">{d.title}</h3>
+                                    </div>
+                                    <ArrowUpRight size={16} className="text-slate-500 opacity-0 group-hover:opacity-100 transition-opacity" />
+                                </div>
+                                <p className="text-xs text-slate-400 leading-relaxed font-mono">
+                                    {d.desc}
+                                </p>
+                            </Link>
+                        ))}
+                    </div>
+
+                </div>
+
+                {/* RIGHT: INTERACTIVE LAB */}
+                <div className="lg:col-span-5 space-y-6 flex flex-col items-center">
+                    
+                    {/* WIDGET */}
+                    <TuringMachine />
+
+                    {/* CHURCH-TURING THESIS CARD */}
+                    <div className="bg-slate-900/60 border border-white/10 rounded-xl p-6 w-full">
+                        <h3 className="font-bold text-white mb-2 flex items-center gap-2 font-mono">
+                            <Binary size={18} className="text-purple-500" /> The Church-Turing Thesis
+                        </h3>
+                        <p className="text-xs text-slate-400 leading-relaxed mb-3">
+                            Any problem that can be solved by an algorithm can be solved by a Turing Machine. This means your smartphone is fundamentally no more powerful than the infinite tape machine above—just faster.
+                        </p>
+                    </div>
+
+                </div>
+
             </div>
-
-          </div>
-
-        </div>
       </div>
     </main>
   );
