@@ -6,7 +6,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   Library, Scroll, PenTool, Hourglass, 
   Scale, BookOpen, Palette, Quote, Sparkles,
-  ArrowRight, Landmark
+  ArrowRight, Landmark,
+  Gamepad
 } from "lucide-react";
 
 // --- DATA ---
@@ -89,6 +90,18 @@ const archives = [
         href: "/humanities/music",
         icon: PenTool,
         desc: "The theory and history of music as an art form."
+      },
+      {
+        title: "Gaming",
+        href: "/humanities/gaming",
+        icon: Gamepad,
+        desc: "The art and culture of video games and interactive media."
+      },
+      {
+        title: "Sports",
+        href: "/humanities/sports",
+        icon: Sparkles,
+        desc: "The cultural and historical significance of sports."
       }
     ]
   }
