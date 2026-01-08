@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import MtgBackground from "@/app/humanities/gaming/tabletop/tcg/mtg/MtgBackground";
-import CommanderTable from "@/app/humanities/gaming/tabletop/tcg/mtg/engine/CommanderTable";
+import CommanderTable from "@/app/humanities/gaming/tabletop/tcg/mtg/components/CommanderTable";
 import { ArrowLeft, Flame } from "lucide-react";
 
 export default function MtgPage() {

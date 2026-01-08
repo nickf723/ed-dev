@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { parseAndFetchDeck, fetchCardData } from './scryfall';
 import { analyzeMechanics } from './mechanics';
 import { PlayerState, CardState, ManaColor } from './types';
+import { createCardInstance } from './cardFactory';
 const STORAGE_KEY = 'mtg-companion-state-v1';
 
 export const useCompanionEngine = () => {
@@ -28,42 +29,28 @@ export const useCompanionEngine = () => {
   const addPlayer = async (name: string, decklistText: string) => {
     setLoading(true);
     
-    // Parse deck
     const rawDeck = await parseAndFetchDeck(decklistText);
-    
-    // Convert to CardState and Tag
-    const library: CardState[] = rawDeck.map((c: any) => {
-        const cardState: CardState = {
-            ...c,
-            instanceId: c.id, 
-            ownerId: "", 
-            zone: 'library',
-            tapped: false,
-            counters: 0,
-            notes: ""
-        };
-        cardState.notes = analyzeMechanics(cardState).join(", ");
-        return cardState;
-    });
+    const newId = crypto.randomUUID();
+
+    // USE FACTORY TO BUILD LIBRARY
+    const library: CardState[] = rawDeck.map(data => 
+        createCardInstance(data, newId)
+    );
 
     const newPlayer: PlayerState = {
-        id: crypto.randomUUID(),
+        id: newId,
         name,
         life: 40,
         poison: 0,
         handSize: 7,
-        // --- MISSING INITIALIZATIONS FIXED HERE ---
         commanderTax: 0,
         commanderDamage: {},
         manaPool: { W: 0, U: 0, B: 0, R: 0, G: 0, C: 0 },
         commander: null,
-        // ------------------------------------------
         board: [], graveyard: [], exile: [], command: [],
-        library: library
+        library: library,
+        hand: []
     };
-
-    // Assign IDs
-    newPlayer.library.forEach(c => c.ownerId = newPlayer.id);
 
     setPlayers(prev => [...prev, newPlayer]);
     setLoading(false);
@@ -71,15 +58,8 @@ export const useCompanionEngine = () => {
 
   const summonCard = async (playerId: string, cardName: string) => {
       const data = await fetchCardData(cardName);
-      const newCard: CardState = {
-          ...data,
-          instanceId: crypto.randomUUID(),
-          ownerId: playerId,
-          zone: 'battlefield',
-          tapped: false,
-          counters: 0,
-          notes: "" 
-      };
+      const newCard = createCardInstance(data, playerId); // Use Factory
+      newCard.zone = 'battlefield';
       
       setPlayers(prev => prev.map(p => 
           p.id === playerId ? { ...p, board: [...p.board, newCard] } : p
@@ -88,17 +68,12 @@ export const useCompanionEngine = () => {
 
   const createToken = async (playerId: string, tokenName: string, power?: string, toughness?: string) => {
     const data = await fetchCardData(tokenName); 
-    const newToken: CardState = {
-        ...data,
-        instanceId: crypto.randomUUID(),
-        ownerId: playerId,
-        zone: 'battlefield',
-        tapped: false,
-        counters: 0,
-        notes: "TOKEN",
-        power: power || data.power || "",
-        toughness: toughness || data.toughness || ""
-    };
+    const newToken = createCardInstance(data, playerId); // Use Factory
+    
+    newToken.zone = 'battlefield';
+    newToken.notes = "TOKEN"; // Tag it
+    if (power) newToken.power = power;
+    if (toughness) newToken.toughness = toughness;
     
     setPlayers(prev => prev.map(p => 
         p.id === playerId ? { ...p, board: [...p.board, newToken] } : p
@@ -127,34 +102,47 @@ export const useCompanionEngine = () => {
       }));
   };
 
-  const moveCard = (playerId: string, instanceId: string, toZone: 'graveyard' | 'exile' | 'hand' | 'battlefield') => {
+  const moveCard = (playerId: string, instanceId: string, toZone: 'graveyard' | 'exile' | 'hand' | 'battlefield' | 'library' | 'command') => {
       setPlayers(prev => prev.map(p => {
           if (p.id !== playerId) return p;
 
           const fromBoard = p.board.find(c => c.instanceId === instanceId);
           const fromGrave = p.graveyard.find(c => c.instanceId === instanceId);
           const fromExile = p.exile.find(c => c.instanceId === instanceId);
+          const fromHand = p.library.find(c => c.instanceId === instanceId);
           
-          const card = fromBoard || fromGrave || fromExile;
+          const card = fromBoard || fromGrave || fromExile || fromHand;
           if (!card) return p; 
 
           const newBoard = p.board.filter(c => c.instanceId !== instanceId);
           const newGrave = p.graveyard.filter(c => c.instanceId !== instanceId);
           const newExile = p.exile.filter(c => c.instanceId !== instanceId);
+          const newLib = p.library.filter(c => c.instanceId !== instanceId);
+          const newCmd = p.command.filter(c => c.instanceId !== instanceId);        
 
-          const updatedCard = { ...card, zone: toZone, tapped: false };
+          const updatedCard = { ...card, zone: toZone, tapped: false, counters: 0 };
 
           if (toZone === 'hand') {
-              return { ...p, board: newBoard, graveyard: newGrave, exile: newExile, handSize: p.handSize + 1 };
+              return { ...p, board: newBoard, graveyard: newGrave, exile: newExile, library: newLib, command: newCmd, handSize: p.handSize + 1 };
           }
           
           const targetArray = toZone === 'battlefield' ? newBoard : toZone === 'graveyard' ? newGrave : newExile;
-          
+            
+          if (toZone === 'library') {
+            return {
+                ...p,
+                board: newBoard, graveyard: newGrave, exile: newExile, command: newCmd,
+                library: [...newLib, updatedCard].sort(() => Math.random() - 0.5) // Auto-shuffle
+            };
+            }
+
           return {
               ...p,
               board: toZone === 'battlefield' ? [...targetArray, updatedCard] : newBoard,
               graveyard: toZone === 'graveyard' ? [...targetArray, updatedCard] : newGrave,
               exile: toZone === 'exile' ? [...targetArray, updatedCard] : newExile,
+              command: toZone === 'command' ? [...newCmd, updatedCard] : newCmd,
+              library: newLib
           };
       }));
   };
@@ -246,7 +234,6 @@ export const useCompanionEngine = () => {
     }
   }, [players]);
 
-  // NEW: Reset Game (Clear Save)
   const resetGame = () => {
       if (confirm("Are you sure? This will delete the current game state.")) {
           localStorage.removeItem(STORAGE_KEY);
@@ -256,11 +243,31 @@ export const useCompanionEngine = () => {
       }
   };
 
+  const drawCard = (playerId: string, amount = 1) => {
+        setPlayers(prev => prev.map(p => {
+            if (p.id !== playerId) return p;
+
+            // Take top N cards
+            const drawn = p.library.slice(0, amount);
+            const remainingLib = p.library.slice(amount);
+
+            // Update zones
+            const newHand = [...p.hand, ...drawn.map(c => ({...c, zone: 'hand' as const}))];
+
+            return {
+                ...p,
+                library: remainingLib,
+                hand: newHand,
+                handSize: newHand.length // Auto-sync the number
+            };
+        }));
+    };
+
   return { 
       players, addPlayer, summonCard, playFromLibrary, createToken, toggleTap, moveCard, 
       modifyLife, modifyHandSize, modifyCounters, modifyMana, 
       playCommander, returnCommanderToZone, modifyCommanderDamage, 
       activePlayerIndex, phase, setPhase, passTurn, resetGame,
-      loading 
+      loading, drawCard 
   };
 };

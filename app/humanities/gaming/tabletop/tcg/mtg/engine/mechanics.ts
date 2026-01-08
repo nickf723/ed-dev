@@ -1,28 +1,34 @@
 import { CardState } from './types';
 
-const MECHANICS = [
-  { tag: "RAMP", regex: /search your library for a (basic )?land|add \{/i },
-  { tag: "DRAW", regex: /draw \w+ card/i },
+const KEYWORDS = [
+  { tag: "RAMP", regex: /add \{|search your library for a (basic )?land/i },  { tag: "DRAW", regex: /draw \w+ card/i },
   { tag: "REMOVAL", regex: /destroy|exile|deal \d+ damage to any target/i },
   { tag: "WIPE", regex: /destroy all|exile all|each creature/i },
   { tag: "TUTOR", regex: /search your library for a card/i },
   { tag: "COUNTER", regex: /counter target spell/i },
   { tag: "TOKEN", regex: /create (a|\d+) .+ token/i },
-  { tag: "FLYING", regex: /\bflying\b/i },
+  { tag: "FLYING", regex: /\bFlying\b/i },
+  { tag: "VIGILANCE", regex: /\bVigilance\b/i },
+  { tag: "TRAMPLE", regex: /\bTrample\b/i },
+  { tag: "HASTE", regex: /\bHaste\b/i },
+  { tag: "DEATHTOUCH", regex: /\bDeathtouch\b/i },
+  { tag: "LIFELINK", regex: /\bLifelink\b/i },
 ];
 
 export function analyzeMechanics(card: CardState): string[] {
-  const tags: string[] = [];
-  if (!card.oracleText) return tags;
+  const tags: Set<string> = new Set();
+  const text = (card.oracleText || "") + " " + (card.typeLine || "");
 
-  MECHANICS.forEach(m => {
-    if (m.regex.test(card.oracleText || "")) {
-      tags.push(m.tag);
+  KEYWORDS.forEach(m => {
+    if (m.regex.test(text)) {
+      tags.add(m.tag);
     }
   });
 
-  if (card.typeLine?.includes("Land")) tags.push("LAND");
-  if (card.typeLine?.includes("Commander") || card.typeLine?.includes("Legendary Creature")) tags.push("LEGEND");
+  // Role Logic
+  if (card.typeLine?.includes("Land")) tags.add("LAND");
+  if (card.typeLine?.includes("Commander") || card.typeLine?.includes("Legendary Creature")) tags.add("LEGEND");
+  if (card.typeLine?.includes("Artifact") && text.includes("Add {")) tags.add("ROCK"); // Mana Rock
 
-  return tags;
+  return Array.from(tags);
 }
