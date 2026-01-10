@@ -1,180 +1,187 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
-import GlobeBackground, { EarthLayer } from "@/app/natural-science/earth-science/GlobeBackground";
+import GlobeBackground, { DomainKey } from "./GlobeBackground";
 import { 
-  ArrowLeft, Globe, Mountain, Wind, Waves, Layers, Thermometer, 
-  Droplet, Activity
+  ArrowLeft, Globe, ArrowUpRight,
+  Mountain, Map, Gem, Droplets, CloudRain, ThermometerSun
 } from "lucide-react";
 
+// --- CONFIGURATION ENGINE ---
+// Add new domains here. The UI will auto-generate.
+const SUBDOMAINS = [
+  {
+    id: "geology" as DomainKey,
+    title: "Geology",
+    subtitle: "Solid Earth Systems",
+    desc: "The study of rocky planetary bodies and the processes that shape them.",
+    icon: Mountain,
+    stats: { label: "CRUST DEPTH", value: "5-70 km" },
+    styles: {
+      bg: "bg-emerald-950/40", border: "border-emerald-500/50", 
+      text: "text-emerald-500", shadow: "shadow-emerald-500/10",
+      accent: "bg-emerald-500"
+    }
+  },
+  {
+    id: "geography" as DomainKey,
+    title: "Geography",
+    subtitle: "Spatial Analysis",
+    desc: "The physical features of the earth and its atmosphere, and of human activity.",
+    icon: Map,
+    stats: { label: "SURFACE AREA", value: "510M km²" },
+    styles: {
+      bg: "bg-amber-950/40", border: "border-amber-500/50", 
+      text: "text-amber-500", shadow: "shadow-amber-500/10",
+      accent: "bg-amber-500"
+    }
+  },
+  {
+    id: "mineralogy" as DomainKey,
+    title: "Mineralogy",
+    subtitle: "Crystalline Structures",
+    desc: "Chemistry, crystal structure, and physical properties of minerals.",
+    icon: Gem,
+    stats: { label: "KNOWN SPECIES", value: "5,700+" },
+    styles: {
+      bg: "bg-fuchsia-950/40", border: "border-fuchsia-500/50", 
+      text: "text-fuchsia-500", shadow: "shadow-fuchsia-500/10",
+      accent: "bg-fuchsia-500"
+    }
+  },
+  {
+    id: "hydrology" as DomainKey,
+    title: "Hydrology",
+    subtitle: "Fluid Dynamics",
+    desc: "The movement, distribution, and management of water on Earth.",
+    icon: Droplets,
+    stats: { label: "OCEAN COVER", value: "71%" },
+    styles: {
+      bg: "bg-blue-950/40", border: "border-blue-500/50", 
+      text: "text-blue-500", shadow: "shadow-blue-500/10",
+      accent: "bg-blue-500"
+    }
+  },
+  {
+    id: "meteorology" as DomainKey,
+    title: "Meteorology",
+    subtitle: "Atmospheric Science",
+    desc: "Forecasting weather processes and atmospheric phenomena.",
+    icon: CloudRain,
+    stats: { label: "ATM PRESSURE", value: "1013 hPa" },
+    styles: {
+      bg: "bg-sky-950/40", border: "border-sky-500/50", 
+      text: "text-sky-500", shadow: "shadow-sky-500/10",
+      accent: "bg-sky-500"
+    }
+  },
+  {
+    id: "climatology" as DomainKey,
+    title: "Climatology",
+    subtitle: "Long-term Patterns",
+    desc: "The study of climate, scientifically defined as weather conditions averaged over a period of time.",
+    icon: ThermometerSun,
+    stats: { label: "GLOBAL AVG", value: "15°C" },
+    styles: {
+      bg: "bg-red-950/40", border: "border-red-500/50", 
+      text: "text-red-500", shadow: "shadow-red-500/10",
+      accent: "bg-red-500"
+    }
+  }
+];
+
 export default function EarthSciencePage() {
-  const [activeLayer, setActiveLayer] = useState<EarthLayer>("lithosphere");
+  const [activeDomain, setActiveDomain] = useState<DomainKey>("geology");
+  const [hoveredCard, setHoveredCard] = useState<string | null>(null);
+
+  // Helper to get active color for headers
+  const activeConfig = SUBDOMAINS.find(d => d.id === activeDomain) || SUBDOMAINS[0];
 
   return (
     <main className="relative min-h-screen bg-[#020408] text-white overflow-hidden selection:bg-teal-500/30 font-sans">
       
-      {/* 1. VISUAL ENGINE */}
-      <GlobeBackground layer={activeLayer} />
+      <GlobeBackground domain={activeDomain} />
       
-      {/* OVERLAY */}
+      {/* OVERLAYS */}
       <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10 pointer-events-none z-0" />
       <div className="absolute inset-0 bg-radial-vignette opacity-50 pointer-events-none z-0" />
 
-      {/* 2. DASHBOARD UI */}
-      <div className="relative z-10 container mx-auto px-6 py-12 min-h-screen flex flex-col">
+      {/* DASHBOARD */}
+      <div className="relative z-10 container mx-auto px-6 py-8 min-h-screen flex flex-col">
         
         {/* HEADER */}
-        <header className="flex justify-between items-start mb-12 pointer-events-auto">
+        <header className="flex flex-col md:flex-row justify-between items-start mb-12 pointer-events-auto">
              <div>
-                 <Link href="/natural-science" className="flex items-center gap-2 text-xs font-mono text-teal-500 hover:text-teal-400 transition-colors mb-4 uppercase tracking-widest">
-                    <ArrowLeft size={12} /> Natural_Sciences // Domain_04
+                 <Link href="/natural-science" className="flex items-center gap-2 text-xs font-mono text-zinc-500 hover:text-white transition-colors mb-2 uppercase tracking-widest group">
+                    <ArrowLeft size={12} className="group-hover:-translate-x-1 transition-transform"/> Natural_Sciences // Domain_04
                  </Link>
                  <div className="flex items-center gap-4">
-                     <div className="p-3 bg-teal-500/10 border border-teal-500/30 rounded-full animate-pulse">
-                        <Globe size={32} className="text-teal-400" />
+                     <div className="relative">
+                        <div className={`absolute inset-0 blur-xl opacity-20 animate-pulse ${activeConfig.styles.accent}`}></div>
+                        <Globe size={48} className="text-white relative z-10" strokeWidth={1} />
                      </div>
-                     <h1 className="text-5xl md:text-7xl font-black text-white tracking-tighter drop-shadow-lg">
-                        EARTH<br/>SCIENCE
-                     </h1>
+                     <div>
+                        <h1 className="text-4xl md:text-6xl font-black text-white tracking-tighter">
+                           EARTH SYSTEMS
+                        </h1>
+                        <div className={`flex gap-4 text-[10px] font-mono uppercase tracking-widest mt-1 ${activeConfig.styles.text} opacity-80`}>
+                            <span>Mode: {activeDomain.toUpperCase()}</span>
+                            <span>Status: Online</span>
+                        </div>
+                     </div>
                  </div>
-             </div>
-
-             {/* LAYER CONTROLS */}
-             <div className="bg-black/60 backdrop-blur-md border border-white/10 rounded-xl p-2 flex flex-col gap-2 pointer-events-auto">
-                 <button 
-                    onClick={() => setActiveLayer("lithosphere")}
-                    className={`p-3 rounded-lg transition-all flex items-center gap-3 ${activeLayer === "lithosphere" ? "bg-emerald-600 text-white" : "hover:bg-white/10 text-neutral-400"}`}
-                 >
-                    <Mountain size={18} /> <span className="text-xs font-bold hidden md:inline">LITHOSPHERE</span>
-                 </button>
-                 <button 
-                    onClick={() => setActiveLayer("atmosphere")}
-                    className={`p-3 rounded-lg transition-all flex items-center gap-3 ${activeLayer === "atmosphere" ? "bg-sky-600 text-white" : "hover:bg-white/10 text-neutral-400"}`}
-                 >
-                    <Wind size={18} /> <span className="text-xs font-bold hidden md:inline">ATMOSPHERE</span>
-                 </button>
-                 <button 
-                    onClick={() => setActiveLayer("hydrosphere")}
-                    className={`p-3 rounded-lg transition-all flex items-center gap-3 ${activeLayer === "hydrosphere" ? "bg-blue-600 text-white" : "hover:bg-white/10 text-neutral-400"}`}
-                 >
-                    <Waves size={18} /> <span className="text-xs font-bold hidden md:inline">HYDROSPHERE</span>
-                 </button>
              </div>
         </header>
 
-        {/* 3. MAIN CONTENT (Bottom Aligned) */}
-        <div className="mt-auto grid grid-cols-1 md:grid-cols-3 gap-6 pointer-events-auto">
+        {/* --- DYNAMIC GRID --- */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pointer-events-auto mt-auto mb-12">
             
-            {/* CARD 1: GEOLOGY (Linked) */}
-            <Link 
-                href="/natural-science/earth-science/geology"
-                onMouseEnter={() => setActiveLayer("lithosphere")}
-                className={`
-                    p-6 rounded-2xl border backdrop-blur-md transition-all group cursor-pointer
-                    ${activeLayer === "lithosphere" ? "bg-emerald-950/60 border-emerald-500/50 scale-[1.02] shadow-lg" : "bg-neutral-900/60 border-white/10 hover:border-white/30 hover:scale-[1.01]"}
-                `}
-            >
-                <div className="flex justify-between items-start mb-4">
-                    <div className="p-2 bg-emerald-500/10 rounded-lg text-emerald-400">
-                        <Layers size={24} />
+            {SUBDOMAINS.map((item) => (
+                <Link 
+                    key={item.id}
+                    href={`/natural-science/earth-science/${item.id}`}
+                    onMouseEnter={() => { setActiveDomain(item.id); setHoveredCard(item.id); }}
+                    onMouseLeave={() => setHoveredCard(null)}
+                    className={`
+                        relative p-6 rounded-xl border backdrop-blur-xl transition-all duration-500 group overflow-hidden
+                        ${activeDomain === item.id 
+                            ? `${item.styles.bg} ${item.styles.border} shadow-[0_0_30px_rgba(0,0,0,0.2)] scale-[1.02]` 
+                            : "bg-black/40 border-white/5 opacity-60 hover:opacity-100 hover:bg-black/60"}
+                    `}
+                >
+                    {/* Hover Glow */}
+                    <div className={`absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-white to-transparent opacity-0 group-hover:opacity-20 transition-opacity`} />
+                    
+                    {/* Icon & Label */}
+                    <div className="flex justify-between items-start mb-3">
+                        <div className={`p-2 rounded-md ${activeDomain === item.id ? `${item.styles.accent} text-black` : `bg-white/5 ${item.styles.text}`}`}>
+                            <item.icon size={20} />
+                        </div>
+                        <span className={`text-[10px] font-mono opacity-50 ${item.styles.text}`}>
+                            SYS_{item.id.substring(0,3).toUpperCase()}
+                        </span>
                     </div>
-                    <span className="text-[10px] font-mono text-emerald-500/60">SYS_GEO</span>
-                </div>
-                <h2 className="text-xl font-bold text-white mb-2 group-hover:text-emerald-300 transition-colors">Geology</h2>
-                <p className="text-sm text-neutral-400 mb-4 leading-relaxed">
-                    Study of the solid Earth, the rocks of which it is composed, and the processes by which they change.
-                </p>
-                <div className="space-y-2">
-                    <div className="flex justify-between text-xs border-b border-white/5 pb-1">
-                        <span className="text-neutral-500">CRUST DEPTH</span>
-                        <span className="text-emerald-200">5 - 70 km</span>
-                    </div>
-                </div>
-            </Link>
+                    
+                    <h2 className="text-2xl font-bold text-white mb-1">{item.title}</h2>
+                    <p className={`text-xs font-mono mb-4 uppercase opacity-60 ${item.styles.text}`}>
+                        {item.subtitle}
+                    </p>
+                    <p className="text-sm text-zinc-400 mb-6 line-clamp-2 h-10">
+                        {item.desc}
+                    </p>
 
-            {/* CARD 2: METEOROLOGY (Linked) */}
-            <Link
-                href="/natural-science/earth-science/meteorology"
-                onMouseEnter={() => setActiveLayer("atmosphere")}
-                className={`
-                    p-6 rounded-2xl border backdrop-blur-md transition-all group cursor-pointer
-                    ${activeLayer === "atmosphere" ? "bg-sky-950/60 border-sky-500/50 scale-[1.02] shadow-lg" : "bg-neutral-900/60 border-white/10 hover:border-white/30 hover:scale-[1.01]"}
-                `}
-            >
-                <div className="flex justify-between items-start mb-4">
-                    <div className="p-2 bg-sky-500/10 rounded-lg text-sky-400">
-                        <Thermometer size={24} />
+                    {/* Data Viz */}
+                    <div className="mt-auto pt-4 border-t border-white/5 flex justify-between items-end">
+                         <div className="flex flex-col">
+                            <span className={`text-[10px] font-mono opacity-60 ${item.styles.text}`}>{item.stats.label}</span>
+                            <span className="text-lg font-bold text-white">{item.stats.value}</span>
+                         </div>
+                         <ArrowUpRight size={16} className="text-zinc-600 group-hover:text-white transition-colors" />
                     </div>
-                    <span className="text-[10px] font-mono text-sky-500/60">SYS_ATM</span>
-                </div>
-                <h2 className="text-xl font-bold text-white mb-2 group-hover:text-sky-300 transition-colors">Meteorology</h2>
-                <p className="text-sm text-neutral-400 mb-4 leading-relaxed">
-                    The science of the atmosphere. Weather forecasting, climate dynamics, and atmospheric chemistry.
-                </p>
-                <div className="space-y-2">
-                    <div className="flex justify-between text-xs border-b border-white/5 pb-1">
-                        <span className="text-neutral-500">PRESSURE</span>
-                        <span className="text-sky-200">1013.25 hPa</span>
-                    </div>
-                </div>
-            </Link>
-
-            {/* CARD 3: HYDROLOGY (Linked) */}
-            <Link
-                href="/natural-science/earth-science/hydrology"
-                onMouseEnter={() => setActiveLayer("hydrosphere")}
-                className={`
-                    p-6 rounded-2xl border backdrop-blur-md transition-all group cursor-pointer
-                    ${activeLayer === "hydrosphere" ? "bg-blue-950/60 border-blue-500/50 scale-[1.02] shadow-lg" : "bg-neutral-900/60 border-white/10 hover:border-white/30 hover:scale-[1.01]"}
-                `}
-            >
-                <div className="flex justify-between items-start mb-4">
-                    <div className="p-2 bg-blue-500/10 rounded-lg text-blue-400">
-                        <Droplet size={24} />
-                    </div>
-                    <span className="text-[10px] font-mono text-blue-500/60">SYS_HYDRO</span>
-                </div>
-                <h2 className="text-xl font-bold text-white mb-2 group-hover:text-blue-300 transition-colors">Hydrology</h2>
-                <p className="text-sm text-neutral-400 mb-4 leading-relaxed">
-                    Exploration of the ocean and fresh water systems. Currents, waves, marine ecosystems, and fluid dynamics.
-                </p>
-                <div className="space-y-2">
-                    <div className="flex justify-between text-xs border-b border-white/5 pb-1">
-                        <span className="text-neutral-500">COVERAGE</span>
-                        <span className="text-blue-200">71%</span>
-                    </div>
-                </div>
-            </Link>
+                </Link>
+            ))}
 
         </div>
-
-        {/* 4. SEISMIC TICKER (Footer) */}
-        <div className="mt-8 border-t border-white/10 pt-4 flex items-center gap-6 pointer-events-auto">
-             <div className="flex items-center gap-2 text-xs font-mono font-bold text-red-400 animate-pulse">
-                 <Activity size={14} /> LIVE SEISMIC
-             </div>
-             {/* Fake Seismic Graph */}
-             <div className="flex-1 h-8 bg-neutral-900/50 rounded border border-white/5 overflow-hidden relative">
-                 <div className="absolute inset-0 flex items-center">
-                    <div className="w-full h-[1px] bg-red-500/20" />
-                 </div>
-                 {/* Moving Line (CSS Animation) */}
-                 <div className="absolute top-0 bottom-0 right-0 w-2 bg-red-500/50" />
-                 <svg className="w-full h-full" preserveAspectRatio="none">
-                    <polyline 
-                        points="0,15 20,15 25,10 30,20 35,15 100,15 110,5 120,25 130,15 300,15 310,12 320,18 330,15 600,15"
-                        fill="none" 
-                        stroke="#ef4444" 
-                        strokeWidth="1"
-                        className="animate-[dash_5s_linear_infinite]"
-                    />
-                 </svg>
-             </div>
-             <div className="text-[10px] font-mono text-neutral-500">
-                 STATION: HNL-04 // MAG: 2.1
-             </div>
-        </div>
-
       </div>
     </main>
   );

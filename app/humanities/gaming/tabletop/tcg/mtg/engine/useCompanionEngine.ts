@@ -3,6 +3,7 @@ import { parseAndFetchDeck, fetchCardData } from './scryfall';
 import { analyzeMechanics } from './mechanics';
 import { PlayerState, CardState, ManaColor } from './types';
 import { createCardInstance } from './cardFactory';
+import { CARD_LOGIC } from './cardLogic';
 const STORAGE_KEY = 'mtg-companion-state-v1';
 
 export const useCompanionEngine = () => {
@@ -263,11 +264,25 @@ export const useCompanionEngine = () => {
         }));
     };
 
+const activateAbility = (playerId: string, cardId: string, effectId: string) => {
+    const logic = CARD_LOGIC[effectId];
+    if (!logic) {
+        console.warn("No logic found for effect:", effectId);
+        return;
+    }
+
+    // Execute the function and update state
+    setPlayers(prevPlayers => {
+        // Note: The logic function returns the NEW player array
+        return logic(prevPlayers, playerId, cardId);
+    });
+};
+
   return { 
       players, addPlayer, summonCard, playFromLibrary, createToken, toggleTap, moveCard, 
       modifyLife, modifyHandSize, modifyCounters, modifyMana, 
       playCommander, returnCommanderToZone, modifyCommanderDamage, 
       activePlayerIndex, phase, setPhase, passTurn, resetGame,
-      loading, drawCard 
+      loading, drawCard, activateAbility 
   };
 };

@@ -1,129 +1,162 @@
 "use client";
+import React from "react";
 import Link from "next/link";
-import AlgebraBackground from "@/app/formal-science/mathematics/algebra/AlgebraBackground";
-import QuadraticLab from "@/app/formal-science/mathematics/algebra/QuadraticLab";
+import AlgebraBackground2 from "./AlgebraBackground2";
 import { 
-  ArrowLeft, Variable, Scale, Box, Grid 
+  ArrowLeft, Variable, FunctionSquare, 
+  Grid3X3, Infinity, Braces, Equal, Divide
 } from "lucide-react";
+import AlgebraBackground from "../page";
+
+const SUBDOMAINS = [
+  {
+    id: "pre-algebra",
+    title: "Pre-Algebra",
+    subtitle: "Foundations",
+    desc: "Integers, order of operations, and introduction to variables.",
+    icon: Divide,
+    equation: "2(x + 3) = 10",
+    color: "text-emerald-400",
+    border: "group-hover:border-emerald-500/50",
+    href: "/formal-science/mathematics/algebra/pre-algebra"
+  },
+  {
+    id: "elementary-algebra",
+    title: "Elementary",
+    subtitle: "Solving for X",
+    desc: "Linear equations, inequalities, graphing, and polynomials.",
+    icon: Variable,
+    equation: "ax² + bx + c = 0",
+    color: "text-blue-400",
+    border: "group-hover:border-blue-500/50",
+    href: "/formal-science/mathematics/algebra/elementary-algebra"
+  },
+  {
+    id: "linear-algebra",
+    title: "Linear Algebra",
+    subtitle: "Vectors & Spaces",
+    desc: "Vector spaces, linear mappings, eigenvalues, and matrix theory.",
+    icon: Grid3X3,
+    equation: "Ax = λx",
+    color: "text-indigo-400",
+    border: "group-hover:border-indigo-500/50",
+    href: "/formal-science/mathematics/algebra/linear-algebra"
+  },
+  {
+    id: "abstract-algebra",
+    title: "Abstract Algebra",
+    subtitle: "Structures",
+    desc: "Algebraic structures such as groups, rings, fields, and modules.",
+    icon: Infinity,
+    equation: "G/Ker(φ) ≅ Im(φ)",
+    color: "text-violet-400",
+    border: "group-hover:border-violet-500/50",
+    href: "/formal-science/mathematics/algebra/abstract-algebra"
+  }
+];
 
 export default function AlgebraPage() {
   return (
-    <main className="relative min-h-screen bg-[#18181b] text-zinc-200 overflow-hidden font-sans selection:bg-amber-500/30">
+    <main className="relative min-h-screen bg-[#0c0a1f] text-white overflow-hidden font-mono selection:bg-indigo-500/50">
       
       {/* 1. VISUAL ENGINE */}
-      <AlgebraBackground />
       
-      {/* OVERLAY */}
-      <div className="absolute inset-0 bg-radial-vignette opacity-70 pointer-events-none z-0" />
+      <AlgebraBackground2 />
+      
+      {/* OVERLAY: GRAPH PAPER */}
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(99,102,241,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(99,102,241,0.05)_1px,transparent_1px)] bg-[size:50px_50px] pointer-events-none z-0" />
+      <div className="absolute inset-0 bg-radial-vignette opacity-50 pointer-events-none z-0" />
 
-      {/* 2. HEADER */}
-      <header className="relative z-20 flex items-center justify-between px-8 py-6 border-b border-white/10 bg-[#18181b]/90 backdrop-blur-md sticky top-0">
-         <div className="flex items-center gap-6">
-             <Link href="/formal-science/mathematics" className="flex items-center gap-2 text-xs font-mono text-amber-500 hover:text-amber-400 transition-colors uppercase tracking-widest">
-                <ArrowLeft size={12} /> Mathematics
+      {/* 2. UI CONTAINER */}
+      <div className="relative z-10 container mx-auto px-6 py-12 min-h-screen flex flex-col items-center">
+        
+        {/* HEADER CENTERED */}
+        <header className="w-full max-w-4xl flex flex-col items-center text-center mb-20 relative">
+             <Link href="/math" className="absolute left-0 top-0 flex items-center gap-2 text-xs text-indigo-400 hover:text-white transition-colors uppercase tracking-widest group">
+                <ArrowLeft size={12} className="group-hover:-translate-x-1 transition-transform"/> Math // Domain_02
              </Link>
-             <div className="h-4 w-px bg-white/10" />
-             <div className="flex items-center gap-3">
-                 <div className="p-1.5 bg-zinc-900 border border-amber-500/50 rounded">
-                    <Variable size={18} className="text-amber-500" />
+             
+             <div className="mt-8 flex items-center gap-6">
+                 <Braces size={64} strokeWidth={0.5} className="text-indigo-500/50" />
+                 <div>
+                    <h1 className="text-6xl md:text-8xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white to-indigo-400">
+                       ALGEBRA
+                    </h1>
+                    <div className="flex justify-center gap-4 text-xs text-indigo-300/60 uppercase tracking-widest mt-4">
+                        <span>Balance</span>
+                        <span className="text-indigo-500">•</span>
+                        <span>Structure</span>
+                        <span className="text-indigo-500">•</span>
+                        <span>Unknowns</span>
+                    </div>
                  </div>
-                 <h1 className="text-xl font-bold text-white tracking-tight">
-                    ALGEBRA
-                 </h1>
+                 <Braces size={64} strokeWidth={0.5} className="text-indigo-500/50 rotate-180" />
              </div>
-         </div>
-         <div className="hidden md:block text-[10px] font-mono text-amber-500/50 uppercase tracking-widest">
-            The Restoration
-         </div>
-      </header>
+        </header>
 
-      {/* 3. CONTENT GRID */}
-      <div className="relative z-10 container mx-auto p-6 md:p-8">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                
-                {/* LEFT: THE CONCEPTS */}
-                <div className="lg:col-span-7 space-y-6">
+        {/* CONTENT GRID - Symmetrical Layout */}
+        <div className="w-full max-w-5xl grid grid-cols-1 md:grid-cols-2 gap-8 mb-20">
+            
+            {SUBDOMAINS.map((item, i) => (
+                <Link 
+                    key={item.id}
+                    href={item.href}
+                    className={`
+                        group relative flex items-center gap-6 p-8
+                        bg-black/20 backdrop-blur-sm border border-white/5 rounded-2xl
+                        transition-all duration-300 hover:bg-black/40 hover:-translate-y-1 hover:shadow-2xl
+                        ${item.border}
+                    `}
+                >
+                    {/* Visual: Matrix Bracket Left */}
+                    <div className="absolute left-0 top-4 bottom-4 w-1 border-l-2 border-t-2 border-b-2 border-white/10 rounded-l group-hover:border-indigo-400/50 transition-colors" />
                     
-                    {/* HERO CARD */}
-                    <div className="bg-zinc-900/60 backdrop-blur-md border border-white/10 rounded-2xl p-8 relative overflow-hidden group">
-                        <div className="absolute top-0 right-0 p-24 bg-amber-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
-                        
-                        <div className="relative z-10">
-                            <h2 className="text-3xl font-bold text-white mb-4">The Great Balancer</h2>
-                            <p className="text-sm text-zinc-300 leading-relaxed mb-6">
-                                The word comes from the Arabic <em>al-jabr</em>, meaning "restoration" or "completion." It is the art of manipulating symbols to solve for unknowns. If Arithmetic is about computing with numbers, Algebra is about reasoning with structures.
-                            </p>
-                            <div className="flex gap-4">
-                                <div className="flex items-center gap-2 px-3 py-1.5 bg-black/30 rounded border border-white/5">
-                                    <Scale size={14} className="text-amber-400" />
-                                    <span className="text-xs font-mono">Equation</span>
-                                </div>
-                                <div className="flex items-center gap-2 px-3 py-1.5 bg-black/30 rounded border border-white/5">
-                                    <Grid size={14} className="text-amber-400" />
-                                    <span className="text-xs font-mono">Function</span>
-                                </div>
-                            </div>
-                        </div>
+                    {/* Icon Box */}
+                    <div className={`
+                        flex-shrink-0 w-16 h-16 rounded-xl flex items-center justify-center
+                        bg-black/50 border border-white/10 group-hover:scale-110 transition-transform
+                        ${item.color}
+                    `}>
+                        <item.icon size={32} strokeWidth={1.5} />
                     </div>
 
-                    
-
-[Image of polynomial graphs]
-
-
-                    {/* DOMAINS GRID */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        
-                        <div className="bg-zinc-900/40 border border-white/5 p-5 rounded-xl hover:border-amber-500/30 transition-colors group">
-                            <div className="flex items-center gap-3 mb-2">
-                                <Variable className="text-amber-500" size={20} />
-                                <h3 className="font-bold text-white">Elementary Algebra</h3>
-                            </div>
-                            <p className="text-xs text-zinc-400">
-                                Solving for $x$. Polynomials, factoring, and graphing functions.
-                            </p>
+                    {/* Text Content */}
+                    <div className="flex-1">
+                        <div className="flex justify-between items-center mb-1">
+                             <h2 className="text-2xl font-bold text-white group-hover:text-indigo-200 transition-colors">
+                                {item.title}
+                             </h2>
+                             <span className="text-[10px] opacity-30 font-bold uppercase tracking-widest">
+                                MOD_0{i+1}
+                             </span>
                         </div>
-
-                        <div className="bg-zinc-900/40 border border-white/5 p-5 rounded-xl hover:border-amber-500/30 transition-colors group">
-                            <div className="flex items-center gap-3 mb-2">
-                                <Grid className="text-amber-500" size={20} />
-                                <h3 className="font-bold text-white">Linear Algebra</h3>
-                            </div>
-                            <p className="text-xs text-zinc-400">
-                                Vectors and Matrices. The language of modern computing and 3D graphics.
-                            </p>
+                        <div className={`text-xs font-bold uppercase mb-2 opacity-70 ${item.color}`}>
+                            {item.subtitle}
                         </div>
-                        
-                        <div className="bg-zinc-900/40 border border-white/5 p-5 rounded-xl hover:border-amber-500/30 transition-colors group">
-                            <div className="flex items-center gap-3 mb-2">
-                                <Box className="text-amber-500" size={20} />
-                                <h3 className="font-bold text-white">Abstract Algebra</h3>
-                            </div>
-                            <p className="text-xs text-zinc-400">
-                                Studying structures like Groups, Rings, and Fields. The symmetry of math.
-                            </p>
-                        </div>
-
-                    </div>
-                </div>
-
-                {/* RIGHT: INTERACTIVE LAB */}
-                <div className="lg:col-span-5 space-y-6 flex flex-col items-center">
-                    
-                    {/* WIDGET */}
-                    <QuadraticLab />
-
-                    {/* HISTORY CARD */}
-                    <div className="bg-zinc-900/60 border border-white/10 rounded-xl p-6 w-full">
-                        <h3 className="font-bold text-white mb-2">Al-Khwarizmi</h3>
-                        <p className="text-xs text-zinc-400 leading-relaxed mb-3">
-                            The 9th-century Persian mathematician who literally wrote the book on Algebra (<em>The Compendious Book on Calculation by Completion and Balancing</em>). He introduced the systematic solution of linear and quadratic equations.
+                        <p className="text-sm text-zinc-400 leading-relaxed mb-4">
+                            {item.desc}
                         </p>
+                        
+                        {/* Equation Footer */}
+                        <div className="inline-block px-3 py-1 bg-white/5 rounded text-xs font-mono text-indigo-300 group-hover:bg-indigo-500/20 group-hover:text-white transition-colors">
+                            {item.equation}
+                        </div>
                     </div>
 
-                </div>
+                    {/* Visual: Matrix Bracket Right */}
+                    <div className="absolute right-0 top-4 bottom-4 w-1 border-r-2 border-t-2 border-b-2 border-white/10 rounded-r group-hover:border-indigo-400/50 transition-colors" />
+                </Link>
+            ))}
 
-            </div>
+        </div>
+        
+        {/* FOOTER: THE ULTIMATE EQUATION */}
+        <div className="flex items-center gap-8 opacity-40 hover:opacity-100 transition-opacity duration-700">
+             <span className="text-2xl font-mono">f(x)</span>
+             <Equal size={24} />
+             <span className="text-2xl font-mono">y</span>
+        </div>
+
       </div>
     </main>
   );

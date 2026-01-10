@@ -12,92 +12,92 @@ export default function MathBackground() {
 
     let w = (canvas.width = window.innerWidth);
     let h = (canvas.height = window.innerHeight);
-    let time = 0;
-    
-    // Mathematical Glyphs
-    const symbols = ["∑", "∫", "∂", "√", "π", "∞", "≠", "≈", "∇", "∆", "φ", "λ", "θ", "0", "1", "e", "i"];
-    
-    type FloatingSymbol = { x: number; y: number; char: string; size: number; alpha: number; v: number };
-    const glyphs: FloatingSymbol[] = [];
 
-    // Initialize Glyphs
-    for(let i=0; i<40; i++) {
-        glyphs.push({
-            x: Math.random() * w,
-            y: Math.random() * h,
-            char: symbols[Math.floor(Math.random() * symbols.length)],
-            size: 10 + Math.random() * 20,
-            alpha: Math.random() * 0.5,
-            v: 0.2 + Math.random() * 0.5
+    // --- LORENZ ATTRACTOR CONFIG ---
+    // The classic "Chaos" constants
+    const sigma = 10;
+    const rho = 28;
+    const beta = 8 / 3;
+
+    // Simulation State
+    // We simulate multiple independent points to create "flow"
+    const numTrails = 60;
+    const trails: { x: number; y: number; z: number; color: string; history: {x:number, y:number}[] }[] = [];
+
+    // Initialize random start points near the center
+    for (let i = 0; i < numTrails; i++) {
+        trails.push({
+            x: 0.1, 
+            y: 0, 
+            z: 0,
+            // Math gradient: Cyan -> Indigo -> Purple
+            color: `hsl(${200 + Math.random() * 60}, 70%, 50%)`,
+            history: []
         });
     }
 
-    const animate = () => {
-      // Deep Blackboard / Void
-      ctx.fillStyle = "#0a0a0a"; 
+    let dt = 0.008; // Time step
+    let scale = 15; // Zoom level
+
+    const render = () => {
+      // Fade effect for trails (creates the "drawing" look)
+      ctx.fillStyle = "rgba(10, 10, 15, 0.1)"; 
       ctx.fillRect(0, 0, w, h);
-      
-      time += 0.02;
 
-      // 1. Draw Faint Graph Lines
-      ctx.lineWidth = 2;
-      ctx.strokeStyle = "rgba(255, 255, 255, 0.03)";
-      ctx.beginPath();
-      // Sine Wave
-      for(let x=0; x<=w; x+=10) {
-          const y = h/2 + Math.sin(x * 0.01 + time) * 100;
-          x === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
-      }
-      ctx.stroke();
+      const cx = w / 2;
+      const cy = h / 2;
 
-      // Tangent/Complex Wave
-      ctx.strokeStyle = "rgba(245, 158, 11, 0.03)"; // Gold tint
-      ctx.beginPath();
-      for(let x=0; x<=w; x+=10) {
-          const y = h/2 + Math.cos(x * 0.02 - time) * 50 + Math.sin(x * 0.05) * 20;
-          x === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
-      }
-      ctx.stroke();
+      ctx.lineWidth = 1.5;
 
-      // 2. Draw Floating Glyphs
-      ctx.fillStyle = "#ffffff";
-      ctx.textAlign = "center";
-      
-      glyphs.forEach(g => {
-          g.y -= g.v; // Float Up
-          if (g.y < -50) {
-              g.y = h + 50;
-              g.x = Math.random() * w;
-              g.char = symbols[Math.floor(Math.random() * symbols.length)];
-          }
+      trails.forEach((p, i) => {
+        // --- DIFFERENTIAL EQUATIONS ---
+        // dx/dt = sigma * (y - x)
+        // dy/dt = x * (rho - z) - y
+        // dz/dt = x * y - beta * z
+        
+        const dx = sigma * (p.y - p.x) * dt;
+        const dy = (p.x * (rho - p.z) - p.y) * dt;
+        const dz = (p.x * p.y - beta * p.z) * dt;
 
-          ctx.font = `${g.size}px "Times New Roman", serif`; // Classic math font
-          ctx.globalAlpha = g.alpha * 0.2; // Very faint
-          ctx.fillText(g.char, g.x, g.y);
+        p.x += dx;
+        p.y += dy;
+        p.z += dz;
+
+        // Project 3D to 2D
+        // Simple rotation to make it look cool
+        const angle = Date.now() * 0.0001; 
+        const rx = p.x * Math.cos(angle) - p.y * Math.sin(angle);
+        const ry = p.x * Math.sin(angle) + p.y * Math.cos(angle);
+
+        const screenX = cx + rx * scale;
+        const screenY = cy + (p.z - 25) * scale; // Offset Z to center it
+
+        p.history.push({ x: screenX, y: screenY });
+        if (p.history.length > 20) p.history.shift(); // Keep tails short
+
+        // Draw
+        ctx.strokeStyle = p.color;
+        ctx.beginPath();
+        if (p.history.length > 1) {
+            ctx.moveTo(p.history[0].x, p.history[0].y);
+            for (let j = 1; j < p.history.length; j++) {
+                ctx.lineTo(p.history[j].x, p.history[j].y);
+            }
+        }
+        ctx.stroke();
       });
-      ctx.globalAlpha = 1;
 
-      // 3. Grid overlay
-      ctx.strokeStyle = "rgba(255,255,255,0.02)";
-      ctx.lineWidth = 1;
-      const gridSize = 100;
-      ctx.beginPath();
-      for(let x=0; x<=w; x+=gridSize) { ctx.moveTo(x,0); ctx.lineTo(x,h); }
-      for(let y=0; y<=h; y+=gridSize) { ctx.moveTo(0,y); ctx.lineTo(w,y); }
-      ctx.stroke();
-
-      requestAnimationFrame(animate);
+      requestAnimationFrame(render);
     };
 
-    const animId = requestAnimationFrame(animate);
+    const animId = requestAnimationFrame(render);
     const handleResize = () => { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; };
     window.addEventListener("resize", handleResize);
-
     return () => {
         window.removeEventListener("resize", handleResize);
         cancelAnimationFrame(animId);
     };
   }, []);
 
-  return <canvas ref={canvasRef} className="fixed inset-0 z-0 pointer-events-none" />;
+  return <canvas ref={canvasRef} className="fixed inset-0 z-0 opacity-40 pointer-events-none" />;
 }

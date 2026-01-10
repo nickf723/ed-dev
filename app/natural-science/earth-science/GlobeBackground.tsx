@@ -1,10 +1,36 @@
 "use client";
 import { useEffect, useRef } from "react";
 
-export type EarthLayer = "lithosphere" | "atmosphere" | "hydrosphere";
+export type DomainKey = 
+  | "geology" | "geography" | "mineralogy" 
+  | "hydrology" | "meteorology" | "climatology";
 
-export default function GlobeBackground({ layer }: { layer: EarthLayer }) {
+// 1. CONFIGURATION
+const CONFIG: Record<DomainKey, { 
+    color: { r: number, g: number, b: number }, 
+    physics: 'solid' | 'fluid' | 'gas' | 'crystal',
+    renderShape: 'dot' | 'diamond' | 'grid' | 'cloud'
+}> = {
+  geology:     { color: { r: 16, g: 185, b: 129 }, physics: 'solid',  renderShape: 'dot' }, // Emerald
+  geography:   { color: { r: 217, g: 119, b: 6 },  physics: 'solid',  renderShape: 'grid' }, // Amber
+  mineralogy:  { color: { r: 216, g: 180, b: 254 },physics: 'crystal',renderShape: 'diamond' }, // Lavender
+  hydrology:   { color: { r: 59, g: 130, b: 246 }, physics: 'fluid',  renderShape: 'dot' }, // Blue
+  meteorology: { color: { r: 14, g: 165, b: 233 }, physics: 'gas',    renderShape: 'cloud' }, // Sky
+  climatology: { color: { r: 239, g: 68, b: 68 },  physics: 'gas',    renderShape: 'dot' }, // Red
+};
+
+export default function GlobeBackground({ domain }: { domain: DomainKey }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  
+  // Mutable state for smooth transitions
+  const stateRef = useRef({
+    rotation: 0,
+    currentR: CONFIG.geology.color.r,
+    currentG: CONFIG.geology.color.g,
+    currentB: CONFIG.geology.color.b,
+    wavePhase: 0,
+    pulse: 0
+  });
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -15,152 +41,164 @@ export default function GlobeBackground({ layer }: { layer: EarthLayer }) {
     let w = (canvas.width = window.innerWidth);
     let h = (canvas.height = window.innerHeight);
     
-    let rotation = 0;
-    let mouse = { x: w / 2, y: h / 2 };
-    let isDragging = false;
-    let lastX = 0;
-
-    // Generate Sphere Points
-    const points: {x: number, y: number, z: number, lat: number, lon: number}[] = [];
-    const numPoints = 1200;
-    
-    // Fibonacci Sphere Algorithm for even distribution
+    // --- GENERATE POINTS ---
+    const points: {x: number, y: number, z: number, originalY: number, phaseOffset: number }[] = [];
+    const numPoints = domain === 'geography' ? 800 : 1500; // Fewer points for grid mode to save perf
     const phi = Math.PI * (3 - Math.sqrt(5)); 
+    
     for (let i = 0; i < numPoints; i++) {
-        const y = 1 - (i / (numPoints - 1)) * 2; // y goes from 1 to -1
-        const radius = Math.sqrt(1 - y * y); // radius at y
+        const y = 1 - (i / (numPoints - 1)) * 2; 
+        const radius = Math.sqrt(1 - y * y);
         const theta = phi * i; 
-
         const x = Math.cos(theta) * radius;
         const z = Math.sin(theta) * radius;
-        
-        points.push({ x, y, z, lat: Math.asin(y), lon: Math.atan2(z, x) });
+        points.push({ x, y, z, originalY: y, phaseOffset: Math.random() * Math.PI });
     }
 
-    // Atmosphere Particles (Clouds)
-    const clouds = Array.from({ length: 100 }, () => ({
-        lat: (Math.random() - 0.5) * Math.PI,
-        lon: Math.random() * Math.PI * 2,
-        r: 1.2 + Math.random() * 0.1, // Higher altitude
-        speed: 0.002 + Math.random() * 0.005
-    }));
+    let animId: number;
 
-    const animate = () => {
-      ctx.fillStyle = "#020408"; // Deep space black/blue
+    const render = () => {
+      // CLEAR
+      ctx.fillStyle = "#020408"; 
       ctx.fillRect(0, 0, w, h);
-      
+
       const cx = w / 2;
       const cy = h / 2;
-      const scale = Math.min(w, h) * 0.35; // Globe size
+      const baseScale = Math.min(w, h) * 0.35; 
 
-      // Auto rotate if not dragging
-      if (!isDragging) rotation += 0.002;
+      // --- INTERPOLATE STATE ---
+      const config = CONFIG[domain];
+      const lerp = 0.05;
 
-      // --- DRAW GLOBE ---
-      points.forEach(p => {
-          // 1. Rotate around Y axis
-          const x1 = p.x * Math.cos(rotation) - p.z * Math.sin(rotation);
-          const z1 = p.x * Math.sin(rotation) + p.z * Math.cos(rotation);
-          const y1 = p.y; // No X-axis rotation for simplicity right now
+      stateRef.current.currentR += (config.color.r - stateRef.current.currentR) * lerp;
+      stateRef.current.currentG += (config.color.g - stateRef.current.currentG) * lerp;
+      stateRef.current.currentB += (config.color.b - stateRef.current.currentB) * lerp;
+      
+      // Update Physics Time
+      const speed = config.physics === 'gas' ? 0.003 : 0.001;
+      stateRef.current.rotation += speed;
+      stateRef.current.wavePhase += 0.02;
+      stateRef.current.pulse += 0.05;
 
-          // 2. Project to 2D
-          // Simple orthographic projection
-          const px = cx + x1 * scale;
-          const py = cy + y1 * scale;
-          
-          // 3. Occlusion (Back-face culling / dimming)
-          const alpha = z1 > 0 ? 1 : 0.1; // Bright front, dim back
-          const size = z1 > 0 ? 1.5 : 1;
+      const { currentR, currentG, currentB, rotation, wavePhase, pulse } = stateRef.current;
+      const cssColor = `rgb(${Math.round(currentR)}, ${Math.round(currentG)}, ${Math.round(currentB)})`;
+      
+      // --- DRAW LOOP ---
+      ctx.fillStyle = cssColor;
+      ctx.strokeStyle = cssColor;
 
-          // 4. Color logic based on Layer
-          let color = "rgba(255, 255, 255, 0.5)";
-          
-          if (layer === "lithosphere") {
-              // Tectonic/Land look: Emerald/Brown
-              color = z1 > 0 ? "#10b981" : "#064e3b"; // Emerald-500
-          } else if (layer === "atmosphere") {
-              // Sky look: Cyan/White
-              color = z1 > 0 ? "#bae6fd" : "#0c4a6e"; // Sky-200
-          } else if (layer === "hydrosphere") {
-              // Ocean look: Deep Blue
-              color = z1 > 0 ? "#3b82f6" : "#1e3a8a"; // Blue-500
-          }
+      // GEOGRAPHY: Draw Lat/Long Grid Lines logic (Simplified)
+      if (config.renderShape === 'grid') {
+         ctx.lineWidth = 0.5;
+         ctx.globalAlpha = 0.1;
+         ctx.beginPath();
+         // Just a placeholder visual for grid - real sphere grid is complex math, 
+         // sticking to point cloud for stability but connecting neighbors would be next step.
+      }
 
-          ctx.fillStyle = color;
-          ctx.globalAlpha = alpha;
-          ctx.beginPath();
-          ctx.arc(px, py, size, 0, Math.PI*2);
-          ctx.fill();
+      points.forEach((p, i) => {
+         let modX = p.x;
+         let modY = p.y;
+         let modZ = p.z;
+
+         // --- PHYSICS MODIFIERS ---
+         if (config.physics === 'fluid') {
+            // Waving motion
+            const wave = Math.sin(p.originalY * 10 + wavePhase) * 0.05;
+            modX += p.x * wave; modY += p.y * wave; modZ += p.z * wave;
+         }
+         else if (config.physics === 'gas') {
+            // Expansion & Chaos
+            const chaos = Math.sin(wavePhase * 2 + p.phaseOffset) * 0.02;
+            const expansion = 1.1 + chaos;
+            modX *= expansion; modY *= expansion; modZ *= expansion;
+         }
+         else if (config.physics === 'crystal') {
+            // Rigid, sharp rotation ticks instead of smooth flow?
+            // Or just static stability.
+         }
+
+         // Rotate Y
+         const x1 = modX * Math.cos(rotation) - modZ * Math.sin(rotation);
+         const z1 = modX * Math.sin(rotation) + modZ * Math.cos(rotation);
+         const y1 = modY;
+
+         // Project
+         const scale = baseScale;
+         const px = cx + x1 * scale;
+         const py = cy + y1 * scale;
+         
+         const isFront = z1 > 0;
+         const alpha = isFront ? 0.8 : 0.1;
+         
+         ctx.globalAlpha = alpha;
+
+         // --- RENDER SHAPES ---
+         
+         if (config.renderShape === 'diamond') {
+             // MINERALOGY: Draw rotating diamonds
+             const size = isFront ? 3 : 1;
+             ctx.save();
+             ctx.translate(px, py);
+             ctx.rotate(rotation * 2 + p.phaseOffset); // Sparkle spin
+             ctx.beginPath();
+             ctx.moveTo(0, -size);
+             ctx.lineTo(size, 0);
+             ctx.lineTo(0, size);
+             ctx.lineTo(-size, 0);
+             ctx.closePath();
+             ctx.fill();
+             ctx.restore();
+         } 
+         else if (config.renderShape === 'grid') {
+             // GEOGRAPHY: Draw small crosses instead of dots to look like map markers
+             const size = isFront ? 2 : 0.5;
+             ctx.beginPath();
+             ctx.moveTo(px - size, py); ctx.lineTo(px + size, py);
+             ctx.moveTo(px, py - size); ctx.lineTo(px, py + size);
+             ctx.stroke();
+         }
+         else if (config.renderShape === 'cloud') {
+             // METEOROLOGY: Soft, larger circles
+             const size = isFront ? 4 : 2;
+             ctx.beginPath();
+             ctx.arc(px, py, size, 0, Math.PI * 2);
+             ctx.fill();
+         }
+         else {
+             // DEFAULT (DOT)
+             const size = isFront ? 1.5 : 0.5;
+             ctx.beginPath();
+             ctx.arc(px, py, size, 0, Math.PI * 2);
+             ctx.fill();
+         }
       });
 
-      // --- DRAW ATMOSPHERE LAYER (If active) ---
-      if (layer === "atmosphere") {
-          clouds.forEach(c => {
-              c.lon += c.speed; // Move clouds
-              
-              // Spherical to Cartesian
-              const cx3 = Math.cos(c.lat) * Math.cos(c.lon);
-              const cy3 = Math.sin(c.lat);
-              const cz3 = Math.cos(c.lat) * Math.sin(c.lon);
-
-              // Rotate
-              const x1 = cx3 * Math.cos(rotation) - cz3 * Math.sin(rotation);
-              const z1 = cx3 * Math.sin(rotation) + cz3 * Math.cos(rotation);
-              
-              if (z1 > -0.2) { // Show slightly behind horizon
-                  const px = cx + x1 * scale * c.r;
-                  const py = cy + cy3 * scale * c.r;
-                  
-                  ctx.fillStyle = "rgba(255,255,255,0.3)";
-                  ctx.beginPath();
-                  ctx.arc(px, py, 4, 0, Math.PI*2);
-                  ctx.fill();
-              }
-          });
-      }
-      
-      // --- DRAW TECTONIC LINES (If Lithosphere) ---
-      if (layer === "lithosphere") {
-          // Visual flair: Connect random nearby points to simulate structure
-          // (Omitted for perf, keeping it point-cloud based for now)
+      // --- POST-PROCESSING ---
+      // Climatology Heat Haze
+      if (domain === 'climatology') {
+          const pulsate = Math.sin(pulse) * 0.1 + 0.1;
+          ctx.globalCompositeOperation = "screen";
+          ctx.fillStyle = "rgba(239, 68, 68, 0.1)";
+          ctx.beginPath();
+          ctx.arc(cx, cy, baseScale * (1 + pulsate), 0, Math.PI*2);
+          ctx.fill();
+          ctx.globalCompositeOperation = "source-over";
       }
 
       ctx.globalAlpha = 1;
-      requestAnimationFrame(animate);
+      animId = requestAnimationFrame(render);
     };
 
-    const animId = requestAnimationFrame(animate);
-
-    const handleMouseDown = (e: MouseEvent) => {
-        isDragging = true;
-        lastX = e.clientX;
-    };
-    const handleMouseMove = (e: MouseEvent) => {
-        mouse.x = e.clientX;
-        mouse.y = e.clientY;
-        if (isDragging) {
-            const dx = e.clientX - lastX;
-            rotation += dx * 0.005;
-            lastX = e.clientX;
-        }
-    };
-    const handleMouseUp = () => isDragging = false;
-    
+    render();
     const handleResize = () => { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; };
-
-    window.addEventListener("mousedown", handleMouseDown);
-    window.addEventListener("mousemove", handleMouseMove);
-    window.addEventListener("mouseup", handleMouseUp);
     window.addEventListener("resize", handleResize);
 
     return () => {
-        window.removeEventListener("mousedown", handleMouseDown);
-        window.removeEventListener("mousemove", handleMouseMove);
-        window.removeEventListener("mouseup", handleMouseUp);
-        window.removeEventListener("resize", handleResize);
-        cancelAnimationFrame(animId);
+      window.removeEventListener("resize", handleResize);
+      cancelAnimationFrame(animId);
     };
-  }, [layer]);
+  }, [domain]); 
 
-  return <canvas ref={canvasRef} className="fixed inset-0 z-0 pointer-events-auto cursor-grab active:cursor-grabbing" />;
+  return <canvas ref={canvasRef} className="fixed inset-0 z-0 opacity-60 pointer-events-none" />;
 }

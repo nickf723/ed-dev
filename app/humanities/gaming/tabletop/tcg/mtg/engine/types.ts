@@ -1,6 +1,8 @@
 // app/humanities/gaming/tabletop/tcg/mtg/engine/types.ts
 
 export type ManaColor = 'W' | 'U' | 'B' | 'R' | 'G' | 'C';
+export type AbilityType = 'ACTIVATED' | 'TRIGGERED' | 'STATIC';
+
 
 // 1. Raw API Data
 export interface ScryfallData {
@@ -14,7 +16,7 @@ export interface ScryfallData {
   toughness?: string;
   imageUrl: string | null;
   colors?: string[];
-  
+  abilities?: CardAbility[];
   // New Fields from API
   keywords: string[]; // e.g. ["Flying", "Haste"]
   produced_mana?: string[];
@@ -28,11 +30,7 @@ export interface CardState extends ScryfallData {
   zone: 'battlefield' | 'graveyard' | 'exile' | 'hand' | 'library' | 'command';
   tapped: boolean;
   counters: number;
-  
-  // RESTORED: For manual tags like "Token" or "Commander"
   notes?: string; 
-
-  // NEW: Abstracted Logic Flags
   mechanics: {
       isInstantSpeed: boolean;
       isLand: boolean;
@@ -61,6 +59,13 @@ export interface PlayerState {
   command: CardState[];
   commander: CardState | null;
   hand: CardState[];
-  // Optional: Monarch/Initiative tracking
   isMonarch?: boolean;
+}
+
+export interface CardAbility {
+  id: string;
+  type: AbilityType;
+  cost?: string; 
+  text: string; 
+  effectId: string;
 }
