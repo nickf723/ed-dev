@@ -1,131 +1,184 @@
 "use client";
+import React from "react";
 import Link from "next/link";
-import GeometryBackground from "@/app/formal-science/mathematics/geometry/GeometryBackground";
-import UnitCircleLab from "@/app/formal-science/mathematics/geometry/UnitCircleLab";
+import GeometryBackground from "./GeometryBackground";
 import { 
-  ArrowLeft, Triangle, Globe, Compass, 
-  Hexagon, Ruler
+  ArrowLeft, Ruler, Globe, 
+  Activity, Combine, Axis3d, 
+  Triangle, Shapes
 } from "lucide-react";
+
+// --- DOMAINS DATA ---
+const LEFT_COL = [
+  {
+    id: "euclidean",
+    title: "Euclidean",
+    subtitle: "Axiomatic / Flat",
+    desc: "The geometry of flat surfaces. Triangles add to 180°. Parallel lines never meet.",
+    icon: Ruler,
+    color: "text-sky-400",
+    border: "border-sky-500/30",
+    href: "geometry/euclidean"
+  },
+  {
+    id: "non-euclidean",
+    title: "Non-Euclidean",
+    subtitle: "Hyperbolic / Elliptic",
+    desc: "Curved space where parallel lines diverge or intersect. The geometry of gravity.",
+    icon: Globe,
+    color: "text-indigo-400",
+    border: "border-indigo-500/30",
+    href: "geometry/non-euclidean"
+  },
+  {
+    id: "trigonometry",
+    title: "Trigonometry",
+    subtitle: "Ratios / Cycles",
+    desc: "The bridge between angles and lengths. Sine waves and circular motion.",
+    icon: Triangle,
+    color: "text-teal-400",
+    border: "border-teal-500/30",
+    href: "geometry/trigonometry"
+  }
+];
+
+const RIGHT_COL = [
+  {
+    id: "analytic",
+    title: "Analytic",
+    subtitle: "Coordinate Systems",
+    desc: "Descartes' grid. Translating shapes into algebraic equations (y = mx + b).",
+    icon: Axis3d,
+    color: "text-blue-400",
+    border: "border-blue-500/30",
+    href: "geometry/analytic"
+  },
+  {
+    id: "topology",
+    title: "Topology",
+    subtitle: "Deformation",
+    desc: "Geometry without distance. Properties preserved under stretching and bending.",
+    icon: Combine,
+    color: "text-violet-400",
+    border: "border-violet-500/30",
+    href: "geometry/topology"
+  },
+  {
+    id: "fractal",
+    title: "Fractal",
+    subtitle: "Recursion / Chaos",
+    desc: "Self-similar structures. Fractional dimensions found in nature (coastlines, ferns).",
+    icon: Activity,
+    color: "text-fuchsia-400",
+    border: "border-fuchsia-500/30",
+    href: "geometry/fractal"
+  }
+];
 
 export default function GeometryPage() {
   return (
-    <main className="relative min-h-screen bg-[#022c22] text-emerald-50 overflow-hidden font-sans selection:bg-white/30">
+    <main className="relative min-h-screen bg-[#02040a] text-white overflow-hidden font-mono selection:bg-sky-500/30 flex flex-col">
       
       {/* 1. VISUAL ENGINE */}
       <GeometryBackground />
       
-      {/* OVERLAY */}
-      <div className="absolute inset-0 bg-radial-vignette opacity-70 pointer-events-none z-0" />
-
+      {/* OVERLAY: Clean Vignette */}
+      <div className="absolute inset-0 bg-radial-vignette opacity-80 pointer-events-none z-0" />
+      
       {/* 2. HEADER */}
-      <header className="relative z-20 flex items-center justify-between px-8 py-6 border-b border-white/10 bg-[#022c22]/90 backdrop-blur-md sticky top-0">
-         <div className="flex items-center gap-6">
-             <Link href="/formal-science/mathematics" className="flex items-center gap-2 text-xs font-mono text-emerald-400 hover:text-emerald-300 transition-colors uppercase tracking-widest">
-                <ArrowLeft size={12} /> Mathematics
-             </Link>
-             <div className="h-4 w-px bg-white/10" />
-             <div className="flex items-center gap-3">
-                 <div className="p-1.5 bg-emerald-950 border border-emerald-500/50 rounded">
-                    <Triangle size={18} className="text-emerald-500" />
-                 </div>
-                 <h1 className="text-xl font-bold text-white tracking-tight">
-                    GEOMETRY
-                 </h1>
-             </div>
-         </div>
-         <div className="hidden md:block text-[10px] font-mono text-emerald-500/50 uppercase tracking-widest">
-            Measure of Earth
-         </div>
+      <header className="relative z-10 w-full p-8 flex justify-between items-start pointer-events-none">
+           <div className="pointer-events-auto">
+               <Link href="./" className="flex items-center gap-2 text-xs text-sky-500 hover:text-white transition-colors mb-2 uppercase tracking-widest group">
+                  <ArrowLeft size={12} className="group-hover:-translate-x-1 transition-transform"/> Mathematics // Domain_02
+               </Link>
+               <h1 className="text-5xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-white to-sky-500/50">
+                   GEOMETRY
+               </h1>
+           </div>
+           
+           <div className="text-right hidden md:block">
+               <div className="text-[10px] text-sky-500/50 uppercase font-bold tracking-[0.2em] mb-1">
+                   Platonic Solid: Dodecahedron
+               </div>
+               <div className="text-[10px] text-zinc-600">
+                   Faces: 12 (Pentagons)
+               </div>
+           </div>
       </header>
 
-      {/* 3. CONTENT GRID */}
-      <div className="relative z-10 container mx-auto p-6 md:p-8">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                
-                {/* LEFT: THE CONCEPTS */}
-                <div className="lg:col-span-7 space-y-6">
-                    
-                    {/* HERO CARD */}
-                    <div className="bg-emerald-950/60 backdrop-blur-md border border-white/10 rounded-2xl p-8 relative overflow-hidden group">
-                        <div className="absolute top-0 right-0 p-24 bg-emerald-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
-                        
-                        <div className="relative z-10">
-                            <h2 className="text-3xl font-bold text-white mb-4">The Shape of Logic</h2>
-                            <p className="text-sm text-emerald-100/80 leading-relaxed mb-6">
-                                From the Greek <em>geo</em> (earth) and <em>metron</em> (measure). It is the study of properties of space that are preserved under various transformations. It starts with points and lines (Euclidean) and expands to curved space (Riemannian), which Einstein used to describe gravity.
-                            </p>
-                            <div className="flex gap-4">
-                                <div className="flex items-center gap-2 px-3 py-1.5 bg-black/30 rounded border border-white/5">
-                                    <Compass size={14} className="text-emerald-400" />
-                                    <span className="text-xs font-mono">Axioms</span>
-                                </div>
-                                <div className="flex items-center gap-2 px-3 py-1.5 bg-black/30 rounded border border-white/5">
-                                    <Hexagon size={14} className="text-emerald-400" />
-                                    <span className="text-xs font-mono">Polygons</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    
+      {/* 3. DUAL COLUMN LAYOUT */}
+      <div className="relative z-10 flex-1 flex flex-col md:flex-row justify-between items-center w-full max-w-7xl mx-auto px-6 pb-12 gap-12 md:gap-0">
+          
+          {/* LEFT BANK */}
+          <div className="flex flex-col gap-4 w-full md:w-80 pointer-events-auto">
+              {LEFT_COL.map((item) => (
+                  <Link 
+                      key={item.id}
+                      href={item.href}
+                      className={`
+                          group relative p-5 rounded-xl border backdrop-blur-sm
+                          bg-black/30 hover:bg-black/60 transition-all duration-300
+                          hover:-translate-y-1 hover:shadow-lg ${item.border}
+                      `}
+                  >
+                      <div className="flex items-center gap-4 mb-3">
+                          <div className={`p-2 rounded bg-white/5 ${item.color}`}>
+                              <item.icon size={20} />
+                          </div>
+                          <div>
+                              <div className="font-bold text-white leading-none">{item.title}</div>
+                              <div className={`text-[9px] uppercase font-bold tracking-wider mt-1 ${item.color} opacity-70`}>
+                                  {item.subtitle}
+                              </div>
+                          </div>
+                      </div>
+                      <p className="text-xs text-zinc-400 leading-relaxed pl-1">
+                          {item.desc}
+                      </p>
+                  </Link>
+              ))}
+          </div>
 
-                    {/* DOMAINS GRID */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        
-                        <div className="bg-emerald-950/40 border border-white/5 p-5 rounded-xl hover:border-emerald-500/30 transition-colors group">
-                            <div className="flex items-center gap-3 mb-2">
-                                <Ruler className="text-emerald-500" size={20} />
-                                <h3 className="font-bold text-white">Euclidean</h3>
-                            </div>
-                            <p className="text-xs text-emerald-100/60">
-                                Flat space. The geometry of everyday experience. $180^\circ$ in a triangle.
-                            </p>
-                        </div>
+          {/* CENTER SPACER (The Stage) */}
+          <div className="flex-1 h-full min-h-[300px] flex items-center justify-center pointer-events-none">
+              {/* Optional: Center label floating under the shape */}
+              <div className="mt-64 text-[10px] text-white/20 uppercase tracking-[0.5em] animate-pulse">
+                  Structure of Space
+              </div>
+          </div>
 
-                        <div className="bg-emerald-950/40 border border-white/5 p-5 rounded-xl hover:border-emerald-500/30 transition-colors group">
-                            <div className="flex items-center gap-3 mb-2">
-                                <Globe className="text-emerald-500" size={20} />
-                                <h3 className="font-bold text-white">Non-Euclidean</h3>
-                            </div>
-                            <p className="text-xs text-emerald-100/60">
-                                Curved space. Hyperbolic and Elliptic geometry. Lines can intersect twice or never.
-                            </p>
-                        </div>
-                        
-                        <div className="bg-emerald-950/40 border border-white/5 p-5 rounded-xl hover:border-emerald-500/30 transition-colors group">
-                            <div className="flex items-center gap-3 mb-2">
-                                <Compass className="text-emerald-500" size={20} />
-                                <h3 className="font-bold text-white">Trigonometry</h3>
-                            </div>
-                            <p className="text-xs text-emerald-100/60">
-                                The study of triangles and the relationships between lengths and angles.
-                            </p>
-                        </div>
+          {/* RIGHT BANK */}
+          <div className="flex flex-col gap-4 w-full md:w-80 pointer-events-auto">
+              {RIGHT_COL.map((item) => (
+                  <Link 
+                      key={item.id}
+                      href={item.href}
+                      className={`
+                          group relative p-5 rounded-xl border backdrop-blur-sm
+                          bg-black/30 hover:bg-black/60 transition-all duration-300
+                          hover:-translate-y-1 hover:shadow-lg ${item.border}
+                      `}
+                  >
+                      <div className="flex flex-row-reverse items-center gap-4 mb-3">
+                          <div className={`p-2 rounded bg-white/5 ${item.color}`}>
+                              <item.icon size={20} />
+                          </div>
+                          <div className="text-right">
+                              <div className="font-bold text-white leading-none">{item.title}</div>
+                              <div className={`text-[9px] uppercase font-bold tracking-wider mt-1 ${item.color} opacity-70`}>
+                                  {item.subtitle}
+                              </div>
+                          </div>
+                      </div>
+                      <p className="text-xs text-zinc-400 leading-relaxed text-right pr-1">
+                          {item.desc}
+                      </p>
+                  </Link>
+              ))}
+          </div>
 
-                    </div>
-                </div>
-
-                {/* RIGHT: INTERACTIVE LAB */}
-                <div className="lg:col-span-5 space-y-6 flex flex-col items-center">
-                    
-                    {/* WIDGET */}
-                    <UnitCircleLab />
-
-                    {/* PYTHAGORAS CARD */}
-                    <div className="bg-emerald-950/60 border border-white/10 rounded-xl p-6 w-full">
-                        <h3 className="font-bold text-white mb-2">Euclid's Elements</h3>
-                        <p className="text-xs text-emerald-100/60 leading-relaxed mb-3">
-                            Written around 300 BC, it is one of the most influential textbooks in history. It deduces the properties of geometric objects from a small set of axioms.
-                        </p>
-                        <div className="p-3 bg-black/20 rounded font-mono text-center text-lg text-emerald-400 font-bold border border-white/5">
-                            a² + b² = c²
-                        </div>
-                    </div>
-
-                </div>
-
-            </div>
       </div>
+
     </main>
   );
 }

@@ -1,231 +1,223 @@
 "use client";
-import { useState } from "react";
+import React from "react";
 import Link from "next/link";
-import NetworkBackground from "@/app/humanities/NetworkBackground";
-import { motion, AnimatePresence } from "framer-motion";
-import {
-  Library, Scroll, PenTool, Hourglass, 
-  Scale, BookOpen, Palette, Quote, Sparkles,
-  ArrowRight, Landmark,
-  Gamepad
+import HumanitiesBackground from "./HumanitiesBackground";
+import { 
+  ArrowLeft, Hourglass, Rocket, 
+  Scale, Star, BookOpen, 
+  Languages, Palette, Drama, 
+  Music, Flame, Gamepad2, 
+  Trophy, Feather
 } from "lucide-react";
+import GlyphBackground from "./GlyphBackground";
+import NetworkBackground from "../NetworkBackground";
 
-// --- DATA ---
-const archives = [
+// --- CURATED COLLECTIONS ---
+const DOMAINS = [
+  // ROW 1: TIME & THOUGHT
   {
     id: "history",
-    label: "HISTORY",
+    title: "History",
+    subtitle: "The Record",
     icon: Hourglass,
-    desc: "The Record of Time. Understanding the past to contextualize the present.",
-    color: "text-amber-400",
-    bg: "bg-amber-900/50",
-    border: "border-amber-500",
-    items: [
-      { 
-        title: "History", 
-        href: "/humanities/history/", 
-        icon: Landmark,
-        desc: "Our story: the chronicles of human civilization."
-      },
-      { 
-        title: "Archaeology", 
-        href: "/humanities/archaeology", 
-        icon: SearchIcon,
-        desc: "Uncovering the material remains of past human life."
-      }
-    ]
+    desc: "The study of past events. Understanding where we came from to know where we are going.",
+    color: "text-amber-500",
+    border: "border-amber-600/40"
+  },
+  {
+    id: "futurology",
+    title: "Futurology",
+    subtitle: "The Horizon",
+    icon: Rocket,
+    desc: "Postulating possible futures. Transhumanism, space colonization, and the singularity.",
+    color: "text-cyan-400", // Pop of modern color
+    border: "border-cyan-600/40"
   },
   {
     id: "philosophy",
-    label: "PHILOSOPHY",
-    icon: Scale,
-    desc: "The Pursuit of Wisdom. Examining existence, knowledge, values, and reason.",
-    color: "text-rose-400",
-    bg: "bg-rose-900/50",
-    border: "border-rose-500",
-    items: [
-      { 
-        title: "Metaphysics", 
-        href: "/humanities/philosophy/metaphysics", 
-        icon: Sparkles,
-        desc: "Exploring the fundamental nature of reality and being."
-      },
-      { 
-        title: "Ethics", 
-        href: "/humanities/philosophy/ethics", 
-        icon: Scale,
-        desc: "Moral philosophy: defining right, wrong, and the good life."
-      }
-    ]
+    title: "Philosophy",
+    subtitle: "The Logic",
+    icon: Scale, // Representing balance/reason
+    desc: "The study of knowledge, reality, and existence. Asking 'Why?' until it hurts.",
+    color: "text-zinc-300",
+    border: "border-zinc-500/40"
   },
   {
-    id: "arts",
-    label: "ARTS & LIT",
+    id: "religion",
+    title: "Religion",
+    subtitle: "The Belief",
+    icon: Star,
+    desc: "Systems of faith and worship. Exploring the human relationship with the divine.",
+    color: "text-yellow-200",
+    border: "border-yellow-500/40"
+  },
+  
+  // ROW 2: EXPRESSION
+  {
+    id: "literature",
+    title: "Literature",
+    subtitle: "The Story",
+    icon: BookOpen,
+    desc: "Written works of artistic merit. The novel, poetry, and the power of narrative.",
+    color: "text-stone-300",
+    border: "border-stone-500/40"
+  },
+  {
+    id: "language",
+    title: "Language",
+    subtitle: "The Code",
+    icon: Languages,
+    desc: "Linguistics and communication. The structure of how we transmit ideas.",
+    color: "text-rose-300",
+    border: "border-rose-500/40"
+  },
+  {
+    id: "visual-arts",
+    title: "Visual Arts",
+    subtitle: "The Image",
     icon: Palette,
-    desc: "The Expression of Soul. Literature, visual arts, and the creative impulse.",
-    color: "text-purple-400",
-    bg: "bg-purple-900/50",
-    border: "border-purple-500",
-    items: [
-      { 
-        title: "Literature", 
-        href: "/humanities/literature", 
-        icon: BookOpen,
-        desc: "Written works of lasting artistic merit."
-      },
-      { 
-        title: "Visual Arts", 
-        href: "/humanities/visual-arts", 
-        icon: Palette,
-        desc: "Painting, sculpture, and the visual aesthetics of culture."
-      },
-      {
-        title: "Performing Arts",
-        href: "/humanities/performing-arts",
-        icon: Scroll,
-        desc: "Theater, dance, and music as live artistic expression."
-      },
-      {
-        title: "Music",
-        href: "/humanities/music",
-        icon: PenTool,
-        desc: "The theory and history of music as an art form."
-      },
-      {
-        title: "Gaming",
-        href: "/humanities/gaming",
-        icon: Gamepad,
-        desc: "The art and culture of video games and interactive media."
-      },
-      {
-        title: "Sports",
-        href: "/humanities/sports",
-        icon: Sparkles,
-        desc: "The cultural and historical significance of sports."
-      }
-    ]
+    desc: "Painting, sculpture, and design. Manifesting imagination into the physical world.",
+    color: "text-fuchsia-400",
+    border: "border-fuchsia-500/40"
+  },
+  {
+    id: "performing-arts",
+    title: "Performing Arts",
+    subtitle: "The Stage",
+    icon: Drama,
+    desc: "Theater, dance, and cinema. The ephemeral art of the moment.",
+    color: "text-red-400",
+    border: "border-red-500/40"
+  },
+
+  // ROW 3: CULTURE & PLAY
+  {
+    id: "music",
+    title: "Music",
+    subtitle: "The Sound",
+    icon: Music,
+    desc: "Harmonic frequencies. Theory, composition, and the universal language.",
+    color: "text-violet-400",
+    border: "border-violet-500/40"
+  },
+  {
+    id: "culinary-arts",
+    title: "Culinary Arts",
+    subtitle: "The Taste",
+    icon: Flame,
+    desc: "Gastronomy and cooking. The intersection of chemistry, culture, and sustenance.",
+    color: "text-orange-400",
+    border: "border-orange-500/40"
+  },
+  {
+    id: "gaming",
+    title: "Gaming",
+    subtitle: "The Simulation",
+    icon: Gamepad2,
+    desc: "Interactive entertainment. Ludology, game design, and virtual worlds.",
+    color: "text-green-400",
+    border: "border-green-500/40"
+  },
+  {
+    id: "sports",
+    title: "Sports",
+    subtitle: "The Motion",
+    icon: Trophy,
+    desc: "Physical exertion and skill. Strategy, athleticism, and the limits of the human body.",
+    color: "text-emerald-400",
+    border: "border-emerald-500/40"
   }
 ];
 
-// Helper Icon
-function SearchIcon(props: any) {
-    return <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/><path d="M16 11h-2"/><path d="M11 16v-2"/></svg>
-}
-
 export default function HumanitiesPage() {
-  const [activeTab, setActiveTab] = useState("history");
-  const activeArchive = archives.find(a => a.id === activeTab) || archives[0];
-
   return (
-    <main className="relative min-h-screen bg-[#1a0505] text-stone-200 overflow-hidden selection:bg-amber-500/30 font-serif">
+    <main className="relative min-h-screen bg-[#0f0505] text-white overflow-hidden font-serif selection:bg-amber-500/30 flex flex-col">
       
       {/* 1. VISUAL ENGINE */}
-      <NetworkBackground />
+      <HumanitiesBackground />
       
-      {/* OVERLAY: Paper Texture & Vignette */}
-      <div className="absolute inset-0 bg-[url('/noise.png')] opacity-[0.05] pointer-events-none z-0 mix-blend-overlay" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,#0f0202_100%)] pointer-events-none z-0" />
+      {/* OVERLAY: Paper Texture */}
+      <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-20 pointer-events-none z-0 mix-blend-overlay" />
+      <div className="absolute inset-0 bg-gradient-to-b from-[#0f0505] via-transparent to-[#0f0505] pointer-events-none z-0" />
 
-      {/* 2. DASHBOARD UI */}
-      <div className="relative z-10 container mx-auto px-6 py-12 min-h-screen flex flex-col">
-        
-        {/* HEADER */}
-        <header className="mb-16 text-center md:text-left">
-             <div className="flex items-center justify-center md:justify-start gap-2 text-xs font-mono text-amber-500/80 mb-4 uppercase tracking-[0.2em] border-b border-amber-900/50 pb-4 w-fit mx-auto md:mx-0">
-                <Library size={14} /> The Great Archives // Humanities
+      {/* 2. HEADER */}
+      <header className="relative z-10 p-8 pb-4 text-center">
+         <Link href="/" className="inline-flex items-center gap-2 text-xs text-amber-500 hover:text-white transition-colors mb-4 uppercase tracking-widest font-sans group">
+            <ArrowLeft size={12} className="group-hover:-translate-x-1 transition-transform"/> Return Home
+         </Link>
+         
+         <div className="flex flex-col items-center gap-4">
+             <div className="w-16 h-16 rounded-full border border-amber-500/30 flex items-center justify-center bg-amber-950/20 backdrop-blur-md">
+                 <Feather size={32} className="text-amber-500" />
              </div>
-             
-             <h1 className="text-6xl md:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-b from-amber-100 to-amber-700 mb-6 drop-shadow-lg tracking-tight">
-                THE<br/>HUMANITIES
-             </h1>
-             
-             <div className="relative max-w-2xl mx-auto md:mx-0">
-                 <Quote className="absolute -left-8 -top-4 text-amber-900/50 scale-150 transform -scale-x-100" size={48} />
-                 <p className="text-stone-400 text-lg md:text-xl leading-relaxed italic border-l-2 border-amber-800/50 pl-6">
-                    "Science explains how the world works; the Humanities explain what it means to be human."
-                 </p>
+             <div>
+                <h1 className="text-5xl md:text-6xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-b from-amber-100 to-amber-700">
+                   HUMANITIES
+                </h1>
+                <p className="text-amber-500/60 text-sm tracking-widest uppercase font-sans mt-2">
+                    The Study of the Human Condition
+                </p>
              </div>
-        </header>
+         </div>
+      </header>
 
-        {/* 3. ARCHIVE SELECTOR (Tabs) */}
-        <div className="flex flex-wrap justify-center md:justify-start gap-6 mb-12">
-            {archives.map((cat) => (
-                <button
-                    key={cat.id}
-                    onClick={() => setActiveTab(cat.id)}
-                    className={`
-                        relative px-8 py-4 rounded-sm border transition-all duration-500 group overflow-hidden
-                        ${activeTab === cat.id 
-                            ? `bg-[#2a0a0a] ${cat.border} text-amber-100 shadow-[0_0_30px_-5px_rgba(0,0,0,0.8)]` 
-                            : "bg-[#1f0808] border-white/5 text-stone-500 hover:text-stone-300 hover:border-white/20"
-                        }
-                    `}
-                >
-                    {/* Hover Shine Effect */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]" />
-                    
-                    <div className="flex items-center gap-3 relative z-10">
-                        <cat.icon size={18} className={activeTab === cat.id ? cat.color : ""} />
-                        <span className="font-bold tracking-[0.15em] text-xs font-sans">{cat.label}</span>
-                    </div>
-                </button>
-            ))}
-        </div>
+      {/* 3. THE GALLERY (Grid) */}
+      <div className="relative z-10 flex-1 overflow-y-auto pb-12">
+          <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 pt-8">
+              
+              {DOMAINS.map((item, i) => (
+                  <Link 
+                      key={item.id}
+                      href={`/humanities/${item.id}`}
+                      className={`
+                          group relative flex flex-col p-6 rounded-sm
+                          border backdrop-blur-sm bg-[#1a0a0a]/60
+                          transition-all duration-500
+                          hover:-translate-y-2 hover:shadow-[0_10px_30px_rgba(0,0,0,0.5)]
+                          ${item.border}
+                      `}
+                  >
+                      {/* Frame Decoration */}
+                      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
 
-        {/* 4. CONTENT DISPLAY */}
-        <div className="flex-1">
-            <AnimatePresence mode="wait">
-                <motion.div
-                    key={activeTab}
-                    initial={{ opacity: 0, scale: 0.95, filter: "blur(10px)" }}
-                    animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-                    exit={{ opacity: 0, scale: 1.05, filter: "blur(10px)" }}
-                    transition={{ duration: 0.4 }}
-                >
-                    {/* Description Block */}
-                    <div className="mb-10 flex items-center gap-4">
-                        <div className={`w-2 h-2 rounded-full ${activeArchive.bg} border ${activeArchive.border}`} />
-                        <span className={`font-mono text-xs uppercase tracking-widest ${activeArchive.color}`}>
-                            {activeArchive.desc}
-                        </span>
-                        <div className="h-px flex-1 bg-gradient-to-r from-white/10 to-transparent" />
-                    </div>
+                      {/* Header */}
+                      <div className="flex justify-between items-start mb-4">
+                          <div className={`p-3 rounded-full bg-black/40 border border-white/5 ${item.color} group-hover:scale-110 transition-transform duration-500`}>
+                              <item.icon size={20} />
+                          </div>
+                          <span className="font-sans text-[10px] text-white/20 font-bold uppercase tracking-widest">
+                              {i < 9 ? `0${i+1}` : i+1}
+                          </span>
+                      </div>
 
-                    {/* Cards Grid */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        {activeArchive.items.map((item) => (
-                            <Link 
-                                href={item.href} 
-                                key={item.title}
-                                className="group relative bg-[#150505] border border-white/5 p-8 hover:border-amber-500/30 transition-all duration-500 hover:-translate-y-1 shadow-2xl"
-                            >
-                                {/* Decorative Corners */}
-                                <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-white/20 group-hover:border-amber-500/50 transition-colors" />
-                                <div className="absolute top-0 right-0 w-2 h-2 border-t border-r border-white/20 group-hover:border-amber-500/50 transition-colors" />
-                                <div className="absolute bottom-0 left-0 w-2 h-2 border-b border-l border-white/20 group-hover:border-amber-500/50 transition-colors" />
-                                <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-white/20 group-hover:border-amber-500/50 transition-colors" />
+                      {/* Content */}
+                      <div>
+                          <h2 className="text-2xl font-bold text-white mb-1 group-hover:text-amber-100 transition-colors">
+                              {item.title}
+                          </h2>
+                          <div className={`font-sans text-[10px] font-bold uppercase tracking-wider mb-4 opacity-70 ${item.color}`}>
+                              {item.subtitle}
+                          </div>
+                          <p className="text-sm text-zinc-400 leading-relaxed font-sans opacity-80 group-hover:opacity-100 transition-opacity">
+                              {item.desc}
+                          </p>
+                      </div>
 
-                                <div className="flex justify-between items-start mb-6">
-                                    <div className={`p-4 bg-black/40 border border-white/5 shadow-inner ${activeArchive.color}`}>
-                                        <item.icon size={32} strokeWidth={1.5} />
-                                    </div>
-                                    <ArrowRight className="text-stone-700 group-hover:text-amber-500 transition-colors duration-300" />
-                                </div>
-                                
-                                <h3 className="text-2xl font-bold text-stone-100 mb-3 group-hover:text-amber-200 transition-colors font-serif tracking-wide">
-                                    {item.title}
-                                </h3>
-                                <p className="text-sm text-stone-500 leading-relaxed font-sans">
-                                    {item.desc}
-                                </p>
-                            </Link>
-                        ))}
-                    </div>
-                </motion.div>
-            </AnimatePresence>
-        </div>
+                      {/* Hover Interaction: "Read More" Line */}
+                      <div className="mt-6 h-px w-full bg-white/5 group-hover:bg-white/20 transition-colors" />
+                  </Link>
+              ))}
 
+          </div>
       </div>
+      
+      {/* FOOTER */}
+      <div className="relative z-10 p-6 text-center">
+          <div className="text-[10px] text-amber-900/50 uppercase font-sans font-bold tracking-[0.3em]">
+              Ars Longa, Vita Brevis
+          </div>
+      </div>
+
     </main>
   );
 }

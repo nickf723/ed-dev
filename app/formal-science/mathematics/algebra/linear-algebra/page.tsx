@@ -19,7 +19,8 @@ const MATRIX_ELEMENTS = [
     desc: "Direction & Magnitude",
     color: "text-red-400",
     border: "group-hover:border-red-500/50",
-    bg: "group-hover:bg-red-950/30"
+    bg: "group-hover:bg-red-950/30",
+    href: "linear-algebra/vectors"
   },
   {
     id: "matrices",
@@ -29,7 +30,8 @@ const MATRIX_ELEMENTS = [
     desc: "The Grid Structure",
     color: "text-emerald-400",
     border: "group-hover:border-emerald-500/50",
-    bg: "group-hover:bg-emerald-950/30"
+    bg: "group-hover:bg-emerald-950/30",
+    href: "linear-algebra/matrices"
   },
   {
     id: "systems",
@@ -39,7 +41,8 @@ const MATRIX_ELEMENTS = [
     desc: "Gaussian RREF",
     color: "text-blue-400",
     border: "group-hover:border-blue-500/50",
-    bg: "group-hover:bg-blue-950/30"
+    bg: "group-hover:bg-blue-950/30",
+    href: "linear-algebra/systems"
   },
   // ROW 2
   {
@@ -50,7 +53,8 @@ const MATRIX_ELEMENTS = [
     desc: "Area Scaling",
     color: "text-amber-400",
     border: "group-hover:border-amber-500/50",
-    bg: "group-hover:bg-amber-950/30"
+    bg: "group-hover:bg-amber-950/30",
+    href: "linear-algebra/determinants"
   },
   {
     id: "spaces",
@@ -60,7 +64,8 @@ const MATRIX_ELEMENTS = [
     desc: "Basis & Span",
     color: "text-violet-400",
     border: "group-hover:border-violet-500/50",
-    bg: "group-hover:bg-violet-950/30"
+    bg: "group-hover:bg-violet-950/30",
+    href: "linear-algebra/spaces"
   },
   {
     id: "eigen",
@@ -71,7 +76,7 @@ const MATRIX_ELEMENTS = [
     color: "text-fuchsia-400",
     border: "group-hover:border-fuchsia-500/50",
     bg: "group-hover:bg-fuchsia-950/30",
-    href: ""
+    href: "linear-algebra/eigen"
   }
 ];
 

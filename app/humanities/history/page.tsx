@@ -1,184 +1,138 @@
 "use client";
-import { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
-import TimeBackground from "@/app/humanities/history/TimeBackground";
-import EraTimeline from "@/app/humanities/history/EraTimeline";
-import { motion, AnimatePresence } from "framer-motion";
-import { 
-  ArrowLeft, Hourglass, Globe, BookOpen, Scroll, 
-  Landmark, Map, PenTool, FlaskConical, Palette
-} from "lucide-react";
+import { ArrowLeft, Search, Calendar, ChevronRight } from "lucide-react";
 
-// --- DATA ---
-const classifications = [
-  { id: "chronological", label: "CHRONOLOGICAL", icon: Hourglass },
-  { id: "regional", label: "REGIONAL", icon: Globe },
-  { id: "thematic", label: "THEMATIC", icon: BookOpen },
+// --- MOCK DATA: THE AGES ---
+const ERAS = [
+  { id: "ancient", year: -3000, label: "Ancient Era", color: "text-amber-500" },
+  { id: "classical", year: -500, label: "Classical Antiquity", color: "text-rose-500" },
+  { id: "medieval", year: 500, label: "The Middle Ages", color: "text-emerald-500" },
+  { id: "renaissance", year: 1400, label: "The Renaissance", color: "text-purple-500" },
+  { id: "industrial", year: 1760, label: "Industrial Revolution", color: "text-cyan-500" },
+  { id: "modern", year: 1900, label: "The Modern Age", color: "text-white" },
+  { id: "digital", year: 1980, label: "The Digital Age", color: "text-lime-400" },
 ];
 
 export default function HistoryPage() {
-  const [activeView, setActiveView] = useState("chronological");
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Sync scroll to state
+  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
+    const progress = scrollTop / (scrollHeight - clientHeight);
+    setScrollProgress(progress);
+  };
 
   return (
-    <main className="relative min-h-screen bg-[#1a0505] text-stone-200 overflow-hidden selection:bg-amber-500/30 font-serif">
+    <main className="relative h-screen bg-[#050505] text-stone-200 font-serif overflow-hidden selection:bg-amber-500/30">
       
-      {/* 1. VISUAL ENGINE */}
-      <TimeBackground />
-      
-      {/* OVERLAY */}
-      <div className="absolute inset-0 bg-[url('/noise.png')] opacity-[0.06] pointer-events-none z-0 mix-blend-overlay" />
-      <div className="absolute inset-0 bg-radial-vignette opacity-60 pointer-events-none z-0" />
-
-      {/* 2. DASHBOARD */}
-      <div className="relative z-10 container mx-auto px-6 py-12 min-h-screen flex flex-col">
-        
-        {/* HEADER */}
-        <header className="mb-12">
-             <Link href="/humanities" className="flex items-center gap-2 text-xs font-mono text-amber-600 hover:text-amber-500 transition-colors mb-4 uppercase tracking-widest">
-                <ArrowLeft size={12} /> Humanities // History
-             </Link>
-             <div className="flex items-center gap-4 mb-8">
-                 <div className="p-3 bg-amber-900/30 border border-amber-500/20 rounded-sm rotate-3">
-                    <Scroll size={32} className="text-amber-500" />
-                 </div>
-                 <h1 className="text-5xl md:text-7xl font-black text-amber-100 tracking-tighter drop-shadow-xl">
-                    HISTORY
-                 </h1>
+      {/* 1. HEADER */}
+      <header className="fixed top-0 left-0 w-full z-50 p-6 flex justify-between items-start pointer-events-none">
+         <Link href="/humanities" className="pointer-events-auto flex items-center gap-2 text-stone-500 hover:text-white transition-colors group">
+            <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform"/>
+            <span className="text-xs font-bold font-sans uppercase tracking-widest">Return</span>
+         </Link>
+         
+         <div className="text-right">
+             <h1 className="text-4xl font-black text-white tracking-tight">CHRONOS</h1>
+             <div className="text-[10px] font-sans font-bold uppercase tracking-[0.3em] text-stone-500">
+                 The Record of Human Events
              </div>
+         </div>
+      </header>
 
-             {/* CLASSIFICATION TABS */}
-             <div className="flex gap-1 bg-black/30 p-1 rounded-lg w-fit backdrop-blur-md border border-white/10">
-                 {classifications.map((c) => (
-                     <button
-                        key={c.id}
-                        onClick={() => setActiveView(c.id)}
-                        className={`
-                            px-6 py-2 rounded-md flex items-center gap-2 text-xs font-bold uppercase tracking-wider transition-all
-                            ${activeView === c.id 
-                                ? "bg-amber-800 text-white shadow-lg" 
-                                : "hover:bg-white/5 text-stone-500 hover:text-stone-300"
-                            }
-                        `}
-                     >
-                         <c.icon size={14} /> {c.label}
-                     </button>
-                 ))}
-             </div>
-        </header>
-
-        {/* 3. DYNAMIC CONTENT AREA */}
-        <div className="flex-1 relative">
-            <AnimatePresence mode="wait">
-                
-                {/* VIEW 1: CHRONOLOGICAL */}
-                {activeView === "chronological" && (
-                    <motion.div
-                        key="chronos"
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: 20 }}
-                        className="space-y-8"
-                    >
-                        <EraTimeline />
-                        
-
-[Image of historical timeline chart]
-
-
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div className="p-6 bg-[#120404] border border-amber-900/30 hover:border-amber-500/50 transition-colors group">
-                                <div className="text-amber-500 font-bold mb-2 flex items-center gap-2">
-                                    <Landmark size={18} /> ANCIENT HISTORY
-                                </div>
-                                <p className="text-sm text-stone-500 leading-relaxed">
-                                    The cradle of civilization. From the invention of writing in Sumer to the fall of the Western Roman Empire.
-                                </p>
-                            </div>
-                            <div className="p-6 bg-[#120404] border border-amber-900/30 hover:border-amber-500/50 transition-colors group">
-                                <div className="text-amber-500 font-bold mb-2 flex items-center gap-2">
-                                    <Scroll size={18} /> POST-CLASSICAL
-                                </div>
-                                <p className="text-sm text-stone-500 leading-relaxed">
-                                    The Middle Ages. The Golden Age of Islam, the feudal systems of Europe, and the Silk Road trade networks.
-                                </p>
-                            </div>
-                            {/* Add Modern etc... */}
-                        </div>
-                    </motion.div>
-                )}
-
-                {/* VIEW 2: REGIONAL */}
-                {activeView === "regional" && (
-                    <motion.div
-                        key="topos"
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: 20 }}
-                    >
-                        
-
-[Image of world civilizations map]
-
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-6">
-                            <RegionalCard title="The West" sub="Europe & Americas" icon={Map} color="text-blue-400" />
-                            <RegionalCard title="The East" sub="Asia & Oceania" icon={Globe} color="text-red-400" />
-                            <RegionalCard title="The South" sub="Africa & South America" icon={Map} color="text-amber-400" />
-                        </div>
-                    </motion.div>
-                )}
-
-                {/* VIEW 3: THEMATIC */}
-                {activeView === "thematic" && (
-                    <motion.div
-                        key="thema"
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: 20 }}
-                        className="grid grid-cols-1 md:grid-cols-2 gap-6"
-                    >
-                        <div className="bg-[#2a0a0a] p-8 border-l-4 border-purple-500 shadow-xl">
-                            <Palette size={32} className="text-purple-500 mb-4" />
-                            <h2 className="text-2xl font-bold text-white mb-2">History of Art</h2>
-                            <p className="text-stone-400 text-sm">
-                                From cave paintings at Lascaux to the digital revolution. How visual expression mirrors the human condition.
-                            </p>
-                        </div>
-
-                        <div className="bg-[#2a0a0a] p-8 border-l-4 border-cyan-500 shadow-xl">
-                            <FlaskConical size={32} className="text-cyan-500 mb-4" />
-                            <h2 className="text-2xl font-bold text-white mb-2">History of Science</h2>
-                            <p className="text-stone-400 text-sm">
-                                The evolution of empirical thought. From Aristotelian physics to Quantum Mechanics.
-                            </p>
-                        </div>
-                        
-                        <div className="bg-[#2a0a0a] p-8 border-l-4 border-rose-500 shadow-xl">
-                            <PenTool size={32} className="text-rose-500 mb-4" />
-                            <h2 className="text-2xl font-bold text-white mb-2">Intellectual History</h2>
-                            <p className="text-stone-400 text-sm">
-                                The history of ideas. How philosophy, religion, and political thought have shaped societies.
-                            </p>
-                        </div>
-                    </motion.div>
-                )}
-
-            </AnimatePresence>
-        </div>
-
+      {/* 2. THE CHRONOMETER (Navigation Rail) */}
+      <div className="fixed right-8 top-1/2 -translate-y-1/2 z-50 flex flex-col gap-1 pointer-events-none">
+          {ERAS.map((era, i) => {
+              // Calculate if this era is currently "active" based on scroll
+              // (Simple mock logic: distribute them evenly across 0-1 range)
+              const eraPos = i / (ERAS.length - 1); 
+              const isActive = Math.abs(scrollProgress - eraPos) < 0.1;
+              
+              return (
+                  <div key={era.id} className="group flex items-center justify-end gap-4 h-8 pointer-events-auto cursor-pointer">
+                      <span className={`
+                          text-[10px] font-sans font-bold uppercase tracking-widest transition-all duration-300
+                          ${isActive ? `opacity-100 ${era.color} translate-x-0` : "opacity-0 translate-x-4 group-hover:opacity-100 group-hover:translate-x-0"}
+                      `}>
+                          {era.label}
+                      </span>
+                      
+                      {/* The Tick Mark */}
+                      <div className={`
+                          w-1 h-1 rounded-full transition-all duration-300
+                          ${isActive ? `bg-white scale-150` : "bg-stone-700 group-hover:bg-stone-400"}
+                      `} />
+                  </div>
+              )
+          })}
+          
+          {/* The Progress Line */}
+          <div className="absolute top-2 bottom-2 right-[1.5px] w-px bg-stone-800 -z-10" />
+          {/* The Moving Indicator */}
+          <div 
+            className="absolute right-[1.5px] w-px bg-white transition-all duration-75 ease-out"
+            style={{ 
+                top: '0.5rem', 
+                height: `${scrollProgress * 100}%`,
+                maxHeight: 'calc(100% - 1rem)'
+            }} 
+          />
       </div>
+
+      {/* 3. THE Z-AXIS SCROLL CONTAINER */}
+      {/* This simulates depth. Items closer to the top are "farther away" in time? 
+          Actually, let's do standard vertical scroll but style it to look like depth. */}
+      <div 
+        ref={containerRef}
+        onScroll={handleScroll}
+        className="absolute inset-0 overflow-y-auto scrollbar-hide perspective-1000"
+      >
+          <div className="relative min-h-[400vh] flex flex-col items-center pt-[50vh] pb-[50vh]">
+              
+              {ERAS.map((era, i) => (
+                  <section 
+                    key={era.id} 
+                    className="h-screen w-full max-w-4xl mx-auto flex items-center justify-center relative"
+                  >
+                      {/* Timeline Line connecting sections */}
+                      <div className="absolute top-0 bottom-0 left-1/2 w-px bg-gradient-to-b from-transparent via-white/20 to-transparent -z-10" />
+
+                      {/* The Content Card */}
+                      <div className="relative p-12 bg-black/40 border border-white/5 backdrop-blur-sm rounded-lg text-center transform transition-all hover:scale-105 hover:bg-black/60 hover:border-white/20 group">
+                          
+                          {/* Year Marker */}
+                          <div className={`
+                              absolute -top-6 left-1/2 -translate-x-1/2 
+                              px-4 py-1 rounded-full bg-[#050505] border border-white/10
+                              text-xl font-bold font-sans tracking-widest ${era.color}
+                          `}>
+                              {Math.abs(era.year)} {era.year < 0 ? 'BCE' : 'CE'}
+                          </div>
+
+                          <h2 className="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-stone-600 mb-6">
+                              {era.label}
+                          </h2>
+                          
+                          <p className="text-lg text-stone-400 max-w-lg mx-auto leading-relaxed">
+                              [Summary of the {era.label}. Key events, figures, and shifts in human consciousness.]
+                          </p>
+
+                          <div className="mt-8 flex justify-center gap-4">
+                              <button className="px-6 py-2 rounded-full border border-white/10 hover:bg-white hover:text-black transition-all text-xs font-sans font-bold uppercase tracking-widest flex items-center gap-2">
+                                  Explore Era <ChevronRight size={12} />
+                              </button>
+                          </div>
+                      </div>
+
+                  </section>
+              ))}
+
+          </div>
+      </div>
+
     </main>
   );
-}
-
-function RegionalCard({ title, sub, icon: Icon, color }: any) {
-    return (
-        <div className="aspect-[3/4] bg-[#120404] border border-white/5 p-6 flex flex-col items-center justify-center text-center hover:bg-[#1a0505] transition-colors group cursor-pointer relative overflow-hidden">
-            <div className={`absolute inset-0 bg-gradient-to-t from-black/80 to-transparent z-0`} />
-            <div className={`p-4 rounded-full bg-white/5 mb-4 group-hover:scale-110 transition-transform relative z-10 ${color}`}>
-                <Icon size={32} />
-            </div>
-            <h3 className="text-2xl font-bold text-white font-serif relative z-10">{title}</h3>
-            <span className="text-xs font-mono text-stone-500 uppercase tracking-widest mt-2 relative z-10">{sub}</span>
-        </div>
-    )
 }
