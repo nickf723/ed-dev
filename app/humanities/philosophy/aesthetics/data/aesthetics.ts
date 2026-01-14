@@ -88,7 +88,7 @@ export const AESTHETICS_DB: AestheticProfile[] = [
           title: "The Mega-Block", 
           desc: "A self-contained brutalist city-within-a-building. 200 floors of cramped housing, vending machines, and crime.", 
           imageQuery: "cyberpunk brutalist megabuilding apartment",
-          localImage: "https://images.unsplash.com/photo-1605218427306-635ba2439af2?q=80&w=1000&auto=format&fit=crop"
+          localImage: "/images/cyberpunk/arc_mega-block.jpg"
         },
         { 
           title: "The Neon Market", 
