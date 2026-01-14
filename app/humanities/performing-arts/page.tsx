@@ -11,14 +11,14 @@ import {
 // --- DATA SCHEMA (Unchanged) ---
 const PERFORMING_ARTS_DATA = [
   {
-    id: "screen",
-    title: "Screen",
-    fullTitle: "Screen Performance",
+    id: "tv-film",
+    title: "TV & Film",
+    fullTitle: "TV & Film",
     desc: "The captured performance. From the silver screen to the streaming stream.",
     icon: Clapperboard,
     color: "text-cyan-400",
     accent: "bg-cyan-500",
-    repositoryId: "screen-db",
+    repositoryId: "tv-film-db",
     subdomains: [
       { title: "Cinema & TV", desc: "Episodic & feature storytelling." },
       { title: "Voice Acting", desc: "Animation & narrative audio." },

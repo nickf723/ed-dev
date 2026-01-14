@@ -43,7 +43,8 @@ export default function PerformingArtsBackground() {
         { color: "rgba(244, 63, 94, 0.15)", speed: 0.002, freq: 0.003, amp: 100 }, // Rose
         { color: "rgba(14, 165, 233, 0.15)", speed: 0.003, freq: 0.005, amp: 150 }, // Cyan
         { color: "rgba(217, 70, 239, 0.15)", speed: 0.001, freq: 0.002, amp: 200 }, // Fuchsia
-        
+        { color: "rgba(34, 197, 94, 0.15)", speed: 0.0025, freq: 0.004, amp: 120 },  // Green
+        { color: "rgba(251, 191, 36, 0.15)", speed: 0.0022, freq: 0.0035, amp: 130 } // Amber
       ].forEach((wave, i) => {
           ctx.beginPath();
           ctx.strokeStyle = wave.color;
