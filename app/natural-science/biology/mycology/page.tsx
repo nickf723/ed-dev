@@ -1,124 +1,112 @@
 "use client";
+import React, { useState } from "react";
 import Link from "next/link";
-import { M } from "@/components/Math";
-import MyceliumBackground from "@/app/natural-science/biology/mycology/MyceliumBackground";
-import WoodWideWebWidget from "@/app/natural-science/biology/mycology/WoodWideWebWidget";
-import { 
-  ArrowLeft, Sprout, Network, Recycle, Skull, Umbrella 
-} from "lucide-react";
+import MycologyBackground from "./MycologyBackground";
+import { MYCOLOGY_CONFIG, Edibility } from "./mycology-data";
+import { useWikiMycology, FungiRecord } from "./useWikiMycology";
+import { ArrowLeft, Skull, Sprout, AlertTriangle, ScanLine, Microscope } from "lucide-react";
 
 export default function MycologyPage() {
+  const { data, loading } = useWikiMycology();
+  const [selectedFungi, setSelectedFungi] = useState<FungiRecord | null>(null);
+
   return (
-    <main className="relative min-h-screen bg-[#1c1917] text-stone-200 overflow-hidden selection:bg-purple-500/30 font-sans">
+    <main className="min-h-screen bg-[#05050a] text-stone-200 font-sans pl-0 md:pl-80 relative overflow-hidden selection:bg-purple-500/30">
       
       {/* 1. VISUAL ENGINE */}
-      <MyceliumBackground />
-      
-      {/* VIGNETTE */}
-      <div className="absolute inset-0 bg-radial-vignette opacity-80 pointer-events-none z-0" />
+      <MycologyBackground />
+      {/* UV Vignette */}
+      <div className="fixed inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,#000_100%)] pointer-events-none opacity-80" />
 
-      {/* 2. DASHBOARD */}
-      <div className="relative z-10 container mx-auto px-6 py-12 min-h-screen flex flex-col pointer-events-none">
+      <div className="relative z-10 p-6 md:p-12 min-h-screen flex flex-col">
         
         {/* HEADER */}
-        <header className="flex justify-between items-start mb-16 pointer-events-auto">
-             <div>
-                 <Link href="/natural-science/biology" className="flex items-center gap-2 text-xs font-mono text-stone-500 hover:text-stone-400 transition-colors mb-4 uppercase tracking-widest">
-                    <ArrowLeft size={12} /> Biology // Fungi
-                 </Link>
-                 <div className="flex items-center gap-4">
-                     <div className="p-3 bg-purple-900/30 border border-purple-500/20 rounded-2xl">
-                        <Umbrella size={32} className="text-purple-400" />
-                     </div>
-                     <h1 className="text-5xl md:text-7xl font-black text-stone-100 tracking-tighter drop-shadow-lg font-serif">
-                        MYCOLOGY
-                     </h1>
-                 </div>
-             </div>
-             
-             <div className="hidden md:block text-right font-mono text-stone-500 text-xs">
-                 <div>KINGDOM: Fungi</div>
-                 <div>ROLE: Decomposers</div>
-             </div>
+        <header className="mb-16 flex justify-between items-end">
+            <div>
+                <Link href="/natural-science/biology" className="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-purple-400 hover:text-white transition-colors mb-6">
+                    <ArrowLeft size={10} /> Biology Dept
+                </Link>
+                <h1 className="text-5xl md:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-br from-purple-400 to-emerald-400 tracking-tighter mb-2 filter drop-shadow-[0_0_10px_rgba(168,85,247,0.5)]">
+                    THE SPOREIUM
+                </h1>
+                <p className="text-purple-300/60 font-mono text-xs uppercase tracking-widest">
+                    Fungal Research // Subterranean Sector
+                </p>
+            </div>
+            
+            {/* Caution Badge */}
+            <div className="hidden md:flex items-center gap-3 px-4 py-2 rounded border border-red-500/20 bg-red-950/20 text-red-400">
+                <AlertTriangle size={16} />
+                <div className="text-[10px] font-bold uppercase tracking-widest">
+                    Toxic Specimens Contained
+                </div>
+            </div>
         </header>
 
+        {/* FUNGI GRID */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 pb-20">
+            {data.map((fungi) => {
+                const config = MYCOLOGY_CONFIG[fungi.edibility];
+                const Icon = config.icon;
+                
+                return (
+                    <div 
+                        key={fungi.id}
+                        className="group relative rounded-2xl bg-neutral-900/40 border border-white/5 overflow-hidden hover:-translate-y-2 transition-transform duration-500"
+                    >
+                        {/* Hazard Border for Deadly items */}
+                        {fungi.edibility === 'DEADLY' && (
+                             <div className="absolute inset-0 border-2 border-red-600/50 rounded-2xl pointer-events-none z-20 animate-pulse" />
+                        )}
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 flex-1 pointer-events-auto">
+                        {/* Image */}
+                        <div className="h-48 w-full bg-black relative overflow-hidden">
+                            
+                            {fungi.thumbnail ? (
+                                <img src={fungi.thumbnail} className="w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700 filter grayscale group-hover:grayscale-0" />
+                            ) : (
+                                <div className="w-full h-full flex items-center justify-center bg-white/5 text-stone-700 font-mono text-xs">NO VISUAL</div>
+                            )}
+                            <div className="absolute inset-0 bg-gradient-to-t from-[#05050a] to-transparent" />
+                        </div>
+
+                        {/* Data Card */}
+                        <div className="p-6 relative">
+                            {/* Bioluminescent Glow on Hover */}
+                            <div className={`absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-500 bg-gradient-to-t ${fungi.edibility === 'DEADLY' ? 'from-red-600' : 'from-purple-600'} to-transparent pointer-events-none`} />
+
+                            <div className="relative z-10">
+                                <div className="flex justify-between items-start mb-4">
+                                    <h2 className="text-2xl font-bold text-white leading-none">{fungi.title}</h2>
+                                    {/* Edibility Badge */}
+                                    <div className={`p-2 rounded-lg ${config.bg} ${config.color} border ${config.border}`}>
+                                        <Icon size={14} />
+                                    </div>
+                                </div>
+                                
+                                <div className="text-xs font-mono text-stone-500 mb-4 flex items-center gap-2">
+                                    <Sprout size={12} /> {fungi.substrate}
+                                </div>
+
+                                <p className="text-stone-400 text-sm line-clamp-2 leading-relaxed mb-6">
+                                    {fungi.extract}
+                                </p>
+
+                                <button className="w-full py-2 rounded bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 text-[10px] font-bold uppercase tracking-widest text-stone-300 transition-colors flex items-center justify-center gap-2">
+                                    <Microscope size={12} /> Analyze Spores
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                )
+            })}
             
-            {/* LEFT: THE HIDDEN KINGDOM */}
-            <div className="lg:col-span-7 space-y-8">
-                
-                {/* MYCELIUM CARD */}
-                <div className="bg-stone-900/80 backdrop-blur-md border border-stone-700 rounded-3xl p-8 relative overflow-hidden">
-                    <div className="flex items-center gap-3 mb-6">
-                        <Network size={24} className="text-stone-400" />
-                        <h2 className="text-2xl font-bold text-white font-serif">The Mycelial Network</h2>
-                    </div>
-                    
-                    <p className="text-stone-400 text-sm leading-relaxed mb-6">
-                        What we call "mushrooms" are just the fruiting bodies. The real organism is the <strong>mycelium</strong>: a vast, underground web of microscopic threads (hyphae) that can span entire forests.
-                    </p>
-
-                    <div className="bg-black/30 p-4 rounded-xl border border-white/5 flex gap-4">
-                        <div className="flex-1 border-r border-white/10">
-                            <div className="text-xs text-stone-500 mb-1">LARGEST ORGANISM</div>
-                            <div className="text-white font-bold">Armillaria ostoyae</div>
-                            <div className="text-[10px] text-purple-400">Oregon, 2,385 acres</div>
-                        </div>
-                        <div className="flex-1 pl-4">
-                            <div className="text-xs text-stone-500 mb-1">GROWTH RATE</div>
-                            <div className="text-white font-bold">Exponential</div>
-                            <div className="text-[10px] text-purple-400">Radial expansion</div>
-                        </div>
-                    </div>
-                </div>
-
-                {/* DECOMPOSITION CARD */}
-                <div className="bg-stone-900/80 backdrop-blur-md border border-stone-700 rounded-3xl p-8 group hover:border-purple-500/30 transition-colors">
-                    <div className="flex items-center gap-3 mb-6">
-                        <Recycle size={24} className="text-purple-500" />
-                        <h2 className="text-2xl font-bold text-white font-serif">The Great Recyclers</h2>
-                    </div>
-                    <p className="text-stone-400 text-sm leading-relaxed">
-                        Fungi are the primary decomposers of organic matter. They secrete enzymes to break down tough materials like <strong>lignin</strong> and <strong>cellulose</strong> in wood, releasing carbon and nutrients back into the ecosystem. Without them, the world would be buried in dead plants.
-                    </p>
-                </div>
-
-            </div>
-
-
-            {/* RIGHT: SYMBIOSIS & WIDGET */}
-            <div className="lg:col-span-5 space-y-8">
-                
-                {/* INTERACTIVE WIDGET */}
-                <WoodWideWebWidget />
-
-                {/* PATHOGENS & TOXINS */}
-                <div className="bg-stone-900/80 border border-stone-700 rounded-2xl p-6 flex gap-4">
-                    <div className="p-3 bg-red-900/20 rounded-full h-fit border border-red-900/50">
-                        <Skull size={20} className="text-red-500" />
-                    </div>
-                    <div>
-                        <h3 className="font-bold text-stone-200 mb-2">Pathogens & Toxins</h3>
-                        <p className="text-xs text-stone-500 leading-relaxed mb-3">
-                            Not all fungi are benign. Some are parasitic (Cordyceps), while others produce deadly mycotoxins (Amanita phalloides).
-                        </p>
-                    </div>
-                </div>
-
-                {/* LICHEN */}
-                <div className="bg-stone-900/80 border border-stone-700 rounded-2xl p-6">
-                    <h3 className="font-bold text-stone-200 mb-2 flex items-center gap-2">
-                        <Sprout size={16} className="text-lime-500" /> Lichen Symbiosis
-                    </h3>
-                    <p className="text-xs text-stone-500 leading-relaxed">
-                        A composite organism arising from algae or cyanobacteria living among filaments of multiple fungi species in a mutualistic relationship.
-                    </p>
-                </div>
-
-            </div>
-
+            {/* Loading Skeletons */}
+            {loading && [1,2,3,4].map(i => (
+                <div key={i} className="h-96 rounded-2xl bg-purple-900/10 border border-purple-500/10 animate-pulse" />
+            ))}
         </div>
+
       </div>
     </main>
   );

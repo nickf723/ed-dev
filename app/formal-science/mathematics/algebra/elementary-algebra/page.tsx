@@ -134,8 +134,14 @@ const MODULES = [
   {
     id: "complex",
     title: "Complex",
-    icon: X,
-    href: "/formal-science/mathematics/algebra/elementary-algebra/complex"
+    icon: Braces,
+    href: "/formal-science/mathematics/algebra/elementary-algebra/complex",
+    subtitle: "Numbers & Imaginary",
+    desc: "Imaginary numbers, complex plane, and operations with complex numbers.",
+    problem: "i = √-1",
+    color: "text-amber-400",
+    border: "border-amber-500/30",
+    bg: "bg-amber-950/20",
   }
 ];
 

@@ -1,130 +1,107 @@
 "use client";
+import React from "react";
 import Link from "next/link";
-import RiemannBackground from "@/app/formal-science/mathematics/calculus/RiemannBackground";
-import TangentSurfer from "@/app/formal-science/mathematics/calculus/TangentSurfer";
-import { 
-  ArrowLeft, Activity, Divide, Sigma, 
-  Infinity as Inf, TrendingUp, Anchor 
-} from "lucide-react";
+import CalculusBackground from "./CalculusBackground";
+import { CALCULUS_BRANCHES } from "./calculus-data";
+import { ArrowLeft, FunctionSquare, ChevronRight, Sigma } from "lucide-react";
+import RiemannBackground from "./RiemannBackground";
+import VectorFieldBackground from "./VectorFieldBackground";
+
+// Helper for LaTeX rendering (Simulation)
+const Latex = ({ children }: { children: string }) => (
+    <span className="font-serif italic font-bold tracking-wide text-lg opacity-90">
+        {children}
+    </span>
+);
 
 export default function CalculusPage() {
   return (
-    <main className="relative min-h-screen bg-[#050505] text-slate-200 font-sans selection:bg-blue-500/30">
-      
-      {/* 1. VISUAL ENGINE */}
+    <main className="min-h-screen bg-[#0f172a] text-slate-200 font-sans pl-0 md:pl-80 relative overflow-hidden selection:bg-cyan-500/30">
       <RiemannBackground />
+      {/* 1. VISUAL ENGINE */}
+      <VectorFieldBackground />
       
-      {/* OVERLAY */}
-      <div className="absolute inset-0 bg-radial-vignette opacity-70 pointer-events-none z-0" />
+      <div className="fixed inset-0 bg-gradient-to-b from-transparent via-[#0f172a]/50 to-[#0f172a] pointer-events-none" />
 
-      {/* 2. HEADER */}
-      <header className="relative z-20 flex items-center justify-between px-8 py-6 border-b border-white/10 bg-[#050505]/90 backdrop-blur-md sticky top-0">
-         <div className="flex items-center gap-6">
-             <Link href="/formal-science/mathematics" className="flex items-center gap-2 text-xs text-blue-500 hover:text-blue-400 transition-colors uppercase tracking-widest font-mono">
-                <ArrowLeft size={12} /> Mathematics
-             </Link>
-             <div className="h-4 w-px bg-white/10" />
-             <div className="flex items-center gap-3">
-                 <div className="p-1.5 bg-slate-900 border border-blue-500/50 rounded">
-                    <Activity size={18} className="text-blue-500" />
-                 </div>
-                 <h1 className="text-xl font-bold text-white tracking-tight">
-                    CALCULUS
-                 </h1>
-             </div>
-         </div>
-         <div className="hidden md:block text-[10px] font-mono text-slate-500 uppercase tracking-widest">
-            The Mathematics of Change
-         </div>
-      </header>
+      <div className="relative z-10 p-6 md:p-12 min-h-screen flex flex-col">
+        
+        {/* HEADER */}
+        <header className="mb-12">
+            <Link href="/natural-science/mathematics" className="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-cyan-400 hover:text-white transition-colors mb-6">
+                <ArrowLeft size={10} /> Mathematics Dept
+            </Link>
+            <h1 className="text-5xl md:text-7xl font-black text-white tracking-tighter mb-4 flex items-center gap-4">
+                CALCULUS <Sigma className="opacity-20" size={64} />
+            </h1>
+            <p className="text-slate-400 max-w-xl text-lg font-light leading-relaxed">
+                The mathematical study of continuous change. The language used to describe the motion of stars, the flow of electricity, and the growth of economies.
+            </p>
+        </header>
 
-      {/* 3. CONTENT GRID */}
-      <div className="relative z-10 container mx-auto p-6 md:p-8">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                
-                {/* LEFT: THE CONCEPTS */}
-                <div className="lg:col-span-7 space-y-6">
-                    
-                    {/* HERO CARD */}
-                    <div className="bg-slate-900/60 backdrop-blur-md border border-white/10 rounded-2xl p-8 relative overflow-hidden group">
-                        <div className="absolute top-0 right-0 p-24 bg-blue-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
-                        
-                        <div className="relative z-10">
-                            <h2 className="text-3xl font-bold text-white mb-4">The Engine of Change</h2>
-                            <p className="text-sm text-slate-300 leading-relaxed mb-6">
-                                While Algebra solves for unknown numbers, Calculus solves for changing relationships. It allows us to freeze time to see the instant (Differentiation) and sum up the infinitesimals to see the whole (Integration).
-                            </p>
-                            <div className="flex gap-4 items-center text-xs font-mono text-blue-300">
-                                <span className="flex items-center gap-1"><Divide size={12}/> Derivatives</span>
-                                <span className="w-1 h-1 bg-white/20 rounded-full" />
-                                <span className="flex items-center gap-1"><Sigma size={12}/> Integrals</span>
-                                <span className="w-1 h-1 bg-white/20 rounded-full" />
-                                <span className="flex items-center gap-1"><Inf size={12}/> Limits</span>
+        {/* INTERACTIVE GRID */}
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 pb-20">
+            {CALCULUS_BRANCHES.map((branch) => {
+                const Icon = branch.icon;
+                return (
+                    <div 
+                        key={branch.id}
+                        className={`
+                            group relative p-8 rounded-xl bg-[#1e293b]/60 border border-white/5 backdrop-blur-sm 
+                            hover:bg-[#1e293b]/80 hover:-translate-y-1 transition-all duration-300
+                            ${branch.border}
+                        `}
+                    >
+                        {/* Hover Gradient */}
+                        <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-xl" />
+
+                        {/* Header */}
+                        <div className="flex justify-between items-start mb-6">
+                            <div className={`p-3 rounded-lg bg-black/30 border border-white/10 ${branch.color}`}>
+                                <Icon size={24} />
+                            </div>
+                            <div className="text-[10px] font-bold uppercase tracking-widest px-2 py-1 rounded bg-black/20 text-slate-400">
+                                {branch.level}
                             </div>
                         </div>
-                    </div>
 
-                    {/* FUNDAMENTAL THEOREM */}
-                    <div className="bg-gradient-to-r from-blue-900/40 to-purple-900/40 border border-white/10 p-6 rounded-xl flex items-center justify-between gap-6">
-                        <div>
-                            <h3 className="font-bold text-white mb-1">The Fundamental Theorem</h3>
-                            <p className="text-xs text-slate-400">
-                                Isaac Newton and Gottfried Leibniz discovered that Differentiation and Integration are <strong>inverse operations</strong>.
-                            </p>
-                        </div>
-                        <div className="text-2xl font-serif italic text-white/80 bg-black/20 px-4 py-2 rounded border border-white/5">
-                            ∫ f'(x) dx = f(x)
-                        </div>
-                    </div>
-
-                    {/* DOMAINS GRID */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {/* Title & Formula */}
+                        <h2 className="text-2xl font-bold text-white mb-2 group-hover:text-cyan-400 transition-colors">
+                            {branch.title}
+                        </h2>
                         
-                        <div className="bg-slate-900/40 border border-white/5 p-5 rounded-xl hover:border-blue-500/30 transition-colors group">
-                            <div className="flex items-center gap-3 mb-2">
-                                <TrendingUp className="text-blue-500" size={20} />
-                                <h3 className="font-bold text-white">Differentiation</h3>
+                        {/* Mathematical Notation Display */}
+                        <div className="mb-4 h-12 flex items-center text-slate-300">
+                            {/* We just render the string as is for now, in a real app we'd use Katex/MathJax */}
+                            <div className="font-serif text-xl italic opacity-80 border-l-2 border-white/10 pl-4">
+                                {branch.formula}
                             </div>
-                            <p className="text-xs text-slate-400">
-                                The study of rates of change. How fast is a car moving at exactly 2:00 PM?
-                            </p>
                         </div>
 
-                        <div className="bg-slate-900/40 border border-white/5 p-5 rounded-xl hover:border-pink-500/30 transition-colors group">
-                            <div className="flex items-center gap-3 mb-2">
-                                <Sigma className="text-pink-500" size={20} />
-                                <h3 className="font-bold text-white">Integration</h3>
-                            </div>
-                            <p className="text-xs text-slate-400">
-                                The study of accumulation. Calculating the total distance traveled or the volume of a weird shape.
-                            </p>
-                        </div>
-
-                    </div>
-                </div>
-
-                {/* RIGHT: INTERACTIVE LAB */}
-                <div className="lg:col-span-5 space-y-6 flex flex-col items-center">
-                    
-                    {/* WIDGET */}
-                    <TangentSurfer />
-
-                    {/* ZENO'S PARADOX */}
-                    <div className="bg-slate-900/60 border border-white/10 rounded-xl p-6 w-full">
-                        <h3 className="font-bold text-white mb-2 flex items-center gap-2">
-                            <Anchor size={18} className="text-slate-400" /> Limits: Taming Infinity
-                        </h3>
-                        
-                        <p className="text-xs text-slate-400 leading-relaxed mb-3">
-                            Before calculus, mathematicians struggled with Zeno's Paradox: "To walk across a room, you must first go halfway, then half of the remaining distance... you will never arrive." 
-                            <br/><br/>
-                            Calculus solved this by proving that an infinite sum of getting smaller steps can equal a <strong>finite</strong> result.
+                        <p className="text-sm text-slate-400 leading-relaxed mb-6">
+                            {branch.desc}
                         </p>
+
+                        {/* Footer Link */}
+                        <div className="mt-auto pt-4 border-t border-white/5 flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-white opacity-0 group-hover:opacity-100 transition-opacity transform translate-y-2 group-hover:translate-y-0">
+                            Explore Module <ChevronRight size={12} />
+                        </div>
+
+                        {/* Special Tag for Diff Eq */}
+                        {branch.id === 'diffeq' && (
+                             <div className="absolute -top-3 right-6 px-3 py-1 bg-red-900/80 border border-red-500/50 text-red-200 text-[9px] font-bold uppercase tracking-widest rounded shadow-lg">
+                                 Mastery Level
+                             </div>
+                        )}
                     </div>
+                )
+            })}
+        </div>
+        
+        {/* Footer Note */}
+        <div className="mt-auto border-t border-white/5 pt-8 text-center md:text-left text-slate-500 text-sm font-mono">
+             "If I have seen further, it is by standing on the shoulders of giants." — Isaac Newton
+        </div>
 
-                </div>
-
-            </div>
       </div>
     </main>
   );

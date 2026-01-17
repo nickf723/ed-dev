@@ -19,6 +19,7 @@ export default function DnaBackground() {
     // Biology Palette (Green / Lime / Cyan)
     const colorA = "#84cc16"; // Lime
     const colorB = "#22d3ee"; // Cyan
+ 
 
     const animate = () => {
       ctx.clearRect(0, 0, w, h);

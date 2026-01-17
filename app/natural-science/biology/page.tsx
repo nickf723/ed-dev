@@ -1,234 +1,152 @@
 "use client";
+import React from "react";
 import Link from "next/link";
-import PageHeader from "@/components/PageHeader";
-import TopicCard from "@/components/TopicCard";
-import LifeBackground from "@/app/natural-science/biology/LifeBackground";
-import CellInspector from "@/app/natural-science/biology/CellInspector";
-import TaxonomyTree from "@/app/natural-science/biology/TaxonomyTree";
-import EvoWidget from "@/app/natural-science/biology/EvoWidget";
-import { motion } from "framer-motion";
-import {
-  Dna, Microscope, Sprout, Globe, Fingerprint, GitFork, Bug, Flower,
-  Binary, Activity, Layers, ArrowDown
+import BiologyBackground from "./BiologyBackground";
+import { 
+  Dna, Microscope, Atom, Sprout, 
+  Bug, Leaf, PawPrint, HeartPulse, 
+  Globe, Activity, ArrowLeft, ArrowUpRight 
 } from "lucide-react";
+import DnaBackground from "./DnaBackground";
+import LifeBackground from "./LifeBackground";
 
-// --- SECTOR DATA ---
-const biologicalScales = [
+// --- DATA: Grouped by Scale ---
+const BIO_SCALES = [
   {
-    id: "basis",
-    title: "The Molecular Basis",
-    subtitle: "Life's Operating System",
-    desc: "The fundamental machinery of life. How information is stored in DNA, transcribed by RNA, and executed by cells.",
-    color: "text-lime-400",
-    border: "border-lime-500/20",
-    icon: Binary,
-    widget: <CellInspector />,
-    topics: [
-      { 
-        title: "Genetics", 
-        desc: "The study of heredity and the variation of inherited characteristics.", 
-        href: "/natural-science/biology/genetics", 
-        Icon: Dna, 
-        className: "theme-lime",
-        subtitle: "The Code" 
-      },
-      { 
-        title: "Molecular Biology", 
-        desc: "Molecular basis of biological activity in and between cells.", 
-        href: "/natural-science/biology/molecular", 
-        Icon: Fingerprint, 
-        className: "theme-lime",
-        subtitle: "The Chemistry" 
-      },
-      { 
-        title: "Cytology", 
-        desc: "The study of cell structure, function, and chemistry.", 
-        href: "/natural-science/biology/cytology", 
-        Icon: Microscope, 
-        className: "theme-lime",
-        subtitle: "The Unit" 
-      }
-    ]
-  },
-  {
-    id: "evolution",
-    title: "The Evolutionary Process",
-    subtitle: "The Engine of Change",
-    desc: "Life is not static. Through mutation, selection, and drift, organisms adapt to their environments over vast timescales.",
-    color: "text-amber-400",
-    border: "border-amber-500/20",
-    icon: GitFork,
-    widget: <EvoWidget />,
-    topics: [
-      { 
-        title: "Evolutionary Biology", 
-        desc: "The processes that generated the diversity of life on Earth.", 
-        href: "/natural-science/biology/evolution", 
-        Icon: Activity, 
-        className: "theme-amber",
-        subtitle: "Adaptation" 
-      }
-    ]
-  },
-  {
-    id: "diversity",
-    title: "Biodiversity",
-    subtitle: "Endless Forms Most Beautiful",
-    desc: "The branching tree of life. From microscopic bacteria to giant sequoias and complex animals.",
-    color: "text-emerald-400",
-    border: "border-emerald-500/20",
-    icon: Layers,
-    widget: <TaxonomyTree />,
-    topics: [
-      { 
-        title: "Microbiology", 
-        desc: "Bacteria, viruses, archaea, and protozoa.", 
-        href: "/natural-science/biology/microbiology", 
-        Icon: Microscope, 
-        className: "theme-emerald",
-        subtitle: "The Invisible" 
-      },
-      {
-        title: "Botany",
-        desc: "The biology of plants, from algae to angiosperms.",
-        href: "/natural-science/biology/botany",
-        Icon: Flower,
-        className: "theme-emerald",
-        subtitle: "The Producers"
-      },
-      {
-        title: "Mycology",
-        desc: "The study of fungi, yeasts, and molds.",
-        href: "/natural-science/biology/mycology",
-        Icon: Sprout, 
-        className: "theme-emerald",
-        subtitle: "The Decomposers"
-      },
-      {
-        title: "Zoology",
-        desc: "The study of the animal kingdom, including physiology and behavior.",
-        href: "/natural-science/biology/zoology",
-        Icon: Bug,
-        className: "theme-emerald",
-        subtitle: "The Consumers"
-      }
-    ]
-  },
-  {
-    id: "ecology",
-    title: "Planetary Ecology",
-    subtitle: "The Web of Life",
-    desc: "Life does not exist in isolation. Ecology studies the interactions between organisms and their physical environment.",
+    title: "MICRO SCALE",
+    subtitle: "Cellular Foundations",
     color: "text-cyan-400",
-    border: "border-cyan-500/20",
-    icon: Globe,
-    widget: null, // Ecology is the widget itself (the macro view)
-    topics: [
-      { 
-        title: "Ecology", 
-        desc: "Ecosystems, biomes, and the biosphere.", 
-        href: "/natural-science/biology/ecology", 
-        Icon: Globe, 
-        className: "theme-cyan",
-        subtitle: "Global Systems" 
-      }
+    border: "border-cyan-500/30",
+    glow: "shadow-cyan-500/20",
+    bg: "bg-cyan-950/20",
+    items: [
+      { id: "cytology", title: "Cytology", icon: Microscope, desc: "Structure & function of cells." },
+      { id: "genetics", title: "Genetics", icon: Dna, desc: "Heredity and variation." },
+      { id: "molecular", title: "Molecular Bio", icon: Atom, desc: "Biological activity." },
+    ]
+  },
+  {
+    title: "MESO SCALE",
+    subtitle: "Organismal Life",
+    color: "text-emerald-400",
+    border: "border-emerald-500/30",
+    glow: "shadow-emerald-500/20",
+    bg: "bg-emerald-950/20",
+    items: [
+      { id: "microbiology", title: "Microbiology", icon: Bug, desc: "Bacteria, viruses, archaea." },
+      { id: "mycology", title: "Mycology", icon: Sprout, desc: "The kingdom of Fungi." },
+      { id: "botany", title: "Botany", icon: Leaf, desc: "Plant physiology & ecology." },
+      { id: "zoology", title: "Zoology", icon: PawPrint, desc: "Animal behavior & structure." },
+    ]
+  },
+  {
+    title: "MACRO SCALE",
+    subtitle: "Systems & Process",
+    color: "text-amber-400",
+    border: "border-amber-500/30",
+    glow: "shadow-amber-500/20",
+    bg: "bg-amber-950/20",
+    items: [
+      { id: "anatomy", title: "Anatomy", icon: HeartPulse, desc: "Bodily structure." },
+      { id: "ecology", title: "Ecology", icon: Globe, desc: "Interactions & biospheres." },
+      { id: "evolution", title: "Evolution", icon: Activity, desc: "Change over time." },
     ]
   }
 ];
 
 export default function BiologyPage() {
   return (
-    <main className="relative min-h-screen bg-[#051005] text-white overflow-hidden selection:bg-lime-500/30 font-sans">
-      
+    <main className="h-screen bg-[#050a07] text-stone-200 font-sans pl-0 md:pl-80 relative overflow-hidden selection:bg-emerald-500/30">
       {/* 1. VISUAL ENGINE */}
-      <LifeBackground />
+      <DnaBackground />
       
-      {/* VIGNETTE */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,#000000_100%)] pointer-events-none z-0" />
+      {/* Vignette Overlay */}
+      <div className="fixed inset-0 bg-gradient-to-t from-[#050a07] via-transparent to-[#050a07] pointer-events-none opacity-80" />
 
-      {/* 2. CONTENT CONTAINER */}
-      <div className="relative z-10 container mx-auto px-6 py-12 min-h-screen flex flex-col">
+      <div className="relative z-10 p-6 md:p-8 h-full flex flex-col">
         
-        <PageHeader
-          eyebrow="Natural Science // Domain 05"
-          title="Biology"
-          subtitle="The science of life. From the molecular machinery of cells to the complex interactions of global ecosystems."
-        />
+        {/* HEADER */}
+        <header className="flex justify-between items-end mb-8 shrink-0">
+             <div>
+                 <Link href="/natural-science" className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-emerald-500/80 hover:text-emerald-400 transition-colors mb-2">
+                     <ArrowLeft size={10} /> Natural Science
+                 </Link>
+                 <h1 className="text-4xl md:text-6xl font-black text-white tracking-tighter">
+                     BIOLOGY
+                 </h1>
+                 <p className="text-sm text-stone-400 font-mono mt-1">
+                     SYSTEMS OF LIFE: v.3.0
+                 </p>
+             </div>
+             
+             {/* Decorative Stat */}
+             <div className="hidden md:block text-right">
+                 <div className="text-2xl font-black text-emerald-500">10</div>
+                 <div className="text-[9px] uppercase tracking-widest text-stone-600">Core Disciplines</div>
+             </div>
+        </header>
 
-        {/* 3. NAVIGATION SECTORS */}
-        <div className="mt-16 space-y-24">
+        {/* MAIN DASHBOARD GRID */}
+        <div className="flex-1 grid grid-cols-1 lg:grid-cols-3 gap-6 overflow-y-auto pb-4 custom-scrollbar">
             
-            {biologicalScales.map((scale, idx) => (
-                <section key={scale.id} className="relative">
+            {BIO_SCALES.map((scale, i) => (
+                <div key={i} className="flex flex-col gap-4">
                     
-                    {/* Visual Connector Line */}
-                    {idx !== biologicalScales.length - 1 && (
-                        <div className="absolute left-8 top-16 bottom-[-96px] w-px bg-gradient-to-b from-white/20 to-transparent border-l border-dashed border-white/10 hidden lg:block" />
-                    )}
-
-                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-                        
-                        {/* LEFT: HEADER & WIDGET */}
-                        <div className="lg:col-span-4 space-y-6">
-                            <div className="flex items-start gap-4">
-                                <div className={`p-3 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md ${scale.color}`}>
-                                    <scale.icon size={24} />
-                                </div>
-                                <div>
-                                    <h2 className="text-2xl font-bold text-white">{scale.title}</h2>
-                                    <div className={`text-xs font-mono uppercase tracking-widest mb-2 ${scale.color}`}>
-                                        {scale.subtitle}
-                                    </div>
-                                    <p className="text-sm text-neutral-400 leading-relaxed">
-                                        {scale.desc}
-                                    </p>
-                                </div>
-                            </div>
-
-                            {/* Embedded Interactive Widget */}
-                            {scale.widget && (
-                                <motion.div 
-                                    initial={{ opacity: 0, y: 20 }}
-                                    whileInView={{ opacity: 1, y: 0 }}
-                                    viewport={{ once: true, margin: "-50px" }}
-                                    transition={{ duration: 0.5 }}
-                                    className="relative"
-                                >
-                                    {/* Connection Line to Widget */}
-                                    <div className="absolute -left-4 top-8 w-4 h-px bg-white/10 hidden lg:block" />
-                                    {scale.widget}
-                                </motion.div>
-                            )}
+                    {/* Column Header */}
+                    <div className={`
+                        p-4 rounded-xl border bg-black/40 backdrop-blur-md
+                        ${scale.border}
+                    `}>
+                        <div className={`text-xl font-black ${scale.color} mb-1`}>{scale.title}</div>
+                        <div className="text-[10px] font-bold uppercase tracking-widest text-stone-500">
+                            {scale.subtitle}
                         </div>
-
-                        {/* RIGHT: TOPIC GRID */}
-                        <div className="lg:col-span-8">
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                {scale.topics.map((topic, i) => (
-                                    <motion.div
-                                        key={topic.title}
-                                        initial={{ opacity: 0, x: 20 }}
-                                        whileInView={{ opacity: 1, x: 0 }}
-                                        viewport={{ once: true }}
-                                        transition={{ duration: 0.3, delay: i * 0.1 }}
-                                    >
-                                        <TopicCard {...topic} />
-                                    </motion.div>
-                                ))}
-                            </div>
-                        </div>
-
                     </div>
-                </section>
+
+                    {/* Domain Cards */}
+                    <div className="flex-1 flex flex-col gap-3">
+                        {scale.items.map((item) => {
+                            const Icon = item.icon;
+                            return (
+                                <Link
+                                    key={item.id}
+                                    href={`/natural-science/biology/${item.id}`}
+                                    className={`
+                                        group relative p-5 rounded-xl border bg-black/20 backdrop-blur-sm transition-all duration-300 hover:scale-[1.02] hover:-translate-y-1 hover:shadow-lg hover:bg-black/40
+                                        ${scale.border}
+                                    `}
+                                >
+                                    {/* Background Glow on Hover */}
+                                    <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br ${scale.bg} to-transparent rounded-xl`} />
+                                    
+                                    <div className="relative z-10 flex items-start justify-between">
+                                        <div className="flex items-center gap-4">
+                                            <div className={`
+                                                p-2.5 rounded-lg bg-black/30 border border-white/5 group-hover:border-white/20 transition-colors
+                                                ${scale.color}
+                                            `}>
+                                                <Icon size={20} />
+                                            </div>
+                                            <div>
+                                                <h3 className="text-lg font-bold text-white leading-none mb-1 group-hover:text-emerald-200 transition-colors">
+                                                    {item.title}
+                                                </h3>
+                                                <p className="text-[11px] text-stone-400 font-medium">
+                                                    {item.desc}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        
+                                        {/* Arrow Icon */}
+                                        <ArrowUpRight size={14} className={`opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all ${scale.color}`} />
+                                    </div>
+                                </Link>
+                            )
+                        })}
+                    </div>
+                </div>
             ))}
 
-        </div>
-
-        {/* FOOTER */}
-        <div className="mt-32 border-t border-white/10 pt-12 text-center">
-            <p className="text-neutral-500 text-sm flex items-center justify-center gap-2">
-                <Sprout size={16} /> "Life finds a way."
-            </p>
         </div>
 
       </div>

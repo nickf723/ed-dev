@@ -126,6 +126,15 @@ const DOMAINS = [
     desc: "Physical exertion and skill. Strategy, athleticism, and the limits of the human body.",
     color: "text-emerald-400",
     border: "border-emerald-500/40"
+  },
+  {
+    id: "culture",
+    title: "Culture",
+    subtitle: "The Collective",
+    icon: Feather,
+    desc: "The shared practices, values, and artifacts of societies. Anthropology and ethnography.",
+    color: "text-amber-400",
+    border: "border-amber-500/40"
   }
 ];
 
