@@ -1,212 +1,89 @@
 "use client";
-import { useState } from "react";
-import PageHeader from "@/components/PageHeader";
-import TopicCard from "@/components/TopicCard";
-import OrbitalBackground from "@/app/natural-science/chemistry/OrbitalBackground"; // Keeping the atomic theme
-import MoleculeViewer from "@/app/natural-science/chemistry/MoleculeViewer";
-import PeriodicTable from "@/app/natural-science/chemistry/PeriodicTable"; // New integration
-import { motion } from "framer-motion";
-import {
-  Atom, FlaskConical, Box, Layers, Scale, Zap, Microscope, Beaker
-} from "lucide-react";
-
-// --- DATA SECTORS ---
-const sectors = [
-  {
-    name: "Structure of Matter",
-    desc: "The fundamental building blocks. From subatomic particles to complex macromolecules.",
-    color: "text-lime-400",
-    icon: Layers,
-    items: [
-      { 
-        title: "Periodic Table", 
-        desc: "The master key to chemistry. Trends, families, and electron configurations.", 
-        href: "/natural-science/chemistry/periodic-table", 
-        Icon: Layers, 
-        className: "theme-chemistry",
-        subtitle: "The Elements" 
-      },
-      { 
-        title: "Atomic Structure", 
-        desc: "Protons, Neutrons, Electrons, and the Quantum Mechanical Model.", 
-        href: "/natural-science/chemistry/atomic-structure", 
-        Icon: Atom, 
-        className: "theme-chemistry",
-        subtitle: "Quantum Realm" 
-      },
-      { 
-        title: "Bonding & Geometry", 
-        desc: "Ionic, Covalent, and Metallic bonds. VSEPR theory and molecular shapes.", 
-        href: "/natural-science/chemistry/bonding", 
-        Icon: Box, 
-        className: "theme-chemistry",
-        subtitle: "Connections" 
-      }
-    ]
-  },
-  {
-    name: "Reactions & Stoichiometry",
-    desc: "The math of change. Balancing equations and calculating yields.",
-    color: "text-orange-400",
-    icon: Scale,
-    items: [
-      { 
-        title: "Stoichiometry", 
-        desc: "Calculating mass, moles, and particles in chemical reactions.", 
-        href: "/natural-science/chemistry/stoichiometry", 
-        Icon: Scale, 
-        className: "theme-chemistry",
-        subtitle: "Chemical Math" 
-      },
-      { 
-        title: "Chemical Kinetics", 
-        desc: "Reaction rates, collision theory, and catalysts.", 
-        href: "/natural-science/chemistry/kinetics", 
-        Icon: Zap, 
-        className: "theme-chemistry",
-        subtitle: "Speed of Change" 
-      },
-      { 
-        title: "Virtual Lab: Titration", 
-        desc: "Interactive simulation for determining concentration.", 
-        href: "/natural-science/chemistry/titration-lab", 
-        Icon: FlaskConical, 
-        className: "theme-chemistry",
-        subtitle: "Interactive" 
-      }
-    ]
-  }
-];
+import React, { useState } from "react";
+import Link from "next/link";
+import { ArrowLeft, FlaskConical, Atom, Layers } from "lucide-react";
+import ChemistryBackground from "./ChemistryBackground";
+import PeriodicTable from "./PeriodicTable";
+import MoleculeViewer from "./MoleculeViewer";
+import ElementInspector from "./ElementInspector";
+import { ELEMENTS, ChemicalElement } from "./chemistry-data";
+import BohrAtom from "./BohrAtom";
 
 export default function ChemistryPage() {
-  const [selectedElement, setSelectedElement] = useState<any>(null);
+  // Default to Carbon (Index 5 in our array, Z=6)
+  const [selectedElement, setSelectedElement] = useState<ChemicalElement>(ELEMENTS[5]);
 
   return (
-    <main className="relative min-h-screen overflow-hidden bg-neutral-950 lg:px-12">
+    <main className="min-h-screen bg-[#0f172a] text-slate-300 font-sans pl-0 md:pl-80 relative overflow-hidden selection:bg-lime-500/30">
       
-      {/* 1. Visual Engine: Orbital Background matches the atomic theme perfectly */}
-      <OrbitalBackground />
-      
-      <div className="relative z-10 mx-auto flex max-w-7xl flex-col py-10">
+      {/* 1. VISUAL ENGINE */}
+      <ChemistryBackground />
+      <div className="fixed inset-0 bg-gradient-to-br from-lime-900/10 to-slate-900/80 pointer-events-none" />
+
+      <div className="relative z-10 p-6 md:p-12 min-h-screen flex flex-col">
         
-        <PageHeader
-          eyebrow="Natural Science"
-          title="Chemistry"
-          subtitle="The central science. It bridges physics and biology, explaining how the inanimate building blocks of the universe combine to form the complexity of life."
-        />
-
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 items-start">
-          
-          {/* MAIN CONTENT (9 Cols) */}
-          <div className="lg:col-span-9 space-y-12">
+        {/* HEADER */}
+        <header className="mb-8 flex justify-between items-end">
+            <div>
+                <Link href="/natural-science" className="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-lime-500 hover:text-white transition-colors mb-4">
+                    <ArrowLeft size={10} /> Natural Science
+                </Link>
+                <h1 className="text-5xl md:text-7xl font-black text-white tracking-tighter mb-2 flex items-center gap-4">
+                    CHEMISTRY <FlaskConical className="opacity-20 text-lime-400" size={48} />
+                </h1>
+                <p className="text-lime-500/60 font-mono text-xs uppercase tracking-widest">
+                    The Central Science // Elemental Analysis
+                </p>
+            </div>
             
-            {/* FEATURE: Mini Periodic Table Explorer */}
-            <section>
-                <motion.div 
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    className="mb-6 rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-md"
-                >
-                    <div className="mb-4 flex items-center justify-between">
-                        <h2 className="flex items-center gap-2 text-lg font-bold text-white">
-                            <Layers className="text-lime-400" size={20} /> 
-                            Element Explorer
-                        </h2>
-                        {selectedElement && (
-                            <span className="text-xs font-mono text-lime-300">
-                                Selected: {selectedElement.name} ({selectedElement.symbol})
-                            </span>
-                        )}
-                    </div>
-                    {/* We embed the PeriodicTable component directly as a hero widget */}
-                    <PeriodicTable onSelect={setSelectedElement} />
-                </motion.div>
-            </section>
+            <div className="hidden md:flex flex-col items-end text-[10px] font-mono text-slate-500">
+                <div className="flex items-center gap-2 text-lime-500"><Atom size={12} className="animate-spin-slow" /> SPECTROMETER ACTIVE</div>
+                <div>STP: 273.15 K, 100 kPa</div>
+            </div>
+        </header>
 
-            {/* DOMAIN SECTORS */}
-            {sectors.map((sector, idx) => (
-              <section key={sector.name}>
-                 <motion.div 
-                    initial={{ opacity: 0, x: -10 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.4, delay: idx * 0.1 }}
-                    className="mb-6 flex items-center gap-3"
-                 >
-                    <sector.icon className={sector.color} size={24} />
-                    <div>
-                        <h2 className="text-xl font-bold text-white tracking-wide">{sector.name}</h2>
-                        <p className="text-xs text-neutral-500">{sector.desc}</p>
-                    </div>
-                    <div className="h-[1px] flex-1 bg-white/10 ml-4"></div>
-                 </motion.div>
-
-                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                    {sector.items.map((item, i) => (
-                        <motion.div
-                            key={item.title}
-                            initial={{ opacity: 0, y: 15 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.3, delay: 0.1 + (i * 0.05) }}
-                        >
-                            <TopicCard {...item} />
-                        </motion.div>
-                    ))}
-                 </div>
-              </section>
-            ))}
-          </div>
-
-          {/* SIDEBAR (3 Cols) */}
-          <div className="flex flex-col gap-6 lg:col-span-3 lg:sticky lg:top-6 h-fit pt-2">
+        {/* MAIN DASHBOARD GRID */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 pb-20">
             
-            {/* WIDGET 1: Molecule Viewer */}
-            <motion.div 
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.4 }}
-            >
-               <MoleculeViewer />
-            </motion.div>
+            {/* LEFT COL: TOOLS (Span 2) */}
+            <div className="lg:col-span-2 flex flex-col gap-6">
+                
+                {/* PERIODIC TABLE CONTAINER */}
+                <div className="bg-slate-900/50 border border-white/5 rounded-2xl p-6 backdrop-blur-sm relative group min-h-[400px]">
+                    <div className="absolute top-0 left-0 p-4 opacity-50">
+                        <h3 className="text-xs font-bold uppercase tracking-widest flex items-center gap-2 text-lime-400">
+                            <Layers size={14} /> Periodic Table
+                        </h3>
+                    </div>
+                    <div className="mt-8">
+                        <PeriodicTable onSelect={setSelectedElement} activeZ={selectedElement.z} />
+                    </div>
+                </div>
 
-            {/* WIDGET 2: Fact/Quote Box */}
-            <div className="rounded-xl border border-lime-500/20 bg-lime-950/10 p-5 backdrop-blur-md">
-                <div className="flex flex-col gap-3">
-                    <Beaker size={20} className="text-lime-400"/>
-                    <p className="text-xs text-neutral-300 leading-relaxed italic">
-                        "The meeting of two personalities is like the contact of two chemical substances: if there is any reaction, both are transformed."
-                    </p>
-                    <p className="text-[10px] font-bold uppercase tracking-widest text-lime-500 text-right">
-                        — Carl Jung
-                    </p>
+                {/* 3D MOLECULE VIEWER */}
+                <div className="relative">
+                     <MoleculeViewer />
                 </div>
             </div>
 
-            {/* WIDGET 3: Quick Reference */}
-            <div className="rounded-xl border border-white/10 bg-neutral-900/50 p-4">
-                <h4 className="text-xs font-bold text-white mb-3 uppercase tracking-wider">Standard Conditions</h4>
-                <ul className="space-y-2 text-[10px] font-mono text-neutral-400">
-                    <li className="flex justify-between">
-                        <span>Temp (STP)</span>
-                        <span className="text-lime-300">273.15 K</span>
-                    </li>
-                    <li className="flex justify-between">
-                        <span>Pressure</span>
-                        <span className="text-lime-300">1 atm</span>
-                    </li>
-                    <li className="flex justify-between">
-                        <span>1 Mole gas</span>
-                        <span className="text-lime-300">22.4 L</span>
-                    </li>
-                    <li className="flex justify-between">
-                        <span>Avogadro No.</span>
-                        <span className="text-lime-300">6.022e23</span>
-                    </li>
-                </ul>
-            </div>
+            {/* RIGHT COL: INSPECTOR (Span 1) */}
+            <div className="flex flex-col gap-6">
+                {/* THE INSPECTOR COMPONENT */}
+                <ElementInspector element={selectedElement} />
+                <BohrAtom element={selectedElement} />
 
-          </div>
+                {/* Legend (Optional, if space permits) */}
+                <div className="p-4 rounded-xl border border-white/5 bg-slate-900/50">
+                    <h4 className="text-[10px] font-bold uppercase text-slate-500 mb-3">Group Key</h4>
+                    <div className="flex flex-wrap gap-2">
+                        {['Alkali', 'Alkaline', 'Transition', 'Halogen', 'Noble Gas'].map(g => (
+                            <span key={g} className="px-2 py-1 bg-white/5 rounded text-[9px] text-slate-400 uppercase border border-white/5">
+                                {g}
+                            </span>
+                        ))}
+                    </div>
+                </div>
+            </div>
 
         </div>
       </div>

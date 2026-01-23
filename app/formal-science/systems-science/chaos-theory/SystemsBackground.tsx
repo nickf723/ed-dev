@@ -79,7 +79,7 @@ export default function SystemsBackground() {
       // We'll use a dynamic stroke style
       const gradient = ctx.createLinearGradient(0, 0, w, h);
       gradient.addColorStop(0, "#ae00ff");
-      gradient.addColorStop(0.5, "#1100ff");
+      gradient.addColorStop(0.5, "#ff0000");
       gradient.addColorStop(1, "#00ffea");
       
       ctx.strokeStyle = gradient;

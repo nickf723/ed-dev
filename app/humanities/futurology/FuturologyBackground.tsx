@@ -17,8 +17,8 @@ export default function FuturologyBackground() {
     const render = () => {
       // Clear: Deep Cyberpunk Blue/Purple
       const bg = ctx.createLinearGradient(0, 0, 0, h);
-      bg.addColorStop(0, "#020005");
-      bg.addColorStop(1, "#0f0214");
+      bg.addColorStop(0, "#000874");
+      bg.addColorStop(1, "#d801bb");
       ctx.fillStyle = bg;
       ctx.fillRect(0, 0, w, h);
 
@@ -28,7 +28,7 @@ export default function FuturologyBackground() {
       const fov = 300;
 
       ctx.lineWidth = 2;
-      ctx.strokeStyle = "rgba(232, 121, 249, 0.3)"; // Neon Pink
+      ctx.strokeStyle = "rgba(214, 12, 245, 0.3)"; // Neon Pink
       ctx.shadowBlur = 10;
       ctx.shadowColor = "rgba(232, 121, 249, 0.8)";
 
@@ -57,13 +57,13 @@ export default function FuturologyBackground() {
       ctx.shadowBlur = 0;
 
       // THE SUN (The Future)
-      const sunGrad = ctx.createLinearGradient(w/2, horizon-100, w/2, horizon+100);
+      const sunGrad = ctx.createLinearGradient(w/2, horizon-200, w/2, horizon+100);
       sunGrad.addColorStop(0, "#facc15");
       sunGrad.addColorStop(1, "#ec4899");
       
       ctx.fillStyle = sunGrad;
       ctx.beginPath();
-      ctx.arc(w/2, horizon - 50, 150, 0, Math.PI, true); // Semi-circle sun
+      ctx.arc(w/2, horizon, 150, 0, Math.PI, true); // Semi-circle sun
       ctx.fill();
 
       // Scanline Overlay

@@ -1,174 +1,108 @@
 "use client";
-import { useState } from "react";
-import PageHeader from "@/components/PageHeader";
-import TopicCard from "@/components/TopicCard";
-import SystemsBackground from "@/app/formal-science/systems-science/SystemsBackground";
-import FeedbackWidget from "@/app/formal-science/systems-science/FeedbackWidget";
-import { motion } from "framer-motion";
-import {
-  Network,
-  Waves,
-  RefreshCcw,
-  Sigma,
-  GitMerge,
-  Target,
-  Globe
-} from "lucide-react";
-import { Activity } from "lucide-react";
+import React from "react";
+import Link from "next/link";
+import SystemsBackground2 from "./SystemsBackground2";
+import GameOfLife from "./GameOfLife";
+import { SYSTEMS_SECTORS } from "./systems-data";
+import { ArrowLeft, Network, GitMerge, Share2 } from "lucide-react";
 
-// --- DATA ---
-const sectors = [
-  {
-    name: "Core Theory",
-    desc: "The search for universal principles that apply to all complex entities.",
-    color: "text-purple-400",
-    icon: Globe,
-    items: [
-      { 
-        title: "General Systems Theory", 
-        desc: "The transdisciplinary study of the abstract organization of phenomena, independent of their substance.", 
-        href: "/formal-science/systems-science/general-systems-theory", 
-        Icon: Network, 
-        className: "theme-systems-science",
-        subtitle: "The Universal Framework" 
-      },
-      { 
-        title: "System Dynamics", 
-        desc: "Modeling complex systems by mapping stocks, flows, and causal loops over time.", 
-        href: "/formal-science/systems-science/system-dynamics", 
-        Icon: Sigma, 
-        className: "theme-systems-science",
-        subtitle: "Stocks & Flows" 
-      }
-    ]
-  },
-  {
-    name: "Control & Communication",
-    desc: "How systems regulate themselves and process information.",
-    color: "text-cyan-400",
-    icon: RefreshCcw,
-    items: [
-      { 
-        title: "Cybernetics", 
-        desc: "The science of communications and automatic control systems in both machines and living things.", 
-        href: "/formal-science/systems-science/cybernetics-control", 
-        Icon: Target, 
-        className: "theme-systems-science",
-        subtitle: "Regulation" 
-      }
-    ]
-  },
-  {
-    name: "Chaos & Emergence",
-    desc: "Where order arises from unpredictability.",
-    color: "text-blue-400",
-    icon: Waves,
-    items: [
-      { 
-        title: "Complexity & Chaos", 
-        desc: "Studying how small changes in initial conditions can result in vast differences in outcome (The Butterfly Effect).", 
-        href: "/formal-science/systems-science/complexity-chaos", 
-        Icon: Activity, 
-        className: "theme-systems-science",
-        subtitle: "Non-Linearity" 
-      },
-      { 
-        title: "Network Science", 
-        desc: "The study of complex networks such as telecommunication networks, computer networks, and social networks.", 
-        href: "/formal-science/systems-science/network-science", 
-        Icon: GitMerge, 
-        className: "theme-systems-science",
-        subtitle: "Topology" 
-      }
-    ]
-  }
-];
-
-export default function SystemsSciencePage() {
+export default function SystemsPage() {
   return (
-    <main className="relative min-h-screen overflow-hidden bg-neutral-950 lg:px-12">
+    <main className="min-h-screen bg-[#050202] text-red-100 font-sans relative overflow-hidden selection:bg-red-500/30">
       
-      {/* 1. Lorenz Attractor Background */}
-      <SystemsBackground />
-      
-      <div className="relative z-10 mx-auto flex max-w-7xl flex-col py-10">
+      {/* 1. VISUAL ENGINE */}
+      <SystemsBackground2 />
+      <div className="fixed inset-0 bg-gradient-to-b from-[#050202] via-transparent to-[#050202] pointer-events-none" />
+
+      <div className="relative z-10 p-6 md:p-12 min-h-screen flex flex-col">
         
-        <PageHeader
-          eyebrow="Formal Science"
-          title="Systems Science"
-          subtitle="The study of wholes. While other sciences dissect reality into parts, Systems Science studies how those parts interact to create complex, emergent behaviors like life, markets, and weather."
-        />
+        {/* HEADER */}
+        <header className="mb-12">
+            <Link href="/formal-science" className="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-red-600 hover:text-white transition-colors mb-6">
+                <ArrowLeft size={10} /> Formal Science
+            </Link>
+            <h1 className="text-5xl md:text-7xl font-black text-white tracking-tighter mb-4 flex items-center gap-4">
+                SYSTEMS <GitMerge className="text-red-600 opacity-80" size={48} />
+            </h1>
+            <p className="text-red-400/60 font-mono text-xs uppercase tracking-widest max-w-xl">
+                The Architecture of Order // Complexity, Cybernetics, and Chaos.
+            </p>
+        </header>
 
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 items-start">
-          
-          {/* MAIN CONTENT (8 cols) */}
-          <div className="lg:col-span-9 space-y-10">
-             {sectors.map((sector, idx) => (
-              <section key={sector.name}>
-                 <motion.div 
-                    initial={{ opacity: 0, x: -10 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.4, delay: idx * 0.1 }}
-                    className="mb-4 flex items-center gap-3"
-                 >
-                    <sector.icon className={sector.color} size={20} />
-                    <h2 className="text-lg font-bold text-white tracking-wide">{sector.name}</h2>
-                    <div className="h-[1px] flex-1 bg-white/10"></div>
-                 </motion.div>
-
-                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                    {sector.items.map((item, i) => (
-                        <motion.div
-                            key={item.title}
-                            initial={{ opacity: 0, y: 15 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.3, delay: 0.1 + (i * 0.05) }}
-                        >
-                            <TopicCard {...item} />
-                        </motion.div>
-                    ))}
-                 </div>
-              </section>
-            ))}
-          </div>
-
-          {/* SIDEBAR (3 cols) */}
-          <div className="flex flex-col gap-6 lg:col-span-3 lg:sticky lg:top-6 h-fit pt-2">
-            
-            {/* Feedback Loops Widget */}
-            <motion.div 
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.4 }}
-            >
-               <FeedbackWidget />
-            </motion.div>
-
-            {/* Emergence Quote */}
-            <motion.div 
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.6 }}
-                className="rounded-lg border border-purple-500/20 bg-purple-950/10 p-4 backdrop-blur-md"
-            >
-                <div className="flex items-start gap-3">
-                    <Waves size={18} className="text-purple-400 shrink-0 mt-1"/>
-                    <div>
-                        <h4 className="text-xs font-bold uppercase text-purple-400 mb-1">
-                            Emergence
-                        </h4>
-                        <p className="text-[11px] text-neutral-400 leading-relaxed">
-                            "The whole is greater than the sum of its parts." Wetness is not a property of a water molecule, but of the system of molecules.
+        {/* TOP SECTION: INTERACTIVE MODEL */}
+        <section className="mb-16">
+            <div className="bg-black/50 border border-red-900/30 rounded-2xl p-8 backdrop-blur-md relative overflow-hidden">
+                <div className="absolute top-0 right-0 p-4 opacity-30">
+                    <Share2 className="text-red-500" size={100} />
+                </div>
+                
+                <div className="flex flex-col xl:flex-row gap-12 items-start relative z-10">
+                    <div className="xl:w-1/3">
+                        <h2 className="text-2xl font-bold text-white mb-4">Emergence Simulator</h2>
+                        <p className="text-sm text-red-200/60 leading-relaxed mb-6">
+                            Complex systems are often defined by <strong>Emergence</strong>: when a system's properties are not inherent to its parts, but arise from their interactions.
+                            <br /><br />
+                            This model (Conway's Game of Life) demonstrates how simple local rules can generate complex, self-replicating global patterns.
                         </p>
+                        
+                        <div className="p-4 rounded border border-red-900/30 bg-red-950/10">
+                            <h3 className="text-[10px] font-bold uppercase tracking-widest text-red-500 mb-2">The Rules</h3>
+                            <ul className="text-xs text-red-300 space-y-1 font-mono">
+                                <li>1. Underpopulation: &lt; 2 neighbors -&gt; Dies</li>
+                                <li>2. Survival: 2 or 3 neighbors -&gt; Lives</li>
+                                <li>3. Overpopulation: &gt; 3 neighbors -&gt; Dies</li>
+                                <li>4. Reproduction: Exactly 3 neighbors -&gt; Born</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div className="xl:w-2/3 w-full flex justify-center">
+                        <GameOfLife />
                     </div>
                 </div>
-            </motion.div>
+            </div>
+        </section>
 
-          </div>
+        {/* BOTTOM SECTION: SECTORS GRID */}
+        <h2 className="text-xs font-bold uppercase tracking-widest text-red-500 mb-6 flex items-center gap-2">
+            <Network size={12} /> Systems Domains
+        </h2>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pb-20">
+            {SYSTEMS_SECTORS.map((sector) => {
+                const Icon = sector.icon;
+                return (
+                    <div 
+                        onClick={() => window.location.href = sector.href}
+                        key={sector.id}
+                        className={`
+                            group relative p-6 rounded-xl bg-black/40 border border-red-900/20 hover:border-red-500/50 transition-all duration-300 hover:-translate-y-1
+                            ${sector.bg}
+                        `}
+                    >
+                        <div className="flex justify-between items-start mb-4">
+                            <div className={`p-3 rounded-lg bg-black/50 border border-red-900/30 ${sector.color}`}>
+                                <Icon size={20} />
+                            </div>
+                            <div className="text-[10px] font-mono text-red-900 group-hover:text-red-500 transition-colors">
+                                SYS_{sector.id.toUpperCase().slice(0,3)}
+                            </div>
+                        </div>
 
+                        <h3 className="text-xl font-bold text-white mb-1 group-hover:text-red-400 transition-colors">
+                            {sector.label}
+                        </h3>
+                        <div className="text-[10px] font-bold uppercase tracking-wider text-red-700 mb-3">
+                            {sector.sub}
+                        </div>
+                        <p className="text-xs text-red-200/50 leading-relaxed">
+                            {sector.desc}
+                        </p>
+                    </div>
+                )
+            })}
         </div>
+
       </div>
     </main>
   );

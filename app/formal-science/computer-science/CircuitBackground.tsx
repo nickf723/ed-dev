@@ -29,7 +29,7 @@ export default function CircuitBackground() {
                 this.vx = 0; this.vy = Math.random() > 0.5 ? 2 : -2;
             }
             this.life = 100 + Math.random() * 100;
-            this.color = Math.random() > 0.5 ? "#22c55e" : "#3b82f6"; // Green or Blue
+            this.color = Math.random() > 0.5 ? "#00ff0df6" : "#1000f7f6"; // Green or Blue
         }
 
         update() {
@@ -74,11 +74,11 @@ export default function CircuitBackground() {
 
     const animate = () => {
       // Fade effect for trails
-      ctx.fillStyle = "rgba(15, 23, 42, 0.2)"; // Slate-900
+      ctx.fillStyle = "rgba(1, 12, 1, 0.1)"; // Slate-900
       ctx.fillRect(0, 0, w, h);
 
       // Draw Grid (Static)
-      ctx.fillStyle = "rgba(255,255,255,0.03)";
+      ctx.fillStyle = "rgb(0, 0, 0)";
       for (let x = 0; x < w; x += gridSize) {
           for (let y = 0; y < h; y += gridSize) {
               ctx.fillRect(x-1, y-1, 2, 2);

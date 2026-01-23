@@ -1,147 +1,165 @@
 "use client";
-import { useState, useEffect, useCallback } from "react";
-import { Users, Shuffle, Play, Pause, RefreshCw } from "lucide-react";
+import React, { useState, useEffect, useRef } from "react";
+import { Play, Pause, RefreshCw, Users } from "lucide-react";
 
-// Grid Config
-const SIZE = 12; // 12x12 grid
-const CELLS = SIZE * SIZE;
-const TYPES = ["empty", "A", "B"]; // 0=empty, 1=A(Cyan), 2=B(Indigo)
+// 0: Empty, 1: Group A (Purple), 2: Group B (Teal)
+type Cell = 0 | 1 | 2;
+
+const SIZE = 20; // 20x20 Grid
+const THRESHOLD = 0.30; // Agents move if < 30% of neighbors are like them
 
 export default function SchellingModel() {
-  const [grid, setGrid] = useState<number[]>([]);
+  const [grid, setGrid] = useState<Cell[]>([]);
   const [isRunning, setIsRunning] = useState(false);
-  const [round, setRound] = useState(0);
-  const [similarity, setSimilarity] = useState(0);
+  const [steps, setSteps] = useState(0);
+  const [happyCount, setHappyCount] = useState(0);
 
-  // Initialize
-  const initGrid = useCallback(() => {
-    const newGrid = Array(CELLS).fill(0).map(() => {
-        const r = Math.random();
-        if (r < 0.1) return 0; // 10% empty
-        return r < 0.55 ? 1 : 2; // Split A/B
+  // 1. INITIALIZE GRID
+  const reset = () => {
+    const newGrid: Cell[] = Array(SIZE * SIZE).fill(0).map(() => {
+      const r = Math.random();
+      if (r < 0.1) return 0; // 10% Empty
+      if (r < 0.55) return 1; // 45% Group A
+      return 2; // 45% Group B
     });
     setGrid(newGrid);
-    setRound(0);
+    setSteps(0);
     setIsRunning(false);
-  }, []);
-
-  useEffect(() => { initGrid(); }, [initGrid]);
-
-  // Step Simulation
-  const step = () => {
-      setGrid(prev => {
-          const next = [...prev];
-          const emptyIndices = next.map((v, i) => v === 0 ? i : -1).filter(i => i !== -1);
-          let moved = false;
-          let totalSim = 0;
-          let agentCount = 0;
-
-          // Check every cell
-          for (let i = 0; i < CELLS; i++) {
-              const type = prev[i];
-              if (type === 0) continue;
-
-              // Check neighbors
-              const neighbors = [];
-              const x = i % SIZE;
-              const y = Math.floor(i / SIZE);
-
-              for (let dy = -1; dy <= 1; dy++) {
-                  for (let dx = -1; dx <= 1; dx++) {
-                      if (dx === 0 && dy === 0) continue;
-                      const nx = x + dx;
-                      const ny = y + dy;
-                      if (nx >= 0 && nx < SIZE && ny >= 0 && ny < SIZE) {
-                          const nType = prev[ny * SIZE + nx];
-                          if (nType !== 0) neighbors.push(nType);
-                      }
-                  }
-              }
-
-              if (neighbors.length > 0) {
-                  const same = neighbors.filter(n => n === type).length;
-                  const ratio = same / neighbors.length;
-                  
-                  // Calc stats
-                  totalSim += ratio;
-                  agentCount++;
-
-                  // Threshold Rule (e.g., 30% preference)
-                  if (ratio < 0.30) {
-                      // Unhappy -> Move
-                      if (emptyIndices.length > 0) {
-                          const randIndex = Math.floor(Math.random() * emptyIndices.length);
-                          const target = emptyIndices[randIndex];
-                          
-                          // Swap
-                          next[target] = type;
-                          next[i] = 0;
-                          
-                          // Update empty list (simple swap logic for this tick)
-                          emptyIndices[randIndex] = i; 
-                          moved = true;
-                      }
-                  }
-              }
-          }
-          
-          if (agentCount > 0) setSimilarity(totalSim / agentCount);
-          return next;
-      });
-      setRound(r => r + 1);
   };
 
-  useEffect(() => {
-      let interval: any;
-      if (isRunning) {
-          interval = setInterval(step, 200);
+  useEffect(() => { reset(); }, []);
+
+  // 2. SIMULATION LOGIC
+  const runStep = () => {
+    setGrid((prev) => {
+      const next = [...prev];
+      const emptyIndices = next.map((c, i) => c === 0 ? i : -1).filter(i => i !== -1);
+      let moved = false;
+      let happy = 0;
+      let totalAgents = 0;
+
+      for (let i = 0; i < next.length; i++) {
+        const agent = prev[i];
+        if (agent === 0) continue;
+
+        totalAgents++;
+        
+        // Check Neighbors
+        const row = Math.floor(i / SIZE);
+        const col = i % SIZE;
+        let alike = 0;
+        let totalNeighbors = 0;
+
+        for (let r = -1; r <= 1; r++) {
+          for (let c = -1; c <= 1; c++) {
+            if (r === 0 && c === 0) continue;
+            const nr = row + r;
+            const nc = col + c;
+            if (nr >= 0 && nr < SIZE && nc >= 0 && nc < SIZE) {
+              const neighbor = prev[nr * SIZE + nc];
+              if (neighbor !== 0) {
+                totalNeighbors++;
+                if (neighbor === agent) alike++;
+              }
+            }
+          }
+        }
+
+        // Calculate Happiness
+        const ratio = totalNeighbors === 0 ? 1 : alike / totalNeighbors;
+        
+        if (ratio < THRESHOLD) {
+          // UNHAPPY: Move to random empty spot
+          if (emptyIndices.length > 0) {
+            const randomEmptyIdx = Math.floor(Math.random() * emptyIndices.length);
+            const target = emptyIndices[randomEmptyIdx];
+            
+            next[target] = agent; // Move here
+            next[i] = 0; // Leave old spot
+            
+            // Update empty list
+            emptyIndices[randomEmptyIdx] = i; 
+            moved = true;
+          }
+        } else {
+            happy++;
+        }
       }
-      return () => clearInterval(interval);
+      
+      setHappyCount(Math.round((happy / totalAgents) * 100));
+      return next;
+    });
+    
+    setSteps(s => s + 1);
+  };
+
+  // Timer
+  useEffect(() => {
+    let interval: any;
+    if (isRunning) {
+      interval = setInterval(runStep, 200);
+    }
+    return () => clearInterval(interval);
   }, [isRunning]);
 
   return (
-    <div className="bg-slate-900/90 border border-cyan-500/30 rounded-xl p-6 backdrop-blur-md shadow-2xl w-full max-w-sm">
+    <div className="flex flex-col md:flex-row gap-8 items-start w-full">
         
-        <div className="flex justify-between items-center mb-4">
-            <h3 className="font-bold text-cyan-100 flex items-center gap-2 font-serif tracking-wider">
-                <Users size={18} className="text-cyan-500" /> MICRO-MOTIVES
+        {/* CANVAS */}
+        <div className="w-full md:w-auto flex flex-col items-center">
+             <div 
+                className="grid gap-[1px] bg-stone-900 border border-violet-900/50 p-1 shadow-2xl rounded"
+                style={{ gridTemplateColumns: `repeat(${SIZE}, 1fr)`, width: "300px", height: "300px" }}
+             >
+                {grid.map((cell, i) => (
+                    <div 
+                        key={i} 
+                        className={`
+                            w-full h-full rounded-[1px] transition-colors duration-200
+                            ${cell === 0 ? "bg-transparent" : cell === 1 ? "bg-violet-500" : "bg-teal-400"}
+                        `}
+                    />
+                ))}
+            </div>
+            
+            {/* CONTROLS */}
+            <div className="flex gap-2 mt-4">
+                <button onClick={() => setIsRunning(!isRunning)} className="px-4 py-2 bg-violet-900/40 border border-violet-500/30 rounded text-violet-300 text-xs font-bold uppercase hover:bg-violet-500 hover:text-white transition-all flex items-center gap-2">
+                    {isRunning ? <Pause size={14} /> : <Play size={14} />}
+                    {isRunning ? "Pause" : "Simulate"}
+                </button>
+                <button onClick={reset} className="px-4 py-2 bg-stone-800 border border-stone-700 rounded text-stone-400 text-xs font-bold uppercase hover:text-white transition-all">
+                    <RefreshCw size={14} />
+                </button>
+            </div>
+        </div>
+
+        {/* INFO PANEL */}
+        <div className="flex-1">
+            <h3 className="text-xl font-bold text-white mb-2 flex items-center gap-2">
+                <Users className="text-violet-500" size={20} /> Schelling's Segregation
             </h3>
-            <button onClick={initGrid} className="text-cyan-500/50 hover:text-cyan-400"><RefreshCw size={14}/></button>
+            <p className="text-sm text-violet-200/60 leading-relaxed mb-6">
+                This model demonstrates <strong>Micro-Motives vs. Macro-Behavior</strong>. 
+                Even if individual agents have a very mild preference (e.g., "I want just 30% of my neighbors to look like me"), 
+                the entire system will eventually segregate completely.
+            </p>
+
+            <div className="grid grid-cols-2 gap-4">
+                <div className="p-3 bg-violet-950/20 border border-violet-500/20 rounded">
+                    <div className="text-[10px] font-mono text-violet-400 uppercase">Happiness</div>
+                    <div className="text-2xl font-black text-white">{happyCount}%</div>
+                </div>
+                <div className="p-3 bg-stone-900/40 border border-stone-800 rounded">
+                    <div className="text-[10px] font-mono text-stone-500 uppercase">Steps</div>
+                    <div className="text-2xl font-black text-stone-300">{steps}</div>
+                </div>
+            </div>
+            
+            <div className="mt-4 p-3 border-l-2 border-violet-500 bg-violet-500/5 text-xs text-violet-300 italic">
+                "Mild individual bias can create extreme collective separation."
+            </div>
         </div>
-
-        <p className="text-xs text-slate-400 mb-4 leading-relaxed">
-            Schelling's Model: Agents move if fewer than 30% of neighbors are like them. Slight bias creates massive segregation.
-        </p>
-
-        {/* GRID VISUAL */}
-        <div className="aspect-square w-full bg-black/40 rounded border border-slate-700 grid gap-1 p-1 mb-4"
-             style={{ gridTemplateColumns: `repeat(${SIZE}, 1fr)` }}>
-            {grid.map((cell, i) => (
-                <div 
-                    key={i} 
-                    className={`rounded-sm transition-colors duration-300
-                        ${cell === 0 ? "bg-transparent" : cell === 1 ? "bg-cyan-500" : "bg-indigo-500"}
-                    `}
-                />
-            ))}
-        </div>
-
-        {/* STATS */}
-        <div className="flex justify-between text-xs font-mono text-slate-400 mb-4">
-            <div>ROUND: <span className="text-white">{round}</span></div>
-            <div>SEGREGATION: <span className={`${similarity > 0.7 ? "text-rose-400" : "text-emerald-400"}`}>{(similarity * 100).toFixed(0)}%</span></div>
-        </div>
-
-        {/* CONTROLS */}
-        <button 
-            onClick={() => setIsRunning(!isRunning)}
-            className={`w-full py-3 rounded-lg font-bold text-xs flex items-center justify-center gap-2 transition-colors
-                ${isRunning ? "bg-rose-500/20 text-rose-400 border border-rose-500/50" : "bg-cyan-500/20 text-cyan-400 border border-cyan-500/50 hover:bg-cyan-500/30"}
-            `}
-        >
-            {isRunning ? <><Pause size={14}/> PAUSE SIMULATION</> : <><Play size={14}/> START SIMULATION</>}
-        </button>
-
     </div>
   );
 }

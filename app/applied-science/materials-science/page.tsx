@@ -3,13 +3,8 @@
 import PageHeader from "@/components/PageHeader";
 import FloatingSymbols from "@/components/FloatingSymbols";
 import TopicCard from "@/components/TopicCard";
-import {
-  Hammer,
-  Atom,
-  FlaskConical,
-  Box,
-} from "@/components/icons";
 import React from "react";
+import { Atom, Box, FlaskConical, Hammer } from "lucide-react";
 
 const materialsScienceSymbols = [
   "\\text{Alloy}", "\\text{Polymer}", "\\text{Crystal}", "\\text{Grain}", "\\text{MPa}", "\\text{T}", "\\Delta G", "\\text{E}",

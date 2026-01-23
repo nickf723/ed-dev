@@ -1,24 +1,29 @@
 import "./globals.css";
-import "./themes.css"
-import "./components.css"
-import Sidebar from "@/components/Sidebar";
-import "katex/dist/katex.min.css";
-import MemexDock from "@/components/MemexDock";
+// import { Inter } from "next/font/google"; // If you use fonts
+import Sidebar from "../components/Sidebar";
+import { SidebarProvider } from "../components/SidebarContext";
+import MainContent from "../components/MainContent";
 
-export const metadata = {
-  title: "Knowledge Netowrk",
-  description: "A hub for learning anything, powered by interconnected concepts and clear explanations.",
-};
-
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en">
-      <body className="flex bg-neutral-950">
-        <Sidebar />
-        <div className="ml-[var(--sidebar-width)] flex-1 min-h-screen relative">
+      <body className="bg-black text-white">
+        {/* 1. Provider wraps everything */}
+        <SidebarProvider>
+          
+          {/* 2. Sidebar is INSIDE Provider */}
+          <Sidebar />
+
+          {/* 3. Content is INSIDE Provider */}
+          <MainContent>
             {children}
-            <MemexDock /> {/* THE DOCK LIVES HERE, GLOBALLY */}
-        </div>
+          </MainContent>
+
+        </SidebarProvider>
       </body>
     </html>
   );

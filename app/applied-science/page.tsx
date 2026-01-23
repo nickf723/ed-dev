@@ -1,206 +1,138 @@
 "use client";
-import { useState } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
-import InfrastructureBackground from "@/app/applied-science/InfrastructureBackground";
-import { motion, AnimatePresence } from "framer-motion";
-import {
-  Hammer, Cpu, Stethoscope, HardHat, Pickaxe, HeartPulse,
-  TreeDeciduous, Building, Globe2, ArrowRight, Layers,
-  Terminal, Dna, Box
-} from "lucide-react";
-
-// --- DATA ---
-const categories = [
-  {
-    id: "hardware",
-    label: "HARDWARE",
-    icon: Box,
-    desc: "The Physical Layer. Manipulating matter and energy to build structure.",
-    color: "text-orange-400",
-    bg: "bg-orange-500",
-    border: "border-orange-500",
-    items: [
-      { 
-        title: "Engineering", 
-        role: "Design & Build", 
-        href: "/applied-science/engineering", 
-        icon: Hammer,
-        desc: "Designing complex systems, structures, and machines."
-      },
-      { 
-        title: "Architecture", 
-        role: "Spatial Design", 
-        href: "/applied-science/architecture", 
-        icon: Building,
-        desc: "The art and science of designing built environments."
-      },
-      { 
-        title: "Materials Science", 
-        role: "Matter Engineering", 
-        href: "/applied-science/materials-science", 
-        icon: Pickaxe,
-        desc: "Creating new materials with novel properties."
-      }
-    ]
-  },
-  {
-    id: "software",
-    label: "SOFTWARE",
-    icon: Terminal,
-    desc: "The Digital Layer. Processing information and simulating reality.",
-    color: "text-sky-400",
-    bg: "bg-sky-500",
-    border: "border-sky-500",
-    items: [
-      { 
-        title: "Computer Technology", 
-        role: "Computation", 
-        href: "/applied-science/computer-technology", 
-        icon: Cpu,
-        desc: "Hardware and software systems that power the information age."
-      }
-    ]
-  },
-  {
-    id: "wetware",
-    label: "WETWARE",
-    icon: Dna,
-    desc: "The Biological Layer. Healing, sustaining, and augmenting life.",
-    color: "text-emerald-400",
-    bg: "bg-emerald-500",
-    border: "border-emerald-500",
-    items: [
-      { 
-        title: "Medicine", 
-        role: "Human Health", 
-        href: "/applied-science/medicine", 
-        icon: Stethoscope,
-        desc: "Diagnosis, treatment, and prevention of disease."
-      },
-      { 
-        title: "Environmental Science", 
-        role: "Planetary Health", 
-        href: "/applied-science/environmental-science", 
-        icon: Globe2,
-        desc: "Protecting and sustaining natural ecosystems."
-      },
-      { 
-        title: "Agriculture", 
-        role: "Cultivation", 
-        href: "/applied-science/agriculture", 
-        icon: TreeDeciduous,
-        desc: "The science and practice of farming and food production."
-      }
-    ]
-  }
-];
+import AppliedBackground from "./AppliedBackground";
+import { APPLIED_DOMAINS, APPLIED_FIELDS, Domain } from "./applied-data";
+import GlobalVisualMedia from "@/components/GlobalVisualMedia";
+import { ArrowLeft, Settings, ExternalLink } from "lucide-react";
 
 export default function AppliedSciencePage() {
-  const [activeTab, setActiveTab] = useState("hardware");
-  const activeCategory = categories.find(c => c.id === activeTab) || categories[0];
+  const [activeDomain, setActiveDomain] = useState<Domain | "ALL">("ALL");
 
   return (
-    <main className="relative min-h-screen bg-neutral-950 text-white overflow-hidden selection:bg-orange-500/30 font-sans">
+    <main className="min-h-screen bg-[#0f172a] text-slate-200 font-sans relative overflow-hidden selection:bg-cyan-500/30">
       
-      {/* 1. VISUAL ENGINE */}
-      <InfrastructureBackground />
-      
-      {/* OVERLAY */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_bottom,transparent_0%,#020617_100%)] pointer-events-none z-0" />
-      <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10 pointer-events-none z-0" />
+      <AppliedBackground />
+      <div className="fixed inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,#0f172a_100%)] pointer-events-none" />
 
-      {/* 2. DASHBOARD UI */}
-      <div className="relative z-10 container mx-auto px-6 py-12 min-h-screen flex flex-col">
+      <div className="relative z-10 p-6 md:p-12 min-h-screen flex flex-col">
         
         {/* HEADER */}
         <header className="mb-16">
-             <div className="flex items-center gap-2 text-xs font-mono text-orange-500 mb-4 uppercase tracking-widest">
-                <Layers size={14} /> Domain_04 // Applied_Sciences
-             </div>
-             <div className="max-w-4xl">
-                 <h1 className="text-6xl md:text-8xl font-black text-white mb-6 tracking-tighter drop-shadow-2xl">
-                    APPLIED<br/>SCIENCE
-                 </h1>
-                 <p className="text-slate-400 text-lg md:text-xl leading-relaxed max-w-2xl border-l-4 border-orange-500 pl-6">
-                    Knowledge in action. We take the laws of physics, the logic of code, and the patterns of biology to build tools, cure diseases, and engineer the future.
-                 </p>
-             </div>
+            <Link href="/" className="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-cyan-500 hover:text-white transition-colors mb-6">
+                <ArrowLeft size={10} /> Knowledge Base
+            </Link>
+            <h1 className="text-5xl md:text-7xl font-black text-white tracking-tighter mb-4 flex items-center gap-4">
+                APPLIED SCIENCES <Settings className="text-cyan-500 animate-spin-slow opacity-80" size={48} />
+            </h1>
+            <p className="text-slate-400 font-mono text-xs uppercase tracking-widest max-w-xl">
+                The Engineering Trinity // Transforming Theory into Reality.
+            </p>
         </header>
 
-        {/* 3. STACK SWITCHER */}
+        {/* DOMAIN SELECTOR */}
         <div className="flex flex-wrap gap-4 mb-12">
-            {categories.map((cat) => (
-                <button
-                    key={cat.id}
-                    onClick={() => setActiveTab(cat.id)}
-                    className={`
-                        px-6 py-4 rounded-xl border flex items-center gap-3 transition-all duration-300
-                        ${activeTab === cat.id 
-                            ? `bg-slate-800 ${cat.border} text-white shadow-[0_0_20px_rgba(0,0,0,0.5)] scale-105` 
-                            : "bg-slate-900/50 border-white/10 text-slate-500 hover:bg-slate-800 hover:text-slate-300"
-                        }
-                    `}
-                >
-                    <cat.icon size={20} className={activeTab === cat.id ? cat.color : ""} />
-                    <span className="font-bold tracking-wide text-sm">{cat.label}</span>
-                </button>
-            ))}
+            <button 
+                onClick={() => setActiveDomain("ALL")}
+                className={`px-6 py-2 rounded-full border text-xs font-bold uppercase tracking-widest transition-all ${activeDomain === "ALL" ? "bg-white text-black border-white" : "bg-black/40 border-slate-700 text-slate-500 hover:border-white hover:text-white"}`}
+            >
+                Overview
+            </button>
+            {(Object.keys(APPLIED_DOMAINS) as Domain[]).map((d) => {
+                const info = APPLIED_DOMAINS[d];
+                return (
+                    <button 
+                        key={d}
+                        onClick={() => setActiveDomain(d)}
+                        className={`
+                            px-6 py-2 rounded-full border text-xs font-bold uppercase tracking-widest transition-all flex items-center gap-2
+                            ${activeDomain === d 
+                                ? `${info.bg} ${info.color} ${info.border}` 
+                                : "bg-black/40 border-slate-700 text-slate-500 hover:border-slate-400 hover:text-slate-300"}
+                        `}
+                    >
+                        <info.icon size={14} /> {info.title}
+                    </button>
+                )
+            })}
         </div>
 
-        {/* 4. CONTENT GRID */}
-        <div className="flex-1">
-            <AnimatePresence mode="wait">
-                <motion.div
-                    key={activeTab}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -20 }}
-                    transition={{ duration: 0.3 }}
-                >
-                    {/* Category Description */}
-                    <div className="mb-8 flex items-center gap-4">
-                        <div className={`h-px flex-1 bg-gradient-to-r from-transparent via-white/20 to-transparent`} />
-                        <span className={`font-mono text-xs uppercase tracking-widest ${activeCategory.color}`}>
-                            {activeCategory.desc}
-                        </span>
-                        <div className={`h-px flex-1 bg-gradient-to-r from-transparent via-white/20 to-transparent`} />
-                    </div>
+        {/* CONTENT SECTIONS */}
+        <div className="space-y-24 pb-20">
+            {(Object.keys(APPLIED_DOMAINS) as Domain[]).map((domainKey) => {
+                if (activeDomain !== "ALL" && activeDomain !== domainKey) return null;
+                
+                const domain = APPLIED_DOMAINS[domainKey];
+                const fields = APPLIED_FIELDS.filter(f => f.domain === domainKey);
 
-                    {/* Cards */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {activeCategory.items.map((item) => (
-                            <Link 
-                                href={item.href} 
-                                key={item.title}
-                                className="group relative bg-slate-900/60 backdrop-blur-md border border-white/10 rounded-2xl p-8 hover:border-white/30 transition-all hover:-translate-y-1 overflow-hidden"
-                            >
-                                {/* Hover Glow */}
-                                <div className={`absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-500 ${activeCategory.bg}`} />
-                                
-                                <div className="relative z-10">
-                                    <div className="flex justify-between items-start mb-6">
-                                        <div className={`p-3 rounded-xl bg-white/5 border border-white/10 group-hover:scale-110 transition-transform duration-300 ${activeCategory.color}`}>
-                                            <item.icon size={28} />
+                return (
+                    <section key={domainKey} className="animate-in fade-in slide-in-from-bottom-8 duration-700">
+                        {/* Section Header */}
+                        <div className={`flex items-end gap-4 mb-8 pb-4 border-b border-white/5 ${domain.color}`}>
+                            <domain.icon size={32} />
+                            <div>
+                                <h2 className="text-3xl font-black uppercase tracking-tight text-white">{domain.title}</h2>
+                                <p className="text-xs font-mono opacity-80 mt-1">{domain.desc}</p>
+                            </div>
+                        </div>
+
+                        {/* Fields Grid */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                            {fields.map((field) => (
+                                <div 
+                                    key={field.id}
+                                    className={`
+                                        group relative p-6 rounded-xl bg-slate-900/40 border border-white/5 hover:border-opacity-50 transition-all duration-300 hover:-translate-y-1
+                                        ${domain.border} border-l-4
+                                    `}
+                                >
+                                    {/* Card Header */}
+                                    <div className="flex justify-between items-start mb-4">
+                                        <div className={`p-2 rounded bg-black/50 ${domain.color}`}>
+                                            <field.icon size={20} />
                                         </div>
-                                        <ArrowRight className="text-slate-600 group-hover:text-white transition-colors" />
+                                        <ExternalLink size={14} className="opacity-0 group-hover:opacity-50 transition-opacity" />
                                     </div>
-                                    
-                                    <div className="mb-1">
-                                        <span className={`text-[10px] font-bold uppercase tracking-widest px-2 py-1 rounded bg-white/5 ${activeCategory.color}`}>
-                                            {item.role}
-                                        </span>
-                                    </div>
-                                    
-                                    <h3 className="text-2xl font-bold text-white mb-3">{item.title}</h3>
-                                    <p className="text-sm text-slate-400 leading-relaxed">
-                                        {item.desc}
+
+                                    <h3 className="text-xl font-bold text-white mb-2">{field.title}</h3>
+                                    <p className="text-xs text-slate-400 leading-relaxed mb-4 h-10 line-clamp-2">
+                                        {field.desc}
                                     </p>
+
+                                    {/* THE VISUAL ENGINE */}
+                                    {/* THE VISUAL ENGINE */}
+                                    <div className="grid grid-cols-3 gap-2 h-32 mt-4">
+                                        
+                                        {/* Main Concept Image */}
+                                        <div className="col-span-2 rounded-lg overflow-hidden relative bg-black border border-white/5 group-hover:border-white/20 transition-colors">
+                                            <GlobalVisualMedia 
+                                                query={field.imageQuery} // e.g. "Boston Dynamics robot"
+                                                alt={field.title}
+                                            />
+                                            <div className="absolute bottom-1 left-2 px-1.5 py-0.5 bg-black/60 backdrop-blur rounded text-[8px] font-bold uppercase tracking-widest text-white border border-white/10">
+                                                Visual
+                                            </div>
+                                        </div>
+
+                                        {/* Secondary Concept Image (Was Diagram) */}
+                                        {/* Since we removed schematic mode, we just query the diagram topic on Wiki */}
+                                        <div className="col-span-1 rounded-lg overflow-hidden relative bg-slate-950 border border-white/5 group-hover:border-white/20 transition-colors">
+                                            <GlobalVisualMedia 
+                                                query={field.diagramQuery} // e.g. "Robotic arm diagram"
+                                                alt={`${field.title} Detail`} 
+                                            />
+                                            <div className="absolute bottom-1 left-2 px-1.5 py-0.5 bg-black/60 backdrop-blur rounded text-[8px] font-bold uppercase tracking-widest text-cyan-400 border border-cyan-900/50">
+                                                Detail
+                                            </div>
+                                        </div>
+
+                                    </div>
                                 </div>
-                            </Link>
-                        ))}
-                    </div>
-                </motion.div>
-            </AnimatePresence>
+                            ))}
+                        </div>
+                    </section>
+                );
+            })}
         </div>
 
       </div>

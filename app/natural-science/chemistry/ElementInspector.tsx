@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Atom, Scale, Zap, Layers } from "lucide-react";
 
 // Re-using the type locally for simplicity
-type Element = { z: number; symbol: string; name: string; group: string; mass: number; config: string };
+export type Element = { z: number; symbol: string; name: string; group: string; mass: number; config: string };
 
 export default function ElementInspector({ element }: { element: Element | null }) {
   
