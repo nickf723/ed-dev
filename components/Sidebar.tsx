@@ -3,7 +3,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { LayoutGrid, ChevronDown, Menu, X, PanelLeftClose, PanelLeftOpen } from "lucide-react";
+import { LayoutGrid, ChevronDown, Menu, X, PanelLeftClose, PanelLeftOpen, Search } from "lucide-react";
 // Assuming these exist based on your snippet, otherwise remove/mock
 import XRayConsole from "@/components/XRayConsole"; 
 import { NAVIGATION_DATA } from "@/lib/navigation";
@@ -70,6 +70,7 @@ export default function Sidebar() {
             ${isMobileOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}
             ${isCollapsed ? "w-20" : "w-72"}
         `}
+        
       >
         
         {/* HEADER / BRAND */}
@@ -134,6 +135,24 @@ export default function Sidebar() {
                 <XRayConsole />
             )}
         </div>
+        {/* KEYBOARD SHORTCUT HINT */}
+        {!isCollapsed && (
+            <div className="mt-auto p-4 border-t border-white/5">
+                <button 
+                    // We can also make this button clickable to open the menu manually if we want
+                    onClick={() => document.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', ctrlKey: true }))}
+                    className="w-full flex items-center justify-between px-3 py-2 rounded-lg bg-white/5 border border-white/5 text-xs text-slate-400 hover:border-cyan-500/30 hover:text-cyan-400 transition-colors group"
+                >
+                    <span className="flex items-center gap-2">
+                        <Search size={12} />
+                        <span className="font-mono text-[10px] uppercase">Search</span>
+                    </span>
+                    <kbd className="hidden md:inline-flex h-5 items-center gap-1 rounded border border-white/10 bg-black px-1.5 font-mono text-[10px] font-medium text-slate-500 group-hover:text-cyan-500 group-hover:border-cyan-500/30">
+                        <span className="text-xs">⌘</span>K
+                    </kbd>
+                </button>
+            </div>
+        )}
       </aside>
     </>
   );

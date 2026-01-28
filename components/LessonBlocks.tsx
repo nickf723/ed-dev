@@ -2,23 +2,8 @@
 import React, { useState } from "react";
 import Link from "next/link"; 
 import { LucideIcon, Quote } from "lucide-react";
-import {
-  ChevronDown,
-  ChevronUp,
-  Eye,
-  EyeOff,
-  Lightbulb,
-  Info,
-  BookCopy,
-  Target,
-  CheckSquare,
-  Link as LinkIcon,
-  ExternalLink as ExternalLinkIcon,
-  AlertTriangle,
-  CheckCircle,
-  ListCheck,
-  Table,
-} from "./icons";
+import { BookCopy, CheckCircle, CheckSquare, ChevronDown, ChevronUp, Eye, EyeOff, ExternalLink as ExternalLinkIcon, 
+  Info, Lightbulb, Link as LinkIcon, ListCheck, Target, AlertTriangle } from "lucide-react";
 
 // --- EXISTING TYPES ---
 type LessonHeaderProps = { icon: LucideIcon; title: string; };

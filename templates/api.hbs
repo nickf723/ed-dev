@@ -1,0 +1,14 @@
+import { useResource } from "@/lib/api";
+
+// Define the shape of data for this domain
+export interface {{pascalCase name}}Data {
+  id: string;
+  name: string;
+}
+
+// Custom Hook
+export function use{{pascalCase name}}(id: string | null) {
+  return useResource<{{pascalCase name}}Data>(
+    id ? `/api/{{kebabCase name}}/${id}` : null
+  );
+}

@@ -1,14 +1,14 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
+import Link from "next/link";
 import PageHeader from "@/components/PageHeader";
 import MatrixBackground from "@/app/glossary/MatrixBackground";
 import FlashcardWidget from "@/app/glossary/FlashcardWidget";
 import { glossaryTerms, termCategories, GlossaryTermKey } from "@/lib/glossary-db";
-import { Search, Database, Filter } from "lucide-react";
+import { Search, Database, Filter, ArrowUpRight, AlignLeft } from "lucide-react";
 import { motion } from "framer-motion";
 
-// Get all data once
 const allTerms = Object.keys(glossaryTerms).sort() as GlossaryTermKey[];
 const allCategories = [...new Set(Object.values(glossaryTerms).map((term) => term.category))].sort();
 const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
@@ -17,7 +17,6 @@ export default function GlossaryPage() {
   const [searchText, setSearchText] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
-  // Filter logic
   const groupedTerms = useMemo(() => {
     const categoryFiltered = selectedCategory
       ? allTerms.filter((term) => glossaryTerms[term].category === selectedCategory)
@@ -42,143 +41,151 @@ export default function GlossaryPage() {
     }, {} as Record<string, GlossaryTermKey[]>);
   }, [searchText, selectedCategory]);
 
-  const activeLetters = useMemo(() => Object.keys(groupedTerms).sort(), [groupedTerms]);
+  const activeLetters = Object.keys(groupedTerms).sort();
 
   return (
-    <main className="relative min-h-screen overflow-hidden bg-neutral-950 lg:px-12">
+    <main className="relative min-h-screen bg-neutral-950">
       
-      {/* 1. Matrix Background */}
       <MatrixBackground />
 
-      <div className="relative z-10 mx-auto flex max-w-7xl flex-col py-10">
+      <div className="relative z-10 mx-auto max-w-[1600px] px-4 md:px-8 py-10">
         
         <PageHeader
-          eyebrow="Reference Hub"
-          title="System Glossary"
-          subtitle="The central database of definitions. Access key terms, axioms, and concepts from across the entire knowledge network."
+          eyebrow="The Index"
+          title="Glossary"
+          subtitle="A high-density definition matrix connecting all domains."
         />
 
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start mt-8">
           
-          {/* MAIN CONTENT (8 cols) */}
-          <div className="lg:col-span-8">
-            
-            {/* Search & Filter Bar */}
-            <div className="sticky top-4 z-30 mb-8 flex flex-col gap-4 rounded-xl border border-cyan-500/30 bg-neutral-900/90 p-4 shadow-2xl backdrop-blur-md lg:flex-row lg:items-center">
-              <div className="relative flex-1">
-                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-cyan-500" />
-                <input
-                  type="text"
-                  value={searchText}
-                  onChange={(e) => setSearchText(e.target.value)}
-                  placeholder="Search database..."
-                  className="w-full rounded-lg border border-neutral-700 bg-neutral-950 py-2 pl-10 pr-4 text-sm text-cyan-100 placeholder-neutral-600 focus:border-cyan-500 focus:outline-none focus:ring-1 focus:ring-cyan-500"
-                />
-              </div>
-              
-              <div className="relative min-w-[200px]">
-                <Filter className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-cyan-500" />
-                <select
-                  value={selectedCategory || "all"}
-                  onChange={(e) => setSelectedCategory(e.target.value === "all" ? null : e.target.value)}
-                  className="w-full cursor-pointer appearance-none rounded-lg border border-neutral-700 bg-neutral-950 py-2 pl-10 pr-8 text-sm text-cyan-100 focus:border-cyan-500 focus:outline-none"
-                >
-                  <option value="all">All Categories</option>
-                  {allCategories.map((cat) => (
-                    <option key={cat} value={cat}>{cat}</option>
-                  ))}
-                </select>
-              </div>
-            </div>
+          {/* LEFT: CONTROLS & WIDGETS (3 Cols) */}
+          <div className="lg:col-span-3 space-y-6 lg:sticky lg:top-8">
+             
+             {/* SEARCH POD */}
+             <div className="rounded-xl border border-cyan-500/20 bg-neutral-900/80 p-4 backdrop-blur-md shadow-xl">
+                <div className="relative mb-3">
+                    <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-cyan-500" />
+                    <input
+                      type="text"
+                      value={searchText}
+                      onChange={(e) => setSearchText(e.target.value)}
+                      placeholder="Filter matrix..."
+                      className="w-full rounded-lg border border-neutral-700 bg-neutral-950 py-2 pl-9 pr-2 text-xs text-cyan-100 placeholder-neutral-600 focus:border-cyan-500 focus:outline-none"
+                    />
+                </div>
+                <div className="relative">
+                    <Filter className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-cyan-500" />
+                    <select
+                      value={selectedCategory || "all"}
+                      onChange={(e) => setSelectedCategory(e.target.value === "all" ? null : e.target.value)}
+                      className="w-full cursor-pointer appearance-none rounded-lg border border-neutral-700 bg-neutral-950 py-2 pl-9 pr-4 text-xs text-cyan-100 focus:border-cyan-500 focus:outline-none"
+                    >
+                      <option value="all">All Domains</option>
+                      {allCategories.map((cat) => (
+                        <option key={cat} value={cat}>{cat}</option>
+                      ))}
+                    </select>
+                </div>
+             </div>
 
-            {/* Alphabet Jump Bar */}
-            <div className="mb-8 flex flex-wrap gap-1 px-2">
-              {alphabet.map((letter) => {
-                const isActive = activeLetters.includes(letter);
-                return (
-                  <a
-                    key={letter}
-                    href={isActive ? `#section-${letter}` : undefined}
-                    className={`flex h-6 w-6 items-center justify-center rounded text-[10px] font-bold transition-colors ${
-                      isActive
-                        ? "bg-cyan-900/50 text-cyan-300 hover:bg-cyan-500 hover:text-white cursor-pointer"
-                        : "text-neutral-700 cursor-default"
-                    }`}
-                  >
-                    {letter}
-                  </a>
-                );
-              })}
-            </div>
+             {/* STATS POD */}
+             <div className="rounded-xl border border-neutral-800 bg-neutral-900/50 p-4 backdrop-blur-md">
+                <div className="flex justify-between items-center mb-2">
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-neutral-500">Database Size</span>
+                    <Database size={12} className="text-cyan-600" />
+                </div>
+                <div className="text-3xl font-black text-white">{allTerms.length} <span className="text-xs font-normal text-neutral-500">records</span></div>
+             </div>
 
-            {/* Terms List */}
-            <div className="space-y-12">
-                {activeLetters.length === 0 && (
-                    <div className="rounded-xl border border-dashed border-neutral-800 py-20 text-center">
-                        <Database className="mx-auto mb-4 h-10 w-10 text-neutral-700" />
-                        <p className="text-neutral-500">No records found in archives.</p>
+             {/* FLASHCARD WIDGET (Compact) */}
+             <FlashcardWidget />
+
+             {/* JUMP BAR */}
+             <div className="flex flex-wrap gap-1 p-2 rounded-xl border border-neutral-800 bg-neutral-900/30">
+                {alphabet.map((letter) => {
+                    const isActive = activeLetters.includes(letter);
+                    return (
+                    <a
+                        key={letter}
+                        href={isActive ? `#section-${letter}` : undefined}
+                        className={`flex h-6 w-6 items-center justify-center rounded text-[9px] font-bold transition-all ${
+                        isActive
+                            ? "bg-cyan-950 text-cyan-400 hover:bg-cyan-500 hover:text-white border border-cyan-800"
+                            : "text-neutral-800 cursor-default"
+                        }`}
+                    >
+                        {letter}
+                    </a>
+                    );
+                })}
+             </div>
+          </div>
+
+          {/* RIGHT: THE CONTENT MASONRY (9 Cols) */}
+          <div className="lg:col-span-9">
+            {activeLetters.length === 0 && (
+                <div className="flex h-64 items-center justify-center rounded-xl border border-dashed border-neutral-800 bg-neutral-900/20">
+                    <div className="text-center">
+                        <Database className="mx-auto mb-2 h-8 w-8 text-neutral-700" />
+                        <p className="text-sm text-neutral-500">Query returned 0 results.</p>
                     </div>
-                )}
+                </div>
+            )}
 
+            <div className="space-y-8">
                 {activeLetters.map((letter) => (
                     <section key={letter} id={`section-${letter}`} className="scroll-mt-24">
-                        <div className="mb-4 flex items-center gap-4">
-                            <span className="flex h-10 w-10 items-center justify-center rounded-lg border border-cyan-500/20 bg-cyan-950/30 text-xl font-black text-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.2)]">
+                        {/* Letter Header */}
+                        <div className="sticky top-0 z-20 mb-4 flex items-center gap-4 bg-neutral-950/90 py-2 backdrop-blur">
+                            <span className="flex h-8 w-8 items-center justify-center rounded border border-cyan-500/20 bg-cyan-950/50 text-sm font-black text-cyan-400">
                                 {letter}
                             </span>
-                            <div className="h-[1px] flex-1 bg-gradient-to-r from-cyan-900/50 to-transparent" />
+                            <div className="h-px flex-1 bg-gradient-to-r from-cyan-900/30 to-transparent" />
                         </div>
 
-                        <div className="grid gap-4">
+                        {/* MASONRY LAYOUT */}
+                        <div className="columns-1 md:columns-2 xl:columns-3 gap-4 space-y-4">
                             {groupedTerms[letter].map((term) => {
                                 const item = glossaryTerms[term];
                                 return (
-                                    <motion.div
+                                    <div
                                         key={term}
-                                        initial={{ opacity: 0, y: 10 }}
-                                        whileInView={{ opacity: 1, y: 0 }}
-                                        viewport={{ once: true }}
-                                        className="group relative overflow-hidden rounded-lg border border-white/5 bg-neutral-900/40 p-5 transition-all hover:border-cyan-500/30 hover:bg-neutral-900/80"
+                                        className="break-inside-avoid-column group relative overflow-hidden rounded-lg border border-white/5 bg-neutral-900/60 hover:bg-neutral-900 transition-all hover:border-cyan-500/30"
                                     >
-                                        <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-                                            <h4 className="font-bold text-cyan-100 group-hover:text-cyan-400 transition-colors">
-                                                {term}
-                                            </h4>
-                                            <span className="inline-flex rounded-full bg-white/5 px-2.5 py-0.5 text-[10px] font-medium uppercase tracking-wide text-neutral-400 border border-white/5">
-                                                {item.category}
-                                            </span>
+                                        <div className="p-3">
+                                            <div className="flex items-start justify-between gap-2 mb-2">
+                                                <h4 className="text-sm font-bold text-cyan-100 group-hover:text-cyan-400 leading-tight">
+                                                    {term}
+                                                </h4>
+                                                
+                                                {item.href && (
+                                                    <Link 
+                                                        href={item.href}
+                                                        className="shrink-0 opacity-0 group-hover:opacity-100 transition-opacity p-1 hover:bg-cyan-900 rounded text-cyan-400"
+                                                        title="Go to Lesson"
+                                                    >
+                                                        <ArrowUpRight size={12} />
+                                                    </Link>
+                                                )}
+                                            </div>
+                                            
+                                            <p className="text-xs leading-relaxed text-neutral-400 group-hover:text-neutral-300 mb-3">
+                                                {item.definition}
+                                            </p>
+
+                                            <div className="flex items-center justify-between pt-2 border-t border-white/5">
+                                                <span className="text-[9px] font-medium uppercase tracking-wider text-neutral-600 group-hover:text-cyan-600/80">
+                                                    {item.category}
+                                                </span>
+                                            </div>
                                         </div>
-                                        <p className="mt-3 text-sm leading-relaxed text-neutral-400 group-hover:text-neutral-300">
-                                            {item.definition}
-                                        </p>
-                                    </motion.div>
+                                    </div>
                                 );
                             })}
                         </div>
                     </section>
                 ))}
             </div>
-
-          </div>
-
-          {/* SIDEBAR (4 cols) */}
-          <div className="hidden lg:col-span-4 lg:block lg:sticky lg:top-4 h-fit space-y-6">
-            
-            {/* Flashcard Widget */}
-            <FlashcardWidget />
-
-            {/* Stats Box */}
-            <div className="rounded-xl border border-neutral-800 bg-neutral-900/50 p-6 backdrop-blur-sm">
-                <h3 className="text-xs font-bold uppercase tracking-widest text-neutral-500 mb-4">Database Stats</h3>
-                <div className="flex items-end gap-2">
-                    <span className="text-4xl font-black text-white">{allTerms.length}</span>
-                    <span className="mb-1 text-sm font-medium text-cyan-500">Total Definitions</span>
-                </div>
-                <div className="mt-4 h-1.5 w-full overflow-hidden rounded-full bg-neutral-800">
-                    <div className="h-full bg-cyan-500 w-[75%]" />
-                </div>
-            </div>
-
           </div>
 
         </div>

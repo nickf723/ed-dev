@@ -2,9 +2,45 @@
 import Link from "next/link";
 import MtgBackground from "@/app/humanities/gaming/tabletop/tcg/mtg/MtgBackground";
 import CommanderTable from "@/app/humanities/gaming/tabletop/tcg/mtg/components/CommanderTable";
+import { DeckAnalytics } from "@/components/viz/DeckAnalytics";
 import { ArrowLeft, Flame } from "lucide-react";
+import { useAppStore } from "@/lib/store";
+import { useEffect } from "react";
 
 export default function MtgPage() {
+
+      const { scanner, addCard, clearHistory } = useAppStore();
+
+      // THE FETCH LOGIC MOVES HERE
+      // We need to fetch the FULL data when an ID is scanned
+      useEffect(() => {
+
+         const fetchCard = async () => {
+            try {
+            const res = await fetch(`https://api.scryfall.com/cards/named?fuzzy=${encodeURIComponent}`);
+            const data = await res.json();
+            
+            // Transform API data into our "Rich Card" format
+            const newCard = {
+                  id: data.id,
+                  name: data.name,
+                  cmc: data.cmc || 0,
+                  price: parseFloat(data.prices?.usd || "0"),
+                  image: data.image_uris?.normal || data.card_faces?.[0]?.image_uris?.normal,
+                  type: data.type_line
+            };
+            
+            addCard(newCard); // Store the full object!
+            } catch (e) {
+            console.error("Failed to fetch card details", e);
+            }
+         };
+
+         fetchCard();
+      }, [addCard]);
+
+
+
   return (
     <main className="relative min-h-screen bg-[#0c0a09] text-[#e7e5e4] overflow-hidden font-serif selection:bg-[#fbbf24]/30">
       <div className="absolute inset-0 bg-radial-gradient from-[#1c1917] to-[#0c0a09] z-0" />

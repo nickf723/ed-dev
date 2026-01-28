@@ -3,6 +3,7 @@ import "./globals.css";
 import Sidebar from "../components/Sidebar";
 import { SidebarProvider } from "../components/SidebarContext";
 import MainContent from "../components/MainContent";
+import { CommandMenu } from "@/components/CommandMenu";
 
 export default function RootLayout({
   children,
@@ -14,7 +15,7 @@ export default function RootLayout({
       <body className="bg-black text-white">
         {/* 1. Provider wraps everything */}
         <SidebarProvider>
-          
+          <CommandMenu />
           {/* 2. Sidebar is INSIDE Provider */}
           <Sidebar />
 

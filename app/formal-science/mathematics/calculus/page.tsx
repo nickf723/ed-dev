@@ -6,6 +6,9 @@ import { CALCULUS_BRANCHES } from "./calculus-data";
 import { ArrowLeft, FunctionSquare, ChevronRight, Sigma } from "lucide-react";
 import RiemannBackground from "./RiemannBackground";
 import VectorFieldBackground from "./VectorFieldBackground";
+import VocabModule from "@/components/VocabModule";
+import { calculusTerms } from "@/lib/glossary/formal-science/mathematics/calculus";
+
 
 // Helper for LaTeX rendering (Simulation)
 const Latex = ({ children }: { children: string }) => (
@@ -97,6 +100,24 @@ export default function CalculusPage() {
             })}
         </div>
         
+        {/* SIDEBAR: The "Intuitive" Context */}
+        <div className="lg:col-span-3 border-l border-white/5 bg-black/20 p-6 backdrop-blur-md">
+            <div className="sticky top-8 space-y-8">
+                
+                {/* 1. VOCAB MODULE: Automatically populated */}
+                <VocabModule 
+                    terms={calculusTerms} 
+                    title="Calculus Concepts" 
+                />
+
+                {/* 2. Other widgets (like Formulas or Tools) */}
+                <div className="p-4 rounded-xl border border-dashed border-slate-800 text-center">
+                    <span className="text-xs text-slate-600 uppercase tracking-widest">Interactive Graph</span>
+                </div>
+
+            </div>
+        </div>
+
         {/* Footer Note */}
         <div className="mt-auto border-t border-white/5 pt-8 text-center md:text-left text-slate-500 text-sm font-mono">
              "If I have seen further, it is by standing on the shoulders of giants." — Isaac Newton
