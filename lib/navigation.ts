@@ -67,6 +67,7 @@ export const NAVIGATION_DATA = [
     items: [
       { label: "Glossary", href: "/glossary", icon: BookOpen, domain: "meta" },
       { label: "Stage", href: "/stage", icon: Theater, domain: "meta" },
+      { label: "Backgrounds Collection", href: "/backgrounds-collection", icon: Gamepad2, domain: "meta" },
     ]
   }
 ];

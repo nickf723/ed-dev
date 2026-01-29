@@ -1,7 +1,7 @@
 "use client";
 import PageHeader from "@/components/PageHeader";
 import TopicCard from "@/components/TopicCard";
-import PulseBackground from "@/components/PulseBackground";
+import PulseBackground from "@/app/applied-science/medicine/PulseBackground";
 import AnatomyWidget from "@/app/applied-science/medicine/AnatomyWidget";
 import { motion } from "framer-motion";
 import {

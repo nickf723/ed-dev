@@ -7,7 +7,6 @@ import { LayoutGrid, ChevronDown, Menu, X, PanelLeftClose, PanelLeftOpen, Search
 // Assuming these exist based on your snippet, otherwise remove/mock
 import XRayConsole from "@/components/XRayConsole"; 
 import { NAVIGATION_DATA } from "@/lib/navigation";
-import { useSidebar } from "./SidebarContext";
 
 // --- CONFIG ---
 const getDomain = (path: string) => {
@@ -37,8 +36,7 @@ export default function Sidebar() {
   // Mobile Overlay State
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   // Desktop Collapsed State (Persist this in local storage in a real app)
-  const { isCollapsed, toggleSidebar } = useSidebar();
-  
+  const [isCollapsed, setIsCollapsed] = useState(false);  
   const domain = getDomain(pathname);
   const activeTheme = domainColors[domain];
 
@@ -89,7 +87,7 @@ export default function Sidebar() {
 
             {/* DESKTOP COLLAPSE TOGGLE (Hidden on mobile) */}
             <button 
-                onClick={toggleSidebar}
+                onClick={() => setIsCollapsed(!isCollapsed)}
                 className="hidden md:flex absolute -right-3 top-1/2 -translate-y-1/2 w-6 h-6 bg-black border border-white/20 rounded-full items-center justify-center text-neutral-400 hover:text-white hover:border-white transition-all z-50"
             >
                 {isCollapsed ? <PanelLeftOpen size={12} /> : <PanelLeftClose size={12} />}
@@ -135,24 +133,6 @@ export default function Sidebar() {
                 <XRayConsole />
             )}
         </div>
-        {/* KEYBOARD SHORTCUT HINT */}
-        {!isCollapsed && (
-            <div className="mt-auto p-4 border-t border-white/5">
-                <button 
-                    // We can also make this button clickable to open the menu manually if we want
-                    onClick={() => document.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', ctrlKey: true }))}
-                    className="w-full flex items-center justify-between px-3 py-2 rounded-lg bg-white/5 border border-white/5 text-xs text-slate-400 hover:border-cyan-500/30 hover:text-cyan-400 transition-colors group"
-                >
-                    <span className="flex items-center gap-2">
-                        <Search size={12} />
-                        <span className="font-mono text-[10px] uppercase">Search</span>
-                    </span>
-                    <kbd className="hidden md:inline-flex h-5 items-center gap-1 rounded border border-white/10 bg-black px-1.5 font-mono text-[10px] font-medium text-slate-500 group-hover:text-cyan-500 group-hover:border-cyan-500/30">
-                        <span className="text-xs">⌘</span>K
-                    </kbd>
-                </button>
-            </div>
-        )}
       </aside>
     </>
   );

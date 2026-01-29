@@ -8,6 +8,7 @@ import {
   FunctionSquare, Pi, Braces
 } from "lucide-react";
 import GalaxyBackground from "./GalaxyBackground";
+import ChaosGame from "../systems-science/chaos-theory/ChaosGame";
 
 // --- CONFIGURATION ---
 const SUBDOMAINS = [

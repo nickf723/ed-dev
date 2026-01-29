@@ -1,18 +1,18 @@
 "use client";
 import Link from "next/link";
-import SocialBackground from "@/app/social-science/SocialBackground";
 import PrisonersDilemma from "@/app/social-science/PrisonersDilemma";
 import { 
   ArrowLeft, Users, Brain, Globe2, Gavel, 
   Coins, HeartPulse, LineChart
 } from "lucide-react";
+import SocialDynamicsBackground from "./SocialDynamicsBackground";
 
 export default function SocialSciencePage() {
   return (
     <main className="relative min-h-screen bg-[#1e1b4b] text-slate-200 overflow-hidden selection:bg-teal-500/30 font-sans">
       
       {/* 1. VISUAL ENGINE */}
-      <SocialBackground />
+      <SocialDynamicsBackground />
       
       {/* OVERLAY: Grid & Vignette */}
       <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.05] pointer-events-none z-0" />

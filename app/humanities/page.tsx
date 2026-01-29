@@ -9,8 +9,6 @@ import {
   Music, Flame, Gamepad2, 
   Trophy, Feather
 } from "lucide-react";
-import GlyphBackground from "./GlyphBackground";
-import NetworkBackground from "../NetworkBackground";
 
 // --- CURATED COLLECTIONS ---
 const DOMAINS = [
@@ -156,11 +154,11 @@ export default function HumanitiesPage() {
          </Link>
          
          <div className="flex flex-col items-center gap-4">
-             <div className="w-16 h-16 rounded-full border border-amber-500/30 flex items-center justify-center bg-amber-950/20 backdrop-blur-md">
-                 <Feather size={32} className="text-amber-500" />
+             <div className="w-16 h-16 rounded-full border border-cyan-500/30 flex items-center justify-center bg-cyan-950/20 backdrop-blur-md">
+                 <Feather size={32} className="text-cyan-500" />
              </div>
              <div>
-                <h1 className="text-5xl md:text-6xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-b from-amber-100 to-amber-700">
+                <h1 className="text-5xl md:text-6xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-b from-cyan-100 to-cyan-700">
                    HUMANITIES
                 </h1>
                 <p className="text-amber-500/60 text-sm tracking-widest uppercase font-sans mt-2">
@@ -172,7 +170,7 @@ export default function HumanitiesPage() {
 
       {/* 3. THE GALLERY (Grid) */}
       <div className="relative z-10 flex-1 overflow-y-auto pb-12">
-          <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 pt-8">
+          <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 pt-8">
               
               {DOMAINS.map((item, i) => (
                   <Link 

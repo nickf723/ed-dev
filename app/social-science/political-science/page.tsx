@@ -1,6 +1,5 @@
 "use client";
 import PageHeader from "@/components/PageHeader";
-import TopicCard from "@/components/TopicCard";
 import HexMapBackground from "@/app/social-science/political-science/HexMapBackground"; // NEW BACKGROUND
 import PoliticalCompassWidget from "@/app/social-science/political-science/PoliticalCompassWidget"; 
 import ParliamentWidget from "@/app/social-science/political-science/ParliamentWidget"; // NEW WIDGET
@@ -132,7 +131,17 @@ export default function PoliticalSciencePage() {
                             viewport={{ once: true }}
                             transition={{ duration: 0.3, delay: 0.1 + (i * 0.05) }}
                         >
-                            <TopicCard {...item} />
+                            <a
+                              href={item.href}
+                              className={`block rounded-xl border border-neutral-800 hover:border-white/20 transition-colors p-6 h-full bg-gradient-to-b from-neutral-900/50 to-neutral-900/20 backdrop-blur-md`}
+                            >
+                              <item.Icon size={32} className={`${item.className} mb-4`} />
+                              <h3 className="text-lg font-semibold text-white">{item.title}</h3>
+                              <p className="text-sm text-neutral-400">{item.desc}</p>
+                              {item.subtitle && (
+                                <p className="mt-2 text-xs text-neutral-500 uppercase tracking-wider">{item.subtitle}</p>
+                              )}
+                            </a>
                         </motion.div>
                     ))}
                  </div>

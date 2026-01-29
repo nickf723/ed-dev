@@ -1,9 +1,8 @@
 "use client";
-import { useSidebar } from "./SidebarContext";
 
 export default function MainContent({ children }: { children: React.ReactNode }) {
-  const { isCollapsed } = useSidebar();
 
+  const isCollapsed = false; // Replace with actual state from context if needed
   return (
     <main 
       className={`

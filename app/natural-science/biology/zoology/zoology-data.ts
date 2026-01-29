@@ -81,14 +81,24 @@ export const ECOLOGY_MAP: Record<string, {
 
 // Expanded Collections for the new Biomes
 export const COLLECTIONS = {
-  RAINFOREST: ["Jaguar", "Harpy_eagle", "Poison_dart_frog", "Capybara", "Green_anaconda", "Three-toed_sloth"],
-  SAVANNA: ["Lion", "African_bush_elephant", "Cheetah", "Giraffe", "Plains_zebra", "Spotted_hyena", "White_rhinoceros"],
-  DESERT: ["Fennec_fox", "Dromedary", "Gila_monster", "Meerkat", "Sidewinder", "Deathstalker"],
-  TUNDRA: ["Polar_bear", "Arctic_fox", "Snowy_owl", "Muskox", "Walrus", "Reindeer"],
-  OCEAN: ["Orca", "Great_white_shark", "Blue_whale", "Giant_Pacific_octopus", "Manta_ray", "Lionfish"],
-  WETLANDS: ["Nile_crocodile", "Hippopotamus", "Egyptian_plover", "Shoebill", "Beaver", "American_alligator"],
-  MOUNTAINS: ["Mountain_goat", "Snow_leopard", "Golden_eagle", "Alpine_marmot", "Ibex", "Pika"],
-  GRASSLAND: ["Bison", "Prairie_dog", "Meadowlark", "Coyote", "Pronghorn", "Burrowing_owl"],
-  FOREST: ["Red_fox", "Eastern_gray_squirrel", "Barred_owl", "White-tailed_deer", "Black_bear", "Pileated_woodpecker"],
-  CORAL_REEF: ["Clownfish", "Parrotfish", "Moray_eel", "Sea_turtle", "Reef_shark", "Anemone"]
+  RAINFOREST:[  "Jaguar", "Harpy_eagle", "Poison_dart_frog", 
+                "Capybara", "Green_anaconda", "Three-toed_sloth", "Toucan"],
+  SAVANNA:[     "Lion", "African_bush_elephant", "Cheetah", "Giraffe", 
+                "Plains_zebra", "Spotted_hyena", "White_rhinoceros"],
+  DESERT:[      "Fennec_fox", "Dromedary", "Gila_monster", "Meerkat", 
+                "Sidewinder", "Deathstalker"],
+  TUNDRA:[      "Polar_bear", "Arctic_fox", "Snowy_owl", "Muskox", 
+                "Walrus", "Reindeer"],
+  OCEAN:[       "Orca", "Great_white_shark", "Blue_whale", 
+                "Giant_Pacific_octopus", "Manta_ray", "Lionfish"],
+  WETLANDS:[    "Nile_crocodile", "Hippopotamus", "Egyptian_plover", 
+                "Shoebill", "Beaver", "American_alligator"],
+  MOUNTAINS:[   "Mountain_goat", "Snow_leopard", "Golden_eagle", 
+                "Alpine_marmot", "Ibex", "Pika"],
+  GRASSLAND:[   "Bison", "Prairie_dog", "Meadowlark", "Coyote", 
+                "Pronghorn", "Burrowing_owl"],
+  FOREST:[      "Red_fox", "Eastern_gray_squirrel", "Barred_owl", 
+                "White-tailed_deer", "Black_bear", "Pileated_woodpecker"],
+  CORAL_REEF:[  "Clownfish", "Parrotfish", "Moray_eel", "Sea_turtle", 
+                "Reef_shark", "Anemone"]
 };

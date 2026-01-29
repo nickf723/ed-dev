@@ -14,8 +14,8 @@ export default function NeuralBackground() {
     let mouse = { x: -100, y: -100 };
 
     // Configuration
-    const nodeCount = 60;
-    const connectDist = 180;
+    const nodeCount = 100;
+    const connectDist = 150;
     
     // Neuron Class
     class Neuron {
@@ -63,9 +63,9 @@ export default function NeuralBackground() {
             
             ctx.beginPath();
             ctx.arc(curX, curY, 2, 0, Math.PI*2);
-            ctx.fillStyle = "#f472b6"; // Pink-400
+            ctx.fillStyle = "#00e1ff"; // Pink-400
             ctx.shadowBlur = 10;
-            ctx.shadowColor = "#f472b6";
+            ctx.shadowColor = "#16065f";
             ctx.fill();
             ctx.shadowBlur = 0;
         }
@@ -109,7 +109,7 @@ export default function NeuralBackground() {
           // Draw Body
           ctx.beginPath();
           ctx.arc(n.x, n.y, n.radius, 0, Math.PI*2);
-          ctx.fillStyle = "#4c1d95"; // Violet-900
+          ctx.fillStyle = "#9c05aa"; // Violet-900
           ctx.fill();
 
           // Draw Axons

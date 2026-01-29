@@ -6,6 +6,7 @@ import {
   ArrowLeft, Brain, Puzzle, Eye, Fingerprint, 
   Activity, Zap, Lightbulb
 } from "lucide-react";
+import InkblotBackground from "./InkblotBackground";
 
 export default function PsychologyPage() {
   return (
@@ -13,6 +14,7 @@ export default function PsychologyPage() {
       
       {/* 1. VISUAL ENGINE */}
       <NeuralBackground />
+      <InkblotBackground />
       
       {/* OVERLAY */}
       <div className="absolute inset-0 bg-[url('/noise.png')] opacity-[0.05] pointer-events-none z-0 mix-blend-overlay" />

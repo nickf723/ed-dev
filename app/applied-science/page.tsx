@@ -1,10 +1,10 @@
 "use client";
 import React, { useState } from "react";
 import Link from "next/link";
-import AppliedBackground from "./AppliedBackground";
 import { APPLIED_DOMAINS, APPLIED_FIELDS, Domain } from "./applied-data";
 import GlobalVisualMedia from "@/components/GlobalVisualMedia";
 import { ArrowLeft, Settings, ExternalLink } from "lucide-react";
+import InfrastructureBackground from "./InfrastructureBackground";
 
 export default function AppliedSciencePage() {
   const [activeDomain, setActiveDomain] = useState<Domain | "ALL">("ALL");
@@ -12,7 +12,7 @@ export default function AppliedSciencePage() {
   return (
     <main className="min-h-screen bg-[#0f172a] text-slate-200 font-sans relative overflow-hidden selection:bg-cyan-500/30">
       
-      <AppliedBackground />
+      <InfrastructureBackground />
       <div className="fixed inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,#0f172a_100%)] pointer-events-none" />
 
       <div className="relative z-10 p-6 md:p-12 min-h-screen flex flex-col">

@@ -11,8 +11,9 @@ import {
   Globe,          // Interdisciplinary
   ArrowRight
 } from 'lucide-react';
-import LibraryBackground from '@/app/HomepageBackground';
-import NetworkBackground from '@/app/NetworkBackground';
+import LibraryBackground from '@/app/_homepage/HomepageBackground';
+import NetworkBackground from '@/app/_homepage/NetworkBackground';
+import WireframeBackground from '@/app/_homepage/WireframeBackground';
 
 // --- CONFIGURATION ---
 const DOMAINS = [
@@ -87,6 +88,7 @@ export default function Home() {
       
       <NetworkBackground />
       <LibraryBackground />
+      <WireframeBackground />
 
       <div className="relative z-10 w-full max-w-6xl space-y-12">       
         {/* --- HEADER --- */}

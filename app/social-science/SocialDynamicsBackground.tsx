@@ -13,11 +13,11 @@ export default function SocialDynamicsBackground() {
     let w = (canvas.width = window.innerWidth);
     let h = (canvas.height = window.innerHeight);
 
-    const count = 100;
+    const count = 250;
     const agents: Agent[] = [];
     
     // Social Palette
-    const colors = ["#6366f1", "#8b5cf6", "#3b82f6", "#a855f7"];
+    const colors = ["#2f32ec", "#6329eb", "#1e70f3", "#a619dd"];
 
     class Agent {
       x: number;
@@ -94,7 +94,7 @@ export default function SocialDynamicsBackground() {
                 ctx.beginPath();
                 ctx.strokeStyle = this.color;
                 ctx.globalAlpha = 0.1; // Very faint connections
-                ctx.lineWidth = 0.5;
+                ctx.lineWidth = 3;
                 ctx.moveTo(this.x, this.y);
                 ctx.lineTo(other.x, other.y);
                 ctx.stroke();

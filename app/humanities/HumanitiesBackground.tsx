@@ -14,16 +14,16 @@ export default function HumanitiesBackground() {
     let h = (canvas.height = window.innerHeight);
 
     // --- STATE ---
-    const particleCount = 200;
+    const particleCount = 2000;
     const particles: {x: number, y: number, vx: number, vy: number, life: number, color: string}[] = [];
     
     // Palette: Classic Humanities (Ochre, Sienna, Ink, Gold)
     const colors = [
-        "rgba(217, 119, 6, 0.5)",   // Amber
-        "rgba(180, 83, 9, 0.5)",    // Sienna
-        "rgba(251, 191, 36, 0.5)",  // Gold
+        "rgb(234, 238, 3)",   // Amber
+        "rgba(2, 162, 236, 0.86)",    // Sienna
+        "rgba(14, 12, 173, 0.5)",  // Gold
         "rgba(30, 58, 138, 0.5)",   // Deep Blue
-        "rgba(255, 255, 255, 0.2)"  // Parchment White
+        "rgb(0, 0, 0)"  // Parchment White
     ];
 
     const initParticle = () => ({
@@ -45,7 +45,7 @@ export default function HumanitiesBackground() {
     const render = () => {
       // Fade out effect (Instead of clearing, we draw a semi-transparent rect)
       // This creates the "trails" or "brushstrokes"
-      ctx.fillStyle = "rgba(15, 5, 5, 0.05)"; // Very dark warm black
+      ctx.fillStyle = "rgba(6, 0, 95, 0.05)"; // Very dark warm black
       ctx.fillRect(0, 0, w, h);
 
       particles.forEach((p, i) => {

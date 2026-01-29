@@ -1,46 +1,52 @@
 import { create } from 'zustand';
 
-// 1. Define the Shape of a "Rich Card"
-export interface CardData {
+// 1. Define the Background Theme Interface (Optional, but good for safety)
+export interface BackgroundTheme {
   id: string;
   name: string;
-  cmc: number; // Converted Mana Cost (for the curve)
-  price: number; // USD Price (for the ticker)
-  image: string;
-  type: string;
+  value: string;
+  type: 'css' | 'image';
 }
 
 interface AppState {
+  // SYSTEM STATE
   ui: {
     sidebarOpen: boolean;
     debugMode: boolean;
+    activeBackgroundId: string; // <--- FIX: Ensure this is "active", not "activate"
   };
+
+  // ACTIONS
   toggleSidebar: () => void;
   toggleDebug: () => void;
+  setBackground: (id: string) => void;
 
+  // SCANNER STATE (Keep this if you still have the scanner code)
   scanner: {
-    history: CardData[]; // <--- NOW STORES FULL OBJECTS
+    history: any[]; 
   };
-  
-  // 2. Updated Actions
-  addCard: (card: CardData) => void;
+  addCard: (card: any) => void;
   clearHistory: () => void;
 }
 
 export const useAppStore = create<AppState>((set) => ({
-  ui: { sidebarOpen: true, debugMode: false },
+  // System Defaults
+  ui: { 
+    sidebarOpen: true, 
+    debugMode: false,
+    activeBackgroundId: "default-void" // <--- FIX: Initialize it here
+  },
+
   toggleSidebar: () => set((state) => ({ ui: { ...state.ui, sidebarOpen: !state.ui.sidebarOpen } })),
   toggleDebug: () => set((state) => ({ ui: { ...state.ui, debugMode: !state.ui.debugMode } })),
+  
+  // FIX: Action to update the background
+  setBackground: (id) => set((state) => ({ 
+    ui: { ...state.ui, activeBackgroundId: id } 
+  })),
 
+  // Scanner Defaults
   scanner: { history: [] },
-  
-  addCard: (card) => set((state) => {
-    // Prevent duplicates based on ID
-    if (state.scanner.history.find(c => c.id === card.id)) return state;
-    return { 
-      scanner: { ...state.scanner, history: [card, ...state.scanner.history] } 
-    };
-  }),
-  
+  addCard: (card) => set((state) => ({ scanner: { ...state.scanner, history: [card, ...state.scanner.history] } })),
   clearHistory: () => set({ scanner: { history: [] } }),
 }));

@@ -18,7 +18,7 @@ export default function InfrastructureBackground() {
     // Isometric Constants
     const tileW = 40;
     const tileH = 20; // Flattened for iso look
-    const gridSize = 20; // NxN grid
+    const gridSize = 40; // NxN grid
     
     // Grid State
     type Cell = { x: number; y: number; h: number; targetH: number; color: string };
