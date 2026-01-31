@@ -1,3 +1,4 @@
+import { label } from "framer-motion/client";
 import { 
   Binary, Atom, Handshake, Hammer, Palette, Link as LinkIcon,
   BookOpen, Gamepad2, Theater
@@ -15,6 +16,7 @@ export const NAVIGATION_DATA = [
           { label: "Computer Science", href: "/formal-science/computer-science" },
           { label: "Systems Science", href: "/formal-science/systems-science" },
           { label: "Data Science", href: "/formal-science/data-science" },
+          { label: "Information Science", href: "/formal-science/information-science" },
         ]
       },
       {
@@ -50,10 +52,18 @@ export const NAVIGATION_DATA = [
         label: "Humanities", href: "/humanities", icon: Palette, domain: "humanities",
         children: [
           { label: "Philosophy", href: "/humanities/philosophy" },
+          { label: "Religion", href: "/humanities/religion" },
           { label: "History", href: "/humanities/history" },
+          { label: "Futurology", href: "/humanities/futurology" },
+          { label: "Language", href: "/humanities/language" },
           { label: "Literature", href: "/humanities/literature" },
-          { label: "Arts", href: "/humanities/arts" },
+          { label: "Visual Arts", href: "/humanities/visual-arts" },
           { label: "Music", href: "/humanities/music" },
+          { label: "Performing Arts", href: "/humanities/performing-arts" },
+          { label: "Culinary Arts", href: "/humanities/culinary-arts" },
+          { label: "Gaming", href: "/humanities/gaming" },
+          { label: "Sports", href: "/humanities/sports" },
+          { label: "Culture", href: "/humanities/culture" },
         ]
       },
       {
@@ -67,7 +77,6 @@ export const NAVIGATION_DATA = [
     items: [
       { label: "Glossary", href: "/glossary", icon: BookOpen, domain: "meta" },
       { label: "Stage", href: "/stage", icon: Theater, domain: "meta" },
-      { label: "Backgrounds Collection", href: "/backgrounds-collection", icon: Gamepad2, domain: "meta" },
     ]
   }
 ];

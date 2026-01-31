@@ -142,10 +142,6 @@ export default function HumanitiesPage() {
       
       {/* 1. VISUAL ENGINE */}
       <HumanitiesBackground />
-      
-      {/* OVERLAY: Paper Texture */}
-      <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-20 pointer-events-none z-0 mix-blend-overlay" />
-      <div className="absolute inset-0 bg-gradient-to-b from-[#0f0505] via-transparent to-[#0f0505] pointer-events-none z-0" />
 
       {/* 2. HEADER */}
       <header className="relative z-10 p-8 pb-4 text-center">
@@ -170,7 +166,7 @@ export default function HumanitiesPage() {
 
       {/* 3. THE GALLERY (Grid) */}
       <div className="relative z-10 flex-1 overflow-y-auto pb-12">
-          <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 pt-8">
+          <div className="max-w-fill mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-6 pt-8">
               
               {DOMAINS.map((item, i) => (
                   <Link 
