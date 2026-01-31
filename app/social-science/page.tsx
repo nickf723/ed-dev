@@ -1,130 +1,89 @@
 "use client";
+import { useState } from "react";
 import Link from "next/link";
-import PrisonersDilemma from "@/app/social-science/PrisonersDilemma";
+import { motion } from "framer-motion";
 import { 
-  ArrowLeft, Users, Brain, Globe2, Gavel, 
-  Coins, HeartPulse, LineChart
+  ArrowLeft, Brain, Users, MessageSquare, Gavel, 
+  Coins, Map, Landmark, Search, LineChart
 } from "lucide-react";
 import SocialDynamicsBackground from "./SocialDynamicsBackground";
 
-export default function SocialSciencePage() {
+export default function SocialStudiesHub() {
+  const [activeLens, setActiveLens] = useState<string | null>("systems");
+
+  const sectors = [
+    { 
+      id: "micro", 
+      title: "The Individual", 
+      disciplines: [
+        { name: "Psychology", href: "/social-science/psychology", icon: Brain, color: "text-pink-400", desc: "Mind & Behavior" },
+        { name: "Communications", href: "/social-science/communications", icon: MessageSquare, color: "text-cyan-400", desc: "Interaction & Media" }
+      ] 
+    },
+    { 
+      id: "macro", 
+      title: "The System", 
+      disciplines: [
+        { name: "Sociology", href: "/social-science/sociology", icon: Users, color: "text-indigo-400", desc: "Structures & Groups" },
+        { name: "Political Science", href: "/social-science/political-science", icon: Gavel, color: "text-amber-400", desc: "Power & Policy" },
+        { name: "Economics", href: "/social-science/economics", icon: Coins, color: "text-emerald-400", desc: "Resources & Choice" }
+      ] 
+    },
+    { 
+      id: "context", 
+      title: "The Environment", 
+      disciplines: [
+        { name: "Human Geography", href: "/social-science/geography", icon: Map, color: "text-sky-400", desc: "Space & Place" },
+        { name: "Anthropology", href: "/social-science/anthropology", icon: Search, color: "text-orange-500", desc: "Evolution & Culture" },
+        { name: "Linguistics", href: "/social-science/linguistics", icon: Landmark, color: "text-lime-400", desc: "Language & Logic" }
+      ] 
+    }
+  ];
+
   return (
-    <main className="relative min-h-screen bg-[#1e1b4b] text-slate-200 overflow-hidden selection:bg-teal-500/30 font-sans">
-      
-      {/* 1. VISUAL ENGINE */}
+    <main className="relative min-h-screen bg-[#050510] text-slate-200 overflow-hidden font-sans">
       <SocialDynamicsBackground />
       
-      {/* OVERLAY: Grid & Vignette */}
-      <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.05] pointer-events-none z-0" />
-      <div className="absolute inset-0 bg-radial-vignette opacity-60 pointer-events-none z-0" />
-
-      {/* 2. DASHBOARD */}
-      <div className="relative z-10 container mx-auto px-6 py-12 min-h-screen flex flex-col pointer-events-none">
-        
-        {/* HEADER */}
-        <header className="mb-16 pointer-events-auto text-center md:text-left">
-             <Link href="/" className="inline-flex items-center gap-2 text-xs font-mono text-teal-500 hover:text-teal-400 transition-colors mb-4 uppercase tracking-widest">
-                <ArrowLeft size={12} /> Home // Social Science
-             </Link>
-             <div className="flex flex-col md:flex-row items-center gap-4">
-                 <div className="p-4 bg-slate-900 border border-teal-500/30 rounded-2xl shadow-[0_0_30px_rgba(45,212,191,0.1)]">
-                    <Users size={40} className="text-teal-400" />
-                 </div>
-                 <div>
-                    <h1 className="text-5xl md:text-7xl font-black text-white tracking-tighter drop-shadow-xl font-serif">
-                        SOCIAL SCIENCE
-                    </h1>
-                    <p className="text-teal-500/60 text-lg font-light tracking-wide italic">
-                        The study of human society and social relationships.
-                    </p>
-                 </div>
-             </div>
+      <div className="relative z-10 container mx-auto px-6 py-12 flex flex-col min-h-screen">
+        <header className="mb-12">
+          <Link href="/" className="inline-flex items-center gap-2 text-xs font-mono text-teal-500 mb-4 uppercase tracking-[0.3em]">
+            <ArrowLeft size={12} /> Knowledge Graph // Social Studies
+          </Link>
+          <h1 className="text-6xl md:text-8xl font-black text-white tracking-tighter drop-shadow-2xl">
+            SOCIAL<span className="text-teal-500">.</span>SCIENCE
+          </h1>
+          <p className="max-w-2xl text-slate-400 text-lg leading-relaxed italic">
+            "The study of human society and the relationships among individuals within it."
+          </p>
         </header>
 
-        
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 flex-1">
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 flex-1 pointer-events-auto">
-            
-            {/* LEFT: THE DISCIPLINES */}
-            <div className="lg:col-span-7 space-y-6">
-                
-                {/* Psychology */}
-                <Link href="/social-science/psychology" className="block bg-slate-900/80 border border-slate-700 p-6 rounded-xl hover:border-teal-500/50 transition-all hover:translate-x-2 group">
-                    <div className="flex items-center justify-between mb-2">
-                        <div className="flex items-center gap-3">
-                            <Brain className="text-pink-400 group-hover:scale-110 transition-transform" />
-                            <h3 className="font-bold text-white text-xl">Psychology</h3>
+          {/* RIGHT: THE SECTOR MAP */}
+          <div className="lg:col-span-8 space-y-12">
+            {sectors.map((sector) => (
+              <section key={sector.id} className="relative">
+                <h2 className="text-[10px] font-bold uppercase tracking-[0.5em] text-white/30 mb-6 flex items-center gap-4">
+                  {sector.title} <div className="h-[1px] flex-1 bg-white/5" />
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {sector.disciplines.map((d) => (
+                    <Link key={d.name} href={d.href} className="group relative bg-slate-900/40 border border-white/5 p-6 rounded-xl hover:bg-white/5 hover:border-teal-500/50 transition-all">
+                      <div className="flex items-center gap-4">
+                        <div className={`p-3 rounded-lg bg-black/40 border border-white/10 ${d.color} group-hover:scale-110 transition-transform`}>
+                          <d.icon size={24} />
                         </div>
-                        <ArrowLeft className="rotate-180 text-slate-600 group-hover:text-teal-500 transition-colors" />
-                    </div>
-                    <p className="text-sm text-slate-400 leading-relaxed pl-9">
-                        The study of the mind and behavior. From cognitive processes to emotional development and mental health.
-                    </p>
-                </Link>
-
-                {/* Sociology */}
-                <Link href="/social-science/sociology" className="block bg-slate-900/80 border border-slate-700 p-6 rounded-xl hover:border-teal-500/50 transition-all hover:translate-x-2 group">
-                    <div className="flex items-center justify-between mb-2">
-                        <div className="flex items-center gap-3">
-                            <Globe2 className="text-indigo-400 group-hover:scale-110 transition-transform" />
-                            <h3 className="font-bold text-white text-xl">Sociology</h3>
+                        <div>
+                          <h4 className="font-bold text-white group-hover:text-teal-400 transition-colors">{d.name}</h4>
+                          <p className="text-xs text-slate-500">{d.desc}</p>
                         </div>
-                        <ArrowLeft className="rotate-180 text-slate-600 group-hover:text-teal-500 transition-colors" />
-                    </div>
-                    <p className="text-sm text-slate-400 leading-relaxed pl-9">
-                        The study of the development, structure, and functioning of human society. Focusing on groups, institutions, and social stratification.
-                    </p>
-                </Link>
-
-                {/* Political Science */}
-                <Link href="/social-science/political-science" className="block bg-slate-900/80 border border-slate-700 p-6 rounded-xl hover:border-teal-500/50 transition-all hover:translate-x-2 group">
-                    <div className="flex items-center justify-between mb-2">
-                        <div className="flex items-center gap-3">
-                            <Gavel className="text-amber-400 group-hover:scale-110 transition-transform" />
-                            <h3 className="font-bold text-white text-xl">Political Science</h3>
-                        </div>
-                        <ArrowLeft className="rotate-180 text-slate-600 group-hover:text-teal-500 transition-colors" />
-                    </div>
-                    <p className="text-sm text-slate-400 leading-relaxed pl-9">
-                        The analysis of political activity, political thought, associated constitutions, and behavior.
-                    </p>
-                </Link>
-
-                {/* Economics */}
-                <Link href="/social-science/economics" className="block bg-slate-900/80 border border-slate-700 p-6 rounded-xl hover:border-teal-500/50 transition-all hover:translate-x-2 group">
-                    <div className="flex items-center justify-between mb-2">
-                        <div className="flex items-center gap-3">
-                            <Coins className="text-emerald-400 group-hover:scale-110 transition-transform" />
-                            <h3 className="font-bold text-white text-xl">Economics</h3>
-                        </div>
-                        <ArrowLeft className="rotate-180 text-slate-600 group-hover:text-teal-500 transition-colors" />
-                    </div>
-                    <p className="text-sm text-slate-400 leading-relaxed pl-9">
-                        The social science that studies the production, distribution, and consumption of goods and services.
-                    </p>
-                </Link>
-
-            </div>
-
-
-            {/* RIGHT: INTERACTIVE WIDGET */}
-            <div className="lg:col-span-5 space-y-8 flex flex-col items-center">
-                
-                {/* WIDGET */}
-                <PrisonersDilemma />
-
-                {/* INSIGHT CARD */}
-                <div className="bg-slate-900/80 border border-slate-700 rounded-xl p-6 w-full">
-                    <h3 className="font-bold text-white mb-2 flex items-center gap-2">
-                        <LineChart size={18} className="text-teal-500" /> Qualitative vs. Quantitative
-                    </h3>
-                    <p className="text-xs text-slate-400 leading-relaxed mb-4">
-                        Social science bridges the gap between the hard sciences and the humanities. It uses both <strong>Quantitative</strong> methods (statistics, data) and <strong>Qualitative</strong> methods (interviews, ethnography) to understand the human condition.
-                    </p>
+                      </div>
+                    </Link>
+                  ))}
                 </div>
-
-            </div>
-
+              </section>
+            ))}
+          </div>
         </div>
       </div>
     </main>

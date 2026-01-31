@@ -1,128 +1,134 @@
 "use client";
-import { useEffect, useRef } from "react";
 
+import React, { useEffect, useRef } from 'react';
+
+/**
+ * SyntaxBackground Component
+ * * Visualizes the "Generative" nature of language by cascading linguistic tokens
+ * (Phonemes, Morphemes, and Syntax fragments) that react to mouse proximity.
+ */
 export default function SyntaxBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext("2d")!;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
 
-    let w = (canvas.width = window.innerWidth);
-    let h = (canvas.height = window.innerHeight);
-    
-    // Linguistics Palette (Lime / Yellow / Emerald)
-    const colors = ["#84cc16", "#a3e635", "#facc15", "#10b981"];
-    
-    const trees: Tree[] = [];
-    const maxTrees = 15;
+    let width = (canvas.width = window.innerWidth);
+    let height = (canvas.height = window.innerHeight);
+    let particles: Token[] = [];
+    const mouse = { x: -1000, y: -1000 };
 
-    class Tree {
+    // Linguistic symbols across different layers of analysis
+    const tokens = [
+      "ə", "θ", "ŋ", "æ", // Phonemes
+      "-ing", "-ed", "pre-", "un-", // Morphemes
+      "NP", "VP", "S", "DET", // Syntactic Categories
+      "λ", "→", "∅", "Σ" // Formal Logic/Semantics
+    ];
+
+    class Token {
       x: number;
       y: number;
-      branches: {x: number, y: number, parentX: number, parentY: number, life: number}[];
+      text: string;
+      fontSize: number;
+      speed: number;
+      opacity: number;
       color: string;
-      active: boolean;
-      age: number;
 
       constructor() {
-        this.x = Math.random() * w;
-        this.y = h + 50; // Grow from bottom
-        this.color = colors[Math.floor(Math.random() * colors.length)];
-        this.active = true;
-        this.age = 0;
-        this.branches = [];
-        
-        // Trunk
-        this.grow(this.x, this.y, -Math.PI / 2, 100, 0);
-      }
-      
-      grow(x: number, y: number, angle: number, length: number, depth: number) {
-          if (depth > 4) return; // Recursion limit
-          
-          const endX = x + Math.cos(angle) * length;
-          const endY = y + Math.sin(angle) * length;
-          
-          this.branches.push({
-              x: endX, y: endY, parentX: x, parentY: y, life: 0
-          });
-
-          // Split
-          const splitAngle = 0.4 + Math.random() * 0.4;
-          const lenMod = 0.7 + Math.random() * 0.1;
-          
-          // Branch Left
-          this.grow(endX, endY, angle - splitAngle, length * lenMod, depth + 1);
-          // Branch Right
-          this.grow(endX, endY, angle + splitAngle, length * lenMod, depth + 1);
+        this.x = Math.random() * width;
+        this.y = Math.random() * height;
+        this.text = tokens[Math.floor(Math.random() * tokens.length)];
+        this.fontSize = Math.random() * 14 + 10;
+        this.speed = Math.random() * 0.5 + 0.2;
+        this.opacity = Math.random() * 0.4 + 0.1;
+        // Themed lime/indigo palette for Linguistics
+        this.color = Math.random() > 0.5 ? '163, 230, 53' : '129, 140, 248'; 
       }
 
       update() {
-          this.age++;
-          if (this.age > 300) { // Die after a while
-              this.active = false;
-          }
+        this.y -= this.speed; // Floating upwards like an evolving thought
+        
+        // Mouse avoidance (Cognitive Disturbance)
+        const dx = this.x - mouse.x;
+        const dy = this.y - mouse.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 150) {
+          const force = (150 - dist) / 150;
+          this.x += dx * force * 0.05;
+          this.y += dy * force * 0.05;
+        }
+
+        if (this.y < -50) {
+          this.y = height + 50;
+          this.x = Math.random() * width;
+        }
       }
 
       draw() {
-          ctx.strokeStyle = this.color;
-          ctx.lineWidth = 1.5;
-          
-          this.branches.forEach((b, i) => {
-              // Animate drawing "growth" based on index roughly
-              const start = i * 5;
-              if (this.age > start) {
-                  // Fade in/out
-                  let alpha = Math.min(1, (this.age - start) / 20);
-                  if (this.age > 250) alpha *= (300 - this.age) / 50;
-                  
-                  ctx.globalAlpha = alpha * 0.4;
-                  ctx.beginPath();
-                  ctx.moveTo(b.parentX, b.parentY);
-                  ctx.lineTo(b.x, b.y);
-                  ctx.stroke();
-                  
-                  // Node dot
-                  ctx.fillStyle = this.color;
-                  ctx.beginPath();
-                  ctx.arc(b.x, b.y, 2, 0, Math.PI*2);
-                  ctx.fill();
-              }
-          });
-          ctx.globalAlpha = 1;
+        if (!ctx) return;
+        ctx.font = `bold ${this.fontSize}px font-mono`;
+        ctx.fillStyle = `rgba(${this.color}, ${this.opacity})`;
+        ctx.fillText(this.text, this.x, this.y);
       }
     }
 
-    const animate = () => {
-      ctx.clearRect(0, 0, w, h);
-      
-      // Spawn
-      if (trees.length < maxTrees && Math.random() > 0.97) {
-          trees.push(new Tree());
-      }
+    const init = () => {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+      particles = Array.from({ length: 60 }, () => new Token());
+    };
 
-      // Update & Draw
-      for (let i = trees.length - 1; i >= 0; i--) {
-          const t = trees[i];
-          t.update();
-          t.draw();
-          if (!t.active) trees.splice(i, 1);
+    const animate = () => {
+      ctx.fillStyle = '#020617'; // Deep Slate background
+      ctx.fillRect(0, 0, width, height);
+
+      // Background Grid (The Semantic Ledger)
+      ctx.strokeStyle = 'rgba(163, 230, 53, 0.03)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      for (let x = 0; x < width; x += 100) {
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, height);
       }
+      for (let y = 0; y < height; y += 100) {
+        ctx.moveTo(0, y);
+        ctx.lineTo(width, y);
+      }
+      ctx.stroke();
+
+      particles.forEach((p) => {
+        p.update();
+        p.draw();
+      });
 
       requestAnimationFrame(animate);
     };
 
-    const animId = requestAnimationFrame(animate);
-    const handleResize = () => { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; };
-    window.addEventListener("resize", handleResize);
-    return () => { window.removeEventListener("resize", handleResize); cancelAnimationFrame(animId); };
+    const handleMouseMove = (e: MouseEvent) => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+    };
+
+    init();
+    animate();
+
+    window.addEventListener('resize', init);
+    window.addEventListener('mousemove', handleMouseMove);
+
+    return () => {
+      window.removeEventListener('resize', init);
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
   }, []);
 
   return (
-    <>
-        <canvas ref={canvasRef} className="fixed inset-0 pointer-events-none z-0 opacity-40 mix-blend-screen" />
-        <div className="hd-vignette" />
-    </>
+    <canvas
+      ref={canvasRef}
+      className="fixed inset-0 z-0 pointer-events-none"
+    />
   );
 }

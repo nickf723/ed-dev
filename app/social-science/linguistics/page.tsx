@@ -1,171 +1,83 @@
 "use client";
-import PageHeader from "@/components/PageHeader";
-import TopicCard from "@/components/TopicCard";
-import SyntaxBackground from "@/app/social-science/linguistics/SyntaxBackground";
-import GrammarWidget from "@/app/social-science/linguistics/GrammarWidget";
+import Link from "next/link";
 import { motion } from "framer-motion";
-import {
-  Speech, BookText, Network, BrainCog, Terminal, Languages, Mic, Code2
+import SyntaxBackground from "./SyntaxBackground";
+import GrammarWidget from "./GrammarWidget"; // New interactive lab
+import { 
+  MessageSquare, Mic2, Layers, Repeat, 
+  Share2, Type, ChevronRight, Binary
 } from "lucide-react";
 
-// --- DATA ---
-const sectors = [
-  {
-    name: "The Signal: Sound",
-    desc: "The physical production and perception of language.",
-    color: "text-lime-400",
-    icon: Mic,
-    items: [
-      { 
-        title: "Phonetics & Phonology", 
-        desc: "The study of speech sounds (phones) and their cognitive organization (phonemes).", 
-        href: "/social-science/linguistics/phonology-phonetics", 
-        Icon: Speech, 
-        className: "theme-linguistics",
-        subtitle: "Articulation" 
-      }
-    ]
-  },
-  {
-    name: "The Code: Structure",
-    desc: "The rules that govern how words and sentences are built.",
-    color: "text-yellow-400",
-    icon: Code2,
-    items: [
-      { 
-        title: "Syntax", 
-        desc: "The study of sentence structure. How words combine to form grammatical phrases.", 
-        href: "/social-science/linguistics/syntax-semantics", 
-        Icon: Network, 
-        className: "theme-linguistics",
-        subtitle: "Grammar" 
-      },
-      { 
-        title: "Morphology", 
-        desc: "The study of the internal structure of words (roots, prefixes, suffixes).", 
-        href: "/social-science/linguistics/morphology", // New link
-        Icon: BookText, 
-        className: "theme-linguistics",
-        subtitle: "Word Formation" 
-      }
-    ]
-  },
-  {
-    name: "The Meaning: Context",
-    desc: "How language conveys information and social identity.",
-    color: "text-emerald-400",
-    icon: Languages,
-    items: [
-      { 
-        title: "Semantics & Pragmatics", 
-        desc: "The study of literal meaning vs. meaning in context (implied meaning).", 
-        href: "/social-science/linguistics/semantics", // New link logic
-        Icon: BrainCog, 
-        className: "theme-linguistics",
-        subtitle: "Interpretation" 
-      },
-      { 
-        title: "Sociolinguistics", 
-        desc: "How language varies based on region, class, gender, and social situation.", 
-        href: "/social-science/linguistics/sociolinguistics", 
-        Icon: Languages, 
-        className: "theme-sociology", // Cross-discipline theme
-        subtitle: "Society" 
-      }
-    ]
-  },
-  {
-    name: "The Machine: Application",
-    desc: "Teaching computers to understand human language.",
-    color: "text-cyan-400",
-    icon: Terminal,
-    items: [
-      { 
-        title: "Computational Linguistics", 
-        desc: "Natural Language Processing (NLP), machine translation, and speech recognition.", 
-        href: "/social-science/linguistics/computational-linguistics", 
-        Icon: Terminal, 
-        className: "theme-computer-science", // Cross-discipline theme
-        subtitle: "AI & NLP" 
-      }
-    ]
-  }
-];
-
 export default function LinguisticsPage() {
+  const branches = [
+    { name: "Phonology", icon: Mic2, color: "text-rose-400", desc: "The Sound System" },
+    { name: "Morphology", icon: Layers, color: "text-amber-400", desc: "Word Formation" },
+    { name: "Syntax", icon: Repeat, color: "text-lime-400", desc: "Sentence Logic" },
+    { name: "Semantics", icon: Type, color: "text-cyan-400", desc: "Constructing Meaning" },
+    { name: "Pragmatics", icon: Share2, color: "text-indigo-400", desc: "Social Context" }
+  ];
+
   return (
-    <main className="relative min-h-screen overflow-hidden bg-neutral-950 lg:px-12">
-      
-      {/* 1. Syntax Tree Background */}
+    <main className="relative min-h-screen bg-slate-950 text-slate-200 overflow-hidden selection:bg-lime-500/30">
       <SyntaxBackground />
       
-      <div className="relative z-10 mx-auto flex max-w-7xl flex-col py-10">
-        
-        <PageHeader
-          eyebrow="Social Science"
-          title="Linguistics"
-          subtitle="The scientific study of language. It bridges the gap between the biological structure of the brain (Natural Science) and the complex web of human culture (Humanities)."
-        />
-
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 items-start">
-          
-          {/* MAIN CONTENT (9 cols) */}
-          <div className="lg:col-span-9 space-y-10">
-             {sectors.map((sector, idx) => (
-              <section key={sector.name}>
-                 <motion.div 
-                    initial={{ opacity: 0, x: -10 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.4, delay: idx * 0.1 }}
-                    className="mb-4 flex items-center gap-3"
-                 >
-                    <sector.icon className={sector.color} size={20} />
-                    <h2 className="text-lg font-bold text-white tracking-wide">{sector.name}</h2>
-                    <div className="h-[1px] flex-1 bg-white/10"></div>
-                 </motion.div>
-
-                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-2">
-                    {sector.items.map((item, i) => (
-                        <motion.div
-                            key={item.title}
-                            initial={{ opacity: 0, y: 15 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.3, delay: 0.1 + (i * 0.05) }}
-                        >
-                            <TopicCard {...item} />
-                        </motion.div>
-                    ))}
-                 </div>
-              </section>
-            ))}
+      {/* 1. HERO HUD: THE SEMIOTIC MATRIX */}
+      <div className="relative z-20 pt-16 pb-12 px-6">
+        <div className="absolute top-0 left-0 w-full h-[1px] bg-lime-500/30 animate-pulse shadow-[0_0_15px_lime-500]" />
+        <div className="max-w-4xl">
+          <div className="inline-block px-2 py-1 bg-lime-500 text-slate-950 text-[10px] font-black uppercase mb-4 tracking-widest">
+            Signal Processor // Active
           </div>
+          <h1 className="text-6xl md:text-8xl font-black text-white leading-none tracking-tighter uppercase">
+            LINGUISTICS
+          </h1>
+          <p className="mt-6 text-lime-200/60 max-w-xl font-medium leading-relaxed italic">
+            "The scientific study of language and its structure, investigating the cognitive and social processes of human communication."
+          </p>
+        </div>
+      </div>
 
-          {/* SIDEBAR (3 cols) */}
-          <div className="flex flex-col gap-6 lg:col-span-3 lg:sticky lg:top-6 h-fit pt-2">
-            
-            {/* Grammar Widget */}
-            <motion.div 
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.4 }}
-            >
-               <GrammarWidget />
-            </motion.div>
+      <div className="relative z-10 container mx-auto px-6">
+        {/* --- UNIVERSAL NAV --- */}
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-2 border-t border-b border-white/10 bg-white/5 backdrop-blur-md">
+            {branches.map((b) => (
+                <Link key={b.name} href={`/social-science/linguistics/${b.name.toLowerCase()}`}
+                      className="p-6 border-x border-white/5 hover:bg-lime-500/5 transition-all group">
+                    <b.icon className={`${b.color} mb-3 group-hover:scale-110 transition-transform`} size={20} />
+                    <h3 className="text-[10px] font-black uppercase tracking-widest text-white">{b.name}</h3>
+                    <p className="text-[9px] text-slate-500 mt-1">{b.desc}</p>
+                </Link>
+            ))}
+        </div>
 
-            {/* Chomsky Quote */}
-            <div className="p-5 rounded-xl border border-dashed border-neutral-700 bg-neutral-900/40">
-                <h4 className="text-xs font-bold uppercase text-lime-400 mb-2 flex items-center gap-2">
-                    <BrainCog size={14} /> Innateness
-                </h4>
-                <p className="text-[11px] text-neutral-500 leading-relaxed">
-                    Noam Chomsky argued that the ability to learn language is hard-wired into the human brain (Universal Grammar), not just learned from the environment.
-                </p>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 mt-20 pb-20">
+            {/* INTERACTIVE LAB: THE GRAMMAR ENGINE */}
+            <div className="lg:col-span-7 bg-slate-900/60 border border-lime-500/20 rounded-3xl p-8 backdrop-blur-xl">
+                <div className="flex items-center justify-between mb-8">
+                    <h2 className="text-2xl font-black italic tracking-tighter text-white uppercase">Generative Lab</h2>
+                    <div className="px-3 py-1 bg-lime-500/10 border border-lime-500/30 rounded-full text-[10px] text-lime-400 font-bold uppercase">Recursive_Loop</div>
+                </div>
+                <GrammarWidget /> {/* Interactive tree-diagram builder */}
             </div>
 
-          </div>
+            {/* SIDEBAR: CORE THEORIES */}
+            <div className="lg:col-span-5 space-y-6">
+                <div className="p-8 rounded-3xl bg-black border border-slate-800 hover:border-lime-500/50 transition-colors group">
+                    <Binary size={32} className="text-lime-500 mb-4 group-hover:rotate-180 transition-transform duration-700" />
+                    <h3 className="text-xl font-bold text-white mb-2 tracking-tight">The LAD Hypothesis</h3>
+                    <p className="text-xs text-slate-500 leading-relaxed mb-4 italic">
+                        "We are born with a Language Acquisition Device (LAD)—a biological blueprint that allows children to master complex grammar without formal instruction."
+                    </p>
+                    <div className="text-[10px] font-mono text-lime-500 uppercase tracking-widest">— Noam Chomsky</div>
+                </div>
 
+                <div className="p-8 rounded-3xl bg-gradient-to-br from-lime-900/20 to-slate-950 border border-lime-900/30">
+                    <h3 className="text-lg font-bold text-lime-100 mb-2 italic">Linguistic Relativity</h3>
+                    <p className="text-xs text-slate-400 leading-relaxed">
+                        The **Sapir-Whorf Hypothesis** suggests that the structure of the language we speak influences the way we perceive and think about the world.
+                    </p>
+                </div>
+            </div>
         </div>
       </div>
     </main>
