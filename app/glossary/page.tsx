@@ -2,7 +2,6 @@
 
 import React, { useState, useMemo } from "react";
 import Link from "next/link";
-import PageHeader from "@/components/PageHeader";
 import MatrixBackground from "@/app/glossary/MatrixBackground";
 import FlashcardWidget from "@/app/glossary/FlashcardWidget";
 import { glossaryTerms, termCategories, GlossaryTermKey } from "@/lib/glossary-db";
@@ -49,12 +48,7 @@ export default function GlossaryPage() {
       <MatrixBackground />
 
       <div className="relative z-10 mx-auto max-w-[1600px] px-4 md:px-8 py-10">
-        
-        <PageHeader
-          eyebrow="The Index"
-          title="Glossary"
-          subtitle="A high-density definition matrix connecting all domains."
-        />
+
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start mt-8">
           

@@ -1,188 +1,118 @@
 "use client";
 import Link from "next/link";
-import BlueprintBackground from "@/app/applied-science/engineering/BlueprintBackground";
-import GearMechanic from "@/app/applied-science/engineering/GearMechanic";
+import BlueprintBackground from "./BlueprintBackground";
+import StressTestLab from "./StressTestLab";
 import { 
-  ArrowLeft, Hammer, PenTool, Cpu, Zap, 
-  FlaskConical, Rocket, Wrench, Building2, 
-  Settings, ArrowUpRight, Code
+  Settings, PenTool, Cpu, Plane, 
+  Terminal, Car, FlaskConical, Hammer,
+  ArrowRight, HardHat, Cog
 } from "lucide-react";
 
-// --- CONFIGURATION: EDIT DISCIPLINES HERE ---
-const DISCIPLINES = [
-  {
-    id: "civil",
-    title: "Civil Engineering",
-    icon: Building2,
-    desc: "The design and construction of public works: bridges, dams, and infrastructure.",
-    color: "text-yellow-400",
-    bg: "bg-yellow-500/10",
-    border: "border-yellow-500/20"
-  },
-  {
-    id: "mechanical",
-    title: "Mechanical Eng.",
-    icon: Settings, // or Hammer
-    desc: "The branch involving machinery, thermodynamics, and mechanical systems.",
-    color: "text-orange-400",
-    bg: "bg-orange-500/10",
-    border: "border-orange-500/20"
-  },
-  {
-    id: "electrical",
-    title: "Electrical Eng.",
-    icon: Zap,
-    desc: "The study of electricity, electronics, and electromagnetism.",
-    color: "text-cyan-400",
-    bg: "bg-cyan-500/10",
-    border: "border-cyan-500/20"
-  },
-  {
-    id: "aerospace",
-    title: "Aerospace Eng.",
-    icon: Rocket,
-    desc: "The development of aircraft and spacecraft.",
-    color: "text-indigo-400",
-    bg: "bg-indigo-500/10",
-    border: "border-indigo-500/20"
-  },
-  {
-    id: "chemical",
-    title: "Chemical Eng.",
-    icon: FlaskConical,
-    desc: "Turning raw materials into useful products through chemical processes.",
-    color: "text-emerald-400",
-    bg: "bg-emerald-500/10",
-    border: "border-emerald-500/20"
-  },
-  {
-    id: "software",
-    title: "Software Eng.",
-    icon: Code,
-    desc: "The systematic application of engineering approaches to software development.",
-    color: "text-pink-400",
-    bg: "bg-pink-500/10",
-    border: "border-pink-500/20"
-  }
-];
-
 export default function EngineeringPage() {
+  const disciplines = [
+    { title: "Mechanical", icon: Cog, color: "text-slate-300", desc: "Motion, forces, and machinery." },
+    { title: "Civil", icon: HardHat, color: "text-orange-400", desc: "Infrastructure, bridges, and dams." },
+    { title: "Electrical", icon: Cpu, color: "text-yellow-400", desc: "Circuits, power, and electromagnetism." },
+    { title: "Software", icon: Terminal, color: "text-green-400", desc: "Systems, code, and algorithms." },
+    { title: "Aerospace", icon: Plane, color: "text-sky-400", desc: "Flight and atmospheric dynamics." },
+    { title: "Automotive", icon: Car, color: "text-red-400", desc: "Vehicle mobility and engines." },
+    { title: "Chemical", icon: FlaskConical, color: "text-purple-400", desc: "Process conversion of matter." },
+    { title: "Carpentry", icon: Hammer, color: "text-amber-600", desc: "Structural fabrication and joinery." },
+  ];
+
   return (
-    <main className="relative min-h-screen bg-[#172554] text-zinc-200 overflow-hidden font-sans selection:bg-orange-500/30">
-      
-      {/* 1. VISUAL ENGINE */}
+    <main className="relative min-h-screen bg-[#020617] text-slate-200 overflow-hidden font-sans selection:bg-violet-500/30">
       <BlueprintBackground />
-      
-      {/* OVERLAY */}
-      <div className="absolute inset-0 bg-radial-vignette opacity-80 pointer-events-none z-0" />
-      <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.05] pointer-events-none z-0" />
+      <div className="absolute inset-0 bg-radial-vignette opacity-60 pointer-events-none" />
 
-      {/* 2. HEADER */}
-      <header className="relative z-20 flex items-center justify-between px-8 py-6 border-b border-white/10 bg-[#172554]/90 backdrop-blur-md sticky top-0">
-         <div className="flex items-center gap-6">
-             {/* Back to Parent (Applied Science) */}
-             <Link href="/applied-science" className="flex items-center gap-2 text-xs font-mono text-blue-300/50 hover:text-white transition-colors uppercase tracking-widest">
-                <ArrowLeft size={12} /> Applied Science
-             </Link>
-             <div className="h-4 w-px bg-white/10" />
-             <div className="flex items-center gap-3">
-                 <div className="p-1.5 bg-blue-900 border border-white/10 rounded">
-                    <Hammer size={18} className="text-white" />
-                 </div>
-                 <h1 className="text-xl font-bold text-white tracking-tight font-sans">
-                    ENGINEERING
-                 </h1>
-             </div>
-         </div>
-         <div className="hidden md:block text-[10px] font-mono text-blue-300/50 uppercase tracking-widest">
-            The Application of Science
-         </div>
-      </header>
-
-      {/* 3. CONTENT GRID */}
-      <div className="relative z-10 container mx-auto p-6 md:p-8">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                
-                {/* LEFT: THE DISCIPLINES GRID */}
-                <div className="lg:col-span-7 space-y-6">
-                    
-                    {/* HERO CARD */}
-                    <div className="bg-blue-900/60 backdrop-blur-md border border-white/10 rounded-2xl p-8 relative overflow-hidden group">
-                        <div className="absolute top-0 right-0 p-24 bg-orange-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
-                        
-                        <div className="relative z-10">
-                            <h2 className="text-3xl font-bold text-white mb-4">Building the World</h2>
-                            <p className="text-sm text-blue-200 leading-relaxed mb-6">
-                                Scientists ask "Why?" Engineers ask "How?" <br/>
-                                This is the rigorous application of scientific principles to design, build, and maintain the systems that power modern civilization.
-                            </p>
-                            <div className="flex gap-4">
-                                <div className="flex items-center gap-2 px-3 py-1.5 bg-black/30 rounded border border-white/5">
-                                    <PenTool size={14} className="text-orange-400" />
-                                    <span className="text-xs font-mono">Design</span>
-                                </div>
-                                <div className="flex items-center gap-2 px-3 py-1.5 bg-black/30 rounded border border-white/5">
-                                    <Wrench size={14} className="text-orange-400" />
-                                    <span className="text-xs font-mono">Build</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* DYNAMIC DISCIPLINES GRID */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        {DISCIPLINES.map((discipline) => (
-                            <Link 
-                                key={discipline.id} 
-                                href={`/applied-science/engineering/${discipline.id}`}
-                                className={`
-                                    group flex flex-col p-5 rounded-xl border backdrop-blur-sm bg-blue-900/40 transition-all duration-300 
-                                    hover:-translate-y-1 hover:shadow-xl hover:bg-blue-900/60
-                                    ${discipline.border}
-                                `}
-                            >
-                                <div className="flex justify-between items-start mb-3">
-                                    <div className="flex items-center gap-3">
-                                        <discipline.icon className={discipline.color} size={20} />
-                                        <h3 className="font-bold text-white text-sm">{discipline.title}</h3>
-                                    </div>
-                                    <ArrowUpRight size={16} className="text-blue-400 opacity-0 group-hover:opacity-100 transition-opacity" />
-                                </div>
-                                <p className="text-xs text-blue-200/60 leading-relaxed">
-                                    {discipline.desc}
-                                </p>
-                            </Link>
-                        ))}
-                    </div>
-
-                </div>
-
-                {/* RIGHT: INTERACTIVE LAB */}
-                <div className="lg:col-span-5 space-y-6 flex flex-col items-center">
-                    
-                    {/* WIDGET */}
-                    <GearMechanic />
-
-                    {/* ENGINEERING METHOD CARD */}
-                    <div className="bg-blue-900/60 border border-white/10 rounded-xl p-6 w-full">
-                        <h3 className="font-bold text-white mb-2">The Design Process</h3>
-                        
-
-[Image of engineering design cycle]
-
-                        <ol className="text-xs text-blue-200/70 space-y-2 list-decimal list-inside font-mono">
-                            <li>Define the Problem</li>
-                            <li>Do Background Research</li>
-                            <li>Specify Requirements</li>
-                            <li>Brainstorm Solutions</li>
-                            <li>Prototype & Test</li>
-                            <li>Iterate</li>
-                        </ol>
-                    </div>
-
-                </div>
-
+      <div className="relative z-10 container mx-auto px-6 py-12">
+        {/* HERO HEADER */}
+        <header className="mb-16 border-b border-violet-500/20 pb-8">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="p-2 bg-violet-500/10 border border-violet-500/30 rounded">
+              <Settings className="text-violet-400 animate-spin-slow" size={20} />
             </div>
+            <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-violet-400">
+              Applied Science // Systems
+            </span>
+          </div>
+          <h1 className="text-6xl md:text-8xl font-black text-white tracking-tighter uppercase leading-none">
+            ENGINE<span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-cyan-400">ERING</span>
+          </h1>
+          <p className="mt-6 text-slate-400 max-w-2xl text-lg font-light leading-relaxed border-l-2 border-violet-500/50 pl-6">
+            The application of scientific principles to design and build machines, structures, and systems. It is the bridge between the abstract laws of physics and the concrete needs of humanity.
+          </p>
+        </header>
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+          
+          {/* LEFT: DISCIPLINE MATRIX */}
+          <div className="lg:col-span-8">
+            <section className="mb-8">
+              <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-6">Fields of Practice</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {disciplines.map((d) => (
+                  <Link 
+                    key={d.title} 
+                    href={`/applied-science/engineering/${d.title.toLowerCase().replace(" ", "-")}`} 
+                    className="group relative p-5 bg-slate-900/60 border border-white/5 hover:border-violet-500/50 rounded-xl transition-all hover:-translate-y-1 backdrop-blur-sm"
+                  >
+                    <div className="flex items-start gap-4">
+                      <div className={`p-3 rounded-lg bg-black/40 border border-white/5 ${d.color} group-hover:scale-110 transition-transform`}>
+                        <d.icon size={24} />
+                      </div>
+                      <div className="flex-1">
+                        <div className="flex justify-between items-center">
+                            <h4 className="text-lg font-bold text-white mb-1">{d.title}</h4>
+                            <ArrowRight size={16} className="opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all text-violet-400" />
+                        </div>
+                        <p className="text-xs text-slate-400 leading-tight">{d.desc}</p>
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </section>
+          </div>
+
+          {/* RIGHT: INTERACTIVE LAB & THEORY */}
+          <div className="lg:col-span-4 space-y-6">
+            
+            {/* The Lab Widget */}
+            <StressTestLab />
+
+            {/* Theory Card: Safety Factor */}
+            <div className="p-6 rounded-2xl bg-violet-950/20 border border-violet-500/20">
+              <h4 className="text-sm font-bold text-white uppercase mb-2 flex items-center gap-2">
+                <PenTool size={16} className="text-violet-400" /> The Engineering Method
+              </h4>
+              <ul className="space-y-3 mt-4">
+                {['Define the Problem', 'Research & Specify', 'Brainstorm Solutions', 'Prototype & Test', 'Iterate'].map((step, i) => (
+                  <li key={step} className="flex items-center gap-3 text-xs text-slate-400">
+                    <span className="flex items-center justify-center w-5 h-5 rounded-full bg-black border border-white/10 text-[9px] font-bold text-violet-400">
+                      {i + 1}
+                    </span>
+                    {step}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Stat Block */}
+            <div className="grid grid-cols-2 gap-4">
+              <div className="p-4 bg-black/40 border border-white/10 rounded-xl text-center">
+                <span className="text-[10px] text-slate-500 uppercase font-bold">Accuracy</span>
+                <p className="text-xl font-mono text-cyan-400 mt-1">99.9%</p>
+              </div>
+              <div className="p-4 bg-black/40 border border-white/10 rounded-xl text-center">
+                <span className="text-[10px] text-slate-500 uppercase font-bold">Tolerance</span>
+                <p className="text-xl font-mono text-cyan-400 mt-1">±0.05mm</p>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
       </div>
     </main>
   );

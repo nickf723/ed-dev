@@ -12,32 +12,38 @@ const DISCIPLINES = [
   {
     id: "frontend", title: "Frontend", icon: Layers,
     desc: "Building the visual interface. React, CSS, UX.",
-    color: "text-blue-400", border: "border-blue-500/20"
+    color: "text-blue-400", border: "border-blue-500/20",
+    href: "/applied-science/engineering/software/frontend"
   },
   {
     id: "backend", title: "Backend", icon: Database,
     desc: "Server-side logic, APIs, and databases.",
-    color: "text-green-400", border: "border-green-500/20"
+    color: "text-green-400", border: "border-green-500/20",
+    href: "/applied-science/engineering/software/backend"
   },
   {
     id: "devops", title: "DevOps", icon: Terminal,
     desc: "Infrastructure, CI/CD, and cloud scaling.",
-    color: "text-orange-400", border: "border-orange-500/20"
+    color: "text-orange-400", border: "border-orange-500/20",
+    href: "/applied-science/engineering/software/devops"
   },
   {
     id: "embedded", title: "Embedded", icon: Cpu,
     desc: "Coding close to the metal (IoT, Firmware).",
-    color: "text-purple-400", border: "border-purple-500/20"
+    color: "text-purple-400", border: "border-purple-500/20",
+    href: "/applied-science/engineering/software/embedded"
   },
   {
     id: "security", title: "Security", icon: ShieldCheck,
     desc: "Protecting systems from exploits and attacks.",
-    color: "text-red-400", border: "border-red-500/20"
+    color: "text-red-400", border: "border-red-500/20",
+    href: "/applied-science/engineering/software/security"
   },
   {
     id: "ai", title: "AI/ML Eng", icon: Smartphone, // Using phone as generic tech icon
     desc: "Implementing and scaling machine learning models.",
-    color: "text-pink-400", border: "border-pink-500/20"
+    color: "text-pink-400", border: "border-pink-500/20",
+    href: "/applied-science/engineering/software/ai-ml"
   }
 ];
 
@@ -111,8 +117,9 @@ export default function SoftwarePage() {
                     {/* DYNAMIC DISCIPLINES GRID */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {DISCIPLINES.map((d) => (
-                            <div 
-                                key={d.id} 
+                            <Link
+                                key={d.id}
+                                href={`/applied-science/engineering/software/${d.id}`}
                                 className={`
                                     flex flex-col p-5 rounded-xl border bg-[#252526] hover:bg-[#2d2d2d] transition-colors
                                     ${d.border}
@@ -125,7 +132,7 @@ export default function SoftwarePage() {
                                 <p className="text-xs text-zinc-400 leading-relaxed">
                                     {d.desc}
                                 </p>
-                            </div>
+                            </Link>
                         ))}
                     </div>
 

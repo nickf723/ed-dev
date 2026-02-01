@@ -13,7 +13,7 @@ export default function NetworkBackground() {
     let w = (canvas.width = window.innerWidth);
     let h = (canvas.height = window.innerHeight);
     
-    const particleCount = 1600; 
+    const particleCount = 600; 
     const connectionDist = 180;
     const mouse = { x: w/2, y: h/2 };
     

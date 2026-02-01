@@ -1,7 +1,11 @@
 import "./globals.css";
-// import { Inter } from "next/font/google"; // If you use fonts
-import Sidebar from "../components/Sidebar";
-import MainContent from "../components/MainContent";
+import Sidebar from "@/components/Sidebar";
+import MainContent from "@/components/MainContent";
+
+export const metadata = {
+  title: "The Knowledge Web",
+  description: "Educational ontological structures",
+};
 
 export default function RootLayout({
   children,
@@ -10,14 +14,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="bg-black text-white">
-        {/* 1. Provider wraps everything */}
+      <body className="bg-black text-white antialiased">
+        <div className="flex min-h-screen">
           <Sidebar />
-          {/* 3. Content is INSIDE Provider */}
           <MainContent>
             {children}
           </MainContent>
-
+        </div>
       </body>
     </html>
   );
