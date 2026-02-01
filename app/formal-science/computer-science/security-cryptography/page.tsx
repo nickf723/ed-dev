@@ -1,6 +1,4 @@
 "use client";
-import PageHeader from "@/components/PageHeader";
-import TopicCard from "@/components/TopicCard";
 import CipherBackground from "@/app/formal-science/computer-science/security-cryptography/CipherBackground";
 import EnigmaWidget from "@/app/formal-science/computer-science/security-cryptography/EnigmaWidget";
 import { motion } from "framer-motion";
@@ -96,11 +94,7 @@ export default function CryptographyPage() {
       
       <div className="relative z-10 mx-auto flex max-w-7xl flex-col py-10">
         
-        <PageHeader
-          eyebrow="Computer Science"
-          title="Cryptography & Security"
-          subtitle="The art of writing hidden messages. From the scytales of Sparta to the quantum-resistant lattices of the future, cryptography is the mathematical armor that protects information."
-        />
+        
 
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 items-start">
           
@@ -129,7 +123,6 @@ export default function CryptographyPage() {
                             viewport={{ once: true }}
                             transition={{ duration: 0.3, delay: 0.1 + (i * 0.05) }}
                         >
-                            <TopicCard {...item} />
                         </motion.div>
                     ))}
                  </div>

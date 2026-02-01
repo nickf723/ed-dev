@@ -13,7 +13,7 @@ export default function NetworkBackground() {
     let w = (canvas.width = window.innerWidth);
     let h = (canvas.height = window.innerHeight);
     
-    const particleCount = 60; 
+    const particleCount = 1600; 
     const connectionDist = 180;
     const mouse = { x: w/2, y: h/2 };
     
@@ -125,7 +125,7 @@ export default function NetworkBackground() {
                      // Draw Line
                      ctx.beginPath();
                      ctx.strokeStyle = "rgba(255,255,255,0.1)";
-                     ctx.lineWidth = 0.5;
+                     ctx.lineWidth = 0.2;
                      ctx.globalAlpha = Math.min(alpha, 1 - d/connectionDist);
                      ctx.moveTo(p.x, p.y);
                      ctx.lineTo(other.x, other.y);

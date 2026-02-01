@@ -1,143 +1,149 @@
 "use client";
-import Link from "next/link";
-import TheoryBackground from "@/app/formal-science/computer-science/theory/TheoryBackground";
-import PathfindingLab from "@/app/formal-science/computer-science/theory/PathFindingLab";
+import React from "react";
+import { TheoryBackground } from "./TheoryBackground";
+import { DashboardCard } from "@/components/ui/DashboardCard";
 import { 
-  ArrowLeft, Binary, Network, Lock, 
-  Sigma, Clock, Scale
+  Sigma, 
+  BrainCircuit, 
+  Puzzle, 
+  Scale, 
+  FileCode, 
+  Binary, 
+  Infinity, 
+  HelpCircle
 } from "lucide-react";
 
-// --- CONFIG: DISCIPLINES ---
-const DISCIPLINES = [
-  {
-    id: "algo", title: "Algorithms", icon: Scale,
-    desc: "Step-by-step procedures for calculation. Sorting, searching, and optimization.",
-    color: "text-purple-400", border: "border-purple-500/20"
-  },
-  {
-    id: "complexity", title: "Complexity Theory", icon: Clock,
-    desc: "Classifying problems by how hard they are (Time & Space). P vs NP.",
-    color: "text-pink-400", border: "border-pink-500/20"
-  },
-  {
-    id: "crypto", title: "Cryptography", icon: Lock,
-    desc: "Secure communication in the presence of adversaries. Math of secrets.",
-    color: "text-emerald-400", border: "border-emerald-500/20"
-  },
-  {
-    id: "graph", title: "Graph Theory", icon: Network,
-    desc: "Modeling pairwise relations between objects. The math of the internet.",
-    color: "text-blue-400", border: "border-blue-500/20"
-  }
-];
-
-export default function TheoryPage() {
+export default function ComputationTheoryPage() {
   return (
-    <main className="relative min-h-screen bg-[#1c1917] text-zinc-300 overflow-hidden font-sans selection:bg-purple-500/30">
-      
-      {/* 1. VISUAL ENGINE */}
+    <div className="p-8 md:p-12 min-h-screen space-y-12 animate-in fade-in duration-500 font-mono">
       <TheoryBackground />
       
-      {/* OVERLAY */}
-      <div className="absolute inset-0 bg-radial-vignette opacity-80 pointer-events-none z-0" />
-
-      {/* 2. HEADER */}
-      <header className="relative z-20 flex items-center justify-between px-8 py-6 border-b border-white/10 bg-[#1c1917]/90 backdrop-blur-md sticky top-0">
-         <div className="flex items-center gap-6">
-             <Link href="/formal-science/computer-science" className="flex items-center gap-2 text-xs font-mono text-purple-400 hover:text-white transition-colors uppercase tracking-widest">
-                <ArrowLeft size={12} /> Computer Science
-             </Link>
-             <div className="h-4 w-px bg-white/10" />
-             <div className="flex items-center gap-3">
-                 <div className="p-1.5 bg-zinc-800 border border-purple-500/50 rounded">
-                    <Binary size={18} className="text-purple-500" />
-                 </div>
-                 <h1 className="text-xl font-bold text-white tracking-tight font-sans">
-                    THEORY
-                 </h1>
-             </div>
-         </div>
-         <div className="hidden md:block text-[10px] font-mono text-zinc-500 uppercase tracking-widest">
-            The Limits of Computation
-         </div>
+      {/* HEADER */}
+      <header className="flex flex-col items-center text-center gap-6 py-8 border-b border-white/5">
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-pink-500/30 bg-pink-950/20 text-pink-300 text-[10px] font-bold uppercase tracking-widest backdrop-blur-md">
+           <Sigma size={12} /> Formal Systems
+        </div>
+        <h1 className="text-5xl md:text-7xl font-black text-white tracking-tighter">
+          COMPUTATION THEORY
+        </h1>
+        <p className="text-slate-400 max-w-lg mx-auto text-lg leading-relaxed">
+           Asking the fundamental questions: What is computable? How efficiently can we solve it?
+        </p>
       </header>
 
-      {/* 3. CONTENT GRID */}
-      <div className="relative z-10 container mx-auto p-6 md:p-8">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                
-                {/* LEFT: THE DISCIPLINES */}
-                <div className="lg:col-span-7 space-y-6">
-                    
-                    {/* HERO CARD */}
-                    <div className="bg-[#262626] border border-white/10 rounded-2xl p-8 relative overflow-hidden group shadow-2xl">
-                        <div className="absolute top-0 right-0 p-32 bg-purple-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
-                        
-                        <div className="relative z-10">
-                            <h2 className="text-3xl font-bold text-white mb-4">The Math Behind the Machine</h2>
-                            <p className="text-sm text-zinc-400 leading-relaxed mb-6 font-mono">
-                                Before you can write code, you must understand logic. Theoretical Computer Science asks the fundamental questions: What can be computed? How fast can we compute it? And are there limits to what we can know?
-                            </p>
-                            <div className="flex gap-4">
-                                <div className="flex items-center gap-2 px-3 py-1.5 bg-black/30 rounded border border-white/5">
-                                    <Sigma size={14} className="text-purple-400" />
-                                    <span className="text-xs font-mono">Proof</span>
-                                </div>
-                                <div className="flex items-center gap-2 px-3 py-1.5 bg-black/30 rounded border border-white/5">
-                                    <Clock size={14} className="text-purple-400" />
-                                    <span className="text-xs font-mono">Time</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+      {/* THE THEORY GRID */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
+        
+        {/* 1. AUTOMATA THEORY */}
+        <DashboardCard 
+          title="Automata Theory" 
+          icon={BrainCircuit} 
+          href="/formal-science/computer-science/theory/automata"
+          accentColor="slate"
+          className="bg-black/40 border-white/10"
+        >
+          <div className="mt-auto space-y-4">
+             
 
-                    
+[Image of finite state machine diagram]
 
-                    {/* DYNAMIC DISCIPLINES GRID */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        {DISCIPLINES.map((d) => (
-                            <Link 
-                                key={d.id} 
-                                href={`/formal-science/computer-science/theory/${d.id}`}
-                                className={`
-                                    group flex flex-col p-5 rounded-xl border bg-[#262626] transition-all duration-300 
-                                    hover:-translate-y-1 hover:shadow-lg hover:bg-zinc-800
-                                    ${d.border}
-                                `}
-                            >
-                                <div className="flex items-center gap-3 mb-3">
-                                    <d.icon className={d.color} size={18} />
-                                    <h3 className="font-bold text-zinc-100 text-sm font-sans">{d.title}</h3>
-                                </div>
-                                <p className="text-xs text-zinc-500 leading-relaxed font-mono">
-                                    {d.desc}
-                                </p>
-                            </Link>
-                        ))}
-                    </div>
+             <div className="flex justify-between text-[10px] text-slate-500 uppercase">
+                <span>Finite State</span>
+                <span>Pushdown</span>
+             </div>
+             <div className="text-xs text-slate-300">
+                Mathematical models of abstract machines.
+             </div>
+          </div>
+        </DashboardCard>
 
-                </div>
+        {/* 2. COMPUTABILITY (Turing) */}
+        <DashboardCard 
+          title="Computability" 
+          icon={Binary} 
+          href="/formal-science/computer-science/theory/computability"
+          accentColor="purple"
+          className="bg-black/40 border-purple-500/20"
+        >
+          <div className="mt-auto space-y-2">
+             <div className="p-2 bg-purple-900/20 border border-purple-500/20 rounded font-mono text-[10px] text-purple-300 overflow-hidden whitespace-nowrap">
+                1 0 1 1 0 1 [HEAD] 0 0 1
+             </div>
+             <div className="text-xs text-slate-400">
+                The Turing Machine & The Halting Problem.
+             </div>
+          </div>
+        </DashboardCard>
 
-                {/* RIGHT: INTERACTIVE LAB */}
-                <div className="lg:col-span-5 space-y-6 flex flex-col items-center">
-                    
-                    {/* WIDGET */}
-                    <PathfindingLab />
+        {/* 3. COMPLEXITY (P vs NP) - Hero Card */}
+        <DashboardCard 
+          title="Complexity Theory" 
+          icon={Puzzle} 
+          href="/formal-science/computer-science/theory/complexity-theory"
+          accentColor="orange"
+          className="row-span-2 bg-gradient-to-b from-orange-950/10 to-black/60 border-orange-500/20"
+        >
+           <div className="flex flex-col h-full items-center justify-center text-center space-y-4">
+              <HelpCircle size={48} className="text-orange-500/50" />
+              <div className="text-3xl font-black text-white">P vs NP</div>
+              <p className="text-xs text-orange-200/70 max-w-[200px]">
+                 The biggest unsolved problem in computer science. If a solution is easy to check, is it also easy to find?
+              </p>
+              <div className="grid grid-cols-2 gap-2 w-full mt-4">
+                 <div className="p-2 bg-black/40 border border-orange-500/30 rounded text-[10px] text-orange-400">P (Easy)</div>
+                 <div className="p-2 bg-black/40 border border-orange-500/30 rounded text-[10px] text-orange-400">NP (Hard?)</div>
+              </div>
+           </div>
+        </DashboardCard>
 
-                    {/* P vs NP CARD */}
-                    <div className="bg-[#262626] border border-white/10 rounded-xl p-6 w-full">
-                        <h3 className="font-bold text-white mb-2 flex items-center gap-2">
-                            <Clock size={18} className="text-pink-500" /> The Million Dollar Question
-                        </h3>
-                        <p className="text-xs text-zinc-400 leading-relaxed mb-3">
-                            <strong>P vs NP:</strong> If the solution to a problem is easy to <em>check</em>, is it also easy to <em>find</em>? Most computer scientists believe the answer is "No", but no one has proven it yet.
-                        </p>
-                    </div>
+        {/* 4. LOGIC */}
+        <DashboardCard 
+          title="Formal Logic" 
+          icon={Scale} 
+          href="/formal-science/computer-science/theory/logic"
+          accentColor="slate"
+          className="bg-black/40 border-white/10"
+        >
+           <div className="mt-auto font-mono text-xs text-slate-300">
+              ∀x ∃y (P(x) → Q(y))
+           </div>
+        </DashboardCard>
 
-                </div>
+        {/* 5. INFORMATION THEORY */}
+        <DashboardCard 
+          title="Information Theory" 
+          icon={FileCode} 
+          href="/formal-science/computer-science/theory/information-theory"
+          accentColor="cyan"
+          className="bg-black/40 border-cyan-500/20"
+        >
+           <div className="mt-auto text-xs text-slate-400">
+              Quantifying data. Entropy, compression, and channel capacity.
+           </div>
+        </DashboardCard>
 
-            </div>
+        {/* 6. QUANTUM COMPUTING (Theory) */}
+        <DashboardCard 
+          title="Quantum Theory" 
+          icon={Infinity} 
+          href="/formal-science/computer-science/theory/quantum-theory"
+          accentColor="purple"
+          className="lg:col-span-2 bg-purple-950/10 border-purple-500/20"
+        >
+           <div className="flex items-center justify-between mt-auto">
+              <div>
+                 <div className="text-sm font-bold text-white">Beyond Binary</div>
+                 <div className="text-xs text-purple-400">Superposition & Entanglement</div>
+              </div>
+              <div className="flex gap-1">
+                 <div className="w-2 h-2 rounded-full bg-purple-500 animate-pulse" />
+                 <div className="w-2 h-2 rounded-full bg-purple-500 animate-pulse delay-75" />
+                 <div className="w-2 h-2 rounded-full bg-purple-500 animate-pulse delay-150" />
+              </div>
+           </div>
+        </DashboardCard>
+
       </div>
-    </main>
+    </div>
   );
 }

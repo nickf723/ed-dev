@@ -19,7 +19,7 @@ export default function WireframeBackground() {
     
     // Configuration
     const r = 400; // Radius
-    const numPoints = 80; // Reduced slightly for aesthetics
+    const numPoints = 180; // Reduced slightly for aesthetics
     const basePoints: {x: number, y: number, z: number}[] = [];
 
     // Initialize Points on a Sphere (Fibonacci Sphere)

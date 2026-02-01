@@ -1,152 +1,153 @@
 "use client";
-import Link from "next/link";
-import CircuitBackground from "@/app/formal-science/computer-science/CircuitBackground";
-import TuringMachine from "@/app/formal-science/computer-science/TuringMachine";
+import React from "react";
+import { ComputerScienceBackground } from "./ComputerScienceBackground";
+import { DashboardCard } from "@/components/ui/DashboardCard";
 import { 
-  ArrowLeft, Terminal, Cpu, BrainCircuit, 
-  Code2, Network, Binary, ArrowUpRight
+  Terminal, 
+  Cpu, 
+  Network, 
+  BrainCircuit, 
+  Code2, 
+  Binary, 
+  ShieldCheck, 
+  Layers,
+  Server
 } from "lucide-react";
 
-// --- CONFIG: DISCIPLINES ---
-const DISCIPLINES = [
-  {
-    id: "software", title: "Software", icon: Code2,
-    desc: "The construction of virtual systems. Operating systems, compilers, and applications.",
-    color: "text-blue-400", border: "border-blue-500/20", bg: "bg-blue-500/10"
-  },
-  {
-    id: "hardware", title: "Hardware", icon: Cpu,
-    desc: "The physical substrate. Computer architecture, logic gates, and circuits.",
-    color: "text-orange-400", border: "border-orange-500/20", bg: "bg-orange-500/10"
-  },
-  {
-    id: "theory", title: "Theory", icon: Binary, // or Sigma
-    desc: "The mathematical foundations. Algorithms, complexity classes (P vs NP), and cryptography.",
-    color: "text-purple-400", border: "border-purple-500/20", bg: "bg-purple-500/10"
-  },
-  {
-    id: "ai", title: "Artificial Intelligence", icon: BrainCircuit,
-    desc: "Agents that perceive and act. Machine Learning, Neural Networks, and NLP.",
-    color: "text-green-400", border: "border-green-500/20", bg: "bg-green-500/10"
-  }
-];
-
-export default function ComputerSciencePage() {
+export default function ComputerScienceHub() {
   return (
-    <main className="relative min-h-screen bg-[#0f172a] text-slate-300 overflow-hidden font-sans selection:bg-green-500/30">
+    <div className="p-8 md:p-12 min-h-screen space-y-12 animate-in fade-in duration-500 font-mono">
+      <ComputerScienceBackground />
       
-      {/* 1. VISUAL ENGINE */}
-      <CircuitBackground />
-      
-      {/* OVERLAY */}
-      <div className="absolute inset-0 bg-radial-vignette opacity-80 pointer-events-none z-0" />
-      <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.05] pointer-events-none z-0" />
-
-      {/* 2. HEADER */}
-      <header className="relative z-20 flex items-center justify-between px-8 py-6 border-b border-white/10 bg-[#0f172a]/90 backdrop-blur-md sticky top-0">
-         <div className="flex items-center gap-6">
-             <Link href="/formal-science" className="flex items-center gap-2 text-xs font-mono text-green-500 hover:text-green-400 transition-colors uppercase tracking-widest">
-                <ArrowLeft size={12} /> Formal Science
-             </Link>
-             <div className="h-4 w-px bg-white/10" />
-             <div className="flex items-center gap-3">
-                 <div className="p-1.5 bg-slate-900 border border-green-500/50 rounded">
-                    <Terminal size={18} className="text-green-500" />
-                 </div>
-                 <h1 className="text-xl font-bold text-white tracking-tight font-sans">
-                    COMPUTER_SCIENCE
-                 </h1>
-             </div>
-         </div>
-         <div className="hidden md:block text-[10px] font-mono text-green-500/50 uppercase tracking-widest">
-            The Study of Information
-         </div>
+      {/* HERO: THE TERMINAL HEADER */}
+      <header className="border-b border-emerald-500/30 pb-8 relative">
+        <div className="absolute top-0 right-0 flex gap-4 text-[10px] text-emerald-500/50">
+            <span>UPTIME: 99.99%</span>
+            <span>MEM: 64TB</span>
+        </div>
+        
+        <div className="flex items-center gap-4 mb-4">
+            <div className="h-12 w-12 bg-emerald-500/10 border border-emerald-500 flex items-center justify-center text-emerald-400">
+                <Terminal size={24} />
+            </div>
+            <div>
+                <h1 className="text-4xl md:text-6xl font-black text-white tracking-tighter uppercase">
+                    SYSTEM_<span className="text-emerald-500">ROOT</span>
+                </h1>
+                <p className="text-emerald-400/60 text-sm">
+                    &gt; sudo mount /formal-science/computer-science
+                </p>
+            </div>
+        </div>
       </header>
 
-      {/* 3. CONTENT GRID */}
-      <div className="relative z-10 container mx-auto p-6 md:p-8">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                
-                {/* LEFT: THE DISCIPLINES */}
-                <div className="lg:col-span-7 space-y-6">
-                    
-                    {/* HERO CARD */}
-                    <div className="bg-slate-900/60 backdrop-blur-md border border-white/10 rounded-2xl p-8 relative overflow-hidden group">
-                        <div className="absolute top-0 right-0 p-24 bg-green-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
-                        
-                        <div className="relative z-10">
-                            <h2 className="text-3xl font-bold text-white mb-4">The Universal Machine</h2>
-                            <p className="text-sm text-slate-400 leading-relaxed mb-6 font-mono">
-                                Computer Science is not just about programming. It is the study of what can be computed (Theory), how to compute it efficiently (Algorithms), and how to build the machines to do it (Hardware).
-                            </p>
-                            <div className="flex gap-4">
-                                <div className="flex items-center gap-2 px-3 py-1.5 bg-black/30 rounded border border-white/5">
-                                    <Binary size={14} className="text-blue-400" />
-                                    <span className="text-xs font-mono">0s & 1s</span>
-                                </div>
-                                <div className="flex items-center gap-2 px-3 py-1.5 bg-black/30 rounded border border-white/5">
-                                    <Network size={14} className="text-green-400" />
-                                    <span className="text-xs font-mono">Systems</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+      {/* THE ARCHITECTURE GRID */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        
+        {/* 1. HARDWARE (The Core) */}
+        <DashboardCard 
+          title="Hardware_Arch" 
+          icon={Cpu} 
+          href="/formal-science/computer-science/hardware"
+          accentColor="emerald"
+          className="lg:col-span-2 lg:row-span-2 bg-black/60 border-emerald-500/30"
+        >
+          <div className="flex flex-col h-full justify-between">
+            <div className="my-auto text-center space-y-4">
+                 
 
-                    
+[Image of cpu architecture diagram]
 
-[Image of von Neumann architecture diagram]
-
-
-                    {/* DYNAMIC DISCIPLINES GRID */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        {DISCIPLINES.map((d) => (
-                            <Link 
-                                key={d.id} 
-                                href={`/formal-science/computer-science/${d.id}`}
-                                className={`
-                                    group flex flex-col p-5 rounded-xl border backdrop-blur-sm bg-slate-900/40 transition-all duration-300 
-                                    hover:-translate-y-1 hover:shadow-lg hover:bg-slate-900/60
-                                    ${d.border}
-                                `}
-                            >
-                                <div className="flex justify-between items-start mb-3">
-                                    <div className="flex items-center gap-3">
-                                        <div className={`p-2 rounded-lg ${d.bg}`}>
-                                            <d.icon className={d.color} size={18} />
-                                        </div>
-                                        <h3 className="font-bold text-white text-sm font-sans">{d.title}</h3>
-                                    </div>
-                                    <ArrowUpRight size={16} className="text-slate-500 opacity-0 group-hover:opacity-100 transition-opacity" />
-                                </div>
-                                <p className="text-xs text-slate-400 leading-relaxed font-mono">
-                                    {d.desc}
-                                </p>
-                            </Link>
-                        ))}
-                    </div>
-
-                </div>
-
-                {/* RIGHT: INTERACTIVE LAB */}
-                <div className="lg:col-span-5 space-y-6 flex flex-col items-center">
-                    
-                    {/* WIDGET */}
-                    <TuringMachine />
-
-                    {/* CHURCH-TURING THESIS CARD */}
-                    <div className="bg-slate-900/60 border border-white/10 rounded-xl p-6 w-full">
-                        <h3 className="font-bold text-white mb-2 flex items-center gap-2 font-mono">
-                            <Binary size={18} className="text-purple-500" /> The Church-Turing Thesis
-                        </h3>
-                        <p className="text-xs text-slate-400 leading-relaxed mb-3">
-                            Any problem that can be solved by an algorithm can be solved by a Turing Machine. This means your smartphone is fundamentally no more powerful than the infinite tape machine above—just faster.
-                        </p>
-                    </div>
-
-                </div>
-
+                 <div className="text-xs text-emerald-500/50">Processing Unit Detected</div>
             </div>
+            <div className="grid grid-cols-2 gap-2 mt-8">
+                <div className="p-2 bg-emerald-900/20 border border-emerald-500/20 rounded text-[10px] text-emerald-400 text-center">
+                    LOGIC GATES
+                </div>
+                <div className="p-2 bg-emerald-900/20 border border-emerald-500/20 rounded text-[10px] text-emerald-400 text-center">
+                    ISA
+                </div>
+            </div>
+          </div>
+        </DashboardCard>
+
+        {/* 2. PROGRAMMING (The Input) */}
+        <DashboardCard 
+          title="Source_Code" 
+          icon={Code2} 
+          href="/formal-science/computer-science/software"
+          accentColor="cyan"
+          className="bg-black/60"
+        >
+          <div className="mt-auto font-mono text-xs text-cyan-300">
+             fn main() &#123;<br/>
+             &nbsp;&nbsp;init_world();<br/>
+             &#125;
+          </div>
+        </DashboardCard>
+
+        {/* 3. ALGORITHMS (The Optimization) */}
+        <DashboardCard 
+          title="Algos & Data" 
+          icon={Binary} 
+          href="/formal-science/computer-science/algorithms"
+          accentColor="purple"
+          className="bg-black/60"
+        >
+          <div className="mt-auto text-xs text-purple-300">
+             O(n log n) Efficiency
+          </div>
+        </DashboardCard>
+
+        {/* 4. AI (The Intelligence) */}
+        <DashboardCard 
+          title="Neural_Net" 
+          icon={BrainCircuit} 
+          href="/formal-science/computer-science/artificial-intelligence"
+          accentColor="orange"
+          className="bg-black/60"
+        >
+          <div className="mt-auto space-y-1">
+             <div className="h-1 w-full bg-orange-900/30 rounded overflow-hidden">
+                <div className="h-full w-3/4 bg-orange-500 animate-pulse" />
+             </div>
+             <div className="text-[10px] text-orange-400 text-right">TRAINING...</div>
+          </div>
+        </DashboardCard>
+
+        {/* 5. THEORY (The Math) */}
+        <DashboardCard 
+          title="Comp_Theory" 
+          icon={Layers} 
+          href="/formal-science/computer-science/theory"
+          accentColor="slate"
+          className="bg-black/60"
+        >
+          <div className="mt-auto text-xs text-slate-400">
+             Automata • Turing Machines • Complexity
+          </div>
+        </DashboardCard>
+
+        {/* 6. NETWORKS (The Connection) */}
+        <DashboardCard 
+          title="Net_Sec" 
+          icon={ShieldCheck} 
+          href="/formal-science/computer-science/security-cryptography"
+          accentColor="emerald"
+          className="lg:col-span-2 bg-emerald-950/10 border-emerald-500/20"
+        >
+           <div className="flex items-center justify-between mt-auto">
+             <div className="flex items-center gap-2 text-emerald-400">
+                <Network size={16} />
+                <span className="text-sm font-bold">Protocol Layer</span>
+             </div>
+             <div className="text-[10px] font-mono text-emerald-600 bg-emerald-900/20 px-2 py-1 rounded border border-emerald-500/20">
+                ENCRYPTION: AES-256
+             </div>
+           </div>
+        </DashboardCard>
+
       </div>
-    </main>
+    </div>
   );
 }
