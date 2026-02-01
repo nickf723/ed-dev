@@ -38,7 +38,7 @@ export default function NetworkBackground() {
     }
 
     const render = () => {
-      ctx.fillStyle = "#030712"; // Gray-950
+      ctx.fillStyle = "#120303d0"; // Gray-950
       ctx.fillRect(0, 0, w, h);
 
       // Update Nodes
@@ -52,7 +52,7 @@ export default function NetworkBackground() {
       });
 
       // Draw Connections & Manage Packets
-      ctx.strokeStyle = "rgba(6, 182, 212, 0.15)"; // Cyan-500 low opacity
+      ctx.strokeStyle = "rgba(212, 6, 6, 0.15)"; // Cyan-500 low opacity
       ctx.lineWidth = 1;
 
       for (let i = 0; i < nodeCount; i++) {
@@ -106,14 +106,14 @@ export default function NetworkBackground() {
           const curX = n1.x + (n2.x - n1.x) * p.progress;
           const curY = n1.y + (n2.y - n1.y) * p.progress;
 
-          ctx.fillStyle = "#22d3ee"; // Cyan-400
+          ctx.fillStyle = "#ee2222"; // Cyan-400
           ctx.beginPath();
           ctx.arc(curX, curY, 2, 0, Math.PI*2);
           ctx.fill();
       }
 
       // Draw Nodes (Tech Dots)
-      ctx.fillStyle = "#0e7490"; // Cyan-700
+      ctx.fillStyle = "#900e0e"; // Cyan-700
       nodes.forEach(n => {
           ctx.beginPath();
           ctx.arc(n.x, n.y, 2, 0, Math.PI*2);

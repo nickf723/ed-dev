@@ -11,7 +11,7 @@ export default function FrontendPage() {
   const stack = [
     { id: "html-semantics", title: "HTML & Semantics", icon: Layout, color: "text-orange-400", desc: "The structural skeleton of the web. Accessibility and SEO." },
     { id: "css-architecture", title: "CSS & Architecture", icon: Palette, color: "text-pink-400", desc: "Visual styling, layout systems (Flex/Grid), and responsiveness." },
-    { id: "javascript-logic", title: "JavaScript Logic", icon: Terminal, color: "text-yellow-400", desc: "Interactivity, state management, and DOM manipulation." },
+    { id: "javascript", title: "JavaScript Logic", icon: Terminal, color: "text-yellow-400", desc: "Interactivity, state management, and DOM manipulation." },
     { id: "modern-frameworks", title: "Modern Frameworks", icon: Box, color: "text-sky-400", desc: "React, Vue, and Next.js component-based architectures." }
   ];
 

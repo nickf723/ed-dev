@@ -33,9 +33,9 @@ export default function GameOfLifeBackground() {
     const draw = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       // Red glow for "Alive" cells (Formal Science Theme)
-      ctx.fillStyle = "#00ffc8"; 
+      ctx.fillStyle = "#ff0000"; 
       ctx.shadowBlur = 10;
-      ctx.shadowColor = "#44efe6";
+      ctx.shadowColor = "#ef7a44";
 
       for (let i = 0; i < cols; i++) {
         for (let j = 0; j < rows; j++) {
