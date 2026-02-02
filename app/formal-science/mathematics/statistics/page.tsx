@@ -1,131 +1,159 @@
 "use client";
 import Link from "next/link";
-import StatsBackground from "@/app/formal-science/mathematics/statistics/StatsBackground";
-import RegressionLab from "@/app/formal-science/mathematics/statistics/RegressionLab";
+import GaltonBoardBackground from "./GaltonBoardBackground";
+import RegressionPlayground from "./RegressionPlayground";
 import { 
-  ArrowLeft, BarChart3, PieChart, LineChart, 
-  HelpCircle, Binary, Search
+  Sigma, BarChart3, ScatterChart, PieChart, 
+  ArrowRight, Binary, Calculator, BrainCircuit,
+  TrendingUp, Activity, FileSpreadsheet
 } from "lucide-react";
 
 export default function StatisticsPage() {
+  // Navigation Modules (The Child Pages)
+  const modules = [
+    { 
+      title: "Descriptive Statistics", 
+      href: "/formal-science/mathematics/statistics/descriptive", 
+      icon: BarChart3, 
+      color: "text-teal-400",
+      border: "hover:border-teal-500/50",
+      bg: "hover:bg-teal-500/10",
+      desc: "Summarizing datasets. Mean, Median, Mode, and standard deviation." 
+    },
+    { 
+      title: "Inferential Statistics", 
+      href: "/formal-science/mathematics/statistics/inferential", 
+      icon: ScatterChart, 
+      color: "text-indigo-400",
+      border: "hover:border-indigo-500/50",
+      bg: "hover:bg-indigo-500/10",
+      desc: "Hypothesis testing, confidence intervals, and p-values." 
+    },
+    { 
+      title: "Probability Theory", 
+      href: "/formal-science/mathematics/statistics/probability", 
+      icon: Binary, 
+      color: "text-purple-400",
+      border: "hover:border-purple-500/50",
+      bg: "hover:bg-purple-500/10",
+      desc: "Quantifying uncertainty, random variables, and distributions." 
+    },
+    { 
+      title: "Bayesian Statistics", 
+      href: "/formal-science/mathematics/statistics/bayesian", 
+      icon: BrainCircuit, 
+      color: "text-rose-400",
+      border: "hover:border-rose-500/50",
+      bg: "hover:bg-rose-500/10",
+      desc: "Probabilistic reasoning that updates belief as new data arrives." 
+    },
+  ];
+
   return (
-    <main className="relative min-h-screen bg-[#0f0518] text-violet-100 overflow-hidden font-sans selection:bg-cyan-500/30">
-      
-      {/* 1. VISUAL ENGINE */}
-      <StatsBackground />
-      
-      {/* OVERLAY */}
-      <div className="absolute inset-0 bg-radial-vignette opacity-70 pointer-events-none z-0" />
+    <main className="relative min-h-screen bg-[#020617] text-slate-200 overflow-hidden font-sans selection:bg-indigo-500/30">
+      <GaltonBoardBackground />
+      <div className="absolute inset-0 bg-radial-vignette opacity-80 pointer-events-none" />
 
-      {/* 2. HEADER */}
-      <header className="relative z-20 flex items-center justify-between px-8 py-6 border-b border-white/10 bg-[#0f0518]/90 backdrop-blur-md sticky top-0">
-         <div className="flex items-center gap-6">
-             <Link href="/formal-science/mathematics" className="flex items-center gap-2 text-xs font-mono text-violet-500 hover:text-violet-400 transition-colors uppercase tracking-widest">
-                <ArrowLeft size={12} /> Mathematics
-             </Link>
-             <div className="h-4 w-px bg-white/10" />
-             <div className="flex items-center gap-3">
-                 <div className="p-1.5 bg-violet-950 border border-violet-500/50 rounded">
-                    <BarChart3 size={18} className="text-violet-500" />
-                 </div>
-                 <h1 className="text-xl font-bold text-white tracking-tight">
-                    STATISTICS
-                 </h1>
-             </div>
-         </div>
-         <div className="hidden md:block text-[10px] font-mono text-violet-500/50 uppercase tracking-widest">
-            The Science of Data
-         </div>
-      </header>
+      <div className="relative z-10 container mx-auto px-6 py-12">
+        {/* HERO */}
+        <header className="mb-16 border-b border-indigo-500/20 pb-8">
+          <div className="flex items-center gap-3 mb-4">
+            <Link href="/formal-science/mathematics" className="p-2 bg-indigo-500/10 border border-indigo-500/30 rounded hover:bg-indigo-500/20 transition-colors">
+              <Sigma className="text-indigo-400" size={20} />
+            </Link>
+            <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-indigo-400">
+              Mathematics // Data
+            </span>
+          </div>
+          <h1 className="text-6xl md:text-8xl font-black text-white tracking-tighter uppercase leading-none">
+            STATIS<span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-teal-400">TICS</span>
+          </h1>
+          <p className="mt-6 text-slate-400 max-w-2xl text-lg font-light leading-relaxed border-l-2 border-indigo-500/50 pl-6">
+            The science of collecting, analyzing, interpreting, and presenting data. In a chaotic world, statistics provides the tools to find the signal in the noise.
+          </p>
+        </header>
 
-      {/* 3. CONTENT GRID */}
-      <div className="relative z-10 container mx-auto p-6 md:p-8">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                
-                {/* LEFT: THE CONCEPTS */}
-                <div className="lg:col-span-7 space-y-6">
-                    
-                    {/* HERO CARD */}
-                    <div className="bg-violet-950/60 backdrop-blur-md border border-white/10 rounded-2xl p-8 relative overflow-hidden group">
-                        <div className="absolute top-0 right-0 p-24 bg-cyan-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
-                        
-                        <div className="relative z-10">
-                            <h2 className="text-3xl font-bold text-white mb-4">Making Sense of Chaos</h2>
-                            <p className="text-sm text-violet-200/80 leading-relaxed mb-6">
-                                We live in a noisy, uncertain world. Statistics provides the mathematical toolkit to quantify uncertainty, find patterns in data, and make predicted decisions with confidence.
-                            </p>
-                            <div className="flex gap-4">
-                                <div className="flex items-center gap-2 px-3 py-1.5 bg-black/30 rounded border border-white/5">
-                                    <LineChart size={14} className="text-violet-400" />
-                                    <span className="text-xs font-mono">Inference</span>
-                                </div>
-                                <div className="flex items-center gap-2 px-3 py-1.5 bg-black/30 rounded border border-white/5">
-                                    <Binary size={14} className="text-cyan-400" />
-                                    <span className="text-xs font-mono">Data</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    
-
-[Image of normal distribution curve]
-
-
-                    {/* DOMAINS GRID */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        
-                        <div className="bg-violet-950/40 border border-white/5 p-5 rounded-xl hover:border-violet-500/30 transition-colors group">
-                            <div className="flex items-center gap-3 mb-2">
-                                <PieChart className="text-violet-500" size={20} />
-                                <h3 className="font-bold text-white">Descriptive</h3>
-                            </div>
-                            <p className="text-xs text-violet-200/60">
-                                Summarizing data. Mean, Median, Mode, and Standard Deviation. The "what happened".
-                            </p>
-                        </div>
-
-                        <div className="bg-violet-950/40 border border-white/5 p-5 rounded-xl hover:border-cyan-500/30 transition-colors group">
-                            <div className="flex items-center gap-3 mb-2">
-                                <Search className="text-cyan-500" size={20} />
-                                <h3 className="font-bold text-white">Inferential</h3>
-                            </div>
-                            <p className="text-xs text-violet-200/60">
-                                Drawing conclusions from samples. Hypothesis Testing, P-values, and Confidence Intervals.
-                            </p>
-                        </div>
-                        
-                        <div className="bg-violet-950/40 border border-white/5 p-5 rounded-xl hover:border-violet-500/30 transition-colors group">
-                            <div className="flex items-center gap-3 mb-2">
-                                <HelpCircle className="text-violet-500" size={20} />
-                                <h3 className="font-bold text-white">Probability</h3>
-                            </div>
-                            <p className="text-xs text-violet-200/60">
-                                The logic of chance. Calculating the likelihood of events occurring.
-                            </p>
-                        </div>
-
-                    </div>
-                </div>
-
-                {/* RIGHT: INTERACTIVE LAB */}
-                <div className="lg:col-span-5 space-y-6 flex flex-col items-center">
-                    
-                    {/* WIDGET */}
-                    <RegressionLab />
-
-                    {/* LAW OF LARGE NUMBERS */}
-                    <div className="bg-violet-950/60 border border-white/10 rounded-xl p-6 w-full">
-                        <h3 className="font-bold text-white mb-2">Law of Large Numbers</h3>
-                        <p className="text-xs text-violet-200/60 leading-relaxed mb-3">
-                            If you flip a coin 10 times, you might get 80% heads. If you flip it 1,000,000 times, you will almost certainly get 50% heads. As the sample size grows, the average converges to the expected value.
-                        </p>
-                    </div>
-
-                </div>
-
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+          
+          {/* LEFT: INTERACTIVE MODULES */}
+          <div className="lg:col-span-7 space-y-12">
+            
+            {/* The Bell Curve Concept */}
+            <div className="p-6 bg-slate-900/60 border border-white/5 rounded-2xl backdrop-blur-md">
+              <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
+                <Activity size={20} className="text-indigo-400" /> The Central Limit Theorem
+              </h3>
+              <p className="text-sm text-slate-400 leading-relaxed mb-4">
+                You are watching it happen in the background. When you sum up many independent random variables (like balls bouncing left or right), the result <em>always</em> converges to a Normal Distribution (The Bell Curve).
+              </p>
             </div>
+            
+            
+
+[Image of normal distribution curve standard deviation]
+
+
+            {/* Navigation Grid */}
+            <div>
+               <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-6 flex items-center gap-2">
+                  <FileSpreadsheet size={14} /> Core Curriculum
+               </h3>
+               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                 {modules.map((m) => (
+                   <Link 
+                     key={m.title} 
+                     href={m.href}
+                     className={`group p-5 bg-black/40 border border-white/5 rounded-xl transition-all hover:-translate-y-1 ${m.border} ${m.bg}`}
+                   >
+                      <div className="flex items-start justify-between mb-3">
+                         <m.icon className={m.color} size={24} />
+                         <ArrowRight size={16} className={`opacity-0 group-hover:opacity-100 transition-opacity ${m.color}`} />
+                      </div>
+                      <h4 className="font-bold text-white text-sm mb-1">{m.title}</h4>
+                      <p className="text-xs text-slate-400 leading-snug">{m.desc}</p>
+                   </Link>
+                 ))}
+               </div>
+            </div>
+            
+            
+
+          </div>
+
+          {/* RIGHT: THE LAB */}
+          <div className="lg:col-span-5 space-y-8">
+            <RegressionPlayground />
+            
+            <div className="p-6 bg-slate-900/50 border border-white/5 rounded-2xl">
+               <h4 className="text-sm font-bold text-white uppercase mb-4 flex items-center gap-2">
+                   <Calculator size={16} className="text-slate-400" /> Statistical Notation
+               </h4>
+               <div className="space-y-4">
+                  <Metric title="Mean (µ)" desc="Population Average" formula="Σx / N" />
+                  <Metric title="Standard Deviation (σ)" desc="Spread/Dispersion" formula="√Var(x)" />
+                  <Metric title="Correlation (r)" desc="Linear Relationship" formula="cov(x,y) / σxσy" />
+               </div>
+            </div>
+            
+            
+          </div>
+
+        </div>
       </div>
     </main>
   );
+}
+
+function Metric({ title, desc, formula }: any) {
+    return (
+        <div className="flex items-center justify-between border-b border-white/5 pb-2 last:border-0 last:pb-0">
+            <div>
+                <div className="text-sm font-bold text-indigo-400">{title}</div>
+                <div className="text-[10px] text-slate-500">{desc}</div>
+            </div>
+            <div className="px-3 py-1 bg-black/40 rounded font-mono text-xs text-white border border-white/10">
+                {formula}
+            </div>
+        </div>
+    )
 }

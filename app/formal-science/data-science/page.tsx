@@ -1,6 +1,4 @@
 "use client";
-import PageHeader from "@/components/PageHeader";
-import TopicCard from "@/components/TopicCard";
 import ClusterBackground from "@/app/formal-science/data-science/ClusterBackground";
 import DistributionWidget from "@/app/formal-science/data-science/DistributionWidget";
 import { motion } from "framer-motion";
@@ -99,12 +97,7 @@ export default function DataSciencePage() {
       <ClusterBackground />
       
       <div className="relative z-10 mx-auto flex max-w-7xl flex-col py-10">
-        
-        <PageHeader
-          eyebrow="Formal Science"
-          title="Data Science"
-          subtitle="The alchemy of the information age. Data Science combines statistics, computer science, and domain expertise to extract knowledge and insight from noise."
-        />
+
 
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 items-start">
           
@@ -133,7 +126,6 @@ export default function DataSciencePage() {
                             viewport={{ once: true }}
                             transition={{ duration: 0.3, delay: 0.1 + (i * 0.05) }}
                         >
-                            <TopicCard {...item} />
                         </motion.div>
                     ))}
                  </div>

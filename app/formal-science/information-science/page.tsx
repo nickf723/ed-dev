@@ -1,173 +1,187 @@
 "use client";
-import PageHeader from "@/components/PageHeader";
-import TopicCard from "@/components/TopicCard";
-import BinaryOceanBackground from "@/app/formal-science/information-science/BinaryOceanBackground";
-import EntropyWidget from "@/app/formal-science/information-science/EntropyWidget";
-import { motion } from "framer-motion";
-import {
-  Binary, Database, ChartScatter, Lock, Server, Radio, Eye, FileText
+import Link from "next/link";
+import VectorSearchLab from "./VectorSearchLab";
+import { 
+  Database, Network, FileSearch, Archive, 
+  ArrowRight, Library, SearchCheck, Layers,
+  Binary, FileJson
 } from "lucide-react";
-
-// --- DATA ---
-const sectors = [
-  {
-    name: "Foundations & Theory",
-    desc: "The mathematical properties of symbols, signals, and transmission.",
-    color: "text-cyan-400",
-    icon: Binary,
-    items: [
-      {
-        title: "Information Theory",
-        desc: "Quantifying information (Entropy) and the limits of compression and transmission.",
-        href: "/formal-science/information-science/information-theory",
-        Icon: Binary,
-        className: "theme-information-science",
-        subtitle: "The Bit"
-      },
-      {
-        title: "Semiotics & Encoding",
-        desc: "How meaning is constructed and represented through signs and symbols.",
-        href: "/formal-science/information-science/semiotics",
-        Icon: FileText,
-        className: "theme-information-science", // Borrowing theme
-        subtitle: "Representation"
-      }
-    ]
-  },
-  {
-    name: "Storage & Retrieval",
-    desc: "Organizing vast amounts of data for efficient access.",
-    color: "text-blue-400",
-    icon: Database,
-    items: [
-      {
-        title: "Information Retrieval",
-        desc: "The science of search engines: Indexing, querying, and ranking relevance.",
-        href: "/formal-science/information-science/information-retrieval",
-        Icon: Search, // Assuming Search icon needs import or use Database
-        className: "theme-information-science",
-        subtitle: "Search Systems"
-      },
-      {
-        title: "InfoSec",
-        desc: "Protecting the confidentiality, integrity, and availability of information assets.",
-        href: "/formal-science/information-science/information-security",
-        Icon: Lock,
-        className: "theme-information-science",
-        subtitle: "Defense"
-      }
-    ]
-  },
-  {
-    name: "Human-Information Interaction",
-    desc: "Making data understandable and actionable for people.",
-    color: "text-purple-400",
-    icon: Eye,
-    items: [
-      {
-        title: "Data Visualization",
-        desc: "Translating abstract information into graphical representations.",
-        href: "/formal-science/information-science/data-visualization",
-        Icon: ChartScatter,
-        className: "theme-information-science",
-        subtitle: "Visual Analytics"
-      }
-    ]
-  }
-];
-
-// Helper for Search Icon since I missed it in imports above
-import { Search } from "lucide-react";
+import BinaryOceanBackground from "./BinaryOceanBackground";
 
 export default function InformationSciencePage() {
+  // Navigation Modules (The Child Pages)
+  const modules = [
+    { 
+      title: "Information Retrieval", 
+      href: "/formal-science/information-science/information-retrieval", 
+      icon: SearchCheck, 
+      color: "text-cyan-400", 
+      border: "hover:border-cyan-500/50",
+      bg: "hover:bg-cyan-500/10",
+      desc: "The science of search engines. Indexing, querying, and ranking relevance." 
+    },
+    { 
+      title: "Taxonomy & Ontology", 
+      href: "/formal-science/information-science/taxonomy-ontology", 
+      icon: Layers, 
+      color: "text-indigo-400", 
+      border: "hover:border-indigo-500/50",
+      bg: "hover:bg-indigo-500/10",
+      desc: "The classification of things. Creating hierarchies and relationships between concepts." 
+    },
+    { 
+      title: "Archival Science", 
+      href: "/formal-science/information-science/archival-science", 
+      icon: Archive, 
+      color: "text-amber-400", 
+      border: "hover:border-amber-500/50",
+      bg: "hover:bg-amber-500/10",
+      desc: "Preservation of data for long-term access and historical integrity." 
+    },
+    { 
+      title: "Bibliometrics", 
+      href: "/formal-science/information-science/bibliometrics", 
+      icon: Library, 
+      color: "text-emerald-400", 
+      border: "hover:border-emerald-500/50",
+      bg: "hover:bg-emerald-500/10",
+      desc: "Quantitative analysis of written publications and citation networks." 
+    },
+  ];
+
   return (
-    <main className="relative min-h-screen overflow-hidden bg-neutral-950 lg:px-12">
-      
-      {/* 1. Background */}
+    <main className="relative min-h-screen bg-[#0f172a] text-slate-200 overflow-hidden font-sans selection:bg-cyan-500/30">
       <BinaryOceanBackground />
-      
-      <div className="relative z-10 mx-auto flex max-w-7xl flex-col py-10">
-        
-        <PageHeader
-          eyebrow="Formal Science"
-          title="Information Science"
-          subtitle="The study of the lifecycle of information: creation, organization, management, retrieval, and dissemination. It connects the math of data to the human need for meaning."
-        />
+      <div className="absolute inset-0 bg-radial-vignette opacity-80 pointer-events-none" />
 
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 items-start">
+      <div className="relative z-10 container mx-auto px-6 py-12">
+        {/* HERO */}
+        <header className="mb-16 border-b border-cyan-500/20 pb-8">
+          <div className="flex items-center gap-3 mb-4">
+            <Link href="/applied-science" className="p-2 bg-cyan-500/10 border border-cyan-500/30 rounded hover:bg-cyan-500/20 transition-colors">
+              <Database className="text-cyan-400" size={20} />
+            </Link>
+            <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-cyan-400">
+              Formal Science // Data
+            </span>
+          </div>
+          <h1 className="text-5xl md:text-7xl font-black text-white tracking-tighter uppercase leading-none">
+            INFORMATION <br/><span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-indigo-400">SCIENCE</span>
+          </h1>
+          <p className="mt-6 text-slate-400 max-w-2xl text-lg font-light leading-relaxed border-l-2 border-cyan-500/50 pl-6">
+            We are drowning in data but starving for wisdom. Information Science is the discipline of collecting, organizing, storing, retrieving, and disseminating information to create meaning.
+          </p>
+        </header>
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
           
-          {/* MAIN CONTENT (8 cols) */}
-          <div className="lg:col-span-9 space-y-10">
-            {sectors.map((sector, idx) => (
-              <section key={sector.name}>
-                 <motion.div 
-                    initial={{ opacity: 0, x: -10 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.4, delay: idx * 0.1 }}
-                    className="mb-4 flex items-center gap-3"
-                 >
-                    <sector.icon className={sector.color} size={20} />
-                    <h2 className="text-lg font-bold text-white tracking-wide">{sector.name}</h2>
-                    <div className="h-[1px] flex-1 bg-white/10"></div>
-                 </motion.div>
-
-                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                    {sector.items.map((item, i) => (
-                        <motion.div
-                            key={item.title}
-                            initial={{ opacity: 0, y: 15 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.3, delay: 0.1 + (i * 0.05) }}
-                        >
-                            <TopicCard {...item} />
-                        </motion.div>
-                    ))}
+          {/* LEFT: THEORY & NAVIGATION */}
+          <div className="lg:col-span-6 space-y-12">
+            
+            {/* DIKW Pyramid */}
+            <div className="p-6 bg-slate-900/60 border border-white/5 rounded-2xl backdrop-blur-md">
+              <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
+                <Layers size={20} className="text-cyan-400" /> The Hierarchy of Value
+              </h3>
+              <p className="text-sm text-slate-400 leading-relaxed mb-4">
+                The core philosophy of the field is moving raw input up the value chain.
+              </p>
+              
+              
+              
+              <div className="space-y-2 mt-4 bg-black/40 p-4 rounded-xl border border-white/5">
+                 <div className="flex gap-4 items-baseline border-b border-white/5 pb-2">
+                    <span className="text-xs font-bold text-amber-400 w-20 text-right uppercase tracking-wider">Wisdom</span>
+                    <span className="text-xs text-slate-500">Applied knowledge. "Knowing WHY."</span>
                  </div>
-              </section>
-            ))}
+                 <div className="flex gap-4 items-baseline border-b border-white/5 pb-2">
+                    <span className="text-xs font-bold text-indigo-400 w-20 text-right uppercase tracking-wider">Knowledge</span>
+                    <span className="text-xs text-slate-500">Synthesized information. "Knowing HOW."</span>
+                 </div>
+                 <div className="flex gap-4 items-baseline border-b border-white/5 pb-2">
+                    <span className="text-xs font-bold text-cyan-400 w-20 text-right uppercase tracking-wider">Information</span>
+                    <span className="text-xs text-slate-500">Structured data. "Knowing WHAT."</span>
+                 </div>
+                 <div className="flex gap-4 items-baseline pt-1">
+                    <span className="text-xs font-bold text-slate-400 w-20 text-right uppercase tracking-wider">Data</span>
+                    <span className="text-xs text-slate-500">Raw signals. Chaos.</span>
+                 </div>
+              </div>
+            </div>
+
+            {/* NAVIGABLE MODULE GRID */}
+            <div>
+               <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-6 flex items-center gap-2">
+                  <FileJson size={14} /> Knowledge Domains
+               </h3>
+               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                 {modules.map((m) => (
+                   <Link 
+                     key={m.title} 
+                     href={m.href}
+                     className={`group p-5 bg-black/40 border border-white/5 rounded-xl transition-all hover:-translate-y-1 ${m.border} ${m.bg}`}
+                   >
+                      <div className="flex items-start justify-between mb-3">
+                         <m.icon className={m.color} size={24} />
+                         <ArrowRight size={16} className={`opacity-0 group-hover:opacity-100 transition-opacity ${m.color}`} />
+                      </div>
+                      <h4 className="font-bold text-white text-sm mb-1">{m.title}</h4>
+                      <p className="text-xs text-slate-400 leading-snug">{m.desc}</p>
+                   </Link>
+                 ))}
+               </div>
+            </div>
+
+            
+
+            {/* Retrieval Concept */}
+            <div className="flex gap-4 p-4 bg-indigo-900/10 border border-indigo-500/20 rounded-xl">
+                <FileSearch className="text-indigo-500 shrink-0" />
+                <div>
+                    <h4 className="text-sm font-bold text-white uppercase">The Inverted Index</h4>
+                    <p className="text-xs text-slate-400 mt-1">
+                        How Google works. Instead of scanning every document for a word, it keeps a list of every word and which documents contain it.
+                    </p>
+                    
+                    
+                </div>
+            </div>
+
           </div>
 
-          {/* SIDEBAR (3 cols) */}
-          <div className="flex flex-col gap-6 lg:col-span-3 lg:sticky lg:top-6 h-fit pt-2">
+          {/* RIGHT: THE LAB */}
+          <div className="lg:col-span-6 space-y-8">
+            <VectorSearchLab />
             
-            {/* Entropy Calculator */}
-            <motion.div 
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.4 }}
-            >
-               <EntropyWidget />
-            </motion.div>
+            <div className="p-6 bg-slate-900/50 border border-white/5 rounded-2xl">
+               <h4 className="text-sm font-bold text-white uppercase mb-4 flex items-center gap-2">
+                   <Network size={16} className="text-slate-400" /> The Knowledge Graph
+               </h4>
+               <p className="text-xs text-slate-300 leading-relaxed mb-4">
+                  The future of information is the <strong>Graph</strong>. Entities (People, Places, Things) are nodes, and edges describe their relationship (e.g., "Leonardo da Vinci" —painted&rarr; "Mona Lisa").
+               </p>
+               
+               
+            </div>
 
-            {/* DIKW Pyramid Widget */}
-            <motion.div 
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.6 }}
-                className="rounded-xl border border-cyan-500/20 bg-cyan-950/10 p-4 backdrop-blur-md"
-            >
-                <h4 className="text-xs font-bold uppercase text-cyan-400 mb-4 flex items-center gap-2">
-                    <Server size={14} /> The DIKW Hierarchy
-                </h4>
-                
-                <div className="flex flex-col gap-1 items-center">
-                   {/* Wisdom */}
-                   <div className="w-[40%] h-6 bg-cyan-500/90 rounded-t-sm flex items-center justify-center text-[9px] font-bold text-black">WISDOM</div>
-                   {/* Knowledge */}
-                   <div className="w-[60%] h-6 bg-cyan-600/80 flex items-center justify-center text-[9px] font-bold text-white">KNOWLEDGE</div>
-                   {/* Information */}
-                   <div className="w-[80%] h-6 bg-cyan-700/70 flex items-center justify-center text-[9px] font-bold text-white">INFORMATION</div>
-                   {/* Data */}
-                   <div className="w-full h-6 bg-cyan-800/60 rounded-b-sm flex items-center justify-center text-[9px] font-bold text-white">DATA</div>
-                </div>
-
-                <p className="text-[10px] text-neutral-400 leading-relaxed mt-4 text-center">
-                    Data is raw facts. Information is data in context. Knowledge is actionable information. Wisdom is applied knowledge.
-                </p>
-            </motion.div>
-
+            {/* Metadata Card */}
+            <div className="p-6 bg-amber-900/10 border border-amber-500/20 rounded-2xl">
+               <h4 className="text-sm font-bold text-white uppercase mb-4">Metadata: Data about Data</h4>
+               <div className="font-mono text-xs space-y-2 text-amber-200/80">
+                  <div className="flex justify-between border-b border-white/5 pb-1">
+                     <span>DC.Title</span>
+                     <span className="text-white">"Information Science"</span>
+                  </div>
+                  <div className="flex justify-between border-b border-white/5 pb-1">
+                     <span>DC.Creator</span>
+                     <span className="text-white">"Society OS"</span>
+                  </div>
+                  <div className="flex justify-between border-b border-white/5 pb-1">
+                     <span>DC.Date</span>
+                     <span className="text-white">"2026-02-02"</span>
+                  </div>
+               </div>
+            </div>
           </div>
 
         </div>
