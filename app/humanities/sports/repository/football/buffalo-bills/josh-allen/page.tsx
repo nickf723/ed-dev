@@ -2,6 +2,7 @@
 import Link from "next/link";
 import ElectricFieldBackground from "./ElectricFieldBackground";
 import ChaosMatrixLab from "./ChaosMatrixLab";
+import JoshAllenResources from "./JoshAllenResources"; // Import the new component
 import { 
   Trophy, Zap, Target, TrendingUp, 
   ArrowRight, Shield, Activity, Flame 
@@ -72,15 +73,8 @@ export default function JoshAllenPage() {
           <div className="lg:col-span-7 space-y-8">
             <ChaosMatrixLab />
             
-            <div className="p-6 bg-slate-900/80 border border-white/10 rounded-2xl backdrop-blur-md">
-               <h4 className="text-sm font-bold text-white uppercase mb-4 flex items-center gap-2">
-                   <TrendingUp size={16} className="text-blue-400" /> The Growth Mindset
-               </h4>
-               <p className="text-sm text-slate-300 leading-relaxed">
-                  Drafted as a "Project" with accuracy issues (56% in college), Allen defied mathematical probability to become an elite passer (69% in 2020). He is the statistical outlier that every team now tries to find.
-               </p>
-            </div>
-            
+            {/* NEW RESOURCES SECTION */}
+            <JoshAllenResources />
             
           </div>
 
