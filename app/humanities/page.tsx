@@ -1,226 +1,183 @@
 "use client";
-import React from "react";
+import React, { useState } from 'react';
 import Link from "next/link";
-import HumanitiesBackground from "./HumanitiesBackground";
+import { motion, AnimatePresence } from "framer-motion";
+import HumanitiesBackground from "./HumanitiesBackground"; // Assuming you have this
 import { 
-  ArrowLeft, Hourglass, Rocket, 
-  Scale, Star, BookOpen, 
-  Languages, Palette, Drama, 
-  Music, Flame, Gamepad2, 
-  Trophy, Feather
+  Hourglass, Rocket, Scale, Star, 
+  BookOpen, Languages, Palette, Drama, 
+  Music, Flame, Gamepad2, Trophy, Feather,
+  ArrowRight, Library
 } from "lucide-react";
 
-// --- CURATED COLLECTIONS ---
+// --- DATA ---
 const DOMAINS = [
-  // ROW 1: TIME & THOUGHT
-  {
-    id: "history",
-    title: "History",
-    subtitle: "The Record",
-    icon: Hourglass,
-    desc: "The study of past events. Understanding where we came from to know where we are going.",
-    color: "text-amber-500",
-    border: "border-amber-600/40"
-  },
-  {
-    id: "futurology",
-    title: "Futurology",
-    subtitle: "The Horizon",
-    icon: Rocket,
-    desc: "Postulating possible futures. Transhumanism, space colonization, and the singularity.",
-    color: "text-cyan-400", // Pop of modern color
-    border: "border-cyan-600/40"
-  },
-  {
-    id: "philosophy",
-    title: "Philosophy",
-    subtitle: "The Logic",
-    icon: Scale, // Representing balance/reason
-    desc: "The study of knowledge, reality, and existence. Asking 'Why?' until it hurts.",
-    color: "text-zinc-300",
-    border: "border-zinc-500/40"
-  },
-  {
-    id: "religion",
-    title: "Religion",
-    subtitle: "The Belief",
-    icon: Star,
-    desc: "Systems of faith and worship. Exploring the human relationship with the divine.",
-    color: "text-yellow-200",
-    border: "border-yellow-500/40"
-  },
-  
-  // ROW 2: EXPRESSION
-  {
-    id: "literature",
-    title: "Literature",
-    subtitle: "The Story",
-    icon: BookOpen,
-    desc: "Written works of artistic merit. The novel, poetry, and the power of narrative.",
-    color: "text-stone-300",
-    border: "border-stone-500/40"
-  },
-  {
-    id: "language",
-    title: "Language",
-    subtitle: "The Code",
-    icon: Languages,
-    desc: "Linguistics and communication. The structure of how we transmit ideas.",
-    color: "text-rose-300",
-    border: "border-rose-500/40"
-  },
-  {
-    id: "visual-arts",
-    title: "Visual Arts",
-    subtitle: "The Image",
-    icon: Palette,
-    desc: "Painting, sculpture, and design. Manifesting imagination into the physical world.",
-    color: "text-fuchsia-400",
-    border: "border-fuchsia-500/40"
-  },
-  {
-    id: "performing-arts",
-    title: "Performing Arts",
-    subtitle: "The Stage",
-    icon: Drama,
-    desc: "Theater, dance, and cinema. The ephemeral art of the moment.",
-    color: "text-red-400",
-    border: "border-red-500/40"
-  },
-
-  // ROW 3: CULTURE & PLAY
-  {
-    id: "music",
-    title: "Music",
-    subtitle: "The Sound",
-    icon: Music,
-    desc: "Harmonic frequencies. Theory, composition, and the universal language.",
-    color: "text-violet-400",
-    border: "border-violet-500/40"
-  },
-  {
-    id: "culinary-arts",
-    title: "Culinary Arts",
-    subtitle: "The Taste",
-    icon: Flame,
-    desc: "Gastronomy and cooking. The intersection of chemistry, culture, and sustenance.",
-    color: "text-orange-400",
-    border: "border-orange-500/40"
-  },
-  {
-    id: "gaming",
-    title: "Gaming",
-    subtitle: "The Simulation",
-    icon: Gamepad2,
-    desc: "Interactive entertainment. Ludology, game design, and virtual worlds.",
-    color: "text-green-400",
-    border: "border-green-500/40"
-  },
-  {
-    id: "sports",
-    title: "Sports",
-    subtitle: "The Motion",
-    icon: Trophy,
-    desc: "Physical exertion and skill. Strategy, athleticism, and the limits of the human body.",
-    color: "text-emerald-400",
-    border: "border-emerald-500/40"
-  },
-  {
-    id: "culture",
-    title: "Culture",
-    subtitle: "The Collective",
-    icon: Feather,
-    desc: "The shared practices, values, and artifacts of societies. Anthropology and ethnography.",
-    color: "text-amber-400",
-    border: "border-amber-500/40"
-  }
+  { category: "Time & Thought", items: [
+    { id: "history", title: "History", subtitle: "The Record", icon: Hourglass, desc: "The study of past events. Understanding where we came from to know where we are going.", color: "text-amber-500", border: "border-amber-600/40", bg: "from-amber-500/20" },
+    { id: "futurology", title: "Futurology", subtitle: "The Horizon", icon: Rocket, desc: "Postulating possible futures. Transhumanism, space colonization, and the singularity.", color: "text-cyan-400", border: "border-cyan-600/40", bg: "from-cyan-500/20" },
+    { id: "philosophy", title: "Philosophy", subtitle: "The Logic", icon: Scale, desc: "The study of knowledge, reality, and existence. Asking 'Why?' until it hurts.", color: "text-zinc-300", border: "border-zinc-500/40", bg: "from-zinc-500/20" },
+    { id: "religion", title: "Religion", subtitle: "The Belief", icon: Star, desc: "Systems of faith and worship. Exploring the human relationship with the divine.", color: "text-yellow-200", border: "border-yellow-500/40", bg: "from-yellow-500/20" },
+  ]},
+  { category: "Expression", items: [
+    { id: "literature", title: "Literature", subtitle: "The Story", icon: BookOpen, desc: "Written works of artistic merit. The novel, poetry, and the power of narrative.", color: "text-stone-300", border: "border-stone-500/40", bg: "from-stone-500/20" },
+    { id: "language", title: "Language", subtitle: "The Code", icon: Languages, desc: "Linguistics and communication. The structure of how we transmit ideas.", color: "text-rose-300", border: "border-rose-500/40", bg: "from-rose-500/20" },
+    { id: "visual-arts", title: "Visual Arts", subtitle: "The Image", icon: Palette, desc: "Painting, sculpture, and design. Manifesting imagination into the physical world.", color: "text-fuchsia-400", border: "border-fuchsia-500/40", bg: "from-fuchsia-500/20" },
+    { id: "performing-arts", title: "Performing Arts", subtitle: "The Stage", icon: Drama, desc: "Theater, dance, and cinema. The ephemeral art of the moment.", color: "text-red-400", border: "border-red-500/40", bg: "from-red-500/20" },
+  ]},
+  { category: "Culture & Play", items: [
+    { id: "music", title: "Music", subtitle: "The Sound", icon: Music, desc: "Harmonic frequencies. Theory, composition, and the universal language.", color: "text-violet-400", border: "border-violet-500/40", bg: "from-violet-500/20" },
+    { id: "culinary-arts", title: "Culinary Arts", subtitle: "The Taste", icon: Flame, desc: "Gastronomy and cooking. The intersection of chemistry, culture, and sustenance.", color: "text-orange-400", border: "border-orange-500/40", bg: "from-orange-500/20" },
+    { id: "gaming", title: "Gaming", subtitle: "The Simulation", icon: Gamepad2, desc: "Interactive entertainment. Ludology, game design, and virtual worlds.", color: "text-green-400", border: "border-green-500/40", bg: "from-green-500/20" },
+    { id: "sports", title: "Sports", subtitle: "The Motion", icon: Trophy, desc: "Physical exertion and skill. Strategy, athleticism, and the limits of the human body.", color: "text-emerald-400", border: "border-emerald-500/40", bg: "from-emerald-500/20" },
+    { id: "culture", title: "Culture", subtitle: "The Collective", icon: Feather, desc: "The shared practices, values, and artifacts of societies. Anthropology and ethnography.", color: "text-amber-400", border: "border-amber-500/40", bg: "from-amber-500/20" },
+  ]}
 ];
 
 export default function HumanitiesPage() {
+  // Default to History
+  const [active, setActive] = useState(DOMAINS[0].items[0]);
+
   return (
-    <main className="relative min-h-screen bg-[#0f0505] text-white overflow-hidden font-serif selection:bg-amber-500/30 flex flex-col">
-      
-      {/* 1. VISUAL ENGINE */}
+    <main className="relative h-screen w-full bg-[#1c1917] text-stone-200 overflow-hidden font-sans selection:bg-amber-500/30 flex items-center justify-center">
       <HumanitiesBackground />
-
-      {/* 2. HEADER */}
-      <header className="relative z-10 p-8 pb-4 text-center">
-         <Link href="/" className="inline-flex items-center gap-2 text-xs text-amber-500 hover:text-white transition-colors mb-4 uppercase tracking-widest font-sans group">
-            <ArrowLeft size={12} className="group-hover:-translate-x-1 transition-transform"/> Return Home
-         </Link>
-         
-         <div className="flex flex-col items-center gap-4">
-             <div className="w-16 h-16 rounded-full border border-cyan-500/30 flex items-center justify-center bg-cyan-950/20 backdrop-blur-md">
-                 <Feather size={32} className="text-cyan-500" />
-             </div>
-             <div>
-                <h1 className="text-5xl md:text-6xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-b from-cyan-100 to-cyan-700">
-                   HUMANITIES
-                </h1>
-                <p className="text-amber-500/60 text-sm tracking-widest uppercase font-sans mt-2">
-                    The Study of the Human Condition
-                </p>
-             </div>
-         </div>
-      </header>
-
-      {/* 3. THE GALLERY (Grid) */}
-      <div className="relative z-10 flex-1 overflow-y-auto pb-12">
-          <div className="max-w-fill mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-6 pt-8">
-              
-              {DOMAINS.map((item, i) => (
-                  <Link 
-                      key={item.id}
-                      href={`/humanities/${item.id}`}
-                      className={`
-                          group relative flex flex-col p-6 rounded-sm
-                          border backdrop-blur-sm bg-[#1a0a0a]/60
-                          transition-all duration-500
-                          hover:-translate-y-2 hover:shadow-[0_10px_30px_rgba(0,0,0,0.5)]
-                          ${item.border}
-                      `}
-                  >
-                      {/* Frame Decoration */}
-                      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-
-                      {/* Header */}
-                      <div className="flex justify-between items-start mb-4">
-                          <div className={`p-3 rounded-full bg-black/40 border border-white/5 ${item.color} group-hover:scale-110 transition-transform duration-500`}>
-                              <item.icon size={20} />
-                          </div>
-                          <span className="font-sans text-[10px] text-white/20 font-bold uppercase tracking-widest">
-                              {i < 9 ? `0${i+1}` : i+1}
-                          </span>
-                      </div>
-
-                      {/* Content */}
-                      <div>
-                          <h2 className="text-2xl font-bold text-white mb-1 group-hover:text-amber-100 transition-colors">
-                              {item.title}
-                          </h2>
-                          <div className={`font-sans text-[10px] font-bold uppercase tracking-wider mb-4 opacity-70 ${item.color}`}>
-                              {item.subtitle}
-                          </div>
-                          <p className="text-sm text-zinc-400 leading-relaxed font-sans opacity-80 group-hover:opacity-100 transition-opacity">
-                              {item.desc}
-                          </p>
-                      </div>
-
-                      {/* Hover Interaction: "Read More" Line */}
-                      <div className="mt-6 h-px w-full bg-white/5 group-hover:bg-white/20 transition-colors" />
-                  </Link>
-              ))}
-
-          </div>
-      </div>
       
-      {/* FOOTER */}
-      <div className="relative z-10 p-6 text-center">
-          <div className="text-[10px] text-amber-900/50 uppercase font-sans font-bold tracking-[0.3em]">
-              Ars Longa, Vita Brevis
-          </div>
-      </div>
+      {/* Texture Overlay */}
+      <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-20 pointer-events-none" />
+      
+      {/* VIGNETTE */}
+      <div className="absolute inset-0 bg-radial-vignette opacity-80 pointer-events-none" />
 
+      <div className="relative z-10 w-full max-w-7xl px-6 h-[85vh] grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-12">
+        
+        {/* --- LEFT COL: THE ARCHIVE (Navigation) --- */}
+        <div className="lg:col-span-4 flex flex-col h-full overflow-hidden">
+          
+          {/* Header */}
+          <header className="mb-6 flex-shrink-0">
+             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-stone-700 bg-stone-900/50 backdrop-blur-md mb-4">
+                 <Library size={12} className="text-amber-500" />
+                 <span className="text-[10px] font-bold uppercase tracking-widest text-stone-400">The Grand Hall</span>
+             </div>
+             <h1 className="text-4xl font-black text-white uppercase tracking-tight">
+                 Humanities
+             </h1>
+             <p className="text-stone-500 text-sm mt-2">
+                 Select a discipline to inspect its artifacts.
+             </p>
+          </header>
+
+          {/* Scrollable List */}
+          <div className="flex-1 overflow-y-auto pr-2 space-y-6 custom-scrollbar">
+            {DOMAINS.map((group, i) => (
+                <div key={i} className="space-y-2">
+                    <h3 className="text-[10px] font-bold uppercase tracking-widest text-stone-600 sticky top-0 bg-[#1c1917]/95 py-2 z-10">
+                        {group.category}
+                    </h3>
+                    <div className="space-y-1">
+                        {group.items.map((item) => (
+                            <button
+                                key={item.id}
+                                onMouseEnter={() => setActive(item)}
+                                onClick={() => setActive(item)}
+                                className={`w-full text-left px-4 py-3 rounded-lg border transition-all duration-200 flex items-center justify-between group ${
+                                    active.id === item.id 
+                                    ? `bg-stone-800 ${item.border} border-l-4` 
+                                    : 'border-transparent hover:bg-white/5 border-l-4 border-l-transparent'
+                                }`}
+                            >
+                                <div className="flex items-center gap-3">
+                                    <item.icon size={18} className={active.id === item.id ? item.color : 'text-stone-500 group-hover:text-stone-300'} />
+                                    <span className={`text-sm font-bold ${active.id === item.id ? 'text-white' : 'text-stone-400 group-hover:text-white'}`}>
+                                        {item.title}
+                                    </span>
+                                </div>
+                                {active.id === item.id && (
+                                    <motion.div layoutId="arrow">
+                                        <ArrowRight size={14} className={item.color} />
+                                    </motion.div>
+                                )}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+            ))}
+          </div>
+
+        </div>
+
+        {/* --- RIGHT COL: THE LENS (Detail View) --- */}
+        <div className="lg:col-span-8 hidden lg:flex flex-col h-full">
+            <AnimatePresence mode="wait">
+                <motion.div 
+                    key={active.id}
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.98 }}
+                    transition={{ duration: 0.3 }}
+                    className="relative flex-1 bg-stone-900/60 border border-white/10 rounded-3xl overflow-hidden backdrop-blur-xl flex flex-col"
+                >
+                    {/* Dynamic Gradient Background based on selection */}
+                    <div className={`absolute inset-0 bg-gradient-to-br ${active.bg} to-transparent opacity-20`} />
+                    
+                    {/* Content Container */}
+                    <div className="relative z-10 p-12 flex flex-col h-full">
+                        
+                        {/* Subtitle Badge */}
+                        <div className="inline-flex items-center gap-2 self-start px-3 py-1 rounded border border-white/10 bg-black/20 text-stone-400 text-xs font-mono uppercase tracking-widest mb-8">
+                            <span>#{active.id}</span>
+                            <span className="w-px h-3 bg-white/10" />
+                            <span>{active.subtitle}</span>
+                        </div>
+
+                        {/* Huge Icon */}
+                        <div className={`p-6 rounded-2xl bg-black/40 w-fit mb-8 ${active.color}`}>
+                            <active.icon size={64} strokeWidth={1.5} />
+                        </div>
+
+                        {/* Title & Desc */}
+                        <h2 className="text-7xl font-black text-white uppercase tracking-tighter mb-6 leading-none">
+                            {active.title}
+                        </h2>
+                        <p className="text-xl text-stone-300 font-light leading-relaxed max-w-2xl border-l-2 border-white/10 pl-6">
+                            {active.desc}
+                        </p>
+
+                        {/* Action Area (Bottom) */}
+                        <div className="mt-auto pt-12 border-t border-white/5 flex items-center justify-between">
+                            <div className="flex gap-4">
+                                <Stat label="Modules" value="4" />
+                                <Stat label="Articles" value="12" />
+                            </div>
+                            <Link 
+                                href={`/humanities/${active.id}`}
+                                className={`px-8 py-4 rounded-xl font-bold text-black uppercase tracking-wider flex items-center gap-3 transition-transform hover:scale-105 ${active.color.replace('text-', 'bg-')}`}
+                            >
+                                Enter Domain <ArrowRight size={18} />
+                            </Link>
+                        </div>
+                    </div>
+
+                    {/* Decorative Watermark */}
+                    <active.icon 
+                        className="absolute -bottom-24 -right-24 text-white opacity-[0.03] pointer-events-none" 
+                        size={600} 
+                        strokeWidth={0.5} 
+                    />
+
+                </motion.div>
+            </AnimatePresence>
+        </div>
+
+      </div>
     </main>
   );
+}
+
+function Stat({ label, value }: any) {
+    return (
+        <div>
+            <div className="text-[10px] font-bold text-stone-500 uppercase">{label}</div>
+            <div className="text-2xl font-mono text-white">{value}</div>
+        </div>
+    )
 }

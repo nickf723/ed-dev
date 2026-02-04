@@ -47,8 +47,8 @@ export default function GrimoireBackground() {
       // Draw the light (Radial Gradient)
       const grad = ctx.createRadialGradient(lightX, lightY, 0, lightX, lightY, lightRadius);
       grad.addColorStop(0, "rgba(255, 100, 0, 0.4)"); // Hot Orange center
-      grad.addColorStop(0.5, "rgba(153, 27, 27, 0.2)"); // Deep Red mid
-      grad.addColorStop(1, "rgba(0,0,0,0)");
+      grad.addColorStop(0.5, "rgba(46, 25, 2, 0.65)"); // Deep Red mid
+      grad.addColorStop(1, "rgba(33, 0, 71, 0.68)");
       ctx.fillStyle = grad;
       ctx.fillRect(0, 0, w, h);
 

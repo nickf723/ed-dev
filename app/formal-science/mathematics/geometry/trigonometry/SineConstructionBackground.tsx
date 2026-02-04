@@ -19,8 +19,8 @@ export default function SineConstructionBackground() {
       ctx.fillStyle = '#020617'; // Slate-950
       ctx.fillRect(0, 0, width, height);
 
-      const cx = width * 0.15; // Circle X
-      const cy = height / 2;   // Circle Y
+      const cx = width * 0.2; // Circle Center X
+      const cy = height / 2;   // Circle Center Y
       const radius = 80;
 
       // Update Angle
@@ -32,7 +32,7 @@ export default function SineConstructionBackground() {
 
       // Store y-value for the wave
       trail.unshift(py);
-      if (trail.length > width * 0.8) trail.pop();
+      if (trail.length > width * 0.6) trail.pop();
 
       // 1. Draw The Circle
       ctx.beginPath();
@@ -44,18 +44,20 @@ export default function SineConstructionBackground() {
       // 2. Draw The Triangle inside the Circle
       ctx.beginPath();
       ctx.moveTo(cx, cy); // Center
-      ctx.lineTo(px, py); // Point
+      ctx.lineTo(px, py); // Point on circle
       ctx.lineTo(px, cy); // Drop perpendicular
       ctx.lineTo(cx, cy); // Back to center
-      ctx.strokeStyle = 'rgba(255,255,255,0.2)';
+      ctx.fillStyle = 'rgba(34, 211, 238, 0.1)'; // Cyan fill
+      ctx.fill();
+      ctx.strokeStyle = '#22d3ee';
       ctx.stroke();
 
-      // 3. Draw The Projection Line
-      const waveStartX = width * 0.3;
+      // 3. Draw The Projection Line (The Connection)
+      const waveStartX = width * 0.45;
       ctx.beginPath();
       ctx.moveTo(px, py);
-      ctx.lineTo(waveStartX, py); // Connect circle to wave start
-      ctx.strokeStyle = 'rgba(232, 121, 249, 0.3)'; // Magenta line
+      ctx.lineTo(waveStartX, py);
+      ctx.strokeStyle = 'rgba(192, 132, 252, 0.3)'; // Purple line
       ctx.setLineDash([5, 5]);
       ctx.stroke();
       ctx.setLineDash([]);
@@ -66,19 +68,14 @@ export default function SineConstructionBackground() {
       for(let i=1; i<trail.length; i++) {
           ctx.lineTo(waveStartX + i * 2, trail[i]);
       }
-      ctx.strokeStyle = '#e879f9'; // Magenta-400
+      ctx.strokeStyle = '#c084fc'; // Purple-400
       ctx.lineWidth = 2;
       ctx.stroke();
 
       // 5. Draw The Point
-      ctx.fillStyle = '#22d3ee'; // Cyan
+      ctx.fillStyle = '#fff';
       ctx.beginPath();
-      ctx.arc(px, py, 6, 0, Math.PI * 2);
-      ctx.fill();
-
-      // 6. Draw Wave Leading Point
-      ctx.beginPath();
-      ctx.arc(waveStartX, py, 4, 0, Math.PI * 2);
+      ctx.arc(px, py, 4, 0, Math.PI * 2);
       ctx.fill();
 
       requestAnimationFrame(animate);
