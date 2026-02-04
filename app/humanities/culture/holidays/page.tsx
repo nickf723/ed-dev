@@ -100,7 +100,7 @@ export default function HolidaysPage() {
         )}
 
         {/* FULL CHRONOLOGICAL GRID */}
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-8 pb-20">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 pb-20">
             {HOLIDAYS.map((localHoliday) => {
                 // 3. MERGE LOGIC
                 // Try to find the matching Wiki Record for this holiday
