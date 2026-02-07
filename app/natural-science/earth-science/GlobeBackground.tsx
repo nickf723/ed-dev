@@ -11,11 +11,11 @@ const CONFIG: Record<DomainKey, {
     physics: 'solid' | 'fluid' | 'gas' | 'crystal',
     renderShape: 'dot' | 'diamond' | 'grid' | 'cloud'
 }> = {
-  geology:     { color: { r: 16, g: 185, b: 129 }, physics: 'solid',  renderShape: 'dot' }, // Emerald
-  geography:   { color: { r: 217, g: 119, b: 6 },  physics: 'solid',  renderShape: 'grid' }, // Amber
-  mineralogy:  { color: { r: 216, g: 180, b: 254 },physics: 'crystal',renderShape: 'diamond' }, // Lavender
-  hydrology:   { color: { r: 59, g: 130, b: 246 }, physics: 'fluid',  renderShape: 'dot' }, // Blue
-  meteorology: { color: { r: 14, g: 165, b: 233 }, physics: 'gas',    renderShape: 'cloud' }, // Sky
+  geology:     { color: { r: 16, g: 255, b: 129 }, physics: 'solid',  renderShape: 'dot' }, // Emerald
+  geography:   { color: { r: 255, g: 255, b: 6 },  physics: 'solid',  renderShape: 'grid' }, // Amber
+  mineralogy:  { color: { r: 216, g: 0, b: 254 },physics: 'crystal',renderShape: 'diamond' }, // Lavender
+  hydrology:   { color: { r: 0, g: 70, b: 255 }, physics: 'fluid',  renderShape: 'dot' }, // Blue
+  meteorology: { color: { r: 80, g: 80, b: 255 }, physics: 'gas',    renderShape: 'cloud' }, // Sky
   climatology: { color: { r: 239, g: 68, b: 68 },  physics: 'gas',    renderShape: 'dot' }, // Red
 };
 
@@ -104,13 +104,13 @@ export default function GlobeBackground({ domain }: { domain: DomainKey }) {
          // --- PHYSICS MODIFIERS ---
          if (config.physics === 'fluid') {
             // Waving motion
-            const wave = Math.sin(p.originalY * 10 + wavePhase) * 0.05;
+            const wave = Math.sin(p.originalY * 10 + wavePhase) * 0.015;
             modX += p.x * wave; modY += p.y * wave; modZ += p.z * wave;
          }
          else if (config.physics === 'gas') {
             // Expansion & Chaos
-            const chaos = Math.sin(wavePhase * 2 + p.phaseOffset) * 0.02;
-            const expansion = 1.1 + chaos;
+            const chaos = Math.sin(wavePhase * 2 + p.phaseOffset) * 0.04;
+            const expansion = 1.2 + chaos;
             modX *= expansion; modY *= expansion; modZ *= expansion;
          }
          else if (config.physics === 'crystal') {
@@ -179,7 +179,7 @@ export default function GlobeBackground({ domain }: { domain: DomainKey }) {
       if (domain === 'climatology') {
           const pulsate = Math.sin(pulse) * 0.1 + 0.1;
           ctx.globalCompositeOperation = "screen";
-          ctx.fillStyle = "rgba(239, 68, 68, 0.1)";
+          ctx.fillStyle = "rgba(239, 68, 68, 0.46)";
           ctx.beginPath();
           ctx.arc(cx, cy, baseScale * (1 + pulsate), 0, Math.PI*2);
           ctx.fill();

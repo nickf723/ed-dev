@@ -1,5 +1,4 @@
 "use client";
-import PageHeader from "@/components/PageHeader";
 import FourierLesson from "@/app/stage/FourierLesson";
 import { Clapperboard } from "lucide-react";
 
@@ -9,11 +8,6 @@ export default function StagePage() {
       
       <div className="relative z-10 mx-auto flex max-w-5xl flex-col py-10 items-center">
         
-        <PageHeader
-          eyebrow="Production Studio"
-          title="The Stage"
-          subtitle="Render farm for educational shorts. This viewport is locked to a 1080x1080 master format."
-        />
 
         {/* The Production Unit */}
         <div className="w-full flex justify-center mt-8">

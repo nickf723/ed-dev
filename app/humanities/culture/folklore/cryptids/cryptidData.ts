@@ -20,7 +20,7 @@ export const CRYPTID_DATA: Cryptid[] = [
     dangerLevel: 4,
     frequency: 23.4,
     description: "Large, winged humanoid with glowing red eyes. Sightings often precede major infrastructure failures (See: Silver Bridge Collapse). Entity displays ability to fly at speeds exceeding 100mph without flapping wings. Do not approach light sources if sighted.",
-    image: 'https://upload.wikimedia.org/wikipedia/commons/e/e0/Mothman_Artist_Impression.png'
+    image: 'https://www.syfy.com/sites/syfy/files/2020/10/the-mothman.jpg'
   },
   {
     id: 'bigfoot',
@@ -31,7 +31,7 @@ export const CRYPTID_DATA: Cryptid[] = [
     dangerLevel: 2,
     frequency: 89.1,
     description: "Bipedal North American Ape. Height: 7-9ft. Evidence includes dermal ridges on footprints consistent with primates but sized 2x human average. Generally elusive but territorial. High concentrations in the 'Emerald Triangle'.",
-    image: 'https://upload.wikimedia.org/wikipedia/en/9/99/Patterson%E2%80%93Gimlin_film_frame_352.jpg'
+    image: 'https://cdn.britannica.com/33/256733-050-92FE3E79/Sasquatch-Bigfoot-Abominable-Snowman-Patterson-1967.jpg?w=400&h=300&c=crop'
   },
   {
     id: 'nessie',
@@ -86,7 +86,7 @@ export const CRYPTID_DATA: Cryptid[] = [
     dangerLevel: 5,
     frequency: 44.4,
     description: "Malevolent spirit associated with cannibalism, greed, and winter. Physical manifestation involves emaciation and ash-grey skin. WARNING: Psychoreactive entity. Knowledge of the name may trigger manifestation.",
-    image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Windigo_ice_sculpture_2.jpg/800px-Windigo_ice_sculpture_2.jpg'
+    image: 'https://hewhowanders.com/wp-content/uploads/2020/10/wendigo.jpg'
   },
   {
     id: 'yeti',
@@ -109,5 +109,16 @@ export const CRYPTID_DATA: Cryptid[] = [
     frequency: 77.7,
     description: "Avian entity with wingspan exceeding 20ft. Capable of creating sonic booms. Often sighted during severe storms. Historical records from indigenous tribes suggest creature has existed for millennia.",
     image: 'https://upload.wikimedia.org/wikipedia/commons/3/3f/Thunderbird_mythology.jpg'
+  },
+  {
+    id: "flatwoods_monster",
+    code: 'CASE-1952-WV',
+    name: 'Flatwoods Monster',
+    location: 'Flatwoods, WV',
+    status: 'DORMANT',
+    dangerLevel: 2,
+    frequency: 31.3,
+    description: "Described as 10ft tall with a spade-shaped head and glowing eyes. Initial reports linked to meteorite landing, but no physical evidence found. Possible extraterrestrial origin. Caution advised due to reported nausea and headaches among witnesses.",
+    image: 'https://braxtonwv.org/wp-content/uploads/2019/10/FlatwoodsMonster1-2.jpg'
   }
 ];

@@ -1,6 +1,4 @@
 "use client";
-import PageHeader from "@/components/PageHeader";
-import TopicCard from "@/components/TopicCard";
 import AttractorBackground from "@/app/formal-science/systems-science/complexity-chaos/AttractorBackground";
 import PendulumWidget from "@/app/formal-science/systems-science/complexity-chaos/PendulumWidget";
 import { motion } from "framer-motion";
@@ -77,11 +75,6 @@ export default function ChaosPage() {
       
       <div className="relative z-10 mx-auto flex max-w-7xl flex-col py-10">
         
-        <PageHeader
-          eyebrow="Systems Science"
-          title="Complexity & Chaos"
-          subtitle="The study of the unpredictable. Chaos theory deals with nonlinear things that are effectively impossible to predict or control, like turbulence, weather, the stock market, and our brain states."
-        />
 
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 items-start">
           
@@ -110,7 +103,7 @@ export default function ChaosPage() {
                             viewport={{ once: true }}
                             transition={{ duration: 0.3, delay: 0.1 + (i * 0.05) }}
                         >
-                            <TopicCard {...item} />
+
                         </motion.div>
                     ))}
                  </div>

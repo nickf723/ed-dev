@@ -1,6 +1,4 @@
 "use client";
-import PageHeader from "@/components/PageHeader";
-import TopicCard from "@/components/TopicCard";
 import MandelbrotBackground from "@/app/formal-science/systems-science/complexity-chaos/fractals/MandelbrotBackground";
 import FractalExplorer from "@/app/formal-science/systems-science/complexity-chaos/fractals/FractalExplorer";
 import { motion } from "framer-motion";
@@ -69,11 +67,6 @@ export default function FractalsPage() {
       
       <div className="relative z-10 mx-auto flex max-w-7xl flex-col py-10">
         
-        <PageHeader
-          eyebrow="Complexity & Chaos"
-          title="Fractals"
-          subtitle="The geometry of nature. Euclidean geometry describes man-made objects (lines, squares), but Fractal geometry describes the rough, self-similar shapes of the wild (clouds, mountains, coastlines)."
-        />
 
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 items-start">
           
@@ -102,7 +95,6 @@ export default function FractalsPage() {
                             viewport={{ once: true }}
                             transition={{ duration: 0.3, delay: 0.1 + (i * 0.05) }}
                         >
-                            <TopicCard {...item} />
                         </motion.div>
                     ))}
                  </div>

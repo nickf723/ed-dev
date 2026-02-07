@@ -15,6 +15,7 @@ export default function WorldMapExplorer() {
     { id: 'london', name: 'London', x: 48, y: 28, active: false },
     { id: 'tokyo', name: 'Tokyo', x: 85, y: 36, active: false },
     { id: 'paris', name: 'Paris', x: 50, y: 30, active: false },
+    { id: 'buffalo', name: 'Buffalo', x: 34, y: 36, active: true },
   ];
 
   useEffect(() => {
@@ -119,7 +120,7 @@ export default function WorldMapExplorer() {
                             <span className="text-xs font-bold text-white uppercase tracking-wider">{city.name}</span>
                         </div>
                         {city.active && (
-                            <Link href="/humanities/culture/locations/chicago" className="block mt-2">
+                            <Link href={"/humanities/culture/locations/" + city.id} className="block mt-2">
                                 <button className="w-full py-1.5 bg-cyan-600 hover:bg-cyan-500 text-[10px] font-bold text-white uppercase rounded transition-colors flex items-center justify-center gap-2">
                                     Enter City <ArrowRight size={10} />
                                 </button>

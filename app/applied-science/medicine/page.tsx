@@ -1,6 +1,4 @@
 "use client";
-import PageHeader from "@/components/PageHeader";
-import TopicCard from "@/components/TopicCard";
 import PulseBackground from "@/app/applied-science/medicine/PulseBackground";
 import AnatomyWidget from "@/app/applied-science/medicine/AnatomyWidget";
 import { motion } from "framer-motion";
@@ -93,11 +91,7 @@ export default function MedicinePage() {
       
       <div className="relative z-10 mx-auto flex max-w-7xl flex-col py-10">
         
-        <PageHeader
-          eyebrow="Applied Science"
-          title="Medicine"
-          subtitle="The maintenance of the human machine. We combine deep biological knowledge with chemical and mechanical intervention to diagnose, treat, and prevent disease."
-        />
+
 
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 items-start">
           
@@ -126,7 +120,7 @@ export default function MedicinePage() {
                             viewport={{ once: true }}
                             transition={{ duration: 0.3, delay: 0.1 + (i * 0.05) }}
                         >
-                            <TopicCard {...item} />
+
                         </motion.div>
                     ))}
                  </div>
