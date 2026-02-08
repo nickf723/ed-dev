@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MapPin, ArrowRight, Globe } from 'lucide-react';
 import Link from 'next/link';
+import { tr } from 'framer-motion/client';
 
 export default function WorldMapExplorer() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -13,9 +14,24 @@ export default function WorldMapExplorer() {
     { id: 'chicago', name: 'Chicago', x: 28, y: 35, active: true },
     { id: 'ny', name: 'New York', x: 32, y: 34, active: false },
     { id: 'london', name: 'London', x: 48, y: 28, active: false },
-    { id: 'tokyo', name: 'Tokyo', x: 85, y: 36, active: false },
+    { id: 'tokyo', name: 'Tokyo', x: 85, y: 36, active: true },
     { id: 'paris', name: 'Paris', x: 50, y: 30, active: false },
     { id: 'buffalo', name: 'Buffalo', x: 34, y: 36, active: true },
+    { id: 'boston', name: 'Boston', x: 33, y: 33, active: true },
+    { id: 'cairo', name: 'Cairo', x: 60, y: 45, active: true },
+    { id: 'boulder', name: 'Boulder', x: 25, y: 40, active: true },
+    { id: 'seattle', name: 'Seattle', x: 15, y: 25, active: true },
+    { id: 'miami', name: 'Miami', x: 30, y: 50, active: true },
+    { id: 'sanfran', name: 'San Francisco', x: 10, y: 30, active: true },
+    { id: 'delhi', name: 'Delhi', x: 75, y: 40, active: false },
+    { id: 'sydney', name: 'Sydney', x: 90, y: 80, active: false },
+    { id: 'rio', name: 'Rio de Janeiro', x: 40, y: 80, active: false },
+    { id: 'moscow', name: 'Moscow', x: 65, y: 20, active: false },
+    { id: 'berlin', name: 'Berlin', x: 55, y: 25, active: false },
+    { id: 'rome', name: 'Rome', x: 52, y: 35, active: false },
+    { id: 'beijing', name: 'Beijing', x: 80, y: 30, active: false },
+    { id: 'cape_town', name: 'Cape Town', x: 60, y: 90, active: false },
+
   ];
 
   useEffect(() => {

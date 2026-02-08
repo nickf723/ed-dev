@@ -22,7 +22,7 @@ const SUBDOMAINS = [
   },
   {
     id: "elementary-algebra",
-    title: "Elementary",
+    title: "Integrated Algebra",
     subtitle: "Solving for X",
     desc: "Linear equations, inequalities, graphing, and polynomials.",
     icon: Variable,
