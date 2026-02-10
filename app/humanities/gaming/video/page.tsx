@@ -1,134 +1,114 @@
 "use client";
-import React from "react";
-import Link from "next/link";
-import SynthwaveBackground from "./SynthwaveBackground";
-import PhysicsPlayground from "./PhysicsPlayground";
-import GlobalVisualMedia from "@/components/GlobalVisualMedia"; // Use your global visualizer
-import VocabModule from "@/components/VocabModule";
-import { VIDEO_ERAS, GENRES, videoGamingTerms } from "./video-data";
-import { ArrowLeft, Monitor, Cpu, Gamepad, Sparkles } from "lucide-react";
+import React from 'react';
+import Link from 'next/link';
+import SynthwaveGrid from "./SynthwaveGrid";
+import FrameBudget from "./FrameBudget";
+import { GAME_REPO } from './_assets/gamingData';
+import { 
+  Gamepad2, Cpu, ArrowLeft, 
+  ExternalLink, Disc, BookOpen 
+} from "lucide-react";
 
-export default function VideoGamingPage() {
+export default function GamingPage() {
   return (
-    <main className="min-h-screen bg-[#090014] text-purple-100 font-sans relative overflow-hidden selection:bg-cyan-500/30">
+    <main className="relative min-h-screen bg-[#0f0c29] text-white font-sans selection:bg-purple-500/50 overflow-hidden">
       
       {/* 1. VISUAL ENGINE */}
-      <SynthwaveBackground />
-      {/* Scanline Overlay */}
-      <div className="fixed inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] z-0 bg-[length:100%_2px,3px_100%] pointer-events-none opacity-20" />
-
-      <div className="relative z-10 p-6 md:p-12 min-h-screen flex flex-col">
+      <SynthwaveGrid />
+      
+      <div className="relative z-10 container mx-auto px-6 py-12">
         
-        {/* HEADER */}
-        <header className="mb-16">
-            <Link href="/humanities/gaming" className="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-purple-400 hover:text-cyan-400 transition-colors mb-6">
-                <ArrowLeft size={10} /> Gaming Hub
+        {/* NAV */}
+        <div className="flex items-center justify-between mb-16">
+            <Link href="/humanities/gaming" className="group flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-purple-300 hover:text-white transition-colors bg-black/40 px-3 py-2 rounded backdrop-blur-sm border border-purple-500/20">
+                <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" />
+                Return to Hub
             </Link>
-            <div className="flex items-center gap-4">
-                <h1 className="text-5xl md:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500 tracking-tighter mb-4 drop-shadow-[0_0_10px_rgba(168,85,247,0.5)]">
-                    VIDEO LUDOLOGY
-                </h1>
-                <Gamepad size={48} className="text-cyan-400 opacity-80" />
+            <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest bg-black/40 border border-cyan-500/30 px-3 py-1 rounded text-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.3)] backdrop-blur-md">
+                <Gamepad2 size={12} /> System Ready
             </div>
-            <p className="text-purple-300/60 font-mono text-xs uppercase tracking-widest max-w-xl">
-                The Tenth Art // Interactive Systems & Virtual Worlds
+        </div>
+
+        {/* HERO */}
+        <header className="mb-32 text-center relative">
+            {/* Glitch Title Effect */}
+            <h1 className="text-6xl md:text-9xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-purple-400 tracking-tighter uppercase leading-none mb-6 drop-shadow-[0_0_30px_rgba(168,85,247,0.5)]">
+                VIDEO <br/> GAMING
+            </h1>
+            
+            <p className="max-w-2xl mx-auto text-xl text-purple-200/80 font-light leading-relaxed mb-8">
+                The defining medium of the 21st century. An interactive canvas where narrative, mechanics, and technology collide.
             </p>
+
+            <div className="inline-flex gap-4">
+                <div className="px-4 py-2 rounded border border-purple-500/30 bg-purple-900/20 text-xs font-mono text-purple-300 uppercase">
+                    Press Start to Begin
+                </div>
+            </div>
         </header>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+        
+
+        {/* SECTION 1: THE ENGINE (Interactive) */}
+        <section className="mb-32">
+            <div className="flex items-center gap-4 mb-8">
+                <Cpu size={24} className="text-cyan-400" />
+                <h2 className="text-3xl font-black text-white uppercase tracking-tight">The Frame Budget</h2>
+            </div>
             
-            {/* LEFT COLUMN: HISTORY & GENRES (8 Cols) */}
-            <div className="lg:col-span-8 space-y-16">
-                
-                {/* HERO SECTION: ERAS */}
-                <section>
-                    <h2 className="text-xl font-bold text-white mb-8 flex items-center gap-2">
-                        <Monitor className="text-purple-500" /> Hardware Generations
-                    </h2>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        {VIDEO_ERAS.map((era) => {
-                            const Icon = era.icon;
-                            return (
-                                <div key={era.id} className="group relative bg-black/40 border border-purple-500/20 hover:border-cyan-400/50 rounded-xl overflow-hidden transition-all hover:-translate-y-1">
-                                    {/* Image Top */}
-                                    <div className="h-32 w-full relative opacity-60 group-hover:opacity-100 transition-opacity">
-                                        <GlobalVisualMedia 
-                                        query={era.imageQuery}
-                                        src={era.directUrl}
-                                        wikiEndpoint={era.wikiEndpoint} 
-                                        alt={era.title}
-                                        fit="cover" />
-                                        <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent" />
-                                    </div>
-                                    
-                                    <div className="p-6 relative">
-                                        <div className="flex justify-between items-start mb-2">
-                                            <div className="p-2 rounded bg-purple-900/30 text-purple-300 border border-purple-700/30">
-                                                <Icon size={20} />
-                                            </div>
-                                            <span className="text-[10px] font-mono text-cyan-500 uppercase">{era.year}</span>
-                                        </div>
-                                        <h3 className="text-lg font-bold text-white mb-2">{era.title}</h3>
-                                        <p className="text-xs text-purple-200/60 leading-relaxed mb-4">{era.desc}</p>
-                                        <div className="text-[9px] font-bold uppercase tracking-widest text-purple-500 flex items-center gap-1">
-                                            <Cpu size={10} /> {era.tech}
-                                        </div>
-                                    </div>
-                                </div>
-                            )
-                        })}
-                    </div>
-                </section>
+            <p className="text-slate-300 mb-8 max-w-2xl">
+                Every game is a race against time. The engine has exactly <strong>16.6 milliseconds</strong> to calculate physics, AI, and render millions of pixels to hit 60 frames per second. Can you optimize the settings?
+            </p>
 
-                {/* GENRE GRID */}
-                <section>
-                    <h2 className="text-xl font-bold text-white mb-8 flex items-center gap-2">
-                        <Sparkles className="text-cyan-500" /> Core Genres
-                    </h2>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                        {GENRES.map((g) => (
-                            <div key={g.title} className="group relative aspect-square rounded-xl overflow-hidden border border-white/10 hover:border-cyan-400 transition-colors">
-                                <div className="absolute inset-0 opacity-50 group-hover:opacity-80 transition-opacity">
-                                    <GlobalVisualMedia 
-                                    query={g.query} 
-                                    src={g.directUrl} 
-                                    wikiEndpoint={g.wikiEndpoint}
-                                    alt={g.title}
-                                    fit="contain" />
-                                </div>
-                                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
-                                <div className="absolute bottom-0 inset-x-0 p-3">
-                                    <div className="text-[10px] font-bold uppercase text-white leading-tight mb-1">{g.title}</div>
-                                    <div className="text-[8px] text-gray-400 line-clamp-2">{g.desc}</div>
-                                </div>
+            <FrameBudget />
+        </section>
+
+        {/* SECTION 2: THE REPOSITORY */}
+        <section className="border-t border-purple-500/30 pt-12">
+            <div className="flex items-center gap-4 mb-12">
+                <Disc size={24} className="text-pink-500" />
+                <h2 className="text-3xl font-black text-white uppercase tracking-tight">Knowledge Cartridges</h2>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                {GAME_REPO.map((node) => (
+                    <Link 
+                        key={node.id} 
+                        href={node.link}
+                        className="group relative h-80 bg-slate-900 border border-slate-700 rounded-xl overflow-hidden hover:border-cyan-500 hover:shadow-[0_0_20px_rgba(6,182,212,0.4)] transition-all duration-300 flex flex-col"
+                    >
+                        {/* Image Header */}
+                        <div className="h-1/2 relative overflow-hidden">
+                            <div 
+                                className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
+                                style={{ backgroundImage: `url(${node.image})` }}
+                            />
+                            <div className="absolute inset-0 bg-purple-900/20 mix-blend-overlay group-hover:bg-transparent transition-colors" />
+                        </div>
+
+                        {/* Content Body */}
+                        <div className="flex-1 p-6 flex flex-col">
+                            <div className="mb-auto">
+                                <span className="text-[10px] font-bold uppercase text-cyan-400 mb-2 block tracking-widest">
+                                    {node.category}
+                                </span>
+                                <h3 className="text-xl font-bold text-white mb-2 leading-tight group-hover:text-cyan-200 transition-colors">
+                                    {node.title}
+                                </h3>
+                                <p className="text-xs text-slate-400 leading-relaxed line-clamp-3">
+                                    {node.desc}
+                                </p>
                             </div>
-                        ))}
-                    </div>
-                </section>
-
+                            
+                            <div className="mt-4 pt-4 border-t border-slate-800 flex items-center justify-between text-slate-500 group-hover:text-white transition-colors">
+                                <span className="text-[9px] font-mono uppercase">Load Module</span>
+                                <ExternalLink size={12} />
+                            </div>
+                        </div>
+                    </Link>
+                ))}
             </div>
-
-            {/* RIGHT COLUMN: LAB & VOCAB (4 Cols) */}
-            <div className="lg:col-span-4 space-y-8">
-                
-                {/* 1. PHYSICS LAB */}
-                <div className="sticky top-8">
-                    <PhysicsPlayground />
-                    
-                    <div className="mt-8">
-                        <VocabModule terms={videoGamingTerms} title="Dev Lexicon" />
-                    </div>
-
-                    {/* Fun Extra: Konami Code Hint */}
-                    <div className="mt-8 p-4 rounded bg-purple-950/20 border border-purple-500/10 text-center">
-                        <div className="text-[10px] font-mono text-purple-500 uppercase tracking-widest mb-1">Cheat Code</div>
-                        <div className="text-xs font-bold text-purple-300">↑ ↑ ↓ ↓ ← → ← → B A</div>
-                    </div>
-                </div>
-
-            </div>
-
-        </div>
+        </section>
 
       </div>
     </main>

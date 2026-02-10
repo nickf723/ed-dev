@@ -1,0 +1,28 @@
+/* Styling for the Dark Mode Popup */
+.leaflet-popup-content-wrapper {
+    background: #0f172a; /* Slate-900 */
+    border: 1px solid #334155; /* Slate-700 */
+    color: #e2e8f0;
+    box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.8);
+    border-radius: 0.5rem;
+    padding: 0;
+    overflow: hidden; /* Contains the rounded corners */
+}
+
+.leaflet-popup-tip {
+    background: #0f172a;
+    border-left: 1px solid #334155;
+    border-top: 1px solid #334155;
+    margin-bottom: -5px; /* Pulls the tip closer */
+}
+
+.leaflet-popup-content {
+    margin: 0 !important;
+    padding: 1rem !important;
+    width: 240px !important; /* Force a safe width */
+}
+
+/* Hide the default close button completely */
+.leaflet-popup-close-button {
+    display: none;
+}
