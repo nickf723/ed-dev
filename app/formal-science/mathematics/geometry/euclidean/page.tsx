@@ -1,200 +1,145 @@
 "use client";
-import React from "react";
-import Link from "next/link";
-import EuclideanBackground from "./EuclideanBackground";
+import React from 'react';
+import Link from 'next/link';
+import BlueprintGrid from './BlueprintGrid';
+import AnglePlayground from "./AnglePlayground";
+import { GEOMETRY_MEDIA, GEOMETRY_TOPICS, GEOMETRY_VOCAB } from './_assets/geometryData';
 import { 
-  ArrowLeft, Ruler, Triangle, Circle, 
-  PenTool, Pentagon, Box, DraftingCompass, 
-  MoveHorizontal, Scaling
+  Triangle, Ruler, Compass, 
+  ArrowLeft, BookOpen, PenTool 
 } from "lucide-react";
-
-// --- DATA ---
-const AXIOMS = [
-  { id: 1, title: "The Line", desc: "A straight line segment can be drawn joining any two points." },
-  { id: 2, title: "The Ray", desc: "Any straight line segment can be extended indefinitely in a straight line." },
-  { id: 3, title: "The Circle", desc: "Given any straight line segment, a circle can be drawn having the segment as radius and one endpoint as center." },
-  { id: 4, title: "Right Angles", desc: "All right angles are congruent (equal to 90°)." },
-  { id: 5, title: "Parallel", desc: "If two lines intersect a third such that inner angles < 180°, the lines eventually meet." }
-];
-
-const SHAPES = [
-  { id: "triangles", title: "Triangles", icon: Triangle, desc: "Congruence & Similarity", href: "euclidean/triangles" },
-  { id: "circles", title: "Circles", icon: Circle, desc: "Chords & Tangents", href: "euclidean/circles" },
-  { id: "polygons", title: "Polygons", icon: Pentagon, desc: "Regular N-Gons", href: "euclidean/polygons" },
-  { id: "solids", title: "Solids", icon: Box, desc: "Platonic Solids", href: "eucidean/solids" },
-];
 
 export default function EuclideanPage() {
   return (
-    <main className="relative min-h-screen bg-[#0f172a] text-white overflow-hidden font-mono selection:bg-sky-500/30 flex flex-col">
+    <main className="relative min-h-screen bg-[#172554] text-slate-100 font-sans selection:bg-blue-500/30 overflow-hidden">
       
       {/* 1. VISUAL ENGINE */}
-      <EuclideanBackground />
+      <BlueprintGrid />
       
-      {/* OVERLAY: Blueprint Grid */}
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(56,189,248,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(56,189,248,0.05)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none z-0" />
-      <div className="absolute inset-0 bg-radial-vignette opacity-60 pointer-events-none z-0" />
+      <div className="relative z-10 container mx-auto px-6 py-12">
+        
+        {/* NAV */}
+        <div className="flex items-center justify-between mb-16">
+            <Link href="/formal-science/mathematics" className="group flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-blue-300 hover:text-white transition-colors bg-black/20 px-3 py-2 rounded backdrop-blur-sm border border-blue-500/20">
+                <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" />
+                Return to Mathematics
+            </Link>
+            <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest bg-black/40 border border-blue-400/30 px-3 py-1 rounded text-blue-200 shadow-sm backdrop-blur-md">
+                <Compass size={12} /> Euclid's Elements
+            </div>
+        </div>
 
-      {/* 2. HEADER */}
-      <header className="relative z-10 p-8 pb-4">
-         <div className="max-w-7xl mx-auto flex justify-between items-end border-b border-sky-500/30 pb-6">
-             <div>
-                 <Link href="./" className="flex items-center gap-2 text-xs text-sky-500 hover:text-white transition-colors mb-2 uppercase tracking-widest group">
-                    <ArrowLeft size={12} className="group-hover:-translate-x-1 transition-transform"/> Geometry // Domain_01
-                 </Link>
-                 <div className="flex items-center gap-4">
-                    <div className="bg-sky-500/10 p-3 rounded-lg border border-sky-500/30 backdrop-blur-md">
-                        <Ruler size={32} className="text-sky-400" />
+        {/* HERO */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-24 items-center">
+            <div>
+                <h1 className="text-6xl md:text-8xl font-black text-white tracking-tighter uppercase leading-none mb-6 drop-shadow-[0_0_25px_rgba(59,130,246,0.3)]">
+                    EUCLIDEAN <br/><span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">GEOMETRY</span>
+                </h1>
+                <p className="text-xl text-blue-100/80 leading-relaxed border-l-4 border-blue-500 pl-6 bg-black/20 p-4 rounded-r-xl backdrop-blur-sm">
+                    The study of shape, size, relative position, and the properties of space. It is the language of architects, engineers, and the universe itself.
+                </p>
+            </div>
+            {/* Hero Image Card */}
+            <div className="relative h-80 rounded-2xl overflow-hidden border-2 border-blue-500/30 shadow-2xl rotate-1 hover:rotate-0 transition-transform duration-500 group">
+                <div 
+                    className="absolute inset-0 bg-cover bg-center transition-transform duration-1000 group-hover:scale-110"
+                    style={{ backgroundImage: `url(${GEOMETRY_MEDIA.hero})` }}
+                />
+                <div className="absolute inset-0 bg-blue-900/40 mix-blend-multiply" />
+                
+                {/* Overlay UI */}
+                <div className="absolute top-4 right-4 bg-black/60 backdrop-blur px-3 py-1 rounded text-[10px] font-mono text-white border border-white/20">
+                    FIG. 1.0: Structure
+                </div>
+            </div>
+        </div>
+
+        
+
+        {/* SECTION 1: INTERACTIVE PROOF */}
+        <section className="mb-32">
+            <div className="flex items-center gap-4 mb-8">
+                <Triangle size={24} className="text-blue-400" />
+                <h2 className="text-3xl font-black text-white uppercase tracking-tight">The Sum Theorem</h2>
+            </div>
+            
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+                <div className="lg:col-span-1 bg-slate-900/50 border border-blue-500/20 p-6 rounded-xl backdrop-blur-md">
+                    <h3 className="text-lg font-bold text-white mb-4">Axiomatic Truth</h3>
+                    <p className="text-sm text-slate-300 leading-relaxed mb-6">
+                        In Euclidean space, the interior angles of any triangle will always sum to exactly <strong>180 degrees</strong> (π radians). 
+                    </p>
+                    <div className="p-4 bg-blue-900/20 rounded border border-blue-500/30">
+                        <div className="text-[10px] font-bold text-blue-300 uppercase mb-2">The Proof</div>
+                        <div className="font-mono text-white text-xs">
+                            If L || base,<br/>
+                            Alt. Interior Angles are equal.<br/>
+                            ∴ A + B + C = 180°
+                        </div>
                     </div>
-                    <div>
-                        <h1 className="text-5xl font-black tracking-tighter text-white">
-                           EUCLIDEAN
-                        </h1>
-                        <p className="text-sky-400/60 text-sm tracking-wide">
-                            The Elements. Logic. Construction.
+                </div>
+
+                <div className="lg:col-span-2">
+                    <AnglePlayground />
+                </div>
+            </div>
+        </section>
+
+        {/* SECTION 2: TOPIC BLUEPRINTS */}
+        <section className="mb-32">
+             <div className="flex items-center gap-4 mb-12">
+                <Ruler size={24} className="text-cyan-400" />
+                <h2 className="text-3xl font-black text-white uppercase tracking-tight">The Blueprint</h2>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {GEOMETRY_TOPICS.map((topic) => (
+                    <Link 
+                        key={topic.id} 
+                        href={topic.link}
+                        className="group relative bg-slate-900/80 border border-slate-700 p-8 rounded-xl hover:border-blue-400 hover:shadow-[0_0_30px_rgba(59,130,246,0.2)] transition-all duration-300 overflow-hidden"
+                    >
+                        {/* Grid BG inside card */}
+                        <div className="absolute inset-0 bg-[url('https://upload.wikimedia.org/wikipedia/commons/1/10/Grid_graph_paper.svg')] opacity-[0.05] invert transition-opacity group-hover:opacity-[0.1]" />
+                        
+                        <div className="relative z-10 flex gap-6">
+                            <div className="w-12 h-12 rounded bg-blue-900/50 border border-blue-500/30 flex items-center justify-center text-blue-400 group-hover:text-white group-hover:bg-blue-600 transition-colors">
+                                <PenTool size={24} />
+                            </div>
+                            <div>
+                                <h3 className="text-xl font-bold text-white mb-2 uppercase">{topic.title}</h3>
+                                <p className="text-sm text-slate-400 leading-relaxed">
+                                    {topic.desc}
+                                </p>
+                            </div>
+                        </div>
+                    </Link>
+                ))}
+            </div>
+        </section>
+
+        {/* SECTION 3: VOCABULARY */}
+        <section className="border-t border-blue-800/50 pt-12">
+            <div className="flex items-center gap-4 mb-12">
+                <BookOpen size={24} className="text-blue-300" />
+                <h2 className="text-3xl font-black text-white uppercase tracking-tight">The Elements</h2>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {GEOMETRY_VOCAB.map((v) => (
+                    <div key={v.term} className="bg-slate-900/50 border border-slate-700 p-6 rounded-xl hover:bg-slate-800 transition-colors">
+                        <h3 className="font-bold text-blue-400 mb-2 text-lg">{v.term}</h3>
+                        <p className="text-sm text-slate-300 mb-4 h-16">
+                            {v.def}
                         </p>
+                        <div className="text-xs text-slate-500 font-mono border-t border-slate-800 pt-3">
+                            Ex: {v.example}
+                        </div>
                     </div>
-                 </div>
-             </div>
-         </div>
-      </header>
+                ))}
+            </div>
+        </section>
 
-      {/* 3. SCROLLABLE CONTENT AREA */}
-      <div className="relative z-10 flex-1 overflow-y-auto">
-          <div className="max-w-7xl mx-auto p-8 space-y-20">
-              
-              {/* SECTION 1: THE AXIOMS (Horizontal Deck) */}
-              <section>
-                  <div className="flex items-center gap-4 mb-8">
-                      <div className="w-12 h-px bg-sky-500" />
-                      <h2 className="text-xl font-bold text-sky-200 uppercase tracking-widest">
-                          The 5 Postulates
-                      </h2>
-                  </div>
-                  
-                  {/* The Deck */}
-                  <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-                      {AXIOMS.map((axiom) => (
-                          <div 
-                             key={axiom.id}
-                             className="group relative h-64 p-6 rounded-xl border border-sky-500/20 bg-black/40 backdrop-blur-md flex flex-col justify-between hover:bg-sky-900/20 hover:border-sky-500/50 transition-all duration-300 hover:-translate-y-2"
-                          >
-                              <div className="text-[10px] text-sky-500/50 font-bold uppercase tracking-widest">
-                                  AXIOM_0{axiom.id}
-                              </div>
-                              
-                              <div>
-                                  <div className="text-lg font-bold text-white mb-2 group-hover:text-sky-300">
-                                      {axiom.title}
-                                  </div>
-                                  <div className="h-px w-8 bg-sky-500/30 mb-4 group-hover:w-full transition-all" />
-                                  <p className="text-xs text-zinc-400 leading-relaxed group-hover:text-white transition-colors">
-                                      {axiom.desc}
-                                  </p>
-                              </div>
-
-                              <div className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
-                                  <PenTool size={16} className="text-sky-400" />
-                              </div>
-                          </div>
-                      ))}
-                  </div>
-              </section>
-
-              {/* SECTION 2: THE TOOLS (Split View) */}
-              <section className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  {/* COMPASS */}
-                  <div className="p-8 rounded-2xl border border-sky-500/20 bg-sky-950/10 backdrop-blur-md flex items-center gap-8 group hover:border-sky-500/50 transition-colors">
-                      <div className="p-6 rounded-full bg-black/40 border border-white/10 group-hover:scale-110 transition-transform">
-                          <DraftingCompass size={40} className="text-sky-400" />
-                      </div>
-                      <div>
-                          <h3 className="text-2xl font-bold text-white mb-2">Compass</h3>
-                          <div className="text-xs font-mono text-sky-500 mb-4">tool.drawCircle(center, radius)</div>
-                          <p className="text-sm text-zinc-400">
-                              Creates circles. Transfers distances. The engine of rotation.
-                              
-
-[Image of compass drawing circle]
-
-                          </p>
-                      </div>
-                  </div>
-
-                  {/* STRAIGHTEDGE */}
-                  <div className="p-8 rounded-2xl border border-sky-500/20 bg-sky-950/10 backdrop-blur-md flex items-center gap-8 group hover:border-sky-500/50 transition-colors">
-                      <div className="p-6 rounded-full bg-black/40 border border-white/10 group-hover:scale-110 transition-transform">
-                          <MoveHorizontal size={40} className="text-sky-400" />
-                      </div>
-                      <div>
-                          <h3 className="text-2xl font-bold text-white mb-2">Straightedge</h3>
-                          <div className="text-xs font-mono text-sky-500 mb-4">tool.connect(p1, p2)</div>
-                          <p className="text-sm text-zinc-400">
-                              Creates lines. Connects points. The engine of linearity.
-                              
-                          </p>
-                      </div>
-                  </div>
-              </section>
-
-              {/* SECTION 3: THE SHAPE LIBRARY (Grid) */}
-              <section>
-                  <div className="flex items-center gap-4 mb-8">
-                      <div className="w-12 h-px bg-sky-500" />
-                      <h2 className="text-xl font-bold text-sky-200 uppercase tracking-widest">
-                          Shape Library
-                      </h2>
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                      {SHAPES.map((shape) => (
-                          <Link
-                              key={shape.id}
-                              href={shape.href}
-                              className="group p-1 rounded-xl bg-gradient-to-br from-sky-500/20 to-transparent hover:from-sky-500/50 transition-all duration-500"
-                          >
-                              <div className="bg-[#0f172a] h-full rounded-lg p-6 relative overflow-hidden">
-                                  {/* Hover Glow */}
-                                  <div className="absolute -right-8 -top-8 w-24 h-24 bg-sky-500/20 blur-2xl group-hover:bg-sky-500/40 transition-colors" />
-                                  
-                                  <shape.icon size={32} className="text-sky-400 mb-4 group-hover:scale-110 transition-transform" />
-                                  <h3 className="text-lg font-bold text-white mb-1">{shape.title}</h3>
-                                  <div className="text-[10px] text-sky-500 uppercase tracking-wider">{shape.desc}</div>
-                              </div>
-                          </Link>
-                      ))}
-                  </div>
-              </section>
-
-              {/* SECTION 4: THE GOLDEN RATIO */}
-              <section className="relative rounded-2xl overflow-hidden border border-amber-500/30">
-                  <div className="absolute inset-0 bg-amber-900/10 z-0" />
-                  <div className="relative z-10 p-12 flex flex-col md:flex-row items-center gap-12">
-                      <div className="flex-1">
-                          <div className="flex items-center gap-2 text-amber-400 mb-2">
-                              <Scaling size={20} />
-                              <span className="font-bold tracking-widest uppercase text-xs">Divine Proportion</span>
-                          </div>
-                          <h2 className="text-4xl font-black text-white mb-4">phi (φ) ≈ 1.618</h2>
-                          <p className="text-zinc-300 leading-relaxed mb-6">
-                              A special number found by dividing a line into two parts so that the longer part divided by the smaller part is also equal to the whole length divided by the longer part. 
-                              
-                          </p>
-                          <div className="inline-block px-4 py-2 border border-amber-500/50 rounded text-amber-300 font-mono text-xs">
-                              (a+b)/a = a/b = φ
-                          </div>
-                      </div>
-                      
-                      {/* Visual: Golden Rectangle Diagram */}
-                      <div className="w-64 h-40 border-2 border-amber-500/50 bg-black/40 relative">
-                          {/* Main square */}
-                          <div className="absolute top-0 left-0 bottom-0 w-40 border-r border-amber-500/30 bg-amber-500/10" />
-                          <div className="absolute top-1/2 left-[62%] -translate-x-1/2 -translate-y-1/2 text-2xl font-serif text-amber-500 italic">φ</div>
-                      </div>
-                  </div>
-              </section>
-
-          </div>
       </div>
     </main>
   );
