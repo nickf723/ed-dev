@@ -1,7 +1,12 @@
 "use client";
 import React from 'react';
 import { Settings, Sliders, Activity, Zap, Waves } from 'lucide-react';
-import { SynthParams, OscillatorShape } from './_hooks/useAudioEngine';
+
+export interface SynthParams {
+  wave: 'sine' | 'triangle' | 'square' | 'sawtooth';
+  attack: number;
+  release: number;
+}
 
 interface Props {
   params: SynthParams;

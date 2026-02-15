@@ -1,21 +1,39 @@
 "use client";
 import React, { useEffect, useRef } from 'react';
 
-export default function Oscilloscope({ audioCtx, sourceNode }: { audioCtx: AudioContext | null, sourceNode: AudioNode | null }) {
+interface OscilloscopeProps {
+  audioCtx: AudioContext | null;
+  sourceNode: AudioNode | null;
+}
+
+export default function Oscilloscope({ audioCtx, sourceNode }: OscilloscopeProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const analyserRef = useRef<AnalyserNode | null>(null);
   const rafId = useRef<number>(0);
 
   useEffect(() => {
+    // 1. Safety Checks
     if (!audioCtx || !sourceNode) return;
 
-    // Create Analyser if not exists
+    // Check if the source actually has outputs to connect from
+    if (sourceNode.numberOfOutputs === 0) return;
+
+    // 2. Create Analyser (Singleton pattern for this effect lifecycle)
     if (!analyserRef.current) {
         analyserRef.current = audioCtx.createAnalyser();
         analyserRef.current.fftSize = 2048;
+    }
+    
+    // 3. Connect Graph safely
+    try {
+        // Connect Master -> Analyser
         sourceNode.connect(analyserRef.current);
+    } catch (e) {
+        console.warn("Oscilloscope connection failed:", e);
+        return;
     }
 
+    // 4. Canvas Setup
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
@@ -24,19 +42,20 @@ export default function Oscilloscope({ audioCtx, sourceNode }: { audioCtx: Audio
     const bufferLength = analyserRef.current.frequencyBinCount;
     const dataArray = new Uint8Array(bufferLength);
 
+    // 5. Render Loop
     const draw = () => {
       if (!analyserRef.current) return;
       
       rafId.current = requestAnimationFrame(draw);
       analyserRef.current.getByteTimeDomainData(dataArray);
 
-      // Clear
+      // Clear Canvas
       ctx.fillStyle = '#0a0a0a';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      // Draw Wave
+      // Draw Waveform
       ctx.lineWidth = 2;
-      ctx.strokeStyle = '#f59e0b'; // Amber
+      ctx.strokeStyle = '#f59e0b'; // Amber-500
       ctx.beginPath();
 
       const sliceWidth = canvas.width * 1.0 / bufferLength;
@@ -58,13 +77,25 @@ export default function Oscilloscope({ audioCtx, sourceNode }: { audioCtx: Audio
 
     draw();
 
-    return () => cancelAnimationFrame(rafId.current);
+    // 6. Cleanup Function
+    return () => {
+        cancelAnimationFrame(rafId.current);
+        if (analyserRef.current && sourceNode) {
+            try {
+                sourceNode.disconnect(analyserRef.current);
+            } catch (e) {
+                // Ignore disconnection errors on unmount
+            }
+        }
+    };
   }, [audioCtx, sourceNode]);
 
   return (
-    <div className="bg-black border border-neutral-800 rounded-lg overflow-hidden h-16 w-32 relative shadow-inner">
-        <canvas ref={canvasRef} width={128} height={64} className="w-full h-full" />
-        <div className="absolute top-1 left-1 text-[8px] font-mono text-neutral-500 uppercase">Oscilloscope</div>
+    <div className="bg-black border border-neutral-800 rounded-lg overflow-hidden h-12 w-32 relative shadow-inner">
+        <canvas ref={canvasRef} width={128} height={48} className="w-full h-full" />
+        <div className="absolute top-1 left-1 text-[8px] font-mono text-neutral-500 uppercase pointer-events-none">
+            Scope
+        </div>
     </div>
   );
 }
