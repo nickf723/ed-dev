@@ -1,152 +1,173 @@
 "use client";
-import { useRef, useState, useCallback } from 'react';
-import { InstrumentPatch } from './useAudioEngine';
 
-// --- GLOBAL STORAGE ---
-const AUDIO_CACHE = new Map<string, AudioBuffer>();
-const LOADED_PATCHES = new Set<string>();
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import * as Tone from "tone";
+import { probeUrl } from "../_utils/audioCache";
 
-const getMidi = (note: string) => {
-  const notes = ["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"];
-  const name = note.slice(0, -1);
-  const oct = parseInt(note.slice(-1));
-  return (oct + 1) * 12 + notes.indexOf(name);
+export type SampledInstrumentId =
+  | "piano"
+  | "harmonium"
+  | "guitar-acoustic"
+  | "violin";
+
+export type InstrumentPreset = {
+  id: SampledInstrumentId;
+  label: string;
+
+  /**
+   * baseUrl must end with a trailing slash
+   * Example: https://cdn.jsdelivr.net/npm/tonejs-instrument-violin-mp3@1.1.1/
+   */
+  baseUrl: string;
+
+  /** file extension including dot */
+  ext: ".mp3" | ".ogg";
+
+  /**
+   * Notes that are *actually present* in that sample pack.
+   * (If you include a note that doesn't exist, you'll get 404s.)
+   *
+   * These are the "sample pack note names" like: A3, Cs4, As2, etc.
+   */
+  sampleNotes: string[];
+
+  /**
+   * Optional: control sampler envelope-ish behavior
+   */
+  release?: number;
 };
 
-export function useSampler(audioCtx: AudioContext | null, outputNode: AudioNode | null) {
-  const [isLoading, setIsLoading] = useState(false);
-  const [progress, setProgress] = useState(0);
-  const [_, setVersion] = useState(0); // Force re-render on load
-  
-  const activeSources = useRef<Record<string, { stop: () => void }>>({});
+function midiStyleToSamplePackNote(noteName: string): string {
+  // Input: "C#4" / "A#3" / "F4"
+  // Output: "Cs4" / "As3" / "F4"
+  return noteName.replace("#", "s");
+}
 
-  const isLoaded = (patchId: string) => LOADED_PATCHES.has(patchId);
-  const stopAll = useCallback(() => {
-    Object.values(activeSources.current).forEach(s => s.stop());
-    activeSources.current = {};
+function buildUrls(preset: InstrumentPreset): Record<string, string> {
+  // Tone.Sampler urls map is: { "C4": "C4.mp3", "D#4": "Ds4.mp3", ... }
+  // We'll supply MIDI-style keys (C#4) but filenames in sample-pack style (Cs4.mp3)
+  const urls: Record<string, string> = {};
+
+  for (const packNote of preset.sampleNotes) {
+    // Convert pack note "Cs4" back to midi-style key "C#4" for Tone's pitch parser
+    const key = packNote.replace("s", "#");
+    urls[key] = `${packNote}${preset.ext}`;
+  }
+
+  return urls;
+}
+
+async function ensureToneStarted() {
+  if (Tone.context.state !== "running") {
+    await Tone.start();
+  }
+}
+
+export function useSampler(preset: InstrumentPreset) {
+  const [ready, setReady] = useState(false);
+  const [lastError, setLastError] = useState<string>("");
+
+  const samplerRef = useRef<Tone.Sampler | null>(null);
+  const presetRef = useRef<InstrumentPreset>(preset);
+  presetRef.current = preset;
+
+  const urls = useMemo(() => buildUrls(preset), [preset]);
+
+  const disposeSampler = useCallback(() => {
+    if (samplerRef.current) {
+      try {
+        samplerRef.current.disconnect();
+        samplerRef.current.dispose();
+      } catch {
+        // ignore
+      }
+      samplerRef.current = null;
+    }
   }, []);
 
-  // --- LOAD ---
-  const loadPatch = useCallback(async (patch: InstrumentPatch) => {
-    if (!audioCtx || !patch.base_url || !patch.sampleMap) return;
-    if (LOADED_PATCHES.has(patch.id)) return;
+  const load = useCallback(async () => {
+    setReady(false);
+    setLastError("");
 
-    setIsLoading(true);
-    setProgress(0);
+    await ensureToneStarted();
 
-    // Map: { "C4": "C4.mp3" }
-    const entries = Object.entries(patch.sampleMap);
-    let loadedCount = 0;
-
-    await Promise.all(entries.map(async ([note, filename]) => {
-        const cacheKey = `${patch.id}:${note}`; // "steinway:C4"
-        const url = `${patch.base_url}${filename}`;
-
-        if (!AUDIO_CACHE.has(cacheKey)) {
-            try {
-                const res = await fetch(url);
-                if (res.ok) {
-                    const buf = await res.arrayBuffer();
-                    const decoded = await audioCtx.decodeAudioData(buf);
-                    AUDIO_CACHE.set(cacheKey, decoded);
-                }
-            } catch (e) {
-                console.warn(`Missing sample: ${url}`);
-            }
-        }
-        loadedCount++;
-        setProgress(Math.round((loadedCount / entries.length) * 100));
-    }));
-
-    LOADED_PATCHES.add(patch.id);
-    setIsLoading(false);
-    setVersion(v => v + 1);
-  }, [audioCtx]);
-
-  // --- TRIGGER ---
-  const triggerAttack = useCallback((noteFull: string, patch: InstrumentPatch) => {
-    if (!audioCtx || !outputNode) return;
-    
-    // Stop previous instance of this note
-    if (activeSources.current[noteFull]) activeSources.current[noteFull].stop();
-
-    let buffer: AudioBuffer | null = null;
-    let playbackRate = 1.0;
-
-    // A. DRUMS (Exact Match)
-    if (patch.id === 'drums') {
-        buffer = AUDIO_CACHE.get(`${patch.id}:${noteFull}`) || null;
-    } 
-    // B. INSTRUMENTS (Pitch Stretch)
-    else {
-        const targetMidi = getMidi(noteFull);
-        let bestNote = "";
-        let minDiff = Infinity;
-
-        // Iterate ONLY the notes defined in the patch's map
-        if (patch.sampleMap) {
-            for (const mapNote of Object.keys(patch.sampleMap)) {
-                // Check if we actually have this note in RAM
-                if (AUDIO_CACHE.has(`${patch.id}:${mapNote}`)) {
-                    const mapMidi = getMidi(mapNote);
-                    const diff = Math.abs(targetMidi - mapMidi);
-                    
-                    if (diff < minDiff) {
-                        minDiff = diff;
-                        bestNote = mapNote;
-                    }
-                }
-            }
-        }
-
-        // Found a sample?
-        if (bestNote) {
-            buffer = AUDIO_CACHE.get(`${patch.id}:${bestNote}`) || null;
-            const anchorMidi = getMidi(bestNote);
-            playbackRate = Math.pow(2, (targetMidi - anchorMidi) / 12);
-        }
+    // Quickly probe a couple URLs to catch baseUrl mistakes early.
+    // We only probe up to 3 files, not all of them.
+    const sampleKeys = Object.keys(urls).slice(0, 3);
+    for (const k of sampleKeys) {
+      const file = urls[k];
+      const status = await probeUrl(`${preset.baseUrl}${file}`);
+      if (status === "missing") {
+        setLastError(
+          `Sample URL missing: ${preset.baseUrl}${file} (check baseUrl/ext/notes)`
+        );
+        return;
+      }
     }
 
-    if (!buffer) return;
+    disposeSampler();
 
-    // --- PLAYBACK GRAPH ---
-    const src = audioCtx.createBufferSource();
-    src.buffer = buffer;
-    src.playbackRate.value = playbackRate;
+    try {
+      const s = new Tone.Sampler({
+        urls,
+        baseUrl: preset.baseUrl,
+        release: preset.release ?? 0.8,
+        onload: () => setReady(true),
+      });
 
-    const env = audioCtx.createGain();
-    // Start Silent
-    env.gain.setValueAtTime(0, audioCtx.currentTime);
-    // Fast Attack (prevent popping)
-    env.gain.linearRampToValueAtTime(1.0, audioCtx.currentTime + 0.01);
+      // Route to destination by default
+      s.toDestination();
+      samplerRef.current = s;
+    } catch (e: any) {
+      setLastError(e?.message ?? "Failed to create sampler");
+    }
+  }, [disposeSampler, preset.baseUrl, preset.ext, preset.release, urls]);
 
-    src.connect(env);
-    env.connect(outputNode);
-    src.start();
+  useEffect(() => {
+    load();
+    return () => disposeSampler();
+  }, [load, disposeSampler]);
 
-    // Store release handler
-    activeSources.current[noteFull] = {
-      stop: () => {
-        const now = audioCtx.currentTime;
-        const fade = patch.id === 'drums' ? 0.05 : 0.3; // Quick fade for drums
-        
-        try {
-            env.gain.cancelScheduledValues(now);
-            env.gain.setValueAtTime(env.gain.value, now); // Lock value
-            env.gain.linearRampToValueAtTime(0, now + fade); // Fade out
-            src.stop(now + fade + 0.1);
-        } catch(e) {}
-      }
-    };
+  const triggerAttack = useCallback((noteName: string, velocity01 = 0.8) => {
+    const s = samplerRef.current;
+    if (!s) return;
 
-  }, [audioCtx, outputNode]);
-
-  const triggerRelease = useCallback((noteFull: string) => {
-      if (activeSources.current[noteFull]) activeSources.current[noteFull].stop();
+    // Your MIDI layer likely gives "C#4" style notes already.
+    // Tone will accept that. Our sampler urls map uses that style as keys.
+    // (The filenames are sample-pack style under the hood.)
+    s.triggerAttack(noteName, undefined, Math.max(0, Math.min(1, velocity01)));
   }, []);
 
-  return { 
-      isLoading, progress, loadPatch, triggerAttack, triggerRelease, stopAll, 
-      isLoaded: (id: string) => LOADED_PATCHES.has(id)
+  const triggerRelease = useCallback((noteName: string) => {
+    const s = samplerRef.current;
+    if (!s) return;
+    s.triggerRelease(noteName);
+  }, []);
+
+  const stopAll = useCallback(() => {
+    const s = samplerRef.current;
+    if (!s) return;
+    try {
+      s.releaseAll();
+    } catch {
+      // ignore
+    }
+  }, []);
+
+  const debugNoteName = useCallback((noteName: string) => {
+    // For debugging: show what file would be used *if that exact pitch is in the map*
+    const packNote = midiStyleToSamplePackNote(noteName);
+    return `${presetRef.current.baseUrl}${packNote}${presetRef.current.ext}`;
+  }, []);
+
+  return {
+    ready,
+    lastError,
+    sampler: samplerRef.current,
+    load,
+    triggerAttack,
+    triggerRelease,
+    stopAll,
+    debugNoteName,
   };
 }

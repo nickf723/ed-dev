@@ -16,6 +16,7 @@ export default function AppliedSciencePage() {
         { id: 'engineering', title: 'Engineering', href: '/applied-science/engineering', icon: Cpu, color: 'text-violet-400', desc: 'Design and build complex systems.' },
         { id: 'design', title: 'Industrial Design', href: '/applied-science/industrial-design', icon: PenTool, color: 'text-orange-400', desc: 'Form, function, and ergonomics.' },
         { id: 'business', title: 'Business', href: '/applied-science/business', icon: Briefcase, color: 'text-emerald-400', desc: 'Organization and resource management.' },
+        { id: 'materials', title: 'Materials Science', href: '/applied-science/materials-science', icon: Building, color: 'text-cyan-400', desc: 'Properties and applications of materials.' },
       ]
     },
     { 

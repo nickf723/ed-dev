@@ -25,6 +25,7 @@
     "react-leaflet": "^5.0.0",
     "recharts": "^3.7.0",
     "tailwind-merge": "^3.4.0",
+    "tone": "^15.1.22",
     "zustand": "^5.0.10"
   },
   "devDependencies": {

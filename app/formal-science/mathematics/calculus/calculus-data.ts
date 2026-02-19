@@ -1,4 +1,5 @@
 import { TrendingUp, Sigma, Layers, Wind, Activity, FunctionSquare, Infinity } from "lucide-react";
+import { M } from '../../../../components/Math'
 
 export const CALCULUS_BRANCHES = [
   {
@@ -9,7 +10,8 @@ export const CALCULUS_BRANCHES = [
     formula: "\\lim_{x \\to a} f(x) = L",
     icon: Infinity,
     color: "text-emerald-400",
-    border: "border-emerald-500/30"
+    border: "border-emerald-500/30",
+    href: "/formal-science/mathematics/calculus/limits"
   },
   {
     id: "differential",
@@ -19,7 +21,8 @@ export const CALCULUS_BRANCHES = [
     formula: "\\frac{d}{dx}f(x)",
     icon: TrendingUp, // Slopes
     color: "text-cyan-400",
-    border: "border-cyan-500/30"
+    border: "border-cyan-500/30",
+    href: "/formal-science/mathematics/calculus/differential"
   },
   {
     id: "integral",
@@ -29,8 +32,10 @@ export const CALCULUS_BRANCHES = [
     formula: "\\int f(x) dx",
     icon: Sigma, // Summation
     color: "text-amber-400",
-    border: "border-amber-500/30"
-  },
+    border: "border-amber-500/30",
+    href: "/formal-science/mathematics/calculus/integral"
+  }
+  ,
   {
     id: "multivariate",
     title: "Multivariate Calculus",
@@ -39,7 +44,8 @@ export const CALCULUS_BRANCHES = [
     formula: "\\frac{\\partial f}{\\partial x}",
     icon: Layers, // Surfaces
     color: "text-purple-400",
-    border: "border-purple-500/30"
+    border: "border-purple-500/30",
+    href: "/formal-science/mathematics/calculus/multivariate"
   },
   {
     id: "vector",
@@ -49,7 +55,8 @@ export const CALCULUS_BRANCHES = [
     formula: "\\nabla \\cdot \\mathbf{F}",
     icon: Wind, // Flow fields
     color: "text-pink-400",
-    border: "border-pink-500/30"
+    border: "border-pink-500/30",
+    href: "/formal-science/mathematics/calculus/vector"
   },
   {
     id: "diffeq",
@@ -59,6 +66,7 @@ export const CALCULUS_BRANCHES = [
     formula: "\\frac{dy}{dt} = ky",
     icon: Activity, // Dynamics
     color: "text-red-400",
-    border: "border-red-500/30"
+    border: "border-red-500/30",
+    href: "/formal-science/mathematics/calculus/differential-equations"
   }
 ];

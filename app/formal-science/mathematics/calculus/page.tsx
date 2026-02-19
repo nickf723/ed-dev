@@ -1,13 +1,14 @@
 "use client";
 import React from "react";
 import Link from "next/link";
-import CalculusBackground from "./CalculusBackground";
+import CalculusBackground from "./limits/_components/CalculusBackground";
 import { CALCULUS_BRANCHES } from "./calculus-data";
 import { ArrowLeft, FunctionSquare, ChevronRight, Sigma } from "lucide-react";
 import RiemannBackground from "./RiemannBackground";
 import VectorFieldBackground from "./VectorFieldBackground";
 import VocabModule from "@/components/VocabModule";
 import { calculusTerms } from "@/lib/glossary/formal-science/mathematics/calculus";
+import { M } from "@/components/Math";
 
 
 // Helper for LaTeX rendering (Simulation)
@@ -66,6 +67,7 @@ export default function CalculusPage() {
                                 {branch.level}
                             </div>
                         </div>
+                        
 
                         {/* Title & Formula */}
                         <h2 className="text-2xl font-bold text-white mb-2 group-hover:text-cyan-400 transition-colors">
@@ -76,7 +78,7 @@ export default function CalculusPage() {
                         <div className="mb-4 h-12 flex items-center text-slate-300">
                             {/* We just render the string as is for now, in a real app we'd use Katex/MathJax */}
                             <div className="font-serif text-xl italic opacity-80 border-l-2 border-white/10 pl-4">
-                                {branch.formula}
+                                <M>{branch.formula}</M>
                             </div>
                         </div>
 
@@ -88,6 +90,10 @@ export default function CalculusPage() {
                         <div className="mt-auto pt-4 border-t border-white/5 flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-white opacity-0 group-hover:opacity-100 transition-opacity transform translate-y-2 group-hover:translate-y-0">
                             Explore Module <ChevronRight size={12} />
                         </div>
+
+                        <Link href={branch.href} className="absolute inset-0" />
+
+
 
                         {/* Special Tag for Diff Eq */}
                         {branch.id === 'diffeq' && (

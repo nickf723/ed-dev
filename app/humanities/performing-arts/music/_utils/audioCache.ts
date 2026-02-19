@@ -1,34 +1,29 @@
-// _utils/audioCache.ts
-const bufferCache: Record<string, AudioBuffer> = {};
+"use client";
 
-export const AudioCache = {
-  get: (key: string) => bufferCache[key],
-  
-  has: (key: string) => !!bufferCache[key],
+/**
+ * Tiny cache for "do we know this URL is real?"
+ * When a sampler tries to load 40+ files, it’s nice to avoid repeating bad URLs.
+ */
+type UrlStatus = "ok" | "missing";
 
-  // Store by Custom Key (instrument:note) instead of URL
-  load: async (ctx: AudioContext, url: string): Promise<AudioBuffer> => {
-    // If we were just fetching by URL, we'd cache by URL.
-    // But our hook manages the keys. 
-    // This helper is for the FETCH part.
-    
-    // Check if URL is already cached (optional optimization)
-    // Here we just fetch and return. The hook stores it in the Map.
-    
-    const response = await fetch(url);
-    if (!response.ok) throw new Error(`Failed to load ${url}`);
-    
-    const arrayBuffer = await response.arrayBuffer();
-    const audioBuffer = await ctx.decodeAudioData(arrayBuffer);
-    
-    return audioBuffer;
-  },
-  
-  // Set manually
-  set: (key: string, buffer: AudioBuffer) => {
-      bufferCache[key] = buffer;
-  },
-  
-  // Helper for iteration
-  keys: () => Object.keys(bufferCache)
-};
+const statusCache = new Map<string, UrlStatus>();
+
+export async function probeUrl(url: string): Promise<UrlStatus> {
+  const cached = statusCache.get(url);
+  if (cached) return cached;
+
+  try {
+    // HEAD is enough for existence, faster than GET
+    const res = await fetch(url, { method: "HEAD", cache: "force-cache" });
+    const status: UrlStatus = res.ok ? "ok" : "missing";
+    statusCache.set(url, status);
+    return status;
+  } catch {
+    statusCache.set(url, "missing");
+    return "missing";
+  }
+}
+
+export function clearAudioUrlProbeCache() {
+  statusCache.clear();
+}

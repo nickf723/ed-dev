@@ -15,41 +15,66 @@ interface VisualizerProps {
   activeKeys: string[];
 }
 
-const NOTES = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
+// CONFIG MUST MATCH PIANO KEYBOARD EXACTLY
+const START_OCTAVE = 3;
+const OCTAVE_COUNT = 3;
+const WHITE_KEY_WIDTH = 40; // Pixels (Matches PianoKeyboard.tsx)
+const TOTAL_WIDTH = (OCTAVE_COUNT * 7) * WHITE_KEY_WIDTH; // 7 white keys per octave
+
+// Offset from left edge of white key to center of black key (in pixels)
+// C=0, C#=26, D=40, D#=66, E=80, F=120...
+const KEY_OFFSETS = {
+    "C": 20, "C#": 26, 
+    "D": 60, "D#": 66, 
+    "E": 100, 
+    "F": 140, "F#": 146, 
+    "G": 180, "G#": 186, 
+    "A": 220, "A#": 226, 
+    "B": 260
+};
 
 export default function ParticleVisualizer({ activeKeys }: VisualizerProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const particles = useRef<Particle[]>([]);
   const requestRef = useRef<number>(0);
 
-  // Helper: Get color based on note
+  const getNoteX = (noteFull: string) => {
+      const note = noteFull.slice(0, -1);
+      const oct = parseInt(noteFull.slice(-1));
+      
+      const octaveOffset = (oct - START_OCTAVE) * (7 * WHITE_KEY_WIDTH);
+      const keyCenter = KEY_OFFSETS[note as keyof typeof KEY_OFFSETS] || 0;
+      
+      return octaveOffset + keyCenter;
+  };
+
   const getNoteColor = (note: string) => {
-    const noteName = note.slice(0, -1); // "C#4" -> "C#"
-    const idx = NOTES.indexOf(noteName);
-    // Cycle through a vibrant palette
-    const hue = (idx / 12) * 360; 
+    const noteName = note.slice(0, -1);
+    const notes = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
+    const hue = (notes.indexOf(noteName) / 12) * 360; 
     return `hsla(${hue}, 80%, 60%,`; 
   };
 
-  // 1. SPAWN PARTICLES ON KEY PRESS
   useEffect(() => {
     if (!canvasRef.current || activeKeys.length === 0) return;
-    
     const canvas = canvasRef.current;
     
     activeKeys.forEach(key => {
-        // Only spawn if we don't have too many already (performance)
         if (particles.current.length > 300) return;
+
+        const xPos = getNoteX(key);
+
+        // Bounds check
+        if (xPos < 0 || xPos > TOTAL_WIDTH) return;
 
         const colorPrefix = getNoteColor(key);
         
-        // Spawn a burst
         for (let i = 0; i < 8; i++) {
             particles.current.push({
-                x: canvas.width / 2,
-                y: canvas.height - 20, // Start at bottom center
-                vx: (Math.random() - 0.5) * 10,
-                vy: -(Math.random() * 5 + 5), // Shoot up
+                x: xPos,
+                y: canvas.height - 20,
+                vx: (Math.random() - 0.5) * 8, 
+                vy: -(Math.random() * 8 + 5),   
                 life: 1.0,
                 color: colorPrefix,
                 size: Math.random() * 4 + 2
@@ -59,37 +84,25 @@ export default function ParticleVisualizer({ activeKeys }: VisualizerProps) {
 
   }, [activeKeys]);
 
-  // 2. ANIMATION LOOP
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    // Handle Resize Safely
-    const resize = () => {
-        const parent = canvas.parentElement;
-        if (parent) {
-            canvas.width = parent.clientWidth;
-            canvas.height = parent.clientHeight;
-        }
-    };
-    window.addEventListener('resize', resize);
-    resize(); // Init size
+    // HARD LOCK SIZE to match Piano
+    canvas.width = TOTAL_WIDTH;
+    canvas.height = 400; // Fixed height
 
     const animate = () => {
-        // Fade out trail
-        ctx.fillStyle = 'rgba(18, 18, 18, 0.2)';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        // Update Particles
         for (let i = particles.current.length - 1; i >= 0; i--) {
             const p = particles.current[i];
-            
             p.x += p.vx;
             p.y += p.vy;
-            p.vy += 0.2; // Gravity
-            p.life -= 0.02; // Decay
+            p.vy += 0.2; 
+            p.life -= 0.02;
 
             if (p.life <= 0) {
                 particles.current.splice(i, 1);
@@ -100,23 +113,21 @@ export default function ParticleVisualizer({ activeKeys }: VisualizerProps) {
                 ctx.fill();
             }
         }
-
         requestRef.current = requestAnimationFrame(animate);
     };
-
     requestRef.current = requestAnimationFrame(animate);
 
-    return () => {
-        window.removeEventListener('resize', resize);
-        cancelAnimationFrame(requestRef.current);
-    };
+    return () => cancelAnimationFrame(requestRef.current);
   }, []);
 
+  // Center the canvas inside the container, matching the PianoKeyboard centering
   return (
-    <canvas 
-        ref={canvasRef} 
-        className="w-full h-full block"
-        style={{ opacity: 0.8 }}
-    />
+      <div className="w-full h-full flex justify-center overflow-hidden">
+        <canvas 
+            ref={canvasRef} 
+            className="block"
+            style={{ width: `${TOTAL_WIDTH}px`, height: '100%', opacity: 0.8 }}
+        />
+      </div>
   );
 }
