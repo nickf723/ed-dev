@@ -10,9 +10,7 @@ export type CategoryKey =
 export interface AestheticItem {
   title: string;
   desc: string;
-  imageQuery: string;
-  localImage?: string; // Optional override for manual asset control
-  unsplashCollectionId?: string;
+  imageUrl: string; // Optional override for manual asset control
 }
 
 export interface AestheticProfile {
@@ -27,7 +25,6 @@ export interface AestheticProfile {
   relatedMedia?: string[];
   // SCHEMA UPDATE: All categories are now Arrays of Items
   items: Partial<Record<CategoryKey, AestheticItem[]>>; 
-  unsplashCollectionId?: string;
 }
 
 // --- 2. CONFIGURATION ARRAYS ---
@@ -41,6 +38,7 @@ export const AESTHETICS_DB: AestheticProfile[] = [
   // ==============================================
   // A. SPECULATIVE (Sci-Fi / Fantasy)
   // ==============================================
+  //Cyberpunk
   {
     id: "cyberpunk",
     name: "Cyberpunk",
@@ -55,71 +53,65 @@ export const AESTHETICS_DB: AestheticProfile[] = [
         { 
           title: "The Street Samurai", 
           desc: "Function over form. Armored leather bomber jackets with high collars, tactical cargo pants, and a concealed thermal katana.", 
-          imageQuery: "cyberpunk street samurai fashion armored jacket",
-          localImage: "https://images.unsplash.com/photo-1626282874430-c11ae32d2898?q=80&w=1000&auto=format&fit=crop"
+          imageUrl: "https://images.unsplash.com/photo-1626282874430-c11ae32d2898?q=80&w=1000&auto=format&fit=crop"
         },
         { 
           title: "Corpo-Militarism", 
           desc: "The uniform of the elite. Sharp, angular suits made of ballistic weave, synchronized smart-glasses, and minimal branding.", 
-          imageQuery: "cyberpunk corporate suit futuristic business",
-          localImage: "https://images.unsplash.com/photo-1515518562304-94a2806aa717?q=80&w=1000&auto=format&fit=crop"
+          imageUrl: "https://images.unsplash.com/photo-1515518562304-94a2806aa717?q=80&w=1000&auto=format&fit=crop"
         },
         { 
           title: "Nomad Leathers", 
           desc: "Dust-resistant gear for the badlands. Distressed leather, goggles, scarfs, and tech cobbled together from scrap.", 
-          imageQuery: "cyberpunk nomad wasteland fashion" 
+          imageUrl: "https://images.unsplash.com/photo-1503341455253-b2e723bb3dbb?q=80&w=1000&auto=format&fit=crop"
         }
       ],
       tech: [
         { 
           title: "The Cyberdeck", 
           desc: "A portable hacking rig. Often custom-built with stickers and exposed wiring, used to breach corporate ICE.", 
-          imageQuery: "cyberpunk cyberdeck hacking device prop",
-          localImage: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=1000&auto=format&fit=crop"
+          imageUrl: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=1000&auto=format&fit=crop"
         },
         { 
           title: "Mantis Blades", 
           desc: "Retractable thermal blades implanted into the forearms, concealing a deadly weapon in plain sight.", 
-          imageQuery: "cyberpunk mantis blades arm implant" 
+          imageUrl: "https://images.unsplash.com/photo-1602524209351-3c3b3c3b3c3b?q=80&w=1000&auto=format&fit=crop" 
         }
       ],
       architecture: [
         { 
           title: "The Mega-Block", 
           desc: "A self-contained brutalist city-within-a-building. 200 floors of cramped housing, vending machines, and crime.", 
-          imageQuery: "cyberpunk brutalist megabuilding apartment",
-          localImage: "/images/cyberpunk/arc_mega-block.jpg"
+          imageUrl: "/images/cyberpunk/arc_mega-block.jpg"
         },
         { 
           title: "The Neon Market", 
-          desc: "Street level. A claustrophobic maze of noodle stalls, steam, holographic advertisements, and constant rain.", 
-          imageQuery: "cyberpunk alleyway neon market rain",
-          unsplashCollectionId: "2CIpgN8B6uw/cyberpunk-neon-market" 
+          desc: "Street level. A claustrophobic maze of noodle stalls, steam, holographic advertisements, and constant rain.",
+          imageUrl: "/images/cyberpunk/arc_neon-market.jpg"
         }
       ],
       transport: [
         { 
           title: "Yaiba Kusanagi", 
           desc: "A high-speed motorcycle with a glowing rim-light chassis, built for weaving through gridlock.", 
-          imageQuery: "cyberpunk motorcycle akira bike red" 
+          imageUrl: "https://images.unsplash.com/photo-1602524209351-3c3b3c3b3c3b?q=80&w=1000&auto=format&fit=crop"
         },
         { 
           title: "The Aerodyne (AV)", 
           desc: "Luxury flying vehicles using thrust-vectoring fans to soar above the traffic and smog.", 
-          imageQuery: "cyberpunk flying car sci fi city" 
+          imageUrl: "https://images.unsplash.com/photo-1602524209351-3c3b3c3b3c3b?q=80&w=1000&auto=format&fit=crop"
         }
       ],
       cuisine: [
         { 
           title: "Synth-Meat Yakitori", 
           desc: "Lab-grown protein skewers served at roadside stalls. Tastes almost like chicken, if you use enough spice.", 
-          imageQuery: "cyberpunk street food stall noodles neon" 
+          imageUrl: "https://images.unsplash.com/photo-1602524209351-3c3b3c3b3c3b?q=80&w=1000&auto=format&fit=crop"
         }
       ],
     },
-    unsplashCollectionId: "ahRHde9mLXg/cyberpunk/fb18e771535c16af47355d4d64feacae"
-
   },
+  //Steampunk
   {
     id: "steampunk",
     name: "Steampunk",
@@ -130,20 +122,21 @@ export const AESTHETICS_DB: AestheticProfile[] = [
     tags: ["Brass", "Gears", "Victorian", "Steam"],
     items: {
       fashion: [
-        { title: "The Aviator", desc: "Leather flight caps, brass goggles, and shearling coats for high-altitude airship travel.", imageQuery: "steampunk aviator goggles" },
-        { title: "The Aristocrat", desc: "Victorian corsets, bustles, top hats adorned with gears, and velvet frock coats.", imageQuery: "steampunk victorian fashion top hat" },
-        { title: "The Tinker", desc: "Oil-stained overalls, tool belts, and mechanical prosthetic limbs.", imageQuery: "steampunk mechanic outfit" }
+        { title: "The Aviator", desc: "Leather flight caps, brass goggles, and shearling coats for high-altitude airship travel.", imageUrl: "https://images.unsplash.com/photo-1503341455253-b2e723bb3dbb?q=80&w=1000&auto=format&fit=crop" },
+        { title: "The Aristocrat", desc: "Victorian corsets, bustles, top hats adorned with gears, and velvet frock coats.", imageUrl: "https://images.unsplash.com/photo-1503341455253-b2e723bb3dbb?q=80&w=1000&auto=format&fit=crop" },
+        { title: "The Tinker", desc: "Oil-stained overalls, tool belts, and mechanical prosthetic limbs.", imageUrl: "https://images.unsplash.com/photo-1503341455253-b2e723bb3dbb?q=80&w=1000&auto=format&fit=crop" }
       ],
       architecture: [
-        { title: "Smokestack London", desc: "Brick factories and clock towers shrouded in industrial smog.", imageQuery: "steampunk city london fog" },
-        { title: "The Sky-Dock", desc: "High-altitude platforms where dirigibles moor to skyscrapers.", imageQuery: "steampunk airship docking station" }
+        { title: "Smokestack London", desc: "Brick factories and clock towers shrouded in industrial smog.", imageUrl: "https://images.unsplash.com/photo-1503341455253-b2e723bb3dbb?q=80&w=1000&auto=format&fit=crop" },
+        { title: "The Sky-Dock", desc: "High-altitude platforms where dirigibles moor to skyscrapers.", imageUrl: "https://images.unsplash.com/photo-1503341455253-b2e723bb3dbb?q=80&w=1000&auto=format&fit=crop" }
       ],
       tech: [
-        { title: "Difference Engine", desc: "Analog computation using punch cards and brass gears.", imageQuery: "steampunk computer gears" },
-        { title: "Steam Limb", desc: "Piston-driven prosthetic arms powered by miniature boilers.", imageQuery: "steampunk prosthetic arm" }
+        { title: "Difference Engine", desc: "Analog computation using punch cards and brass gears.", imageUrl: "https://images.unsplash.com/photo-1503341455253-b2e723bb3dbb?q=80&w=1000&auto=format&fit=crop" },
+        { title: "Steam Limb", desc: "Piston-driven prosthetic arms powered by miniature boilers.", imageUrl: "https://images.unsplash.com/photo-1503341455253-b2e723bb3dbb?q=80&w=1000&auto=format&fit=crop" }
       ]
     }
   },
+  //Solarpunk
   {
     id: "solarpunk",
     name: "Solarpunk",
@@ -154,15 +147,16 @@ export const AESTHETICS_DB: AestheticProfile[] = [
     tags: ["Nature", "Eco", "Future", "Hope"],
     items: {
       architecture: [
-        { title: "Vertical Forest", desc: "Glass skyscrapers covered in cascading vines and wind turbines.", imageQuery: "solarpunk architecture vertical forest" },
-        { title: "Earthship", desc: "Homes built from recycled materials, semi-submerged in the ground.", imageQuery: "earthship sustainable home" }
+        { title: "Vertical Forest", desc: "Glass skyscrapers covered in cascading vines and wind turbines.", imageUrl: "solarpunk architecture vertical forest" },
+        { title: "Earthship", desc: "Homes built from recycled materials, semi-submerged in the ground.", imageUrl: "earthship sustainable home" }
       ],
       tech: [
-        { title: "Biomimicry Drone", desc: "Robots shaped like dragonflies that pollinate flowers.", imageQuery: "futuristic drone dragonfly" },
-        { title: "Stained Glass Solar", desc: "Beautiful Art Nouveau panels that generate energy.", imageQuery: "stained glass art nouveau solar" }
+        { title: "Biomimicry Drone", desc: "Robots shaped like dragonflies that pollinate flowers.", imageUrl: "futuristic drone dragonfly" },
+        { title: "Stained Glass Solar", desc: "Beautiful Art Nouveau panels that generate energy.", imageUrl: "stained glass art nouveau solar" }
       ]
     }
   },
+  //Dieselpunk
   {
     id: "dieselpunk",
     name: "Dieselpunk",
@@ -173,15 +167,16 @@ export const AESTHETICS_DB: AestheticProfile[] = [
     tags: ["War", "Oil", "Steel", "Art Deco"],
     items: {
       fashion: [
-        { title: "The Mechanic", desc: "Grease-stained jumpsuits and welding goggles.", imageQuery: "dieselpunk mechanic fashion" },
-        { title: "Noir Detective", desc: "Fedora, trench coat, and a cigarette in the rain.", imageQuery: "film noir detective rain" }
+        { title: "The Mechanic", desc: "Grease-stained jumpsuits and welding goggles.", imageUrl: "dieselpunk mechanic fashion" },
+        { title: "Noir Detective", desc: "Fedora, trench coat, and a cigarette in the rain.", imageUrl: "film noir detective rain" }
       ],
       transport: [
-        { title: "The Ironclad", desc: "Massive, rivet-covered tanks and war trains.", imageQuery: "dieselpunk tank vehicle" },
-        { title: "Flying Wing", desc: "Art deco bombers dominating the skies.", imageQuery: "dieselpunk airplane art deco" }
+        { title: "The Ironclad", desc: "Massive, rivet-covered tanks and war trains.", imageUrl: "dieselpunk tank vehicle" },
+        { title: "Flying Wing", desc: "Art deco bombers dominating the skies.", imageUrl: "dieselpunk airplane art deco" }
       ]
     }
   },
+  //Cassette Futurism
   {
     id: "cassette-futurism",
     name: "Cassette Futurism",
@@ -192,14 +187,14 @@ export const AESTHETICS_DB: AestheticProfile[] = [
     tags: ["Analog", "Retro", "Sci-Fi", "80s"],
     items: {
       tech: [
-        { title: "Analog Terminal", desc: "Monochrome green or amber screens with chunky mechanical keyboards.", imageQuery: "retro computer terminal amber screen" },
-        { title: "Data Tape", desc: "Physical media storage reels spinning in massive mainframes.", imageQuery: "mainframe computer reel to reel 70s" }
+        { title: "Analog Terminal", desc: "Monochrome green or amber screens with chunky mechanical keyboards.", imageUrl: "retro computer terminal amber screen" },
+        { title: "Data Tape", desc: "Physical media storage reels spinning in massive mainframes.", imageUrl: "mainframe computer reel to reel 70s" }
       ],
       transport: [
-        { title: "Space Freighter", desc: "Industrial spaceships designed for utility, not aerodynamics (Alien).", imageQuery: "cassette futurism spaceship interior" }
+        { title: "Space Freighter", desc: "Industrial spaceships designed for utility, not aerodynamics (Alien).", imageUrl: "cassette futurism spaceship interior" }
       ],
       fashion: [
-        { title: "Flight Suit", desc: "Padded vests, jumpsuits, and wrist-mounted calculators.", imageQuery: "retro sci fi fashion jumpsuit" }
+        { title: "Flight Suit", desc: "Padded vests, jumpsuits, and wrist-mounted calculators.", imageUrl: "retro sci fi fashion jumpsuit" }
       ]
     }
   },
@@ -207,6 +202,7 @@ export const AESTHETICS_DB: AestheticProfile[] = [
   // ==============================================
   // B. DIGITAL (Internet Native)
   // ==============================================
+  //Vaporwave
   {
     id: "vaporwave",
     name: "Vaporwave",
@@ -217,15 +213,16 @@ export const AESTHETICS_DB: AestheticProfile[] = [
     tags: ["80s", "Glitch", "Mall", "Neon"],
     items: {
       architecture: [
-        { title: "The Dead Mall", desc: "Empty shopping centers with checkered floors and neon palm trees.", imageQuery: "vaporwave dead mall neon" },
-        { title: "Pool Rooms", desc: "Endless tiled rooms filled with bright blue water.", imageQuery: "vaporwave pool rooms liminal" }
+        { title: "The Dead Mall", desc: "Empty shopping centers with checkered floors and neon palm trees.", imageUrl: "vaporwave dead mall neon" },
+        { title: "Pool Rooms", desc: "Endless tiled rooms filled with bright blue water.", imageUrl: "vaporwave pool rooms liminal" }
       ],
       media: [
-        { title: "Glitch Art", desc: "VHS static, anime screenshots, and classical marble busts.", imageQuery: "vaporwave glitch art statue" },
-        { title: "Windows 95", desc: "Pop-up windows, error messages, and jagged fonts.", imageQuery: "windows 95 aesthetic" }
+        { title: "Glitch Art", desc: "VHS static, anime screenshots, and classical marble busts.", imageUrl: "vaporwave glitch art statue" },
+        { title: "Windows 95", desc: "Pop-up windows, error messages, and jagged fonts.", imageUrl: "windows 95 aesthetic" }
       ]
     }
   },
+  //Frutiger Aero
   {
     id: "frutiger-aero",
     name: "Frutiger Aero",
@@ -236,15 +233,16 @@ export const AESTHETICS_DB: AestheticProfile[] = [
     tags: ["2000s", "Glossy", "Tech", "Clean"],
     items: {
       tech: [
-        { title: "Skeuomorphism", desc: "Icons that look like glossy jelly beans or glass.", imageQuery: "frutiger aero interface glossy" },
-        { title: "The Clear Phone", desc: "See-through plastic electronics.", imageQuery: "transparent technology 2000s" }
+        { title: "Skeuomorphism", desc: "Icons that look like glossy jelly beans or glass.", imageUrl: "frutiger aero interface glossy" },
+        { title: "The Clear Phone", desc: "See-through plastic electronics.", imageUrl: "transparent technology 2000s" }
       ],
       architecture: [
-        { title: "Eco-Futurism", desc: "Clean white cities with wind turbines and blue skies.", imageQuery: "frutiger aero city futuristic" },
-        { title: "The Windows Desktop", desc: "Rolling green hills and lens flares.", imageQuery: "bliss wallpaper windows xp" }
+        { title: "Eco-Futurism", desc: "Clean white cities with wind turbines and blue skies.", imageUrl: "frutiger aero city futuristic" },
+        { title: "The Windows Desktop", desc: "Rolling green hills and lens flares.", imageUrl: "bliss wallpaper windows xp" }
       ]
     }
   },
+  //Weirdcore
   {
     id: "weirdcore",
     name: "Weirdcore",
@@ -255,10 +253,10 @@ export const AESTHETICS_DB: AestheticProfile[] = [
     tags: ["Liminal", "Creepy", "Nostalgia", "Internet"],
     items: {
       architecture: [
-        { title: "Liminal Space", desc: "Empty hallways, playgrounds at night, and places that shouldn't exist.", imageQuery: "liminal space hallway eerie" }
+        { title: "Liminal Space", desc: "Empty hallways, playgrounds at night, and places that shouldn't exist.", imageUrl: "liminal space hallway eerie" }
       ],
       media: [
-        { title: "Compression Artifacts", desc: "Low-res JPEGs and primitive text editing.", imageQuery: "weirdcore aesthetic glitch text" }
+        { title: "Compression Artifacts", desc: "Low-res JPEGs and primitive text editing.", imageUrl: "weirdcore aesthetic glitch text" }
       ]
     }
   },
@@ -272,13 +270,13 @@ export const AESTHETICS_DB: AestheticProfile[] = [
     tags: ["Neon", "Night", "Driving", "80s"],
     items: {
       transport: [
-        { title: "The Testarossa", desc: "A sleek sports car speeding towards a wireframe sunset.", imageQuery: "synthwave car outrun ferrari" }
+        { title: "The Testarossa", desc: "A sleek sports car speeding towards a wireframe sunset.", imageUrl: "synthwave car outrun ferrari" }
       ],
       architecture: [
-        { title: "The Grid", desc: "A digital horizon line made of glowing purple lasers.", imageQuery: "synthwave landscape grid neon" }
+        { title: "The Grid", desc: "A digital horizon line made of glowing purple lasers.", imageUrl: "synthwave landscape grid neon" }
       ],
       fashion: [
-        { title: "The Driver", desc: "Letterman jackets, driving gloves, and aviators at night.", imageQuery: "synthwave fashion 80s neon" }
+        { title: "The Driver", desc: "Letterman jackets, driving gloves, and aviators at night.", imageUrl: "synthwave fashion 80s neon" }
       ]
     }
   },
@@ -296,12 +294,12 @@ export const AESTHETICS_DB: AestheticProfile[] = [
     tags: ["Nature", "Soft", "Vintage", "Bread"],
     items: {
       fashion: [
-        { title: "The Forager", desc: "Linen overalls, muddy boots, and a woven basket.", imageQuery: "cottagecore fashion overalls garden" },
-        { title: "Prairie Dress", desc: "Flowing cotton dresses with floral prints and lace collars.", imageQuery: "cottagecore prairie dress picnic" }
+        { title: "The Forager", desc: "Linen overalls, muddy boots, and a woven basket.", imageUrl: "cottagecore fashion overalls garden" },
+        { title: "Prairie Dress", desc: "Flowing cotton dresses with floral prints and lace collars.", imageUrl: "cottagecore prairie dress picnic" }
       ],
       activities: [
-        { title: "Bread Making", desc: "Scoring sourdough loaves in a sun-drenched kitchen.", imageQuery: "sourdough bread scoring baking" },
-        { title: "Flower Pressing", desc: "Preserving wildflowers in heavy vintage books.", imageQuery: "pressed flowers book aesthetic" }
+        { title: "Bread Making", desc: "Scoring sourdough loaves in a sun-drenched kitchen.", imageUrl: "sourdough bread scoring baking" },
+        { title: "Flower Pressing", desc: "Preserving wildflowers in heavy vintage books.", imageUrl: "pressed flowers book aesthetic" }
       ]
     }
   },
@@ -315,12 +313,12 @@ export const AESTHETICS_DB: AestheticProfile[] = [
     tags: ["Books", "University", "Gothic", "Autumn"],
     items: {
       fashion: [
-        { title: "The Scholar", desc: "Tweed blazers, turtlenecks, and wire-rimmed glasses.", imageQuery: "dark academia fashion tweed coat" },
-        { title: "The Poet", desc: "Loose white shirts, ink-stained fingers, and messy hair.", imageQuery: "dark academia aesthetic writing" }
+        { title: "The Scholar", desc: "Tweed blazers, turtlenecks, and wire-rimmed glasses.", imageUrl: "dark academia fashion tweed coat" },
+        { title: "The Poet", desc: "Loose white shirts, ink-stained fingers, and messy hair.", imageUrl: "dark academia aesthetic writing" }
       ],
       architecture: [
-        { title: "Gothic Library", desc: "Spiral staircases, old books, and rain on windows.", imageQuery: "dark academia library interior" },
-        { title: "The Boarding School", desc: "Brick buildings covered in ivy and fog.", imageQuery: "dark academia university ivy" }
+        { title: "Gothic Library", desc: "Spiral staircases, old books, and rain on windows.", imageUrl: "dark academia library interior" },
+        { title: "The Boarding School", desc: "Brick buildings covered in ivy and fog.", imageUrl: "dark academia university ivy" }
       ]
     }
   },
@@ -334,11 +332,11 @@ export const AESTHETICS_DB: AestheticProfile[] = [
     tags: ["Moss", "Mud", "Chaos", "Forest"],
     items: {
       fashion: [
-        { title: "Layered Rags", desc: "Oversized sweaters in earth tones, patchworks, and cargo pockets.", imageQuery: "goblincore fashion earthy sweater" }
+        { title: "Layered Rags", desc: "Oversized sweaters in earth tones, patchworks, and cargo pockets.", imageUrl: "goblincore fashion earthy sweater" }
       ],
       activities: [
-        { title: "Shiny Hunting", desc: "Collecting buttons, bottle caps, and interesting stones.", imageQuery: "goblincore collection shiny objects" },
-        { title: "Mud Walking", desc: "Exploring damp forests and frog ponds.", imageQuery: "mossy forest floor mushrooms" }
+        { title: "Shiny Hunting", desc: "Collecting buttons, bottle caps, and interesting stones.", imageUrl: "goblincore collection shiny objects" },
+        { title: "Mud Walking", desc: "Exploring damp forests and frog ponds.", imageUrl: "mossy forest floor mushrooms" }
       ]
     }
   },
@@ -352,11 +350,11 @@ export const AESTHETICS_DB: AestheticProfile[] = [
     tags: ["Cute", "Spooky", "Pink", "Punk"],
     items: {
       fashion: [
-        { title: "Spiked & Soft", desc: "Oversized pastel sweaters with inverted crosses and spiked chokers.", imageQuery: "pastel goth fashion" },
-        { title: "Creepers", desc: "Platform shoes with bat wings or bone accessories.", imageQuery: "pastel goth platform shoes" }
+        { title: "Spiked & Soft", desc: "Oversized pastel sweaters with inverted crosses and spiked chokers.", imageUrl: "pastel goth fashion" },
+        { title: "Creepers", desc: "Platform shoes with bat wings or bone accessories.", imageUrl: "pastel goth platform shoes" }
       ],
       media: [
-        { title: "Graveyard Picnic", desc: "Eating cupcakes and tea in a cemetery.", imageQuery: "pastel goth aesthetic cemetery" }
+        { title: "Graveyard Picnic", desc: "Eating cupcakes and tea in a cemetery.", imageUrl: "pastel goth aesthetic cemetery" }
       ]
     }
   },
@@ -370,13 +368,13 @@ export const AESTHETICS_DB: AestheticProfile[] = [
     tags: ["Play", "Bright", "Nostalgia", "Toys"],
     items: {
       fashion: [
-        { title: "Primary Color Block", desc: "Overalls, striped shirts, and beads.", imageQuery: "kidcore fashion primary colors" }
+        { title: "Primary Color Block", desc: "Overalls, striped shirts, and beads.", imageUrl: "kidcore fashion primary colors" }
       ],
       interior: [
-        { title: "The Playroom", desc: "Rainbow rugs, inflatable furniture, and fuzzy textures.", imageQuery: "kidcore bedroom aesthetic" }
+        { title: "The Playroom", desc: "Rainbow rugs, inflatable furniture, and fuzzy textures.", imageUrl: "kidcore bedroom aesthetic" }
       ],
       activities: [
-        { title: "Playground", desc: "Ball pits, McDonald's playplaces, and jungle gyms.", imageQuery: "mcdonalds playplace aesthetic 90s" }
+        { title: "Playground", desc: "Ball pits, McDonald's playplaces, and jungle gyms.", imageUrl: "mcdonalds playplace aesthetic 90s" }
       ]
     }
   },
@@ -390,11 +388,11 @@ export const AESTHETICS_DB: AestheticProfile[] = [
     tags: ["Average", "Plain", "Denim", "Simple"],
     items: {
       fashion: [
-        { title: "The Dad Look", desc: "Chunky white sneakers, stonewash jeans, and a plain grey fleece.", imageQuery: "normcore fashion dad shoes" },
-        { title: "The Tourist", desc: "Baseball caps, cargo shorts, and generic t-shirts.", imageQuery: "normcore aesthetic outfit" }
+        { title: "The Dad Look", desc: "Chunky white sneakers, stonewash jeans, and a plain grey fleece.", imageUrl: "normcore fashion dad shoes" },
+        { title: "The Tourist", desc: "Baseball caps, cargo shorts, and generic t-shirts.", imageUrl: "normcore aesthetic outfit" }
       ],
       activities: [
-        { title: "Running Errands", desc: "Shopping at a bulk grocery store or waiting for the bus.", imageQuery: "grocery store aesthetic" }
+        { title: "Running Errands", desc: "Shopping at a bulk grocery store or waiting for the bus.", imageUrl: "grocery store aesthetic" }
       ]
     }
   },
@@ -412,11 +410,11 @@ export const AESTHETICS_DB: AestheticProfile[] = [
     tags: ["1920s", "Gold", "Luxury", "Geometric"],
     items: {
       fashion: [
-        { title: "The Flapper", desc: "Silk dresses with geometric beading and bobbed hair.", imageQuery: "art deco fashion 1920s flapper" },
-        { title: "The Gatsby Tux", desc: "Sharp tuxedos with gold cufflinks.", imageQuery: "1920s men fashion tuxedo" }
+        { title: "The Flapper", desc: "Silk dresses with geometric beading and bobbed hair.", imageUrl: "art deco fashion 1920s flapper" },
+        { title: "The Gatsby Tux", desc: "Sharp tuxedos with gold cufflinks.", imageUrl: "1920s men fashion tuxedo" }
       ],
       architecture: [
-        { title: "The Skyscraper", desc: "Black marble floors, gold geometric patterns, and statues.", imageQuery: "art deco architecture interior gold" }
+        { title: "The Skyscraper", desc: "Black marble floors, gold geometric patterns, and statues.", imageUrl: "art deco architecture interior gold" }
       ]
     }
   },
@@ -430,11 +428,11 @@ export const AESTHETICS_DB: AestheticProfile[] = [
     tags: ["2000s", "Chrome", "Pop", "Shiny"],
     items: {
       fashion: [
-        { title: "Metallic Puffers", desc: "Silver jackets, tinted shades, and frosted tips.", imageQuery: "y2k fashion metallic futuristic" },
-        { title: "Velour Tracksuit", desc: "Bright pink matching sets with rhinestones.", imageQuery: "juicy couture tracksuit 2000s" }
+        { title: "Metallic Puffers", desc: "Silver jackets, tinted shades, and frosted tips.", imageUrl: "y2k fashion metallic futuristic" },
+        { title: "Velour Tracksuit", desc: "Bright pink matching sets with rhinestones.", imageUrl: "juicy couture tracksuit 2000s" }
       ],
       tech: [
-        { title: "Flip Phone", desc: "Decorated with charms and stickers.", imageQuery: "y2k flip phone bling" }
+        { title: "Flip Phone", desc: "Decorated with charms and stickers.", imageUrl: "y2k flip phone bling" }
       ]
     }
   },
@@ -448,17 +446,17 @@ export const AESTHETICS_DB: AestheticProfile[] = [
     tags: ["Gold", "Royal", "Drama", "Ornate"],
     items: {
       architecture: [
-        { title: "The Palace", desc: "Infinite halls of mirrors, painted ceilings, and gold trim.", imageQuery: "palace of versailles hall of mirrors" },
-        { title: "The Cathedral", desc: "Dramatic lighting (chiaroscuro) and marble statues.", imageQuery: "baroque cathedral interior" }
+        { title: "The Palace", desc: "Infinite halls of mirrors, painted ceilings, and gold trim.", imageUrl: "palace of versailles hall of mirrors" },
+        { title: "The Cathedral", desc: "Dramatic lighting (chiaroscuro) and marble statues.", imageUrl: "baroque cathedral interior" }
       ],
       fashion: [
-        { title: "The Courtier", desc: "Powdered wigs, silk brocade, and heavy velvet robes.", imageQuery: "baroque fashion 18th century wig" }
+        { title: "The Courtier", desc: "Powdered wigs, silk brocade, and heavy velvet robes.", imageUrl: "baroque fashion 18th century wig" }
       ],
       media: [
-        { title: "Oil Painting", desc: "Dramatic scenes of gods and martyrs frozen in motion.", imageQuery: "baroque oil painting caravaggio" }
+        { title: "Oil Painting", desc: "Dramatic scenes of gods and martyrs frozen in motion.", imageUrl: "baroque oil painting caravaggio" }
       ],
       music: [
-        { title: "Harpsichord", desc: "Intricate counterpoint and fugues.", imageQuery: "harpsichord baroque instrument" }
+        { title: "Harpsichord", desc: "Intricate counterpoint and fugues.", imageUrl: "harpsichord baroque instrument" }
       ]
     }
   },
@@ -472,14 +470,14 @@ export const AESTHETICS_DB: AestheticProfile[] = [
     tags: ["90s", "Rock", "Messy", "Dark"],
     items: {
       fashion: [
-        { title: "The Dropout", desc: "Oversized flannel shirts, ripped jeans, and dirty converse.", imageQuery: "90s grunge fashion flannel" },
-        { title: "Kinderwhore", desc: "Tattered babydoll dresses worn with combat boots.", imageQuery: "90s grunge kinderwhore fashion" }
+        { title: "The Dropout", desc: "Oversized flannel shirts, ripped jeans, and dirty converse.", imageUrl: "90s grunge fashion flannel" },
+        { title: "Kinderwhore", desc: "Tattered babydoll dresses worn with combat boots.", imageUrl: "90s grunge kinderwhore fashion" }
       ],
       interior: [
-        { title: "The Garage", desc: "Dimly lit basements, peeling band posters, and cigarette smoke.", imageQuery: "grunge aesthetic messy room" }
+        { title: "The Garage", desc: "Dimly lit basements, peeling band posters, and cigarette smoke.", imageUrl: "grunge aesthetic messy room" }
       ],
       tech: [
-        { title: "Analog Noise", desc: "Cassette tapes, distortion pedals, and bulky Walkmans.", imageQuery: "grunge aesthetic cassette tape" }
+        { title: "Analog Noise", desc: "Cassette tapes, distortion pedals, and bulky Walkmans.", imageUrl: "grunge aesthetic cassette tape" }
       ]
     }
   },
@@ -493,14 +491,14 @@ export const AESTHETICS_DB: AestheticProfile[] = [
     tags: ["1950s", "Clean", "Wood", "Retro"],
     items: {
       interior: [
-        { title: "Sunken Living Room", desc: "Conversation pits, teak sideboards, and Eames chairs.", imageQuery: "mid century modern sunken living room" },
-        { title: "The Eames Chair", desc: "Molded plywood and leather lounging furniture.", imageQuery: "eames lounge chair interior" }
+        { title: "Sunken Living Room", desc: "Conversation pits, teak sideboards, and Eames chairs.", imageUrl: "mid century modern sunken living room" },
+        { title: "The Eames Chair", desc: "Molded plywood and leather lounging furniture.", imageUrl: "eames lounge chair interior" }
       ],
       architecture: [
-        { title: "Glass House", desc: "Floor-to-ceiling windows blurring the line between indoors and nature.", imageQuery: "mid century modern architecture palm springs" }
+        { title: "Glass House", desc: "Floor-to-ceiling windows blurring the line between indoors and nature.", imageUrl: "mid century modern architecture palm springs" }
       ],
       tech: [
-        { title: "Hi-Fi System", desc: "Wood-paneled record players and tube amplifiers.", imageQuery: "vintage hifi record player 1960s" }
+        { title: "Hi-Fi System", desc: "Wood-paneled record players and tube amplifiers.", imageUrl: "vintage hifi record player 1960s" }
       ]
     }
   },
@@ -518,8 +516,8 @@ export const AESTHETICS_DB: AestheticProfile[] = [
     tags: ["Concrete", "Grey", "Massive", "Cold"],
     items: {
       architecture: [
-        { title: "Concrete Fortress", desc: "Imposing government buildings with no decoration.", imageQuery: "brutalist architecture concrete building" },
-        { title: "The Housing Block", desc: "Repetitive geometric windows and raw cement.", imageQuery: "brutalist apartment block soviet" }
+        { title: "Concrete Fortress", desc: "Imposing government buildings with no decoration.", imageUrl: "brutalist architecture concrete building" },
+        { title: "The Housing Block", desc: "Repetitive geometric windows and raw cement.", imageUrl: "brutalist apartment block soviet" }
       ]
     }
   },
@@ -533,7 +531,7 @@ export const AESTHETICS_DB: AestheticProfile[] = [
     tags: ["80s", "Colorful", "Geometric", "Fun"],
     items: {
       interior: [
-        { title: "The Playful Room", desc: "Terrazzo floors, laminate furniture, and neon shapes.", imageQuery: "memphis design interior furniture 80s" }
+        { title: "The Playful Room", desc: "Terrazzo floors, laminate furniture, and neon shapes.", imageUrl: "memphis design interior furniture 80s" }
       ]
     }
   },
@@ -547,14 +545,14 @@ export const AESTHETICS_DB: AestheticProfile[] = [
     tags: ["Nature", "Curves", "Elegant", "Paris"],
     items: {
       architecture: [
-        { title: "Metro Station", desc: "Wrought iron twisted into vines and floral shapes.", imageQuery: "art nouveau metro station paris" },
-        { title: "Stained Glass", desc: "Windows depicting peacocks, flowers, and flowing hair.", imageQuery: "art nouveau stained glass window" }
+        { title: "Metro Station", desc: "Wrought iron twisted into vines and floral shapes.", imageUrl: "art nouveau metro station paris" },
+        { title: "Stained Glass", desc: "Windows depicting peacocks, flowers, and flowing hair.", imageUrl: "art nouveau stained glass window" }
       ],
       media: [
-        { title: "Mucha Print", desc: "Posters featuring women with long, flowing hair and halos.", imageQuery: "alphonse mucha art nouveau" }
+        { title: "Mucha Print", desc: "Posters featuring women with long, flowing hair and halos.", imageUrl: "alphonse mucha art nouveau" }
       ],
       interior: [
-        { title: "The Salon", desc: "Curved velvet sofas and lamps shaped like lilies.", imageQuery: "art nouveau interior furniture" }
+        { title: "The Salon", desc: "Curved velvet sofas and lamps shaped like lilies.", imageUrl: "art nouveau interior furniture" }
       ]
     }
   },
@@ -568,13 +566,13 @@ export const AESTHETICS_DB: AestheticProfile[] = [
     tags: ["Clean", "White", "Simple", "Modern"],
     items: {
       interior: [
-        { title: "The Void", desc: "White walls, polished concrete floors, and a single plant.", imageQuery: "minimalist interior design empty room" }
+        { title: "The Void", desc: "White walls, polished concrete floors, and a single plant.", imageUrl: "minimalist interior design empty room" }
       ],
       fashion: [
-        { title: "The Capsule", desc: "Unbranded monochromatic tees, tailored trousers, and white sneakers.", imageQuery: "minimalist fashion monochrome" }
+        { title: "The Capsule", desc: "Unbranded monochromatic tees, tailored trousers, and white sneakers.", imageUrl: "minimalist fashion monochrome" }
       ],
       architecture: [
-        { title: "The Cube", desc: "Buildings reduced to their essential geometric shapes.", imageQuery: "minimalist architecture concrete white" }
+        { title: "The Cube", desc: "Buildings reduced to their essential geometric shapes.", imageUrl: "minimalist architecture concrete white" }
       ]
     }
   }

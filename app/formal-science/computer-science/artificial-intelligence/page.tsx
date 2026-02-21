@@ -1,6 +1,4 @@
 "use client";
-import PageHeader from "@/components/PageHeader";
-import TopicCard from "@/components/TopicCard";
 import NeuralNetworkBackground from "@/app/formal-science/computer-science/artificial-intelligence/NeuralNetworkBackground";
 import PerceptronWidget from "@/app/formal-science/computer-science/artificial-intelligence/PerceptronWidget";
 import { motion } from "framer-motion";
@@ -93,11 +91,6 @@ export default function AIPage() {
       
       <div className="relative z-10 mx-auto flex max-w-7xl flex-col py-10">
         
-        <PageHeader
-          eyebrow="Computer Science"
-          title="Artificial Intelligence"
-          subtitle="The quest to synthesize cognition. From the rigid logic of expert systems to the fluid intuition of neural networks, we are building mirrors of our own minds."
-        />
 
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 items-start">
           
@@ -126,7 +119,7 @@ export default function AIPage() {
                             viewport={{ once: true }}
                             transition={{ duration: 0.3, delay: 0.1 + (i * 0.05) }}
                         >
-                            <TopicCard {...item} />
+                
                         </motion.div>
                     ))}
                  </div>

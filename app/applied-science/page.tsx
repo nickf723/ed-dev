@@ -22,7 +22,7 @@ export default function AppliedSciencePage() {
     { 
       category: "Life & Environment",
       items: [
-        { id: 'medicine', title: 'Health & Medicine', href: '/applied-science/medicine', icon: HeartPulse, color: 'text-rose-400', desc: 'Healing and physiology.' },
+        { id: 'health', title: 'Health', href: '/applied-science/health', icon: HeartPulse, color: 'text-rose-400', desc: 'Healing and physiology.' },
         { id: 'agriculture', title: 'Agriculture', href: '/applied-science/agriculture', icon: Wheat, color: 'text-green-400', desc: 'Cultivation and food systems.' },
       ]
     },
