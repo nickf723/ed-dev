@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
-import CaveBackground from "@/app/humanities/history/prehistory/CaveBackground";
-import HominidWidget from "@/app/humanities/history/prehistory/HominidWidget";
+import CaveBackground from "@/app/humanities/history/chronology/prehistory/CaveBackground";
+import HominidWidget from "@/app/humanities/history/chronology/prehistory/HominidWidget";
 import { 
   ArrowLeft, Flame, Hammer, HandMetal, Skull, 
   Mountain, Sunrise 

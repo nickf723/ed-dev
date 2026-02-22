@@ -1,56 +1,86 @@
 "use client";
-import React, { useState } from "react";
-import HistoryBackground from "./_components/HistoryBackground";
-import HistoryChronos from "./_components/HistoryChronos"; // Import new file
-import HistoryAtlas from "./_components/HistoryAtlas";     // Import new file
-import HistoryNexus from "./_components/HistoryNexus";     // Import new file
-import { ArrowLeft, Clock, Globe, Lightbulb } from "lucide-react";
-import Link from "next/link";
+import React from 'react';
+import { Clock, Map, BookOpen } from 'lucide-react';
+import HistoryBackground from './_components/HistoryBackground';
+import TimeScaleLab from './_components/TimeScaleLab';
+import ChronologyTimeline from './_components/ChronologyTimeline';
+import RegionMap from './_components/RegionMap';
+import ThemeNetwork from './_components/ThemeNetwork';
 
-export default function HistoryPage() {
-  const [viewMode, setViewMode] = useState<'TIME' | 'SPACE' | 'THEME'>('TIME');
-
+export default function HistoryHubPage() {
   return (
-    <main className="relative min-h-screen bg-[#050505] text-stone-200 selection:bg-amber-500/30 font-sans overflow-x-hidden">
-      
-      {/* 1. VISUAL ENGINE */}
+    <main className="relative min-h-screen bg-[#050403] overflow-hidden selection:bg-amber-900/30 font-sans">
       <HistoryBackground />
-      <div className="fixed inset-0 bg-gradient-to-b from-[#050505] via-transparent to-[#050505] pointer-events-none z-0" />
-
-      {/* 2. LAYOUT CONTAINER (The Sidebar Fix) */}
-      {/* pl-80 ensures content starts AFTER the sidebar (72 + padding) */}
-      <div className="relative z-10 pl-0 md:pl-80 transition-all duration-300">
-          
-          {/* 3. NAVIGATION DECK */}
-          <header className="sticky top-0 z-40 p-6 md:p-8 flex flex-col md:flex-row justify-between items-center bg-gradient-to-b from-[#050505] to-transparent">
-             <div className="flex items-center gap-8 w-full md:w-auto">
-                 <Link href="/humanities" className="flex items-center gap-2 text-stone-500 hover:text-white transition-colors group">
-                    <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform"/>
-                    <span className="text-xs font-bold uppercase tracking-widest">Exit Sim</span>
-                 </Link>
-                 
-                 {/* MODE SWITCHER */}
-                 <div className="flex items-center bg-white/5 rounded-full p-1 border border-white/10 backdrop-blur-md">
-                     <button onClick={() => setViewMode('TIME')} className={`px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest transition-all flex items-center gap-2 ${viewMode === 'TIME' ? 'bg-white text-black shadow-lg' : 'text-stone-500 hover:text-white'}`}>
-                        <Clock size={12} /> Chronos
-                     </button>
-                     <button onClick={() => setViewMode('SPACE')} className={`px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest transition-all flex items-center gap-2 ${viewMode === 'SPACE' ? 'bg-white text-black shadow-lg' : 'text-stone-500 hover:text-white'}`}>
-                        <Globe size={12} /> Atlas
-                     </button>
-                     <button onClick={() => setViewMode('THEME')} className={`px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest transition-all flex items-center gap-2 ${viewMode === 'THEME' ? 'bg-white text-black shadow-lg' : 'text-stone-500 hover:text-white'}`}>
-                        <Lightbulb size={12} /> Nexus
-                     </button>
+      
+      <div className="relative z-10 max-w-[90rem] mx-auto px-6 py-12 lg:py-24">
+         
+         {/* HERO SECTION */}
+         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 mb-24 items-end">
+             <div className="lg:col-span-8">
+                 <div className="flex items-center gap-3 text-amber-500 mb-6 font-mono text-xs font-bold tracking-[0.2em] uppercase">
+                     <span className="w-8 h-px bg-amber-500"></span>
+                     The Humanities
                  </div>
+                 <h1 className="text-6xl md:text-8xl font-black text-white mb-8 tracking-tighter leading-none">
+                     HISTORY
+                 </h1>
+                 <p className="text-xl text-neutral-400 max-w-2xl leading-relaxed font-light">
+                     The collective memory of the human species. History isn't just a list of dates and dead kings; it is the chaotic, brilliant, and brutal story of <strong className="text-white font-semibold">how we got here.</strong>
+                 </p>
              </div>
-          </header>
+         </div>
 
-          {/* 4. VIEW RENDERER */}
-          <div className="min-h-screen">
-            {viewMode === 'TIME' && <HistoryChronos />}
-            {viewMode === 'SPACE' && <HistoryAtlas />}
-            {viewMode === 'THEME' && <HistoryNexus />}
-          </div>
+         {/* CONCEPT ZERO */}
+         <div className="mb-32">
+             <TimeScaleLab />
+         </div>
 
+         {/* THE THREE PILLARS */}
+         <div className="space-y-32 mb-24">
+             
+             {/* PILLAR 1: CHRONOLOGY */}
+             <section>
+                 <div className="flex items-center gap-4 mb-8 border-b border-neutral-900 pb-4">
+                     <div className="p-3 bg-amber-950/30 border border-amber-900/50 rounded-lg text-amber-500">
+                         <Clock size={24} />
+                     </div>
+                     <div>
+                         <h2 className="text-3xl font-black text-white tracking-tight">Chronology</h2>
+                         <p className="text-sm text-neutral-500 font-mono tracking-widest uppercase mt-1">The Arrow of Time</p>
+                     </div>
+                 </div>
+                 <ChronologyTimeline />
+             </section>
+
+             {/* PILLAR 2: REGION */}
+             <section>
+                 <div className="flex items-center gap-4 mb-8 border-b border-neutral-900 pb-4">
+                     <div className="p-3 bg-emerald-950/30 border border-emerald-900/50 rounded-lg text-emerald-500">
+                         <Map size={24} />
+                     </div>
+                     <div>
+                         <h2 className="text-3xl font-black text-white tracking-tight">Region</h2>
+                         <p className="text-sm text-neutral-500 font-mono tracking-widest uppercase mt-1">Spatial Geopolitics</p>
+                     </div>
+                 </div>
+                 <RegionMap />
+             </section>
+
+             {/* PILLAR 3: THEME */}
+             <section>
+                 <div className="flex items-center gap-4 mb-8 border-b border-neutral-900 pb-4">
+                     <div className="p-3 bg-indigo-950/30 border border-indigo-900/50 rounded-lg text-indigo-500">
+                         <BookOpen size={24} />
+                     </div>
+                     <div>
+                         <h2 className="text-3xl font-black text-white tracking-tight">Theme</h2>
+                         <p className="text-sm text-neutral-500 font-mono tracking-widest uppercase mt-1">The Ontology of Human Endeavor</p>
+                     </div>
+                 </div>
+                 <ThemeNetwork />
+             </section>
+
+         </div>
       </div>
     </main>
   );

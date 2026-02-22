@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef } from "react";
+import React, { useRef, useEffect } from 'react';
 
 export default function HistoryBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -7,76 +7,63 @@ export default function HistoryBackground() {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    let w = (canvas.width = window.innerWidth);
-    let h = (canvas.height = window.innerHeight);
+    let width = canvas.width = window.innerWidth;
+    let height = canvas.height = window.innerHeight;
+    let time = 0;
 
-    // --- STATE ---
-    const starCount = 300;
-    const stars: {x: number, y: number, z: number, o_z: number}[] = [];
-    
-    // Initialize Stars
-    const initStar = () => ({
-        x: (Math.random() - 0.5) * w,
-        y: (Math.random() - 0.5) * h,
-        z: Math.random() * w,    // Depth
-        o_z: Math.random() * w   // Original Depth (for resetting)
-    });
+    // "Dust of Ages" particles
+    const dust = Array.from({ length: 80 }).map(() => ({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      speed: Math.random() * 0.5 + 0.1,
+      size: Math.random() * 2,
+      opacity: Math.random() * 0.5
+    }));
 
-    for(let i=0; i<starCount; i++) stars.push(initStar());
+    const draw = () => {
+      ctx.fillStyle = '#0a0806'; // Deep, warm charcoal/sepia black
+      ctx.fillRect(0, 0, width, height);
 
-    let speed = 2; // Base speed
-
-    const render = () => {
-      // Clear with trail effect for "warp" feeling
-      ctx.fillStyle = "rgba(5, 5, 5, 0.2)"; 
-      ctx.fillRect(0, 0, w, h);
-
-      const cx = w / 2;
-      const cy = h / 2;
-
-      stars.forEach((star) => {
-          // Move star towards screen
-          star.z -= speed;
-
-          // Reset if it passes screen
-          if (star.z <= 0) {
-              star.z = w;
-              star.x = (Math.random() - 0.5) * w;
-              star.y = (Math.random() - 0.5) * h;
+      // The River of Time (Horizontal flowing waves)
+      ctx.lineWidth = 1;
+      for (let i = 0; i < 5; i++) {
+          ctx.beginPath();
+          const yOffset = (height / 6) * (i + 1);
+          
+          for (let x = 0; x <= width; x += 20) {
+              const wave = Math.sin(x * 0.002 + time * 0.2 + i) * 50 + Math.cos(x * 0.005 - time * 0.1) * 20;
+              const y = yOffset + wave;
+              if (x === 0) ctx.moveTo(x, y);
+              else ctx.lineTo(x, y);
           }
+          ctx.strokeStyle = `rgba(217, 119, 6, ${0.02 + i * 0.01})`; // Amber/Bronze flow
+          ctx.stroke();
+      }
 
-          // Project 3D to 2D
-          // The closer the star (low z), the larger the scale
-          const scale = w / star.z; 
-          const x2d = cx + star.x * scale;
-          const y2d = cy + star.y * scale;
+      // Drifting Dust
+      dust.forEach(p => {
+        p.x -= p.speed; // Drifting left into the past
+        if (p.x < 0) {
+            p.x = width;
+            p.y = Math.random() * height;
+        }
 
-          // Size grows as it gets closer
-          const size = Math.max(0.5, (1 - star.z / w) * 3);
-          const alpha = (1 - star.z / w); // Fade in as it approaches
-
-          if (x2d >= 0 && x2d <= w && y2d >= 0 && y2d <= h) {
-              ctx.fillStyle = `rgba(255, 255, 255, ${alpha})`;
-              ctx.beginPath();
-              ctx.arc(x2d, y2d, size, 0, Math.PI*2);
-              ctx.fill();
-          }
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(251, 191, 36, ${p.opacity})`; // Amber-400
+        ctx.fill();
       });
 
-      requestAnimationFrame(render);
+      time += 0.05;
+      requestAnimationFrame(draw);
     };
 
-    const animId = requestAnimationFrame(render);
-    const handleResize = () => { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; };
-    window.addEventListener("resize", handleResize);
-    return () => {
-        window.removeEventListener("resize", handleResize);
-        cancelAnimationFrame(animId);
-    };
+    const anim = requestAnimationFrame(draw);
+    return () => cancelAnimationFrame(anim);
   }, []);
 
-  return <canvas ref={canvasRef} className="fixed inset-0 z-0 opacity-60 pointer-events-none" />;
+  return <canvas ref={canvasRef} className="fixed inset-0 pointer-events-none z-0" />;
 }

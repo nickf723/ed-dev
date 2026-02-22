@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
-import RiverBackground from "@/app/humanities/history/antiquity/RiverBackground";
-import EmpireSelector from "@/app/humanities/history/antiquity/EmpireSelector";
+import RiverBackground from "@/app/humanities/history/chronology/antiquity/RiverBackground";
+import EmpireSelector from "@/app/humanities/history/chronology/antiquity/EmpireSelector";
 import { 
   ArrowLeft, Landmark, Scroll, Scale, BookOpen
 } from "lucide-react";
