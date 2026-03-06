@@ -17,7 +17,7 @@ const EPOCHS = [
     span: '1776 – 1850',
     description: 'The drafting of the Constitution, the invention of modern democracy, and the aggressive westward expansion known as Manifest Destiny.',
     icon: <Gavel size={24} className="text-blue-500" />,
-    href: '/humanities/history/region/americas/usa/founding'
+    href: '/humanities/history/regional/americas/usa/founding'
   },
   {
     id: 'civil-war',
@@ -25,7 +25,7 @@ const EPOCHS = [
     span: '1850 – 1877',
     description: 'The paradox of a nation built on liberty harboring chattel slavery. The bloodiest conflict in American history, followed by the broken promises of Reconstruction.',
     icon: <Swords size={24} className="text-red-500" />,
-    href: '/humanities/history/region/americas/usa/civil-war'
+    href: '/humanities/history/regional/americas/usa/civil-war'
   },
   {
     id: 'gilded-age',
@@ -33,7 +33,7 @@ const EPOCHS = [
     span: '1877 – 1914',
     description: 'The explosive rise of rail, steel, and oil. The era of Robber Barons, mass immigration, urbanization, and intense labor struggles.',
     icon: <Factory size={24} className="text-amber-500" />,
-    href: '/humanities/history/region/americas/usa/gilded-age'
+    href: '/humanities/history/regional/americas/usa/gilded-age'
   },
   {
     id: 'american-century',
@@ -41,7 +41,15 @@ const EPOCHS = [
     span: '1914 – Present',
     description: 'Two World Wars, the Great Depression, the Atomic Age, and the Cold War. The United States assumes the mantle of global democratic hegemon.',
     icon: <Globe size={24} className="text-white" />,
-    href: '/humanities/history/region/americas/usa/american-century'
+    href: '/humanities/history/regional/americas/usa/american-century'
+  },
+  {
+    id: '2026 and Beyond',
+    title: 'Uncertainty Ahead',
+    span: '2026 – ???',
+    description: 'Facing unprecedented challenges in climate, technology, and global power dynamics, the United States stands at a rapidly approaching crossroads.',
+    icon: <Flag size={24} className="text-red-500" />,
+    href: '/humanities/history/regional/americas/usa/beyond'
   }
 ];
 

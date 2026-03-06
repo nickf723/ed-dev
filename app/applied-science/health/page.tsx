@@ -109,7 +109,7 @@ const LESSONS: Lesson[] = [
     subtitle: 'Specialized Fields',
     description: 'Explore the various specialized fields within health sciences.',
     icon: <HeartPulse size={20} className="text-pink-500" />,
-    href: '/health/specializations',
+    href: 'applied-science/health/specializations',
     color: 'pink'
   }
 ];

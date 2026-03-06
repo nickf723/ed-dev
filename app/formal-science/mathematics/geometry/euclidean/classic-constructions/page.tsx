@@ -1,7 +1,7 @@
 "use client";
 import React from 'react';
 import Link from 'next/link';
-import BlueprintEngine from "./BlueprintEngine";
+import BlueprintEngine from "./_assets/BlueprintEngine";
 import ConstructionLab from "./ConstructionLab";
 import { CONST_MEDIA, TOOLS, CONSTRUCTIONS } from './_assets/constructionData';
 import { 

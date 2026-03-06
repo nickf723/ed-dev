@@ -1,152 +1,333 @@
 "use client";
-import React, { useState } from 'react';
-import { Play, RotateCcw, Share2 } from 'lucide-react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { Play, Pause, RotateCcw, Network, FastForward, Turtle } from 'lucide-react';
 
-// Hardcoded Graph Layout for Stability
-const NODES = [
-  { id: 0, x: 50, y: 150, label: 'Start' },
-  { id: 1, x: 150, y: 50, label: 'A' },
-  { id: 2, x: 150, y: 250, label: 'B' },
-  { id: 3, x: 250, y: 150, label: 'C' },
-  { id: 4, x: 350, y: 50, label: 'D' },
-  { id: 5, x: 350, y: 250, label: 'E' },
-  { id: 6, x: 450, y: 150, label: 'Target' },
-];
+type Node = { id: number; x: number; y: number; r: number; c: number };
+type Edge = { u: number; v: number };
+type Step = {
+  current: number | null;
+  visited: Set<number>;
+  frontier: Set<number>;
+  edgeTree: Edge[];
+};
 
-const EDGES = [
-  [0, 1], [0, 2], // Start -> A, B
-  [1, 3], [2, 3], // A, B -> C
-  [1, 4], [2, 5], // A -> D, B -> E
-  [3, 4], [3, 5], // C -> D, E
-  [4, 6], [5, 6]  // D, E -> Target
-];
+export default function TraversalLab() {
+  const [nodes, setNodes] = useState<Node[]>([]);
+  const [edges, setEdges] = useState<Edge[]>([]);
+  const [adjacencyList, setAdjacencyList] = useState<Map<number, number[]>>(new Map());
+  
+  const [algorithm, setAlgorithm] = useState<'BFS' | 'DFS'>('BFS');
+  const [steps, setSteps] = useState<Step[]>([]);
+  const [currentStepIdx, setCurrentStepIdx] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [speed, setSpeed] = useState(300); // Default to a much slower speed
 
-// BFS Steps
-const BFS_STEPS = [
-  { visited: [0], queue: [0], frontier: [], msg: "Initialize Queue with Start Node." },
-  { visited: [0, 1, 2], queue: [1, 2], frontier: [1, 2], msg: "Visit neighbors of Start: A and B." },
-  { visited: [0, 1, 2, 3, 4], queue: [2, 3, 4], frontier: [3, 4], msg: "Visit neighbors of A: C and D." },
-  { visited: [0, 1, 2, 3, 4, 5], queue: [3, 4, 5], frontier: [5], msg: "Visit neighbors of B: E (C already visited)." },
-  { visited: [0, 1, 2, 3, 4, 5, 6], queue: [], frontier: [6], msg: "Visit neighbors of D/E: Target found!" },
-];
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
 
-export default function BFSVisualizer() {
-  const [step, setStep] = useState(0);
+  // Generate a strict Grid Graph
+  const generateGraph = useCallback(() => {
+    const cols = 16;
+    const rows = 8;
+    const spacing = 40;
+    const offsetX = 100;
+    const offsetY = 60;
 
-  const current = BFS_STEPS[step];
+    const newNodes: Node[] = [];
+    const newEdges: Edge[] = [];
+    const adj = new Map<number, number[]>();
 
-  // Helper to check status
-  const getNodeStatus = (id: number) => {
-      if (current.frontier.includes(id)) return 'frontier';
-      if (current.visited.includes(id)) return 'visited';
-      return 'unvisited';
+    // 1. Plot the Grid
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        const id = r * cols + c;
+        newNodes.push({ 
+            id, 
+            r, c,
+            x: offsetX + c * spacing, 
+            y: offsetY + r * spacing 
+        });
+        adj.set(id, []);
+      }
+    }
+
+    // 2. Connect the Grid (Constant Edge Lengths)
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        const id = r * cols + c;
+        
+        // Connect Right
+        if (c < cols - 1) {
+            // Optional: Remove a few random edges (10%) to create a slight maze effect
+            if (Math.random() > 0.1) {
+                const rightId = r * cols + (c + 1);
+                newEdges.push({ u: id, v: rightId });
+                adj.get(id)!.push(rightId);
+                adj.get(rightId)!.push(id);
+            }
+        }
+        // Connect Down
+        if (r < rows - 1) {
+            if (Math.random() > 0.1) {
+                const downId = (r + 1) * cols + c;
+                newEdges.push({ u: id, v: downId });
+                adj.get(id)!.push(downId);
+                adj.get(downId)!.push(id);
+            }
+        }
+      }
+    }
+
+    // 3. Shuffle the adjacency list! 
+    // If we don't do this, DFS will just go in a boring straight line forever. 
+    // Shuffling makes the snake twist and turn organically.
+    for (let i = 0; i < newNodes.length; i++) {
+        adj.get(i)!.sort(() => Math.random() - 0.5);
+    }
+
+    setNodes(newNodes);
+    setEdges(newEdges);
+    setAdjacencyList(adj);
+    setCurrentStepIdx(0);
+    setIsPlaying(false);
+  }, []);
+
+  // Compute the steps
+  useEffect(() => {
+    if (nodes.length === 0) return;
+
+    // Start roughly in the middle-left of the grid to watch it expand
+    const startNode = Math.floor(8 / 2) * 16 + 2; 
+    
+    const computedSteps: Step[] = [];
+    const visited = new Set<number>();
+    const frontier = new Set<number>();
+    const edgeTree: Edge[] = [];
+    
+    computedSteps.push({
+      current: null,
+      visited: new Set(),
+      frontier: new Set([startNode]),
+      edgeTree: []
+    });
+
+    if (algorithm === 'BFS') {
+      const queue: { node: number, parent: number | null }[] = [{ node: startNode, parent: null }];
+      frontier.add(startNode);
+
+      while (queue.length > 0) {
+        const { node: curr, parent } = queue.shift()!;
+        
+        frontier.delete(curr);
+        visited.add(curr);
+        if (parent !== null) edgeTree.push({ u: parent, v: curr });
+
+        computedSteps.push({
+          current: curr,
+          visited: new Set(visited),
+          frontier: new Set(frontier),
+          edgeTree: [...edgeTree]
+        });
+
+        const neighbors = adjacencyList.get(curr)!;
+        for (let i = neighbors.length - 1; i >= 0; i--) {
+            const neighbor = neighbors[i];
+            if (!visited.has(neighbor) && !frontier.has(neighbor)) {
+                queue.push({ node: neighbor, parent: curr });
+                frontier.add(neighbor);
+            }
+        }
+      }
+    } else {
+      // DFS
+      const stack: { node: number, parent: number | null }[] = [{ node: startNode, parent: null }];
+      
+      while (stack.length > 0) {
+        const { node: curr, parent } = stack.pop()!;
+        
+        if (!visited.has(curr)) {
+          visited.add(curr);
+          if (parent !== null) edgeTree.push({ u: parent, v: curr });
+
+          computedSteps.push({
+            current: curr,
+            visited: new Set(visited),
+            frontier: new Set(stack.map(s => s.node).filter(n => !visited.has(n))),
+            edgeTree: [...edgeTree]
+          });
+
+          const neighbors = adjacencyList.get(curr)!;
+          for (const neighbor of neighbors) {
+            if (!visited.has(neighbor)) {
+              stack.push({ node: neighbor, parent: curr });
+            }
+          }
+        }
+      }
+    }
+
+    computedSteps.push({
+      current: null,
+      visited: new Set(visited),
+      frontier: new Set(),
+      edgeTree: [...edgeTree]
+    });
+
+    setSteps(computedSteps);
+    setCurrentStepIdx(0);
+  }, [nodes, adjacencyList, algorithm]);
+
+  // Initial mount
+  useEffect(() => { generateGraph(); }, [generateGraph]);
+
+  // Playback Loop
+  useEffect(() => {
+    if (isPlaying) {
+      timerRef.current = setInterval(() => {
+        setCurrentStepIdx(prev => {
+          if (prev >= steps.length - 1) {
+            setIsPlaying(false);
+            return prev;
+          }
+          return prev + 1;
+        });
+      }, speed);
+    } else if (timerRef.current) {
+      clearInterval(timerRef.current);
+    }
+    return () => { if (timerRef.current) clearInterval(timerRef.current); };
+  }, [isPlaying, steps.length, speed]);
+
+  const currentFrame = steps[currentStepIdx] || { current: null, visited: new Set(), frontier: new Set(), edgeTree: [] };
+
+  const theme = algorithm === 'BFS' ? {
+      primary: '#0ea5e9',
+      secondary: 'rgba(14, 165, 233, 0.2)',
+      active: '#38bdf8',
+      bg: 'bg-sky-950/20'
+  } : {
+      primary: '#f43f5e',
+      secondary: 'rgba(244, 63, 94, 0.2)',
+      active: '#fb7185',
+      bg: 'bg-rose-950/20'
+  };
+
+  const cycleSpeed = () => {
+      if (speed === 300) setSpeed(100);
+      else if (speed === 100) setSpeed(25);
+      else setSpeed(300);
   };
 
   return (
-    <div className="w-full bg-slate-900 border border-emerald-500/30 rounded-xl p-8 shadow-2xl flex flex-col gap-8">
+    <div className="my-12 border border-neutral-800 rounded-2xl overflow-hidden bg-neutral-900/50 shadow-2xl font-sans">
         
-        {/* HEADER & CONTROLS */}
-        <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <div>
-                <div className="text-xs font-bold text-emerald-500 uppercase tracking-widest mb-1">Algorithm Lab</div>
-                <h3 className="text-2xl font-black text-white">Breadth-First Search (BFS)</h3>
-                <p className="text-sm text-slate-400 mt-1 max-w-md">
-                    BFS explores the graph layer by layer. It is guaranteed to find the shortest path in an unweighted graph.
-                </p>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between px-6 py-4 bg-black/80 border-b border-neutral-800 gap-4">
+            <div className="flex items-center gap-4">
+                <div className="flex gap-1 bg-neutral-900 p-1 rounded-lg border border-neutral-800">
+                    <button 
+                        onClick={() => { setAlgorithm('BFS'); setIsPlaying(false); }} 
+                        className={`px-4 py-1.5 rounded text-xs font-bold uppercase tracking-widest transition-colors ${algorithm === 'BFS' ? 'bg-sky-600 text-white' : 'text-neutral-500 hover:text-white'}`}
+                    >
+                        BFS (Ripple)
+                    </button>
+                    <button 
+                        onClick={() => { setAlgorithm('DFS'); setIsPlaying(false); }} 
+                        className={`px-4 py-1.5 rounded text-xs font-bold uppercase tracking-widest transition-colors ${algorithm === 'DFS' ? 'bg-rose-600 text-white' : 'text-neutral-500 hover:text-white'}`}
+                    >
+                        DFS (Snake)
+                    </button>
+                </div>
+                <button onClick={generateGraph} className="p-2 text-neutral-400 hover:text-white hover:bg-neutral-800 rounded-lg transition-colors flex items-center gap-2 text-xs font-bold uppercase">
+                    <Network size={16}/> Reseed Maze
+                </button>
             </div>
-
-            <div className="flex gap-2">
-                 <button 
-                    onClick={() => setStep(prev => Math.min(prev + 1, BFS_STEPS.length - 1))}
-                    disabled={step === BFS_STEPS.length - 1}
-                    className="px-6 py-3 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white font-bold uppercase rounded flex items-center gap-2"
-                 >
-                     <Play size={16} /> Step
-                 </button>
-                 <button 
-                    onClick={() => setStep(0)}
-                    className="px-4 py-3 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded"
-                 >
-                     <RotateCcw size={16} />
-                 </button>
+            
+            <div className="flex items-center gap-2">
+                <button onClick={() => setCurrentStepIdx(0)} className="p-2 text-neutral-400 hover:text-white transition-colors"><RotateCcw size={16}/></button>
+                <button onClick={() => setIsPlaying(!isPlaying)} className={`p-2 rounded-full flex items-center justify-center transition-colors ${isPlaying ? 'bg-amber-500 text-black' : 'bg-white text-black'}`}>
+                    {isPlaying ? <Pause size={16} className="fill-current"/> : <Play size={16} className="fill-current ml-0.5"/>}
+                </button>
+                <button onClick={cycleSpeed} className="p-2 text-neutral-400 hover:text-white transition-colors flex items-center gap-1 w-20 justify-center">
+                    {speed === 300 ? <Turtle size={16} /> : <FastForward size={16} />}
+                    <span className="text-[10px] font-mono">{speed}ms</span>
+                </button>
             </div>
         </div>
 
-        {/* VISUALIZER */}
-        <div className="bg-black/40 rounded-xl border border-slate-700 h-[300px] relative overflow-hidden flex items-center justify-center">
-            <div className="absolute inset-0 bg-[url('https://upload.wikimedia.org/wikipedia/commons/1/10/Grid_graph_paper.svg')] opacity-5 pointer-events-none invert" />
-            
-            <svg width="500" height="300" viewBox="0 0 500 300">
-                {/* Draw Edges */}
-                {EDGES.map(([s, t], i) => {
-                    const nodeS = NODES[s];
-                    const nodeT = NODES[t];
-                    // Highlight edge if both nodes visited? Optional, keep simple for now.
-                    const isActive = current.visited.includes(s) && current.visited.includes(t);
-                    return (
-                        <line 
-                            key={i} 
-                            x1={nodeS.x} y1={nodeS.y} 
-                            x2={nodeT.x} y2={nodeT.y} 
-                            stroke={isActive ? "#34d399" : "#334155"} 
-                            strokeWidth={isActive ? 3 : 1}
-                            className="transition-all duration-500"
-                        />
-                    );
-                })}
+        <div className="bg-[#020202] relative p-0 flex justify-center items-center w-full overflow-hidden border-b border-neutral-800 h-[450px]">
+             <svg viewBox="0 0 800 450" className="w-full h-full">
+                {/* 1. Base Grid Edges */}
+                {edges.map((edge, i) => (
+                    <line 
+                        key={`base-${i}`}
+                        x1={nodes[edge.u].x} y1={nodes[edge.u].y}
+                        x2={nodes[edge.v].x} y2={nodes[edge.v].y}
+                        stroke="rgba(255, 255, 255, 0.05)"
+                        strokeWidth="2"
+                    />
+                ))}
 
-                {/* Draw Nodes */}
-                {NODES.map((n) => {
-                    const status = getNodeStatus(n.id);
-                    let fill = "#1e293b"; // Unvisited (Slate-800)
-                    let stroke = "#475569"; // Slate-600
-                    let radius = 15;
+                {/* 2. Traversal Path */}
+                {currentFrame.edgeTree.map((edge, i) => (
+                    <line 
+                        key={`tree-${i}`}
+                        x1={nodes[edge.u].x} y1={nodes[edge.u].y}
+                        x2={nodes[edge.v].x} y2={nodes[edge.v].y}
+                        stroke={theme.primary}
+                        strokeWidth="4"
+                        className="transition-all duration-300 drop-shadow-[0_0_8px_currentColor]"
+                    />
+                ))}
 
-                    if (status === 'visited') {
-                        fill = "#065f46"; // Emerald-800
-                        stroke = "#059669"; // Emerald-600
+                {/* 3. Grid Nodes */}
+                {nodes.map(node => {
+                    const isVisited = currentFrame.visited.has(node.id);
+                    const isFrontier = currentFrame.frontier.has(node.id);
+                    const isCurrent = currentFrame.current === node.id;
+
+                    let fill = '#111';
+                    let stroke = '#222';
+                    let radius = 6;
+                    let strokeWidth = 2;
+
+                    if (isCurrent) {
+                        fill = '#fff'; stroke = theme.active; radius = 10; strokeWidth = 3;
+                    } else if (isFrontier) {
+                        fill = theme.secondary; stroke = theme.primary; radius = 8;
+                    } else if (isVisited) {
+                        fill = theme.primary; stroke = theme.primary; radius = 6;
                     }
-                    if (status === 'frontier') {
-                        fill = "#10b981"; // Emerald-500
-                        stroke = "#a7f3d0"; // Emerald-200
-                        radius = 18; // Pulse effect
-                    }
 
                     return (
-                        <g key={n.id} className="transition-all duration-500">
-                            <circle cx={n.x} cy={n.y} r={radius} fill={fill} stroke={stroke} strokeWidth="2" />
-                            <text 
-                                x={n.x} y={n.y + 4} 
-                                textAnchor="middle" 
-                                fontSize="10" 
-                                fontWeight="bold" 
-                                fill={status === 'frontier' ? 'black' : 'white'}
-                            >
-                                {n.label}
-                            </text>
+                        <g key={`node-${node.id}`} className="transition-all duration-300 ease-out">
+                            {isCurrent && (
+                                <circle cx={node.x} cy={node.y} r={24} fill="none" stroke={theme.active} strokeWidth="2" className="animate-ping opacity-50" />
+                            )}
+                            <circle cx={node.x} cy={node.y} r={radius} fill={fill} stroke={stroke} strokeWidth={strokeWidth} />
                         </g>
                     );
                 })}
-            </svg>
-
-            {/* Status Bar */}
-            <div className="absolute bottom-4 left-0 right-0 text-center">
-                <div className="inline-block px-4 py-2 bg-slate-900/80 backdrop-blur border border-emerald-500/30 rounded-full text-xs font-mono text-emerald-400">
-                    {`> ${current.msg}`}
-                </div>
-            </div>
+             </svg>
         </div>
 
-        {/* LEGEND */}
-        <div className="flex justify-center gap-8 text-xs font-bold uppercase text-slate-500">
-            <div className="flex items-center gap-2">
-                <div className="w-3 h-3 bg-slate-800 border border-slate-600 rounded-full" /> Unvisited
+        <div className={`p-6 flex flex-col justify-center gap-4 ${theme.bg}`}>
+            <div className="flex items-center gap-4">
+                <span className="text-[10px] font-mono text-neutral-500">START</span>
+                <input 
+                    type="range" min="0" max={Math.max(0, steps.length - 1)} step="1" 
+                    value={currentStepIdx} 
+                    onChange={e => { setCurrentStepIdx(parseInt(e.target.value)); setIsPlaying(false); }}
+                    className="flex-1 h-2 bg-neutral-800 rounded-lg appearance-none cursor-pointer"
+                    style={{ accentColor: theme.primary }}
+                />
+                <span className="text-[10px] font-mono text-neutral-500">END</span>
             </div>
-            <div className="flex items-center gap-2">
-                <div className="w-3 h-3 bg-emerald-800 border border-emerald-600 rounded-full" /> Visited
-            </div>
-            <div className="flex items-center gap-2">
-                <div className="w-3 h-3 bg-emerald-500 border border-emerald-200 rounded-full animate-pulse" /> Frontier (Active)
+
+            <div className="flex justify-between items-center text-xs font-mono uppercase">
+                <div className="flex gap-6">
+                    <span className="text-white"><strong style={{color: theme.primary}}>{currentFrame.visited.size}</strong> Explored</span>
+                    <span className="text-white"><strong style={{color: theme.active}}>{currentFrame.frontier.size}</strong> Discovered</span>
+                </div>
+                <div className="text-neutral-500">Step {currentStepIdx} / {steps.length - 1}</div>
             </div>
         </div>
     </div>
