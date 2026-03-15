@@ -26,7 +26,8 @@ export default function SocialStudiesHub() {
       disciplines: [
         { name: "Sociology", href: "/social-science/sociology", icon: Users, color: "text-indigo-400", desc: "Structures & Groups" },
         { name: "Political Science", href: "/social-science/political-science", icon: Gavel, color: "text-amber-400", desc: "Power & Policy" },
-        { name: "Economics", href: "/social-science/economics", icon: Coins, color: "text-emerald-400", desc: "Resources & Choice" }
+        { name: "Economics", href: "/social-science/economics", icon: Coins, color: "text-emerald-400", desc: "Resources & Choice" },
+        { name: "Law", href: "/social-science/law", icon: LineChart, color: "text-red-400", desc: "Rules & Justice" }
       ] 
     },
     { 

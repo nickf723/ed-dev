@@ -8,6 +8,8 @@ import {
   Network
 } from "lucide-react";
 import SymmetryBackground from "./SymmetryBackground";
+import { VocabTerm } from "@/components/VocabApplet";
+import VocabApplet from "@/components/VocabApplet";
 
 // --- CURRICULUM ---
 const MODULES = [

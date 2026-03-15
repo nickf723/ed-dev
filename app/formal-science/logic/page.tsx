@@ -8,7 +8,7 @@ import {
 } from 'lucide-react';
 import LogicBackground from './_components/LogicBackground';
 import TruthEngine from './_components/TruthEngine';
-import { M } from '@/components/Math'; 
+import { M } from '@/app/_components/Math'
 
 const CURRICULUM = [
   {

@@ -1,204 +1,186 @@
 "use client";
 import React, { useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image'; // <-- Imported Next.js Image
-import { 
-  Gamepad2, Search, Filter, 
-  ArrowRight, Star, Clock, 
-  CheckCircle2, CircleDashed 
-} from 'lucide-react';
+import { Gamepad2, Database, ArrowRight, Search, CheckCircle2, CircleDashed, 
+  PlayCircle, Star, Sword, Skull, Library, MountainSnow } from 'lucide-react';
 import { GAMES_DB } from './_data/gamesDB';
 
-export default function GameVaultPage() {
-  const [activeGenre, setActiveGenre] = useState<string>('All');
-  const [sortBy, setSortBy] = useState<'title' | 'year' | 'rating'>('rating');
-  
-  const genres = ['All', ...Array.from(new Set(GAMES_DB.map(game => game.genre)))];
+// Helper for the status badges
+const StatusIcon = ({ status }: { status: string }) => {
+    switch(status) {
+        case 'Completed': return <CheckCircle2 size={14} className="text-emerald-500" />;
+        case 'Playing': return <PlayCircle size={14} className="text-amber-500" />;
+        case 'Backlog': return <CircleDashed size={14} className="text-slate-500" />;
+        default: return null;
+    }
+};
 
-  const featuredGame = GAMES_DB.find(g => g.id === 'super-mario-galaxy') || GAMES_DB[0];
-  const FeaturedIcon = featuredGame.icon;
+export default function VideoGamesHub() {
+    const [searchTerm, setSearchTerm] = useState('');
 
-  let processedGames = activeGenre === 'All' 
-    ? [...GAMES_DB] 
-    : GAMES_DB.filter(game => game.genre === activeGenre);
+    const filteredGames = GAMES_DB.filter(game => 
+        game.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
+        game.genre.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
-  processedGames.sort((a, b) => {
-      if (sortBy === 'title') return a.title.localeCompare(b.title);
-      if (sortBy === 'year') return b.releaseYear - a.releaseYear;
-      if (sortBy === 'rating') return b.rating - a.rating;
-      return 0;
-  });
+    return (
+        <main className="min-h-screen bg-[#050505] text-neutral-300 font-sans selection:bg-indigo-500/30">
+            <div className="max-w-[75rem] mx-auto px-6 py-12 md:py-24">
+                
+                {/* HUB HEADER */}
+                <header className="mb-16 border-b border-neutral-800 pb-8">
+                    <div className="flex items-center gap-3 mb-4">
+                        <span className="p-2 bg-indigo-950/30 border border-indigo-500/20 rounded-lg text-indigo-400">
+                            <Gamepad2 size={24} />
+                        </span>
+                        <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-neutral-500">
+                            Humanities // Gaming // Interactive
+                        </span>
+                    </div>
+                    <h1 className="text-5xl md:text-7xl font-black text-white tracking-tighter mb-4">
+                        VIDEO GAMES
+                    </h1>
+                    <p className="text-lg text-neutral-400 font-light max-w-2xl leading-relaxed">
+                        The repository for interactive digital media, systemic design analysis, and comprehensive franchise databases.
+                    </p>
+                </header>
 
-  const getStatusIcon = (status: string) => {
-      if (status === 'Completed') return <CheckCircle2 size={14} className="text-emerald-500" />;
-      if (status === 'Playing') return <Clock size={14} className="text-amber-500" />;
-      return <CircleDashed size={14} className="text-neutral-500" />;
-  };
+                {/* SECTION 1: MASSIVE REPOSITORIES */}
+                <section className="mb-20">
+                    <h2 className="text-sm font-black uppercase tracking-widest text-neutral-500 mb-6 flex items-center gap-2">
+                        <Database size={16} /> API-Connected Repositories
+                    </h2>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        {/* THE POKEMON PORTAL */}
+                        <Link href="/humanities/gaming/video/pokemon/1" className="group block h-full">
+                            <div className="h-full bg-neutral-900/40 border border-neutral-800 hover:border-red-500/50 rounded-2xl p-6 transition-all duration-300 relative overflow-hidden flex flex-col">
+                                {/* Pokeball Decal */}
+                                <div className="absolute -right-8 -bottom-8 w-40 h-40 border-[16px] border-neutral-800/50 rounded-full group-hover:border-red-500/10 transition-colors z-0" />
+                                <div className="absolute right-6 bottom-6 w-8 h-8 bg-neutral-800/50 rounded-full group-hover:bg-red-500/10 transition-colors z-0" />
+                                <div className="absolute right-0 bottom-12 w-24 h-4 bg-neutral-800/50 group-hover:bg-red-500/10 transition-colors z-0" />
 
-  return (
-    <main className="relative min-h-screen bg-[#050505] font-sans text-neutral-300">
-      
-      <div className="relative z-10 max-w-[90rem] mx-auto px-6 py-12 lg:py-24">
-         
-         {/* HEADER */}
-         <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16">
-             <div>
-                 <div className="flex items-center gap-3 text-purple-500 mb-6 font-mono text-xs font-bold tracking-[0.2em] uppercase">
-                     <span className="w-8 h-px bg-purple-500"></span>
-                     Interactive Media
-                 </div>
-                 <h1 className="text-6xl md:text-8xl font-black text-white tracking-tighter leading-none">
-                     THE VAULT
-                 </h1>
-             </div>
-         </div>
-
-         {/* FEATURED HERO SECTION */}
-         <Link 
-            href={featuredGame.href}
-            className={`group relative w-full rounded-3xl overflow-hidden bg-gradient-to-br from-${featuredGame.color}-900/40 to-black border border-neutral-800 hover:border-${featuredGame.color}-500/50 transition-all duration-500 mb-16 flex flex-col md:flex-row min-h-[400px] shadow-2xl block`}
-         >
-             {/* Left Content */}
-             <div className="p-8 md:p-16 flex flex-col justify-center flex-1 relative z-20">
-                 <div className="flex items-center gap-3 mb-4">
-                     <span className={`px-3 py-1 rounded bg-${featuredGame.color}-950/80 border border-${featuredGame.color}-500/50 text-${featuredGame.color}-400 text-[10px] font-black uppercase tracking-widest backdrop-blur-md`}>
-                         Featured Title
-                     </span>
-                     <span className="flex items-center gap-1 text-yellow-500 font-bold text-sm bg-black/50 px-2 py-1 rounded backdrop-blur-md">
-                         <Star size={14} fill="currentColor"/> {featuredGame.rating}/10
-                     </span>
-                 </div>
-                 
-                 <h2 className="text-5xl md:text-7xl font-black text-white mb-4 tracking-tight drop-shadow-lg">
-                     {featuredGame.title}
-                 </h2>
-                 <p className="text-lg text-neutral-300 max-w-xl leading-relaxed font-light mb-8 drop-shadow-md">
-                     {featuredGame.summary}
-                 </p>
-                 
-                 <div className={`flex items-center gap-2 text-sm font-bold text-${featuredGame.color}-400 uppercase tracking-widest group-hover:gap-4 transition-all drop-shadow-md`}>
-                     Access Records <ArrowRight size={16} />
-                 </div>
-             </div>
-
-             {/* Right Graphic / Image Area */}
-             <div className="flex-1 relative flex items-center justify-center p-12 overflow-hidden min-h-[300px] md:min-h-full">
-                 <div className="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-l from-transparent via-black/50 to-[#050505] z-10"></div>
-                 
-                 {featuredGame.imageUrl ? (
-                     <Image 
-                         src={featuredGame.imageUrl} 
-                         alt={featuredGame.title} 
-                         fill 
-                         className="object-cover object-center opacity-60 group-hover:scale-105 group-hover:opacity-80 transition-all duration-700 z-0"
-                     />
-                 ) : (
-                     <FeaturedIcon size={300} className={`text-${featuredGame.color}-500 opacity-20 group-hover:scale-110 group-hover:rotate-12 transition-all duration-700 relative z-0`} />
-                 )}
-             </div>
-         </Link>
-
-         {/* CONTROLS BAR */}
-         <div className="flex flex-col lg:flex-row justify-between items-center mb-12 gap-6 bg-neutral-900/30 p-3 rounded-2xl border border-neutral-800 backdrop-blur-md">
-             
-             {/* Genre Filters */}
-             <div className="flex flex-wrap gap-2 w-full lg:w-auto">
-                 {genres.map(genre => (
-                     <button
-                        key={genre}
-                        onClick={() => setActiveGenre(genre)}
-                        className={`px-5 py-2.5 rounded-xl text-xs font-bold uppercase tracking-widest transition-all duration-300 ${
-                            activeGenre === genre 
-                                ? 'bg-white text-black shadow-lg scale-105' 
-                                : 'bg-black/50 text-neutral-500 hover:text-white hover:bg-neutral-800'
-                        }`}
-                     >
-                         {genre}
-                     </button>
-                 ))}
-             </div>
-
-             {/* Sorting */}
-             <div className="flex items-center gap-4 w-full lg:w-auto pr-2">
-                 <div className="flex items-center gap-2 bg-black/50 rounded-lg p-1 border border-neutral-800">
-                     <button onClick={() => setSortBy('rating')} className={`px-3 py-1.5 rounded text-[10px] font-bold uppercase tracking-widest transition-colors ${sortBy === 'rating' ? 'bg-neutral-800 text-white' : 'text-neutral-500'}`}>Rating</button>
-                     <button onClick={() => setSortBy('year')} className={`px-3 py-1.5 rounded text-[10px] font-bold uppercase tracking-widest transition-colors ${sortBy === 'year' ? 'bg-neutral-800 text-white' : 'text-neutral-500'}`}>Year</button>
-                     <button onClick={() => setSortBy('title')} className={`px-3 py-1.5 rounded text-[10px] font-bold uppercase tracking-widest transition-colors ${sortBy === 'title' ? 'bg-neutral-800 text-white' : 'text-neutral-500'}`}>A-Z</button>
-                 </div>
-             </div>
-         </div>
-
-         {/* THE GRID */}
-         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-             {processedGames.map((game) => {
-                 const Icon = game.icon;
-                 
-                 return (
-                     <Link 
-                        key={game.id} 
-                        href={game.href}
-                        className="group relative flex flex-col bg-[#0a0a0a] border border-neutral-800 rounded-2xl overflow-hidden hover:border-neutral-500 transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.5)]"
-                     >
-                        {/* COVER ART AREA */}
-                        <div className={`aspect-[3/4] w-full relative overflow-hidden bg-gradient-to-br from-black to-${game.color}-950/30 p-6 flex flex-col justify-between`}>
-                            
-                            {/* The Optional Image */}
-                            {game.imageUrl && (
-                                <>
-                                    <Image 
-                                        src={game.imageUrl} 
-                                        alt={game.title} 
-                                        fill 
-                                        className="object-cover opacity-60 group-hover:opacity-90 group-hover:scale-105 transition-all duration-700 z-0"
-                                    />
-                                    {/* Vignette/Gradient overlay so text is always readable over bright images */}
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-black/80 z-10 transition-opacity duration-500 group-hover:opacity-80"></div>
-                                </>
-                            )}
-
-                            {/* Top Badges */}
-                            <div className="flex justify-between items-start z-20">
-                                <span className="bg-black/80 backdrop-blur text-white text-[9px] font-black uppercase tracking-widest px-2 py-1 rounded border border-neutral-700">
-                                    {game.releaseYear}
-                                </span>
-                                <div className="flex items-center gap-1 bg-black/80 backdrop-blur px-2 py-1 rounded border border-neutral-700 text-[10px] font-bold text-yellow-500">
-                                    <Star size={10} fill="currentColor"/> {game.rating}
+                                <div className="relative z-10 flex-1">
+                                    <div className="text-[10px] font-bold text-red-500 uppercase tracking-widest bg-red-950/30 px-2 py-1 rounded border border-red-500/20 w-fit mb-4">
+                                        Live Database
+                                    </div>
+                                    <h3 className="text-2xl font-black text-white mb-2 group-hover:text-red-400 transition-colors">National Pokédex</h3>
+                                    <p className="text-sm text-neutral-400 leading-relaxed font-light mb-6 max-w-sm">
+                                        A systemic breakdown of genetics, stats, and lineage, powered by live PokeAPI integration across all 9 generations.
+                                    </p>
+                                </div>
+                                <div className="relative z-10 flex items-center gap-2 text-xs font-bold text-neutral-500 group-hover:text-white transition-colors mt-auto">
+                                    Access Terminal <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
                                 </div>
                             </div>
+                        </Link>
+                    </div>
+                </section>
 
-                            {/* Abstract Graphic Fallback (Only shows if no image) */}
-                            {!game.imageUrl && (
-                                <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-5 group-hover:opacity-10 transition-opacity duration-500 group-hover:scale-125 transform z-0">
-                                    <Icon size={140} />
-                                </div>
-                            )}
-
-                            {/* Title Area */}
-                            <div className="relative z-20 mt-auto">
-                                <div className={`text-[10px] font-black text-${game.color}-400 uppercase tracking-widest mb-2 flex items-center gap-2 drop-shadow-md`}>
-                                    {game.developer}
-                                </div>
-                                <h3 className="text-2xl font-black text-white leading-tight drop-shadow-lg">
-                                    {game.title}
-                                </h3>
+                {/* SECTION 1.5: GENRE STUDIES */}
+                <section className="mb-20">
+                    <h2 className="text-sm font-black uppercase tracking-widest text-neutral-500 mb-6 flex items-center gap-2">
+                        <Library size={16} /> Academic Genre Studies
+                    </h2>
+                    
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        {/* Platformers */}
+                        <Link href="/humanities/gaming/video/genres/platformers" className="group p-5 bg-neutral-900/30 border border-neutral-800 hover:border-sky-500/50 rounded-xl transition-all hover:-translate-y-1">
+                            <div className="flex justify-between items-start mb-3">
+                                <MountainSnow size={20} className="text-sky-500" />
+                                <ArrowRight size={14} className="text-neutral-600 group-hover:text-sky-400 transition-colors" />
                             </div>
+                            <h3 className="text-lg font-bold text-white mb-1">Platformers</h3>
+                            <p className="text-xs text-neutral-500 leading-relaxed">Kinesthetics, momentum, and spatial navigation.</p>
+                        </Link>
+
+                        {/* Metroidvanias */}
+                        <Link href="/humanities/gaming/video/genres/metroidvanias" className="group p-5 bg-neutral-900/30 border border-neutral-800 hover:border-indigo-500/50 rounded-xl transition-all hover:-translate-y-1">
+                            <div className="flex justify-between items-start mb-3">
+                                <Skull size={20} className="text-indigo-500" />
+                                <ArrowRight size={14} className="text-neutral-600 group-hover:text-indigo-400 transition-colors" />
+                            </div>
+                            <h3 className="text-lg font-bold text-white mb-1">Metroidvanias</h3>
+                            <p className="text-xs text-neutral-500 leading-relaxed">Utility-gated exploration and interconnected world design.</p>
+                        </Link>
+
+                        {/* RPGs */}
+                        <Link href="/humanities/gaming/video/genres/rpgs" className="group p-5 bg-neutral-900/30 border border-neutral-800 hover:border-amber-500/50 rounded-xl transition-all hover:-translate-y-1">
+                            <div className="flex justify-between items-start mb-3">
+                                <Sword size={20} className="text-amber-500" />
+                                <ArrowRight size={14} className="text-neutral-600 group-hover:text-amber-400 transition-colors" />
+                            </div>
+                            <h3 className="text-lg font-bold text-white mb-1">Role-Playing</h3>
+                            <p className="text-xs text-neutral-500 leading-relaxed">Action economies, state spaces, and narrative agency.</p>
+                        </Link>
+                    </div>
+                </section>
+
+                {/* SECTION 2: BESPOKE GAME ANALYSES */}
+                <section>
+                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-6 gap-4">
+                        <h2 className="text-sm font-black uppercase tracking-widest text-neutral-500 flex items-center gap-2">
+                            <Gamepad2 size={16} /> Curated Analyses & Reviews
+                        </h2>
+                        
+                        {/* Local Search */}
+                        <div className="flex items-center gap-3 bg-black border border-neutral-800 rounded-lg px-4 py-2 focus-within:border-indigo-500/50 transition-colors w-full sm:w-72">
+                            <Search size={14} className="text-neutral-500" />
+                            <input 
+                                type="text"
+                                placeholder="Filter archive..."
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                                className="bg-transparent border-none outline-none text-white text-xs w-full font-mono placeholder:text-neutral-600"
+                            />
                         </div>
+                    </div>
 
-                        {/* DATA BAR */}
-                        <div className="p-4 bg-black border-t border-neutral-900 flex justify-between items-center relative z-20">
-                            <span className="text-[10px] font-bold text-neutral-500 uppercase tracking-widest">
-                                {game.genre}
-                            </span>
-                            <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-neutral-400">
-                                {getStatusIcon(game.status)} {game.status}
-                            </div>
-                        </div>
-                     </Link>
-                 );
-             })}
-         </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                        {filteredGames.map(game => {
+                            const Icon = game.icon;
+                            return (
+                                <Link key={game.id} href={game.href} className="group block h-full">
+                                    <div className={`h-full bg-neutral-900/30 border border-neutral-800 hover:border-${game.color}-500/50 hover:bg-neutral-900/60 rounded-2xl p-6 transition-all duration-300 flex flex-col`}>
+                                        
+                                        {/* Card Header */}
+                                        <div className="flex justify-between items-start mb-4">
+                                            <div>
+                                                <div className={`text-[9px] font-black uppercase tracking-widest text-${game.color}-500 mb-1`}>
+                                                    {game.genre}
+                                                </div>
+                                                <h3 className="text-xl font-bold text-white group-hover:text-white transition-colors">{game.title}</h3>
+                                                <div className="text-xs text-neutral-500 font-mono mt-1">
+                                                    {game.developer} • {game.releaseYear}
+                                                </div>
+                                            </div>
+                                            <div className={`p-2 bg-${game.color}-950/30 rounded-lg text-${game.color}-400 group-hover:scale-110 transition-transform shrink-0`}>
+                                                <Icon size={20} />
+                                            </div>
+                                        </div>
 
-      </div>
-    </main>
-  );
+                                        <p className="text-sm text-neutral-400 leading-relaxed font-light mb-6 flex-1">
+                                            {game.summary}
+                                        </p>
+
+                                        {/* Meta Footer */}
+                                        <div className="flex items-center justify-between pt-4 border-t border-neutral-800/50">
+                                            <div className="flex items-center gap-1.5 text-xs font-mono font-bold text-neutral-400">
+                                                <StatusIcon status={game.status} /> {game.status}
+                                            </div>
+                                            <div className="flex items-center gap-1 text-xs font-bold text-amber-400 bg-amber-950/30 px-2 py-1 rounded border border-amber-500/20">
+                                                <Star size={12} className="fill-amber-400" />
+                                                {game.rating}/10
+                                            </div>
+                                        </div>
+                                    </div>
+                                </Link>
+                            )
+                        })}
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    );
 }

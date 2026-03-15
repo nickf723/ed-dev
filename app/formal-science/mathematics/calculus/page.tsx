@@ -6,9 +6,9 @@ import { CALCULUS_BRANCHES } from "./calculus-data";
 import { ArrowLeft, FunctionSquare, ChevronRight, Sigma } from "lucide-react";
 import RiemannBackground from "./RiemannBackground";
 import VectorFieldBackground from "./VectorFieldBackground";
-import VocabModule from "@/components/VocabModule";
+import VocabModule from "@/app/_components/VocabModule";
 import { calculusTerms } from "@/lib/glossary/formal-science/mathematics/calculus";
-import { M } from "@/components/Math";
+import { M } from "@/app/_components/Math";
 
 
 // Helper for LaTeX rendering (Simulation)

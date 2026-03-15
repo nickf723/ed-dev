@@ -1,8 +1,8 @@
 "use client";
 import React from "react";
 import { AutomataBackground } from "./AutomataBackground";
-import { DashboardCard } from "@/components/ui/DashboardCard";
-import { Panel } from "@/components/ui/Panel";
+import { DashboardCard } from "@/app/_components/ui/DashboardCard";
+import { Panel } from "@/app/_components/ui/Panel";
 import { 
   Bot, 
   GitCommit, 

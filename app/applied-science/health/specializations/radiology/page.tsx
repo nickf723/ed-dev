@@ -7,7 +7,7 @@ import {
 } from 'lucide-react';
 import RadiologyBackground from './_components/RadiologyBackground';
 import ImagingLab from './_components/ImagingLab';
-import { M } from '@/components/Math'; 
+import { M } from '@/app/_components/Math'; 
 
 const CURRICULUM = [
   {

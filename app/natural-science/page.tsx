@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { useAppStore } from "@/lib/store";
-import { ParticleButton } from "@/components/ui/ParticleButton";
+import { ParticleButton } from "@/app/_components/ui/ParticleButton";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { 

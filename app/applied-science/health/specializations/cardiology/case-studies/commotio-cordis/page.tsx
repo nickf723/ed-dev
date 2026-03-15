@@ -3,7 +3,7 @@ import { ArrowLeft, ShieldAlert, Activity, Zap } from 'lucide-react';
 import Link from 'next/link';
 import CardiologyBackground from '../../_components/CardiologyBackground';
 import CommotioLab from '../_components/CommotioLab';
-import { M } from '@/components/Math';
+import { M } from '@/app/_components/Math';
 
 export default function CommotioCordisPage() {
   return (

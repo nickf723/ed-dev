@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from 'react';
 import { Cpu, Power, Hash, GitCommit } from 'lucide-react';
-import { M } from '@/components/Math';
+import { M } from '@/app/_components/Math';
 
 export default function TruthEngine() {
   const [p, setP] = useState(false);

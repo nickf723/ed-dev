@@ -1,6 +1,6 @@
 import "./globals.css";
-import Sidebar from "@/components/Sidebar";
-import MainContent from "@/components/MainContent";
+import Sidebar from "@/app/_components/Sidebar";
+import MainContent from "@/app/_components/MainContent";
 
 export const metadata = {
   title: "The Knowledge Web",

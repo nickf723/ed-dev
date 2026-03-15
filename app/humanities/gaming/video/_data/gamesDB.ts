@@ -1,4 +1,4 @@
-import { Gamepad2, Skull, Sparkles, Sword, MountainSnow } from 'lucide-react';
+import { Sparkles, Skull, Sword, MountainSnow } from 'lucide-react';
 
 export type GameRecord = {
     id: string;
@@ -27,10 +27,10 @@ export const GAMES_DB: GameRecord[] = [
         summary: 'A gravity-defying masterpiece that redefined 3D platforming through spherical level design.',
         status: 'Completed',
         rating: 10,
-        href: '/humanities/gaming/video/platformers/super-mario-galaxy',
+        href: '/humanities/gaming/video/repository/super-mario/super-mario-galaxy',
         color: 'sky',
         icon: Sparkles,
-        imageUrl: 'https://static.wikitide.net/allthetropeswiki/4/46/SMG1_Cover_1467.png'
+        imageUrl: 'https://upload.wikimedia.org/wikipedia/en/7/76/Super_Mario_Galaxy_box_cover.png' // Swapped to Wikimedia for your config!
     },
     {
         id: 'hollow-knight',
@@ -42,7 +42,7 @@ export const GAMES_DB: GameRecord[] = [
         summary: 'A hauntingly beautiful descent into a ruined insect kingdom with razor-sharp combat.',
         status: 'Completed',
         rating: 9.5,
-        href: '/humanities/gaming/video/metroidvanias/hollow-knight',
+        href: '/humanities/gaming/video/repository/team-cherry/hollow-knight',
         color: 'indigo',
         icon: Skull
     },
@@ -56,7 +56,7 @@ export const GAMES_DB: GameRecord[] = [
         summary: 'An unparalleled open-world translation of the punishing, intricate Soulsborne formula.',
         status: 'Playing',
         rating: 10,
-        href: '/humanities/gaming/video/rpgs/elden-ring',
+        href: '/humanities/gaming/video/repository/fromsoftware/elden-ring',
         color: 'amber',
         icon: Sword
     },
@@ -70,7 +70,7 @@ export const GAMES_DB: GameRecord[] = [
         summary: 'A grueling, hyper-tight platformer that doubles as a profound narrative about overcoming anxiety.',
         status: 'Backlog',
         rating: 9,
-        href: '/humanities/gaming/video/platformers/celeste',
+        href: '/humanities/gaming/video/repository/extremely-ok-games/celeste',
         color: 'rose',
         icon: MountainSnow
     }

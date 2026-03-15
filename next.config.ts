@@ -1,14 +1,37 @@
-/** @type {import('next').NextConfig} */
+/** @type {import('next').Config} */
 const nextConfig = {
   images: {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'static.wikitide.net',
+        hostname: 'upload.wikimedia.org',
         port: '',
-        pathname: '/**', // This allows any path under this domain
+        pathname: '/**', 
       },
-      // You can add more trusted domains here in the future!
+      {
+        protocol: 'https',
+        hostname: 'raw.githubusercontent.com', // Needed for PokéAPI sprites!
+        port: '',
+        pathname: '/**', 
+      },
+      {
+        protocol: 'https',
+        hostname: 'www.transparenttextures.com', // For the space background pattern on the Super Mario Galaxy page
+        port: '',
+        pathname: '/**', 
+      },
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com', // For the hero image on the Ludology page
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'nintendo.fandom.com', // For the Gusty Garden Galaxy image on the Super Mario Galaxy page
+        port: '',
+        pathname: '/**',
+      }
     ],
   },
 };

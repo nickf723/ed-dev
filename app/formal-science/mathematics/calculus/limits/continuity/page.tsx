@@ -3,7 +3,7 @@ import { ArrowLeft, Activity } from 'lucide-react';
 import Link from 'next/link';
 import ContinuityBackground from './_components/ContinuityBackground';
 import ContinuityLab from './_components/ContinuityLab';
-import { M } from '@/components/Math';
+import { M } from '@/app/_components/Math';
 
 export default function ContinuityPage() {
   return (

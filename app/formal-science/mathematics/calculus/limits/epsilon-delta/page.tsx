@@ -3,7 +3,7 @@ import { ArrowLeft, Sword, Shield } from 'lucide-react';
 import Link from 'next/link';
 import EpsilonBackground from './_components/EpsilonBackground'; 
 import EpsilonDeltaLab from './_components/EpsilonDeltaLab';
-import { M } from '@/components/Math';
+import { M } from '@/app/_components/Math';
 
 
 

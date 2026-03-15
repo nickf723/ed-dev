@@ -9,7 +9,7 @@ import {
 } from 'lucide-react';
 import AmericasBackground from './_components/AmericasBackground';
 import ExchangeLab from './_components/ExchangeLab';
-import { M } from '@/components/Math'; 
+import { M } from '@/app/_components/Math'; 
 
 const EPOCHS = [
   {

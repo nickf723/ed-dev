@@ -43,8 +43,8 @@ export default function HeroJourney() {
             {steps.map((step, i) => {
                 const angle = (i / 12) * 2 * Math.PI - Math.PI / 2; // Start at top
                 const r = 80; // Radius
-                const x = Math.cos(angle) * r;
-                const y = Math.sin(angle) * r;
+                const x = (Math.cos(angle) * r).toFixed(3);
+                const y = (Math.sin(angle) * r).toFixed(3);
                 
                 return (
                     <button

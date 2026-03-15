@@ -3,7 +3,7 @@ import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import DerivativeBackground from './_components/DerivativeBackground';
 import LhopitalLab from './_components/LhopitalLab';
-import { M } from '@/components/Math';
+import { M } from '@/app/_components/Math';
 
 export default function LhopitalPage() {
   return (

@@ -7,7 +7,7 @@ import {
 } from 'lucide-react';
 import NorthAmericaBackground from './_components/NorthAmericaBackground';
 import ContestedMapLab from './_components/ContestedMapLab';
-import { M } from '@/components/Math';
+import { M } from '@/app/_components/Math';
 
 const NATIONS = [
   {
@@ -16,7 +16,7 @@ const NATIONS = [
     subtitle: 'The Federal Republic',
     description: 'Born from colonial rebellion, it expanded rapidly across the continent to become the dominant global military and economic hegemon.',
     icon: <Landmark size={20} className="text-blue-500" />,
-    href: '/applied-science/humanities/history/region/americas/usa',
+    href: '/humanities/history/regional/americas/north-america/usa',
     color: 'blue'
   },
   {
@@ -25,7 +25,7 @@ const NATIONS = [
     subtitle: 'The Northern Dominion',
     description: 'A vast, resource-rich federation built on treaties, French-British compromise, and remaining tied to the British Commonwealth.',
     icon: <MountainSnow size={20} className="text-red-500" />,
-    href: '/applied-science/humanities/history/region/americas/canada',
+    href: '/humanities/history/regional/americas/north-america/canada',
     color: 'red'
   },
   {
@@ -34,7 +34,7 @@ const NATIONS = [
     subtitle: 'The Cultural Synthesis',
     description: 'The direct heir to Mesoamerican empires and New Spain. A history defined by revolution, profound cultural synthesis, and regional influence.',
     icon: <Compass size={20} className="text-emerald-500" />,
-    href: '/applied-science/humanities/history/region/americas/mexico',
+    href: '/humanities/history/regional/americas/north-america/mexico',
     color: 'emerald'
   },
   {
@@ -43,7 +43,7 @@ const NATIONS = [
     subtitle: 'First Peoples',
     description: 'The sovereign histories of the Navajo, Iroquois Confederacy, Inuit, and hundreds of other nations existing before, during, and after colonization.',
     icon: <Tent size={20} className="text-amber-500" />,
-    href: '/applied-science/humanities/history/region/americas/indigenous',
+    href: '/humanities/history/regional/americas/north-america/indigenous',
     color: 'amber'
   }
 ];
@@ -55,7 +55,7 @@ export default function NorthAmericaPage() {
       
       <div className="relative z-10 max-w-[90rem] mx-auto px-6 py-12 lg:py-24">
          
-         <Link href="/applied-science/humanities/history/region/americas" className="inline-flex items-center gap-2 text-[10px] font-black tracking-widest text-neutral-500 hover:text-white mb-12 transition-colors uppercase">
+         <Link href="/humanities/history/regional/americas" className="inline-flex items-center gap-2 text-[10px] font-black tracking-widest text-neutral-500 hover:text-white mb-12 transition-colors uppercase">
              <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform"/> Back to The Americas
          </Link>
 

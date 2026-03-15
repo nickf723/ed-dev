@@ -7,7 +7,7 @@ import {
 } from 'lucide-react';
 import DentistryBackground from './_components/DentistryBackground';
 import ToothLab from './_components/ToothLab';
-import { M } from '@/components/Math'; 
+import { M } from '@/app/_components/Math'; 
 
 const CURRICULUM = [
   {

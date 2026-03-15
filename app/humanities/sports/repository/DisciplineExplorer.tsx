@@ -13,6 +13,13 @@ export default function DisciplineExplorer() {
     { id: 'basketball', name: 'Basketball', category: 'Team', popularity: 'High', intensity: 'High', icon: Zap, href: '/humanities/sports/repository/basketball' },
     { id: 'tennis', name: 'Tennis', category: 'Individual', popularity: 'Med', intensity: 'High', icon: Activity, href: '/humanities/sports/repository/tennis' },
     { id: 'f1', name: 'Formula 1', category: 'Racing', popularity: 'High', intensity: 'Extreme', icon: Trophy, href: '/humanities/sports/repository/f1' },
+    { id: 'hockey', name: 'Hockey', category: 'Team', popularity: 'Med', intensity: 'High', icon: Shield, href: '/humanities/sports/repository/hockey' },
+    { id: 'golf', name: 'Golf', category: 'Individual', popularity: 'Med', intensity: 'Low', icon: Globe, href: '/humanities/sports/repository/golf' },
+    { id: 'marathon', name: 'Marathon Running', category: 'Individual', popularity: 'Med', intensity: 'Extreme', icon: Activity, href: '/humanities/sports/repository/marathon' },
+    { id: 'nascar', name: 'NASCAR', category: 'Racing', popularity: 'High', intensity: 'High', icon: Trophy, href: '/humanities/sports/repository/nascar' },
+    { id: 'boxing', name: 'Boxing', category: 'Individual', popularity: 'Med', intensity: 'Extreme', icon: Zap, href: '/humanities/sports/repository/boxing' },
+    { id: 'rugby', name: 'Rugby', category: 'Team', popularity: 'Med', intensity: 'High', icon: Shield, href: '/humanities/sports/repository/rugby' },
+    { id: 'cycling', name: 'Cycling', category: 'Racing', popularity: 'Med', intensity: 'High', icon: Trophy, href: '/humanities/sports/repository/cycling' },
   ];
 
   const filtered = filter === 'All' ? sports : sports.filter(s => s.category === filter);

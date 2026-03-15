@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { TheoryBackground } from "./TheoryBackground";
-import { DashboardCard } from "@/components/ui/DashboardCard";
+import { DashboardCard } from "@/app/_components/ui/DashboardCard";
 import { 
   Sigma, 
   BrainCircuit, 

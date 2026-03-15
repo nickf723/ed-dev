@@ -3,7 +3,7 @@ import { ArrowLeft, Divide, Hammer } from 'lucide-react';
 import Link from 'next/link';
 import AlgebraBackground from './_components/AlgebraBackground';
 import LimitLawsLab from './_components/LimitLawsLab';
-import { M } from '@/components/Math';
+import { M } from '@/app/_components/Math';
 
 export default function LimitLawsPage() {
   return (

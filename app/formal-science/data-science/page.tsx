@@ -1,164 +1,179 @@
-"use client";
-import ClusterBackground from "@/app/formal-science/data-science/ClusterBackground";
-import DistributionWidget from "@/app/formal-science/data-science/DistributionWidget";
-import { motion } from "framer-motion";
-import {
-  ChartScatter,
-  BrainCog,
-  Table,
-  Target,
-  Database,
-  Eye,
-} from "lucide-react"; 
+import React from 'react';
+import Link from 'next/link';
+import { ArrowLeft, Network, Database, LineChart, BrainCircuit, Activity } from 'lucide-react';
+import DataScienceBackground from './_components/DataScienceBackground';
+import KMeansLab from './_components/KMeansLab';
 
-// Helper for icons if needed
-import { BarChart, Filter, Layers, Network } from "lucide-react";
+// Re-using your robust math component!
+import { M } from '@/app/_components/Math';
 
-// --- DATA ---
-const sectors = [
-  {
-    name: "Inference & Prediction",
-    desc: "Using math to uncover patterns and predict future events.",
-    color: "text-amber-400",
-    icon: BrainCog,
-    items: [
-      {
-        title: "Statistical Inference",
-        desc: "Drawing conclusions about a population from a sample using probability theory.",
-        href: "/formal-science/data-science/statistical-modeling",
-        Icon: ChartScatter,
-        className: "theme-data-science",
-        subtitle: "Hypothesis Testing"
-      },
-      {
-        title: "Machine Learning",
-        desc: "Algorithms that improve automatically through experience. Classification, Regression, and Clustering.",
-        href: "/formal-science/data-science/machine-learning",
-        Icon: Network,
-        className: "theme-data-science",
-        subtitle: "Automated Learning"
-      }
-    ]
-  },
-  {
-    name: "Data Engineering",
-    desc: "The architecture of data. Cleaning, storing, and structuring information.",
-    color: "text-orange-500",
-    icon: Database,
-    items: [
-      {
-        title: "Data Wrangling",
-        desc: "The process of cleaning and transforming raw data into a usable format.",
-        href: "/formal-science/data-science/data-wrangling",
-        Icon: Filter,
-        className: "theme-data-science",
-        subtitle: "Pre-processing"
-      },
-      {
-        title: "Experiment Design",
-        desc: "Designing A/B tests and trials to establish causality rather than just correlation.",
-        href: "/formal-science/data-science/experiment-design",
-        Icon: Target,
-        className: "theme-data-science",
-        subtitle: "Causality"
-      }
-    ]
-  }
+// Routing Grid Array
+const DS_TOPICS = [
+    {
+        id: 'statistics',
+        title: 'Statistical Inference',
+        description: 'Probability distributions, p-values, and hypothesis testing.',
+        icon: LineChart,
+        color: 'sky',
+        href: '#'
+    },
+    {
+        id: 'supervised',
+        title: 'Supervised Learning',
+        description: 'Linear regression, decision trees, and training models with labeled data.',
+        icon: Target, // Make sure to import Target from lucide-react if you use this
+        color: 'emerald',
+        href: '#'
+    },
+    {
+        id: 'neural',
+        title: 'Deep Learning',
+        description: 'Backpropagation, gradient descent, and artificial neural networks.',
+        icon: BrainCircuit,
+        color: 'violet',
+        href: '#'
+    },
+    {
+        id: 'bigdata',
+        title: 'Big Data Architecture',
+        description: 'Data pipelines, SQL/NoSQL, and distributed computing.',
+        icon: Database,
+        color: 'amber',
+        href: '#'
+    }
 ];
 
-// Static Pipeline Data for Sidebar
-const pipeline = [
-  { title: "Collection", desc: "APIs, Sensors", Icon: Database },
-  { title: "Processing", desc: "Cleaning, ETL", Icon: Filter },
-  { title: "Analysis", desc: "EDA, Modeling", Icon: BarChart },
-  { title: "Action", desc: "Decision Making", Icon: Target },
-];
-
-function PipelineStep({ item, isLast }: { item: typeof pipeline[0]; isLast: boolean }) {
-  return (
-    <div className="relative flex gap-4 pb-6 last:pb-0 group">
-      {!isLast && <div className="absolute left-[15px] top-8 bottom-0 w-0.5 bg-neutral-800 group-hover:bg-amber-500/30 transition-colors" />}
-      <div className="z-10 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-neutral-900 border border-neutral-800 text-neutral-500 group-hover:bg-amber-950/30 group-hover:text-amber-400 group-hover:border-amber-500/50 transition-colors">
-        <item.Icon size={14} />
-      </div>
-      <div className="pt-1">
-        <h4 className="text-xs font-bold text-neutral-300 group-hover:text-white transition-colors">{item.title}</h4>
-        <p className="text-[10px] text-neutral-500">{item.desc}</p>
-      </div>
-    </div>
-  );
-}
+// Fallback import fix
+import { Target } from 'lucide-react';
 
 export default function DataSciencePage() {
-  return (
-    <main className="relative min-h-screen overflow-hidden bg-neutral-950 lg:px-12">
-      
-      {/* 1. Cluster Background */}
-      <ClusterBackground />
-      
-      <div className="relative z-10 mx-auto flex max-w-7xl flex-col py-10">
-
-
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 items-start">
-          
-          {/* MAIN CONTENT (8 cols) */}
-          <div className="lg:col-span-9 space-y-10">
-             {sectors.map((sector, idx) => (
-              <section key={sector.name}>
-                 <motion.div 
-                    initial={{ opacity: 0, x: -10 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.4, delay: idx * 0.1 }}
-                    className="mb-4 flex items-center gap-3"
-                 >
-                    <sector.icon className={sector.color} size={20} />
-                    <h2 className="text-lg font-bold text-white tracking-wide">{sector.name}</h2>
-                    <div className="h-[1px] flex-1 bg-white/10"></div>
-                 </motion.div>
-
-                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-2">
-                    {sector.items.map((item, i) => (
-                        <motion.div
-                            key={item.title}
-                            initial={{ opacity: 0, y: 15 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.3, delay: 0.1 + (i * 0.05) }}
-                        >
-                        </motion.div>
-                    ))}
-                 </div>
-              </section>
-            ))}
-          </div>
-
-          {/* SIDEBAR (3 cols) */}
-          <div className="flex flex-col gap-6 lg:col-span-3 lg:sticky lg:top-6 h-fit pt-2">
+    return (
+        <main className="relative min-h-screen bg-[#050a0f] text-zinc-300 font-sans selection:bg-cyan-500/30 overflow-x-hidden">
             
-            {/* Distribution Lab Widget */}
-            <motion.div 
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.4 }}
-            >
-               <DistributionWidget />
-            </motion.div>
+            <DataScienceBackground />
 
-            {/* Pipeline Static Widget */}
-            <div className="glass p-6 rounded-xl border border-amber-900/20 bg-gradient-to-b from-neutral-900/80 to-neutral-950/80">
-               <h3 className="mb-6 text-xs font-bold uppercase tracking-widest text-amber-500 flex items-center gap-2">
-                 <Layers size={14} /> The Data Pipeline
-               </h3>
-               <div>
-                 {pipeline.map((p, i) => <PipelineStep key={p.title} item={p} isLast={i === pipeline.length - 1} />)}
-               </div>
+            <div className="relative z-10 max-w-[85rem] mx-auto px-6 py-12 md:py-24">
+                
+                {/* HEADER */}
+                <header className="mb-16 border-b border-white/10 pb-8 backdrop-blur-sm">
+                    <Link href="/formal-science" className="inline-flex items-center gap-2 text-zinc-500 hover:text-zinc-300 text-xs font-bold uppercase tracking-widest mb-6 transition-colors">
+                        <ArrowLeft size={14} /> Formal Science Directory
+                    </Link>
+                    
+                    <div className="flex items-center gap-3 mb-4">
+                        <span className="p-2 bg-black/50 border border-cyan-500/30 rounded-lg text-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.2)]">
+                            <Network size={24} />
+                        </span>
+                        <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-cyan-300/50">
+                            Formal Science // Computation
+                        </span>
+                    </div>
+                    
+                    <h1 className="text-5xl md:text-7xl font-black text-white tracking-tighter mb-6">
+                        DATA SCIENCE & <br />
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-indigo-400">MACHINE LEARNING</span>
+                    </h1>
+                    <p className="text-lg md:text-xl text-zinc-400 font-light max-w-3xl leading-relaxed">
+                        Extracting knowledge from noise. Data science utilizes mathematics, statistics, and computer algorithms to uncover hidden patterns in massive datasets, turning raw information into predictive power.
+                    </p>
+                </header>
+
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 mb-24">
+                    
+                    {/* LEFT: THEORETICAL TEXT */}
+                    <div className="lg:col-span-5 space-y-12">
+                        
+                        <section>
+                            <h2 className="text-2xl font-bold text-white mb-4 flex items-center gap-3">
+                                <Activity className="text-cyan-400" /> The Data Pipeline
+                            </h2>
+                            <p className="text-zinc-400 leading-relaxed font-light mb-4">
+                                Before a model can predict the future, data must be cleaned and transformed. Real-world data is messy, incomplete, and highly unstructured.
+                            </p>
+                            
+                            
+
+[Image of the Data Science Lifecycle]
+
+
+                            <div className="p-5 bg-black/40 border-l-4 border-cyan-500 text-sm text-zinc-300 font-serif italic rounded-r-xl mt-6">
+                                "Data is the new oil. It’s valuable, but if unrefined it cannot really be used." — Clive Humby
+                            </div>
+                        </section>
+
+                        <section className="pt-8 border-t border-white/5">
+                            <h2 className="text-2xl font-bold text-white mb-4 flex items-center gap-3">
+                                <BrainCircuit className="text-indigo-400" /> Unsupervised Learning
+                            </h2>
+                            <p className="text-zinc-400 leading-relaxed font-light mb-4">
+                                In <strong>Supervised Learning</strong>, we train models using labeled data (e.g., thousands of pictures explicitly tagged as "cats"). In <strong>Unsupervised Learning</strong>, we throw raw, unlabeled data at an algorithm and ask it to find the structure itself.
+                            </p>
+                            <p className="text-zinc-400 leading-relaxed font-light mb-4">
+                                The <strong>K-Means Clustering</strong> algorithm does this by scattering $k$ "centroids" into the data space. It then mathematically groups points based on Euclidean distance:
+                            </p>
+                            
+                            <div className="p-4 bg-zinc-900/50 border border-white/10 rounded-xl flex justify-center overflow-x-auto text-white shadow-inner mb-6">
+                                <M display>{String.raw`d(p, q) = \sqrt{(p_x - q_x)^2 + (p_y - q_y)^2}`}</M>
+                            </div>
+
+                            
+                        </section>
+
+                    </div>
+
+                    {/* RIGHT: INTERACTIVE LAB */}
+                    <div className="lg:col-span-7">
+                        <div className="sticky top-24">
+                            <KMeansLab />
+                        </div>
+                    </div>
+
+                </div>
+
+                {/* BOTTOM: DOMAIN ROUTING */}
+                <div className="pt-16 border-t border-white/10">
+                    <h2 className="text-2xl font-bold text-white mb-2 flex items-center gap-3">
+                        <Network className="text-cyan-400" /> Advanced Disciplines
+                    </h2>
+                    <p className="text-zinc-500 font-light mb-8">Navigate to specialized analytical modules.</p>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                        {DS_TOPICS.map((topic) => {
+                            const Icon = topic.icon;
+                            const borderHover = 
+                                topic.color === 'cyan' ? 'hover:border-cyan-500/50' :
+                                topic.color === 'violet' ? 'hover:border-violet-500/50' :
+                                topic.color === 'emerald' ? 'hover:border-emerald-500/50' :
+                                topic.color === 'sky' ? 'hover:border-sky-500/50' :
+                                'hover:border-amber-500/50';
+                                
+                            const iconColor = 
+                                topic.color === 'cyan' ? 'text-cyan-400' :
+                                topic.color === 'violet' ? 'text-violet-400' :
+                                topic.color === 'emerald' ? 'text-emerald-400' :
+                                topic.color === 'sky' ? 'text-sky-400' :
+                                'text-amber-400';
+
+                            return (
+                                <Link key={topic.id} href={topic.href} className={`bg-black/40 border border-white/5 p-6 rounded-2xl transition-all duration-300 group hover:-translate-y-1 ${borderHover}`}>
+                                    <div className="flex items-start justify-between mb-4">
+                                        <div className={`p-3 bg-white/5 rounded-xl ${iconColor}`}>
+                                            <Icon size={24} />
+                                        </div>
+                                    </div>
+                                    <h3 className="font-bold text-white mb-2 group-hover:text-white transition-colors">
+                                        {topic.title}
+                                    </h3>
+                                    <p className="text-xs text-zinc-400 leading-relaxed">
+                                        {topic.description}
+                                    </p>
+                                </Link>
+                            );
+                        })}
+                    </div>
+                </div>
+
             </div>
-
-          </div>
-
-        </div>
-      </div>
-    </main>
-  );
+        </main>
+    );
 }

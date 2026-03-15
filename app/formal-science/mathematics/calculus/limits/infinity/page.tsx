@@ -3,7 +3,7 @@ import { ArrowLeft, BookOpen, Quote } from 'lucide-react';
 import Link from 'next/link';
 import InfinityBackground from './_components/InfinityBackground';
 import InfiniteLab from './_components/InfiniteLab';
-import { M } from '@/components/Math';
+import { M } from '@/app/_components/Math';
 
 export default function InfiniteLimitsPage() {
   return (

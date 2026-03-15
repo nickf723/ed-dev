@@ -8,7 +8,8 @@ import {
 } from 'lucide-react';
 import USABackground from './_components/USABackground';
 import ExpansionLab from './_components/ExpansionLab';
-import { M } from '@/components/Math';
+import { M } from '@/app/_components/Math';
+import { desc } from 'framer-motion/client';
 
 const EPOCHS = [
   {
@@ -38,18 +39,18 @@ const EPOCHS = [
   {
     id: 'american-century',
     title: 'The American Century',
-    span: '1914 – Present',
+    span: '1914 – 2020',
     description: 'Two World Wars, the Great Depression, the Atomic Age, and the Cold War. The United States assumes the mantle of global democratic hegemon.',
     icon: <Globe size={24} className="text-white" />,
     href: '/humanities/history/regional/americas/usa/american-century'
   },
   {
-    id: '2026 and Beyond',
-    title: 'Uncertainty Ahead',
-    span: '2026 – ???',
-    description: 'Facing unprecedented challenges in climate, technology, and global power dynamics, the United States stands at a rapidly approaching crossroads.',
-    icon: <Flag size={24} className="text-red-500" />,
-    href: '/humanities/history/regional/americas/usa/beyond'
+    id: 'modern-day',
+    title: 'Polarization & Decline',
+    span: '2020 – present',
+    description: 'The fracturing of the American political consensus, the rise of hyper-partisanship, and the looming question of whether the United States can adapt to 21st-century challenges.',
+    icon: <MapPin size={24} className="text-slate-400" />,
+    href: '/humanities/history/regional/americas/usa/modern-day'
   }
 ];
 
@@ -60,7 +61,7 @@ export default function USAHistoryPage() {
       
       <div className="relative z-10 max-w-[90rem] mx-auto px-6 py-12 lg:py-24">
          
-         <Link href="/humanities/history/region/americas" className="inline-flex items-center gap-2 text-[10px] font-black tracking-widest text-neutral-500 hover:text-white mb-12 transition-colors uppercase">
+         <Link href="/humanities/history/regional/americas" className="inline-flex items-center gap-2 text-[10px] font-black tracking-widest text-neutral-500 hover:text-white mb-12 transition-colors uppercase">
              <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform"/> Back to The Americas
          </Link>
 

@@ -1,6 +1,4 @@
 "use client";
-import PageHeader from "@/components/PageHeader";
-import TopicCard from "@/components/TopicCard";
 import PsychedelicBackground from "@/app/interdisciplines/psychedelics/PsychedelicBackground";
 import BrainStateWidget from "@/app/interdisciplines/psychedelics/BrainStateWidget";
 import { motion } from "framer-motion";
@@ -96,11 +94,7 @@ export default function PsychedelicsPage() {
       
       <div className="relative z-10 mx-auto flex max-w-7xl flex-col py-10">
         
-        <PageHeader
-          eyebrow="Interdiscipline"
-          title="Psychedelics"
-          subtitle="The science of altered states. Bridging chemistry, neuroscience, and psychology to understand how specific molecules can dissolve the ego, rewire the brain, and reveal the mechanics of consciousness itself."
-        />
+
 
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 items-start">
           
@@ -129,7 +123,6 @@ export default function PsychedelicsPage() {
                             viewport={{ once: true }}
                             transition={{ duration: 0.3, delay: 0.1 + (i * 0.05) }}
                         >
-                            <TopicCard {...item} />
                         </motion.div>
                     ))}
                  </div>

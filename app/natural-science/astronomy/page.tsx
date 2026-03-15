@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { AstronomyBackground } from "./AstronomyBackground";
-import { DashboardCard } from "@/components/ui/DashboardCard";
+import { DashboardCard } from "@/app/_components/ui/DashboardCard";
 import { 
   Telescope, 
   Orbit, 

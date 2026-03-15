@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useRef } from "react";
-import { ChemicalElement, GROUP_COLORS } from "./chemistry-data";
+import { ChemicalElement, GROUP_COLORS } from "./_components/chemistry-data";
 
 export default function BohrAtom({ element }: { element: ChemicalElement }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);

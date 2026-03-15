@@ -1,130 +1,165 @@
-"use client";
-import Link from "next/link";
-import PrimeBackground from "@/app/formal-science/mathematics/number-theory/PrimeBackground";
-import ModularLoom from "@/app/formal-science/mathematics/number-theory/ModularLoom";
+import React from 'react';
+import Link from 'next/link';
 import { 
-  ArrowLeft, Key, Lock, Fingerprint, 
-  Hash, Clock, Sigma
-} from "lucide-react";
+    ArrowLeft, Fingerprint, Lock, Layers, 
+    Asterisk, ShieldAlert, Grid3X3, Brackets 
+} from 'lucide-react';
+import NumberTheoryBackground from './_components/NumberTheoryBackground';
+import PrimeLab from './_components/PrimeLab';
+
+// 1. THE CHILD ROUTES DATA STRUCTURE
+const NUMBER_THEORY_TOPICS = [
+    {
+        id: 'primes',
+        title: 'Primes & Divisibility',
+        description: 'The Sieve of Eratosthenes, prime counting function, and the Riemann Hypothesis.',
+        icon: Asterisk,
+        color: 'emerald',
+        href: '/formal-science/mathematics/number-theory/primes'
+    },
+    {
+        id: 'modular',
+        title: 'Modular Arithmetic',
+        description: 'Clock math, congruences, and Fermat\'s Little Theorem.',
+        icon: Grid3X3,
+        color: 'violet',
+        href: '/formal-science/mathematics/number-theory/modular'
+    },
+    {
+        id: 'cryptography',
+        title: 'Cryptographic Systems',
+        description: 'RSA encryption, public/private keys, and trapdoor functions.',
+        icon: ShieldAlert,
+        color: 'sky',
+        href: '/formal-science/mathematics/number-theory/cryptography'
+    },
+    {
+        id: 'diophantine',
+        title: 'Diophantine Equations',
+        description: 'Polynomial equations where only integer solutions are accepted.',
+        icon: Brackets,
+        color: 'rose',
+        href: '/formal-science/mathematics/number-theory/diophantine'
+    }
+];
 
 export default function NumberTheoryPage() {
-  return (
-    <main className="relative min-h-screen bg-[#0f0518] text-fuchsia-100 overflow-hidden font-sans selection:bg-gold-500/30">
-      
-      {/* 1. VISUAL ENGINE */}
-      <PrimeBackground />
-      
-      {/* OVERLAY */}
-      <div className="absolute inset-0 bg-radial-vignette opacity-80 pointer-events-none z-0" />
+    return (
+        <main className="relative min-h-screen bg-[#05050a] text-zinc-300 font-sans selection:bg-violet-500/30 overflow-x-hidden">
+            
+            <NumberTheoryBackground />
 
-      {/* 2. HEADER */}
-      <header className="relative z-20 flex items-center justify-between px-8 py-6 border-b border-white/10 bg-[#0f0518]/90 backdrop-blur-md sticky top-0">
-         <div className="flex items-center gap-6">
-             <Link href="/formal-science/mathematics" className="flex items-center gap-2 text-xs font-mono text-fuchsia-500 hover:text-fuchsia-400 transition-colors uppercase tracking-widest">
-                <ArrowLeft size={12} /> Mathematics
-             </Link>
-             <div className="h-4 w-px bg-white/10" />
-             <div className="flex items-center gap-3">
-                 <div className="p-1.5 bg-indigo-900 border border-fuchsia-500/50 rounded">
-                    <Key size={18} className="text-fuchsia-500" />
-                 </div>
-                 <h1 className="text-xl font-bold text-white tracking-tight">
-                    NUMBER_THEORY
-                 </h1>
-             </div>
-         </div>
-         <div className="hidden md:block text-[10px] font-mono text-fuchsia-500/50 uppercase tracking-widest">
-            The Queen of Mathematics
-         </div>
-      </header>
-
-      {/* 3. CONTENT GRID */}
-      <div className="relative z-10 container mx-auto p-6 md:p-8">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            <div className="relative z-10 max-w-[85rem] mx-auto px-6 py-12 md:py-24">
                 
-                {/* LEFT: THE CONCEPTS */}
-                <div className="lg:col-span-7 space-y-6">
+                {/* HEADER */}
+                <header className="mb-16 border-b border-white/10 pb-8 backdrop-blur-sm">
+                    <Link href="/formal-science/mathematics" className="inline-flex items-center gap-2 text-zinc-500 hover:text-zinc-300 text-xs font-bold uppercase tracking-widest mb-6 transition-colors">
+                        <ArrowLeft size={14} /> Mathematics Directory
+                    </Link>
                     
-                    {/* HERO CARD */}
-                    <div className="bg-indigo-950/60 backdrop-blur-md border border-white/10 rounded-2xl p-8 relative overflow-hidden group">
-                        <div className="absolute top-0 right-0 p-24 bg-fuchsia-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
-                        
-                        <div className="relative z-10">
-                            <h2 className="text-3xl font-bold text-white mb-4">The Atoms of Math</h2>
-                            <p className="text-sm text-indigo-100/80 leading-relaxed mb-6">
-                                Number Theory is the study of the integers: $0, 1, 2, 3...$. It asks simple questions with impossibly hard answers. Its core atoms are the **Prime Numbers**, the building blocks of all arithmetic.
+                    <div className="flex items-center gap-3 mb-4">
+                        <span className="p-2 bg-black/50 border border-violet-500/30 rounded-lg text-violet-400 shadow-[0_0_15px_rgba(139,92,246,0.2)]">
+                            <Fingerprint size={24} />
+                        </span>
+                        <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-violet-300/50">
+                            Formal Science // Pure Mathematics
+                        </span>
+                    </div>
+                    
+                    <h1 className="text-5xl md:text-7xl font-black text-white tracking-tighter mb-6">
+                        NUMBER <br />
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-emerald-400">THEORY</span>
+                    </h1>
+                    <p className="text-lg md:text-xl text-zinc-400 font-light max-w-3xl leading-relaxed">
+                        The study of the integers. While it was once considered the purest, most abstract branch of mathematics, it has become the foundational science behind modern cryptography and digital security.
+                    </p>
+                </header>
+
+                {/* TOP SECTION: THEORY & INTERACTIVE LAB */}
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 mb-24">
+                    
+                    {/* LEFT: THEORETICAL TEXT */}
+                    <div className="lg:col-span-5 space-y-12">
+                        <section>
+                            <h2 className="text-2xl font-bold text-white mb-4 flex items-center gap-3">
+                                <Layers className="text-violet-400" /> The Fundamental Theorem
+                            </h2>
+                            <p className="text-zinc-400 leading-relaxed font-light mb-4">
+                                The Fundamental Theorem of Arithmetic states that every integer greater than 1 is either prime itself or can be uniquely factored into a product of prime numbers. 
                             </p>
-                            <div className="flex gap-4">
-                                <div className="flex items-center gap-2 px-3 py-1.5 bg-black/30 rounded border border-white/5">
-                                    <Hash size={14} className="text-fuchsia-400" />
-                                    <span className="text-xs font-mono">Primes</span>
-                                </div>
-                                <div className="flex items-center gap-2 px-3 py-1.5 bg-black/30 rounded border border-white/5">
-                                    <Lock size={14} className="text-gold-400 text-yellow-500" />
-                                    <span className="text-xs font-mono">Crypto</span>
-                                </div>
+                            <div className="p-5 bg-black/40 border-l-4 border-violet-500 text-sm text-zinc-300 font-serif italic rounded-r-xl">
+                                Primes are the "atoms" of mathematics. Just as every molecule in the universe is built from a specific combination of elements, every number is built from a specific combination of primes.
                             </div>
-                        </div>
+                            <p className="text-zinc-400 leading-relaxed font-light mt-4 mb-4">
+                                For example, the number 60 can be broken down into $2^2 \times 3 \times 5$. No other combination of primes will ever multiply to exactly 60.
+                            </p>
+                            
+                        </section>
+
+                        <section className="pt-8 border-t border-white/5">
+                            <h2 className="text-2xl font-bold text-white mb-4 flex items-center gap-3">
+                                <Lock className="text-emerald-400" /> RSA & Cryptography
+                            </h2>
+                            <p className="text-zinc-400 leading-relaxed font-light mb-4">
+                                Why do primes matter outside of pure theory? Because factoring large numbers is computationally asymmetric. 
+                            </p>
+                            <p className="text-zinc-400 leading-relaxed font-light">
+                                If you take two massive prime numbers ($p$ and $q$) and multiply them together to get $N$, a computer can do that math in milliseconds. But if you give a computer $N$ and ask it to find the original $p$ and $q$, it could take a supercomputer millions of years. This "trapdoor function" secures the entire internet.
+                            </p>
+                        </section>
                     </div>
 
-                    
-
-                    {/* DOMAINS GRID */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        
-                        <div className="bg-indigo-950/40 border border-white/5 p-5 rounded-xl hover:border-fuchsia-500/30 transition-colors group">
-                            <div className="flex items-center gap-3 mb-2">
-                                <Fingerprint className="text-fuchsia-500" size={20} />
-                                <h3 className="font-bold text-white">Primes</h3>
-                            </div>
-                            <p className="text-xs text-indigo-200/60">
-                                The Fundamental Theorem of Arithmetic: Every integer is a unique product of primes.
-                            </p>
+                    {/* RIGHT: INTERACTIVE LAB */}
+                    <div className="lg:col-span-7">
+                        <div className="sticky top-24">
+                            <PrimeLab />
                         </div>
-
-                        <div className="bg-indigo-950/40 border border-white/5 p-5 rounded-xl hover:border-fuchsia-500/30 transition-colors group">
-                            <div className="flex items-center gap-3 mb-2">
-                                <Clock className="text-fuchsia-500" size={20} />
-                                <h3 className="font-bold text-white">Modular Arithmetic</h3>
-                            </div>
-                            <p className="text-xs text-indigo-200/60">
-                                "Clock math." $7 + 6 = 1$ (mod 12). The basis of modern cryptography.
-                            </p>
-                        </div>
-                        
-                        <div className="bg-indigo-950/40 border border-white/5 p-5 rounded-xl hover:border-fuchsia-500/30 transition-colors group">
-                            <div className="flex items-center gap-3 mb-2">
-                                <Lock className="text-fuchsia-500" size={20} />
-                                <h3 className="font-bold text-white">Cryptography</h3>
-                            </div>
-                            <p className="text-xs text-indigo-200/60">
-                                RSA Encryption relies on the fact that multiplying primes is easy, but factoring the result is hard.
-                            </p>
-                        </div>
-
                     </div>
                 </div>
 
-                {/* RIGHT: INTERACTIVE LAB */}
-                <div className="lg:col-span-5 space-y-6 flex flex-col items-center">
+                {/* BOTTOM SECTION: CHILD ROUTE NAVIGATION */}
+                <div className="pt-16 border-t border-white/10">
+                    <h2 className="text-2xl font-bold text-white mb-2 flex items-center gap-3">
+                        <Grid3X3 className="text-violet-400" /> Theoretical Branches
+                    </h2>
+                    <p className="text-zinc-500 font-light mb-8">Select a sub-discipline to initialize the interactive laboratory.</p>
                     
-                    {/* WIDGET */}
-                    <ModularLoom />
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                        {NUMBER_THEORY_TOPICS.map((topic) => {
+                            const Icon = topic.icon;
+                            // Tailwind safe color mapping
+                            const borderHover = 
+                                topic.color === 'violet' ? 'hover:border-violet-500/50' :
+                                topic.color === 'emerald' ? 'hover:border-emerald-500/50' :
+                                topic.color === 'sky' ? 'hover:border-sky-500/50' :
+                                'hover:border-rose-500/50';
+                                
+                            const iconColor = 
+                                topic.color === 'violet' ? 'text-violet-400' :
+                                topic.color === 'emerald' ? 'text-emerald-400' :
+                                topic.color === 'sky' ? 'text-sky-400' :
+                                'text-rose-400';
 
-                    {/* FERMAT CARD */}
-                    <div className="bg-indigo-950/60 border border-white/10 rounded-xl p-6 w-full">
-                        <h3 className="font-bold text-white mb-2">Fermat's Last Theorem</h3>
-                        <p className="text-xs text-indigo-200/60 leading-relaxed mb-3">
-                            For $n &gt; 2$, there are no integer solutions to $a^n + b^n = c^n$. 
-                            <br/><br/>
-                            Pierre de Fermat scribbled in a margin in 1637: "I have discovered a truly marvelous proof of this, which this margin is too narrow to contain." It took 358 years to actually prove it (Andrew Wiles, 1994).
-                        </p>
+                            return (
+                                <Link key={topic.id} href={topic.href} className={`bg-black/40 border border-white/5 p-6 rounded-2xl transition-all duration-300 group hover:-translate-y-1 ${borderHover}`}>
+                                    <div className="flex items-start justify-between mb-4">
+                                        <div className={`p-3 bg-white/5 rounded-xl ${iconColor}`}>
+                                            <Icon size={24} />
+                                        </div>
+                                    </div>
+                                    <h3 className="font-bold text-white mb-2 group-hover:text-white transition-colors">
+                                        {topic.title}
+                                    </h3>
+                                    <p className="text-xs text-zinc-400 leading-relaxed">
+                                        {topic.description}
+                                    </p>
+                                </Link>
+                            );
+                        })}
                     </div>
-
                 </div>
 
             </div>
-      </div>
-    </main>
-  );
+        </main>
+    );
 }

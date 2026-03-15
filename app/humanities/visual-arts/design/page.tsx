@@ -1,11 +1,12 @@
 "use client";
 import React from 'react';
 import Link from 'next/link';
-import BauhausGridEngine from "./BauhausGridEngine";
-import TypefaceAnatomy from "./TypefaceAnatomy";
+import BauhausGridEngine from "./_components/BauhausGridEngine";
+import TypefaceAnatomy from './_components/TypefaceAnatomy';
+import DesignAntiLab from "./_components/DesignAntiLab"; // IMPORT THE LAB
 import { 
   PenTool, LayoutGrid, Type, 
-  Palette, ArrowLeft, MousePointer 
+  Palette, ArrowLeft, MousePointer, AlertOctagon
 } from "lucide-react";
 
 export default function DesignPage() {
@@ -17,7 +18,7 @@ export default function DesignPage() {
       
       <div className="relative z-10 container mx-auto px-6 py-12">
         
-        {/* NAV */}
+        {/* NAV & HERO (Unchanged) */}
         <div className="flex items-center justify-between mb-24">
             <Link href="/humanities/visual-arts" className="group flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-stone-500 hover:text-black transition-colors">
                 <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" />
@@ -28,7 +29,6 @@ export default function DesignPage() {
             </div>
         </div>
 
-        {/* HERO */}
         <header className="mb-32">
             <div className="border-l-8 border-black pl-8 md:pl-16 py-4">
                 <h1 className="text-7xl md:text-9xl font-black tracking-tighter uppercase leading-[0.85] mb-8">
@@ -42,16 +42,13 @@ export default function DesignPage() {
             </div>
         </header>
 
-        {/* SECTION 1: THE FOUNDATIONS (Bento Grid) */}
+        {/* SECTION 1: THE FOUNDATIONS (Bento Grid - Unchanged) */}
         <section className="mb-32">
             <div className="flex items-center gap-4 mb-8">
                 <LayoutGrid size={24} />
                 <h2 className="text-3xl font-black uppercase tracking-tight">The Pillars</h2>
             </div>
-
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 auto-rows-[200px]">
-                
-                {/* CARD 1: TYPOGRAPHY */}
                 <div className="md:col-span-2 row-span-2 bg-black text-white p-8 flex flex-col justify-between group hover:bg-stone-900 transition-colors">
                     <Type size={32} className="text-stone-500" />
                     <div>
@@ -59,8 +56,6 @@ export default function DesignPage() {
                         <p className="text-stone-400 max-w-sm">The voice of text. Choosing the right typeface evokes authority, playfulness, or elegance before a single word is read.</p>
                     </div>
                 </div>
-
-                {/* CARD 2: COLOR */}
                 <div className="bg-red-600 text-white p-6 flex flex-col justify-between group">
                     <Palette size={24} className="text-red-200" />
                     <div>
@@ -68,8 +63,6 @@ export default function DesignPage() {
                         <p className="text-xs text-red-100">Psychology of hue.</p>
                     </div>
                 </div>
-
-                {/* CARD 3: SPACE */}
                 <div className="bg-white border-2 border-black p-6 flex flex-col justify-between group">
                     <div className="w-8 h-8 border-2 border-black rounded-full" />
                     <div>
@@ -77,8 +70,6 @@ export default function DesignPage() {
                         <p className="text-xs text-stone-500">The art of nothing.</p>
                     </div>
                 </div>
-
-                {/* CARD 4: GRID */}
                 <div className="md:col-span-1 bg-stone-200 p-6 flex flex-col justify-between group relative overflow-hidden">
                     <div className="absolute inset-0 grid grid-cols-4 gap-1 opacity-10">
                         {Array.from({length:16}).map((_,i)=><div key={i} className="bg-black/20" />)}
@@ -89,13 +80,21 @@ export default function DesignPage() {
                         <p className="text-xs text-stone-600">Order from chaos.</p>
                     </div>
                 </div>
-
             </div>
         </section>
 
-        
+        {/* SECTION 2: THE ANTI-LAB (NEW SECTION) */}
+        <section className="mb-32">
+            <div className="flex items-center gap-4 mb-8">
+                <AlertOctagon size={24} className="text-red-600" />
+                <h2 className="text-3xl font-black uppercase tracking-tight">The Anti-Lab</h2>
+            </div>
+            
+            <DesignAntiLab />
+            
+        </section>
 
-        {/* SECTION 2: INTERACTIVE LAB */}
+        {/* SECTION 3: ANATOMY (Previously Section 2) */}
         <section className="mb-32">
             <div className="flex items-center gap-4 mb-8">
                 <MousePointer size={24} />
@@ -103,17 +102,10 @@ export default function DesignPage() {
             </div>
             
             <TypefaceAnatomy />
-            
-            <div className="mt-4 flex gap-8 text-xs font-bold uppercase text-stone-400">
-                <span>// Cap Height</span>
-                <span>// X-Height</span>
-                <span>// Baseline</span>
-                <span>// Descender</span>
-            </div>
         </section>
 
-        {/* SECTION 3: HISTORY */}
-        <section className="border-t-4 border-black pt-12 grid grid-cols-1 md:grid-cols-2 gap-12">
+        {/* SECTION 4: HISTORY (Unchanged) */}
+        <section className="border-t-4 border-black pt-12 grid grid-cols-1 md:grid-cols-2 gap-12 mb-24">
             <div>
                 <h3 className="text-5xl font-black uppercase mb-6 leading-none">
                     From Bauhaus <br/> to Browser
@@ -126,7 +118,6 @@ export default function DesignPage() {
                 <p className="text-stone-700 leading-relaxed font-medium">
                     Today, these principles govern the digital world. The grid systems of Swiss posters became the CSS Grids of web design. The clarity of Helvetica became the utility of UI fonts like Inter and Roboto.
                 </p>
-                
             </div>
         </section>
 
