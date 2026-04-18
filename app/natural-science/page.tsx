@@ -12,7 +12,7 @@ import { ParticleButton } from "@/app/_components/ui/ParticleButton";
 import { cn } from "@/lib/utils";
 import { NaturalScienceBackground } from "./NaturalScienceBackground";
 import VocabDrawer, { VocabWord } from "@/app/_components/ui/VocabDrawer";
-import { naturalScienceFoundationsTerms } from "@/app/_data/vocab/n/natural-science";
+import { naturalScienceVocab } from "@/app/_data/vocab/n/natural-science";
 
 // --- INTERACTIVE CARDS ---
 const SCIENCES = [
@@ -68,10 +68,6 @@ const SCIENCES = [
   }
 ];
 
-const LESSON_VOCAB: VocabWord[] = Object.entries(naturalScienceFoundationsTerms).map(([term, details]) => ({
-    term,
-    ...details,
-}));
 
 export default function NaturalSciencesPage() {
   const [hoveredId, setHoveredId] = useState<string | null>(null);
@@ -81,7 +77,6 @@ export default function NaturalSciencesPage() {
 
   return (
     <main className="relative min-h-screen bg-black text-slate-300 font-sans selection:bg-emerald-500/30 overflow-x-hidden">
-        <VocabDrawer vocabList={LESSON_VOCAB} themeColor="emerald" />
         
         {/* Pass the exact ID string (e.g. "biology", "physics") */}
         <NaturalScienceBackground activeId={activeId} />
