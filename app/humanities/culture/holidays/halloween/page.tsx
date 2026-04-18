@@ -4,7 +4,7 @@ import Link from 'next/link';
 import BloodMoonFog from "./BloodMoonFog";
 import FearBioMonitor from "./FearBioMonitor";
 import SamhainRitualWheel from "./SamhainRitualWheel";
-import GlitchText from "@/components/GlitchText";
+import GlitchText from '@/app/_components/GlitchText';
 import { 
   Skull, Flame, ArrowLeft, Eye, 
   Database, Map, BookOpen, ExternalLink 
