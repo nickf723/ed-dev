@@ -1,8 +1,5 @@
 // app/applied-science/materials-science/page.tsx
 "use client";
-import PageHeader from "@/components/PageHeader";
-import FloatingSymbols from "@/components/FloatingSymbols";
-import TopicCard from "@/components/TopicCard";
 import React from "react";
 import { Atom, Box, FlaskConical, Hammer } from "lucide-react";
 
@@ -44,24 +41,6 @@ const branches = [
 export default function MaterialsSciencePage() {
   return (
     <main className="topic-page theme-applied-science lg:px-16">
-      <FloatingSymbols symbols={materialsScienceSymbols} />
-      <PageHeader
-        eyebrow="Applied Sciences"
-        title="Materials Science"
-        subtitle="The interdisciplinary field that investigates the relationship between the structure, properties, processing, and performance of matter for specific technological applications."
-      />
-      <section className="topic-grid">
-        {branches.map((branch) => (
-          <TopicCard
-            key={branch.href}
-            href={branch.href}
-            title={branch.title}
-            desc={branch.desc}
-            Icon={branch.Icon}
-            className={branch.className}
-          />
-        ))}
-      </section>
     </main>
   );
 }

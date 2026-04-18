@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
-import GlassBackground from "@/app/humanities/history/medieval/GlassBackground";
-import FeudalPyramid from "@/app/humanities/history/medieval/FeudalPyramid";
+import GlassBackground from "@/app/humanities/history/chronology/medieval/GlassBackground";
+import FeudalPyramid from "@/app/humanities/history/chronology/medieval/FeudalPyramid";
 import { 
   ArrowLeft, Castle, Crown, Book, Skull, Church, 
   Sword, Scroll,

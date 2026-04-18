@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
-import NavigationBackground from "@/app/humanities/history/early-modern/NavigationBackground";
-import CosmosWidget from "@/app/humanities/history/early-modern/CosmosWidget";
+import NavigationBackground from "@/app/humanities/history/chronology/early-modern/NavigationBackground";
+import CosmosWidget from "@/app/humanities/history/chronology/early-modern/CosmosWidget";
 import { 
   ArrowLeft, Compass, Ship, Feather, BookOpen, 
   Lightbulb, Globe

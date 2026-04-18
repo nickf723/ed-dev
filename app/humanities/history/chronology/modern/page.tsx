@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
-import ModernBackground from "@/app/humanities/history/modern/ModernBackground";
-import AccelerationGraph from "@/app/humanities/history/modern/AccelerationGraph";
+import ModernBackground from "@/app/humanities/history/chronology/modern/ModernBackground";
+import AccelerationGraph from "@/app/humanities/history/chronology/modern/AccelerationGraph";
 import { 
   ArrowLeft, Factory, Globe, Rocket, Radio, 
   Cpu, Activity

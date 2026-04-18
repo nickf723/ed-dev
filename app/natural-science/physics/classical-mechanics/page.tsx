@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { M } from "@/components/Math";
+import { M } from "@/app/_components/Math";
 import TrajectoryBackground from "@/app/natural-science/physics/classical-mechanics/TrajectoryBackground";
 import { ArrowLeft, Box, Move, Activity, TrendingUp, Scale, Clock } from "lucide-react";
 
