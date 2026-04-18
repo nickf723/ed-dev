@@ -38,7 +38,8 @@ import { architectureVocab } from './a/architecture';
 import { quantumMechanicsVocab } from './q/quantum-mechanics';
 import { data } from 'framer-motion/client';
 import { dataScienceVocab } from './d/data-science';
-import { meteorologyVocab } from './m/metroidvania';
+import { meteorologyVocab } from './m/meteorology';
+import { metroidvaniaVocab } from './m/metroidvania';
 import { anthropologyVocab } from './a/anthropology';
 import { mythologyVocab } from './m/mythology';
 import { cognitiveScienceVocab } from './c/cognitive-science';
@@ -76,5 +77,6 @@ export const ALL_VOCAB: VocabTerm[] = [
     ...meteorologyVocab,
     ...anthropologyVocab,
     ...mythologyVocab,
-    ...cognitiveScienceVocab
+    ...cognitiveScienceVocab,
+    ...metroidvaniaVocab
 ];
