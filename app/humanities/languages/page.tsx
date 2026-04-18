@@ -1,173 +1,144 @@
-"use client";
-import PageHeader from "@/components/PageHeader";
-import TopicCard from "@/components/TopicCard";
-import GlyphBackground from "@/app/humanities/GlyphBackground"; // NEW BACKGROUND
-import RosettaWidget from "@/app/humanities/languages/RosettaWidget";     // NEW WIDGET
-import { motion } from "framer-motion";
-import {
-  Globe, BookOpen, PenTool, Mic, Ear, Hand, MessageSquare, Sparkles
-} from "@/components/icons"; // Ensure these are exported in icons.ts
+import React from 'react';
+import Link from 'next/link';
+import { ArrowLeft, BookA, Globe2, Network, MessageCircle, SplitSquareHorizontal } from 'lucide-react';
+import LanguagesBackground from './_components/LanguagesBackground';
+import OmniTranslator from './_components/OmniTranslator';
 
-// --- DATA SECTORS ---
-const sectors = [
-  {
-    name: "Acquisition & Input",
-    desc: "How we absorb new tongues. Listening, reading, and immersion.",
-    color: "text-emerald-400",
-    icon: Ear,
-    items: [
-      {
-        title: "Immersion Strategy",
-        desc: "Learning by doing. Comprehensible input and the natural approach.",
-        href: "/humanities/languages/immersion",
-        Icon: Globe,
-        className: "theme-languages",
-        subtitle: "Input"
-      },
-      {
-        title: "Reading & Literacy",
-        desc: "Decoding scripts. From alphabets to logograms.",
-        href: "/humanities/languages/literacy",
-        Icon: BookOpen,
-        className: "theme-languages",
-        subtitle: "Decoding"
-      }
-    ]
-  },
-  {
-    name: "Production & Output",
-    desc: "Speaking your mind. Pronunciation, writing, and signing.",
-    color: "text-pink-400",
-    icon: Mic,
-    items: [
-      {
-        title: "Phonetics & Speech",
-        desc: "Mastering the sounds of the world (IPA). Accent reduction and flow.",
-        href: "/humanities/languages/phonetics",
-        Icon: Mic,
-        className: "theme-languages",
-        subtitle: "Sound"
-      },
-      {
-        title: "Sign Language (ASL)",
-        desc: "Visual-spatial communication. Grammar without words.",
-        href: "/humanities/languages/sign-language",
-        Icon: Hand,
-        className: "theme-languages",
-        subtitle: "Visual"
-      }
-    ]
-  },
-  {
-    name: "Structure & Logic",
-    desc: "The rules of the game. Grammar, syntax, and morphology.",
-    color: "text-amber-400",
-    icon: PenTool,
-    items: [
-      {
-        title: "Grammar Patterns",
-        desc: "Understanding sentence structure without memorizing rulebooks.",
-        href: "/humanities/languages/grammar",
-        Icon: PenTool,
-        className: "theme-languages",
-        subtitle: "Syntax"
-      },
-      {
-        title: "Conversation",
-        desc: "Pragmatics and social usage. How to actually talk to people.",
-        href: "/humanities/languages/conversation",
-        Icon: MessageSquare,
-        className: "theme-languages",
-        subtitle: "Social"
-      }
-    ]
-  }
+const LINGUISTIC_MODULES = [
+    {
+        id: 'morphology',
+        title: 'Morphology',
+        description: 'How words are built. Explore Isolating languages (Chinese) vs. Agglutinative languages (Turkish).',
+        icon: SplitSquareHorizontal,
+        color: 'sky',
+        href: '#' 
+    },
+    {
+        id: 'phonology',
+        title: 'Phonetics & Phonology',
+        description: 'The International Phonetic Alphabet (IPA) and the physical production of human speech sounds.',
+        icon: MessageCircle,
+        color: 'rose',
+        href: '/social-science/linguistics/phonology' // Linking to our previous build!
+    },
+    {
+        id: 'etymology',
+        title: 'Etymology & Language Trees',
+        description: 'Tracing the roots of modern languages back to Proto-Indo-European and beyond.',
+        icon: Network,
+        color: 'amber',
+        href: '#'
+    }
 ];
 
 export default function LanguagesPage() {
-  return (
-    <main className="relative min-h-screen overflow-hidden bg-neutral-950 lg:px-12">
-      
-      {/* 1. VISUAL ENGINE: The Tower of Babel */}
-      <GlyphBackground />
-      
-      <div className="relative z-10 mx-auto flex max-w-7xl flex-col py-10">
-        
-        <PageHeader
-          eyebrow="Humanities"
-          title="World Languages"
-          subtitle="The keys to the human experience. Learning a language is not just learning words, but learning a new way to think, see, and connect with the world."
-        />
-
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 items-start">
-          
-          {/* MAIN CONTENT (9 Cols) */}
-          <div className="lg:col-span-9 space-y-12">
-            {sectors.map((sector, idx) => (
-              <section key={sector.name}>
-                 {/* Sector Header */}
-                 <motion.div 
-                    initial={{ opacity: 0, x: -10 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.4, delay: idx * 0.1 }}
-                    className="mb-6 flex items-center gap-3"
-                 >
-                    <sector.icon className={sector.color} size={24} />
-                    <div>
-                        <h2 className="text-xl font-bold text-white tracking-wide">{sector.name}</h2>
-                        <p className="text-xs text-neutral-500">{sector.desc}</p>
-                    </div>
-                    <div className="h-[1px] flex-1 bg-white/10 ml-4"></div>
-                 </motion.div>
-
-                 {/* Card Grid */}
-                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-2">
-                    {sector.items.map((item, i) => (
-                        <motion.div
-                            key={item.title}
-                            initial={{ opacity: 0, y: 15 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.3, delay: 0.1 + (i * 0.05) }}
-                        >
-                            <TopicCard {...item} />
-                        </motion.div>
-                    ))}
-                 </div>
-              </section>
-            ))}
-          </div>
-
-          {/* SIDEBAR (3 Cols) */}
-          <div className="flex flex-col gap-6 lg:col-span-3 lg:sticky lg:top-6 h-fit pt-2">
+    return (
+        <main className="relative min-h-screen bg-[#0a0c10] text-zinc-300 font-sans selection:bg-violet-500/30 overflow-x-hidden">
             
-            {/* WIDGET: Rosetta Stone */}
-            <motion.div 
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.4 }}
-            >
-               <RosettaWidget />
-            </motion.div>
+            <LanguagesBackground />
 
-            {/* WIDGET: Quote Box */}
-            <div className="rounded-xl border border-pink-500/20 bg-pink-950/10 p-5 backdrop-blur-md">
-                <div className="flex flex-col gap-3">
-                    <Sparkles size={20} className="text-pink-400"/>
-                    <p className="text-xs text-neutral-300 leading-relaxed italic">
-                        "To have another language is to possess a second soul."
+            <div className="relative z-10 max-w-[85rem] mx-auto px-6 py-12 md:py-24">
+                
+                {/* HEADER */}
+                <header className="mb-16 border-b border-white/10 pb-8 backdrop-blur-sm">
+                    <Link href="/humanities" className="inline-flex items-center gap-2 text-zinc-500 hover:text-zinc-300 text-xs font-bold uppercase tracking-widest mb-6 transition-colors">
+                        <ArrowLeft size={14} /> Humanities Hub
+                    </Link>
+                    
+                    <div className="flex items-center gap-3 mb-4">
+                        <span className="p-2 bg-black/50 border border-violet-500/30 rounded-lg text-violet-400 shadow-[0_0_15px_rgba(139,92,246,0.2)]">
+                            <BookA size={24} />
+                        </span>
+                        <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-violet-300/50">
+                            Humanities // Global Communication
+                        </span>
+                    </div>
+                    
+                    <h1 className="text-5xl md:text-7xl font-black text-white tracking-tighter mb-6">
+                        LANGUAGES & <br />
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-amber-400">LINGUISTICS</span>
+                    </h1>
+                    <p className="text-lg md:text-xl text-zinc-400 font-light max-w-3xl leading-relaxed">
+                        To learn a new language is to learn a new way of thinking. Linguistics is the scientific study of language—how we map abstract thoughts onto physical sounds, and how different cultures structure their view of reality through grammar.
                     </p>
-                    <p className="text-[10px] font-bold uppercase tracking-widest text-pink-500 text-right">
-                        — Charlemagne
-                    </p>
+                </header>
+
+                <div className="grid grid-cols-1 gap-12 lg:gap-20 mb-24">
+                    
+                    {/* TOP: THEORETICAL TEXT */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+                        <section>
+                            <h2 className="text-2xl font-bold text-white mb-4 flex items-center gap-3">
+                                <Globe2 className="text-violet-400" /> Beyond Vocabulary
+                            </h2>
+                            <p className="text-zinc-400 leading-relaxed font-light mb-4">
+                                Most language apps focus heavily on memorizing vocabulary tables. But vocabulary is just the paint; grammar is the canvas. If you don't understand how a language structures its sentences, knowing the words won't help you communicate.
+                            </p>
+                            <p className="text-zinc-400 leading-relaxed font-light">
+                                For example, in English, the order of words determines who is doing what: <em>"The dog bites the man"</em> means something very different than <em>"The man bites the dog."</em> But in languages with heavy case systems (like Latin or Russian), the word endings determine the meaning, so you can mix the words in any order!
+                            </p>
+                        </section>
+
+                        <section>
+                            <h2 className="text-2xl font-bold text-white mb-4 flex items-center gap-3">
+                                <Network className="text-amber-400" /> Syntactic Alignment
+                            </h2>
+                            <p className="text-zinc-400 leading-relaxed font-light mb-4">
+                                When building a sentence, humans generally need three things: a Subject (actor), a Verb (action), and an Object (receiver). How a culture orders these three elements tells you a lot about their language family.
+                            </p>
+                            <div className="p-5 bg-black/40 border-l-4 border-violet-500 text-sm text-zinc-300 font-serif italic rounded-r-xl shadow-inner">
+                                Roughly 45% of the world's languages are <strong>SOV</strong> (Subject-Object-Verb, like Japanese or Korean). Another 42% are <strong>SVO</strong> (like English or Mandarin). Only a tiny fraction use <strong>VSO</strong> (like Irish or Arabic), placing the action at the very beginning of the thought.
+                            </div>
+                        </section>
+                    </div>
+
+                    {/* BOTTOM: THE MASSIVE INTERACTIVE LAB */}
+                    <div className="w-full">
+                        <OmniTranslator />
+                    </div>
+
                 </div>
+
+                {/* ROUTING: LINGUISTIC BRANCHES */}
+                <div className="pt-16 border-t border-white/10">
+                    <h2 className="text-2xl font-bold text-white mb-2 flex items-center gap-3">
+                        <BookA className="text-violet-400" /> Linguistic Branches
+                    </h2>
+                    <p className="text-zinc-500 font-light mb-8">Dive deeper into the mechanics of human speech and writing systems.</p>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        {LINGUISTIC_MODULES.map((topic) => {
+                            const Icon = topic.icon;
+                            const borderHover = 
+                                topic.color === 'sky' ? 'hover:border-sky-500/50' :
+                                topic.color === 'rose' ? 'hover:border-rose-500/50' :
+                                'hover:border-amber-500/50';
+                                
+                            const iconColor = 
+                                topic.color === 'sky' ? 'text-sky-400' :
+                                topic.color === 'rose' ? 'text-rose-400' :
+                                'text-amber-400';
+
+                            return (
+                                <Link key={topic.id} href={topic.href} className={`bg-black/40 border border-white/5 p-6 rounded-2xl transition-all duration-300 group hover:-translate-y-1 ${borderHover}`}>
+                                    <div className="flex items-start justify-between mb-4">
+                                        <div className={`p-3 bg-white/5 rounded-xl ${iconColor}`}>
+                                            <Icon size={24} />
+                                        </div>
+                                    </div>
+                                    <h3 className="font-bold text-white mb-2 group-hover:text-white transition-colors">
+                                        {topic.title}
+                                    </h3>
+                                    <p className="text-xs text-zinc-400 leading-relaxed">
+                                        {topic.description}
+                                    </p>
+                                </Link>
+                            );
+                        })}
+                    </div>
+                </div>
+
             </div>
-
-          </div>
-
-        </div>
-      </div>
-    </main>
-  );
+        </main>
+    );
 }

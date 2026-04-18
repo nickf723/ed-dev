@@ -1,7 +1,6 @@
 "use client";
 import React, { useState } from 'react';
 import { AlignEndVertical, Calculator, Settings2 } from 'lucide-react';
-import { M } from '@/components/Math';
 
 export default function RiemannLab() {
   const [n, setN] = useState(5);

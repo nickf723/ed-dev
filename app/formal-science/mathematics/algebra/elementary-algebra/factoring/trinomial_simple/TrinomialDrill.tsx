@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from 'react';
-import MathRenderer from '@/components/MathRenderer';
+import { M } from "@/app/_components/Math";
 import { CheckCircle, XCircle, ArrowRight, Zap, HelpCircle } from 'lucide-react';
 
 const DRILLS = [
@@ -43,7 +43,7 @@ export default function TrinomialDrill() {
   return (
     <div className="bg-[#134e4a] text-white rounded-2xl p-8 max-w-3xl mx-auto shadow-2xl relative overflow-hidden border border-teal-800">
         <div className="absolute top-0 right-0 p-8 opacity-5 pointer-events-none">
-            <MathRenderer expression="x^2+bx+c" block />
+            <M>x^2+bx+c</M>
         </div>
 
         {/* Header */}
@@ -68,7 +68,7 @@ export default function TrinomialDrill() {
                 Factor Completely
             </div>
             <div className="text-5xl font-black tracking-tight">
-                <MathRenderer expression={DRILLS[index].q} />
+                <M>{DRILLS[index].q}</M>
             </div>
         </div>
 

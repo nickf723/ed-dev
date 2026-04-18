@@ -5,7 +5,7 @@ import NightForestRadar from "./NightForestRadar";
 import EvidenceTerminal from "./EvidenceTerminal";
 import CryptidFrequencyTuner from "./CryptidFrequencyTuner";
 import LiveSightingsTicker from "./LiveSightingsTicker";
-import GlitchText from "../../../../../components/GlitchText";
+import GlitchText from './GlitchText';
 import { 
   Ghost, ArrowLeft, Eye, 
   AlertTriangle, Radio, ExternalLink,

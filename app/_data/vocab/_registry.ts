@@ -14,7 +14,34 @@ import { mathVocab } from './m/math';
 import { abstractAlgebraVocab } from './a/abstract-algebra';
 import { ludologyVocab } from './l/ludology';
 import { gameDesignVocab } from './g/game-design';
-import { lawVocab } from './l/law'; // Example additional domain
+import { lawVocab } from './l/law';
+import { linguisticsVocab } from './l/linguistics';
+import { economicsVocab } from './e/economics';
+import { philosophyVocab } from './p/philosophy';
+import { earthScienceVocab } from './e/earth-science';
+import { computerScienceVocab } from './c/computer-science';
+import { physicsVocab } from './p/physics';
+import { chemistryVocab } from './c/chemistry';
+import { biologyVocab } from './b/biology';
+import { astronomyVocab } from './a/astronomy';
+import { psychologyVocab } from './p/psychology';
+import { sociologyVocab } from './s/sociology';
+import { politicalScienceVocab } from './p/political-science';
+import { medicineVocab } from './m/medicine';
+import { musicVocab } from './m/music';
+import { visualArtsVocab } from './v/visual-arts';
+import { literatureVocab } from './l/literature';
+import { religionVocab } from './r/religion';
+import { algebraBasicsVocab } from './a/algebra-basics';
+import { arch } from 'os';
+import { architectureVocab } from './a/architecture';
+import { quantumMechanicsVocab } from './q/quantum-mechanics';
+import { data } from 'framer-motion/client';
+import { dataScienceVocab } from './d/data-science';
+import { meteorologyVocab } from './m/metroidvania';
+import { anthropologyVocab } from './a/anthropology';
+import { mythologyVocab } from './m/mythology';
+import { cognitiveScienceVocab } from './c/cognitive-science';
 
 export { mathVocab, abstractAlgebraVocab, ludologyVocab, gameDesignVocab };
 
@@ -24,5 +51,30 @@ export const ALL_VOCAB: VocabTerm[] = [
     ...abstractAlgebraVocab,
     ...ludologyVocab,
     ...gameDesignVocab,
-    ...lawVocab
+    ...lawVocab,
+    ...linguisticsVocab,
+    ...economicsVocab,
+    ...philosophyVocab,
+    ...earthScienceVocab,
+    ...computerScienceVocab,
+    ...physicsVocab,
+    ...chemistryVocab,
+    ...biologyVocab,
+    ...astronomyVocab,
+    ...psychologyVocab,
+    ...sociologyVocab,
+    ...politicalScienceVocab,
+    ...medicineVocab,
+    ...musicVocab,
+    ...visualArtsVocab,
+    ...literatureVocab,
+    ...religionVocab,
+    ...algebraBasicsVocab,
+    ...architectureVocab,
+    ...quantumMechanicsVocab,
+    ...dataScienceVocab,
+    ...meteorologyVocab,
+    ...anthropologyVocab,
+    ...mythologyVocab,
+    ...cognitiveScienceVocab
 ];

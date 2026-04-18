@@ -34,5 +34,29 @@ export const literatureVocab: VocabTerm[] = [
         tags: ['Analysis', 'Device'],
         relatedTerms: ['Theme', 'Symbolism'],
         isAdult: false
+    },
+    {
+        id: "lit-synecdoche",
+        word: "Synecdoche",
+        definition: "A figure of speech in which a part is made to represent the whole or vice versa (e.g., 'new wheels' referring to a new car).",
+        domain: "Literature",
+        tags: ["Rhetoric", "Poetry"],
+        isAdult: false
+    },
+    {
+        id: "lit-epistolary",
+        word: "Epistolary",
+        definition: "A novel written as a series of documents, usually letters, although diary entries, newspaper clippings, and other documents are sometimes used.",
+        domain: "Literature",
+        tags: ["Form", "Novel"],
+        isAdult: false
+    },
+    {
+        id: "lit-allegory",
+        word: "Allegory",
+        definition: "A narrative, whether in prose or verse, in which characters, events, and settings represent abstract concepts or moral qualities.",
+        domain: "Literature",
+        tags: ["Narrative", "Symbolism"],
+        isAdult: false
     }
 ];

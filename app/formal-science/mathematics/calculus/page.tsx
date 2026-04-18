@@ -1,30 +1,19 @@
 "use client";
 import React from "react";
 import Link from "next/link";
-import CalculusBackground from "./limits/_components/CalculusBackground";
 import { CALCULUS_BRANCHES } from "./calculus-data";
 import { ArrowLeft, FunctionSquare, ChevronRight, Sigma } from "lucide-react";
 import RiemannBackground from "./RiemannBackground";
 import VectorFieldBackground from "./VectorFieldBackground";
-import VocabModule from "@/app/_components/VocabModule";
-import { calculusTerms } from "@/lib/glossary/formal-science/mathematics/calculus";
 import { M } from "@/app/_components/Math";
 
 
-// Helper for LaTeX rendering (Simulation)
-const Latex = ({ children }: { children: string }) => (
-    <span className="font-serif italic font-bold tracking-wide text-lg opacity-90">
-        {children}
-    </span>
-);
 
 export default function CalculusPage() {
   return (
     <main className="min-h-screen bg-[#0f172a] text-slate-200 font-sans pl-0 md:pl-80 relative overflow-hidden selection:bg-cyan-500/30">
       <RiemannBackground />
-      {/* 1. VISUAL ENGINE */}
       <VectorFieldBackground />
-      
       <div className="fixed inset-0 bg-gradient-to-b from-transparent via-[#0f172a]/50 to-[#0f172a] pointer-events-none" />
 
       <div className="relative z-10 p-6 md:p-12 min-h-screen flex flex-col">
@@ -110,11 +99,7 @@ export default function CalculusPage() {
         <div className="lg:col-span-3 border-l border-white/5 bg-black/20 p-6 backdrop-blur-md">
             <div className="sticky top-8 space-y-8">
                 
-                {/* 1. VOCAB MODULE: Automatically populated */}
-                <VocabModule 
-                    terms={calculusTerms} 
-                    title="Calculus Concepts" 
-                />
+                
 
                 {/* 2. Other widgets (like Formulas or Tools) */}
                 <div className="p-4 rounded-xl border border-dashed border-slate-800 text-center">

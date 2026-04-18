@@ -20,7 +20,7 @@ const DOMAINS = [
   ]},
   { category: "Expression", items: [
     { id: "literature", title: "Literature", subtitle: "The Story", icon: BookOpen, desc: "Written works of artistic merit. The novel, poetry, and the power of narrative.", color: "text-stone-300", border: "border-stone-500/40", bg: "from-stone-500/20" },
-    { id: "language", title: "Language", subtitle: "The Code", icon: Languages, desc: "Linguistics and communication. The structure of how we transmit ideas.", color: "text-rose-300", border: "border-rose-500/40", bg: "from-rose-500/20" },
+    { id: "languages", title: "Languages", subtitle: "The Code", icon: Languages, desc: "Linguistics and communication. The structure of how we transmit ideas.", color: "text-rose-300", border: "border-rose-500/40", bg: "from-rose-500/20" },
     { id: "visual-arts", title: "Visual Arts", subtitle: "The Image", icon: Palette, desc: "Painting, sculpture, and design. Manifesting imagination into the physical world.", color: "text-fuchsia-400", border: "border-fuchsia-500/40", bg: "from-fuchsia-500/20" },
     { id: "performing-arts", title: "Performing Arts", subtitle: "The Stage", icon: Drama, desc: "Theater, dance, and cinema. The ephemeral art of the moment.", color: "text-red-400", border: "border-red-500/40", bg: "from-red-500/20" },
   ]},

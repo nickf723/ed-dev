@@ -4,7 +4,7 @@ import Link from 'next/link';
 import PrimeRain from "./PrimeRain"; // NEW Engine
 import GCFVisualizer from "./GCFVisualizer";
 import GCFPracticeDrill from "./GCFPracticeDrill";
-import MathRenderer from '@/components/MathRenderer';
+import { M } from "@/app/_components/Math";
 import { 
   ArrowLeft, Grid, Search, 
   Lightbulb, AlertTriangle, BookOpen, 
@@ -97,7 +97,7 @@ export default function GCFPage() {
                 <div className="bg-white/90 backdrop-blur-sm p-8 rounded-2xl border-l-4 border-blue-500 shadow-lg hover:-translate-y-1 transition-transform">
                     <div className="text-xs font-bold text-slate-400 uppercase mb-4">Example A: Standard</div>
                     <div className="text-2xl font-bold mb-6 text-slate-800">
-                        <MathRenderer expression="4x^2 - 8x" />
+                        <M>4x^2 - 8x</M>
                     </div>
                     <ul className="space-y-4 text-sm text-slate-600">
                         <li className="flex gap-3">
@@ -114,7 +114,7 @@ export default function GCFPage() {
                         </li>
                     </ul>
                     <div className="mt-6 pt-6 border-t border-slate-100 font-bold text-lg text-center bg-slate-50 rounded-lg py-2">
-                        Result: <MathRenderer expression="4x(x - 2)" />
+                        Result: <M>4x(x - 2)</M>
                     </div>
                 </div>
 
@@ -122,7 +122,7 @@ export default function GCFPage() {
                 <div className="bg-white/90 backdrop-blur-sm p-8 rounded-2xl border-l-4 border-purple-500 shadow-lg hover:-translate-y-1 transition-transform">
                     <div className="text-xs font-bold text-slate-400 uppercase mb-4">Example B: Prime</div>
                     <div className="text-2xl font-bold mb-6 text-slate-800">
-                        <MathRenderer expression="3x^3 + 5x^2 + 7" />
+                        <M>3x^3 + 5x^2 + 7</M>
                     </div>
                     <ul className="space-y-4 text-sm text-slate-600">
                         <li className="flex gap-3">

@@ -1,6 +1,8 @@
 "use client";
 import React from "react";
 import Link from "next/link";
+// Make sure this path matches where you saved your component!
+import Assessment, { AssessmentQuestion } from "@/app/_components/Assessment";
 import FundamentalsBackground from "./FundamentalsBackground";
 import { 
   ArrowLeft, Hash, ListOrdered, 
@@ -8,9 +10,41 @@ import {
   HelpCircle, Divide, Plus, X
 } from "lucide-react";
 
+// --- THE ASSESSMENT DATA ---
+const fundamentalsQuiz: AssessmentQuestion[] = [
+  {
+    id: 'f1',
+    type: 'matching',
+    prompt: 'Match the Real Number category to its correct example.',
+    leftItems: ['Integers (ℤ)', 'Rationals (ℚ)', 'Irrationals'],
+    rightItems: ['1/2, 0.75, -4.5', 'π, √2, non-repeating', '-5, 0, 42'],
+    correctPairs: {
+      'Integers (ℤ)': '-5, 0, 42',
+      'Rationals (ℚ)': '1/2, 0.75, -4.5',
+      'Irrationals': 'π, √2, non-repeating'
+    },
+    explanation: 'Integers are whole numbers and their negatives. Rationals are any number that can be written as a fraction. Irrationals go on forever without repeating.'
+  },
+  {
+    id: 'f2',
+    type: 'mcq',
+    prompt: 'Using the Order of Operations, evaluate: \n 10 - 2 × 3 + 1',
+    options: ['25', '5', '11', '15'],
+    correctAnswer: '5',
+    explanation: 'Multiplication comes first: 2 × 3 = 6. Then addition and subtraction are evaluated left to right: 10 - 6 = 4, and 4 + 1 = 5.'
+  },
+  {
+    id: 'f3',
+    type: 'tf',
+    prompt: 'True or False: A variable acts as a permanent label for one specific, unchanging number.',
+    correctAnswer: false,
+    explanation: 'False. A variable is a placeholder or a "container". It can represent an unknown number we need to find, or a value that changes depending on the equation.'
+  }
+];
+
 export default function FundamentalsPage() {
   return (
-    <main className="relative min-h-screen bg-[#022c22] text-white overflow-hidden font-mono selection:bg-emerald-500/30">
+    <main className="relative min-h-screen bg-[#022c22] text-white overflow-hidden font-mono selection:bg-emerald-500/30 pb-24">
       
       {/* 1. VISUAL ENGINE */}
       <FundamentalsBackground />
@@ -42,7 +76,7 @@ export default function FundamentalsPage() {
              </div>
         </header>
 
-        {/* SECTION 1: THE REAL NUMBER SYSTEM (Nested Boxes) */}
+        {/* SECTION 1: THE REAL NUMBER SYSTEM */}
         <section>
             <div className="flex items-center gap-3 mb-6">
                 <div className="h-px w-8 bg-emerald-500" />
@@ -52,11 +86,6 @@ export default function FundamentalsPage() {
             <div className="relative p-8 border border-emerald-500/30 rounded-xl bg-black/40 backdrop-blur-md">
                 <div className="absolute top-0 right-0 p-2 text-[10px] text-emerald-500/50 uppercase">Domain: ℝ</div>
                 
-                {/* Visualizing Sets as Nested Containers */}
-                
-
-[Image of real number system diagram]
-
                 <div className="border border-emerald-500/20 rounded-lg p-6 bg-emerald-900/10">
                     <span className="text-emerald-200 font-bold block mb-4">ℝ Real Numbers</span>
                     
@@ -90,7 +119,7 @@ export default function FundamentalsPage() {
             </div>
         </section>
 
-        {/* SECTION 2: ORDER OF OPERATIONS (Interactive Stack) */}
+        {/* SECTION 2: ORDER OF OPERATIONS */}
         <section>
             <div className="flex items-center gap-3 mb-6">
                 <div className="h-px w-8 bg-emerald-500" />
@@ -133,7 +162,7 @@ export default function FundamentalsPage() {
             </div>
         </section>
 
-        {/* SECTION 3: THE VARIABLE (Black Box Metaphor) */}
+        {/* SECTION 3: THE VARIABLE */}
         <section>
             <div className="flex items-center gap-3 mb-6">
                 <div className="h-px w-8 bg-emerald-500" />
@@ -168,6 +197,18 @@ export default function FundamentalsPage() {
                      </div>
                 </div>
             </div>
+        </section>
+
+        {/* SECTION 4: KNOWLEDGE CHECK (The new Assessment module!) */}
+        <section className="pt-12 border-t border-emerald-500/20 relative">
+            {/* Soft background glow specifically for the quiz section */}
+            <div className="absolute top-20 left-1/2 -translate-x-1/2 w-full max-w-3xl h-64 bg-emerald-500/5 rounded-full blur-[100px] pointer-events-none" />
+            
+            <Assessment 
+              title="Knowledge Check: Fundamentals" 
+              questions={fundamentalsQuiz} 
+              onComplete={(score, total) => console.log(`Fundamentals Quiz Completed: ${score}/${total}`)}
+            />
         </section>
 
       </div>

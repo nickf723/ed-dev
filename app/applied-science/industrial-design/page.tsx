@@ -1,127 +1,161 @@
-"use client";
-import Link from "next/link";
-import { motion } from "framer-motion";
-import DraftingBackground from "./DraftingBackground";
-import ExplodedView from "./ExplodedViewWidget";
-import { 
-  PenTool, Box, Settings, Layers, 
-  Armchair, Car, Smartphone, Ruler 
-} from "lucide-react";
+import React from 'react';
+import Link from 'next/link';
+import { ArrowLeft, Box, PenTool, LayoutTemplate, DraftingCompass, MonitorSmartphone, Layers } from 'lucide-react';
+import IndustrialBackground from './_components/IndustrialBackground';
+import IsometricLab from './_components/IsometricLab';
+
+const DESIGN_TOPICS = [
+    {
+        id: 'ergonomics',
+        title: 'Ergonomics & Human Factors',
+        description: 'Designing interfaces and physical forms that perfectly map to the biomechanics of the human body.',
+        icon: MonitorSmartphone,
+        color: 'emerald',
+        href: '#'
+    },
+    {
+        id: 'cad-cam',
+        title: 'CAD / CAM',
+        description: 'Computer-Aided Design and Manufacturing. Turning digital 3D models into G-Code for CNC machines.',
+        icon: LayoutTemplate,
+        color: 'sky',
+        href: '#'
+    },
+    {
+        id: 'materials',
+        title: 'Materials Science',
+        description: 'Selecting polymers, alloys, and composites based on tensile strength, weight, and thermal properties.',
+        icon: Box,
+        color: 'indigo',
+        href: '#'
+    }
+];
 
 export default function IndustrialDesignPage() {
-  const sectors = [
-    { title: "Product Design", icon: Smartphone, desc: "Consumer electronics and appliances." },
-    { title: "Furniture", icon: Armchair, desc: "Ergonomics and interior aesthetics." },
-    { title: "Automotive", icon: Car, desc: "Aerodynamics and transportation systems." },
-    { title: "Packaging", icon: Box, desc: "Structural integrity and unboxing experience." }
-  ];
-
-  return (
-    <main className="relative min-h-screen bg-[#0f172a] text-slate-200 overflow-hidden font-sans selection:bg-orange-500/30">
-      <DraftingBackground />
-      
-      {/* Blueprint Grid Overlay */}
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none" />
-
-      <div className="relative z-10 container mx-auto px-6 py-12">
-        
-        {/* HEADER */}
-        <header className="mb-16">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="p-2 bg-orange-500/10 border border-orange-500/30 rounded">
-              <PenTool className="text-orange-400" size={20} />
-            </div>
-            <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-orange-400">
-              Applied Science // Design
-            </span>
-          </div>
-          <h1 className="text-6xl md:text-8xl font-black text-white tracking-tighter uppercase leading-none">
-            INDUSTRIAL <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-amber-200">DESIGN</span>
-          </h1>
-          <p className="mt-6 text-slate-400 max-w-2xl text-lg font-light border-l-2 border-orange-500/30 pl-6">
-            The professional practice of designing products, devices, objects, and services used by millions of people worldwide every day.
-          </p>
-        </header>
-
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-          
-          {/* LEFT: THEORY & SECTORS */}
-          <div className="lg:col-span-7 space-y-12">
+    return (
+        <main className="relative min-h-screen bg-[#0a0a0c] text-zinc-300 font-sans selection:bg-sky-500/30 overflow-x-hidden">
             
-            {/* Philosophy Section */}
-            <section className="bg-slate-900/80 border border-white/10 p-8 rounded-3xl backdrop-blur-md">
-              <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
-                <Ruler className="text-orange-500" /> Form Follows Function
-              </h3>
-              <p className="text-sm text-slate-400 leading-relaxed mb-6">
-                A principle associated with 20th-century modern architecture and industrial design which says that the shape of a building or object should primarily relate to its intended function or purpose.
-              </p>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="p-4 bg-black/40 rounded-xl border border-white/5">
-                  <span className="text-xs font-bold text-orange-400 uppercase">Aesthetics</span>
-                  <p className="text-[10px] text-slate-500 mt-1">Emotional connection and style.</p>
-                </div>
-                <div className="p-4 bg-black/40 rounded-xl border border-white/5">
-                  <span className="text-xs font-bold text-orange-400 uppercase">Ergonomics</span>
-                  <p className="text-[10px] text-slate-500 mt-1">Usability and human fit.</p>
-                </div>
-              </div>
-            </section>
+            <IndustrialBackground />
 
-            {/* Sectors Grid */}
-            <section>
-              <h4 className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-6">Design Sectors</h4>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {sectors.map((s) => (
-                  <div key={s.title} className="group p-5 bg-slate-900/60 border border-white/5 hover:border-orange-500/50 rounded-xl transition-all hover:translate-x-1 cursor-default">
-                    <s.icon className="text-slate-600 group-hover:text-orange-400 transition-colors mb-3" size={24} />
-                    <h5 className="font-bold text-white">{s.title}</h5>
-                    <p className="text-xs text-slate-500">{s.desc}</p>
-                  </div>
-                ))}
-              </div>
-            </section>
-          </div>
+            <div className="relative z-10 max-w-[85rem] mx-auto px-6 py-12 md:py-24">
+                
+                {/* HEADER */}
+                <header className="mb-16 border-b border-white/10 pb-8 backdrop-blur-sm">
+                    <Link href="/applied-science" className="inline-flex items-center gap-2 text-zinc-500 hover:text-zinc-300 text-xs font-bold uppercase tracking-widest mb-6 transition-colors">
+                        <ArrowLeft size={14} /> Applied Science Hub
+                    </Link>
+                    
+                    <div className="flex items-center gap-3 mb-4">
+                        <span className="p-2 bg-black/50 border border-sky-500/30 rounded-lg text-sky-400 shadow-[0_0_15px_rgba(56,189,248,0.2)]">
+                            <PenTool size={24} />
+                        </span>
+                        <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-sky-300/50">
+                            Applied Science // Engineering & Art
+                        </span>
+                    </div>
+                    
+                    <h1 className="text-5xl md:text-7xl font-black text-white tracking-tighter mb-6">
+                        INDUSTRIAL <br />
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-indigo-400">DESIGN</span>
+                    </h1>
+                    <p className="text-lg md:text-xl text-zinc-400 font-light max-w-3xl leading-relaxed">
+                        Where engineering constraints meet human desires. Industrial designers define the form, function, aesthetics, and user experience of manufactured products—from the smartphone in your hand to the chair you are sitting on.
+                    </p>
+                </header>
 
-          {/* RIGHT: INTERACTIVE LAB */}
-          <div className="lg:col-span-5 space-y-6">
-            <div className="p-1 rounded-3xl bg-gradient-to-br from-orange-500/20 to-slate-800/50 border border-orange-500/20">
-              <div className="bg-slate-950/90 rounded-[22px] p-6">
-                <div className="flex justify-between items-center mb-6">
-                  <h3 className="font-bold text-white flex items-center gap-2">
-                    <Layers size={18} className="text-orange-400" /> CAD View
-                  </h3>
-                  <span className="text-[9px] font-mono text-orange-500 bg-orange-500/10 px-2 py-1 rounded">LIVE_RENDER</span>
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 mb-24">
+                    
+                    {/* LEFT: THEORETICAL TEXT */}
+                    <div className="lg:col-span-5 space-y-12">
+                        
+                        <section>
+                            <h2 className="text-2xl font-bold text-white mb-4 flex items-center gap-3">
+                                <DraftingCompass className="text-sky-400" /> The Language of Drafting
+                            </h2>
+                            <p className="text-zinc-400 leading-relaxed font-light mb-4">
+                                A sketch is an idea; a draft is a set of instructions. Before a product goes to a factory, designers use standardized projection techniques to ensure engineers know exactly what to build.
+                            </p>
+                            
+                            <div className="space-y-4 mb-6">
+                                <div className="p-4 bg-zinc-900/50 border border-white/5 rounded-xl text-sm text-zinc-300">
+                                    <span className="text-indigo-400 font-bold uppercase tracking-widest text-[10px]">Orthographic Projection</span><br/>
+                                    Looking at an object perfectly flat from the Top, Front, and Side. It provides perfectly accurate measurements but looks completely flat (like the 2D blueprint in the lab).
+                                </div>
+                                <div className="p-4 bg-zinc-900/50 border border-white/5 rounded-xl text-sm text-zinc-300 shadow-[0_0_15px_rgba(56,189,248,0.1)]">
+                                    <span className="text-sky-400 font-bold uppercase tracking-widest text-[10px]">Isometric Projection</span><br/>
+                                    Rotating an object so the X, Y, and Z axes are exactly 120° apart. This creates a brilliant illusion of 3D depth on a 2D page while maintaining parallel lines (no vanishing points).
+                                </div>
+                            </div>
+                            
+                            
+                        </section>
+
+                        <section className="pt-8 border-t border-white/5">
+                            <h2 className="text-2xl font-bold text-white mb-4 flex items-center gap-3">
+                                <Box className="text-indigo-400" /> Form Follows Function
+                            </h2>
+                            <p className="text-zinc-400 leading-relaxed font-light mb-4">
+                                This famous design principle dictates that the shape of an object should primarily relate to its intended purpose or function. A coffee mug has a handle because boiling water burns skin. 
+                            </p>
+
+                            
+
+                            <div className="p-5 bg-black/40 border-l-4 border-sky-500 text-sm text-zinc-300 font-serif italic rounded-r-xl mt-6">
+                                Good industrial design makes a product self-explanatory. When you look at a door with a flat metal plate, you instinctively know to <strong>Push</strong>. If it has a handle, you instinctively <strong>Pull</strong>. If a door requires a sign to tell you how to use it, the industrial design has failed.
+                            </div>
+                        </section>
+
+                    </div>
+
+                    {/* RIGHT: INTERACTIVE LAB */}
+                    <div className="lg:col-span-7">
+                        <div className="sticky top-24">
+                            <IsometricLab />
+                        </div>
+                    </div>
+
                 </div>
-                
-                {/* The Widget */}
-                <ExplodedView />
-                
-                <p className="text-[10px] text-slate-500 mt-4 leading-relaxed text-center">
-                  Product architecture usually consists of the chassis, internal hardware, and user interface layers.
-                </p>
-              </div>
+
+                {/* BOTTOM: ADVANCED ROUTING */}
+                <div className="pt-16 border-t border-white/10">
+                    <h2 className="text-2xl font-bold text-white mb-2 flex items-center gap-3">
+                        <Layers className="text-sky-400" /> Product Development
+                    </h2>
+                    <p className="text-zinc-500 font-light mb-8">Step beyond drafting and explore how products are engineered, tested, and manufactured.</p>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        {DESIGN_TOPICS.map((topic) => {
+                            const Icon = topic.icon;
+                            const borderHover = 
+                                topic.color === 'emerald' ? 'hover:border-emerald-500/50' :
+                                topic.color === 'sky' ? 'hover:border-sky-500/50' :
+                                'hover:border-indigo-500/50';
+                                
+                            const iconColor = 
+                                topic.color === 'emerald' ? 'text-emerald-400' :
+                                topic.color === 'sky' ? 'text-sky-400' :
+                                'text-indigo-400';
+
+                            return (
+                                <Link key={topic.id} href={topic.href} className={`bg-black/40 border border-white/5 p-6 rounded-2xl transition-all duration-300 group hover:-translate-y-1 ${borderHover}`}>
+                                    <div className="flex items-start justify-between mb-4">
+                                        <div className={`p-3 bg-white/5 rounded-xl ${iconColor}`}>
+                                            <Icon size={24} />
+                                        </div>
+                                    </div>
+                                    <h3 className="font-bold text-white mb-2 group-hover:text-white transition-colors">
+                                        {topic.title}
+                                    </h3>
+                                    <p className="text-xs text-zinc-400 leading-relaxed">
+                                        {topic.description}
+                                    </p>
+                                </Link>
+                            );
+                        })}
+                    </div>
+                </div>
+
             </div>
-
-            {/* Design Process Steps */}
-            <div className="bg-slate-900/60 border border-white/5 p-6 rounded-2xl">
-              <h4 className="text-xs font-bold text-white uppercase mb-4">The Design Process</h4>
-              <div className="space-y-4 relative">
-                {/* Vertical Line */}
-                <div className="absolute left-[7px] top-2 bottom-2 w-px bg-white/10" />
-                
-                {["Define", "Ideate", "Prototype", "Test"].map((step, i) => (
-                  <div key={step} className="flex items-center gap-4 relative z-10">
-                    <div className="w-3.5 h-3.5 rounded-full bg-slate-800 border border-orange-500/50" />
-                    <span className="text-xs text-slate-400">{step}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </main>
-  );
+        </main>
+    );
 }

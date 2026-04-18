@@ -3,7 +3,7 @@ import { ArrowLeft, Zap, Layers } from 'lucide-react';
 import Link from 'next/link';
 import PowerBackground from './_components/PowerBackground';
 import PowerRuleLab from './_components/PowerRuleLab';
-import { M } from '@/components/Math';
+import { M } from '@/app/_components/Math';
 
 export default function PowerRulePage() {
   return (

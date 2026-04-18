@@ -17,7 +17,7 @@ const FOUNDATION_TOPICS = [
         description: 'The four basic operations: Addition, Subtraction, Multiplication, and Division.',
         icon: Columns,
         color: 'rose',
-        href: '#' // Update these as you build the pages!
+        href: '/formal-science/mathematics/foundations/arithmetic' // Update these as you build the pages!
     },
     {
         id: 'inequalities',
@@ -33,7 +33,7 @@ const FOUNDATION_TOPICS = [
         description: 'Recognizing fundamental geometry: Circles, Polygons, and symmetry.',
         icon: Circle,
         color: 'cyan',
-        href: '#'
+        href: '/formal-science/mathematics/foundations/geometry'
     },
     {
         id: 'grouping',
@@ -41,7 +41,15 @@ const FOUNDATION_TOPICS = [
         description: 'The precursor to Set Theory. Organizing objects by shared properties.',
         icon: BoxSelect,
         color: 'yellow',
-        href: '#'
+        href: '/formal-science/mathematics/foundations/grouping'
+    },
+    {
+        id: 'statistics',
+        title: 'Statistics & Probability',
+        description: 'Collecting and analyzing data to make informed predictions about the world.',
+        icon: Hash,
+        color: 'emerald',
+        href: '/formal-science/mathematics/foundations/statistics'
     }
 ];
 

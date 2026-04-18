@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from 'react';
-import MathRenderer from '@/components/MathRenderer';
+import { M } from "@/app/_components/Math";
 import { Check, X, RefreshCw, HelpCircle } from 'lucide-react';
 
 const LEVELS = [

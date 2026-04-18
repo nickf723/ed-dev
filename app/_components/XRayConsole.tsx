@@ -68,21 +68,6 @@ export default function XRayConsole() {
                 {active ? "X-Ray Online" : "Enable X-Ray"}
             </span>
         </button>
-
-        <div className="mt-6 space-y-3">
-            <div className="flex justify-between text-[10px] font-mono text-neutral-500 border-b border-white/5 pb-2">
-                <span>DOM_NODES</span>
-                <span className="text-white">{domCount}</span>
-            </div>
-            <div className="flex justify-between text-[10px] font-mono text-neutral-500 border-b border-white/5 pb-2">
-                <span>RENDER_MODE</span>
-                <span className="text-emerald-400">CSR</span>
-            </div>
-            <div className="flex justify-between text-[10px] font-mono text-neutral-500 pb-2">
-                <span>STATUS</span>
-                <span className="text-white">OPTIMAL</span>
-            </div>
-        </div>
       </div>
     </div>
   );

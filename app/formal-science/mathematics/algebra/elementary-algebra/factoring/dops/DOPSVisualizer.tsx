@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from 'react';
-import MathRenderer from '@/components/MathRenderer';
+import { M } from "@/app/_components/Math";
 import { ArrowDown, Check, X, Split } from 'lucide-react';
 
 const EXAMPLES = [
@@ -70,7 +70,7 @@ export default function DOPSVisualizer() {
 
           {/* PHASE 1: THE PROBLEM */}
           <div className="mb-12 scale-150 text-slate-800 font-black">
-              <MathRenderer expression={data.poly} />
+              <M>{data.poly}</M>
           </div>
 
           <div className="flex gap-16 mb-8 text-slate-400">
@@ -83,13 +83,13 @@ export default function DOPSVisualizer() {
               <div className="flex flex-col items-center gap-2">
                   <div className="text-[10px] font-bold text-slate-400 uppercase">Root A</div>
                   <div className="w-20 h-20 bg-white border-2 border-indigo-400 rounded-xl flex items-center justify-center text-xl font-bold text-indigo-600 shadow-sm">
-                      <MathRenderer expression={data.a} />
+                      <M>{data.a}</M>
                   </div>
               </div>
               <div className="flex flex-col items-center gap-2">
                   <div className="text-[10px] font-bold text-slate-400 uppercase">Root B</div>
                   <div className="w-20 h-20 bg-white border-2 border-rose-400 rounded-xl flex items-center justify-center text-xl font-bold text-rose-600 shadow-sm">
-                      <MathRenderer expression={data.b} />
+                      <M>{data.b}</M>
                   </div>
               </div>
           </div>
@@ -98,7 +98,7 @@ export default function DOPSVisualizer() {
           <div className="w-full max-w-md bg-white border border-slate-200 rounded-xl p-6 shadow-sm mb-6">
               <div className="text-xs font-bold text-slate-400 uppercase mb-2 text-center">Expansion Check</div>
               <div className="text-center font-mono text-sm text-slate-600 mb-2">
-                  <MathRenderer expression={data.proof} />
+                  <M>{data.proof}</M>
               </div>
               <div className="flex items-center justify-center gap-2 text-xs font-bold text-rose-500 bg-rose-50 py-1 rounded">
                   <X size={12} /> Middle terms cancel: {data.cancel}
@@ -110,7 +110,7 @@ export default function DOPSVisualizer() {
               <div className="absolute -inset-1 bg-gradient-to-r from-indigo-400 to-rose-500 rounded-xl blur opacity-30 group-hover:opacity-50 transition duration-1000"></div>
               <div className="relative px-8 py-4 bg-white border border-slate-200 rounded-xl shadow-xl">
                   <div className="text-3xl font-black text-slate-900">
-                      <MathRenderer expression={data.result} />
+                      <M>{data.result}</M>
                   </div>
               </div>
           </div>

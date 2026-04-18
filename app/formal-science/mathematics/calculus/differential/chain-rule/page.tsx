@@ -3,7 +3,7 @@ import { ArrowLeft, GitMerge, Layers, Combine } from 'lucide-react';
 import Link from 'next/link';
 import ChainBackground from './_components/ChainBackground';
 import ChainRuleLab from './_components/ChainRuleLab';
-import { M } from '@/components/Math';
+import { M } from '@/app/_components/Math';
 
 export default function ChainRulePage() {
   return (

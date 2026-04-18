@@ -1,7 +1,6 @@
 "use client";
 import React, { useState } from 'react';
 import { SplitSquareVertical, ArrowRight } from 'lucide-react';
-import { M } from '@/components/Math';
 
 export default function FTCLab() {
   const [x, setX] = useState(2); // Current boundary

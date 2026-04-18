@@ -3,7 +3,7 @@ import { ArrowLeft, Sigma, Type, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import DefiniteBackground from './_components/DefiniteBackground';
 import DefiniteLab from './_components/DefiniteLab';
-import { M } from '@/components/Math';
+import { M } from '@/app/_components/Math';
 
 export default function DefiniteIntegralPage() {
   return (

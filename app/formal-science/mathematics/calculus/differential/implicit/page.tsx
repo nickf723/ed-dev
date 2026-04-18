@@ -3,7 +3,7 @@ import { ArrowLeft, Edit3, Merge } from 'lucide-react';
 import Link from 'next/link';
 import ImplicitBackground from './_components/ImplicitBackground';
 import ImplicitLab from './_components/ImplicitLab';
-import { M } from '@/components/Math';
+import { M } from '@/app/_components/Math';
 
 export default function ImplicitPage() {
   return (

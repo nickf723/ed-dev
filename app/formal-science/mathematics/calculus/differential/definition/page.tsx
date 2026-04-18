@@ -2,7 +2,7 @@ import React from 'react';
 import { ArrowLeft, Microscope, MousePointer2 } from 'lucide-react';
 import Link from 'next/link';
 import SecantLab from './_components/SecantLab';
-import { M } from '@/components/Math';
+import { M } from '@/app/_components/Math';
 import SecantBackground from './_components/SecantBackground';
 
 export default function DerivativeDefinitionPage() {

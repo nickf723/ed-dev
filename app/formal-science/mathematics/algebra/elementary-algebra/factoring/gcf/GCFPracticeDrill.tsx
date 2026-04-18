@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from 'react';
-import MathRenderer from '@/components/MathRenderer';
+import { M } from "@/app/_components/Math";
 import { CheckCircle, XCircle, ArrowRight, Zap, HelpCircle } from 'lucide-react';
 
 const DRILLS = [
@@ -38,7 +38,7 @@ export default function GCFPracticeDrill() {
     <div className="bg-[#0f172a] text-white rounded-2xl p-8 max-w-3xl mx-auto shadow-2xl relative overflow-hidden border border-slate-700">
         {/* Background Decal */}
         <div className="absolute top-0 right-0 p-8 opacity-5 pointer-events-none">
-            <MathRenderer expression="\frac{GCF(a,b)}{x}" block />
+            <M>{'\frac{GCF(a,b)}{x}'}</M>
         </div>
 
         {/* Header */}
@@ -63,7 +63,7 @@ export default function GCFPracticeDrill() {
                 Factor out the GCF
             </div>
             <div className="text-5xl font-black tracking-tight">
-                <MathRenderer expression={DRILLS[index].q} />
+                <M>{DRILLS[index].q}</M>
             </div>
         </div>
 

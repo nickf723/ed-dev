@@ -1,8 +1,28 @@
-import { VocabTerm } from "../_registry";
+import { VocabTerm } from '../_registry';
 
-export const metroidvaniaVocab: VocabTerm[] = [
-    { id: 'mv-01', word: 'Sequence Breaking', definition: 'Using glitches, advanced movement tech, or hidden paths to acquire an item or reach an area long before the game\'s intended narrative or mechanical progression allows it.', domain: 'Gaming', tags: ['Speedrunning', 'Exploration'], isAdult: false },
-    { id: 'mv-02', word: 'Softlock', definition: 'A state where the game is still running, but the player is permanently trapped in an area without the required abilities to progress or backtrack, forcing a reset.', domain: 'Gaming', tags: ['Game Design', 'Bugs'], isAdult: false },
-    { id: 'mv-03', word: 'I-Frames (Invincibility Frames)', definition: 'A brief window of animation (often during a dodge or dash) where the player character completely ignores damage or collision hitboxes.', domain: 'Gaming', tags: ['Mechanics', 'Combat'], isAdult: false },
-    { id: 'mv-04', word: 'Utility Gating', definition: 'Restricting access to a new area of the game world until the player finds a specific traversal mechanic, rather than a literal key.', domain: 'Gaming', tags: ['Level Design', 'Core Concept'], isAdult: false }
+export const meteorologyVocab: VocabTerm[] = [
+    {
+        id: "met-coriolis",
+        word: "Coriolis Effect",
+        definition: "The apparent deflection of moving objects (like wind and ocean currents) to the right in the Northern Hemisphere and to the left in the Southern Hemisphere, caused by Earth's rotation.",
+        domain: "Earth Science",
+        tags: ["Meteorology", "Atmosphere"],
+        isAdult: false
+    },
+    {
+        id: "met-barometric-pressure",
+        word: "Barometric Pressure",
+        definition: "The pressure exerted by the weight of the atmosphere, which changes with weather systems and altitude.",
+        domain: "Earth Science",
+        tags: ["Meteorology", "Thermodynamics"],
+        isAdult: false
+    },
+    {
+        id: "met-dew-point",
+        word: "Dew Point",
+        definition: "The temperature to which air must be cooled to become saturated with water vapor. When cooled further, the airborne water vapor condenses to form liquid water (dew).",
+        domain: "Earth Science",
+        tags: ["Meteorology", "Moisture"],
+        isAdult: false
+    }
 ];

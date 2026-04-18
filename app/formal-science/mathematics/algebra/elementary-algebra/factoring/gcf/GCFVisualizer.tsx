@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from 'react';
-import MathRenderer from '@/components/MathRenderer';
+import { M } from "@/app/_components/Math";
 import { ArrowDown, Check, Split } from 'lucide-react';
 
 // Data Structure
@@ -105,13 +105,13 @@ export default function GCFVisualizer() {
               <div className="text-center group cursor-help">
                   <div className="text-xs font-bold text-slate-400 uppercase mb-2">Term 1</div>
                   <div className="p-4 bg-white rounded-xl shadow-sm border border-slate-200 group-hover:border-green-400 transition-colors">
-                      <div className="text-3xl font-black text-slate-800"><MathRenderer expression={data.term1.raw} /></div>
+                      <div className="text-3xl font-black text-slate-800"><M>{data.term1.raw}</M></div>
                   </div>
               </div>
               <div className="text-center group cursor-help">
                   <div className="text-xs font-bold text-slate-400 uppercase mb-2">Term 2</div>
                   <div className="p-4 bg-white rounded-xl shadow-sm border border-slate-200 group-hover:border-green-400 transition-colors">
-                      <div className="text-3xl font-black text-slate-800"><MathRenderer expression={data.term2.raw} /></div>
+                      <div className="text-3xl font-black text-slate-800"><M>{data.term2.raw}</M></div>
                   </div>
               </div>
           </div>
@@ -147,11 +147,11 @@ export default function GCFVisualizer() {
               <div className="relative px-8 py-4 bg-white border border-slate-200 rounded-xl shadow-xl flex items-center gap-4">
                   <div className="text-right">
                       <div className="text-[10px] font-bold text-slate-400 uppercase">GCF</div>
-                      <div className="text-xl font-black text-green-600"><MathRenderer expression={data.gcfDisplay} /></div>
+                      <div className="text-xl font-black text-green-600"><M>{data.gcfDisplay}</M></div>
                   </div>
                   <div className="h-8 w-px bg-slate-200" />
                   <div className="text-3xl font-black text-slate-900">
-                      <MathRenderer expression={data.result} />
+                      <M>{data.result}</M>
                   </div>
               </div>
           </div>

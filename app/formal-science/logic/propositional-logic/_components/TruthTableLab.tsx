@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from 'react';
 import { Table, Check, X, MousePointerClick } from 'lucide-react';
-import { M } from '@/components/Math';
+import { M } from '@/app/_components/Math';
 
 export default function TruthTableLab() {
   const [activeRow, setActiveRow] = useState<number | null>(0); // 0, 1, 2, or 3

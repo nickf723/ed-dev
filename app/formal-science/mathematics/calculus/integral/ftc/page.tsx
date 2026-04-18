@@ -3,7 +3,7 @@ import { ArrowLeft, Spline, ShieldHalf } from 'lucide-react';
 import Link from 'next/link';
 import FTCBackground from './_components/FtcBackground2';
 import FTCLab from './_components/FTCLab';
-import { M } from '@/components/Math'; // Replaced with your new standard import!
+import { M } from '@/app/_components/Math'; // Replaced with your new standard import!
 
 export default function FTCPage() {
   return (

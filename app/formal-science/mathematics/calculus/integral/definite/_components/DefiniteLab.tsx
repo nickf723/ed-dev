@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from 'react';
 import { Type, ArrowRight, Info } from 'lucide-react';
-import { M } from '@/components/Math';
+import { M } from '@/app/_components/Math';
 
 export default function DefiniteLab() {
   const [a, setA] = useState(0);

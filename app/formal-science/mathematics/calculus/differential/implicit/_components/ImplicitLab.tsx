@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from 'react';
 import { BoxSelect, Move } from 'lucide-react';
-import { M } from '@/components/Math';
+import { M } from '@/app/_components/Math';
 
 export default function ImplicitLab() {
   const [angle, setAngle] = useState(Math.PI / 4); // 45 degrees

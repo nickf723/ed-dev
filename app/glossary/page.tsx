@@ -3,7 +3,6 @@
 import React, { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import MatrixBackground from "@/app/glossary/MatrixBackground";
-import FlashcardWidget from "@/app/glossary/FlashcardWidget";
 import { ALL_VOCAB, VocabTerm } from "@/app/_data/vocab/_registry";
 import { Search, Database, Filter, ArrowUpRight, EyeOff, Eye, ArrowRight } from "lucide-react";
 
@@ -141,9 +140,6 @@ export default function GlossaryPage() {
                     <span className="text-xs font-normal text-neutral-500 ml-2">/ {ALL_VOCAB.length}</span>
                 </div>
              </div>
-
-             {/* FLASHCARD WIDGET (Compact) */}
-             <FlashcardWidget />
 
              {/* JUMP BAR */}
              <div className="flex flex-wrap gap-1 p-2 rounded-xl border border-neutral-800 bg-neutral-900/30">

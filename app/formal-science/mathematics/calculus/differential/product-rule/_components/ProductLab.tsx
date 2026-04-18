@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from 'react';
 import { Layers, X, Plus } from 'lucide-react';
-import { M } from '@/components/Math';
+import { M } from '@/app/_components/Math';
 
 export default function ProductLab() {
   const [u, setU] = useState(4); // Function f(x)

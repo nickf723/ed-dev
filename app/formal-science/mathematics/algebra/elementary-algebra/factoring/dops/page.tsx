@@ -4,7 +4,7 @@ import Link from 'next/link';
 import GridSymmetry from "./GridSymmetry";
 import DOPSVisualizer from "./DOPSVisualizer";
 import DOPSPractice from "./DOPSPractice";
-import MathRenderer from '@/components/MathRenderer';
+import { M } from "@/app/_components/Math";
 import { 
   ArrowLeft, Grid, 
   Lightbulb, AlertTriangle, BookOpen, 
@@ -46,7 +46,7 @@ export default function DOPSPage() {
             </p>
 
             <div className="inline-flex items-center gap-2 px-5 py-3 bg-white/80 border border-slate-200 rounded-xl text-slate-600 text-xs font-bold uppercase tracking-wide shadow-sm font-mono">
-                <MathRenderer expression="a^2 - b^2 = (a-b)(a+b)" />
+                <M>a^2 - b^2 = (a-b)(a+b)</M>
             </div>
         </header>
 
@@ -68,7 +68,7 @@ export default function DOPSPage() {
                         <Lightbulb size={20} className="text-slate-400" /> The Secret
                     </h3>
                     <p className="text-sm text-slate-600 leading-relaxed">
-                        Why is there no middle term (like <MathRenderer expression="6x" />)?
+                        Why is there no middle term (like <M>6x</M>)?
                     </p>
                     <p className="text-sm text-slate-600 leading-relaxed">
                         Because the factors are <strong>Conjugates</strong> (twins with opposite signs). When you expand them, the middle terms are exact opposites, so they destroy each other.
@@ -96,7 +96,7 @@ export default function DOPSPage() {
                 <div className="bg-white/90 backdrop-blur-sm p-8 rounded-2xl border-l-4 border-indigo-500 shadow-lg hover:-translate-y-1 transition-transform">
                     <div className="text-xs font-bold text-slate-400 uppercase mb-4">Case A: Basic</div>
                     <div className="text-2xl font-bold mb-6 text-slate-800">
-                        <MathRenderer expression="x^2 - 64" />
+                        <M>x^2 - 64</M>
                     </div>
                     <ul className="space-y-4 text-sm text-slate-600">
                         <li className="flex gap-3">
@@ -109,7 +109,7 @@ export default function DOPSPage() {
                         </li>
                     </ul>
                     <div className="mt-6 pt-6 border-t border-slate-100 font-bold text-lg text-center bg-slate-50 rounded-lg py-2">
-                        Result: <MathRenderer expression="(x - 8)(x + 8)" />
+                        Result: <M>(x - 8)(x + 8)</M>
                     </div>
                 </div>
 
@@ -117,7 +117,7 @@ export default function DOPSPage() {
                 <div className="bg-white/90 backdrop-blur-sm p-8 rounded-2xl border-l-4 border-rose-500 shadow-lg hover:-translate-y-1 transition-transform">
                     <div className="text-xs font-bold text-slate-400 uppercase mb-4">Case B: The Trap</div>
                     <div className="text-2xl font-bold mb-6 text-slate-800">
-                        <MathRenderer expression="x^2 + 36" />
+                        <M>x^2 + 36</M>
                     </div>
                     <ul className="space-y-4 text-sm text-slate-600">
                         <li className="flex gap-3">

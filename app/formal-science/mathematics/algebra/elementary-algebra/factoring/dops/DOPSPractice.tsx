@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from 'react';
-import MathRenderer from '@/components/MathRenderer';
+import { M } from "@/app/_components/Math";
 import { CheckCircle, XCircle, ArrowRight, Zap, HelpCircle } from 'lucide-react';
 
 const DRILLS = [
@@ -58,7 +58,7 @@ export default function DOPSPractice() {
   return (
     <div className="bg-[#1e1b4b] text-white rounded-2xl p-8 max-w-3xl mx-auto shadow-2xl relative overflow-hidden border border-indigo-900">
         <div className="absolute top-0 right-0 p-8 opacity-5 pointer-events-none">
-            <MathRenderer expression="a^2 - b^2" block />
+            <M>a^2 - b^2</M>
         </div>
 
         {/* Header */}
@@ -83,7 +83,7 @@ export default function DOPSPractice() {
                 Factor Completely
             </div>
             <div className="text-5xl font-black tracking-tight">
-                <MathRenderer expression={DRILLS[index].q} />
+                <M>{DRILLS[index].q}</M>
             </div>
         </div>
 

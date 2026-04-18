@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { ArrowLeft, GitCommit, Split, Combine, ArrowRight } from 'lucide-react';
 import LogicBackground from '../_components/LogicBackground';
 import TruthTableLab from './_components/TruthTableLab';
-import { M } from '@/components/Math'; 
+import { M } from '@/app/_components/Math'; 
 import PropositionalBackground from './_components/PropositionalBackground';
 
 export default function PropositionalLogicPage() {

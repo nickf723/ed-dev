@@ -3,7 +3,7 @@ import { ArrowLeft, Layers, Divide, Music } from 'lucide-react';
 import Link from 'next/link';
 import ProductBackground from './_components/ProductBackground';
 import ProductLab from './_components/ProductLab';
-import { M } from '@/components/Math';
+import { M } from '@/app/_components/Math';
 
 export default function ProductQuotientPage() {
   return (

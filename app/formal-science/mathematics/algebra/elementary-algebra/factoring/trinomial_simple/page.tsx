@@ -4,7 +4,7 @@ import Link from 'next/link';
 import EquilibriumEngine from "./EquilibriumEngine";
 import DiamondGame from "./DiamondGame";
 import TrinomialDrill from "./TrinomialDrill";
-import MathRenderer from '@/components/MathRenderer';
+import { M } from "@/app/_components/Math";
 import { 
   ArrowLeft, Grid, 
   Scale, BookOpen, 
@@ -46,7 +46,7 @@ export default function TrinomialsPage() {
             </p>
 
             <div className="inline-flex items-center gap-2 px-5 py-3 bg-white/80 border border-slate-200 rounded-xl text-slate-600 text-xs font-bold uppercase tracking-wide shadow-sm font-mono">
-                <MathRenderer expression="x^2 + bx + c = (x+m)(x+n)" />
+                <M>expression="x^2 + bx + c = (x+m)(x+n)"</M>
             </div>
         </header>
 
@@ -68,7 +68,7 @@ export default function TrinomialsPage() {
                         <HelpCircle size={20} className="text-slate-400" /> The Logic
                     </h3>
                     <p className="text-sm text-slate-600 leading-relaxed">
-                        To factor <MathRenderer expression="x^2 + bx + c" />, you are looking for two "Mystery Numbers" (m and n).
+                        To factor <M>x^2 + bx + c</M>, you are looking for two "Mystery Numbers" (m and n).
                     </p>
                     <div className="space-y-3">
                         <div className="p-3 bg-teal-50 rounded border border-teal-100 shadow-sm">
@@ -97,7 +97,7 @@ export default function TrinomialsPage() {
                 <div className="bg-white/90 backdrop-blur-sm p-8 rounded-2xl border-l-4 border-teal-500 shadow-lg hover:-translate-y-1 transition-transform">
                     <div className="text-xs font-bold text-slate-400 uppercase mb-4">Case A: Last Term Positive (+)</div>
                     <div className="text-xl font-bold mb-4 text-slate-800">
-                        <MathRenderer expression="x^2 - 7x + 10" />
+                        <M>x^2 - 7x + 10</M>
                     </div>
                     <p className="text-sm text-slate-600 mb-4">
                         If <strong>c</strong> is positive, the signs are the <strong>SAME</strong>. Look at the middle term to decide if they are both (+) or both (-).
@@ -111,7 +111,7 @@ export default function TrinomialsPage() {
                 <div className="bg-white/90 backdrop-blur-sm p-8 rounded-2xl border-l-4 border-yellow-500 shadow-lg hover:-translate-y-1 transition-transform">
                     <div className="text-xs font-bold text-slate-400 uppercase mb-4">Case B: Last Term Negative (-)</div>
                     <div className="text-xl font-bold mb-4 text-slate-800">
-                        <MathRenderer expression="x^2 + 3x - 10" />
+                        <M>x^2 + 3x - 10</M>
                     </div>
                     <p className="text-sm text-slate-600 mb-4">
                         If <strong>c</strong> is negative, the signs are <strong>DIFFERENT</strong>. The "bigger" number gets the sign of the middle term.

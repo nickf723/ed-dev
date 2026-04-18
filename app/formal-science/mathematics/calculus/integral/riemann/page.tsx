@@ -3,7 +3,7 @@ import { ArrowLeft, BoxSelect } from 'lucide-react';
 import Link from 'next/link';
 import RiemannBackground from './_components/RiemannBackground';
 import RiemannLab from './_components/RiemannLab';
-import { M } from '@/components/Math';
+import { M } from '@/app/_components/Math';
 
 export default function RiemannPage() {
   return (

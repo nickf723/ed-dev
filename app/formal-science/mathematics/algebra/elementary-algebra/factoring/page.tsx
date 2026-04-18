@@ -3,7 +3,7 @@ import React from 'react';
 import Link from 'next/link';
 import ParabolaGraph from "./ParabolaGraph";
 import DiamondSolver from "./DiamondSolver";
-import MathRenderer from '../../../../../../components/MathRenderer';
+import { M } from "@/app/_components/Math";
 import { STRATEGIES } from './factoringStrategies';
 import { 
   ArrowLeft, Grid, Calculator, 
@@ -71,7 +71,7 @@ export default function FactoringPage() {
                         When multiplying binomials <span className="font-mono bg-slate-100 px-1 rounded text-slate-700">(x+m)(x+n)</span>, the result is:
                     </p>
                     <div className="text-center text-slate-800 bg-slate-50 p-4 rounded mb-4 overflow-x-auto border border-slate-100">
-                        <MathRenderer expression="x^2 + (m+n)x + (mn)" />
+                        <M>x^2 + (m+n)x + (mn)</M>
                     </div>
                     <p className="text-sm text-slate-600 leading-relaxed">
                         Therefore, to go backwards, we need two numbers that <strong>multiply</strong> to the constant term and <strong>add</strong> to the linear coefficient.
@@ -112,7 +112,7 @@ export default function FactoringPage() {
 
                         {/* MATH RENDERER */}
                         <div className="text-sm text-slate-600 bg-slate-50 p-4 rounded mb-4 text-center min-h-[3rem] flex items-center justify-center border border-slate-100">
-                            <MathRenderer expression={s.formula} />
+                            <M>{s.formula}</M>
                         </div>
                         
                         <p className="text-sm text-slate-600 leading-relaxed mb-6 flex-1">
@@ -133,7 +133,7 @@ export default function FactoringPage() {
                  <div>
                      <h3 className="text-2xl font-black uppercase mb-4">Geometric Proofs</h3>
                      <p className="text-slate-600 mb-6 leading-relaxed">
-                         Factoring isn't just symbol manipulation; it's geometry. The "Difference of Squares" can be proven by taking a square of side <MathRenderer expression="a" />, cutting out a square of side <MathRenderer expression="b" />, and rearranging the remaining area.
+                         Factoring isn't just symbol manipulation; it's geometry. The "Difference of Squares" can be proven by taking a square of side <M>a</M>, cutting out a square of side <M>b</M>, and rearranging the remaining area.
                      </p>
                      
                  </div>
