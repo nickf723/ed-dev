@@ -1,6 +1,4 @@
 "use client";
-import PageHeader from "@/components/PageHeader";
-import TopicCard from "@/components/TopicCard";
 import XRayBackground from "@/app/applied-science/medicine/anatomy-physiology/skeletal/XRayBackground";
 import JointWidget from "@/app/applied-science/medicine/anatomy-physiology/skeletal/JointWidget";
 import { motion } from "framer-motion";
@@ -84,12 +82,7 @@ export default function SkeletalSystemPage() {
       <XRayBackground />
       
       <div className="relative z-10 mx-auto flex max-w-7xl flex-col py-10">
-        
-        <PageHeader
-          eyebrow="Anatomy & Physiology"
-          title="The Skeletal System"
-          subtitle="The biological chassis. 206 bones act as levers for muscles, armor for organs, and warehouses for minerals. It is engineering at its most elegant."
-        />
+
 
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 items-start">
           
@@ -118,7 +111,6 @@ export default function SkeletalSystemPage() {
                             viewport={{ once: true }}
                             transition={{ duration: 0.3, delay: 0.1 + (i * 0.05) }}
                         >
-                            <TopicCard {...item} />
                         </motion.div>
                     ))}
                  </div>

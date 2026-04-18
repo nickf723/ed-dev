@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { M } from "@/components/Math";
+import { M } from "@/app/_components/Math";
 import WaterBackground from "@/app/natural-science/earth-science/hydrology/WaterBackground";
 import { 
   ArrowLeft, Droplet, CloudRain, Sun, Wind, Activity, 

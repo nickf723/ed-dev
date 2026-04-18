@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { M } from "@/components/Math";
+import { M } from "@/app/_components/Math";
 import ReactorBackground from "@/app/natural-science/physics/nuclear/ReactorBackground";
 import { ArrowLeft, Radiation, Zap, CircleDot, AlertTriangle, Layers } from "lucide-react";
 import { useState } from "react";

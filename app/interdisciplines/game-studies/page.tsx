@@ -1,5 +1,4 @@
 "use client";
-import PageHeader from "@/components/PageHeader";
 import LudologyBackground from "@/app/interdisciplines/game-studies/LudologyBackground";
 import Link from "next/link";
 import { motion } from "framer-motion";
@@ -13,12 +12,6 @@ export default function GameStudiesPortal() {
       <LudologyBackground />
       
       <div className="relative z-10 mx-auto flex w-full max-w-7xl flex-1 flex-col justify-center py-20">
-        
-        <PageHeader
-          eyebrow="Interdiscipline"
-          title="Game Studies"
-          subtitle="Ludology. The intersection of Play, Logic, and Culture."
-        />
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12">
             

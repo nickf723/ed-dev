@@ -2,7 +2,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import HeatBackground from "@/app/natural-science/physics/thermodynamics/HeatBackground";
-import { M } from "@/components/Math";
+import { M } from "@/app/_components/Math";
 import { 
   Flame, Thermometer, Wind, AlertTriangle, ArrowLeft, 
   RefreshCw, Snowflake, Gauge, Activity

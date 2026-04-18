@@ -1,7 +1,5 @@
 "use client";
 import { useState } from "react";
-import PageHeader from "@/components/PageHeader";
-import TopicCard from "@/components/TopicCard";
 import BiologicalBackground from "@/app/applied-science/medicine/anatomy-physiology/BiologicalBackground";
 import SystemScanner from "@/app/applied-science/medicine/anatomy-physiology/SystemScanner";
 import { motion } from "framer-motion";
@@ -94,11 +92,6 @@ export default function AnatomyPage() {
       
       <div className="relative z-10 mx-auto flex max-w-7xl flex-col py-10">
         
-        <PageHeader
-          eyebrow="Medicine"
-          title="Anatomy & Physiology"
-          subtitle="The study of the structure (Anatomy) and function (Physiology) of the human body. It explains how the biological machine is built and how it keeps running."
-        />
 
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 items-start">
           
@@ -127,7 +120,6 @@ export default function AnatomyPage() {
                             viewport={{ once: true }}
                             transition={{ duration: 0.3, delay: 0.1 + (i * 0.05) }}
                         >
-                            <TopicCard {...item} />
                         </motion.div>
                     ))}
                  </div>

@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
-import { M } from "@/components/Math";
+import { M } from "@/app/_components/Math";
 import LensingBackground from "@/app/natural-science/physics/relativity/LensingBackground";
 import { ArrowLeft, Clock, Move, Globe, Hourglass, Zap, Maximize } from "lucide-react";
 

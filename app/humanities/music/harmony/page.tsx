@@ -1,7 +1,5 @@
 "use client";
 import { useState } from "react";
-import PageHeader from "@/components/PageHeader";
-import TopicCard from "@/components/TopicCard";
 import PianoRollBackground from "@/app/humanities/music/harmony/PianoRollBackground";
 import IntervalWidget from "@/app/humanities/music/harmony/IntervalWidget";
 import { motion } from "framer-motion";
@@ -86,12 +84,6 @@ export default function HarmonyPage() {
       
       <div className="relative z-10 mx-auto flex max-w-7xl flex-col py-10">
         
-        <PageHeader
-          eyebrow="Music Theory"
-          title="Melody & Harmony"
-          subtitle="Music is geometry in time. Melody moves horizontally (X-axis), while Harmony stacks vertically (Y-axis). Together, they create the coordinate system of emotion."
-        />
-
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 items-start">
           
           {/* MAIN CONTENT (8 cols) */}
@@ -119,7 +111,6 @@ export default function HarmonyPage() {
                             viewport={{ once: true }}
                             transition={{ duration: 0.3, delay: 0.1 + (i * 0.05) }}
                         >
-                            <TopicCard {...item} />
                         </motion.div>
                     ))}
                  </div>

@@ -1,6 +1,4 @@
 "use client";
-import PageHeader from "@/components/PageHeader";
-import TopicCard from "@/components/TopicCard";
 import LeylineBackground from "@/app/interdisciplines/game-studies/library/magic-the-gathering/strategy/LeylineBackground";
 import ArchetypeTriangle from "@/app/interdisciplines/game-studies/library/magic-the-gathering/ArchetypeTriangle";
 import ManaCurveWidget from "@/app/interdisciplines/game-studies/library/magic-the-gathering/strategy/ManaCurveWidget";
@@ -86,12 +84,6 @@ export default function MTGStrategyPage() {
       
       <div className="relative z-10 mx-auto flex max-w-7xl flex-col py-10">
         
-        <PageHeader
-          eyebrow="Magic: The Gathering"
-          title="Deck Building & Strategy"
-          subtitle="The Artificer's Workshop. Magic is not just about playing cards; it is about designing systems (decks) that statistically outperform your opponent's system."
-        />
-
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 items-start">
           
           {/* MAIN CONTENT (9 cols) */}
@@ -119,7 +111,6 @@ export default function MTGStrategyPage() {
                             viewport={{ once: true }}
                             transition={{ duration: 0.3, delay: 0.1 + (i * 0.05) }}
                         >
-                            <TopicCard {...item} />
                         </motion.div>
                     ))}
                  </div>

@@ -2,7 +2,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import PlasmaBackground from "@/app/natural-science/physics/PlasmaBackground";
-import { M } from "@/components/Math";
+import { M } from "@/app/_components/Math";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   Atom, Flame, Zap, Waves, Hourglass, Microscope, Orbit, 

@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { M } from "@/components/Math";
+import { M } from "@/app/_components/Math";
 import ShellBackground from "@/app/natural-science/physics/atomic/ShellBackground";
 import { ArrowLeft, Circle, Disc, Zap, Activity, ScanLine } from "lucide-react";
 import { useState } from "react";

@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { M } from "@/components/Math";
+import { M } from "@/app/_components/Math";
 import { Timer, Atom } from "lucide-react";
 
 export default function CarbonDater() {

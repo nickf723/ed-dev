@@ -1,7 +1,5 @@
 "use client";
 import { useState } from "react";
-import PageHeader from "@/components/PageHeader";
-import TopicCard from "@/components/TopicCard";
 import StardustBackground from "@/app/interdisciplines/astrobiology/StardustBackground";
 import DrakeWidget from "@/app/interdisciplines/astrobiology/DrakeWidget";
 import { motion } from "framer-motion";
@@ -93,12 +91,7 @@ export default function AstrobiologyPage() {
       <StardustBackground />
       
       <div className="relative z-10 mx-auto flex max-w-7xl flex-col py-10">
-        
-        <PageHeader
-          eyebrow="Interdiscipline"
-          title="Astrobiology"
-          subtitle="The study of life in the universe. It combines astronomy, biology, and geology to answer the ultimate question: Are we alone, or is the cosmos teeming with life?"
-        />
+
 
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 items-start">
           
@@ -127,7 +120,6 @@ export default function AstrobiologyPage() {
                             viewport={{ once: true }}
                             transition={{ duration: 0.3, delay: 0.1 + (i * 0.05) }}
                         >
-                            <TopicCard {...item} />
                         </motion.div>
                     ))}
                  </div>

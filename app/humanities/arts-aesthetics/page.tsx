@@ -1,7 +1,5 @@
 "use client";
 import { useState } from "react";
-import PageHeader from "@/components/PageHeader";
-import TopicCard from "@/components/TopicCard";
 import LivingCanvasBackground from "@/app/humanities/arts-aesthetics/LivingCanvasBackground";
 import ColorTheoryWidget from "@/app/humanities/arts-aesthetics/ColorTheoryWidget";
 import { motion } from "framer-motion";
@@ -112,12 +110,6 @@ export default function ArtsPage() {
       
       <div className="relative z-10 mx-auto flex max-w-7xl flex-col py-10">
         
-        <PageHeader
-          eyebrow="Humanities"
-          title="Arts & Aesthetics"
-          subtitle="The expression of human creativity. We explore how form, color, sound, and movement combine to create meaning, emotion, and beauty."
-        />
-
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 items-start">
           
           {/* MAIN CONTENT (9 cols) */}
@@ -145,7 +137,6 @@ export default function ArtsPage() {
                             viewport={{ once: true }}
                             transition={{ duration: 0.3, delay: 0.1 + (i * 0.05) }}
                         >
-                            <TopicCard {...item} />
                         </motion.div>
                     ))}
                  </div>

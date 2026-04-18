@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
-import { M } from "@/components/Math";
+import { M } from "@/app/_components/Math";
 import ObserverBackground from "@/app/natural-science/physics/quantum-mechanics/ObserverBackground";
 import { ArrowLeft, Atom, Box, Eye, Cat, Skull, Shuffle, Zap } from "lucide-react";
 

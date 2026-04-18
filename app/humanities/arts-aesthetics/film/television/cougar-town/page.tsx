@@ -1,5 +1,4 @@
 "use client";
-import PageHeader from "@/components/PageHeader";
 import PennyCanGame from "@/app/humanities/arts-aesthetics/film/television/cougar-town/PennyCanGame";
 import WineGlassWidget from "@/app/humanities/arts-aesthetics/film/television/cougar-town/WineGlassWidget";
 import { motion } from "framer-motion";
@@ -13,12 +12,7 @@ export default function CougarTownPage() {
       <div className="fixed inset-0 pointer-events-none z-0 bg-gradient-to-b from-orange-900/20 to-neutral-950" />
       
       <div className="relative z-10 mx-auto flex max-w-7xl flex-col py-10">
-        
-        <PageHeader
-          eyebrow="Case Study: Sitcom Evolution"
-          title="Cougar Town"
-          subtitle="A masterclass in 'retooling.' Starting as a show about dating, it evolved into a surreal, warm-hearted ensemble comedy about a group of codependent friends who drink wine in a cul-de-sac."
-        />
+
 
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 items-start">
           

@@ -1,6 +1,4 @@
 "use client";
-import PageHeader from "@/components/PageHeader";
-import TopicCard from "@/components/TopicCard";
 import LudologyBackground from "@/app/interdisciplines/game-studies/LudologyBackground";
 import GameTheoryWidget from "@/app/interdisciplines/game-studies/science/GameTheoryWidget";
 import { motion } from "framer-motion";
@@ -65,11 +63,7 @@ export default function GameSciencePage() {
       <LudologyBackground />
       <div className="relative z-10 mx-auto flex max-w-7xl flex-col py-10">
         
-        <PageHeader
-          eyebrow="Game Studies"
-          title="Ludology: The Science"
-          subtitle="The academic analysis of play. Here we strip away the graphics and flavor text to look at the raw mathematical and psychological engines that drive engagement."
-        />
+
 
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 items-start">
           <div className="lg:col-span-9 space-y-10">
@@ -95,7 +89,6 @@ export default function GameSciencePage() {
                             viewport={{ once: true }}
                             transition={{ duration: 0.3, delay: 0.1 + (i * 0.05) }}
                         >
-                            <TopicCard {...item} />
                         </motion.div>
                     ))}
                  </div>

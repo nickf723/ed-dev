@@ -1,6 +1,4 @@
 "use client";
-import PageHeader from "@/components/PageHeader";
-import TopicCard from "@/components/TopicCard";
 import ManaBackground from "@/app/interdisciplines/game-studies/library/magic-the-gathering/ManaBackground";
 import MtgBattleSimulator from "@/app/interdisciplines/game-studies/library/magic-the-gathering/MtgBattleSimulator";
 import MtgCardFetcher from "@/app/interdisciplines/game-studies/library/magic-the-gathering/MtgCardFetcher";
@@ -65,11 +63,6 @@ export default function MTGHubPage() {
       
       <div className="relative z-10 mx-auto flex max-w-7xl flex-col py-10">
         
-        <PageHeader
-          eyebrow="Game Library"
-          title="Magic: The Gathering"
-          subtitle="The grandfather of modern gaming. Part chess, part poker, part math problem. Welcome to the Multiverse."
-        />
 
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 items-start">
           
@@ -92,7 +85,6 @@ export default function MTGHubPage() {
                             viewport={{ once: true }}
                             transition={{ duration: 0.3, delay: i * 0.1 }}
                         >
-                            <TopicCard {...item} />
                         </motion.div>
                     ))}
                  </div>

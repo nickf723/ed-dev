@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { M } from "@/components/Math";
+import { M } from "@/app/_components/Math";
 import TeslaBackground from "@/app/natural-science/physics/electromagnetism/TeslaBackground";
 import { ArrowLeft, Zap, Magnet, Activity, Radio, Sun, BatteryCharging } from "lucide-react";
 

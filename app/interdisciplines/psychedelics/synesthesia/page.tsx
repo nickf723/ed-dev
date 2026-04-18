@@ -1,6 +1,4 @@
 "use client";
-import PageHeader from "@/components/PageHeader";
-import TopicCard from "@/components/TopicCard";
 import SynesthesiaBackground from "@/app/interdisciplines/psychedelics/synesthesia/SynesthesiaBackground";
 import SensoryMapperWidget from "@/app/interdisciplines/psychedelics/synesthesia/SensoryMapperWidget";
 import { motion } from "framer-motion";
@@ -85,11 +83,6 @@ export default function SynesthesiaPage() {
       
       <div className="relative z-10 mx-auto flex max-w-7xl flex-col py-10">
         
-        <PageHeader
-          eyebrow="Phenomenology"
-          title="Synesthesia"
-          subtitle="A perceptual phenomenon in which stimulation of one sensory or cognitive pathway leads to involuntary experiences in a second pathway. It is not a hallucination, but a consistent cross-wiring of reality."
-        />
 
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 items-start">
           
@@ -118,7 +111,6 @@ export default function SynesthesiaPage() {
                             viewport={{ once: true }}
                             transition={{ duration: 0.3, delay: 0.1 + (i * 0.05) }}
                         >
-                            <TopicCard {...item} />
                         </motion.div>
                     ))}
                  </div>

@@ -1,6 +1,4 @@
 "use client";
-import PageHeader from "@/components/PageHeader";
-import TopicCard from "@/components/TopicCard";
 import CardAnatomyWidget from "@/app/interdisciplines/game-studies/library/magic-the-gathering/fundamentals/CardAnatomyWidget";
 import FormatCompass from "@/app/interdisciplines/game-studies/library/magic-the-gathering/fundamentals/FormatCompass";
 import { motion } from "framer-motion";
@@ -95,12 +93,7 @@ export default function MTGFundamentalsPage() {
       <div className="fixed inset-0 pointer-events-none z-0 opacity-20 bg-[url('https://media.magic.wizards.com/images/wallpaper/library_1920x1080_wallpaper.jpg')] bg-cover bg-center" />
       
       <div className="relative z-10 mx-auto flex max-w-7xl flex-col py-10">
-        
-        <PageHeader
-          eyebrow="Magic: The Gathering"
-          title="Fundamentals & Rules"
-          subtitle="The axioms of the game. Before you can break the meta, you must understand the physics of the multiverse: Card Types, The Stack, and the Phases of the Turn."
-        />
+
 
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 items-start">
           
@@ -129,7 +122,6 @@ export default function MTGFundamentalsPage() {
                             viewport={{ once: true }}
                             transition={{ duration: 0.3, delay: 0.1 + (i * 0.05) }}
                         >
-                            <TopicCard {...item} />
                         </motion.div>
                     ))}
                  </div>
