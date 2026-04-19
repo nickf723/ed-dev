@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { ArrowRightLeft, Binary, Quote } from "lucide-react";
-import { M } from "@/components/Math"; // Import the math renderer
+import { M } from "@/app/_components/Math"; // Import the math renderer
 
 const EXAMPLES = [
   { 
