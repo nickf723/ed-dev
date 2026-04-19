@@ -1,6 +1,5 @@
 "use client";
 import { useState } from "react";
-import { M } from "@/components/Math";
 import { Flame, Brain, Hammer, Footprints } from "lucide-react";
 
 const species = [
