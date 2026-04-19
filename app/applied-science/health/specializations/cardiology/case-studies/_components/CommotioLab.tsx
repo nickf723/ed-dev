@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import { Activity, Zap, ShieldAlert, HeartCrack } from 'lucide-react';
-import { M } from '@/components/Math';
+import { M } from '@/app/_components/Math';
 
 export default function CommotioLab() {
   const [impactTime, setImpactTime] = useState(30); // 0-100 scale
