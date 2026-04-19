@@ -47,9 +47,15 @@ export default function MechanicalBackground() {
     }
 
     class Ball {
-        x: number; y: number; r: number; stage: number = 0;
+        x: number;
+        y: number;
+        r: number;
+        stage: number = 0;
         constructor() {
-            this.r = 12; this.reset();
+            this.x = 0;
+            this.y = 0;
+            this.r = 12;
+            this.reset();
         }
         reset() {
             this.x = w * 0.1; this.y = -20; this.stage = 0;
