@@ -1,5 +1,5 @@
 import { TrendingUp, Sigma, Layers, Wind, Activity, FunctionSquare, Infinity } from "lucide-react";
-import { M } from '../../../../components/Math'
+import { M } from '@/app/_components/Math';
 
 export const CALCULUS_BRANCHES = [
   {
