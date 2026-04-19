@@ -5,8 +5,9 @@ import { NOTES, FORMULAS } from '../_assets/musicTheoryDB';
 
 interface TheoryPanelProps {
   root: string; setRoot: (r: string) => void;
-  mode: 'scale' | 'chord'; setMode: (m: 'scale' | 'chord') => void;
+    mode: 'scale' | 'chord' | 'progression'; setMode: (m: 'scale' | 'chord' | 'progression') => void;
   selectedType: string; setSelectedType: (t: string) => void;
+    selectedProgression: string; setSelectedProgression: (p: string) => void;
   chordStyle: 'block' | 'arp'; setChordStyle: (s: 'block' | 'arp') => void;
   isPlaying: boolean;
   onPlay: () => void;
@@ -14,7 +15,8 @@ interface TheoryPanelProps {
 
 export default function TheoryPanel({
   root, setRoot, mode, setMode, selectedType, setSelectedType,
-  chordStyle, setChordStyle, isPlaying, onPlay
+    selectedProgression, setSelectedProgression,
+    chordStyle, setChordStyle, isPlaying, onPlay
 }: TheoryPanelProps) {
   
   return (
@@ -28,19 +30,30 @@ export default function TheoryPanel({
              <select value={root} onChange={e => setRoot(e.target.value)} className="flex-1 bg-black border border-neutral-700 text-white text-xs font-bold rounded p-2 outline-none">
                 {NOTES.map(n => <option key={n} value={n}>{n}</option>)}
              </select>
-             <select value={selectedType} onChange={e => setSelectedType(e.target.value)} className="flex-1 bg-black border border-neutral-700 text-white text-xs font-bold rounded p-2 outline-none">
-                {Object.keys(mode === 'scale' ? FORMULAS.scales : FORMULAS.chords).map(t => <option key={t} value={t}>{t}</option>)}
-             </select>
+                 {mode === 'progression' ? (
+                     <select value={selectedProgression} onChange={e => setSelectedProgression(e.target.value)} className="flex-1 bg-black border border-neutral-700 text-white text-xs font-bold rounded p-2 outline-none">
+                          <option value="Pop Punk">Pop Punk</option>
+                          <option value="Jazz Turnaround">Jazz Turnaround</option>
+                          <option value="Classic Blues">Classic Blues</option>
+                          <option value="Doo-Wop">Doo-Wop</option>
+                          <option value="Cinematic">Cinematic</option>
+                     </select>
+                 ) : (
+                     <select value={selectedType} onChange={e => setSelectedType(e.target.value)} className="flex-1 bg-black border border-neutral-700 text-white text-xs font-bold rounded p-2 outline-none">
+                          {Object.keys(mode === 'scale' ? FORMULAS.scales : FORMULAS.chords).map(t => <option key={t} value={t}>{t}</option>)}
+                     </select>
+                 )}
         </div>
 
         {/* Mode Toggles */}
         <div className="flex bg-black rounded p-1 border border-neutral-800">
             <button onClick={() => setMode('scale')} className={`flex-1 py-1.5 rounded text-[10px] font-bold uppercase ${mode === 'scale' ? 'bg-amber-700 text-white' : 'text-neutral-500'}`}>Scale</button>
             <button onClick={() => setMode('chord')} className={`flex-1 py-1.5 rounded text-[10px] font-bold uppercase ${mode === 'chord' ? 'bg-blue-600 text-white' : 'text-neutral-500'}`}>Chord</button>
+            <button onClick={() => setMode('progression')} className={`flex-1 py-1.5 rounded text-[10px] font-bold uppercase ${mode === 'progression' ? 'bg-emerald-600 text-white' : 'text-neutral-500'}`}>Prog</button>
         </div>
 
         {/* Arp/Block Toggle (Visible only in Chord Mode) */}
-        {mode === 'chord' && (
+        {(mode === 'chord' || mode === 'progression') && (
             <div className="flex items-center justify-between bg-black/40 px-3 py-2 rounded border border-white/5 animate-in slide-in-from-top-1">
                 <span className="text-[9px] font-bold text-neutral-500 uppercase">Playback</span>
                 <div className="flex gap-1">

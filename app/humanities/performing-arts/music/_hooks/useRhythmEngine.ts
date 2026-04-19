@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect, useRef, useCallback } from 'react';
 
-export function useRhythmEngine(audioCtx: AudioContext | null, masterGain: GainNode | null, playNote: (note: string) => void) {
+export function useRhythmEngine(audioCtx: AudioContext | null, masterGain: AudioNode | null, playNote: (note: string) => void) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [bpm, setBpm] = useState(120);
   const [arpMode, setArpMode] = useState<'OFF' | 'UP' | 'DOWN' | 'RANDOM'>('OFF');

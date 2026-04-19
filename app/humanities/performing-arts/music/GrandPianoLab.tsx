@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import { Power, Cable, DownloadCloud } from 'lucide-react';
+import * as Tone from 'tone';
 
 import { useAudioEngine } from './_hooks/useAudioEngine';
 import { useRhythmEngine } from './_hooks/useRhythmEngine';
@@ -59,7 +60,9 @@ export default function GrandPianoLab() {
         audio.triggerRelease(noteFull);
     };
 
-    const rhythm = useRhythmEngine(audio.audioCtx, audio.masterGain, playNote);
+    const audioCtx = Tone.getContext().rawContext as AudioContext;
+    const masterNode = Tone.getDestination() as unknown as AudioNode;
+    const rhythm = useRhythmEngine(audioCtx, masterNode, playNote);
     const { midiStatus, deviceName } = useMidi(playNote, stopNote);
 
     // --- 2. STATE ---
@@ -220,7 +223,7 @@ export default function GrandPianoLab() {
                                 <DownloadCloud size={16} /> {audio.loadingProgress > 0 ? `Loading ${audio.loadingProgress}%` : "Load Samples"}
                             </button>
                         )}
-                        <Oscilloscope audioCtx={audio.audioCtx} sourceNode={audio.masterGain} />
+                        <Oscilloscope audioCtx={audioCtx} sourceNode={masterNode} />
                     </div>
                 </div>
 
