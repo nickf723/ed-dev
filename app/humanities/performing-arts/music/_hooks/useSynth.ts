@@ -2,6 +2,26 @@
 import { useRef, useCallback } from 'react';
 import { InstrumentPatch } from './useAudioEngine';
 
+type LegacySynthParams = {
+  wave?: OscillatorType;
+  filterFreq?: number;
+  vibratoDepth?: number;
+  vibratoSpeed?: number;
+  attack?: number;
+  decay?: number;
+  sustain?: number;
+  release?: number;
+};
+
+const toNativeWave = (wave?: string): OscillatorType => {
+  if (!wave) return 'triangle';
+  if (wave.startsWith('sine')) return 'sine';
+  if (wave.startsWith('square')) return 'square';
+  if (wave.startsWith('triangle')) return 'triangle';
+  if (wave.startsWith('sawtooth')) return 'sawtooth';
+  return 'triangle';
+};
+
 const getMidi = (note: string) => {
   const notes = ["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"];
   const name = note.slice(0, -1);
@@ -16,6 +36,8 @@ export function useSynth(audioCtx: AudioContext | null, outputNode: AudioNode | 
   const triggerAttack = useCallback((noteFull: string, patch: InstrumentPatch) => {
     if (!audioCtx || !outputNode) return;
 
+    const legacy = patch as InstrumentPatch & LegacySynthParams;
+
     // Stop existing voice if re-triggering
     if (activeVoices.current[noteFull]) {
         activeVoices.current[noteFull].stop(audioCtx.currentTime);
@@ -26,29 +48,29 @@ export function useSynth(audioCtx: AudioContext | null, outputNode: AudioNode | 
     const env = audioCtx.createGain();
     
     // 1. Oscillator Setup
-    osc.type = patch.wave || 'triangle';
+    osc.type = toNativeWave(legacy.wave || patch.synth?.type);
     const freq = 440 * Math.pow(2, (getMidi(noteFull) - 69) / 12);
     osc.frequency.setValueAtTime(freq, now);
 
     // 2. Filter (Optional)
     let source: AudioNode = osc;
-    if (patch.filterFreq) {
+    if (legacy.filterFreq) {
         const filter = audioCtx.createBiquadFilter();
         filter.type = 'lowpass';
-        filter.frequency.setValueAtTime(patch.filterFreq, now);
+      filter.frequency.setValueAtTime(legacy.filterFreq, now);
         // Key Tracking: Brighter on higher notes
-        filter.frequency.linearRampToValueAtTime(patch.filterFreq + (freq * 0.5), now + 0.5);
+      filter.frequency.linearRampToValueAtTime(legacy.filterFreq + (freq * 0.5), now + 0.5);
         osc.connect(filter);
         source = filter;
     }
 
     // 3. Vibrato (Optional)
     let lfo: OscillatorNode | null = null;
-    if (patch.vibratoDepth) {
+    if (legacy.vibratoDepth) {
         lfo = audioCtx.createOscillator();
-        lfo.frequency.value = patch.vibratoSpeed || 5;
+      lfo.frequency.value = legacy.vibratoSpeed || 5;
         const lfoGain = audioCtx.createGain();
-        lfoGain.gain.value = patch.vibratoDepth;
+      lfoGain.gain.value = legacy.vibratoDepth;
         lfo.connect(lfoGain);
         lfoGain.connect(osc.frequency);
         lfo.start(now);
@@ -58,10 +80,13 @@ export function useSynth(audioCtx: AudioContext | null, outputNode: AudioNode | 
     // Start at 0
     env.gain.setValueAtTime(0, now);
     // Ramp to Peak (Attack)
-    env.gain.linearRampToValueAtTime(0.5, now + patch.attack);
+    env.gain.linearRampToValueAtTime(0.5, now + (legacy.attack ?? 0.02));
     // Decay to Sustain Level
-    const sustainLevel = patch.sustain * 0.5; // Scale down to avoid clipping
-    env.gain.exponentialRampToValueAtTime(Math.max(0.001, sustainLevel), now + patch.attack + patch.decay);
+    const sustainLevel = (legacy.sustain ?? 0.7) * 0.5; // Scale down to avoid clipping
+    env.gain.exponentialRampToValueAtTime(
+      Math.max(0.001, sustainLevel),
+      now + (legacy.attack ?? 0.02) + (legacy.decay ?? 0.15)
+    );
 
     // Routing
     source.connect(env);
@@ -72,25 +97,22 @@ export function useSynth(audioCtx: AudioContext | null, outputNode: AudioNode | 
     activeVoices.current[noteFull] = {
       stop: (releaseTime: number) => {
         // Cancel any future envelope changes (like long decays)
-        env.gain.cancelScheduledValues(releaseNow);
+        env.gain.cancelScheduledValues(releaseTime);
         
         // Grab current value to prevent popping
-        env.gain.setValueAtTime(env.gain.value, releaseNow);
+        env.gain.setValueAtTime(env.gain.value, releaseTime);
         
         // Ramp to 0 (Release)
-        env.gain.exponentialRampToValueAtTime(0.001, releaseNow + patch.release);
+        env.gain.exponentialRampToValueAtTime(0.001, releaseTime + (legacy.release ?? 0.2));
         
         // Stop Oscillators
-        osc.stop(releaseNow + patch.release + 0.1); // Small buffer
-        if (lfo) lfo.stop(releaseNow + patch.release + 0.1);
+        osc.stop(releaseTime + (legacy.release ?? 0.2) + 0.1); // Small buffer
+        if (lfo) lfo.stop(releaseTime + (legacy.release ?? 0.2) + 0.1);
         
         // Cleanup Ref
         delete activeVoices.current[noteFull];
       }
     };
-    
-    // Helper variable for closure
-    const releaseNow = audioCtx.currentTime;
 
   }, [audioCtx, outputNode]);
 
