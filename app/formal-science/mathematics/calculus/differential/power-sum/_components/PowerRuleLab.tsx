@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from 'react';
 import { Zap, FunctionSquare, ArrowDown } from 'lucide-react';
-import { M } from '@/components/Math';
+import { M } from '@/app/_components/Math';
 
 export default function PowerRuleLab() {
   const [power, setPower] = useState(2); // x^2, x^3, x^4
