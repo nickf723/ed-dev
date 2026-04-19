@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { Sun, Droplet, Wind, Zap } from "lucide-react";
-import { M } from "@/components/Math";
+import { M } from "@/app/_components/Math";
 
 export default function PhotosynthesisWidget() {
   const [light, setLight] = useState(50);
