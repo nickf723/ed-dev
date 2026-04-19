@@ -75,9 +75,8 @@ export default function AestheticMatrixPage() {
     ? activeProfile.items[activeCategory]![activeVariantIndex]
     : null;
 
-// 3. USE THE HOOK
-// Pass the current item and the profile's collection ID
-const activeImageUrl = useLiveFeed(currentArtifact, activeProfile.unsplashCollectionId);
+  // Fetch live feed image
+  const activeImageUrl = useLiveFeed(currentArtifact, activeAestheticId);
 
 // 4. The Fallback Generator (If API is loading or fails)
 const getFallbackUrl = () => {
@@ -273,10 +272,10 @@ const getFallbackUrl = () => {
                               
                               {/* Asset Status Badge */}
                               <div className="absolute top-4 right-4">
-                                   <div className={`px-3 py-1 rounded-full backdrop-blur-md border border-white/10 text-[10px] font-bold text-white flex items-center gap-2 ${currentArtifact?.localImage ? 'bg-rose-900/60' : 'bg-black/60'}`}>
-                                    {/* Green Pulse if Live Feed, Rose Pulse if Archive Asset */}
-                                    <div className={`w-1.5 h-1.5 rounded-full animate-pulse ${currentArtifact?.localImage ? 'bg-rose-500' : 'bg-green-500'}`} />
-                                    {currentArtifact?.localImage ? 'ARCHIVE ASSET' : 'LIVE FEED'}
+                                   <div className={`px-3 py-1 rounded-full backdrop-blur-md border border-white/10 text-[10px] font-bold text-white flex items-center gap-2 ${activeImageUrl ? 'bg-black/60' : 'bg-rose-900/60'}`}>
+                                    {/* Green Pulse if Live Feed, Rose Pulse if Placeholder */}
+                                    <div className={`w-1.5 h-1.5 rounded-full animate-pulse ${activeImageUrl ? 'bg-green-500' : 'bg-rose-500'}`} />
+                                    {activeImageUrl ? 'LIVE FEED' : 'LOADING'}
                                     </div>
                               </div>
                           </div>
