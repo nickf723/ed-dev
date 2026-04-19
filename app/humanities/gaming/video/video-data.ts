@@ -1,5 +1,4 @@
 import { Gamepad2, Cpu, Layers, Box, Monitor, Ghost } from "lucide-react";
-import { GlossaryDatabase, termCategories } from "@/lib/glossary/types";
 
 // 1. PAGE CONTENT
 export const VIDEO_ERAS = [
@@ -64,34 +63,3 @@ export const GENRES = [
     desc: "Procedural generation and permanent death.", 
     query: "Hades game art" },
 ];
-
-// 2. GLOSSARY EXPORT (Copy this to your library later)
-export const videoGamingTerms: GlossaryDatabase = {
-  "Ludonarrative Dissonance": {
-    definition: "The conflict between a video game's narrative told through the story and the narrative told through the gameplay.",
-    category: termCategories.ARTS,
-    href: "/humanities/gaming/video",
-    tags: ["Theory", "Critique"]
-  },
-  "Ray Tracing": {
-    definition: "A rendering technique for generating an image by tracing the path of light as pixels in an image plane and simulating the effects of its encounters with virtual objects.",
-    category: termCategories.COMPUTER_SCIENCE,
-    href: "/formal-science/computer-science/graphics",
-    tags: ["Graphics", "Rendering"]
-  },
-  "Hitbox": {
-    definition: "An invisible shape commonly used in video games for real-time collision detection.",
-    category: termCategories.COMPUTER_SCIENCE,
-    tags: ["Mechanics", "Programming"]
-  },
-  "Frame Rate": {
-    definition: "The frequency at which consecutive images called frames appear on a display. Measured in FPS (frames per second).",
-    category: termCategories.TECHNOLOGY,
-    tags: ["Performance", "Hardware"]
-  },
-  "NPC": {
-    definition: "Non-Player Character. Any character in a game that is not controlled by a player.",
-    category: termCategories.COMPUTER_SCIENCE,
-    tags: ["AI", "Design"]
-  }
-};
