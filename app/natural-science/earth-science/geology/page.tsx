@@ -1,7 +1,6 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
-import { M } from "@/components/Math";
 import TectonicBackground from "@/app/natural-science/earth-science/geology/TectonicBackground";
 import { 
   ArrowLeft, Mountain, Pickaxe, Flame, RefreshCw, 
