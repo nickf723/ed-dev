@@ -1,6 +1,5 @@
 "use client";
 import Link from "next/link";
-import { M } from "@/components/Math";
 import WindBackground from "@/app/natural-science/earth-science/meteorology/WindBackground";
 import { ArrowLeft, Wind, Cloud, Sun, Thermometer, Plane, Rocket, Satellite } from "lucide-react";
 
