@@ -66,7 +66,6 @@ export default function LaserBackground() {
       ctx.shadowColor = "#4ade80";
       ctx.shadowBlur = 15;
       ctx.lineWidth = 3;
-
       let currentX = ray.x;
       let currentY = ray.y;
       let dirX = ray.dx;
@@ -84,12 +83,13 @@ export default function LaserBackground() {
           // Mathematical intersection logic omitted for brevity in favor of "Orbital" check below
           
           // Check Sphere Intersections
-          spheres.forEach(s => {
+          for (const s of spheres) {
               // Vector from current ray start to sphere center
               const ex = s.x - currentX;
               const ey = s.y - currentY;
               // Project sphere center onto ray direction
               const a = ex * dirX + ey * dirY;
+              
               if (a > 0) { // Forward only
                    const nearestX = currentX + dirX * a;
                    const nearestY = currentY + dirY * a;
@@ -108,7 +108,7 @@ export default function LaserBackground() {
                        }
                    }
               }
-          });
+          }
 
           // Draw Segment
           ctx.lineTo(hitX, hitY);
