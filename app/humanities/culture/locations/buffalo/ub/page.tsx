@@ -1,9 +1,9 @@
 "use client";
 import React from 'react';
 import Link from 'next/link';
-// Ensure you create the component file and install dependencies!
-import UBCampusMap from "./UBCampusMap"; 
-import CircuitBoardSnow from "./CircuitBoardSnow";
+import dynamic from 'next/dynamic';
+const UBCampusMap = dynamic(() => import('./UBCampusMap'), { ssr: false });
+const CircuitBoardSnow = dynamic(() => import('./CircuitBoardSnow'), { ssr: false });
 import { 
   ArrowLeft, GraduationCap, Microscope, 
   ExternalLink, BookOpen, Trophy, Map as MapIcon 
