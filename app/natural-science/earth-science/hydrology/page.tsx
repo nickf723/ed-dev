@@ -6,6 +6,7 @@ import {
   Waves, Thermometer, GlassWater
 } from "lucide-react";
 import { useState } from "react";
+import { M } from "@/app/_components/Math"
 
 export default function HydrologyPage() {
   const [cycleStage, setCycleStage] = useState("evaporation");
