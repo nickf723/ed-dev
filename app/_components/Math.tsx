@@ -1,6 +1,5 @@
 import React from "react";
 import katex from "katex";
-import "katex/dist/katex.min.css"; // Ensure CSS is imported!
 
 export function M({ children, display = false }: { children: string, display?: boolean }) {
   const html = katex.renderToString(children, {
