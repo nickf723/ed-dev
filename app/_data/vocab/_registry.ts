@@ -41,6 +41,10 @@ import { metroidvaniaVocab } from './m/metroidvania';
 import { anthropologyVocab } from './a/anthropology';
 import { mythologyVocab } from './m/mythology';
 import { cognitiveScienceVocab } from './c/cognitive-science';
+import { formalScienceVocab } from './f/formal-science';
+import { logicVocab } from './l/logic';
+import { propLogicVocab } from './p/propositional-logic';
+import { firstOrderVocab } from './f/first-order-logic';
 
 export { mathVocab, abstractAlgebraVocab, ludologyVocab, gameDesignVocab };
 
@@ -76,5 +80,9 @@ export const ALL_VOCAB: VocabTerm[] = [
     ...anthropologyVocab,
     ...mythologyVocab,
     ...cognitiveScienceVocab,
-    ...metroidvaniaVocab
+    ...metroidvaniaVocab,
+    ...formalScienceVocab,
+    ...logicVocab,
+    ...propLogicVocab,
+    ...firstOrderVocab
 ];

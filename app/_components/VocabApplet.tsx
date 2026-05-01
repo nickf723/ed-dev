@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from 'react';
-import { BookOpen, Search, EyeOff, Eye, Library, Tags, ArrowRight } from 'lucide-react';
+import { BookOpen, Search, EyeOff, Eye, Library, Tags, ArrowRight, XCircle } from 'lucide-react';
 
 export type VocabTerm = {
     id: string;
@@ -12,65 +12,71 @@ export type VocabTerm = {
     isAdult: boolean;
 };
 
+// --- THEME DICTIONARY ---
+type ThemeColor = 'indigo' | 'rose' | 'cyan' | 'amber' | 'emerald' | 'purple' | 'blue';
+
+const THEMES: Record<ThemeColor, { text: string; textMuted: string; bgSubtle: string; border: string; borderHover: string; borderFocus: string; btnActive: string; iconGlow: string }> = {
+    indigo: { text: 'text-indigo-400', textMuted: 'text-indigo-400/70', bgSubtle: 'bg-indigo-950/30', border: 'border-indigo-500/20', borderHover: 'hover:border-indigo-500', borderFocus: 'focus-within:border-indigo-500/50', btnActive: 'bg-indigo-600 text-white shadow-[0_0_10px_rgba(79,70,229,0.4)]', iconGlow: 'shadow-[0_0_15px_rgba(99,102,241,0.15)]' },
+    rose:   { text: 'text-rose-400', textMuted: 'text-rose-400/70', bgSubtle: 'bg-rose-950/30', border: 'border-rose-500/20', borderHover: 'hover:border-rose-500', borderFocus: 'focus-within:border-rose-500/50', btnActive: 'bg-rose-600 text-white shadow-[0_0_10px_rgba(225,29,72,0.4)]', iconGlow: 'shadow-[0_0_15px_rgba(244,63,94,0.15)]' },
+    cyan:   { text: 'text-cyan-400', textMuted: 'text-cyan-400/70', bgSubtle: 'bg-cyan-950/30', border: 'border-cyan-500/20', borderHover: 'hover:border-cyan-500', borderFocus: 'focus-within:border-cyan-500/50', btnActive: 'bg-cyan-600 text-white shadow-[0_0_10px_rgba(8,145,178,0.4)]', iconGlow: 'shadow-[0_0_15px_rgba(6,182,212,0.15)]' },
+    amber:  { text: 'text-amber-400', textMuted: 'text-amber-400/70', bgSubtle: 'bg-amber-950/30', border: 'border-amber-500/20', borderHover: 'hover:border-amber-500', borderFocus: 'focus-within:border-amber-500/50', btnActive: 'bg-amber-600 text-white shadow-[0_0_10px_rgba(217,119,6,0.4)]', iconGlow: 'shadow-[0_0_15px_rgba(245,158,11,0.15)]' },
+    emerald:{ text: 'text-emerald-400', textMuted: 'text-emerald-400/70', bgSubtle: 'bg-emerald-950/30', border: 'border-emerald-500/20', borderHover: 'hover:border-emerald-500', borderFocus: 'focus-within:border-emerald-500/50', btnActive: 'bg-emerald-600 text-white shadow-[0_0_10px_rgba(5,150,105,0.4)]', iconGlow: 'shadow-[0_0_15px_rgba(16,185,129,0.15)]' },
+    purple: { text: 'text-purple-400', textMuted: 'text-purple-400/70', bgSubtle: 'bg-purple-950/30', border: 'border-purple-500/20', borderHover: 'hover:border-purple-500', borderFocus: 'focus-within:border-purple-500/50', btnActive: 'bg-purple-600 text-white shadow-[0_0_10px_rgba(126,34,206,0.4)]', iconGlow: 'shadow-[0_0_15px_rgba(168,85,247,0.15)]' },
+    blue:   { text: 'text-blue-400', textMuted: 'text-blue-400/70', bgSubtle: 'bg-blue-950/30', border: 'border-blue-500/20', borderHover: 'hover:border-blue-500', borderFocus: 'focus-within:border-blue-500/50', btnActive: 'bg-blue-600 text-white shadow-[0_0_10px_rgba(59,130,246,0.4)]', iconGlow: 'shadow-[0_0_15px_rgba(59,130,246,0.15)]' },
+};
+
 interface VocabAppletProps {
     currentDomain: string;
     localTerms: VocabTerm[];
     parentTerms?: VocabTerm[];
+    accentColor?: ThemeColor; // NEW: Optional theme prop
 }
 
-export default function VocabApplet({ currentDomain, localTerms, parentTerms = [] }: VocabAppletProps) {
-    const [searchTerm, setSearchTerm] = useState('');
-    const [activeTag, setActiveTag] = useState<string>('All');
-    const [includeParents, setIncludeParents] = useState(false);
+export default function VocabApplet({ currentDomain, localTerms, parentTerms = [], accentColor = 'indigo' }: VocabAppletProps) {
+    const theme = THEMES[accentColor]; // Load the active theme
     
-    // Default to true, but we will check localStorage on mount
+    const [searchTerm, setSearchTerm] = useState('');
+    const [activeTag, setActiveTag] = useState<string>('All Tags');
+    const [includeParents, setIncludeParents] = useState(false);
     const [hideAdult, setHideAdult] = useState(true);
     const [isMounted, setIsMounted] = useState(false);
 
-    // 1. PERSISTENT STATE: Load and save Safe Mode preferences
     useEffect(() => {
         setIsMounted(true);
         const savedSafeMode = localStorage.getItem('vocab_safe_mode');
-        if (savedSafeMode !== null) {
-            setHideAdult(savedSafeMode === 'true');
-        }
+        if (savedSafeMode !== null) setHideAdult(savedSafeMode === 'true');
     }, []);
 
-    const toggleSafeMode = () => {
-        const newState = !hideAdult;
-        setHideAdult(newState);
-        localStorage.setItem('vocab_safe_mode', String(newState));
-    };
 
-    // 2. DATA COMPILATION
+
     const activeTerms = includeParents ? [...localTerms, ...parentTerms] : localTerms;
+    const allTags = ['All Tags', ...Array.from(new Set(activeTerms.flatMap(t => t.tags)))].sort();
 
-    // Extract unique tags from the currently active terms
-    const allTags = ['All', ...Array.from(new Set(activeTerms.flatMap(t => t.tags)))].sort();
-
-    // 3. FILTERING ENGINE
     const filteredTerms = activeTerms.filter(term => {
         const matchesSearch = term.word.toLowerCase().includes(searchTerm.toLowerCase()) || 
                               term.definition.toLowerCase().includes(searchTerm.toLowerCase());
         const matchesAdultFilter = hideAdult ? !term.isAdult : true;
-        const matchesTag = activeTag === 'All' ? true : term.tags.includes(activeTag);
-        
+        const matchesTag = activeTag === 'All Tags' ? true : term.tags.includes(activeTag);
         return matchesSearch && matchesAdultFilter && matchesTag;
     });
 
     const sortedTerms = [...filteredTerms].sort((a, b) => a.word.localeCompare(b.word));
 
-    // Prevent hydration mismatch by not rendering the adult-filtered content until mounted
+    const resetFilters = () => {
+        setSearchTerm(''); setActiveTag('All Tags');
+    };
+
     if (!isMounted) return null;
 
     return (
-        <div className="bg-[#0a0a0a] border border-neutral-800 rounded-2xl overflow-hidden font-sans my-8 shadow-xl">
+        <div className="bg-[#0a0a0a] border border-neutral-800 rounded-2xl overflow-hidden font-sans shadow-xl">
             
             {/* APPLET HEADER */}
             <div className="p-6 bg-black border-b border-neutral-800">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-6">
                     <div className="flex items-center gap-4">
-                        <div className="p-3 bg-indigo-950/30 text-indigo-500 rounded-xl border border-indigo-500/20 shadow-[0_0_15px_rgba(99,102,241,0.15)]">
+                        {/* THEMED: Icon Box */}
+                        <div className={`p-3 rounded-xl border ${theme.bgSubtle} ${theme.text} ${theme.border} ${theme.iconGlow}`}>
                             <BookOpen size={24} />
                         </div>
                         <div>
@@ -81,7 +87,8 @@ export default function VocabApplet({ currentDomain, localTerms, parentTerms = [
                         </div>
                     </div>
 
-                    <div className="flex items-center gap-3 bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-2.5 flex-1 md:flex-none md:min-w-[280px] focus-within:border-indigo-500/50 transition-colors">
+                    {/* THEMED: Search Bar Focus */}
+                    <div className={`flex items-center gap-3 bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-2.5 flex-1 md:flex-none md:min-w-[280px] transition-colors ${theme.borderFocus}`}>
                         <Search size={16} className="text-neutral-500" />
                         <input 
                             type="text" 
@@ -93,101 +100,79 @@ export default function VocabApplet({ currentDomain, localTerms, parentTerms = [
                     </div>
                 </div>
 
-                {/* CONTROLS & TAG RIBBON */}
-                <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                     
-                    {/* Tag Filters */}
-                    <div className="flex flex-wrap gap-2">
-                        <Tags size={14} className="text-neutral-600 mr-1 self-center" />
-                        {allTags.map(tag => (
-                            <button
-                                key={tag}
-                                onClick={() => setActiveTag(tag)}
-                                className={`px-3 py-1 rounded-md text-[10px] font-bold uppercase tracking-widest transition-all ${
-                                    activeTag === tag 
-                                        ? 'bg-white text-black' 
-                                        : 'bg-neutral-900 border border-neutral-800 text-neutral-400 hover:text-white hover:border-neutral-600'
-                                }`}
-                            >
-                                {tag}
-                            </button>
-                        ))}
+                    {/* THEMED: Tag Dropdown Focus */}
+                    <div className={`flex items-center gap-2 bg-neutral-900 border border-neutral-800 rounded-lg px-3 py-1.5 transition-colors w-full md:w-auto ${theme.borderFocus}`}>
+                        <Tags size={14} className="text-neutral-500" />
+                        <select 
+                            value={activeTag}
+                            onChange={(e) => setActiveTag(e.target.value)}
+                            className="bg-transparent text-xs font-bold uppercase tracking-widest text-neutral-300 outline-none w-full md:w-48 cursor-pointer"
+                        >
+                            {allTags.map(tag => (
+                                <option key={tag} value={tag} className="bg-neutral-900 text-neutral-300">{tag}</option>
+                            ))}
+                        </select>
                     </div>
 
-                    {/* Toggles */}
-                    <div className="flex gap-2 w-full lg:w-auto">
+                    <div className="flex gap-2 w-full md:w-auto">
                         {parentTerms.length > 0 && (
                             <button 
                                 onClick={() => setIncludeParents(!includeParents)}
-                                className={`flex-1 lg:flex-none flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-widest transition-colors ${
+                                // THEMED: Active Button State
+                                className={`flex-1 md:flex-none flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-widest transition-colors ${
                                     includeParents 
-                                        ? 'bg-indigo-600 text-white shadow-[0_0_10px_rgba(79,70,229,0.4)]' 
+                                        ? theme.btnActive
                                         : 'bg-neutral-900 border border-neutral-800 text-neutral-400 hover:text-white hover:bg-neutral-800'
                                 }`}
                             >
-                                <Library size={14} />
-                                {includeParents ? 'Hide Parents' : 'Show Parents'}
+                                <Library size={14} /> {includeParents ? 'Hide Parents' : 'Show Parents'}
                             </button>
                         )}
-
-                        <button 
-                            onClick={toggleSafeMode}
-                            className={`flex-1 lg:flex-none flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-widest transition-colors ${
-                                hideAdult 
-                                    ? 'bg-emerald-950/30 text-emerald-500 border border-emerald-500/30' 
-                                    : 'bg-rose-950/30 text-rose-500 border border-rose-500/30'
-                            }`}
-                        >
-                            {hideAdult ? <EyeOff size={14} /> : <Eye size={14} />}
-                            {hideAdult ? 'Safe Mode' : 'Unrestricted'}
-                        </button>
                     </div>
                 </div>
             </div>
 
             {/* TERMS DISPLAY */}
-            <div className="max-h-[500px] overflow-y-auto p-6 space-y-6 hidden-scrollbar">
+            <div className="max-h-[400px] overflow-y-auto p-6 space-y-6 hidden-scrollbar">
                 {sortedTerms.length === 0 ? (
                     <div className="text-center text-neutral-500 py-12 flex flex-col items-center">
                         <Search size={32} className="mb-4 opacity-20" />
-                        <span className="text-sm">No terminology matches your current filters.</span>
+                        <span className="text-sm mb-4">No terminology matches your current filters.</span>
+                        <button onClick={resetFilters} className="flex items-center gap-2 px-4 py-2 bg-neutral-900 hover:bg-neutral-800 border border-neutral-800 rounded-lg text-xs font-bold uppercase tracking-widest transition-colors text-white">
+                            <XCircle size={14} /> Clear Filters
+                        </button>
                     </div>
                 ) : (
                     sortedTerms.map(term => (
-                        <div key={term.id} className="group relative pl-4 border-l-2 border-neutral-800 hover:border-indigo-500 transition-colors">
+                        // THEMED: Left Border & Text Hover
+                        <div key={term.id} className={`group relative pl-4 border-l-2 border-neutral-800 transition-colors ${theme.borderHover}`}>
                             <div className="flex flex-wrap items-baseline gap-3 mb-2">
-                                <h4 className="text-lg font-black text-white group-hover:text-indigo-400 transition-colors">
+                                <h4 className={`text-lg font-black text-white transition-colors group-hover:${theme.text.split('-')[1]}-400`}>
                                     {term.word}
                                 </h4>
-                                <span className="text-[10px] font-mono text-neutral-500 uppercase tracking-widest">
-                                    {term.domain}
-                                </span>
+                                <span className="text-[10px] font-mono text-neutral-500 uppercase tracking-widest">{term.domain}</span>
                                 {term.isAdult && (
-                                    <span className="text-[9px] font-bold bg-rose-950/80 text-rose-400 px-1.5 py-0.5 rounded uppercase tracking-widest border border-rose-500/30">
-                                        Mature
-                                    </span>
+                                    <span className="text-[9px] font-bold bg-rose-950/80 text-rose-400 px-1.5 py-0.5 rounded uppercase tracking-widest border border-rose-500/30">Mature</span>
                                 )}
                             </div>
                             
-                            <p className="text-sm text-neutral-300 leading-relaxed font-light mb-3">
-                                {term.definition}
-                            </p>
+                            <p className="text-sm text-neutral-300 leading-relaxed font-light mb-3">{term.definition}</p>
 
-                            {/* Cross-Referencing Footer */}
                             {(term.tags.length > 0 || term.relatedTerms) && (
                                 <div className="flex flex-wrap items-center gap-4 mt-2">
                                     {term.tags.length > 0 && (
                                         <div className="flex gap-1.5">
                                             {term.tags.map(tag => (
-                                                <span key={tag} className="text-[9px] font-bold uppercase tracking-widest text-neutral-500 bg-neutral-900 px-1.5 py-0.5 rounded">
-                                                    {tag}
-                                                </span>
+                                                <span key={tag} className="text-[9px] font-bold uppercase tracking-widest text-neutral-500 bg-neutral-900 px-1.5 py-0.5 rounded">{tag}</span>
                                             ))}
                                         </div>
                                     )}
                                     
                                     {term.relatedTerms && term.relatedTerms.length > 0 && (
-                                        <div className="flex items-center gap-1.5 text-[10px] font-mono text-indigo-400/70">
+                                        // THEMED: Arrow Text
+                                        <div className={`flex items-center gap-1.5 text-[10px] font-mono ${theme.textMuted}`}>
                                             <ArrowRight size={12} />
                                             <span>See also: {term.relatedTerms.join(', ')}</span>
                                         </div>
