@@ -1,148 +1,148 @@
+"use client";
 import React from 'react';
 import Link from 'next/link';
-import { ArrowLeft, GripHorizontal, Boxes, DivideSquare, Calculator } from 'lucide-react';
+import { 
+    ArrowLeft, Boxes, GripHorizontal, 
+    DivideSquare, CheckCircle2, ArrowRight
+} from 'lucide-react';
 import GroupingBackground from './_components/GroupingBackground';
 import PokemonGroupingLab from './_components/PokemonGroupingLab';
 
-const MATH_MODULES = [
-    {
-        id: 'fractions',
-        title: 'Fractions',
-        description: 'What happens when a group is divided, but it doesn\'t split perfectly evenly?',
-        icon: DivideSquare,
-        color: 'sky',
-        href: '#'
-    },
-    {
-        id: 'algebra',
-        title: 'Pre-Algebra',
-        description: 'Using letters to represent unknown group sizes and discovering patterns.',
-        icon: Calculator,
-        color: 'fuchsia',
-        href: '#'
-    }
-];
-
 export default function GroupingPage() {
     return (
-        <main className="relative min-h-screen bg-[#0a0f14] text-zinc-300 font-sans selection:bg-rose-500/30 overflow-x-hidden">
+        <main className="relative min-h-screen bg-[#0a0f14] text-zinc-300 font-sans selection:bg-emerald-500/30 overflow-x-hidden pb-32">
             
             <GroupingBackground />
 
-            <div className="relative z-10 max-w-[85rem] mx-auto px-6 py-12 md:py-24">
+            <div className="relative z-10 max-w-[55rem] mx-auto px-6 py-12 md:py-20">
                 
-                {/* HEADER */}
+                {/* =========================================
+                    HEADER
+                ========================================= */}
                 <header className="mb-16 border-b border-white/10 pb-8 backdrop-blur-sm">
-                    <Link href="/formal-science/mathematics/foundations" className="inline-flex items-center gap-2 text-zinc-500 hover:text-zinc-300 text-xs font-bold uppercase tracking-widest mb-6 transition-colors">
-                        <ArrowLeft size={14} /> Mathematical Foundations
+                    <Link href="/formal-science/mathematics/foundations" className="inline-flex items-center gap-2 text-emerald-500 hover:text-emerald-400 text-[10px] font-black uppercase tracking-widest mb-8 transition-colors bg-emerald-500/10 px-4 py-2 rounded-full border border-emerald-500/20">
+                        <ArrowLeft size={14} /> Back to Foundations
                     </Link>
                     
-                    <div className="flex items-center gap-3 mb-4">
-                        <span className="p-2 bg-black/50 border border-rose-500/30 rounded-lg text-rose-400 shadow-[0_0_15px_rgba(244,63,94,0.2)]">
-                            <Boxes size={24} />
+                    <div className="flex items-center gap-3 mb-6">
+                        <span className="p-3 bg-emerald-500/10 border border-emerald-500/30 rounded-2xl text-emerald-400 shadow-[0_0_20px_rgba(16,185,129,0.2)]">
+                            <Boxes size={32} />
                         </span>
-                        <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-rose-300/50">
-                            Foundations // Multiplication & Division
+                        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-emerald-400">
+                            Core Unit 06
                         </span>
                     </div>
                     
-                    <h1 className="text-5xl md:text-7xl font-black text-white tracking-tighter mb-6">
-                        GROUPING & <br />
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-rose-400 to-amber-400">SETS</span>
+                    <h1 className="text-5xl md:text-7xl font-black text-white tracking-tighter mb-6 drop-shadow-lg">
+                        SETS & <br />
+                        <span className="text-zinc-500 font-light">GROUPING</span>
                     </h1>
-                    <p className="text-lg md:text-xl text-zinc-400 font-light max-w-3xl leading-relaxed">
-                        Addition is great for counting a few items, but what happens when you have hundreds? Grouping allows us to bundle items into equal sets. It is the core logic that transforms slow addition into lightning-fast multiplication.
+                    <p className="text-xl text-zinc-400 font-medium max-w-3xl leading-relaxed">
+                        Addition is great for counting a few items, but what happens when you have hundreds? Grouping allows us to bundle items into neat sets, transforming slow counting into lightning-fast math.
                     </p>
                 </header>
 
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 mb-24">
-                    
-                    {/* LEFT: THEORETICAL TEXT */}
-                    <div className="lg:col-span-5 space-y-12">
-                        
-                        <section>
-                            <h2 className="text-2xl font-bold text-white mb-4 flex items-center gap-3">
-                                <GripHorizontal className="text-amber-400" /> Building Arrays
-                            </h2>
-                            <p className="text-zinc-400 leading-relaxed font-light mb-4">
-                                An <strong>Array</strong> is just a set of items arranged in rows and columns. Instead of counting every single item one by one, you just count how many rows there are, and how many items are in each row.
-                            </p>
-                            
-                            <div className="p-4 bg-zinc-900/50 border border-white/5 rounded-xl mb-6 text-sm text-zinc-300 flex items-center justify-between">
-                                <div>
-                                    <div className="flex gap-2 mb-2"><div className="w-3 h-3 bg-amber-500 rounded-full"/><div className="w-3 h-3 bg-amber-500 rounded-full"/><div className="w-3 h-3 bg-amber-500 rounded-full"/><div className="w-3 h-3 bg-amber-500 rounded-full"/></div>
-                                    <div className="flex gap-2 mb-2"><div className="w-3 h-3 bg-amber-500 rounded-full"/><div className="w-3 h-3 bg-amber-500 rounded-full"/><div className="w-3 h-3 bg-amber-500 rounded-full"/><div className="w-3 h-3 bg-amber-500 rounded-full"/></div>
-                                    <div className="flex gap-2"><div className="w-3 h-3 bg-amber-500 rounded-full"/><div className="w-3 h-3 bg-amber-500 rounded-full"/><div className="w-3 h-3 bg-amber-500 rounded-full"/><div className="w-3 h-3 bg-amber-500 rounded-full"/></div>
-                                </div>
-                                <div className="text-right font-mono text-zinc-500">
-                                    3 rows<br/>of 4
-                                </div>
-                            </div>
-                            
-                            <p className="text-zinc-400 leading-relaxed font-light mt-4">
-                                This array shows 3 groups of 4. We can write this as repeated addition (<strong>4 + 4 + 4 = 12</strong>) or as multiplication (<strong>3 x 4 = 12</strong>).
-                            </p>
-                        </section>
-
-                        <section className="pt-8 border-t border-white/5">
-                            <h2 className="text-2xl font-bold text-white mb-4 flex items-center gap-3">
-                                <DivideSquare className="text-rose-400" /> The Art of Division
-                            </h2>
-                            <p className="text-zinc-400 leading-relaxed font-light mb-4">
-                                Division is just multiplication in reverse. If multiplication is taking equal groups and finding the total, division is taking a total and finding out how many fit into equal groups.
-                            </p>
-
-                            <div className="p-5 bg-black/40 border-l-4 border-rose-500 text-sm text-zinc-300 font-serif italic rounded-r-xl mt-6">
-                                If you have a total of <strong>12</strong> items, and you need to put them into <strong>3</strong> equal groups, how many items go into each group? You have to divide the total by the number of groups!
-                            </div>
-                        </section>
-
+                {/* =========================================
+                    CHAPTER 1: THE FAST WAY TO ADD
+                ========================================= */}
+                <section className="mb-20">
+                    <div className="flex items-center gap-4 mb-8">
+                        <div className="w-12 h-12 rounded-full bg-amber-500/20 flex items-center justify-center text-amber-400 border border-amber-500/30">
+                            <GripHorizontal size={24} strokeWidth={3} />
+                        </div>
+                        <h2 className="text-3xl font-black text-white tracking-tight">The Shortcut</h2>
                     </div>
 
-                    {/* RIGHT: INTERACTIVE LAB */}
-                    <div className="lg:col-span-7">
-                        <div className="sticky top-24">
-                            <PokemonGroupingLab />
+                    <div className="bg-white/5 backdrop-blur-md p-8 rounded-3xl border border-white/10 shadow-xl mb-8">
+                        <p className="text-lg text-zinc-300 leading-relaxed mb-6">
+                            Imagine you want to count the wheels on 5 cars. You could count them one by one: 1, 2, 3, 4, 5... all the way to 20. But that takes forever!
+                        </p>
+                        <p className="text-lg text-zinc-300 leading-relaxed mb-8">
+                            Instead, you notice a pattern. Every car has exactly 4 wheels. You have 5 cars. This means you have <strong>5 groups of 4</strong>. Instead of counting individually, you can use <strong>Multiplication (×)</strong>, which is just a super-fast shortcut for adding the same number over and over again.
+                        </p>
+                        
+                        <div className="flex flex-col md:flex-row items-center justify-center gap-8 bg-black/40 p-6 rounded-2xl border border-white/5">
+                            <div className="text-center">
+                                <div className="text-zinc-500 text-sm font-bold uppercase tracking-widest mb-2">Repeated Addition</div>
+                                <div className="text-2xl font-mono text-white">4 + 4 + 4 + 4 + 4 <span className="text-amber-400">= 20</span></div>
+                            </div>
+                            <div className="hidden md:block w-px h-12 bg-white/10" />
+                            <div className="text-center">
+                                <div className="text-zinc-500 text-sm font-bold uppercase tracking-widest mb-2">Multiplication</div>
+                                <div className="text-2xl font-mono text-white">5 × 4 <span className="text-amber-400">= 20</span></div>
+                            </div>
                         </div>
                     </div>
-
-                </div>
-
-                {/* BOTTOM: ADVANCED ROUTING */}
-                <div className="pt-16 border-t border-white/10">
-                    <h2 className="text-2xl font-bold text-white mb-2 flex items-center gap-3">
-                        <Calculator className="text-rose-400" /> Beyond Whole Numbers
-                    </h2>
-                    <p className="text-zinc-500 font-light mb-8">What happens when the groups don't fit perfectly together?</p>
                     
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        {MATH_MODULES.map((topic) => {
-                            const Icon = topic.icon;
-                            const borderHover = 
-                                topic.color === 'sky' ? 'hover:border-sky-500/50' :
-                                'hover:border-fuchsia-500/50';
-                                
-                            const iconColor = 
-                                topic.color === 'sky' ? 'text-sky-400' :
-                                'text-fuchsia-400';
+                    
+                </section>
 
-                            return (
-                                <Link key={topic.id} href={topic.href} className={`bg-black/40 border border-white/5 p-6 rounded-2xl transition-all duration-300 group hover:-translate-y-1 ${borderHover}`}>
-                                    <div className="flex items-start justify-between mb-4">
-                                        <div className={`p-3 bg-white/5 rounded-xl ${iconColor}`}>
-                                            <Icon size={24} />
-                                        </div>
-                                    </div>
-                                    <h3 className="font-bold text-white mb-2 group-hover:text-white transition-colors">
-                                        {topic.title}
-                                    </h3>
-                                    <p className="text-xs text-zinc-400 leading-relaxed">
-                                        {topic.description}
-                                    </p>
-                                </Link>
-                            );
-                        })}
+                {/* =========================================
+                    CHAPTER 2: INTERACTIVE LAB
+                ========================================= */}
+                <section className="mb-20">
+                    <div className="flex items-center gap-4 mb-8">
+                        <div className="w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400 border border-emerald-500/30">
+                            <Boxes size={24} strokeWidth={3} />
+                        </div>
+                        <h2 className="text-3xl font-black text-white tracking-tight">Building Arrays</h2>
                     </div>
+                    
+                    <p className="text-lg text-zinc-300 leading-relaxed mb-8">
+                        An <strong>Array</strong> is a set of items arranged in rows and columns. It is the best way to visualize multiplication! Let's build some arrays using the Pokémon Daycare system below.
+                    </p>
+
+                    <div className="relative">
+                        <div className="absolute -top-4 left-8 bg-emerald-500 text-white text-[10px] font-black uppercase tracking-widest px-4 py-1.5 rounded-full shadow-lg z-20">
+                            Interactive Lab
+                        </div>
+                        <PokemonGroupingLab />
+                    </div>
+                </section>
+
+                {/* =========================================
+                    CHAPTER 3: FAIR SHARING
+                ========================================= */}
+                <section className="mb-20">
+                    <div className="flex items-center gap-4 mb-8">
+                        <div className="w-12 h-12 rounded-full bg-rose-500/20 flex items-center justify-center text-rose-400 border border-rose-500/30">
+                            <DivideSquare size={24} strokeWidth={3} />
+                        </div>
+                        <h2 className="text-3xl font-black text-white tracking-tight">The Art of Division</h2>
+                    </div>
+
+                    <div className="bg-white/5 backdrop-blur-md p-8 rounded-3xl border border-white/10 shadow-xl">
+                        <p className="text-lg text-zinc-300 leading-relaxed mb-6">
+                            If Multiplication is bundling things together, <strong>Division (÷)</strong> is breaking them apart. But there is a catch: you have to break them apart <em>fairly</em>.
+                        </p>
+                        <p className="text-lg text-zinc-300 leading-relaxed mb-8">
+                            Imagine you have 15 pieces of candy and 3 friends. You want to give each friend the exact same amount. You are taking a big group and splitting it into 3 smaller, equal groups.
+                        </p>
+
+                        <div className="p-6 bg-black/40 rounded-2xl border border-rose-500/20 flex flex-col items-center justify-center text-center">
+                            <div className="text-2xl font-mono text-white mb-2">15 ÷ 3 <span className="text-rose-400">= 5</span></div>
+                            <p className="text-sm text-zinc-400">Total Candy ÷ Number of Friends = Candy per Friend</p>
+                        </div>
+                    </div>
+                </section>
+
+                {/* =========================================
+                    MODULE COMPLETION
+                ========================================= */}
+                <div className="pt-12 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-8">
+                    <div className="flex items-center gap-4">
+                        <div className="w-16 h-16 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400 border border-emerald-500/30">
+                            <CheckCircle2 size={32} />
+                        </div>
+                        <div>
+                            <h3 className="text-xl font-black text-white">Unit Complete!</h3>
+                            <p className="text-zinc-400">You are ready to group and share anything in the world.</p>
+                        </div>
+                    </div>
+                    
+                    <Link href="/formal-science/mathematics/foundations/statistics" className="group flex items-center gap-3 bg-white text-black px-8 py-4 rounded-full font-black uppercase tracking-widest hover:bg-emerald-100 transition-colors">
+                        Next: Data Analysis <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                    </Link>
                 </div>
 
             </div>

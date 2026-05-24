@@ -1,16 +1,19 @@
 "use client";
 import React from "react";
 import Link from "next/link";
-import RadicalBackground from "./RadicalBackground";
+import RadicalBackground from "./_components/RadicalBackground";
+import FractionalExponentLab from "./_components/FractionalExponentLab";
+import { M } from "@/app/_components/Math";
 import { 
   ArrowLeft, Grip, Divide, 
   ArrowDown, BoxSelect, Sparkles,
-  GitBranch, Scaling
+  GitBranch, Scaling, ArrowRight,
+  CheckCircle2
 } from "lucide-react";
 
 export default function RadicalsPage() {
   return (
-    <main className="relative min-h-screen bg-[#0a0514] text-white overflow-hidden font-mono selection:bg-fuchsia-500/30">
+    <main className="relative min-h-screen bg-[#0a0514] text-white overflow-hidden font-sans selection:bg-fuchsia-500/30 pb-32">
       
       {/* 1. VISUAL ENGINE */}
       <RadicalBackground />
@@ -24,19 +27,19 @@ export default function RadicalsPage() {
         
         {/* HEADER */}
         <header>
-             <Link href="/math/algebra/elementary" className="flex items-center gap-2 text-xs text-fuchsia-500 hover:text-white transition-colors mb-4 uppercase tracking-widest group">
+             <Link href="/formal-science/mathematics/algebra/elementary-algebra" className="flex items-center gap-2 text-xs text-fuchsia-500 hover:text-white transition-colors mb-8 uppercase tracking-widest group bg-black/40 border border-fuchsia-500/30 px-4 py-2 rounded-full w-max backdrop-blur-md">
                 <ArrowLeft size={12} className="group-hover:-translate-x-1 transition-transform"/> Integrated_Algebra // Mod_08
              </Link>
-             <div className="flex items-end gap-6 border-b border-fuchsia-500/30 pb-6">
-                 <div className="p-4 bg-fuchsia-500/10 border border-fuchsia-500/30 rounded-lg backdrop-blur-md shadow-[0_0_15px_rgba(217,70,239,0.2)]">
-                    <Grip size={40} className="text-fuchsia-400" />
+             <div className="flex flex-col md:flex-row items-start md:items-end gap-6 border-b border-fuchsia-500/30 pb-8">
+                 <div className="p-4 bg-fuchsia-500/10 border border-fuchsia-500/30 rounded-2xl backdrop-blur-xl relative overflow-hidden group shadow-[0_0_30px_rgba(217,70,239,0.2)]">
+                    <Grip size={48} className="text-fuchsia-400 relative z-10" />
                  </div>
                  <div>
-                    <h1 className="text-5xl font-black text-white tracking-tighter mb-2">
+                    <h1 className="text-5xl md:text-7xl font-black text-white tracking-tighter mb-4 drop-shadow-lg uppercase">
                        RADICALS
                     </h1>
-                    <p className="text-fuchsia-400/60 max-w-md text-sm leading-relaxed">
-                        Square roots, cube roots, and the bridge between roots and fractional exponents.
+                    <p className="text-fuchsia-100/60 max-w-2xl text-lg leading-relaxed font-light border-l-2 border-fuchsia-500/50 pl-6">
+                        The mathematical scalpel. Square roots, cube roots, and the true identity of fractional exponents.
                     </p>
                  </div>
              </div>
@@ -49,53 +52,43 @@ export default function RadicalsPage() {
                     <div className="h-px w-8 bg-fuchsia-500" />
                     <h2 className="text-xl font-bold text-fuchsia-300 uppercase tracking-widest">01 // The Container</h2>
                 </div>
-                <p className="text-sm text-zinc-400 leading-relaxed">
-                    A radical expression asks a question: <strong>"What number multiplied by itself X times equals Y?"</strong> It reverses exponentiation.
+                <p className="text-sm text-zinc-300 leading-relaxed font-sans">
+                    A radical expression asks a fundamental question: <strong>"What number multiplied by itself n times equals x?"</strong> It is the inverse operation of exponentiation.
                 </p>
                 
                 <div className="grid grid-cols-2 gap-4">
-                    <div className="p-4 border border-fuchsia-500/20 bg-black/40 rounded flex items-center gap-4 group hover:border-fuchsia-500/50 transition-colors">
-                        <BoxSelect className="text-fuchsia-500" />
+                    <div className="p-4 border border-fuchsia-500/20 bg-black/40 rounded-xl flex items-center gap-4 group hover:border-fuchsia-500/50 transition-colors shadow-inner">
+                        <BoxSelect className="text-fuchsia-500 shrink-0" size={24} />
                         <div>
-                            <div className="text-xs font-bold text-white">INDEX (n)</div>
-                            <div className="text-[10px] text-fuchsia-500/50">How many times?</div>
+                            <div className="text-xs font-bold text-white mb-1">INDEX (n)</div>
+                            <div className="text-[10px] text-fuchsia-500/60 leading-tight">How many times?<br/>(Default is 2)</div>
                         </div>
                     </div>
-                    <div className="p-4 border border-fuchsia-500/20 bg-black/40 rounded flex items-center gap-4 group hover:border-fuchsia-500/50 transition-colors">
-                        <Sparkles className="text-fuchsia-500" />
+                    <div className="p-4 border border-fuchsia-500/20 bg-black/40 rounded-xl flex items-center gap-4 group hover:border-fuchsia-500/50 transition-colors shadow-inner">
+                        <Sparkles className="text-fuchsia-500 shrink-0" size={24} />
                         <div>
-                            <div className="text-xs font-bold text-white">RADICAND (x)</div>
-                            <div className="text-[10px] text-fuchsia-500/50">The value inside.</div>
+                            <div className="text-xs font-bold text-white mb-1">RADICAND (x)</div>
+                            <div className="text-[10px] text-fuchsia-500/60 leading-tight">The mystery value trapped inside.</div>
                         </div>
                     </div>
                 </div>
             </div>
 
             {/* Visualizer: The Anatomy Map */}
-            <div className="aspect-square relative border border-fuchsia-500/30 rounded-xl bg-black/60 backdrop-blur-md flex items-center justify-center p-8 overflow-hidden group">
+            <div className="aspect-square relative border border-fuchsia-500/30 rounded-3xl bg-black/60 backdrop-blur-xl flex items-center justify-center p-8 overflow-hidden group shadow-2xl">
                  {/* Background Pulse */}
-                 <div className="absolute inset-0 bg-fuchsia-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-1000 animate-pulse" />
+                 <div className="absolute inset-0 bg-gradient-to-tr from-fuchsia-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000 animate-pulse" />
                  
-                 {/* The Symbol */}
-                 <div className="relative text-8xl font-serif text-white flex items-end">
-                     {/* Index */}
-                     <span className="text-2xl mb-12 mr-[-10px] text-fuchsia-400 font-bold group-hover:-translate-y-2 transition-transform">n</span>
-                     
-                     {/* Checkmark part */}
-                     <span className="text-fuchsia-600">√</span>
-                     
-                     {/* Roof */}
-                     <div className="border-t-4 border-fuchsia-600 absolute left-[0.8em] right-0 top-[0.3em] w-[1.5em]" />
-                     
-                     {/* Radicand */}
-                     <span className="ml-2 relative z-10 group-hover:scale-110 transition-transform">x</span>
+                 {/* The Mathematical Symbol */}
+                 <div className="relative text-7xl md:text-8xl text-fuchsia-400 drop-shadow-[0_0_20px_rgba(217,70,239,0.3)] group-hover:scale-110 transition-transform duration-700">
+                     <M display={true}>{String.raw`\sqrt[n]{x}`}</M>
                  </div>
                  
-                 {/* Labels (Hidden by default, appear on hover) */}
-                 <div className="absolute top-1/4 left-1/4 text-xs font-mono text-fuchsia-400 opacity-0 group-hover:opacity-100 transition-opacity -translate-x-4">
+                 {/* Labels */}
+                 <div className="absolute top-1/4 left-[15%] text-xs font-bold uppercase tracking-widest text-white opacity-0 group-hover:opacity-100 transition-opacity -translate-x-4 bg-fuchsia-950/80 px-3 py-1 border border-fuchsia-500/50 rounded-lg">
                      Index
                  </div>
-                 <div className="absolute bottom-1/4 right-1/4 text-xs font-mono text-white opacity-0 group-hover:opacity-100 transition-opacity translate-x-4">
+                 <div className="absolute bottom-1/4 right-[15%] text-xs font-bold uppercase tracking-widest text-white opacity-0 group-hover:opacity-100 transition-opacity translate-x-4 bg-fuchsia-950/80 px-3 py-1 border border-fuchsia-500/50 rounded-lg">
                      Radicand
                  </div>
             </div>
@@ -108,92 +101,93 @@ export default function RadicalsPage() {
                 <h2 className="text-xl font-bold text-fuchsia-300 uppercase tracking-widest">02 // The Jailbreak Method</h2>
             </div>
             
-            <div className="bg-fuchsia-950/10 border border-fuchsia-500/30 rounded-xl p-8">
-                 <div className="grid grid-cols-1 md:grid-cols-5 gap-8 items-center text-center font-mono text-xl">
+            <div className="bg-slate-900/40 border border-fuchsia-500/30 rounded-3xl p-8 md:p-12 backdrop-blur-xl shadow-xl">
+                 <div className="grid grid-cols-1 md:grid-cols-5 gap-8 items-center text-center">
                      
                      {/* Step 1: Prime Factorization */}
-                     <div className="col-span-1 flex flex-col items-center gap-4">
+                     <div className="col-span-1 flex flex-col items-center gap-4 group">
                          <div className="text-xs font-sans text-fuchsia-400 font-bold uppercase tracking-widest">1. Factor</div>
-                         <div className="flex flex-col items-center bg-black/40 p-4 rounded border border-white/10">
-                             <span className="text-2xl mb-2">√12</span>
-                             <ArrowDown size={16} className="text-zinc-500" />
-                             <span className="text-sm text-fuchsia-300">2 • 2 • 3</span>
+                         <div className="flex flex-col items-center bg-black/60 p-6 rounded-2xl border border-white/10 shadow-inner w-full group-hover:border-fuchsia-500/50 transition-colors">
+                             <div className="text-3xl text-white mb-2"><M>{String.raw`\sqrt{12}`}</M></div>
+                             <ArrowDown size={16} className="text-zinc-500 my-2" />
+                             <div className="text-lg text-fuchsia-300"><M>{String.raw`\sqrt{2 \cdot 2 \cdot 3}`}</M></div>
                          </div>
                      </div>
 
                      <div className="hidden md:flex justify-center text-fuchsia-500/50">
-                         <ArrowLeft className="rotate-180" />
+                         <ArrowRight size={32} />
                      </div>
 
                      {/* Step 2: Find Pairs */}
-                     <div className="col-span-1 flex flex-col items-center gap-4">
+                     <div className="col-span-1 flex flex-col items-center gap-4 group">
                          <div className="text-xs font-sans text-fuchsia-400 font-bold uppercase tracking-widest">2. Group</div>
-                         <div className="bg-black/40 p-4 rounded border border-white/10 relative overflow-hidden">
-                             {/* Highlight the pair */}
-                             <div className="absolute top-1/2 left-2 right-8 h-6 -translate-y-1/2 bg-fuchsia-500/20 border border-fuchsia-500 rounded-full" />
-                             <span className="relative z-10 text-sm"><span className="text-white font-bold">2 • 2</span> • 3</span>
+                         <div className="flex flex-col items-center bg-black/60 p-6 rounded-2xl border border-white/10 shadow-inner w-full group-hover:border-fuchsia-500/50 transition-colors">
+                             <div className="text-lg text-fuchsia-300"><M>{String.raw`\sqrt{2^2 \cdot 3}`}</M></div>
+                             <ArrowDown size={16} className="text-zinc-500 my-2" />
+                             <div className="text-xs font-bold text-rose-400 uppercase tracking-widest bg-rose-500/10 px-2 py-1 rounded">Pair Found</div>
                          </div>
                      </div>
 
                      <div className="hidden md:flex justify-center text-fuchsia-500/50">
-                         <ArrowLeft className="rotate-180" />
+                         <ArrowRight size={32} />
                      </div>
 
                      {/* Step 3: Escape */}
-                     <div className="col-span-1 flex flex-col items-center gap-4">
+                     <div className="col-span-1 flex flex-col items-center gap-4 group">
                          <div className="text-xs font-sans text-fuchsia-400 font-bold uppercase tracking-widest">3. Escape</div>
-                         <div className="bg-black/40 p-4 rounded border border-white/10">
-                             <span className="text-2xl text-fuchsia-400 font-bold">2√3</span>
+                         <div className="flex items-center justify-center bg-fuchsia-950/40 p-6 rounded-2xl border border-fuchsia-500/50 shadow-[0_0_20px_rgba(217,70,239,0.2)] w-full h-full">
+                             <div className="text-4xl text-fuchsia-400 drop-shadow-md"><M>{String.raw`2\sqrt{3}`}</M></div>
                          </div>
                      </div>
 
                  </div>
                  
-                 <div className="mt-8 pt-6 border-t border-white/5 text-center">
-                    <p className="text-sm text-zinc-400">
-                        <strong className="text-white">Rule:</strong> For a square root, you need a <strong className="text-fuchsia-400">pair</strong> to escape. One makes it out, the other dies trying.
+                 <div className="mt-12 pt-8 border-t border-white/10 text-center">
+                    <p className="text-sm text-zinc-300 max-w-2xl mx-auto leading-relaxed">
+                        <strong className="text-white">The Rule of the Index:</strong> The index number dictates how large a group must be to escape. For a square root (index 2), you need a <strong className="text-fuchsia-400">pair</strong> to escape. One makes it out, the other is destroyed in the process.
                     </p>
                  </div>
             </div>
         </section>
 
-        {/* SECTION 3: FRACTIONAL EXPONENTS */}
-        <section>
-            <div className="flex items-center gap-3 mb-6">
+        {/* SECTION 3: FRACTIONAL EXPONENTS LAB */}
+        <section className="space-y-8">
+            <div className="flex items-center gap-3">
                 <div className="h-px w-8 bg-fuchsia-500" />
                 <h2 className="text-xl font-bold text-fuchsia-300 uppercase tracking-widest">03 // The Secret Identity</h2>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="p-8 border border-fuchsia-500/20 bg-black/20 rounded-xl backdrop-blur-md flex flex-col justify-center items-center text-center">
-                     <GitBranch size={48} className="text-fuchsia-500 mb-6" />
-                     <h3 className="text-lg font-bold text-white mb-2">Roots are Powers</h3>
-                     <p className="text-xs text-zinc-400 mb-6 max-w-xs">
-                        A radical is just a fraction in the exponent. This makes calculus much easier later.
-                     </p>
-                     
-                     <div className="text-3xl font-bold font-serif flex items-center gap-8">
-                         <span><sup className="text-sm text-fuchsia-400 mr-1">n</sup>√x</span>
-                         <Scaling size={24} className="text-zinc-600" />
-                         <span>x<sup className="text-lg text-fuchsia-400">1/n</sup></span>
-                     </div>
+            <div className="bg-slate-900/40 p-8 rounded-3xl border border-white/5 backdrop-blur-xl">
+                <div className="flex flex-col lg:flex-row gap-12 items-center mb-8">
+                    <div className="flex-1">
+                        <h3 className="text-3xl font-black text-white mb-4">Flower Power</h3>
+                        <p className="text-sm text-zinc-300 font-sans leading-relaxed mb-6">
+                            A radical is not a separate mathematical entity—it is literally just a fraction hiding in the exponent! <strong>Power stays up top. Root goes down to the bottom (like a tree).</strong> Use the lab below to prove it!
+                        </p>
+                    </div>
                 </div>
 
-                <div className="p-8 border border-fuchsia-500/20 bg-black/20 rounded-xl backdrop-blur-md flex flex-col justify-center items-center text-center">
-                     <Divide size={48} className="text-fuchsia-500 mb-6" />
-                     <h3 className="text-lg font-bold text-white mb-2">Flower Power</h3>
-                     <p className="text-xs text-zinc-400 mb-6 max-w-xs">
-                        <strong>Power</strong> stays up top. <strong>Root</strong> goes down bottom. (Like a tree).
-                     </p>
-                     
-                     <div className="text-3xl font-bold font-serif flex items-center gap-8">
-                         <span><sup className="text-sm text-fuchsia-400 mr-1">root</sup>√x<sup className="text-lg text-white">pwr</sup></span>
-                         <Scaling size={24} className="text-zinc-600" />
-                         <span>x<sup className="text-lg text-white">pwr/<span className="text-fuchsia-400">root</span></sup></span>
-                     </div>
-                </div>
+                {/* INJECTED LAB */}
+                <FractionalExponentLab />
             </div>
         </section>
+
+        {/* FOOTER / NAVIGATION */}
+        <div className="mt-8 flex flex-col md:flex-row items-center justify-between gap-8 bg-black/40 p-8 rounded-3xl border border-white/5 backdrop-blur-xl">
+            <div className="flex items-center gap-4">
+                <div className="w-16 h-16 rounded-full bg-fuchsia-500/20 border border-fuchsia-500/30 flex items-center justify-center text-fuchsia-400 shadow-inner">
+                    <CheckCircle2 size={32} />
+                </div>
+                <div>
+                    <h3 className="text-xl font-black text-white">Roots Extracted</h3>
+                    <p className="text-fuchsia-100/50 text-sm font-sans font-light">You have mastered fractional powers and radical scaling.</p>
+                </div>
+            </div>
+            
+            <Link href="/formal-science/mathematics/algebra/elementary-algebra/rational-expressions" className="group flex items-center gap-3 bg-white text-black px-8 py-4 rounded-full font-black uppercase tracking-widest hover:bg-fuchsia-400 hover:text-white transition-all hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(255,255,255,0.2)] hover:shadow-[0_0_30px_rgba(217,70,239,0.5)]">
+                Next: Rational Expressions <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+            </Link>
+        </div>
 
       </div>
     </main>

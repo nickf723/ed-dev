@@ -45,6 +45,20 @@ import { formalScienceVocab } from './f/formal-science';
 import { logicVocab } from './l/logic';
 import { propLogicVocab } from './p/propositional-logic';
 import { firstOrderVocab } from './f/first-order-logic';
+import { mathCoreVocab } from './m/mathematics';
+import { foundationsVocab } from './m/math-foundations';
+import { algebraVocab } from './a/algebra';
+import { preAlgebraVocab } from './p/pre-algebra';
+import { integersVocab } from './i/integers';
+import { pemdasVocab } from './p/pemdas';
+import { propertiesVocab } from './a/algebra-properties';
+import { ratiosVocab } from './r/ratios';
+import { fractionsVocab } from './f/fractions';
+import { exponentsVocab } from './e/exponents';
+import { expressionsVocab } from './a/algebra-expressions';
+import { equationsVocab } from './e/equations';
+import { algebraFundamentalsVocab } from './a/algebra-fundamentals';
+import { quadraticsVocab } from './q/quadratics';
 
 export { mathVocab, abstractAlgebraVocab, ludologyVocab, gameDesignVocab };
 
@@ -84,5 +98,19 @@ export const ALL_VOCAB: VocabTerm[] = [
     ...formalScienceVocab,
     ...logicVocab,
     ...propLogicVocab,
-    ...firstOrderVocab
+    ...firstOrderVocab,
+    ...mathCoreVocab,
+    ...foundationsVocab,
+    ...algebraVocab,
+    ...preAlgebraVocab,
+    ...integersVocab,
+    ...pemdasVocab,
+    ...propertiesVocab,
+    ...ratiosVocab,
+    ...fractionsVocab,
+    ...exponentsVocab,
+    ...expressionsVocab,
+    ...equationsVocab,
+    ...algebraFundamentalsVocab,
+    ...quadraticsVocab,
 ];

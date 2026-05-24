@@ -13,7 +13,7 @@ export type VocabTerm = {
 };
 
 // --- THEME DICTIONARY ---
-type ThemeColor = 'indigo' | 'rose' | 'cyan' | 'amber' | 'emerald' | 'purple' | 'blue';
+type ThemeColor = 'indigo' | 'rose' | 'cyan' | 'amber' | 'emerald' | 'purple' | 'blue' | 'teal' | 'fuchsia' | 'orange';
 
 const THEMES: Record<ThemeColor, { text: string; textMuted: string; bgSubtle: string; border: string; borderHover: string; borderFocus: string; btnActive: string; iconGlow: string }> = {
     indigo: { text: 'text-indigo-400', textMuted: 'text-indigo-400/70', bgSubtle: 'bg-indigo-950/30', border: 'border-indigo-500/20', borderHover: 'hover:border-indigo-500', borderFocus: 'focus-within:border-indigo-500/50', btnActive: 'bg-indigo-600 text-white shadow-[0_0_10px_rgba(79,70,229,0.4)]', iconGlow: 'shadow-[0_0_15px_rgba(99,102,241,0.15)]' },
@@ -23,6 +23,9 @@ const THEMES: Record<ThemeColor, { text: string; textMuted: string; bgSubtle: st
     emerald:{ text: 'text-emerald-400', textMuted: 'text-emerald-400/70', bgSubtle: 'bg-emerald-950/30', border: 'border-emerald-500/20', borderHover: 'hover:border-emerald-500', borderFocus: 'focus-within:border-emerald-500/50', btnActive: 'bg-emerald-600 text-white shadow-[0_0_10px_rgba(5,150,105,0.4)]', iconGlow: 'shadow-[0_0_15px_rgba(16,185,129,0.15)]' },
     purple: { text: 'text-purple-400', textMuted: 'text-purple-400/70', bgSubtle: 'bg-purple-950/30', border: 'border-purple-500/20', borderHover: 'hover:border-purple-500', borderFocus: 'focus-within:border-purple-500/50', btnActive: 'bg-purple-600 text-white shadow-[0_0_10px_rgba(126,34,206,0.4)]', iconGlow: 'shadow-[0_0_15px_rgba(168,85,247,0.15)]' },
     blue:   { text: 'text-blue-400', textMuted: 'text-blue-400/70', bgSubtle: 'bg-blue-950/30', border: 'border-blue-500/20', borderHover: 'hover:border-blue-500', borderFocus: 'focus-within:border-blue-500/50', btnActive: 'bg-blue-600 text-white shadow-[0_0_10px_rgba(59,130,246,0.4)]', iconGlow: 'shadow-[0_0_15px_rgba(59,130,246,0.15)]' },
+    teal:   { text: 'text-teal-400', textMuted: 'text-teal-400/70', bgSubtle: 'bg-teal-950/30', border: 'border-teal-500/20', borderHover: 'hover:border-teal-500', borderFocus: 'focus-within:border-teal-500/50', btnActive: 'bg-teal-600 text-white shadow-[0_0_10px_rgba(20,184,166,0.4)]', iconGlow: 'shadow-[0_0_15px_rgba(20,184,166,0.15)]' },
+    fuchsia:{ text: 'text-fuchsia-400', textMuted: 'text-fuchsia-400/70', bgSubtle: 'bg-fuchsia-950/30', border: 'border-fuchsia-500/20', borderHover: 'hover:border-fuchsia-500', borderFocus: 'focus-within:border-fuchsia-500/50', btnActive: 'bg-fuchsia-600 text-white shadow-[0_0_10px_rgba(236,72,153,0.4)]', iconGlow: 'shadow-[0_0_15px_rgba(236,72,153,0.15)]' },
+    orange:  { text: 'text-orange-400', textMuted: 'text-orange-400/70', bgSubtle: 'bg-orange-950/30', border: 'border-orange-500/20', borderHover: 'hover:border-orange-500', borderFocus: 'focus-within:border-orange-500/50', btnActive: 'bg-orange-600 text-white shadow-[0_0_10px_rgba(249,115,22,0.4)]', iconGlow: 'shadow-[0_0_15px_rgba(249,115,22,0.15)]' },
 };
 
 interface VocabAppletProps {

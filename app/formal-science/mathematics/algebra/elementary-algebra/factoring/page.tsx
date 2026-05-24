@@ -1,147 +1,160 @@
 "use client";
 import React from 'react';
 import Link from 'next/link';
-import ParabolaGraph from "./ParabolaGraph";
-import DiamondSolver from "./DiamondSolver";
+import DiamondSolver from "./_components/DiamondSolver";
 import { M } from "@/app/_components/Math";
-import { STRATEGIES } from './factoringStrategies';
+import ParabolaGraph from "./_components/ParabolaGraph";
+import { STRATEGIES } from "./_components/factoringStrategies";
 import { 
   ArrowLeft, Grid, Calculator, 
-  Divide, Layers, Box, ChevronRight 
+  Divide, Layers, Box, ChevronRight,
+  ArrowRight, CheckCircle2
 } from "lucide-react";
 
 export default function FactoringPage() {
   return (
-    // Main is transparent to let Canvas (z-0) show through.
-    <main className="relative min-h-screen bg-transparent text-slate-800 font-sans selection:bg-blue-200">
+    <main className="relative min-h-screen bg-[#0c0a1f] text-slate-200 font-sans selection:bg-indigo-500/30 pb-32 overflow-hidden">
       
-      {/* LAYER 0: Canvas */}
+      {/* 1. VISUAL ENGINE */}
       <ParabolaGraph />
+      {/* OVERLAY */}
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(99,102,241,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(99,102,241,0.03)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none z-0" />
+      <div className="absolute inset-0 bg-radial-vignette opacity-70 pointer-events-none z-0" />
       
-      {/* LAYER 1: Content (z-10 sits on top of z-0 canvas) */}
-      <div className="relative z-10 container mx-auto px-6 py-12">
+      {/* 2. UI CONTAINER */}
+      <div className="relative z-10 max-w-6xl mx-auto px-6 py-12 flex flex-col gap-20">
         
-        {/* NAV */}
-        <div className="flex items-center justify-between mb-16">
-            <Link href="/formal-science/mathematics/algebra" className="group flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-slate-500 hover:text-blue-600 transition-colors bg-white/50 px-3 py-2 rounded backdrop-blur-sm border border-slate-200/50">
-                <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" />
-                Return to Algebra
-            </Link>
-            <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest bg-white/80 border border-slate-200 px-3 py-1 rounded text-slate-600 shadow-sm backdrop-blur-md">
-                <Grid size={12} /> Unit 4: Polynomials
-            </div>
-        </div>
-
-        {/* HERO */}
-        <header className="mb-24 relative">
-            <div className="inline-block p-3 bg-blue-100/90 rounded-lg text-blue-600 mb-6 backdrop-blur-sm shadow-sm">
-                <Divide size={32} />
-            </div>
-            
-            <h1 className="text-6xl md:text-8xl font-black text-slate-900 tracking-tighter uppercase leading-none mb-6 drop-shadow-sm mix-blend-multiply">
-                THE ART OF <br/><span className="text-blue-600">DECONSTRUCTION</span>
-            </h1>
-            
-            <div className="max-w-2xl bg-white/60 backdrop-blur-md border-l-4 border-blue-600 p-6 rounded-r-lg shadow-sm">
-                <p className="text-xl text-slate-700 font-light leading-relaxed">
-                    Factoring is the reverse of multiplication. It is the process of breaking a polynomial down into its component parts to reveal its roots, zeros, and x-intercepts.
-                </p>
-            </div>
+        {/* HEADER */}
+        <header>
+             <Link href="/formal-science/mathematics/algebra/elementary-algebra" className="flex items-center gap-2 text-xs text-indigo-400 hover:text-white transition-colors mb-8 uppercase tracking-widest group bg-black/40 border border-indigo-500/30 px-4 py-2 rounded-full w-max backdrop-blur-md">
+                <ArrowLeft size={12} className="group-hover:-translate-x-1 transition-transform"/> Integrated_Algebra // Mod_06
+             </Link>
+             <div className="flex flex-col md:flex-row items-start md:items-end gap-6 border-b border-white/10 pb-8">
+                 <div className="p-4 bg-indigo-500/10 border border-indigo-500/30 rounded-2xl backdrop-blur-xl relative overflow-hidden group shadow-[0_0_30px_rgba(99,102,241,0.2)]">
+                    <Divide size={48} className="text-indigo-400 relative z-10" />
+                 </div>
+                 <div>
+                    <h1 className="text-5xl md:text-7xl font-black text-white tracking-tighter mb-4 drop-shadow-lg uppercase">
+                       FACTORING
+                    </h1>
+                    <p className="text-indigo-100/60 max-w-2xl text-lg leading-relaxed font-sans font-light border-l-2 border-indigo-500/50 pl-6">
+                        The art of deconstruction. Factoring is reverse multiplication—breaking a polynomial down into its component parts to reveal its roots.
+                    </p>
+                 </div>
+             </div>
         </header>
 
         
-
-[Image of factoring flowchart diagram]
-
-
         {/* SECTION 1: THE CONCEPT (Interactive) */}
-        <section className="mb-32">
-            <div className="flex items-center gap-4 mb-8">
-                <Calculator size={24} className="text-blue-600" />
-                <h2 className="text-3xl font-black uppercase tracking-tight bg-white/50 backdrop-blur-sm px-2 rounded">The Diamond Method</h2>
+        <section className="space-y-8">
+            <div className="flex items-center gap-3">
+                <div className="h-px w-8 bg-indigo-500" />
+                <h2 className="text-xl font-bold text-indigo-300 uppercase tracking-widest">01 // The Diamond Method</h2>
             </div>
             
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <div className="lg:col-span-2">
                     <DiamondSolver />
                 </div>
-                <div className="bg-white/80 backdrop-blur-md p-6 rounded-xl border border-slate-200 shadow-sm">
-                    <h3 className="font-bold uppercase text-sm text-slate-500 mb-4">Why this works</h3>
-                    <p className="text-sm text-slate-600 leading-relaxed mb-4">
-                        When multiplying binomials <span className="font-mono bg-slate-100 px-1 rounded text-slate-700">(x+m)(x+n)</span>, the result is:
-                    </p>
-                    <div className="text-center text-slate-800 bg-slate-50 p-4 rounded mb-4 overflow-x-auto border border-slate-100">
-                        <M>x^2 + (m+n)x + (mn)</M>
-                    </div>
-                    <p className="text-sm text-slate-600 leading-relaxed">
-                        Therefore, to go backwards, we need two numbers that <strong>multiply</strong> to the constant term and <strong>add</strong> to the linear coefficient.
+                
+                <div className="bg-slate-900/60 backdrop-blur-xl p-8 rounded-3xl border border-white/10 shadow-lg flex flex-col justify-center">
+                    <h3 className="font-bold uppercase text-[10px] tracking-widest text-indigo-400 mb-4">Why this works</h3>
+                    <p className="text-sm text-slate-300 leading-relaxed mb-6">
+                        When multiplying binomials <span className="font-mono bg-indigo-500/20 text-indigo-300 px-2 py-0.5 rounded border border-indigo-500/30">(x+m)(x+n)</span>, the result expands to:
                     </p>
                     
+                    <div className="text-center text-xl text-white bg-black/50 p-4 rounded-xl mb-6 border border-white/5 shadow-inner">
+                        <M>x^2 + (m+n)x + (mn)</M>
+                    </div>
+                    
+                    <p className="text-sm text-slate-300 leading-relaxed border-l-2 border-indigo-500/50 pl-4">
+                        Therefore, to go backwards from standard form, we need to find two mystery numbers that <strong>multiply</strong> to the constant term and <strong>add</strong> to the linear coefficient.
+                    </p>
                 </div>
             </div>
         </section>
 
         {/* SECTION 2: TECHNIQUE LIBRARY */}
-        <section className="border-t border-slate-300/50 pt-12">
-            <div className="flex items-center gap-4 mb-12">
-                <Layers size={24} className="text-slate-700" />
-                <h2 className="text-3xl font-black uppercase tracking-tight bg-white/50 backdrop-blur-sm px-2 rounded">The Strategy Toolkit</h2>
+        <section className="space-y-8">
+            <div className="flex items-center gap-3">
+                <div className="h-px w-8 bg-indigo-500" />
+                <h2 className="text-xl font-bold text-indigo-300 uppercase tracking-widest">02 // The Strategy Toolkit</h2>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {STRATEGIES.map((s) => (
-                    <Link 
+                    <div 
                         key={s.id}
-                        href={`/formal-science/mathematics/algebra/elementary-algebra/factoring/${s.id}`}
-                        className="group bg-white/80 backdrop-blur-sm p-8 rounded-xl border border-slate-200 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col"
+                        className="group bg-slate-900/40 backdrop-blur-xl p-8 rounded-3xl border border-white/10 shadow-lg hover:border-indigo-500/50 transition-all duration-300 flex flex-col relative overflow-hidden"
                     >
-                        <div className="flex justify-between items-start mb-6">
-                            <div className="text-xs font-bold text-blue-600 uppercase tracking-widest bg-blue-50 px-2 py-1 rounded">
+                        {/* Glow effect */}
+                        <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+
+                        <div className="flex justify-between items-start mb-6 relative z-10">
+                            <div className="text-[10px] font-bold text-indigo-300 uppercase tracking-widest bg-indigo-500/10 border border-indigo-500/20 px-3 py-1 rounded-full">
                                 {s.condition}
                             </div>
-                            <div className="flex gap-0.5">
+                            <div className="flex gap-1 items-center">
                                 {[...Array(3)].map((_, i) => (
-                                    <div key={i} className={`w-1.5 h-1.5 rounded-full ${i < s.difficulty ? 'bg-orange-500' : 'bg-slate-200'}`} />
+                                    <div key={i} className={`w-1.5 h-1.5 rounded-full ${i < s.difficulty ? 'bg-rose-500 shadow-[0_0_5px_rgba(244,63,94,0.5)]' : 'bg-white/10'}`} />
                                 ))}
                             </div>
                         </div>
 
-                        <h3 className="text-2xl font-bold text-slate-900 mb-2 group-hover:text-blue-600 transition-colors">
+                        <h3 className="text-2xl font-bold text-white mb-6 relative z-10">
                             {s.name}
                         </h3>
 
                         {/* MATH RENDERER */}
-                        <div className="text-sm text-slate-600 bg-slate-50 p-4 rounded mb-4 text-center min-h-[3rem] flex items-center justify-center border border-slate-100">
+                        <div className="text-lg text-indigo-100 bg-black/50 p-4 rounded-xl mb-6 text-center border border-white/5 shadow-inner relative z-10 overflow-x-auto overflow-y-hidden">
                             <M>{s.formula}</M>
                         </div>
                         
-                        <p className="text-sm text-slate-600 leading-relaxed mb-6 flex-1">
+                        <p className="text-sm text-slate-400 leading-relaxed flex-1 relative z-10">
                             {s.desc}
                         </p>
-
-                        <div className="flex items-center gap-2 text-xs font-bold text-slate-400 uppercase tracking-widest mt-auto group-hover:text-blue-500">
-                            Learn Technique <ChevronRight size={14} />
-                        </div>
-                    </Link>
+                    </div>
                 ))}
             </div>
         </section>
         
         {/* SECTION 3: VISUAL PROOFS */}
-        <section className="mt-24 bg-white/90 backdrop-blur-md rounded-2xl p-8 border border-slate-200 shadow-sm">
-             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+        <section className="bg-gradient-to-br from-indigo-950/40 to-slate-900/40 backdrop-blur-2xl rounded-3xl p-8 md:p-12 border border-white/10 shadow-2xl relative overflow-hidden">
+             <div className="absolute top-0 right-0 p-12 opacity-5 pointer-events-none">
+                 <Box size={300} />
+             </div>
+
+             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center relative z-10">
                  <div>
-                     <h3 className="text-2xl font-black uppercase mb-4">Geometric Proofs</h3>
-                     <p className="text-slate-600 mb-6 leading-relaxed">
-                         Factoring isn't just symbol manipulation; it's geometry. The "Difference of Squares" can be proven by taking a square of side <M>a</M>, cutting out a square of side <M>b</M>, and rearranging the remaining area.
+                     <h3 className="text-3xl font-black text-white mb-6 uppercase tracking-tight">Geometric Proofs</h3>
+                     <p className="text-slate-300 mb-6 leading-relaxed">
+                         Factoring isn't just symbol manipulation; it describes physical space. The "Difference of Squares" can be proven by taking a square of side <M>a</M>, cutting out a square of side <M>b</M>, and rearranging the remaining area into a new rectangle!
                      </p>
-                     
+                     <div className="inline-flex items-center gap-4 text-indigo-400 font-mono font-bold bg-indigo-500/10 px-4 py-2 rounded-lg border border-indigo-500/20">
+                         <M>a^2 - b^2 = (a-b)(a+b)</M>
+                     </div>
                  </div>
-                 <div className="h-64 bg-slate-50 border border-slate-200 rounded flex items-center justify-center">
-                     <Box size={64} className="text-slate-300" />
-                 </div>
+                 <div className="bg-black/40 border border-white/5 rounded-2xl flex items-center justify-center p-4 shadow-inner overflow-hidden">
+                </div>
              </div>
         </section>
+
+        {/* FOOTER / NAVIGATION */}
+        <div className="mt-8 flex flex-col md:flex-row items-center justify-between gap-8 bg-black/40 p-8 rounded-3xl border border-white/5 backdrop-blur-xl">
+            <div className="flex items-center gap-4">
+                <div className="w-16 h-16 rounded-full bg-indigo-500/20 border border-indigo-500/30 flex items-center justify-center text-indigo-400 shadow-inner">
+                    <CheckCircle2 size={32} />
+                </div>
+                <div>
+                    <h3 className="text-xl font-black text-white">Deconstruction Mastered</h3>
+                    <p className="text-indigo-100/50 text-sm font-sans font-light">You are ready to manipulate functions.</p>
+                </div>
+            </div>
+            
+            <Link href="/formal-science/mathematics/algebra/elementary-algebra/functions" className="group flex items-center gap-3 bg-white text-black px-8 py-4 rounded-full font-black uppercase tracking-widest hover:bg-indigo-400 hover:text-white transition-all hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(255,255,255,0.2)] hover:shadow-[0_0_30px_rgba(99,102,241,0.5)]">
+                Next: Functions <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+            </Link>
+        </div>
 
       </div>
     </main>

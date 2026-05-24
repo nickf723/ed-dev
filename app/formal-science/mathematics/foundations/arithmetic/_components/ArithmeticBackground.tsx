@@ -1,21 +1,87 @@
 "use client";
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 export default function ArithmeticBackground() {
-    const [mounted, setMounted] = useState(false);
-    useEffect(() => setMounted(true), []);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
-    return (
-        <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden bg-[#05000a]">
-            {/* Cosmic Lava-Lamp Blobs */}
-            <div className="absolute top-[10%] left-[10%] w-[50vw] h-[50vw] bg-fuchsia-600/10 blur-[120px] rounded-[40%_60%_70%_30%] animate-[spin_30s_linear_infinite] mix-blend-screen" />
-            <div className="absolute bottom-[10%] right-[10%] w-[60vw] h-[60vw] bg-cyan-600/10 blur-[150px] rounded-[60%_40%_30%_70%] animate-[spin_40s_linear_infinite_reverse] mix-blend-screen" />
-            <div className="absolute top-[40%] left-[40%] w-[40vw] h-[40vw] bg-amber-500/5 blur-[100px] rounded-full animate-pulse mix-blend-screen" />
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
 
-            {mounted && (
-                <div className="absolute inset-0 bg-[url('https://upload.wikimedia.org/wikipedia/commons/1/10/Grid_graph_paper.svg')] opacity-[0.03] mix-blend-overlay" />
-            )}
-            <div className="absolute inset-0 bg-radial-vignette opacity-80" />
-        </div>
-    );
+    let w = (canvas.width = window.innerWidth);
+    let h = (canvas.height = window.innerHeight);
+
+    // Create soft, floating math "bubbles"
+    const symbols = ["+", "-", "×", "÷", "=", "1", "2", "3", "5", "10"];
+    const colors = ["#f472b6", "#38bdf8", "#fbbf24", "#34d399"]; // Soft pink, sky blue, amber, emerald
+
+    const items = Array.from({ length: 30 }, () => ({
+      x: Math.random() * w,
+      y: Math.random() * h,
+      vx: (Math.random() - 0.5) * 0.3, // Very slow movement
+      vy: (Math.random() - 0.5) * 0.3,
+      char: symbols[Math.floor(Math.random() * symbols.length)],
+      color: colors[Math.floor(Math.random() * colors.length)],
+      size: Math.random() * 40 + 20, // 20px to 60px
+      rotation: Math.random() * Math.PI * 2,
+      vRot: (Math.random() - 0.5) * 0.01 // Slow spin
+    }));
+
+    const animate = () => {
+      // Soft, dark plum/slate background
+      ctx.fillStyle = "#0f0e17"; 
+      ctx.fillRect(0, 0, w, h);
+
+      items.forEach(item => {
+        item.x += item.vx;
+        item.y += item.vy;
+        item.rotation += item.vRot;
+
+        // Wrap around screen
+        if (item.x < -50) item.x = w + 50;
+        if (item.x > w + 50) item.x = -50;
+        if (item.y < -50) item.y = h + 50;
+        if (item.y > h + 50) item.y = -50;
+
+        ctx.save();
+        ctx.translate(item.x, item.y);
+        ctx.rotate(item.rotation);
+        
+        ctx.font = `bold ${item.size}px "Comic Sans MS", "Nunito", sans-serif`;
+        ctx.fillStyle = item.color;
+        // Soft glowing opacity
+        ctx.globalAlpha = 0.15; 
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText(item.char, 0, 0);
+        
+        ctx.restore();
+      });
+
+      requestAnimationFrame(animate);
+    };
+
+    const animId = requestAnimationFrame(animate);
+
+    const handleResize = () => {
+      w = canvas.width = window.innerWidth;
+      h = canvas.height = window.innerHeight;
+    };
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      cancelAnimationFrame(animId);
+    };
+  }, []);
+
+  return (
+    <div className="fixed inset-0 z-0 pointer-events-none">
+      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
+      {/* Soft gradient overlay to keep text readable */}
+      <div className="absolute inset-0 bg-gradient-to-b from-[#0f0e17]/50 via-transparent to-[#0f0e17] opacity-90" />
+    </div>
+  );
 }

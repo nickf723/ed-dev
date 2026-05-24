@@ -1,16 +1,17 @@
 "use client";
 import React from "react";
 import Link from "next/link";
-import MatrixBackground from "./MatrixBackground";
+import MatrixBackground from "./_components/MatrixBackground";
+import MatrixMultiplierLab from "./_components/MatrixMultiplierLab";
+import { M } from "@/app/_components/Math";
 import { 
   ArrowLeft, Grid3X3, Columns, Rows, 
-  X, RefreshCw, Equal, Scaling, 
-  ArrowRight
+  RefreshCw, Scaling, ArrowRight
 } from "lucide-react";
 
 export default function MatricesPage() {
   return (
-    <main className="relative min-h-screen bg-[#020a05] text-white overflow-hidden font-mono selection:bg-emerald-500/30">
+    <main className="relative min-h-screen bg-[#020a05] text-white overflow-hidden font-sans selection:bg-emerald-500/30 pb-32">
       
       {/* 1. VISUAL ENGINE */}
       <MatrixBackground />
@@ -24,19 +25,19 @@ export default function MatricesPage() {
         
         {/* HEADER */}
         <header>
-             <Link href="/math/algebra/linear" className="flex items-center gap-2 text-xs text-emerald-500 hover:text-white transition-colors mb-4 uppercase tracking-widest group">
+             <Link href="/formal-science/mathematics/algebra/linear-algebra" className="flex items-center gap-2 text-xs text-emerald-500 hover:text-white transition-colors mb-8 uppercase tracking-widest group bg-black/40 px-4 py-2 rounded-full border border-emerald-500/30 backdrop-blur-md w-max shadow-lg">
                 <ArrowLeft size={12} className="group-hover:-translate-x-1 transition-transform"/> Linear_Algebra // Mod_02
              </Link>
-             <div className="flex items-end gap-6 border-b border-emerald-500/30 pb-6">
-                 <div className="p-4 bg-emerald-500/10 border border-emerald-500/30 rounded-lg backdrop-blur-md shadow-[0_0_15px_rgba(16,185,129,0.2)]">
-                    <Grid3X3 size={40} className="text-emerald-400" />
+             <div className="flex flex-col md:flex-row items-start md:items-end gap-6 border-b border-emerald-500/30 pb-8">
+                 <div className="p-4 bg-emerald-500/10 border border-emerald-500/30 rounded-2xl backdrop-blur-md shadow-[0_0_30px_rgba(16,185,129,0.2)] group relative overflow-hidden">
+                    <Grid3X3 size={48} className="text-emerald-400 relative z-10 group-hover:scale-110 transition-transform" />
                  </div>
                  <div>
-                    <h1 className="text-5xl font-black text-white tracking-tighter mb-2">
+                    <h1 className="text-5xl md:text-7xl font-black text-white tracking-tighter mb-4 drop-shadow-lg uppercase">
                        MATRICES
                     </h1>
-                    <p className="text-emerald-400/60 max-w-md text-sm leading-relaxed">
-                        Rectangular arrays of numbers. The fundamental data structure for storing linear equations and transformations.
+                    <p className="text-emerald-100/60 max-w-2xl text-lg leading-relaxed font-light border-l-2 border-emerald-500/50 pl-6">
+                        Rectangular arrays of numbers. The fundamental data structure for storing linear equations, pixels, and complex transformations.
                     </p>
                  </div>
              </div>
@@ -49,149 +50,131 @@ export default function MatricesPage() {
                     <div className="h-px w-8 bg-emerald-500" />
                     <h2 className="text-xl font-bold text-emerald-300 uppercase tracking-widest">01 // Structure</h2>
                 </div>
-                <p className="text-sm text-zinc-400 leading-relaxed">
-                    A Matrix is defined by its dimensions: <strong>Rows (m) × Columns (n)</strong>. Each number inside is an "element" with a specific address $(i, j)$.
+                <p className="text-sm text-zinc-300 leading-relaxed font-sans">
+                    A Matrix is defined by its dimensions: <strong>Rows (m) × Columns (n)</strong>. Each number inside is an element with a specific coordinate address <M>(i, j)</M>, allowing computers to instantly access massive grids of data.
                 </p>
                 
                 <div className="flex gap-4">
-                     <div className="px-4 py-2 border border-emerald-500/30 bg-emerald-950/20 rounded flex items-center gap-2 text-emerald-400 text-xs font-bold uppercase">
-                         <Rows size={14} /> m Rows
+                     <div className="px-4 py-3 border border-emerald-500/30 bg-emerald-950/20 rounded-xl flex items-center gap-3 text-emerald-400 text-xs font-bold uppercase shadow-inner hover:bg-emerald-900/30 transition-colors">
+                         <Rows size={16} /> m Rows
                      </div>
-                     <div className="px-4 py-2 border border-emerald-500/30 bg-emerald-950/20 rounded flex items-center gap-2 text-emerald-400 text-xs font-bold uppercase">
-                         <Columns size={14} className="rotate-90" /> n Columns
+                     <div className="px-4 py-3 border border-emerald-500/30 bg-emerald-950/20 rounded-xl flex items-center gap-3 text-emerald-400 text-xs font-bold uppercase shadow-inner hover:bg-emerald-900/30 transition-colors">
+                         <Columns size={16} className="rotate-90" /> n Columns
                      </div>
                 </div>
             </div>
 
             {/* Visualizer: The Matrix Display */}
-            <div className="aspect-video relative border border-emerald-500/30 rounded-xl bg-black/60 backdrop-blur-md flex items-center justify-center p-8 font-mono text-2xl md:text-4xl text-white group">
-                 {/* Left Bracket */}
-                 <div className="w-4 md:w-8 border-l-4 border-t-4 border-b-4 border-white rounded-l-xl absolute left-8 top-8 bottom-8" />
+            <div className="aspect-video relative border border-emerald-500/30 rounded-3xl bg-black/60 backdrop-blur-xl flex items-center justify-center p-8 text-2xl md:text-5xl text-white group shadow-2xl overflow-hidden">
+                 <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/5 to-transparent pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
                  
-                 <div className="grid grid-cols-3 gap-x-8 gap-y-4 text-center">
-                     <span className="opacity-50 group-hover:text-emerald-400 transition-colors">1</span>
-                     <span className="opacity-50">0</span>
-                     <span className="opacity-50">4</span>
-                     
-                     <span className="opacity-50">2</span>
-                     <span className="text-emerald-400 font-bold scale-110">5</span>
-                     <span className="opacity-50">9</span>
+                 <div className="relative z-10 flex items-center justify-center">
+                     <M display={true}>
+                        {`A = \\begin{bmatrix} 1 & 0 & 4 \\\\ 2 & 5 & 9 \\end{bmatrix}`}
+                     </M>
                  </div>
                  
-                 {/* Right Bracket */}
-                 <div className="w-4 md:w-8 border-r-4 border-t-4 border-b-4 border-white rounded-r-xl absolute right-8 top-8 bottom-8" />
-                 
-                 {/* Address Tag */}
-                 <div className="absolute bottom-4 right-1/2 translate-x-1/2 text-[10px] text-emerald-500 font-bold opacity-0 group-hover:opacity-100 transition-opacity bg-black/80 px-2 py-1 rounded">
-                     Element a₂₂
+                 {/* Address Tag Popup */}
+                 <div className="absolute bottom-6 right-1/2 translate-x-1/2 text-xs font-mono text-emerald-500 font-bold opacity-0 group-hover:opacity-100 transition-opacity bg-black/80 px-4 py-2 border border-emerald-500/30 rounded-lg shadow-[0_0_15px_rgba(16,185,129,0.3)]">
+                     Dimensions: <M>2 \times 3</M>
                  </div>
             </div>
         </section>
 
-        {/* SECTION 2: OPERATIONS (The Crash) */}
-        <section>
-            <div className="flex items-center gap-3 mb-6">
+        {/* SECTION 2: OPERATIONS & MULTIPLICATION LAB */}
+        <section className="space-y-8">
+            <div className="flex items-center gap-3">
                 <div className="h-px w-8 bg-emerald-500" />
-                <h2 className="text-xl font-bold text-emerald-300 uppercase tracking-widest">02 // Matrix Multiplication</h2>
+                <h2 className="text-xl font-bold text-emerald-300 uppercase tracking-widest">02 // The Crash (Multiplication)</h2>
             </div>
             
-            <div className="bg-emerald-950/10 border border-emerald-500/30 rounded-xl p-8">
-                 <div className="flex flex-col md:flex-row items-center justify-center gap-8 font-mono">
-                     
-                     {/* Matrix A (Row Highlight) */}
-                     <div className="relative p-4 border border-white/10 bg-black/40 rounded">
-                         <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-8 border border-emerald-500 bg-emerald-500/20 rounded animate-pulse" />
-                         <div className="grid grid-cols-2 gap-4 text-center relative z-10">
-                             <span>1</span><span>2</span>
-                             <span className="text-white font-bold">3</span><span className="text-white font-bold">4</span>
-                         </div>
-                         <div className="text-[10px] text-emerald-500 text-center mt-2 uppercase">Row 2</div>
-                     </div>
-
-                     <X size={24} className="text-zinc-500" />
-
-                     {/* Matrix B (Col Highlight) */}
-                     <div className="relative p-4 border border-white/10 bg-black/40 rounded">
-                         <div className="absolute inset-y-0 right-0 w-8 border border-emerald-500 bg-emerald-500/20 rounded animate-pulse" />
-                         <div className="grid grid-cols-2 gap-4 text-center relative z-10">
-                             <span>5</span><span className="text-white font-bold">6</span>
-                             <span>7</span><span className="text-white font-bold">8</span>
-                         </div>
-                         <div className="text-[10px] text-emerald-500 text-center mt-2 uppercase">Col 2</div>
-                     </div>
-
-                     <Equal size={24} className="text-zinc-500" />
-
-                     {/* Result */}
-                     <div className="p-4 border border-emerald-500/50 bg-black/60 rounded flex flex-col items-center">
-                         <div className="text-xs text-zinc-500 mb-1">(3•6) + (4•8)</div>
-                         <div className="text-3xl font-bold text-white">50</div>
-                     </div>
-
-                 </div>
-                 
-                 <div className="mt-8 pt-6 border-t border-white/5 text-center">
-                    <p className="text-sm text-zinc-400">
-                        <strong className="text-white">Rule:</strong> You crash the <strong className="text-emerald-400">Row</strong> of the first matrix into the <strong className="text-emerald-400">Column</strong> of the second.
-                    </p>
-                 </div>
+            <p className="text-sm text-zinc-300 font-sans max-w-3xl leading-relaxed mb-8">
+                Matrix multiplication isn't just scaling numbers—it is applying a set of spatial transformations. To multiply matrices, you crash the <strong>Row</strong> of the first matrix into the <strong>Column</strong> of the second, calculating the dot product.
+            </p>
+            
+                        
+            <div className="mt-8">
+                <MatrixMultiplierLab />
             </div>
         </section>
 
         {/* SECTION 3: SPECIAL TYPES */}
         <section>
-            <div className="flex items-center gap-3 mb-6">
+            <div className="flex items-center gap-3 mb-8">
                 <div className="h-px w-8 bg-emerald-500" />
                 <h2 className="text-xl font-bold text-emerald-300 uppercase tracking-widest">03 // Special Matrices</h2>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 {/* Identity */}
-                <div className="p-6 bg-black/40 border border-emerald-500/20 rounded-xl hover:border-emerald-500/50 transition-colors group">
-                    <div className="flex justify-between mb-4">
-                        <Scaling size={20} className="text-emerald-400 group-hover:scale-110 transition-transform" />
-                        <span className="text-[10px] uppercase font-bold text-emerald-600">The One</span>
+                <div className="p-8 bg-black/40 border border-emerald-500/20 rounded-3xl hover:border-emerald-500/50 transition-colors group shadow-lg backdrop-blur-md flex flex-col">
+                    <div className="flex justify-between items-start mb-6">
+                        <div className="p-3 bg-emerald-500/10 rounded-xl group-hover:scale-110 transition-transform border border-emerald-500/20">
+                            <Scaling size={24} className="text-emerald-400" />
+                        </div>
+                        <span className="text-[10px] uppercase font-bold text-emerald-500 tracking-widest bg-emerald-500/10 px-3 py-1 rounded-full">The One</span>
                     </div>
-                    <div className="text-lg font-bold text-white mb-2">Identity (I)</div>
-                    <p className="text-xs text-zinc-500 mb-4 h-10">
-                        A square matrix with 1s on the diagonal and 0s elsewhere. Multiplying by I does nothing.
+                    <div className="text-xl font-bold text-white mb-2">Identity (I)</div>
+                    <p className="text-sm text-zinc-400 mb-6 leading-relaxed flex-1">
+                        A square matrix with 1s on the diagonal and 0s elsewhere. Multiplying by <M>I</M> does absolutely nothing to the original matrix.
                     </p>
-                    <div className="bg-white/5 p-2 rounded text-xs font-mono text-center text-emerald-200">
-                        A • I = A
+                    <div className="bg-black/60 p-4 rounded-xl text-center text-emerald-300 border border-white/5 shadow-inner mt-auto">
+                        <M>A \cdot I = A</M>
                     </div>
                 </div>
 
                 {/* Transpose */}
-                <div className="p-6 bg-black/40 border border-emerald-500/20 rounded-xl hover:border-emerald-500/50 transition-colors group">
-                    <div className="flex justify-between mb-4">
-                        <RefreshCw size={20} className="text-emerald-400 group-hover:rotate-180 transition-transform duration-500" />
-                        <span className="text-[10px] uppercase font-bold text-emerald-600">The Flip</span>
+                <div className="p-8 bg-black/40 border border-sky-500/20 rounded-3xl hover:border-sky-500/50 transition-colors group shadow-lg backdrop-blur-md flex flex-col">
+                    <div className="flex justify-between items-start mb-6">
+                        <div className="p-3 bg-sky-500/10 rounded-xl group-hover:rotate-180 transition-transform duration-500 border border-sky-500/20">
+                            <RefreshCw size={24} className="text-sky-400" />
+                        </div>
+                        <span className="text-[10px] uppercase font-bold text-sky-400 tracking-widest bg-sky-500/10 px-3 py-1 rounded-full">The Flip</span>
                     </div>
-                    <div className="text-lg font-bold text-white mb-2">Transpose (Aᵀ)</div>
-                    <p className="text-xs text-zinc-500 mb-4 h-10">
-                        Swap the rows and columns. Row 1 becomes Column 1.
+                    <div className="text-xl font-bold text-white mb-2">Transpose (<M>A^T</M>)</div>
+                    <p className="text-sm text-zinc-400 mb-6 leading-relaxed flex-1">
+                        Swap the rows and columns. Row 1 becomes Column 1. This reflects the entire matrix perfectly over its main diagonal.
                     </p>
-                    <div className="bg-white/5 p-2 rounded text-xs font-mono text-center text-emerald-200">
-                        [1 2]ᵀ = [1; 2]
+                    <div className="bg-black/60 p-4 rounded-xl text-center text-sky-300 border border-white/5 shadow-inner mt-auto">
+                        <M display={true}>{`\\begin{bmatrix} 1 & 2 \\end{bmatrix}^T = \\begin{bmatrix} 1 \\\\ 2 \\end{bmatrix}`}</M>
                     </div>
                 </div>
 
                 {/* Inverse */}
-                <div className="p-6 bg-black/40 border border-emerald-500/20 rounded-xl hover:border-emerald-500/50 transition-colors group">
-                    <div className="flex justify-between mb-4">
-                        <ArrowRight size={20} className="text-emerald-400 group-hover:-translate-x-1 group-hover:translate-x-1 animate-pulse" />
-                        <span className="text-[10px] uppercase font-bold text-emerald-600">The Undo</span>
+                <div className="p-8 bg-black/40 border border-rose-500/20 rounded-3xl hover:border-rose-500/50 transition-colors group shadow-lg backdrop-blur-md flex flex-col">
+                    <div className="flex justify-between items-start mb-6">
+                        <div className="p-3 bg-rose-500/10 rounded-xl group-hover:-translate-x-1 group-hover:translate-x-1 transition-transform border border-rose-500/20 animate-pulse">
+                            <ArrowRight size={24} className="text-rose-400" />
+                        </div>
+                        <span className="text-[10px] uppercase font-bold text-rose-400 tracking-widest bg-rose-500/10 px-3 py-1 rounded-full">The Undo</span>
                     </div>
-                    <div className="text-lg font-bold text-white mb-2">Inverse (A⁻¹)</div>
-                    <p className="text-xs text-zinc-500 mb-4 h-10">
-                        The matrix that "undoes" A. Only square matrices with non-zero determinants have one.
+                    <div className="text-xl font-bold text-white mb-2">Inverse (<M>{`A^{-1}`}</M>)</div>
+                    <p className="text-sm text-zinc-400 mb-6 leading-relaxed flex-1">
+                        The matrix that "undoes" A. Only square matrices with non-zero determinants possess one.
                     </p>
-                    <div className="bg-white/5 p-2 rounded text-xs font-mono text-center text-emerald-200">
-                        A • A⁻¹ = I
+                    <div className="bg-black/60 p-4 rounded-xl text-center text-rose-300 border border-white/5 shadow-inner mt-auto">
+                        <M>{`A \\cdot A^{-1} = I`}</M>
                     </div>
                 </div>
             </div>
         </section>
+
+        {/* FOOTER / NAVIGATION */}
+        <div className="mt-8 flex flex-col md:flex-row items-center justify-between gap-8 bg-black/40 p-8 rounded-3xl border border-white/5 backdrop-blur-xl">
+            <div className="flex items-center gap-4">
+                <div className="w-16 h-16 rounded-full bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400 shadow-inner">
+                    <Grid3X3 size={32} />
+                </div>
+                <div>
+                    <h3 className="text-xl font-black text-white">Grid Logic Initialized</h3>
+                    <p className="text-emerald-100/50 text-sm font-sans font-light">You are ready to command computational systems.</p>
+                </div>
+            </div>
+            
+            <Link href="/formal-science/mathematics/algebra/linear-algebra/systems" className="group flex items-center gap-3 bg-white text-black px-8 py-4 rounded-full font-black uppercase tracking-widest hover:bg-emerald-400 hover:text-black transition-all hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(255,255,255,0.2)] hover:shadow-[0_0_30px_rgba(16,185,129,0.5)]">
+                Next: Solvers <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+            </Link>
+        </div>
 
       </div>
     </main>

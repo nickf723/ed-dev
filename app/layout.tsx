@@ -1,4 +1,8 @@
+import type { Metadata } from "next";
+import { Urbanist, Fira_Code } from "next/font/google";
 import "./globals.css";
+import 'katex/dist/katex.min.css';
+
 import Sidebar from "@/app/_components/Sidebar";
 import MainContent from "@/app/_components/MainContent";
 

@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { CheckCircle, XCircle, ChevronRight, RotateCcw, Target, HelpCircle, AlertCircle } from 'lucide-react';
 
 // --- THEME DICTIONARY ---
-export type ThemeColor = 'indigo' | 'rose' | 'cyan' | 'amber' | 'emerald' | 'purple' | 'blue';
+export type ThemeColor = 'indigo' | 'rose' | 'cyan' | 'amber' | 'emerald' | 'purple' | 'blue' | 'teal' | 'fuchsia' | 'orange';
 
 const THEMES: Record<ThemeColor, { text: string; bgSubtle: string; border: string; borderActive: string; bgActive: string; button: string; shadow: string }> = {
   indigo: { text: 'text-indigo-400', bgSubtle: 'bg-indigo-500/10', border: 'border-indigo-500/30', borderActive: 'border-indigo-500', bgActive: 'bg-indigo-500/20', button: 'bg-indigo-500 text-black', shadow: 'shadow-[0_0_15px_rgba(99,102,241,0.3)]' },
@@ -13,6 +13,9 @@ const THEMES: Record<ThemeColor, { text: string; bgSubtle: string; border: strin
   emerald:{ text: 'text-emerald-400', bgSubtle: 'bg-emerald-500/10', border: 'border-emerald-500/30', borderActive: 'border-emerald-500', bgActive: 'bg-emerald-500/20', button: 'bg-emerald-500 text-black', shadow: 'shadow-[0_0_15px_rgba(16,185,129,0.3)]' },
   purple: { text: 'text-purple-400', bgSubtle: 'bg-purple-500/10', border: 'border-purple-500/30', borderActive: 'border-purple-500', bgActive: 'bg-purple-500/20', button: 'bg-purple-500 text-black', shadow: 'shadow-[0_0_15px_rgba(168,85,247,0.3)]' },
   blue:   { text: 'text-blue-400', bgSubtle: 'bg-blue-500/10', border: 'border-blue-500/30', borderActive: 'border-blue-500', bgActive: 'bg-blue-500/20', button: 'bg-blue-500 text-black', shadow: 'shadow-[0_0_15px_rgba(59,130,246,0.3)]' },
+  teal:   { text: 'text-teal-400', bgSubtle: 'bg-teal-500/10', border: 'border-teal-500/30', borderActive: 'border-teal-500', bgActive: 'bg-teal-500/20', button: 'bg-teal-500 text-black', shadow: 'shadow-[0_0_15px_rgba(20,184,166,0.3)]' },
+  fuchsia:{ text: 'text-fuchsia-400', bgSubtle: 'bg-fuchsia-500/10', border: 'border-fuchsia-500/30', borderActive: 'border-fuchsia-500', bgActive: 'bg-fuchsia-500/20', button: 'bg-fuchsia-500 text-black', shadow: 'shadow-[0_0_15px_rgba(236,72,153,0.3)]' },
+  orange:  { text: 'text-orange-400', bgSubtle: 'bg-orange-500/10', border: 'border-orange-500/30', borderActive: 'border-orange-500', bgActive: 'bg-orange-500/20', button: 'bg-orange-500 text-black', shadow: 'shadow-[0_0_15px_rgba(249,115,22,0.3)]' },
 };
 
 // --- EXPANDED TYPE DEFINITIONS ---
