@@ -5,6 +5,7 @@ import 'katex/dist/katex.min.css';
 
 import Sidebar from "@/app/_components/Sidebar";
 import MainContent from "@/app/_components/MainContent";
+import { Analytics } from "@vercel/analytics/next"
 
 export const metadata = {
   title: "The Knowledge Web",
@@ -19,6 +20,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="bg-black text-white antialiased">
+        <Analytics />
         <div className="flex min-h-screen">
           <Sidebar />
           <MainContent>
