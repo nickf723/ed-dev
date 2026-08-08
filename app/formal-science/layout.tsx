@@ -9,7 +9,10 @@ export default function FormalScienceLayout({
   return (
     <>
       {children}
-      <VocabularyDrawer scopes={formalScienceVocabularyScopes} />
+      <VocabularyDrawer
+        scopes={formalScienceVocabularyScopes}
+        hiddenTriggerPaths={["/formal-science"]}
+      />
     </>
   );
 }
