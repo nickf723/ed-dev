@@ -89,7 +89,7 @@ export function DeductionDeck() {
   };
 
   return (
-    <section className="relative overflow-hidden rounded-[20px] border border-rose-500/20 bg-[linear-gradient(145deg,rgba(31,7,16,0.74),rgba(3,4,7,0.82))] shadow-[inset_0_1px_0_rgba(255,255,255,0.045),0_18px_45px_rgba(0,0,0,0.30)] backdrop-blur-2xl">
+    <section className="relative flex min-h-0 flex-col overflow-hidden rounded-[20px] border border-rose-500/20 bg-[linear-gradient(145deg,rgba(31,7,16,0.74),rgba(3,4,7,0.82))] shadow-[inset_0_1px_0_rgba(255,255,255,0.045),0_18px_45px_rgba(0,0,0,0.30)] backdrop-blur-2xl">
       <PanelScrews />
       <header className="flex items-center justify-between gap-3 border-b border-rose-500/20 px-4 py-3">
         <div>
@@ -108,27 +108,29 @@ export function DeductionDeck() {
         </button>
       </header>
 
-      <div className="grid grid-cols-[1fr_auto_1fr] items-stretch gap-2 p-4">
-        <ProofCard label="Rule" value={example.rule} />
-        <div className="flex items-center justify-center text-rose-400/60" aria-hidden="true">
-          <span className="font-mono text-lg">+</span>
+      <div className="flex flex-1 flex-col justify-center">
+        <div className="grid grid-cols-[1fr_auto_1fr] items-stretch gap-2 p-4">
+          <ProofCard label="Rule" value={example.rule} />
+          <div className="flex items-center justify-center text-rose-400/60" aria-hidden="true">
+            <span className="font-mono text-lg">+</span>
+          </div>
+          <ProofCard label="Fact" value={example.fact} />
         </div>
-        <ProofCard label="Fact" value={example.fact} />
-      </div>
 
-      <div className="relative mx-4 h-5" aria-hidden="true">
-        <div className="absolute left-1/2 top-0 h-3 w-px -translate-x-1/2 bg-rose-500/40" />
-        <div className="absolute left-1/2 top-3 h-px w-1/2 -translate-x-1/2 bg-gradient-to-r from-transparent via-rose-400/60 to-transparent" />
-      </div>
+        <div className="relative mx-4 h-5" aria-hidden="true">
+          <div className="absolute left-1/2 top-0 h-3 w-px -translate-x-1/2 bg-rose-500/40" />
+          <div className="absolute left-1/2 top-3 h-px w-1/2 -translate-x-1/2 bg-gradient-to-r from-transparent via-rose-400/60 to-transparent" />
+        </div>
 
-      <div className="mx-4 mb-4 flex items-center gap-3 rounded-xl border border-rose-400/25 bg-rose-500/10 px-4 py-3 shadow-[inset_0_0_20px_rgba(244,63,94,0.055)]">
-        <span className="font-mono text-[9px] uppercase tracking-[0.18em] text-rose-300/60">
-          therefore
-        </span>
-        <ArrowRight size={14} className="text-rose-300" aria-hidden="true" />
-        <span className="min-w-0 flex-1 text-right text-sm font-semibold text-rose-100">
-          {example.result}
-        </span>
+        <div className="mx-4 mb-4 flex items-center gap-3 rounded-xl border border-rose-400/25 bg-rose-500/10 px-4 py-3 shadow-[inset_0_0_20px_rgba(244,63,94,0.055)]">
+          <span className="font-mono text-[9px] uppercase tracking-[0.18em] text-rose-300/60">
+            therefore
+          </span>
+          <ArrowRight size={14} className="text-rose-300" aria-hidden="true" />
+          <span className="min-w-0 flex-1 text-right text-sm font-semibold text-rose-100">
+            {example.result}
+          </span>
+        </div>
       </div>
     </section>
   );
