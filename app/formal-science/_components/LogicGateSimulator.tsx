@@ -1,94 +1,84 @@
 "use client";
-import React, { useState } from 'react';
-import { Cpu, RotateCcw, Zap, ZapOff } from 'lucide-react';
+
+import { useState } from "react";
+import { RotateCcw } from "lucide-react";
+
+type Bit = 0 | 1;
+type GateType = "AND" | "OR" | "XOR";
+
+const RULE_DESCRIPTIONS: Record<GateType, string> = {
+  AND: "The output is 1 only when both inputs are 1.",
+  OR: "The output is 1 when either input is 1, including when both are 1.",
+  XOR: "The output is 1 only when the two inputs are different.",
+};
+
+function evaluateGate(gate: GateType, inputA: Bit, inputB: Bit): Bit {
+  if (gate === "AND") return inputA === 1 && inputB === 1 ? 1 : 0;
+  if (gate === "OR") return inputA === 1 || inputB === 1 ? 1 : 0;
+  return inputA !== inputB ? 1 : 0;
+}
 
 export default function LogicGateSimulator() {
-  // Input states (0 or 1)
-  const [inputA, setInputA] = useState(0);
-  const [inputB, setInputB] = useState(0);
-  
-  // Selected Gate
-  const [gateType, setGateType] = useState<'AND' | 'OR' | 'XOR'>('AND');
+  const [inputA, setInputA] = useState<Bit>(0);
+  const [inputB, setInputB] = useState<Bit>(0);
+  const [gateType, setGateType] = useState<GateType>("AND");
 
-  // Compute Output
-  const computeOutput = () => {
-    switch (gateType) {
-      case 'AND': return inputA && inputB;
-      case 'OR': return inputA || inputB;
-      case 'XOR': return inputA !== inputB ? 1 : 0;
-      default: return 0;
-    }
-  };
-
-  const output = computeOutput();
+  const output = evaluateGate(gateType, inputA, inputB);
 
   const reset = () => {
-    setInputA(0); setInputB(0); setGateType('AND');
+    setInputA(0);
+    setInputB(0);
+    setGateType("AND");
   };
 
   return (
-    <div className="w-full h-full bg-black/40 backdrop-blur-md border border-rose-500/20 rounded-3xl p-8 shadow-2xl relative overflow-hidden font-mono flex flex-col">
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(244,63,94,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(244,63,94,0.03)_1px,transparent_1px)] bg-[size:20px_20px] pointer-events-none" />
-      
-      {/* Header */}
-      <div className="relative z-10 flex justify-between items-center mb-8 border-b border-rose-500/20 pb-4">
+    <div className="rounded-2xl border border-white/10 bg-neutral-950/80 p-5 sm:p-7">
+      <div className="flex items-start justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2 text-rose-400 mb-1">
-            <Cpu size={18} />
-            <h3 className="font-bold uppercase tracking-widest text-sm">Logic Gate Lab</h3>
-          </div>
-          <div className="text-[10px] text-slate-500 tracking-widest uppercase">Boolean Algebra Simulator</div>
+          <h3 className="text-lg font-semibold text-white">Try a logic rule</h3>
+          <p className="mt-1 text-sm leading-6 text-slate-400">
+            Change the inputs or rule and watch the required output update.
+          </p>
         </div>
-        <button onClick={reset} className="p-2 bg-white/5 border border-white/10 hover:bg-white/10 rounded-lg text-slate-400 transition-colors">
-          <RotateCcw size={16} />
+        <button
+          type="button"
+          onClick={reset}
+          aria-label="Reset logic gate example"
+          className="rounded-lg border border-white/10 p-2 text-slate-500 transition-colors hover:bg-white/5 hover:text-white"
+        >
+          <RotateCcw size={16} aria-hidden="true" />
         </button>
       </div>
 
-      <div className="relative z-10 flex flex-col md:flex-row gap-12 flex-1 items-center justify-center">
-        
-        {/* LEFT: Inputs */}
-        <div className="flex flex-col gap-8">
-          <div className="flex flex-col items-center">
-            <span className="text-[10px] text-slate-500 uppercase tracking-widest mb-2">Input A</span>
-            <button 
-              onClick={() => setInputA(inputA ? 0 : 1)}
-              className={`w-16 h-16 rounded-xl border-2 flex items-center justify-center text-2xl font-black transition-all ${
-                inputA ? 'bg-rose-500 border-rose-400 text-white shadow-[0_0_15px_rgba(244,63,94,0.5)]' : 'bg-black/50 border-white/10 text-slate-600 hover:border-white/30'
-              }`}
-            >
-              {inputA}
-            </button>
-          </div>
-          
-          <div className="flex flex-col items-center">
-            <span className="text-[10px] text-slate-500 uppercase tracking-widest mb-2">Input B</span>
-            <button 
-              onClick={() => setInputB(inputB ? 0 : 1)}
-              className={`w-16 h-16 rounded-xl border-2 flex items-center justify-center text-2xl font-black transition-all ${
-                inputB ? 'bg-rose-500 border-rose-400 text-white shadow-[0_0_15px_rgba(244,63,94,0.5)]' : 'bg-black/50 border-white/10 text-slate-600 hover:border-white/30'
-              }`}
-            >
-              {inputB}
-            </button>
-          </div>
+      <div className="mt-8 grid gap-7 md:grid-cols-[auto_minmax(0,1fr)_auto] md:items-center">
+        <div className="flex justify-center gap-4 md:flex-col">
+          <InputButton
+            label="Input A"
+            value={inputA}
+            onChange={() => setInputA(inputA === 1 ? 0 : 1)}
+          />
+          <InputButton
+            label="Input B"
+            value={inputB}
+            onChange={() => setInputB(inputB === 1 ? 0 : 1)}
+          />
         </div>
 
-        {/* MIDDLE: Gate Selection */}
-        <div className="relative flex flex-col items-center">
-          {/* Wire Connections */}
-          <div className="absolute top-[20%] -left-12 w-12 h-0.5 bg-rose-500/30" />
-          <div className="absolute bottom-[20%] -left-12 w-12 h-0.5 bg-rose-500/30" />
-          <div className="absolute top-1/2 -right-12 w-12 h-0.5 bg-rose-500/30 -translate-y-1/2" />
-
-          <div className="p-4 bg-black/60 border border-rose-500/30 rounded-2xl flex flex-col gap-2 relative z-10 backdrop-blur-md">
-            {(['AND', 'OR', 'XOR'] as const).map((gate) => (
+        <div>
+          <span className="block text-center text-xs font-medium uppercase tracking-wider text-slate-500">
+            Rule
+          </span>
+          <div className="mt-3 grid grid-cols-3 gap-2 rounded-xl border border-white/10 bg-black/30 p-2">
+            {(["AND", "OR", "XOR"] as GateType[]).map((gate) => (
               <button
+                type="button"
                 key={gate}
+                aria-pressed={gateType === gate}
                 onClick={() => setGateType(gate)}
-                className={`px-8 py-3 rounded-lg font-bold tracking-widest transition-all ${
-                  gateType === gate 
-                    ? 'bg-rose-500/20 border border-rose-500 text-rose-400 shadow-[0_0_15px_rgba(244,63,94,0.2)]' 
-                    : 'bg-white/5 border border-white/5 text-slate-500 hover:text-white'
+                className={`rounded-lg px-3 py-3 text-sm font-semibold transition-colors ${
+                  gateType === gate
+                    ? "bg-rose-500/15 text-rose-200 ring-1 ring-rose-400/40"
+                    : "text-slate-500 hover:bg-white/5 hover:text-white"
                 }`}
               >
                 {gate}
@@ -97,30 +87,56 @@ export default function LogicGateSimulator() {
           </div>
         </div>
 
-        {/* RIGHT: Output */}
         <div className="flex flex-col items-center">
-           <span className="text-[10px] text-slate-500 uppercase tracking-widest mb-2">Output</span>
-           <div className={`w-24 h-24 rounded-full border-4 flex items-center justify-center transition-all duration-500 ${
-             output 
-              ? 'bg-rose-500/20 border-rose-500 shadow-[0_0_50px_rgba(244,63,94,0.6)]' 
-              : 'bg-black/50 border-white/10 shadow-none'
-           }`}>
-             {output ? <Zap size={40} className="text-rose-400" /> : <ZapOff size={40} className="text-slate-700" />}
-           </div>
-           <span className="mt-4 text-2xl font-black text-slate-400">{output}</span>
+          <span className="text-xs font-medium uppercase tracking-wider text-slate-500">
+            Output
+          </span>
+          <div
+            className={`mt-3 flex h-20 w-20 items-center justify-center rounded-full border text-3xl font-bold transition-colors ${
+              output === 1
+                ? "border-rose-400/60 bg-rose-500/15 text-rose-200"
+                : "border-white/10 bg-black/30 text-slate-500"
+            }`}
+            aria-live="polite"
+          >
+            {output}
+          </div>
+          <span className="mt-2 text-sm text-slate-400">
+            {output === 1 ? "True" : "False"}
+          </span>
         </div>
-
-      </div>
-      
-      {/* Truth Table Hint */}
-      <div className="mt-8 pt-4 border-t border-rose-500/20 text-center">
-        <p className="text-[10px] text-slate-400 uppercase tracking-widest">
-          {gateType === 'AND' && "Output is 1 ONLY IF both A and B are 1."}
-          {gateType === 'OR' && "Output is 1 IF A or B (or both) are 1."}
-          {gateType === 'XOR' && "Output is 1 ONLY IF A and B are DIFFERENT."}
-        </p>
       </div>
 
+      <p className="mt-7 border-t border-white/10 pt-5 text-center text-sm text-slate-400">
+        {RULE_DESCRIPTIONS[gateType]}
+      </p>
+    </div>
+  );
+}
+
+type InputButtonProps = {
+  label: string;
+  value: Bit;
+  onChange: () => void;
+};
+
+function InputButton({ label, value, onChange }: InputButtonProps) {
+  return (
+    <div className="flex flex-col items-center">
+      <span className="mb-2 text-xs font-medium text-slate-500">{label}</span>
+      <button
+        type="button"
+        onClick={onChange}
+        aria-pressed={value === 1}
+        aria-label={`${label}: ${value}. Toggle value.`}
+        className={`flex h-14 w-14 items-center justify-center rounded-xl border text-xl font-bold transition-colors ${
+          value === 1
+            ? "border-rose-400/60 bg-rose-500/15 text-rose-200"
+            : "border-white/10 bg-black/30 text-slate-500 hover:border-white/25 hover:text-white"
+        }`}
+      >
+        {value}
+      </button>
     </div>
   );
 }
