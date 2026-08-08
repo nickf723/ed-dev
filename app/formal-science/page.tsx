@@ -5,6 +5,9 @@ import {
   ArrowLeft,
   ArrowRight,
   Binary,
+  Braces,
+  CheckCircle2,
+  CircleDot,
   Database,
   GitGraph,
   Network,
@@ -12,89 +15,102 @@ import {
   Terminal,
 } from "lucide-react";
 import Assessment from "@/app/_components/Assessment";
-import LogicGateSimulator from "@/app/formal-science/_components/LogicGateSimulator";
+import GameOfLifeBackground from "./_components/GameOfLifeBackground";
+import LogicGateSimulator from "./_components/LogicGateSimulator";
+import NetworkBackground from "./_components/NetworkBackground";
 import { formalScienceQuiz } from "./_components/assessment";
 
-const BRANCH_GROUPS = [
+const BRANCH_ROWS = [
   {
     id: "foundations",
     title: "Foundations",
-    description: "The structures used to define objects and justify conclusions.",
+    description: "Define the pieces and establish what counts as a valid result.",
     items: [
       {
         title: "Logic",
-        description: "Valid reasoning, inference, truth, and proof.",
+        description: "Reasoning, inference, truth, and proof.",
+        signal: "P → Q",
         icon: Scale,
         href: "/formal-science/logic",
         iconClass: "text-rose-300",
         iconBackground: "bg-rose-500/10",
         borderClass: "border-rose-500/20",
-        hoverClass: "hover:border-rose-400/50 hover:bg-rose-950/20",
+        hoverClass: "hover:bg-rose-950/25",
+        glowClass: "group-hover:shadow-[0_0_24px_rgba(244,63,94,0.12)]",
       },
       {
         title: "Mathematics",
         description: "Quantity, structure, space, patterns, and change.",
+        signal: "x ∈ ℝ",
         icon: Binary,
         href: "/formal-science/mathematics",
         iconClass: "text-cyan-300",
         iconBackground: "bg-cyan-500/10",
         borderClass: "border-cyan-500/20",
-        hoverClass: "hover:border-cyan-400/50 hover:bg-cyan-950/20",
+        hoverClass: "hover:bg-cyan-950/20",
+        glowClass: "group-hover:shadow-[0_0_24px_rgba(34,211,238,0.10)]",
       },
     ],
   },
   {
-    id: "computation-and-information",
+    id: "computation",
     title: "Computation and information",
-    description: "How rules transform, organize, store, and retrieve information.",
+    description: "Transform, organize, store, and retrieve formal information.",
     items: [
       {
         title: "Computer Science",
-        description: "Computation, algorithms, software, and machines.",
+        description: "Algorithms, software, computation, and machines.",
+        signal: "{ input → output }",
         icon: Terminal,
         href: "/formal-science/computer-science",
         iconClass: "text-violet-300",
         iconBackground: "bg-violet-500/10",
         borderClass: "border-violet-500/20",
-        hoverClass: "hover:border-violet-400/50 hover:bg-violet-950/20",
+        hoverClass: "hover:bg-violet-950/20",
+        glowClass: "group-hover:shadow-[0_0_24px_rgba(167,139,250,0.10)]",
       },
       {
         title: "Information Science",
-        description: "The organization, meaning, flow, and retrieval of information.",
+        description: "Meaning, organization, flow, and retrieval.",
+        signal: "data ⇄ meaning",
         icon: Database,
         href: "/formal-science/information-science",
         iconClass: "text-sky-300",
         iconBackground: "bg-sky-500/10",
         borderClass: "border-sky-500/20",
-        hoverClass: "hover:border-sky-400/50 hover:bg-sky-950/20",
+        hoverClass: "hover:bg-sky-950/20",
+        glowClass: "group-hover:shadow-[0_0_24px_rgba(125,211,252,0.10)]",
       },
     ],
   },
   {
-    id: "analysis-and-systems",
+    id: "analysis",
     title: "Analysis and systems",
-    description: "Methods for finding patterns and understanding interacting parts.",
+    description: "Find patterns and understand how formal parts interact.",
     items: [
       {
         title: "Data Science",
-        description: "Extracting patterns, evidence, and useful models from data.",
+        description: "Patterns, evidence, models, and prediction.",
+        signal: "data → model",
         icon: GitGraph,
         href: "/formal-science/data-science",
         iconClass: "text-emerald-300",
         iconBackground: "bg-emerald-500/10",
         borderClass: "border-emerald-500/20",
-        hoverClass:
-          "hover:border-emerald-400/50 hover:bg-emerald-950/20",
+        hoverClass: "hover:bg-emerald-950/20",
+        glowClass: "group-hover:shadow-[0_0_24px_rgba(52,211,153,0.10)]",
       },
       {
         title: "Systems Science",
-        description: "Relationships, feedback, emergence, and complex behavior.",
+        description: "Feedback, relationships, emergence, and complexity.",
+        signal: "output ↻ input",
         icon: Network,
         href: "/formal-science/systems-science",
         iconClass: "text-amber-300",
         iconBackground: "bg-amber-500/10",
         borderClass: "border-amber-500/20",
-        hoverClass: "hover:border-amber-400/50 hover:bg-amber-950/20",
+        hoverClass: "hover:bg-amber-950/20",
+        glowClass: "group-hover:shadow-[0_0_24px_rgba(251,191,36,0.10)]",
       },
     ],
   },
@@ -102,153 +118,176 @@ const BRANCH_GROUPS = [
 
 export default function FormalSciencePage() {
   return (
-    <main className="relative isolate min-h-screen overflow-hidden bg-[#08090d] text-slate-100 selection:bg-rose-500/30">
-      <div className="pointer-events-none fixed inset-0 -z-20 bg-[#08090d]" />
-      <div className="pointer-events-none fixed inset-0 -z-10 bg-[radial-gradient(circle_at_75%_0%,rgba(244,63,94,0.12),transparent_34%),radial-gradient(circle_at_10%_45%,rgba(244,63,94,0.05),transparent_26%)]" />
-      <div className="pointer-events-none fixed inset-0 -z-10 bg-[linear-gradient(rgba(244,63,94,0.025)_1px,transparent_1px),linear-gradient(90deg,rgba(244,63,94,0.025)_1px,transparent_1px)] bg-[size:56px_56px]" />
+    <main className="relative min-h-screen overflow-hidden bg-[#030305] text-slate-100 selection:bg-rose-500/30">
+      <div className="pointer-events-none fixed inset-0 z-0 opacity-90">
+        <GameOfLifeBackground />
+        <NetworkBackground />
+      </div>
+      <div className="pointer-events-none fixed inset-0 z-[1] bg-[linear-gradient(rgba(244,63,94,0.035)_1px,transparent_1px),linear-gradient(90deg,rgba(244,63,94,0.035)_1px,transparent_1px)] bg-[size:40px_40px]" />
+      <div className="pointer-events-none fixed inset-0 z-[1] bg-[radial-gradient(circle_at_68%_8%,rgba(244,63,94,0.13),transparent_34%),linear-gradient(to_bottom,rgba(3,3,5,0.10),rgba(3,3,5,0.66))]" />
 
-      <div className="mx-auto max-w-6xl px-5 py-10 sm:px-8 sm:py-14 lg:px-10">
-        <header className="max-w-4xl">
-          <Link
-            href="/"
-            className="inline-flex items-center gap-2 text-sm text-slate-500 transition-colors hover:text-slate-200"
-          >
-            <ArrowLeft size={15} aria-hidden="true" />
-            Home
-          </Link>
-
-          <div className="mt-10 flex items-center gap-3">
-            <div className="rounded-xl border border-rose-500/20 bg-rose-500/10 p-3 text-rose-300">
-              <Binary size={24} aria-hidden="true" />
+      <div className="relative z-10 mx-auto max-w-[1480px] px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
+        <header className="overflow-hidden rounded-2xl border border-rose-500/25 bg-[#090307]/80 shadow-[0_0_40px_rgba(244,63,94,0.07)] backdrop-blur-xl">
+          <div className="flex h-11 items-center justify-between border-b border-rose-500/15 bg-rose-950/15 px-4 sm:px-5">
+            <Link
+              href="/"
+              className="inline-flex items-center gap-2 text-sm text-slate-500 transition-colors hover:text-white"
+            >
+              <ArrowLeft size={14} aria-hidden="true" />
+              Home
+            </Link>
+            <div className="flex items-center gap-1.5" aria-hidden="true">
+              <span className="h-1.5 w-1.5 rounded-full bg-rose-500/25" />
+              <span className="h-1.5 w-1.5 rounded-full bg-rose-500/45" />
+              <span className="h-1.5 w-1.5 rounded-full bg-rose-400" />
             </div>
-            <h1 className="text-4xl font-black tracking-tight text-white sm:text-6xl">
-              Formal Science
-            </h1>
           </div>
 
-          <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-300 sm:text-xl">
-            Formal science studies abstract systems through precise definitions,
-            rules, and deduction. Instead of testing a claim against the physical
-            world, it asks what must follow from the structure we define.
-          </p>
+          <div className="grid lg:grid-cols-[minmax(0,1.05fr)_minmax(420px,0.95fr)]">
+            <div className="p-6 sm:p-8 lg:p-10">
+              <div className="flex items-center gap-4">
+                <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl border border-rose-500/25 bg-rose-500/10 text-rose-300 shadow-[inset_0_0_18px_rgba(244,63,94,0.08)]">
+                  <Binary size={27} aria-hidden="true" />
+                </div>
+                <h1 className="text-4xl font-black tracking-tight text-white sm:text-6xl">
+                  Formal Science
+                </h1>
+              </div>
 
-          <div
-            className="mt-8 flex flex-wrap items-center gap-3 rounded-2xl border border-white/10 bg-black/20 px-5 py-4 text-sm text-slate-300"
-            aria-label="The basic flow of a formal system"
-          >
-            <span className="rounded-lg bg-white/5 px-3 py-2">Assumptions</span>
-            <ArrowRight size={16} className="text-rose-400" aria-hidden="true" />
-            <span className="rounded-lg bg-white/5 px-3 py-2">Rules</span>
-            <ArrowRight size={16} className="text-rose-400" aria-hidden="true" />
-            <span className="rounded-lg bg-white/5 px-3 py-2">Conclusions</span>
+              <p className="mt-6 max-w-3xl text-base leading-7 text-slate-300 sm:text-lg sm:leading-8">
+                Abstract systems built from exact definitions and rules. Once the
+                pieces are fixed, deduction determines what must follow.
+              </p>
+            </div>
+
+            <div className="border-t border-rose-500/15 bg-black/25 p-5 sm:p-7 lg:border-l lg:border-t-0 lg:p-8">
+              <div className="grid gap-2 sm:grid-cols-[1fr_auto_1fr_auto_1fr] sm:items-center">
+                <div className="rounded-xl border border-white/10 bg-black/35 p-4">
+                  <CircleDot size={18} className="text-rose-300" aria-hidden="true" />
+                  <div className="mt-3 font-semibold text-white">Axioms</div>
+                  <div className="mt-1 text-xs text-slate-500">starting pieces</div>
+                </div>
+                <ArrowRight
+                  size={17}
+                  className="hidden text-rose-400 sm:block"
+                  aria-hidden="true"
+                />
+                <div className="rounded-xl border border-white/10 bg-black/35 p-4">
+                  <Braces size={18} className="text-rose-300" aria-hidden="true" />
+                  <div className="mt-3 font-semibold text-white">Rules</div>
+                  <div className="mt-1 text-xs text-slate-500">allowed moves</div>
+                </div>
+                <ArrowRight
+                  size={17}
+                  className="hidden text-rose-400 sm:block"
+                  aria-hidden="true"
+                />
+                <div className="rounded-xl border border-white/10 bg-black/35 p-4">
+                  <CheckCircle2
+                    size={18}
+                    className="text-rose-300"
+                    aria-hidden="true"
+                  />
+                  <div className="mt-3 font-semibold text-white">Theorems</div>
+                  <div className="mt-1 text-xs text-slate-500">required results</div>
+                </div>
+              </div>
+            </div>
           </div>
         </header>
 
-        <section className="mt-20" aria-labelledby="formal-branches-heading">
-          <div className="max-w-3xl">
-            <h2
-              id="formal-branches-heading"
-              className="text-2xl font-bold text-white sm:text-3xl"
-            >
+        <section className="mt-5 overflow-hidden rounded-2xl border border-rose-500/20 bg-black/65 shadow-[0_0_34px_rgba(0,0,0,0.35)] backdrop-blur-xl">
+          <div className="flex flex-col gap-1 border-b border-rose-500/15 px-5 py-4 sm:flex-row sm:items-end sm:justify-between sm:px-6">
+            <h2 className="text-xl font-bold text-white sm:text-2xl">
               Explore the field
             </h2>
-            <p className="mt-3 leading-7 text-slate-400">
-              These branches share a concern for structure and valid reasoning,
-              but each studies a different kind of formal object.
+            <p className="text-sm text-slate-500">
+              Six branches arranged by the job they perform.
             </p>
           </div>
 
-          <div className="mt-10 space-y-12">
-            {BRANCH_GROUPS.map((group) => (
-              <section key={group.title} aria-labelledby={`group-${group.id}`}>
-                <div className="mb-5">
-                  <h3
-                    id={`group-${group.id}`}
-                    className="text-base font-semibold text-slate-200"
-                  >
-                    {group.title}
-                  </h3>
-                  <p className="mt-1 text-sm text-slate-500">
-                    {group.description}
-                  </p>
+          <div className="divide-y divide-white/5">
+            {BRANCH_ROWS.map((row, rowIndex) => (
+              <div
+                key={row.id}
+                className="grid lg:grid-cols-[230px_minmax(0,1fr)_minmax(0,1fr)]"
+              >
+                <div className="flex gap-4 border-b border-white/5 bg-rose-950/10 p-5 lg:border-b-0 lg:border-r lg:p-6">
+                  <span className="font-mono text-xs text-rose-400/70">
+                    0{rowIndex + 1}
+                  </span>
+                  <div>
+                    <h3 className="font-semibold text-slate-100">{row.title}</h3>
+                    <p className="mt-2 text-sm leading-6 text-slate-500">
+                      {row.description}
+                    </p>
+                  </div>
                 </div>
 
-                <div className="grid gap-4 md:grid-cols-2">
-                  {group.items.map((item) => (
-                    <Link
-                      key={item.title}
-                      href={item.href}
-                      className={`group flex min-h-36 items-start gap-4 rounded-2xl border bg-black/25 p-5 transition-colors ${item.borderClass} ${item.hoverClass}`}
+                {row.items.map((item, itemIndex) => (
+                  <Link
+                    key={item.title}
+                    href={item.href}
+                    className={`group relative flex min-h-[138px] items-center gap-4 overflow-hidden border-white/5 p-5 transition-colors sm:p-6 ${
+                      itemIndex === 0
+                        ? "border-b lg:border-b-0 lg:border-r"
+                        : ""
+                    } ${item.hoverClass}`}
+                  >
+                    <div
+                      className={`absolute inset-y-0 left-0 w-px ${item.iconBackground}`}
+                      aria-hidden="true"
+                    />
+                    <div
+                      className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border ${item.borderClass} ${item.iconBackground} ${item.iconClass} transition-shadow ${item.glowClass}`}
                     >
-                      <div
-                        className={`rounded-xl border border-white/5 p-3 ${item.iconBackground} ${item.iconClass}`}
-                      >
-                        <item.icon size={22} aria-hidden="true" />
+                      <item.icon size={22} aria-hidden="true" />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center justify-between gap-4">
+                        <h4 className="text-lg font-semibold text-white">
+                          {item.title}
+                        </h4>
+                        <span className={`font-mono text-xs ${item.iconClass}`}>
+                          {item.signal}
+                        </span>
                       </div>
-                      <div className="min-w-0 flex-1">
-                        <div className="flex items-center justify-between gap-4">
-                          <h4 className="text-lg font-semibold text-white">
-                            {item.title}
-                          </h4>
-                          <ArrowRight
-                            size={17}
-                            className="shrink-0 text-slate-600 transition-transform group-hover:translate-x-1 group-hover:text-slate-300"
-                            aria-hidden="true"
-                          />
-                        </div>
-                        <p className="mt-3 text-sm leading-6 text-slate-400">
-                          {item.description}
-                        </p>
-                      </div>
-                    </Link>
-                  ))}
-                </div>
-              </section>
+                      <p className="mt-2 text-sm leading-6 text-slate-400">
+                        {item.description}
+                      </p>
+                    </div>
+                    <ArrowRight
+                      size={17}
+                      className="shrink-0 text-slate-700 transition-all group-hover:translate-x-1 group-hover:text-white"
+                      aria-hidden="true"
+                    />
+                  </Link>
+                ))}
+              </div>
             ))}
           </div>
         </section>
 
-        <section className="mt-24 rounded-3xl border border-rose-500/15 bg-black/25 p-5 sm:p-8 lg:p-10">
-          <div className="grid items-start gap-10 lg:grid-cols-5">
-            <div className="lg:col-span-2">
-              <h2 className="text-2xl font-bold text-white sm:text-3xl">
-                From rules to results
+        <section className="mt-5 overflow-hidden rounded-2xl border border-rose-500/20 bg-black/65 shadow-[0_0_34px_rgba(0,0,0,0.35)] backdrop-blur-xl">
+          <div className="flex flex-col gap-2 border-b border-rose-500/15 px-5 py-4 sm:flex-row sm:items-end sm:justify-between sm:px-6">
+            <div>
+              <h2 className="text-xl font-bold text-white sm:text-2xl">
+                Build a rule
               </h2>
-              <p className="mt-4 leading-7 text-slate-300">
-                A logic gate is a small formal system. It receives defined inputs,
-                applies one exact rule, and produces the output required by that
-                rule.
+              <p className="mt-1 text-sm text-slate-500">
+                Flip the inputs, swap the gate, and follow the lit signal.
               </p>
-
-              <ol className="mt-7 space-y-4 text-sm leading-6 text-slate-400">
-                <li className="flex gap-3">
-                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-rose-500/25 bg-rose-500/10 text-xs text-rose-300">
-                    1
-                  </span>
-                  Choose values for inputs A and B.
-                </li>
-                <li className="flex gap-3">
-                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-rose-500/25 bg-rose-500/10 text-xs text-rose-300">
-                    2
-                  </span>
-                  Select the rule that connects them.
-                </li>
-                <li className="flex gap-3">
-                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-rose-500/25 bg-rose-500/10 text-xs text-rose-300">
-                    3
-                  </span>
-                  Compare the result with the rule&apos;s definition.
-                </li>
-              </ol>
             </div>
-
-            <div className="lg:col-span-3">
-              <LogicGateSimulator />
+            <div className="font-mono text-xs text-rose-300/70">
+              inputs → rule → result
             </div>
+          </div>
+          <div className="p-4 sm:p-6">
+            <LogicGateSimulator />
           </div>
         </section>
 
-        <section className="mt-24 pb-24" aria-label="Formal Science assessment">
+        <section className="mt-5 pb-24" aria-label="Formal Science assessment">
           <Assessment
             title="Check your understanding"
             questions={formalScienceQuiz}
