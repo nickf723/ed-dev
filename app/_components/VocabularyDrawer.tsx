@@ -8,7 +8,7 @@ import {
   useState,
   type ChangeEvent,
 } from "react";
-import { BookOpen, Search, Tags, X } from "lucide-react";
+import { BookOpen, Search, X } from "lucide-react";
 import { findVocabularyScope } from "@/app/_data/vocab/compose";
 import type {
   VocabTerm,
@@ -188,14 +188,15 @@ export default function VocabularyDrawer({ scopes }: VocabularyDrawerProps) {
     <>
       <button
         type="button"
+        aria-label={`Open ${scope.title} vocabulary, ${entries.length} terms`}
         aria-expanded={isOpen}
         aria-controls="page-vocabulary-drawer"
         onClick={() => setIsOpen(true)}
-        className={`fixed bottom-4 right-4 z-[60] flex items-center gap-2 rounded-full border px-4 py-3 text-sm font-semibold shadow-2xl backdrop-blur transition-colors md:bottom-auto md:right-0 md:top-1/2 md:-translate-y-1/2 md:rounded-r-none ${accent.button}`}
+        className={`fixed bottom-4 right-4 z-[60] flex items-center gap-2 rounded-xl border px-3 py-2.5 text-sm font-semibold shadow-[0_12px_32px_rgba(0,0,0,0.45)] backdrop-blur-xl transition-colors md:bottom-auto md:right-5 md:top-5 ${accent.button}`}
       >
-        <Tags size={17} aria-hidden="true" />
-        <span>Vocabulary</span>
-        <span className="rounded-full bg-white/10 px-2 py-0.5 text-xs text-white/70">
+        <BookOpen size={16} aria-hidden="true" />
+        <span className="hidden sm:inline">Vocabulary</span>
+        <span className="rounded-md border border-white/10 bg-white/5 px-1.5 py-0.5 font-mono text-[11px] text-white/70">
           {entries.length}
         </span>
       </button>
