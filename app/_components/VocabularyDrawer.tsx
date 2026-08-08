@@ -16,6 +16,8 @@ import type {
   VocabularyScope,
 } from "@/app/_data/vocab/types";
 
+export const OPEN_PAGE_VOCABULARY_EVENT = "educationstation:open-vocabulary";
+
 const ACCENT_STYLES: Record<
   VocabularyAccent,
   {
@@ -30,7 +32,7 @@ const ACCENT_STYLES: Record<
     button:
       "border-rose-500/30 bg-neutral-950/95 text-rose-200 hover:border-rose-400/60 hover:bg-rose-950/40",
     icon: "text-rose-400",
-    activeFilter: "border-rose-400/50 bg-rose-500/15 text-rose-100",
+    activeFilter: "border-rose-400/50 bg-rose-500/20 text-rose-100",
     focus: "focus:border-rose-400/60",
     border: "border-rose-500/20",
   },
@@ -38,7 +40,7 @@ const ACCENT_STYLES: Record<
     button:
       "border-cyan-500/30 bg-neutral-950/95 text-cyan-200 hover:border-cyan-400/60 hover:bg-cyan-950/40",
     icon: "text-cyan-400",
-    activeFilter: "border-cyan-400/50 bg-cyan-500/15 text-cyan-100",
+    activeFilter: "border-cyan-400/50 bg-cyan-500/20 text-cyan-100",
     focus: "focus:border-cyan-400/60",
     border: "border-cyan-500/20",
   },
@@ -47,7 +49,7 @@ const ACCENT_STYLES: Record<
       "border-violet-500/30 bg-neutral-950/95 text-violet-200 hover:border-violet-400/60 hover:bg-violet-950/40",
     icon: "text-violet-400",
     activeFilter:
-      "border-violet-400/50 bg-violet-500/15 text-violet-100",
+      "border-violet-400/50 bg-violet-500/20 text-violet-100",
     focus: "focus:border-violet-400/60",
     border: "border-violet-500/20",
   },
@@ -55,7 +57,7 @@ const ACCENT_STYLES: Record<
     button:
       "border-sky-500/30 bg-neutral-950/95 text-sky-200 hover:border-sky-400/60 hover:bg-sky-950/40",
     icon: "text-sky-400",
-    activeFilter: "border-sky-400/50 bg-sky-500/15 text-sky-100",
+    activeFilter: "border-sky-400/50 bg-sky-500/20 text-sky-100",
     focus: "focus:border-sky-400/60",
     border: "border-sky-500/20",
   },
@@ -64,7 +66,7 @@ const ACCENT_STYLES: Record<
       "border-emerald-500/30 bg-neutral-950/95 text-emerald-200 hover:border-emerald-400/60 hover:bg-emerald-950/40",
     icon: "text-emerald-400",
     activeFilter:
-      "border-emerald-400/50 bg-emerald-500/15 text-emerald-100",
+      "border-emerald-400/50 bg-emerald-500/20 text-emerald-100",
     focus: "focus:border-emerald-400/60",
     border: "border-emerald-500/20",
   },
@@ -72,7 +74,7 @@ const ACCENT_STYLES: Record<
     button:
       "border-amber-500/30 bg-neutral-950/95 text-amber-200 hover:border-amber-400/60 hover:bg-amber-950/40",
     icon: "text-amber-400",
-    activeFilter: "border-amber-400/50 bg-amber-500/15 text-amber-100",
+    activeFilter: "border-amber-400/50 bg-amber-500/20 text-amber-100",
     focus: "focus:border-amber-400/60",
     border: "border-amber-500/20",
   },
@@ -80,6 +82,7 @@ const ACCENT_STYLES: Record<
 
 type VocabularyDrawerProps = {
   scopes: VocabularyScope[];
+  hiddenTriggerPaths?: string[];
 };
 
 type DrawerEntry = {
@@ -88,7 +91,10 @@ type DrawerEntry = {
   groupLabel: string;
 };
 
-export default function VocabularyDrawer({ scopes }: VocabularyDrawerProps) {
+export default function VocabularyDrawer({
+  scopes,
+  hiddenTriggerPaths = [],
+}: VocabularyDrawerProps) {
   const pathname = usePathname();
   const scope = useMemo(
     () => findVocabularyScope(pathname, scopes),
@@ -104,6 +110,14 @@ export default function VocabularyDrawer({ scopes }: VocabularyDrawerProps) {
     if (savedSafeMode !== null) {
       setHideAdult(savedSafeMode === "true");
     }
+  }, []);
+
+  useEffect(() => {
+    const handleOpenVocabulary = () => setIsOpen(true);
+    window.addEventListener(OPEN_PAGE_VOCABULARY_EVENT, handleOpenVocabulary);
+    return () => {
+      window.removeEventListener(OPEN_PAGE_VOCABULARY_EVENT, handleOpenVocabulary);
+    };
   }, []);
 
   useEffect(() => {
@@ -183,23 +197,26 @@ export default function VocabularyDrawer({ scopes }: VocabularyDrawerProps) {
   if (!scope || entries.length === 0) return null;
 
   const accent = ACCENT_STYLES[scope.accent];
+  const hideDefaultTrigger = hiddenTriggerPaths.includes(pathname);
 
   return (
     <>
-      <button
-        type="button"
-        aria-label={`Open ${scope.title} vocabulary, ${entries.length} terms`}
-        aria-expanded={isOpen}
-        aria-controls="page-vocabulary-drawer"
-        onClick={() => setIsOpen(true)}
-        className={`fixed bottom-4 right-4 z-[60] flex items-center gap-2 rounded-xl border px-3 py-2.5 text-sm font-semibold shadow-[0_12px_32px_rgba(0,0,0,0.45)] backdrop-blur-xl transition-colors md:bottom-auto md:right-5 md:top-5 ${accent.button}`}
-      >
-        <BookOpen size={16} aria-hidden="true" />
-        <span className="hidden sm:inline">Vocabulary</span>
-        <span className="rounded-md border border-white/10 bg-white/5 px-1.5 py-0.5 font-mono text-[11px] text-white/70">
-          {entries.length}
-        </span>
-      </button>
+      {!hideDefaultTrigger && (
+        <button
+          type="button"
+          aria-label={`Open ${scope.title} vocabulary, ${entries.length} terms`}
+          aria-expanded={isOpen}
+          aria-controls="page-vocabulary-drawer"
+          onClick={() => setIsOpen(true)}
+          className={`fixed bottom-4 right-4 z-[60] flex items-center gap-2 rounded-xl border px-3 py-2.5 text-sm font-semibold shadow-[0_12px_32px_rgba(0,0,0,0.45)] backdrop-blur-xl transition-colors md:bottom-auto md:right-5 md:top-5 ${accent.button}`}
+        >
+          <BookOpen size={16} aria-hidden="true" />
+          <span className="hidden sm:inline">Vocabulary</span>
+          <span className="rounded-md border border-white/10 bg-white/5 px-1.5 py-0.5 font-mono text-[11px] text-white/70">
+            {entries.length}
+          </span>
+        </button>
+      )}
 
       {isOpen && (
         <div className="fixed inset-0 z-[80]">
