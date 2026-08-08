@@ -1,116 +1,114 @@
-// 1. The Centralized Type Definition
-export type VocabTerm = {
-    id: string;
-    word: string;
-    definition: string;
-    domain: string;
-    tags: string[];
-    relatedTerms?: string[];
-    isAdult: boolean;
-};
+import { composeVocabulary } from "./compose";
+import type { VocabTerm } from "./types";
 
-// 2. Import your domain files
-import { mathVocab } from './m/math';
-import { abstractAlgebraVocab } from './a/abstract-algebra';
-import { ludologyVocab } from './l/ludology';
-import { gameDesignVocab } from './g/game-design';
-import { lawVocab } from './l/law';
-import { linguisticsVocab } from './l/linguistics';
-import { economicsVocab } from './e/economics';
-import { philosophyVocab } from './p/philosophy';
-import { earthScienceVocab } from './e/earth-science';
-import { computerScienceVocab } from './c/computer-science';
-import { physicsVocab } from './p/physics';
-import { chemistryVocab } from './c/chemistry';
-import { biologyVocab } from './b/biology';
-import { astronomyVocab } from './a/astronomy';
-import { psychologyVocab } from './p/psychology';
-import { sociologyVocab } from './s/sociology';
-import { politicalScienceVocab } from './p/political-science';
-import { medicineVocab } from './m/medicine';
-import { musicVocab } from './m/music';
-import { visualArtsVocab } from './v/visual-arts';
-import { literatureVocab } from './l/literature';
-import { religionVocab } from './r/religion';
-import { algebraBasicsVocab } from './a/algebra-basics';
-import { architectureVocab } from './a/architecture';
-import { quantumMechanicsVocab } from './q/quantum-mechanics';
-import { dataScienceVocab } from './d/data-science';
-import { meteorologyVocab } from './m/meteorology';
-import { metroidvaniaVocab } from './m/metroidvania';
-import { anthropologyVocab } from './a/anthropology';
-import { mythologyVocab } from './m/mythology';
-import { cognitiveScienceVocab } from './c/cognitive-science';
-import { formalScienceVocab } from './f/formal-science';
-import { logicVocab } from './l/logic';
-import { propLogicVocab } from './p/propositional-logic';
-import { firstOrderVocab } from './f/first-order-logic';
-import { mathCoreVocab } from './m/mathematics';
-import { foundationsVocab } from './m/math-foundations';
-import { algebraVocab } from './a/algebra';
-import { preAlgebraVocab } from './p/pre-algebra';
-import { integersVocab } from './i/integers';
-import { pemdasVocab } from './p/pemdas';
-import { propertiesVocab } from './a/algebra-properties';
-import { ratiosVocab } from './r/ratios';
-import { fractionsVocab } from './f/fractions';
-import { exponentsVocab } from './e/exponents';
-import { expressionsVocab } from './a/algebra-expressions';
-import { equationsVocab } from './e/equations';
-import { algebraFundamentalsVocab } from './a/algebra-fundamentals';
-import { quadraticsVocab } from './q/quadratics';
+export type { VocabTerm } from "./types";
+
+import { mathVocab } from "./m/math";
+import { abstractAlgebraVocab } from "./a/abstract-algebra";
+import { ludologyVocab } from "./l/ludology";
+import { gameDesignVocab } from "./g/game-design";
+import { lawVocab } from "./l/law";
+import { linguisticsVocab } from "./l/linguistics";
+import { economicsVocab } from "./e/economics";
+import { philosophyVocab } from "./p/philosophy";
+import { earthScienceVocab } from "./e/earth-science";
+import { computerScienceVocab } from "./c/computer-science";
+import { physicsVocab } from "./p/physics";
+import { chemistryVocab } from "./c/chemistry";
+import { biologyVocab } from "./b/biology";
+import { astronomyVocab } from "./a/astronomy";
+import { psychologyVocab } from "./p/psychology";
+import { sociologyVocab } from "./s/sociology";
+import { politicalScienceVocab } from "./p/political-science";
+import { medicineVocab } from "./m/medicine";
+import { musicVocab } from "./m/music";
+import { visualArtsVocab } from "./v/visual-arts";
+import { literatureVocab } from "./l/literature";
+import { religionVocab } from "./r/religion";
+import { algebraBasicsVocab } from "./a/algebra-basics";
+import { architectureVocab } from "./a/architecture";
+import { quantumMechanicsVocab } from "./q/quantum-mechanics";
+import { dataScienceVocab } from "./d/data-science";
+import { meteorologyVocab } from "./m/meteorology";
+import { metroidvaniaVocab } from "./m/metroidvania";
+import { anthropologyVocab } from "./a/anthropology";
+import { mythologyVocab } from "./m/mythology";
+import { cognitiveScienceVocab } from "./c/cognitive-science";
+import { formalScienceVocab } from "./f/formal-science";
+import { formalScienceLocalVocab } from "./f/formal-science-local";
+import { informationScienceVocab } from "./i/information-science";
+import { systemsScienceVocab } from "./s/systems-science";
+import { logicVocab } from "./l/logic";
+import { propLogicVocab } from "./p/propositional-logic";
+import { firstOrderVocab } from "./f/first-order-logic";
+import { mathCoreVocab } from "./m/mathematics";
+import { foundationsVocab } from "./m/math-foundations";
+import { algebraVocab } from "./a/algebra";
+import { preAlgebraVocab } from "./p/pre-algebra";
+import { integersVocab } from "./i/integers";
+import { pemdasVocab } from "./p/pemdas";
+import { propertiesVocab } from "./a/algebra-properties";
+import { ratiosVocab } from "./r/ratios";
+import { fractionsVocab } from "./f/fractions";
+import { exponentsVocab } from "./e/exponents";
+import { expressionsVocab } from "./a/algebra-expressions";
+import { equationsVocab } from "./e/equations";
+import { algebraFundamentalsVocab } from "./a/algebra-fundamentals";
+import { quadraticsVocab } from "./q/quadratics";
 
 export { mathVocab, abstractAlgebraVocab, ludologyVocab, gameDesignVocab };
 
-// 3. Compile the Master List (Strictly Typed!)
-export const ALL_VOCAB: VocabTerm[] = [
-    ...mathVocab,
-    ...abstractAlgebraVocab,
-    ...ludologyVocab,
-    ...gameDesignVocab,
-    ...lawVocab,
-    ...linguisticsVocab,
-    ...economicsVocab,
-    ...philosophyVocab,
-    ...earthScienceVocab,
-    ...computerScienceVocab,
-    ...physicsVocab,
-    ...chemistryVocab,
-    ...biologyVocab,
-    ...astronomyVocab,
-    ...psychologyVocab,
-    ...sociologyVocab,
-    ...politicalScienceVocab,
-    ...medicineVocab,
-    ...musicVocab,
-    ...visualArtsVocab,
-    ...literatureVocab,
-    ...religionVocab,
-    ...algebraBasicsVocab,
-    ...architectureVocab,
-    ...quantumMechanicsVocab,
-    ...dataScienceVocab,
-    ...meteorologyVocab,
-    ...anthropologyVocab,
-    ...mythologyVocab,
-    ...cognitiveScienceVocab,
-    ...metroidvaniaVocab,
-    ...formalScienceVocab,
-    ...logicVocab,
-    ...propLogicVocab,
-    ...firstOrderVocab,
-    ...mathCoreVocab,
-    ...foundationsVocab,
-    ...algebraVocab,
-    ...preAlgebraVocab,
-    ...integersVocab,
-    ...pemdasVocab,
-    ...propertiesVocab,
-    ...ratiosVocab,
-    ...fractionsVocab,
-    ...exponentsVocab,
-    ...expressionsVocab,
-    ...equationsVocab,
-    ...algebraFundamentalsVocab,
-    ...quadraticsVocab,
-];
+export const ALL_VOCAB: VocabTerm[] = composeVocabulary(
+  mathVocab,
+  abstractAlgebraVocab,
+  ludologyVocab,
+  gameDesignVocab,
+  lawVocab,
+  linguisticsVocab,
+  economicsVocab,
+  philosophyVocab,
+  earthScienceVocab,
+  computerScienceVocab,
+  physicsVocab,
+  chemistryVocab,
+  biologyVocab,
+  astronomyVocab,
+  psychologyVocab,
+  sociologyVocab,
+  politicalScienceVocab,
+  medicineVocab,
+  musicVocab,
+  visualArtsVocab,
+  literatureVocab,
+  religionVocab,
+  algebraBasicsVocab,
+  architectureVocab,
+  quantumMechanicsVocab,
+  dataScienceVocab,
+  meteorologyVocab,
+  anthropologyVocab,
+  mythologyVocab,
+  cognitiveScienceVocab,
+  metroidvaniaVocab,
+  formalScienceLocalVocab,
+  formalScienceVocab,
+  informationScienceVocab,
+  systemsScienceVocab,
+  logicVocab,
+  propLogicVocab,
+  firstOrderVocab,
+  mathCoreVocab,
+  foundationsVocab,
+  algebraVocab,
+  preAlgebraVocab,
+  integersVocab,
+  pemdasVocab,
+  propertiesVocab,
+  ratiosVocab,
+  fractionsVocab,
+  exponentsVocab,
+  expressionsVocab,
+  equationsVocab,
+  algebraFundamentalsVocab,
+  quadraticsVocab,
+);
