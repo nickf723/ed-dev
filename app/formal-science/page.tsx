@@ -13,16 +13,36 @@ import {
   Network,
   Scale,
   Terminal,
+  type LucideIcon,
 } from "lucide-react";
+import { curriculumRegistry } from "@/lib/curriculum/registry";
 import GameOfLifeBackground from "./_components/GameOfLifeBackground";
 import NetworkBackground from "./_components/NetworkBackground";
 
-const CHILDREN = [
-  {
+type FormalChildPresentation = {
+  number: string;
+  icon: LucideIcon;
+  accent: string;
+  border: string;
+  surface: string;
+  glow: string;
+  hover: string;
+  aura: string;
+  dots: string;
+};
+
+const FORMAL_CHILD_ORDER = [
+  "formal.logic",
+  "formal.mathematics",
+  "formal.computer-science",
+  "formal.information-science",
+  "formal.data-science",
+  "formal.systems-science",
+] as const;
+
+const FORMAL_CHILD_PRESENTATION: Record<string, FormalChildPresentation> = {
+  "formal.logic": {
     number: "01",
-    title: "Logic",
-    description: "Reasoning, inference, truth, and proof.",
-    href: "/formal-science/logic",
     icon: Scale,
     accent: "text-rose-300",
     border: "border-rose-500/45",
@@ -32,11 +52,8 @@ const CHILDREN = [
     aura: "bg-rose-500/16",
     dots: "bg-[radial-gradient(circle,rgba(251,113,133,0.42)_1px,transparent_1.5px)]",
   },
-  {
+  "formal.mathematics": {
     number: "02",
-    title: "Mathematics",
-    description: "Structure, patterns, quantity, space, and change.",
-    href: "/formal-science/mathematics",
     icon: Binary,
     accent: "text-sky-300",
     border: "border-sky-500/45",
@@ -46,11 +63,8 @@ const CHILDREN = [
     aura: "bg-sky-500/16",
     dots: "bg-[radial-gradient(circle,rgba(125,211,252,0.42)_1px,transparent_1.5px)]",
   },
-  {
+  "formal.computer-science": {
     number: "03",
-    title: "Computer Science",
-    description: "Algorithms, systems, software, and computation.",
-    href: "/formal-science/computer-science",
     icon: Terminal,
     accent: "text-violet-300",
     border: "border-violet-500/45",
@@ -60,11 +74,8 @@ const CHILDREN = [
     aura: "bg-violet-500/16",
     dots: "bg-[radial-gradient(circle,rgba(196,181,253,0.42)_1px,transparent_1.5px)]",
   },
-  {
+  "formal.information-science": {
     number: "04",
-    title: "Information Science",
-    description: "Representation, meaning, organization, and retrieval.",
-    href: "/formal-science/information-science",
     icon: Database,
     accent: "text-orange-300",
     border: "border-orange-500/45",
@@ -74,11 +85,8 @@ const CHILDREN = [
     aura: "bg-orange-500/16",
     dots: "bg-[radial-gradient(circle,rgba(253,186,116,0.42)_1px,transparent_1.5px)]",
   },
-  {
+  "formal.data-science": {
     number: "05",
-    title: "Data Science",
-    description: "Data, models, evidence, patterns, and insight.",
-    href: "/formal-science/data-science",
     icon: GitGraph,
     accent: "text-teal-300",
     border: "border-teal-500/45",
@@ -88,11 +96,8 @@ const CHILDREN = [
     aura: "bg-teal-500/16",
     dots: "bg-[radial-gradient(circle,rgba(94,234,212,0.42)_1px,transparent_1.5px)]",
   },
-  {
+  "formal.systems-science": {
     number: "06",
-    title: "Systems Science",
-    description: "Complex systems, feedback, behavior, and dynamics.",
-    href: "/formal-science/systems-science",
     icon: Network,
     accent: "text-amber-300",
     border: "border-amber-500/45",
@@ -102,7 +107,25 @@ const CHILDREN = [
     aura: "bg-amber-500/16",
     dots: "bg-[radial-gradient(circle,rgba(252,211,77,0.42)_1px,transparent_1.5px)]",
   },
-];
+};
+
+function buildChildren() {
+  return FORMAL_CHILD_ORDER.map((id) => {
+    const node = curriculumRegistry.getNode(id);
+    const presentation = FORMAL_CHILD_PRESENTATION[id];
+    if (!node) throw new Error(`Formal Science child ${id} is missing from the curriculum registry.`);
+    if (!node.description) throw new Error(`Formal Science child ${id} is missing its curriculum description.`);
+
+    return {
+      ...node,
+      title: node.label,
+      description: node.description,
+      ...presentation,
+    };
+  });
+}
+
+const CHILDREN = buildChildren();
 
 export default function FormalSciencePage() {
   const openVocabulary = () => {
@@ -180,7 +203,7 @@ export default function FormalSciencePage() {
           <div className="px-4 pb-5 pt-5 sm:px-6 lg:px-7 lg:pb-7 lg:pt-6">
             <div className="grid gap-3 md:grid-cols-3 xl:grid-cols-6">
               {CHILDREN.map((child) => (
-                <ChildCard key={child.title} child={child} />
+                <ChildCard key={child.id} child={child} />
               ))}
             </div>
           </div>
