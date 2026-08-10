@@ -1,4 +1,5 @@
 "use client";
+
 import { useEffect, useRef } from "react";
 
 export default function GameOfLifeBackground() {
@@ -7,93 +8,93 @@ export default function GameOfLifeBackground() {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext("2d", { alpha: true });
     if (!ctx) return;
 
-    const cellSize = 10;
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const cellSize = 16;
     let cols = 0;
     let rows = 0;
     let grid: number[][] = [];
-    let animationId: number;
+    let intervalId = 0;
 
-    const resize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      cols = Math.ceil(canvas.width / cellSize);
-      rows = Math.ceil(canvas.height / cellSize);
-      initGrid();
-    };
-
-    const initGrid = () => {
-      grid = new Array(cols).fill(null).map(() =>
-        new Array(rows).fill(null).map(() => (Math.random() > 0.9 ? 1 : 0))
+    const initialize = () => {
+      cols = Math.ceil(window.innerWidth / cellSize);
+      rows = Math.ceil(window.innerHeight / cellSize);
+      grid = Array.from({ length: cols }, () =>
+        Array.from({ length: rows }, () => (Math.random() > 0.92 ? 1 : 0)),
       );
     };
 
-    const draw = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      // Red glow for "Alive" cells (Formal Science Theme)
-      ctx.fillStyle = "#ff0000"; 
-      ctx.shadowBlur = 10;
-      ctx.shadowColor = "#ef7a44";
-
-      for (let i = 0; i < cols; i++) {
-        for (let j = 0; j < rows; j++) {
-          if (grid[i][j]) {
-            // Draw slightly smaller than cell for grid effect
-            ctx.fillRect(i * cellSize + 2, j * cellSize + 2, cellSize - 4, cellSize - 4);
-          }
-        }
-      }
-      ctx.shadowBlur = 0; // Reset
+    const resize = () => {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.round(window.innerWidth * dpr);
+      canvas.height = Math.round(window.innerHeight * dpr);
+      canvas.style.width = `${window.innerWidth}px`;
+      canvas.style.height = `${window.innerHeight}px`;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      initialize();
+      draw();
     };
 
-    const update = () => {
-      const next = grid.map((arr) => [...arr]);
-      for (let i = 0; i < cols; i++) {
-        for (let j = 0; j < rows; j++) {
-          const state = grid[i][j];
-          let sum = 0;
-          for (let x = -1; x < 2; x++) {
-            for (let y = -1; y < 2; y++) {
-              if (x === 0 && y === 0) continue;
-              const col = (i + x + cols) % cols;
-              const row = (j + y + rows) % rows;
-              sum += grid[col][row];
+    const draw = () => {
+      ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+      ctx.fillStyle = "rgba(255,65,54,0.28)";
+
+      for (let x = 0; x < cols; x += 1) {
+        for (let y = 0; y < rows; y += 1) {
+          if (!grid[x]?.[y]) continue;
+          ctx.fillRect(x * cellSize + 5, y * cellSize + 5, 4, 4);
+        }
+      }
+    };
+
+    const evolve = () => {
+      if (document.hidden) return;
+      const next = grid.map((column) => [...column]);
+
+      for (let x = 0; x < cols; x += 1) {
+        for (let y = 0; y < rows; y += 1) {
+          let neighbors = 0;
+          for (let dx = -1; dx <= 1; dx += 1) {
+            for (let dy = -1; dy <= 1; dy += 1) {
+              if (dx === 0 && dy === 0) continue;
+              const column = (x + dx + cols) % cols;
+              const row = (y + dy + rows) % rows;
+              neighbors += grid[column][row];
             }
           }
-          if (state === 0 && sum === 3) next[i][j] = 1;
-          else if (state === 1 && (sum < 2 || sum > 3)) next[i][j] = 0;
+
+          const alive = grid[x][y] === 1;
+          next[x][y] = alive
+            ? neighbors === 2 || neighbors === 3
+              ? 1
+              : 0
+            : neighbors === 3
+              ? 1
+              : 0;
         }
       }
+
       grid = next;
+      draw();
     };
 
-    const loop = () => {
-      draw();
-      setTimeout(() => {
-        update();
-        animationId = requestAnimationFrame(loop);
-      }, 1000); 
-    };
-    
     resize();
-    loop();
+    if (!reducedMotion.matches) intervalId = window.setInterval(evolve, 850);
 
     window.addEventListener("resize", resize);
-    return () => { window.removeEventListener("resize", resize); cancelAnimationFrame(animationId); };
+    return () => {
+      window.removeEventListener("resize", resize);
+      if (intervalId) window.clearInterval(intervalId);
+    };
   }, []);
 
   return (
-    <>
-        <canvas ref={canvasRef} className="fixed inset-0 pointer-events-none z-0 opacity-20" />
-        {/* HD-2D Layers: Scanlines + Blur = Monitor Effect */}
-        <div className="hd-scanlines opacity-50" />
-        <div className="hd-vignette" />
-        {/* Tilt Shift via backdrop blur mask */}
-        <div className="fixed inset-0 pointer-events-none z-0 backdrop-blur-[2px]" 
-             style={{ maskImage: "linear-gradient(to bottom, black 0%, transparent 20%, transparent 80%, black 100%)" }} 
-        />
-    </>
+    <canvas
+      ref={canvasRef}
+      className="pointer-events-none fixed inset-0 z-0 opacity-45"
+      aria-hidden="true"
+    />
   );
 }
