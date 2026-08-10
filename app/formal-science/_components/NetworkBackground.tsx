@@ -1,5 +1,13 @@
 "use client";
+
 import { useEffect, useRef } from "react";
+
+type NetworkNode = {
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+};
 
 export default function NetworkBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -7,130 +15,94 @@ export default function NetworkBackground() {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext("2d", { alpha: true });
     if (!ctx) return;
 
-    let w = (canvas.width = window.innerWidth);
-    let h = (canvas.height = window.innerHeight);
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const nodes: NetworkNode[] = Array.from({ length: 44 }, () => ({
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * window.innerHeight,
+      vx: (Math.random() - 0.5) * 0.12,
+      vy: (Math.random() - 0.5) * 0.12,
+    }));
 
-    // --- CONFIG ---
-    const nodeCount = 60;
-    const connectionDist = 150;
-    const packetChance = 0.02; // Chance to spawn a data packet
-    
-    // --- STATE ---
-    const nodes: { x: number; y: number; vx: number; vy: number }[] = [];
-    const packets: { 
-        startNodeIdx: number; 
-        endNodeIdx: number; 
-        progress: number; // 0 to 1
-        speed: number;
-    }[] = [];
+    let width = window.innerWidth;
+    let height = window.innerHeight;
+    let frameId = 0;
 
-    // Init Nodes
-    for (let i = 0; i < nodeCount; i++) {
-        nodes.push({
-            x: Math.random() * w,
-            y: Math.random() * h,
-            vx: (Math.random() - 0.5) * 0.5,
-            vy: (Math.random() - 0.5) * 0.5
-        });
-    }
-
-    const render = () => {
-      ctx.fillStyle = "#120303d0"; // Gray-950
-      ctx.fillRect(0, 0, w, h);
-
-      // Update Nodes
-      nodes.forEach(n => {
-          n.x += n.vx;
-          n.y += n.vy;
-
-          // Bounce
-          if (n.x < 0 || n.x > w) n.vx *= -1;
-          if (n.y < 0 || n.y > h) n.vy *= -1;
-      });
-
-      // Draw Connections & Manage Packets
-      ctx.strokeStyle = "rgba(212, 6, 6, 0.15)"; // Cyan-500 low opacity
-      ctx.lineWidth = 1;
-
-      for (let i = 0; i < nodeCount; i++) {
-          for (let j = i + 1; j < nodeCount; j++) {
-              const dx = nodes[i].x - nodes[j].x;
-              const dy = nodes[i].y - nodes[j].y;
-              const dist = Math.sqrt(dx*dx + dy*dy);
-
-              if (dist < connectionDist) {
-                  // Draw Line
-                  ctx.beginPath();
-                  ctx.moveTo(nodes[i].x, nodes[i].y);
-                  ctx.lineTo(nodes[j].x, nodes[j].y);
-                  ctx.stroke();
-
-                  // Spawn Packet?
-                  if (Math.random() < packetChance) {
-                      packets.push({
-                          startNodeIdx: i,
-                          endNodeIdx: j,
-                          progress: 0,
-                          speed: 0.02 + Math.random() * 0.03
-                      });
-                  }
-              }
-          }
-      }
-
-      // Draw Packets (The Data Flow)
-      // We iterate backwards to allow removal
-      for (let i = packets.length - 1; i >= 0; i--) {
-          const p = packets[i];
-          p.progress += p.speed;
-
-          if (p.progress >= 1) {
-              packets.splice(i, 1); // Arrived
-              continue;
-          }
-
-          const n1 = nodes[p.startNodeIdx];
-          const n2 = nodes[p.endNodeIdx];
-          
-          // Re-check distance to see if link broke (optional, but looks better)
-          const dist = Math.sqrt((n1.x-n2.x)**2 + (n1.y-n2.y)**2);
-          if (dist > connectionDist) {
-               packets.splice(i, 1);
-               continue;
-          }
-
-          // Lerp position
-          const curX = n1.x + (n2.x - n1.x) * p.progress;
-          const curY = n1.y + (n2.y - n1.y) * p.progress;
-
-          ctx.fillStyle = "#ee2222"; // Cyan-400
-          ctx.beginPath();
-          ctx.arc(curX, curY, 2, 0, Math.PI*2);
-          ctx.fill();
-      }
-
-      // Draw Nodes (Tech Dots)
-      ctx.fillStyle = "#900e0e"; // Cyan-700
-      nodes.forEach(n => {
-          ctx.beginPath();
-          ctx.arc(n.x, n.y, 2, 0, Math.PI*2);
-          ctx.fill();
-      });
-
-      requestAnimationFrame(render);
+    const resize = () => {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.round(width * dpr);
+      canvas.height = Math.round(height * dpr);
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     };
 
-    const animId = requestAnimationFrame(render);
-    const handleResize = () => { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; };
-    window.addEventListener("resize", handleResize);
+    const draw = () => {
+      ctx.clearRect(0, 0, width, height);
+
+      if (!reducedMotion.matches) {
+        for (const node of nodes) {
+          node.x += node.vx;
+          node.y += node.vy;
+          if (node.x < 0 || node.x > width) node.vx *= -1;
+          if (node.y < 0 || node.y > height) node.vy *= -1;
+        }
+      }
+
+      const connectionDistance = 165;
+      for (let i = 0; i < nodes.length; i += 1) {
+        for (let j = i + 1; j < nodes.length; j += 1) {
+          const first = nodes[i];
+          const second = nodes[j];
+          const dx = first.x - second.x;
+          const dy = first.y - second.y;
+          const distanceSquared = dx * dx + dy * dy;
+          if (distanceSquared > connectionDistance * connectionDistance) continue;
+
+          const distance = Math.sqrt(distanceSquared);
+          const alpha = (1 - distance / connectionDistance) * 0.16;
+          ctx.beginPath();
+          ctx.moveTo(first.x, first.y);
+          ctx.lineTo(second.x, second.y);
+          ctx.strokeStyle = `rgba(255,65,54,${alpha})`;
+          ctx.lineWidth = 0.7;
+          ctx.stroke();
+        }
+      }
+
+      for (const node of nodes) {
+        ctx.beginPath();
+        ctx.arc(node.x, node.y, 1.7, 0, Math.PI * 2);
+        ctx.fillStyle = "rgba(255,98,88,0.42)";
+        ctx.fill();
+      }
+    };
+
+    const animate = () => {
+      if (!document.hidden) draw();
+      frameId = requestAnimationFrame(animate);
+    };
+
+    resize();
+    if (reducedMotion.matches) draw();
+    else animate();
+
+    window.addEventListener("resize", resize);
     return () => {
-        window.removeEventListener("resize", handleResize);
-        cancelAnimationFrame(animId);
+      window.removeEventListener("resize", resize);
+      cancelAnimationFrame(frameId);
     };
   }, []);
 
-  return <canvas ref={canvasRef} className="fixed inset-0 z-0 opacity-50 pointer-events-none" />;
+  return (
+    <canvas
+      ref={canvasRef}
+      className="pointer-events-none fixed inset-0 z-0 opacity-60"
+      aria-hidden="true"
+    />
+  );
 }
