@@ -1,4 +1,5 @@
 import { ALGEBRA_CURRICULUM } from "@/lib/curriculum/algebra";
+import { GROUP_THEORY_CURRICULUM } from "@/lib/curriculum/group-theory";
 import { CURRICULUM_DOMAINS } from "@/lib/curriculum/tree";
 import type {
   CurriculumDomain,
@@ -17,6 +18,15 @@ function replaceNode(
   });
 }
 
+const curriculumReplacements = [ALGEBRA_CURRICULUM, GROUP_THEORY_CURRICULUM] as const;
+
+function composeCurriculum(nodes: readonly CurriculumNode[]): readonly CurriculumNode[] {
+  return curriculumReplacements.reduce<readonly CurriculumNode[]>(
+    (current, replacement) => replaceNode(current, replacement),
+    nodes,
+  );
+}
+
 /**
  * Dense curriculum branches can live in focused modules while still composing
  * into one validated registry. `tree.ts` remains the broad academic map; this
@@ -24,7 +34,7 @@ function replaceNode(
  */
 const curriculumDomains: readonly CurriculumDomain[] = CURRICULUM_DOMAINS.map((domain) => ({
   ...domain,
-  children: replaceNode(domain.children, ALGEBRA_CURRICULUM),
+  children: composeCurriculum(domain.children),
 }));
 
 function flatten(nodes: readonly CurriculumNode[]): CurriculumNode[] {
