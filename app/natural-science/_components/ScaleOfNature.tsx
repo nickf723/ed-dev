@@ -18,6 +18,7 @@ import {
   Telescope,
   type LucideIcon,
 } from "lucide-react";
+import DomainPageHeader from "@/app/_components/DomainPageHeader";
 import { NaturalScienceBackground } from "../NaturalScienceBackground";
 
 export type NaturalScienceScaleNode = {
@@ -147,32 +148,22 @@ export default function ScaleOfNature({ nodes }: { nodes: readonly NaturalScienc
       <div className="pointer-events-none fixed inset-0 z-0 opacity-10 [background-image:radial-gradient(circle_at_center,rgba(167,243,208,0.22)_1px,transparent_1px)] [background-size:48px_48px] [mask-image:linear-gradient(to_bottom,black,transparent_90%)]" />
 
       <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-[1540px] flex-col px-4 py-4 sm:px-6 lg:h-screen lg:min-h-0 lg:px-8 lg:py-5">
-        <header className="shrink-0 border-b border-emerald-200/10 pb-4">
-          <div className="flex items-center justify-end">
-            <nav aria-label="Breadcrumb" className="flex items-center gap-2 rounded-full border border-white/[0.07] bg-black/20 px-3 py-2 font-mono text-[9px] uppercase tracking-[0.13em] text-slate-500 backdrop-blur-lg">
-              <Link href="/" className="transition-colors hover:text-emerald-200">Knowledge map</Link>
-              <ChevronRight size={11} className="text-slate-700" />
-              <span className="text-emerald-300">Natural Sciences</span>
-            </nav>
-          </div>
-
-          <div className="mt-3 flex items-center gap-5 sm:gap-6">
-            <div className="hidden h-16 w-16 shrink-0 items-center justify-center rounded-[22px] border border-emerald-300/25 bg-emerald-400/10 text-emerald-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_0_35px_rgba(16,185,129,0.10)] sm:flex">
-              <Sprout size={30} strokeWidth={1.6} />
-            </div>
-            <div className="min-w-0 flex-1">
-              <div className="mb-1 flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.2em] text-emerald-300/60">
-                <Microscope size={12} /> Domain 02
-              </div>
-              <h1 className="text-[clamp(3.2rem,5.8vw,6rem)] font-semibold leading-[0.86] tracking-[-0.06em] text-[#f6fff9] drop-shadow-[0_0_28px_rgba(16,185,129,0.10)]">
-                Natural <span className="bg-gradient-to-r from-emerald-200 via-green-300 to-cyan-200 bg-clip-text text-transparent">Sciences</span>
-              </h1>
-              <p className="mt-2 max-w-2xl text-sm leading-5 text-slate-400 sm:text-base">
-                Explore the physical world through observation, experimentation, and discovery.
-              </p>
-            </div>
-          </div>
-        </header>
+        <DomainPageHeader
+          breadcrumbs={[
+            { label: "Home", href: "/" },
+            { label: "Natural Sciences" },
+          ]}
+          eyebrow="Observation & Experiment"
+          icon={Sprout}
+          accentRgb="52, 211, 153"
+          title={
+            <>
+              Natural <span className="bg-gradient-to-r from-emerald-200 via-green-300 to-cyan-200 bg-clip-text text-transparent">Sciences</span>
+            </>
+          }
+          titleClassName="text-[clamp(3.2rem,5.8vw,6rem)] font-semibold leading-[0.86] tracking-[-0.06em] text-[#f6fff9] drop-shadow-[0_0_28px_rgba(16,185,129,0.10)]"
+          subtitle="Explore the physical world through observation, experimentation, and discovery."
+        />
 
         <div className="mt-4 flex min-h-0 flex-1 flex-col gap-4">
           <section className="grid shrink-0 gap-4 lg:grid-cols-[minmax(0,1fr)_190px]">
