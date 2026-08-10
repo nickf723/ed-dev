@@ -12,7 +12,7 @@ export default function GameOfLifeBackground() {
     if (!ctx) return;
 
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const cellSize = 9;
+    const cellSize = 5;
     let cols = 0;
     let rows = 0;
     let grid: number[][] = [];
@@ -22,18 +22,18 @@ export default function GameOfLifeBackground() {
       cols = Math.ceil(window.innerWidth / cellSize);
       rows = Math.ceil(window.innerHeight / cellSize);
       grid = Array.from({ length: cols }, () =>
-        Array.from({ length: rows }, () => (Math.random() > 0.80 ? 1 : 0)),
+        Array.from({ length: rows }, () => (Math.random() > 0.70 ? 1 : 0)),
       );
     };
 
     const draw = () => {
       ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-      ctx.fillStyle = "rgba(255,65,54,0.24)";
+      ctx.fillStyle = "rgba(255,65,54,0.22)";
 
       for (let x = 0; x < cols; x += 1) {
         for (let y = 0; y < rows; y += 1) {
           if (!grid[x]?.[y]) continue;
-          ctx.fillRect(x * cellSize + 1, y * cellSize + 1, cellSize - 2, cellSize - 2);
+          ctx.fillRect(x * cellSize + 0.5, y * cellSize + 0.5, cellSize - 1, cellSize - 1);
         }
       }
     };
@@ -52,6 +52,7 @@ export default function GameOfLifeBackground() {
     const evolve = () => {
       if (document.hidden) return;
       const next = grid.map((column) => [...column]);
+      let liveCells = 0;
 
       for (let x = 0; x < cols; x += 1) {
         for (let y = 0; y < rows; y += 1) {
@@ -66,22 +67,29 @@ export default function GameOfLifeBackground() {
           }
 
           const alive = grid[x][y] === 1;
-          next[x][y] = alive
+          const nextState = alive
             ? neighbors === 2 || neighbors === 3
               ? 1
               : 0
             : neighbors === 3
               ? 1
               : 0;
+
+          next[x][y] = nextState;
+          liveCells += nextState;
         }
       }
 
       grid = next;
+
+      const density = liveCells / Math.max(1, cols * rows);
+      if (density < 0.055) initialize();
+
       draw();
     };
 
     resize();
-    if (!reducedMotion.matches) intervalId = window.setInterval(evolve, 700);
+    if (!reducedMotion.matches) intervalId = window.setInterval(evolve, 620);
 
     window.addEventListener("resize", resize);
     return () => {
@@ -93,7 +101,7 @@ export default function GameOfLifeBackground() {
   return (
     <canvas
       ref={canvasRef}
-      className="pointer-events-none fixed inset-0 z-0 opacity-65"
+      className="pointer-events-none fixed inset-0 z-0 opacity-75"
       aria-hidden="true"
     />
   );
