@@ -117,7 +117,11 @@ export default function Sidebar({ isCollapsed, onCollapsedChange }: SidebarProps
           </button>
         </header>
 
-        <nav className={`flex-1 overflow-y-auto py-5 ${isCollapsed ? "md:px-2" : "px-3"}`}>
+        <nav
+          className={`flex-1 overflow-y-auto py-5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden ${
+            isCollapsed ? "md:px-2" : "px-3"
+          }`}
+        >
           <div className="space-y-7">
             {NAVIGATION_DATA.map((section) => (
               <section key={section.title}>
@@ -211,10 +215,12 @@ function NavItem({
     ? `linear-gradient(90deg, rgba(${rgb},0.12), rgba(${rgb},0.035))`
     : "rgba(255,255,255,0.055)";
 
+  const childRailClass = depth === 0 ? "ml-5 pl-2" : depth === 1 ? "ml-3 pl-2" : "ml-2 pl-1.5";
+
   return (
-    <div className="relative">
+    <div className="relative min-w-0">
       <div
-        className={`group flex items-center rounded-xl border transition-all ${
+        className={`group flex min-w-0 items-center rounded-xl border transition-all ${
           isTopLevel ? "min-h-11" : "min-h-8 rounded-lg"
         } ${isActiveBranch ? "text-white" : "border-transparent text-slate-500 hover:bg-white/[0.03] hover:text-slate-300"} ${
           isCollapsed ? "md:justify-center" : ""
@@ -230,8 +236,8 @@ function NavItem({
       >
         <Link
           href={item.href}
-          title={isCollapsed ? item.label : undefined}
-          className={`flex min-w-0 flex-1 items-center gap-3 ${isTopLevel ? "px-3 py-2.5" : "px-3 py-1.5"} ${
+          title={isCollapsed || depth >= 2 ? item.label : undefined}
+          className={`flex min-w-0 flex-1 items-center gap-2.5 ${isTopLevel ? "px-3 py-2.5" : "px-2.5 py-1.5"} ${
             isCollapsed ? "md:justify-center md:px-0" : ""
           }`}
         >
@@ -253,9 +259,9 @@ function NavItem({
           )}
 
           <span
-            className={`min-w-0 truncate font-medium tracking-wide ${isTopLevel ? "text-[12px]" : "text-[11px]"} ${
-              isExactMatch ? "text-white" : ""
-            } ${isCollapsed ? "md:hidden" : ""}`}
+            className={`min-w-0 whitespace-normal break-words font-medium tracking-wide ${
+              isTopLevel ? "text-[12px] leading-4" : "text-[11px] leading-4"
+            } ${isExactMatch ? "text-white" : ""} ${isCollapsed ? "md:hidden" : ""}`}
           >
             {item.label}
           </span>
@@ -265,7 +271,7 @@ function NavItem({
           <button
             type="button"
             onClick={() => setExpanded((current) => !current)}
-            className={`mr-1.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-slate-600 transition-all hover:bg-white/[0.05] hover:text-slate-300 ${
+            className={`mr-1 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-slate-600 transition-all hover:bg-white/[0.05] hover:text-slate-300 ${
               isCollapsed ? "md:hidden" : ""
             }`}
             aria-label={`${expanded ? "Collapse" : "Expand"} ${item.label}`}
@@ -282,10 +288,10 @@ function NavItem({
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            className={`overflow-hidden ${isCollapsed ? "md:hidden" : ""}`}
+            className={`min-w-0 overflow-hidden ${isCollapsed ? "md:hidden" : ""}`}
           >
             <div
-              className={`ml-5 mt-1 space-y-0.5 border-l py-0.5 pl-2 ${isTopLevel ? "" : "ml-3"}`}
+              className={`${childRailClass} mt-1 min-w-0 space-y-0.5 border-l py-0.5`}
               style={{ borderColor: `rgba(${rgb},0.15)` }}
             >
               {item.children?.map((child) => (
