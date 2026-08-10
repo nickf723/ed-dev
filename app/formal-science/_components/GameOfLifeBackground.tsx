@@ -28,7 +28,7 @@ export default function GameOfLifeBackground() {
 
     const draw = () => {
       ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-      ctx.fillStyle = "rgba(255,65,54,0.22)";
+      ctx.fillStyle = "rgba(255,65,54,0.18)";
 
       for (let x = 0; x < cols; x += 1) {
         for (let y = 0; y < rows; y += 1) {
@@ -101,7 +101,7 @@ export default function GameOfLifeBackground() {
   return (
     <canvas
       ref={canvasRef}
-      className="pointer-events-none fixed inset-0 z-0 opacity-75"
+      className="pointer-events-none fixed inset-0 z-0 opacity-55"
       aria-hidden="true"
     />
   );
