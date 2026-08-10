@@ -176,6 +176,8 @@ const GROUPS: readonly GroupPresentation[] = [
   },
 ];
 
+const CORE_THEMES = ["Information", "Energy", "Homeostasis", "Evolution"] as const;
+
 function resolveGroups(nodes: readonly BiologyHubNode[]) {
   const byId = new Map(nodes.map((node) => [node.id, node]));
   return GROUPS.map((group) => ({
@@ -193,22 +195,21 @@ function resolveGroups(nodes: readonly BiologyHubNode[]) {
 
 export default function BiologyHub({ nodes }: { nodes: readonly BiologyHubNode[] }) {
   const groups = resolveGroups(nodes);
-  const liveCount = nodes.filter((node) => node.status !== "placeholder").length;
 
   return (
     <main className="relative min-h-screen overflow-x-hidden bg-[#031008] text-stone-100 selection:bg-emerald-400/30">
       <DnaBackground />
-      <div className="pointer-events-none fixed inset-0 z-0 bg-[radial-gradient(circle_at_15%_12%,rgba(34,197,94,0.18),transparent_30%),radial-gradient(circle_at_88%_78%,rgba(34,211,238,0.08),transparent_28%),linear-gradient(to_bottom,rgba(2,12,7,0.12),rgba(2,9,6,0.88))]" />
-      <div className="pointer-events-none fixed inset-0 z-0 opacity-15 [background-image:radial-gradient(circle_at_center,rgba(187,247,208,0.18)_1px,transparent_1px)] [background-size:42px_42px] [mask-image:linear-gradient(to_bottom,black,transparent_85%)]" />
+      <div className="pointer-events-none fixed inset-0 z-0 bg-[radial-gradient(circle_at_15%_12%,rgba(34,197,94,0.16),transparent_30%),radial-gradient(circle_at_88%_78%,rgba(34,211,238,0.07),transparent_28%),linear-gradient(to_bottom,rgba(2,12,7,0.06),rgba(2,9,6,0.68))]" />
+      <div className="pointer-events-none fixed inset-0 z-0 opacity-12 [background-image:radial-gradient(circle_at_center,rgba(187,247,208,0.18)_1px,transparent_1px)] [background-size:42px_42px] [mask-image:linear-gradient(to_bottom,black,transparent_85%)]" />
 
       <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-[1500px] flex-col px-4 py-4 sm:px-6 lg:px-8 lg:py-5">
-        <header className="shrink-0 border-b border-emerald-200/10 pb-4">
+        <header className="shrink-0 border-b border-emerald-200/10 pb-5">
           <div className="flex items-center justify-between gap-4">
             <div className="flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.18em] text-emerald-200/55">
               <Dna size={12} /> Natural Sciences · Biology
             </div>
 
-            <nav aria-label="Breadcrumb" className="flex items-center gap-2 rounded-full border border-white/[0.07] bg-black/20 px-3 py-2 font-mono text-[9px] uppercase tracking-[0.13em] text-slate-500 backdrop-blur-lg">
+            <nav aria-label="Breadcrumb" className="flex items-center gap-2 rounded-full border border-white/[0.07] bg-black/15 px-3 py-2 font-mono text-[9px] uppercase tracking-[0.13em] text-slate-500 backdrop-blur-lg">
               <Link href="/" className="transition-colors hover:text-emerald-200">Knowledge map</Link>
               <ChevronRight size={11} className="text-slate-700" />
               <Link href="/natural-science" className="transition-colors hover:text-emerald-200">Natural Sciences</Link>
@@ -217,7 +218,7 @@ export default function BiologyHub({ nodes }: { nodes: readonly BiologyHubNode[]
             </nav>
           </div>
 
-          <div className="mt-3 flex items-center gap-5 sm:gap-6">
+          <div className="mt-4 flex items-center gap-5 sm:gap-6">
             <div className="hidden h-16 w-16 shrink-0 items-center justify-center rounded-[22px] border border-green-300/25 bg-green-400/10 text-green-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_0_35px_rgba(34,197,94,0.12)] sm:flex">
               <Dna size={31} strokeWidth={1.55} />
             </div>
@@ -225,14 +226,24 @@ export default function BiologyHub({ nodes }: { nodes: readonly BiologyHubNode[]
               <h1 className="text-[clamp(3.4rem,6vw,6.2rem)] font-semibold leading-[0.86] tracking-[-0.06em] text-[#f5fff7] drop-shadow-[0_0_28px_rgba(34,197,94,0.11)]">
                 Biology
               </h1>
-              <p className="mt-2 max-w-3xl text-sm leading-5 text-stone-400 sm:text-base">
+              <p className="mt-4 max-w-3xl text-sm leading-6 text-stone-400 sm:text-base">
                 How living things are built, function, diversify, interact, and change.
               </p>
             </div>
-            <div className="hidden text-right lg:block">
-              <div className="text-2xl font-semibold text-green-300">{liveCount}</div>
-              <div className="font-mono text-[8px] uppercase tracking-[0.15em] text-stone-600">fields available</div>
-            </div>
+
+            <aside className="hidden max-w-[300px] text-right xl:block">
+              <div className="font-mono text-[8px] uppercase tracking-[0.17em] text-green-300/55">Core themes</div>
+              <div className="mt-2 flex flex-wrap justify-end gap-1.5">
+                {CORE_THEMES.map((theme) => (
+                  <span
+                    key={theme}
+                    className="rounded-full border border-green-300/15 bg-green-400/[0.055] px-2.5 py-1 text-[10px] text-stone-300/80 backdrop-blur-md"
+                  >
+                    {theme}
+                  </span>
+                ))}
+              </div>
+            </aside>
           </div>
         </header>
 
@@ -240,12 +251,12 @@ export default function BiologyHub({ nodes }: { nodes: readonly BiologyHubNode[]
           {groups.map((group) => (
             <article
               key={group.id}
-              className={`relative overflow-hidden rounded-[26px] border bg-black/25 p-4 backdrop-blur-xl sm:p-5 ${group.border}`}
-              style={{ boxShadow: `inset 0 1px 0 rgba(255,255,255,0.04), 0 18px 60px rgba(0,0,0,0.22), 0 0 44px ${group.glow}` }}
+              className={`relative overflow-hidden rounded-[26px] border bg-black/[0.16] p-4 backdrop-blur-md sm:p-5 ${group.border}`}
+              style={{ boxShadow: `inset 0 1px 0 rgba(255,255,255,0.035), 0 18px 60px rgba(0,0,0,0.16), 0 0 44px ${group.glow}` }}
             >
               <div className="pointer-events-none absolute -right-12 -top-14 h-40 w-40 rounded-full blur-3xl" style={{ background: group.glow }} />
 
-              <div className="relative border-b border-white/[0.07] pb-4">
+              <div className="relative border-b border-white/[0.065] pb-4">
                 <div className={`font-mono text-[8px] uppercase tracking-[0.18em] ${group.accent}`}>{group.eyebrow}</div>
                 <h2 className="mt-1 text-2xl font-semibold tracking-[-0.03em] text-white">{group.title}</h2>
                 <p className="mt-2 max-w-sm text-xs leading-5 text-stone-500">{group.description}</p>
@@ -260,14 +271,11 @@ export default function BiologyHub({ nodes }: { nodes: readonly BiologyHubNode[]
           ))}
         </section>
 
-        <footer className="mt-4 flex shrink-0 items-center justify-between gap-4 rounded-[18px] border border-emerald-300/10 bg-black/15 px-4 py-3 backdrop-blur-lg">
+        <footer className="mt-4 shrink-0 rounded-[18px] border border-emerald-300/10 bg-black/10 px-4 py-3 backdrop-blur-md">
           <div className="flex items-center gap-2 text-xs text-stone-500">
             <Sparkles size={13} className="text-green-300/60" />
             Biology connects information, structure, function, diversity, and adaptation into one study of life.
           </div>
-          <Link href="/natural-science" className="hidden items-center gap-2 text-xs font-medium text-green-300/70 transition-colors hover:text-green-200 sm:flex">
-            Natural Sciences <ArrowRight size={13} />
-          </Link>
         </footer>
       </div>
     </main>
@@ -311,7 +319,7 @@ function DisciplineCard({
     </>
   );
 
-  const className = `group relative block overflow-hidden rounded-[16px] border px-3.5 py-3 transition-all ${planned ? "cursor-default border-white/[0.05] bg-black/15 opacity-70" : "border-white/[0.08] bg-black/25 hover:-translate-y-0.5 hover:border-white/15 hover:bg-black/35"}`;
+  const className = `group relative block overflow-hidden rounded-[16px] border px-3.5 py-3 transition-all ${planned ? "cursor-default border-white/[0.045] bg-black/[0.09] opacity-70" : "border-white/[0.075] bg-black/[0.16] hover:-translate-y-0.5 hover:border-white/15 hover:bg-black/25"}`;
 
   return planned ? (
     <div className={className} aria-label={`${node.label}, planned`}>{content}</div>
