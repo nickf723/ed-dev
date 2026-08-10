@@ -10,21 +10,12 @@ import {
   Menu,
   PanelLeftClose,
   PanelLeftOpen,
+  Scan,
   X,
 } from "lucide-react";
 import XRayConsole from "@/app/_components/XRayConsole";
 import { DOMAIN_BY_ID, getDomainForPath, type DomainId } from "@/lib/domains";
 import { NAVIGATION_DATA, type NavigationItem } from "@/lib/navigation";
-
-const utilityThemes = {
-  meta: "text-neutral-200 border-white/20 bg-white/5",
-  home: "text-blue-400 border-blue-500/30 bg-blue-500/10",
-};
-
-function getThemeClass(domain: string) {
-  const registeredDomain = DOMAIN_BY_ID[domain as DomainId];
-  return registeredDomain?.theme.sidebar ?? utilityThemes.home;
-}
 
 type SidebarProps = {
   isCollapsed: boolean;
@@ -33,118 +24,157 @@ type SidebarProps = {
 
 type SidebarDomain = DomainId | "meta" | "home";
 
+function domainRgb(domain: SidebarDomain): string {
+  if (domain === "meta") return "148, 163, 184";
+  if (domain === "home") return "34, 211, 238";
+  return DOMAIN_BY_ID[domain]?.theme.rgb ?? "148, 163, 184";
+}
+
 export default function Sidebar({ isCollapsed, onCollapsedChange }: SidebarProps) {
   const pathname = usePathname();
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const [showStructureScan, setShowStructureScan] = useState(false);
   const activeDomain = getDomainForPath(pathname);
-  const isMeta =
-    pathname.startsWith("/skeleton") ||
-    pathname.startsWith("/glossary") ||
-    pathname.startsWith("/stage");
-  const activeTheme = activeDomain?.theme.sidebar ?? (isMeta ? utilityThemes.meta : utilityThemes.home);
+  const isMeta = pathname.startsWith("/glossary") || pathname.startsWith("/stage") || pathname.startsWith("/skeleton");
+  const shellDomain: SidebarDomain = activeDomain?.id ?? (isMeta ? "meta" : "home");
+  const shellRgb = domainRgb(shellDomain);
 
   useEffect(() => {
     setIsMobileOpen(false);
   }, [pathname]);
 
+  const toggleMobile = () => {
+    if (!isMobileOpen && isCollapsed) onCollapsedChange(false);
+    setIsMobileOpen((current) => !current);
+  };
+
+  const toggleStructureScan = () => {
+    if (isCollapsed) {
+      onCollapsedChange(false);
+      setShowStructureScan(true);
+      return;
+    }
+    setShowStructureScan((current) => !current);
+  };
+
   return (
     <>
       <button
-        onClick={() => setIsMobileOpen(!isMobileOpen)}
-        className="fixed top-4 left-4 z-50 p-2 rounded-lg bg-black/50 border border-white/10 text-white backdrop-blur-md md:hidden"
+        onClick={toggleMobile}
+        className="fixed left-4 top-4 z-50 rounded-xl border border-white/10 bg-[#07090d]/90 p-2.5 text-white shadow-xl backdrop-blur-xl md:hidden"
         type="button"
         aria-label={isMobileOpen ? "Close navigation" : "Open navigation"}
       >
-        {isMobileOpen ? <X size={20} /> : <Menu size={20} />}
+        {isMobileOpen ? <X size={19} /> : <Menu size={19} />}
       </button>
 
-      {isMobileOpen && (
+      {isMobileOpen ? (
         <div
-          className="fixed inset-0 bg-black/80 backdrop-blur-sm z-40 md:hidden"
+          className="fixed inset-0 z-40 bg-black/70 backdrop-blur-sm md:hidden"
           onClick={() => setIsMobileOpen(false)}
           aria-hidden="true"
         />
-      )}
+      ) : null}
 
       <aside
-        className={`
-          fixed inset-y-0 left-0 z-40 flex flex-col bg-black/90 backdrop-blur-xl border-r border-white/10 transition-all duration-300 ease-in-out
-          ${isMobileOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}
-          ${isCollapsed ? "w-20" : "w-72"}
-        `}
+        className={`fixed inset-y-0 left-0 z-40 flex w-72 flex-col border-r border-white/[0.07] bg-[#05070a]/95 shadow-[18px_0_60px_rgba(0,0,0,0.22)] backdrop-blur-2xl transition-[width,transform] duration-300 ease-out md:translate-x-0 ${
+          isMobileOpen ? "translate-x-0" : "-translate-x-full"
+        } ${isCollapsed ? "md:w-20" : "md:w-72"}`}
       >
-        <div className="h-20 flex items-center border-b border-white/5 relative">
+        <header className="relative h-20 shrink-0 border-b border-white/[0.06]">
           <Link
             href="/"
-            className={`flex items-center gap-3 px-6 w-full h-full hover:bg-white/5 transition-colors group ${isCollapsed ? "justify-center px-0" : ""}`}
+            className={`flex h-full items-center gap-3 px-5 transition-colors hover:bg-white/[0.025] ${isCollapsed ? "md:justify-center md:px-0" : ""}`}
             aria-label="Education Station 64 home"
           >
-            <div
-              className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border transition-all duration-500 ${activeTheme.replace("text-", "border-").split(" ")[0]} bg-white/5`}
+            <span
+              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[14px] border transition-all duration-300"
+              style={{
+                color: `rgb(${shellRgb})`,
+                borderColor: `rgba(${shellRgb},0.34)`,
+                background: `rgba(${shellRgb},0.08)`,
+                boxShadow: `0 0 26px rgba(${shellRgb},0.08)`,
+              }}
             >
-              <LayoutGrid size={16} className={activeTheme.split(" ")[0]} />
-            </div>
+              <LayoutGrid size={18} />
+            </span>
 
-            <div
-              className={`transition-opacity duration-200 ${isCollapsed ? "opacity-0 w-0 overflow-hidden" : "opacity-100"}`}
-            >
-              <h1 className="text-sm font-black tracking-widest text-white group-hover:text-cyan-400 transition-colors whitespace-nowrap">
-                KNOWLEDGE
-              </h1>
-              <p className="text-[9px] font-mono text-neutral-500 tracking-widest whitespace-nowrap">
-                NETWRK v2.1
-              </p>
-            </div>
+            <span className={`min-w-0 ${isCollapsed ? "md:hidden" : ""}`}>
+              <strong className="block text-sm font-semibold tracking-[0.14em] text-slate-100">KNOWLEDGE</strong>
+              <span className="mt-0.5 block font-mono text-[8px] uppercase tracking-[0.18em] text-slate-600">Education Station 64</span>
+            </span>
           </Link>
 
           <button
             onClick={() => onCollapsedChange(!isCollapsed)}
-            className="hidden md:flex absolute -right-3 top-1/2 -translate-y-1/2 w-6 h-6 bg-black border border-white/20 rounded-full items-center justify-center text-neutral-400 hover:text-white hover:border-white transition-all z-50"
+            className={`absolute hidden h-7 w-7 items-center justify-center rounded-lg border border-white/10 bg-black/60 text-slate-500 transition-all hover:border-white/20 hover:text-white md:flex ${
+              isCollapsed ? "bottom-1.5 right-1.5" : "right-3 top-1/2 -translate-y-1/2"
+            }`}
             type="button"
             aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
           >
-            {isCollapsed ? <PanelLeftOpen size={12} /> : <PanelLeftClose size={12} />}
+            {isCollapsed ? <PanelLeftOpen size={13} /> : <PanelLeftClose size={13} />}
           </button>
-        </div>
+        </header>
 
-        <nav
-          className={`flex-1 overflow-y-auto py-6 space-y-8 scrollbar-thin scrollbar-thumb-white/10 ${isCollapsed ? "px-2" : "px-3"}`}
-        >
-          {NAVIGATION_DATA.map((section) => (
-            <div key={section.title} className={isCollapsed ? "text-center" : ""}>
-              <h3
-                className={`mb-2 text-[9px] font-bold uppercase tracking-[0.2em] text-neutral-600 transition-opacity duration-300 ${isCollapsed ? "opacity-0 h-0 overflow-hidden" : "px-3"}`}
-              >
-                {section.title}
-              </h3>
+        <nav className={`flex-1 overflow-y-auto py-5 ${isCollapsed ? "md:px-2" : "px-3"}`}>
+          <div className="space-y-7">
+            {NAVIGATION_DATA.map((section) => (
+              <section key={section.title}>
+                <h2 className={`mb-2 px-3 font-mono text-[8px] uppercase tracking-[0.2em] text-slate-700 ${isCollapsed ? "md:hidden" : ""}`}>
+                  {section.title === "Knowledge Graph" ? "Knowledge" : section.title}
+                </h2>
 
-              {isCollapsed && <div className="h-px w-8 bg-white/5 mx-auto mb-4" />}
-
-              <div className="space-y-1">
-                {section.items.map((item) => (
-                  <NavItem
-                    key={item.href}
-                    item={item}
-                    currentPath={pathname}
-                    isCollapsed={isCollapsed}
-                  />
-                ))}
-              </div>
-            </div>
-          ))}
+                <div className="space-y-1">
+                  {section.items.map((item) => (
+                    <NavItem
+                      key={item.href}
+                      item={item}
+                      currentPath={pathname}
+                      isCollapsed={isCollapsed}
+                    />
+                  ))}
+                </div>
+              </section>
+            ))}
+          </div>
         </nav>
 
-        <div
-          className={`p-4 border-t border-white/5 bg-black/20 transition-all ${isCollapsed ? "flex justify-center p-2" : ""}`}
-        >
-          {isCollapsed ? (
-            <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center animate-pulse">
-              <div className="w-2 h-2 bg-green-500 rounded-full" />
-            </div>
-          ) : (
-            <XRayConsole />
-          )}
-        </div>
+        <footer className={`shrink-0 border-t border-white/[0.06] bg-black/15 p-2.5 ${isCollapsed ? "md:p-2" : ""}`}>
+          <button
+            type="button"
+            onClick={toggleStructureScan}
+            title={isCollapsed ? "Structure scan" : undefined}
+            className={`flex w-full items-center gap-3 rounded-xl border border-transparent px-3 py-2.5 text-left text-slate-500 transition-all hover:border-white/[0.08] hover:bg-white/[0.035] hover:text-slate-300 ${isCollapsed ? "md:justify-center md:px-0" : ""}`}
+          >
+            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-emerald-400/15 bg-emerald-400/[0.045] text-emerald-300/65">
+              <Scan size={15} />
+            </span>
+            <span className={`min-w-0 flex-1 ${isCollapsed ? "md:hidden" : ""}`}>
+              <strong className="block text-[10px] font-semibold uppercase tracking-[0.12em]">Structure scan</strong>
+              <span className="mt-0.5 block text-[9px] text-slate-700">Developer view</span>
+            </span>
+            <ChevronDown
+              size={12}
+              className={`transition-transform ${showStructureScan ? "rotate-180" : ""} ${isCollapsed ? "md:hidden" : ""}`}
+            />
+          </button>
+
+          <AnimatePresence initial={false}>
+            {showStructureScan && !isCollapsed ? (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: "auto", opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                className="overflow-hidden"
+              >
+                <div className="pt-2">
+                  <XRayConsole />
+                </div>
+              </motion.div>
+            ) : null}
+          </AnimatePresence>
+        </footer>
       </aside>
     </>
   );
@@ -164,83 +194,101 @@ function NavItem({
   parentDomain?: SidebarDomain;
 }) {
   const itemDomain: SidebarDomain = item.domain || parentDomain || getDomainForPath(item.href)?.id || "home";
+  const rgb = domainRgb(itemDomain);
   const isExactMatch = currentPath === item.href;
-  const isChildActive = currentPath.startsWith(item.href + "/") && currentPath !== item.href;
-  const isActive = isExactMatch || isChildActive;
-  const [expanded, setExpanded] = useState(isActive);
+  const isDescendantActive = currentPath.startsWith(`${item.href}/`);
+  const isActiveBranch = isExactMatch || isDescendantActive;
+  const hasChildren = Boolean(item.children?.length);
+  const [expanded, setExpanded] = useState(isActiveBranch);
   const Icon = item.icon;
   const isTopLevel = depth === 0;
 
   useEffect(() => {
-    if (isActive) setExpanded(true);
-    if (isCollapsed) setExpanded(false);
-  }, [isActive, isCollapsed]);
+    if (isActiveBranch) setExpanded(true);
+  }, [isActiveBranch]);
 
-  const handleClick = () => {
-    if (item.children && item.children.length > 0 && !isCollapsed) {
-      setExpanded(!expanded);
-    }
-  };
-
-  const containerStyle = isTopLevel
-    ? `flex items-center justify-between rounded-lg transition-all cursor-pointer relative
-       ${isCollapsed ? "p-3 justify-center" : "px-3 py-2.5"}
-       ${isActive ? getThemeClass(itemDomain) : "text-neutral-500 hover:text-neutral-200 hover:bg-white/5"}`
-    : `flex items-center justify-between rounded transition-all cursor-pointer relative
-       ${isCollapsed ? "justify-center p-2" : "px-3 py-1.5 text-[11px]"}
-       ${isExactMatch ? "text-white bg-white/10 font-medium" : "text-neutral-500 hover:text-neutral-300 hover:bg-white/5"}`;
+  const activeBackground = isTopLevel
+    ? `linear-gradient(90deg, rgba(${rgb},0.12), rgba(${rgb},0.035))`
+    : "rgba(255,255,255,0.055)";
 
   return (
-    <div className="relative group">
-      <Link
-        href={item.href}
-        onClick={handleClick}
-        title={isCollapsed ? item.label : ""}
-        className={containerStyle}
-      >
-        <div className={`flex items-center ${isCollapsed ? "justify-center" : "gap-3 flex-1"}`}>
-          {Icon && (
-            <Icon
-              size={isCollapsed ? 20 : isTopLevel ? 16 : 14}
-              className={
-                isActive
-                  ? "opacity-100"
-                  : "opacity-60 group-hover:opacity-100 transition-opacity"
+    <div className="relative">
+      <div
+        className={`group flex items-center rounded-xl border transition-all ${
+          isTopLevel ? "min-h-11" : "min-h-8 rounded-lg"
+        } ${isActiveBranch ? "text-white" : "border-transparent text-slate-500 hover:bg-white/[0.03] hover:text-slate-300"} ${
+          isCollapsed ? "md:justify-center" : ""
+        }`}
+        style={
+          isActiveBranch
+            ? {
+                borderColor: isTopLevel ? `rgba(${rgb},0.22)` : "rgba(255,255,255,0.06)",
+                background: activeBackground,
               }
+            : undefined
+        }
+      >
+        <Link
+          href={item.href}
+          title={isCollapsed ? item.label : undefined}
+          className={`flex min-w-0 flex-1 items-center gap-3 ${isTopLevel ? "px-3 py-2.5" : "px-3 py-1.5"} ${
+            isCollapsed ? "md:justify-center md:px-0" : ""
+          }`}
+        >
+          {Icon ? (
+            <span
+              className="flex shrink-0 items-center justify-center transition-colors"
+              style={{ color: isActiveBranch ? `rgb(${rgb})` : undefined }}
+            >
+              <Icon size={isTopLevel ? 17 : 14} />
+            </span>
+          ) : (
+            <span
+              className="h-1.5 w-1.5 shrink-0 rounded-full transition-all"
+              style={{
+                background: isExactMatch ? `rgb(${rgb})` : `rgba(${rgb},0.32)`,
+                boxShadow: isExactMatch ? `0 0 8px rgba(${rgb},0.55)` : undefined,
+              }}
             />
           )}
 
           <span
-            className={`font-bold tracking-wide transition-all duration-300 ${isCollapsed ? "w-0 overflow-hidden opacity-0 absolute" : "w-auto opacity-100 relative"} ${isTopLevel ? "text-xs" : "text-[11px]"}`}
+            className={`min-w-0 truncate font-medium tracking-wide ${isTopLevel ? "text-[12px]" : "text-[11px]"} ${
+              isExactMatch ? "text-white" : ""
+            } ${isCollapsed ? "md:hidden" : ""}`}
           >
             {item.label}
           </span>
-        </div>
+        </Link>
 
-        {item.children && item.children.length > 0 && !isCollapsed && (
-          <ChevronDown
-            size={12}
-            className={`transition-transform duration-300 opacity-50 ${expanded ? "rotate-180" : ""}`}
-          />
-        )}
+        {hasChildren ? (
+          <button
+            type="button"
+            onClick={() => setExpanded((current) => !current)}
+            className={`mr-1.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-slate-600 transition-all hover:bg-white/[0.05] hover:text-slate-300 ${
+              isCollapsed ? "md:hidden" : ""
+            }`}
+            aria-label={`${expanded ? "Collapse" : "Expand"} ${item.label}`}
+            aria-expanded={expanded}
+          >
+            <ChevronDown size={12} className={`transition-transform duration-200 ${expanded ? "rotate-180" : ""}`} />
+          </button>
+        ) : null}
+      </div>
 
-        {isActive && isCollapsed && isTopLevel && (
-          <div className="absolute right-1 top-1 w-1.5 h-1.5 rounded-full bg-current shadow-[0_0_5px_currentColor]" />
-        )}
-      </Link>
-
-      <AnimatePresence>
-        {expanded && item.children && item.children.length > 0 && !isCollapsed && (
+      <AnimatePresence initial={false}>
+        {expanded && hasChildren ? (
           <motion.div
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            className="overflow-hidden"
+            className={`overflow-hidden ${isCollapsed ? "md:hidden" : ""}`}
           >
             <div
-              className={`${isTopLevel ? "ml-4 pl-3 border-l border-white/10" : "ml-2 pl-2 border-l border-white/5"} py-1 space-y-0.5 mt-1`}
+              className={`ml-5 mt-1 space-y-0.5 border-l py-0.5 pl-2 ${isTopLevel ? "" : "ml-3"}`}
+              style={{ borderColor: `rgba(${rgb},0.15)` }}
             >
-              {item.children.map((child) => (
+              {item.children?.map((child) => (
                 <NavItem
                   key={child.href}
                   item={child}
@@ -252,7 +300,7 @@ function NavItem({
               ))}
             </div>
           </motion.div>
-        )}
+        ) : null}
       </AnimatePresence>
     </div>
   );
