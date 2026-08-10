@@ -5,7 +5,6 @@ import {
   ArrowRight,
   Braces,
   CheckCircle2,
-  ChevronRight,
   CircleDot,
   Database,
   GitGraph,
@@ -15,6 +14,7 @@ import {
   Terminal,
   type LucideIcon,
 } from "lucide-react";
+import DomainPageHeader from "@/app/_components/DomainPageHeader";
 import GameOfLifeBackground from "./GameOfLifeBackground";
 import FormalNetworkBackground from "./NetworkBackground";
 
@@ -61,6 +61,13 @@ const SHARED_GRAMMAR = [
   { token: "∴", label: "Proofs" },
 ] as const;
 
+const FORMAL_PRINCIPLES = [
+  { code: "01", title: "Abstract", detail: "Strip away context to expose structure." },
+  { code: "02", title: "Define", detail: "Make every object and rule precise." },
+  { code: "03", title: "Derive", detail: "Follow valid operations from what is known." },
+  { code: "04", title: "Verify", detail: "Check consistency, proof, or model behavior." },
+] as const;
+
 function buildNodes(nodes: readonly FormalHubNode[]) {
   const byId = new Map(nodes.map((node) => [node.id, node]));
   return NODE_ORDER.map((id) => {
@@ -87,39 +94,32 @@ export default function FormalScienceHub({ nodes }: { nodes: readonly FormalHubN
       <div className="pointer-events-none fixed inset-0 z-[2] opacity-20 [background-image:repeating-linear-gradient(0deg,transparent_0px,transparent_3px,rgba(255,255,255,0.018)_4px)]" />
 
       <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-[1500px] flex-col px-4 py-4 sm:px-6 lg:h-screen lg:min-h-0 lg:px-8 lg:py-5">
-        <header className="shrink-0 border-b border-[#ff4136]/20 pb-4">
-          <div className="flex items-center justify-between gap-4">
-            <div className="flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.22em] text-[#ff746b]/70">
-              <span className="h-1.5 w-1.5 bg-[#ff4136] shadow-[0_0_10px_rgba(255,65,54,0.9)]" />
-              Structure & proof
-            </div>
-
-            <nav aria-label="Breadcrumb" className="flex items-center gap-2 rounded-full border border-white/[0.07] bg-black/20 px-3 py-2 font-mono text-[9px] uppercase tracking-[0.13em] text-slate-500 backdrop-blur-lg">
-              <Link href="/" className="transition-colors hover:text-[#ff9a94]">Knowledge map</Link>
-              <ChevronRight size={11} className="text-slate-700" />
-              <span className="text-[#ff7c73]">Formal Science</span>
-            </nav>
-          </div>
-
-          <div className="mt-3 grid items-end gap-4 lg:grid-cols-[minmax(0,1fr)_auto]">
-            <div>
-              <h1 className="font-mono text-[clamp(3.4rem,6.5vw,6.8rem)] font-semibold uppercase leading-[0.78] tracking-[-0.075em] text-[#fff9f8]">
-                Formal <span className="text-[#ff6258]">Science</span>
-              </h1>
-              <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-400 sm:text-base">
-                Abstract structures for reasoning, quantity, computation, information, data, and complex systems.
-              </p>
-            </div>
-
-            <div className="hidden items-center gap-2 rounded-full border border-[#ff4136]/20 bg-black/25 px-3 py-2 font-mono text-[9px] uppercase tracking-[0.14em] text-slate-500 backdrop-blur-md lg:flex">
+        <DomainPageHeader
+          breadcrumbs={[
+            { label: "Home", href: "/" },
+            { label: "Formal Sciences" },
+          ]}
+          eyebrow="Structure & Proof"
+          icon={Sigma}
+          accentRgb="255, 65, 54"
+          iconClassName="rounded-none"
+          titleClassName="font-mono text-[clamp(3.4rem,6.5vw,6.8rem)] font-semibold uppercase leading-[0.78] tracking-[-0.075em] text-[#fff9f8]"
+          title={
+            <>
+              Formal <span className="text-[#ff6258]">Sciences</span>
+            </>
+          }
+          subtitle="Abstract structures for reasoning, quantity, computation, information, data, and complex systems."
+          aside={
+            <div className="flex items-center gap-2 rounded-full border border-[#ff4136]/20 bg-black/25 px-3 py-2 font-mono text-[9px] uppercase tracking-[0.14em] text-slate-500 backdrop-blur-md">
               <Stage icon={CircleDot} label="Axioms" />
               <ArrowRight size={11} className="text-[#ff4136]/55" />
               <Stage icon={Braces} label="Rules" />
               <ArrowRight size={11} className="text-[#ff4136]/55" />
               <Stage icon={CheckCircle2} label="Proof" />
             </div>
-          </div>
-        </header>
+          }
+        />
 
         <section className="relative mt-4 shrink-0 overflow-hidden border border-[#ff4136]/20 bg-black/[0.16] shadow-[inset_0_1px_0_rgba(255,255,255,0.035),0_20px_60px_rgba(0,0,0,0.24)] backdrop-blur-[2px]">
           <PanelCorners />
@@ -140,6 +140,7 @@ export default function FormalScienceHub({ nodes }: { nodes: readonly FormalHubN
           </div>
 
           <SharedGrammar />
+          <FormalPrinciples />
         </section>
       </div>
     </main>
@@ -226,6 +227,28 @@ function SharedGrammar() {
             <div key={item.label} className="flex min-w-0 items-center gap-2 bg-[#090909]/80 px-3 py-2.5 backdrop-blur-md">
               <span className="min-w-8 font-mono text-sm font-semibold text-[#ff756d]">{item.token}</span>
               <span className="truncate font-mono text-[8px] uppercase tracking-[0.11em] text-slate-500">{item.label}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function FormalPrinciples() {
+  return (
+    <div className="relative border-t border-[#ff4136]/12 bg-black/[0.26] px-4 py-3 backdrop-blur-md sm:px-5 lg:px-6">
+      <div className="grid gap-3 lg:grid-cols-[210px_minmax(0,1fr)] lg:items-center">
+        <div>
+          <div className="font-mono text-[8px] uppercase tracking-[0.22em] text-[#ff6258]/70">Working principles</div>
+          <p className="mt-1 text-[11px] leading-4 text-slate-600">Four habits that recur across every formal discipline.</p>
+        </div>
+        <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-4">
+          {FORMAL_PRINCIPLES.map((principle) => (
+            <div key={principle.title} className="border border-white/[0.06] bg-white/[0.025] px-3 py-2.5 backdrop-blur-md">
+              <div className="font-mono text-[7px] uppercase tracking-[0.15em] text-[#ff6258]/55">{principle.code}</div>
+              <div className="mt-1 font-mono text-[10px] font-semibold uppercase tracking-[0.08em] text-slate-300">{principle.title}</div>
+              <p className="mt-1 text-[10px] leading-4 text-slate-600">{principle.detail}</p>
             </div>
           ))}
         </div>
