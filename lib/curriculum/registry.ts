@@ -1,3 +1,4 @@
+import { ALGEBRA_CURRICULUM } from "@/lib/curriculum/algebra";
 import { CURRICULUM_DOMAINS } from "@/lib/curriculum/tree";
 import type {
   CurriculumDomain,
@@ -5,11 +6,32 @@ import type {
   CurriculumRegistrySnapshot,
 } from "@/lib/curriculum/types";
 
+function replaceNode(
+  nodes: readonly CurriculumNode[],
+  replacement: CurriculumNode,
+): readonly CurriculumNode[] {
+  return nodes.map((node) => {
+    if (node.id === replacement.id) return replacement;
+    if (!node.children) return node;
+    return { ...node, children: replaceNode(node.children, replacement) };
+  });
+}
+
+/**
+ * Dense curriculum branches can live in focused modules while still composing
+ * into one validated registry. `tree.ts` remains the broad academic map; this
+ * composition layer swaps in richer subtrees as they are migrated.
+ */
+const curriculumDomains: readonly CurriculumDomain[] = CURRICULUM_DOMAINS.map((domain) => ({
+  ...domain,
+  children: replaceNode(domain.children, ALGEBRA_CURRICULUM),
+}));
+
 function flatten(nodes: readonly CurriculumNode[]): CurriculumNode[] {
   return nodes.flatMap((node) => [node, ...flatten(node.children ?? [])]);
 }
 
-const nodes = CURRICULUM_DOMAINS.flatMap((domain) => flatten(domain.children));
+const nodes = curriculumDomains.flatMap((domain) => flatten(domain.children));
 const byId = new Map(nodes.map((node) => [node.id, node]));
 const byHref = new Map(nodes.map((node) => [node.href, node]));
 const parentById = new Map<string, CurriculumNode>();
@@ -21,7 +43,7 @@ function indexParents(parent: CurriculumNode) {
   }
 }
 
-for (const domain of CURRICULUM_DOMAINS) {
+for (const domain of curriculumDomains) {
   for (const root of domain.children) indexParents(root);
 }
 
@@ -72,11 +94,11 @@ validatePrerequisites();
 
 export const curriculumRegistry = {
   snapshot(): CurriculumRegistrySnapshot {
-    return { domains: CURRICULUM_DOMAINS, nodes };
+    return { domains: curriculumDomains, nodes };
   },
 
   allDomains(): readonly CurriculumDomain[] {
-    return CURRICULUM_DOMAINS;
+    return curriculumDomains;
   },
 
   allNodes(): readonly CurriculumNode[] {
