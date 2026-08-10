@@ -16,23 +16,29 @@ export type NavigationSection = {
   items: NavigationItem[];
 };
 
+function activeChildren(node: CurriculumNode): readonly CurriculumNode[] {
+  return (node.children ?? []).filter((child) => child.status !== "placeholder");
+}
+
 function curriculumNodeToNavigation(node: CurriculumNode): NavigationItem {
+  const children = activeChildren(node);
   return {
     label: node.label,
     href: node.href,
     domain: node.domainId,
-    children: node.children?.map(curriculumNodeToNavigation),
+    children: children.length > 0 ? children.map(curriculumNodeToNavigation) : undefined,
   };
 }
 
 const academicDomains: NavigationItem[] = curriculumRegistry.allDomains().map((entry) => {
   const domain = DOMAIN_BY_ID[entry.domainId];
+  const children = entry.children.filter((child) => child.status !== "placeholder");
   return {
     label: domain.navLabel,
     href: domain.href,
     icon: domain.icon,
     domain: domain.id,
-    children: entry.children.map(curriculumNodeToNavigation),
+    children: children.map(curriculumNodeToNavigation),
   };
 });
 
