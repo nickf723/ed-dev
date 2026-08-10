@@ -3,6 +3,7 @@
 import { usePathname } from "next/navigation";
 import { useState, type CSSProperties } from "react";
 import MainContent from "@/app/_components/MainContent";
+import MasteryDock from "@/app/_components/MasteryDock";
 import Sidebar from "@/app/_components/Sidebar";
 import { getDomainForPath } from "@/lib/domains";
 
@@ -32,6 +33,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         onCollapsedChange={setIsSidebarCollapsed}
       />
       <MainContent isCollapsed={isSidebarCollapsed}>{children}</MainContent>
+      <MasteryDock />
     </div>
   );
 }
