@@ -1,5 +1,9 @@
 "use client";
+
 import { useEffect, useRef } from "react";
+
+const PAIR_COUNT = 54;
+const mutations = Array.from({ length: PAIR_COUNT }, (_, index) => index % 17 === 8);
 
 export default function DnaBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -7,93 +11,109 @@ export default function DnaBackground() {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext("2d", { alpha: false });
     if (!ctx) return;
 
-    let w = (canvas.width = window.innerWidth);
-    let h = (canvas.height = window.innerHeight);
+    let width = 0;
+    let height = 0;
     let time = 0;
-    
-    const strandCount = 40; // Number of base pairs visible
-    
-    // Biology Palette (Green / Lime / Cyan)
-    const colorA = "#84cc16"; // Lime
-    const colorB = "#22d3ee"; // Cyan
- 
+    let animationFrame = 0;
+    let hidden = document.hidden;
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
-    const animate = () => {
-      ctx.clearRect(0, 0, w, h);
-      
-      // Dark organic background
-      ctx.fillStyle = "#051005"; 
-      ctx.fillRect(0, 0, w, h);
-
-      const cx = w / 2;
-      const spacing = h / strandCount;
-      
-      ctx.lineWidth = 2;
-
-      for (let i = 0; i < strandCount + 5; i++) {
-          const y = i * spacing + (time * 50) % spacing - spacing;
-          const progress = i / strandCount;
-          
-          // Rotation
-          const angle = (y * 0.01) + time;
-          const radius = 100 + Math.sin(time * 0.5) * 20; // Breathing effect
-          
-          // Calculate strand positions (3D projection)
-          const x1 = cx + Math.cos(angle) * radius;
-          const x2 = cx + Math.cos(angle + Math.PI) * radius;
-          
-          // Z-index simulation (scale/opacity)
-          const z1 = Math.sin(angle);
-          const z2 = Math.sin(angle + Math.PI);
-          
-          const scale1 = 1 + z1 * 0.2;
-          const scale2 = 1 + z2 * 0.2;
-          
-          const alpha1 = 0.5 + z1 * 0.4;
-          const alpha2 = 0.5 + z2 * 0.4;
-
-          // Draw Connection (Base Pair) - Only if not "broken" (mutation effect)
-          if (Math.random() > 0.02) {
-             ctx.beginPath();
-             ctx.strokeStyle = `rgba(255, 255, 255, ${Math.min(alpha1, alpha2) * 0.2})`;
-             ctx.moveTo(x1, y);
-             ctx.lineTo(x2, y);
-             ctx.stroke();
-          }
-
-          // Draw Strand 1
-          ctx.beginPath();
-          ctx.arc(x1, y, 6 * scale1, 0, Math.PI * 2);
-          ctx.fillStyle = colorA;
-          ctx.globalAlpha = alpha1;
-          ctx.fill();
-          
-          // Draw Strand 2
-          ctx.beginPath();
-          ctx.arc(x2, y, 6 * scale2, 0, Math.PI * 2);
-          ctx.fillStyle = colorB;
-          ctx.globalAlpha = alpha2;
-          ctx.fill();
-      }
-
-      ctx.globalAlpha = 1;
-      time += 0.01;
-      requestAnimationFrame(animate);
+    const resize = () => {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
     };
 
-    const animId = requestAnimationFrame(animate);
-    const handleResize = () => { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; };
-    window.addEventListener("resize", handleResize);
-    return () => { window.removeEventListener("resize", handleResize); cancelAnimationFrame(animId); };
+    const handleVisibility = () => {
+      hidden = document.hidden;
+    };
+
+    const draw = () => {
+      if (!hidden) {
+        const gradient = ctx.createRadialGradient(
+          width * 0.72,
+          height * 0.45,
+          0,
+          width * 0.72,
+          height * 0.45,
+          Math.max(width, height) * 0.72,
+        );
+        gradient.addColorStop(0, "#062014");
+        gradient.addColorStop(0.45, "#04150d");
+        gradient.addColorStop(1, "#020906");
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, width, height);
+
+        const centerX = width * (width > 900 ? 0.72 : 0.58);
+        const spacing = height / (PAIR_COUNT - 4);
+        const radius = Math.min(128, Math.max(74, width * 0.085));
+        const speed = reducedMotion.matches ? 0.0012 : 0.006;
+        const pairCount = reducedMotion.matches ? 30 : PAIR_COUNT;
+
+        for (let index = 0; index < pairCount; index += 1) {
+          const y = index * spacing - spacing + ((time * 34) % spacing);
+          const angle = y * 0.011 + time;
+          const depthA = Math.sin(angle);
+          const depthB = -depthA;
+          const xA = centerX + Math.cos(angle) * radius;
+          const xB = centerX - Math.cos(angle) * radius;
+          const alphaA = 0.28 + (depthA + 1) * 0.22;
+          const alphaB = 0.28 + (depthB + 1) * 0.22;
+
+          if (!mutations[index % mutations.length]) {
+            const connector = ctx.createLinearGradient(xA, y, xB, y);
+            connector.addColorStop(0, `rgba(34,211,238,${alphaA * 0.34})`);
+            connector.addColorStop(0.5, "rgba(187,247,208,0.10)");
+            connector.addColorStop(1, `rgba(132,204,22,${alphaB * 0.34})`);
+            ctx.beginPath();
+            ctx.strokeStyle = connector;
+            ctx.lineWidth = 1;
+            ctx.moveTo(xA, y);
+            ctx.lineTo(xB, y);
+            ctx.stroke();
+          }
+
+          ctx.beginPath();
+          ctx.arc(xA, y, 4.5 + depthA * 1.2, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(34,211,238,${alphaA})`;
+          ctx.shadowColor = "rgba(34,211,238,0.35)";
+          ctx.shadowBlur = 10;
+          ctx.fill();
+
+          ctx.beginPath();
+          ctx.arc(xB, y, 4.5 + depthB * 1.2, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(132,204,22,${alphaB})`;
+          ctx.shadowColor = "rgba(132,204,22,0.30)";
+          ctx.shadowBlur = 10;
+          ctx.fill();
+          ctx.shadowBlur = 0;
+        }
+
+        time += speed;
+      }
+
+      animationFrame = requestAnimationFrame(draw);
+    };
+
+    resize();
+    window.addEventListener("resize", resize);
+    document.addEventListener("visibilitychange", handleVisibility);
+    animationFrame = requestAnimationFrame(draw);
+
+    return () => {
+      window.removeEventListener("resize", resize);
+      document.removeEventListener("visibilitychange", handleVisibility);
+      cancelAnimationFrame(animationFrame);
+    };
   }, []);
 
   return (
-    <>
-        <canvas ref={canvasRef} className="fixed inset-0 pointer-events-none z-0 opacity-40" />
-        <div className="hd-vignette" />
-    </>
+    <canvas
+      ref={canvasRef}
+      className="pointer-events-none fixed inset-0 z-0 opacity-70"
+      aria-hidden="true"
+    />
   );
 }
