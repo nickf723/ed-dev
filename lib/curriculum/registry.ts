@@ -3,6 +3,7 @@ import { COMPUTER_SCIENCE_CURRICULUM } from "@/lib/curriculum/computer-science";
 import { GROUP_THEORY_CURRICULUM } from "@/lib/curriculum/group-theory";
 import { LOGIC_CURRICULUM } from "@/lib/curriculum/logic";
 import { CURRICULUM_NODE_METADATA } from "@/lib/curriculum/metadata";
+import { BIOLOGY_CURRICULUM } from "@/lib/curriculum/natural/biology";
 import { CURRICULUM_DOMAINS } from "@/lib/curriculum/tree";
 import type {
   CurriculumDomain,
@@ -34,6 +35,7 @@ const curriculumReplacements = [
   GROUP_THEORY_CURRICULUM,
   LOGIC_CURRICULUM,
   COMPUTER_SCIENCE_CURRICULUM,
+  BIOLOGY_CURRICULUM,
 ] as const;
 
 function composeCurriculum(nodes: readonly CurriculumNode[]): readonly CurriculumNode[] {
