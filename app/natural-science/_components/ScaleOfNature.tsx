@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import {
   ArrowLeft,
   ArrowRight,
@@ -15,9 +15,14 @@ import {
   Telescope,
   type LucideIcon,
 } from "lucide-react";
-import { curriculumRegistry } from "@/lib/curriculum/registry";
-import type { CurriculumNode } from "@/lib/curriculum/types";
 import { NaturalScienceBackground } from "../NaturalScienceBackground";
+
+export type NaturalScienceScaleNode = {
+  id: string;
+  label: string;
+  href: string;
+  description?: string;
+};
 
 type ScalePresentation = {
   exponent: number;
@@ -29,7 +34,7 @@ type ScalePresentation = {
   glow: string;
 };
 
-type ScaleEntry = CurriculumNode & ScalePresentation;
+type ScaleEntry = NaturalScienceScaleNode & ScalePresentation;
 
 const SCALE_PRESENTATION: Record<string, ScalePresentation> = {
   "natural.astronomy": {
@@ -120,16 +125,8 @@ function sliderPosition(exponent: number) {
   return ((exponent + 30) / 60) * 100;
 }
 
-function naturalScienceEntries(): ScaleEntry[] {
-  const naturalDomain = curriculumRegistry
-    .allDomains()
-    .find((domain) => domain.domainId === "natural");
-
-  if (!naturalDomain) {
-    throw new Error("Natural Science is missing from the curriculum registry.");
-  }
-
-  const byId = new Map(naturalDomain.children.map((node) => [node.id, node]));
+function scaleEntries(nodes: readonly NaturalScienceScaleNode[]): ScaleEntry[] {
+  const byId = new Map(nodes.map((node) => [node.id, node]));
 
   return SCALE_ORDER.map((id) => {
     const node = byId.get(id);
@@ -141,8 +138,8 @@ function naturalScienceEntries(): ScaleEntry[] {
   });
 }
 
-export default function ScaleOfNature() {
-  const entries = useMemo(naturalScienceEntries, []);
+export default function ScaleOfNature({ nodes }: { nodes: readonly NaturalScienceScaleNode[] }) {
+  const entries = scaleEntries(nodes);
   const [exponent, setExponent] = useState(0);
 
   const active = entries.reduce((closest, entry) =>
@@ -263,7 +260,7 @@ export default function ScaleOfNature() {
                           key={entry.id}
                           type="button"
                           onClick={() => jumpTo(entry)}
-                          className="group absolute top-[13px] -translate-x-1/2"
+                          className="group absolute top-[13px] z-30 -translate-x-1/2"
                           style={{ left: `${left}%` }}
                           aria-label={`Jump to ${entry.label}, 10 to the ${entry.exponent} meters`}
                         >
