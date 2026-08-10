@@ -38,11 +38,11 @@ export const DOMAINS: DomainDefinition[] = [
     icon: Sigma,
     tags: ["Mathematics", "Logic", "Computation", "Systems"],
     theme: {
-      rgb: "248, 113, 113",
-      text: "text-red-400",
-      border: "border-red-500/50",
-      background: "bg-red-500/20",
-      sidebar: "text-red-400 border-red-500/30 bg-red-500/10 shadow-[0_0_15px_rgba(248,113,113,0.10)]",
+      rgb: "255, 65, 54",
+      text: "text-[#ff6258]",
+      border: "border-[#ff4136]/50",
+      background: "bg-[#ff4136]/20",
+      sidebar: "text-[#ff6258] border-[#ff4136]/30 bg-[#ff4136]/10 shadow-[0_0_15px_rgba(255,65,54,0.12)]",
     },
   },
   {
