@@ -1,14 +1,32 @@
 "use client";
 
-import { useState } from "react";
+import { usePathname } from "next/navigation";
+import { useState, type CSSProperties } from "react";
 import MainContent from "@/app/_components/MainContent";
 import Sidebar from "@/app/_components/Sidebar";
+import { getDomainForPath } from "@/lib/domains";
+
+type DomainThemeStyle = CSSProperties & {
+  "--domain-rgb": string;
+  "--domain-accent": string;
+};
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const activeDomain = getDomainForPath(pathname);
+  const domainRgb = activeDomain?.theme.rgb ?? "34, 211, 238";
+  const themeStyle: DomainThemeStyle = {
+    "--domain-rgb": domainRgb,
+    "--domain-accent": `rgb(${domainRgb})`,
+  };
 
   return (
-    <div className="flex min-h-screen">
+    <div
+      className="flex min-h-screen"
+      data-domain={activeDomain?.id ?? "home"}
+      style={themeStyle}
+    >
       <Sidebar
         isCollapsed={isSidebarCollapsed}
         onCollapsedChange={setIsSidebarCollapsed}
