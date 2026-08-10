@@ -11,15 +11,44 @@ function node(
   return { id, label, href, domainId, children };
 }
 
+function describe(value: CurriculumNode, description: string): CurriculumNode {
+  return { ...value, description };
+}
+
 export const CURRICULUM_DOMAINS = [
   {
     domainId: "formal",
     children: [
       node("formal.mathematics", "Mathematics", "/formal-science/mathematics", "formal", [
         node("formal.mathematics.foundations", "Foundations", "/formal-science/mathematics/foundations", "formal", [
-          node("formal.mathematics.foundations.arithmetic", "Arithmetic", "/formal-science/mathematics/foundations/arithmetic", "formal"),
-          node("formal.mathematics.foundations.geometry", "Geometry", "/formal-science/mathematics/foundations/geometry", "formal"),
-          node("formal.mathematics.foundations.grouping", "Grouping & Sets", "/formal-science/mathematics/foundations/grouping", "formal"),
+          describe(
+            node("formal.mathematics.foundations.arithmetic", "Arithmetic", "/formal-science/mathematics/foundations/arithmetic", "formal"),
+            "The absolute core: Addition, Subtraction, Multiplication, and Division.",
+          ),
+          describe(
+            node("formal.mathematics.foundations.fractions", "Fractions & Ratios", "/formal-science/mathematics/foundations/fractions", "formal"),
+            "Parts of a whole. Decimals, percentages, and proportional reasoning.",
+          ),
+          describe(
+            node("formal.mathematics.foundations.inequalities", "Magnitude", "/formal-science/mathematics/foundations/inequalities", "formal"),
+            "Evaluating relative size. Greater than, less than, and the number line.",
+          ),
+          describe(
+            node("formal.mathematics.foundations.geometry", "Basic Geometry", "/formal-science/mathematics/foundations/geometry", "formal"),
+            "Recognizing fundamental shapes: Circles, polygons, angles, and symmetry.",
+          ),
+          describe(
+            node("formal.mathematics.foundations.measurement", "Measurement", "/formal-science/mathematics/foundations/measurement", "formal"),
+            "Units, telling time, and mapping the Cartesian coordinate plane.",
+          ),
+          describe(
+            node("formal.mathematics.foundations.grouping", "Sets & Grouping", "/formal-science/mathematics/foundations/grouping", "formal"),
+            "The precursor to Set Theory. Organizing objects by shared properties.",
+          ),
+          describe(
+            node("formal.mathematics.foundations.statistics", "Data Analysis", "/formal-science/mathematics/foundations/statistics", "formal"),
+            "Collecting and charting data to make informed predictions about the world.",
+          ),
         ]),
         node("formal.mathematics.calculus", "Calculus", "/formal-science/mathematics/calculus", "formal", [
           node("formal.mathematics.calculus.differential-equations", "Differential Equations", "/formal-science/mathematics/calculus/differential-equations", "formal"),
