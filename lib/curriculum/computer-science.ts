@@ -6,6 +6,7 @@ function node(
   href: string,
   description: string,
   children?: readonly CurriculumNode[],
+  status: CurriculumNode["status"] = "active",
 ): CurriculumNode {
   return {
     id,
@@ -13,7 +14,7 @@ function node(
     href,
     description,
     domainId: "formal",
-    status: "active",
+    status,
     children,
   };
 }
@@ -35,6 +36,54 @@ export const COMPUTER_SCIENCE_CURRICULUM: CurriculumNode = node(
       "Software",
       "/formal-science/computer-science/software",
       "Programming languages, source code, software systems, and the architecture of the virtual world.",
+      [
+        node(
+          "formal.computer-science.software.fundamentals",
+          "Programming Fundamentals",
+          "/formal-science/computer-science/software/fundamentals",
+          "Variables, control flow, functions, and basic data structures: the building blocks of programming.",
+        ),
+        node(
+          "formal.computer-science.software.languages",
+          "Languages & Compilers",
+          "/formal-science/computer-science/software/languages",
+          "Syntax, semantics, compilation, and the tradeoffs between low-level and high-level programming languages.",
+          undefined,
+          "placeholder",
+        ),
+        node(
+          "formal.computer-science.software.algorithms",
+          "Algorithms & Data",
+          "/formal-science/computer-science/software/algorithms",
+          "Software-facing study of algorithmic thinking, data structures, complexity, sorting, searching, and traversal.",
+          undefined,
+          "placeholder",
+        ),
+        node(
+          "formal.computer-science.software.web",
+          "Web Engineering",
+          "/formal-science/computer-science/software/web",
+          "HTTP, browsers, frontend systems, backend services, and scalable web architecture.",
+          undefined,
+          "placeholder",
+        ),
+        node(
+          "formal.computer-science.software.security",
+          "Cybersecurity",
+          "/formal-science/computer-science/software/security",
+          "Encryption, penetration testing, secure coding, and protecting software systems from attack.",
+          undefined,
+          "placeholder",
+        ),
+        node(
+          "formal.computer-science.software.architecture",
+          "System Architecture",
+          "/formal-science/computer-science/software/architecture",
+          "Design patterns, services, containers, cloud infrastructure, and architectural tradeoffs at scale.",
+          undefined,
+          "placeholder",
+        ),
+      ],
     ),
     node(
       "formal.computer-science.algorithms",
