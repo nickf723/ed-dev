@@ -12,7 +12,7 @@ export default function GameOfLifeBackground() {
     if (!ctx) return;
 
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const cellSize = 16;
+    const cellSize = 9;
     let cols = 0;
     let rows = 0;
     let grid: number[][] = [];
@@ -22,8 +22,20 @@ export default function GameOfLifeBackground() {
       cols = Math.ceil(window.innerWidth / cellSize);
       rows = Math.ceil(window.innerHeight / cellSize);
       grid = Array.from({ length: cols }, () =>
-        Array.from({ length: rows }, () => (Math.random() > 0.92 ? 1 : 0)),
+        Array.from({ length: rows }, () => (Math.random() > 0.80 ? 1 : 0)),
       );
+    };
+
+    const draw = () => {
+      ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+      ctx.fillStyle = "rgba(255,65,54,0.24)";
+
+      for (let x = 0; x < cols; x += 1) {
+        for (let y = 0; y < rows; y += 1) {
+          if (!grid[x]?.[y]) continue;
+          ctx.fillRect(x * cellSize + 1, y * cellSize + 1, cellSize - 2, cellSize - 2);
+        }
+      }
     };
 
     const resize = () => {
@@ -35,18 +47,6 @@ export default function GameOfLifeBackground() {
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       initialize();
       draw();
-    };
-
-    const draw = () => {
-      ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-      ctx.fillStyle = "rgba(255,65,54,0.28)";
-
-      for (let x = 0; x < cols; x += 1) {
-        for (let y = 0; y < rows; y += 1) {
-          if (!grid[x]?.[y]) continue;
-          ctx.fillRect(x * cellSize + 5, y * cellSize + 5, 4, 4);
-        }
-      }
     };
 
     const evolve = () => {
@@ -81,7 +81,7 @@ export default function GameOfLifeBackground() {
     };
 
     resize();
-    if (!reducedMotion.matches) intervalId = window.setInterval(evolve, 850);
+    if (!reducedMotion.matches) intervalId = window.setInterval(evolve, 700);
 
     window.addEventListener("resize", resize);
     return () => {
@@ -93,7 +93,7 @@ export default function GameOfLifeBackground() {
   return (
     <canvas
       ref={canvasRef}
-      className="pointer-events-none fixed inset-0 z-0 opacity-45"
+      className="pointer-events-none fixed inset-0 z-0 opacity-65"
       aria-hidden="true"
     />
   );
