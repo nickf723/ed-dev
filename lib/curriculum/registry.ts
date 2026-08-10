@@ -1,5 +1,6 @@
 import { ALGEBRA_CURRICULUM } from "@/lib/curriculum/algebra";
 import { GROUP_THEORY_CURRICULUM } from "@/lib/curriculum/group-theory";
+import { CURRICULUM_NODE_METADATA } from "@/lib/curriculum/metadata";
 import { CURRICULUM_DOMAINS } from "@/lib/curriculum/tree";
 import type {
   CurriculumDomain,
@@ -18,12 +19,21 @@ function replaceNode(
   });
 }
 
+function applyMetadata(nodes: readonly CurriculumNode[]): readonly CurriculumNode[] {
+  return nodes.map((node) => ({
+    ...node,
+    ...CURRICULUM_NODE_METADATA[node.id],
+    children: node.children ? applyMetadata(node.children) : undefined,
+  }));
+}
+
 const curriculumReplacements = [ALGEBRA_CURRICULUM, GROUP_THEORY_CURRICULUM] as const;
 
 function composeCurriculum(nodes: readonly CurriculumNode[]): readonly CurriculumNode[] {
+  const withMetadata = applyMetadata(nodes);
   return curriculumReplacements.reduce<readonly CurriculumNode[]>(
     (current, replacement) => replaceNode(current, replacement),
-    nodes,
+    withMetadata,
   );
 }
 
