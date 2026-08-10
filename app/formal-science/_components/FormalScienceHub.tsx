@@ -52,6 +52,15 @@ const PRESENTATION: Record<string, NodePresentation> = {
   "formal.systems-science": { code: "06", icon: Network, shortLabel: "Dynamics", rgb: "96, 165, 250" },
 };
 
+const SHARED_GRAMMAR = [
+  { token: ":=", label: "Definitions" },
+  { token: "≡", label: "Relations" },
+  { token: "f(x)", label: "Functions" },
+  { token: "→", label: "Transforms" },
+  { token: "[ ]", label: "Structures" },
+  { token: "∴", label: "Proofs" },
+] as const;
+
 function buildNodes(nodes: readonly FormalHubNode[]) {
   const byId = new Map(nodes.map((node) => [node.id, node]));
   return NODE_ORDER.map((id) => {
@@ -72,8 +81,8 @@ export default function FormalScienceHub({ nodes }: { nodes: readonly FormalHubN
         <FormalNetworkBackground />
       </div>
 
-      <div className="pointer-events-none fixed inset-0 z-[1] bg-[linear-gradient(rgba(255,65,54,0.045)_1px,transparent_1px),linear-gradient(90deg,rgba(255,65,54,0.045)_1px,transparent_1px)] bg-[size:38px_38px]" />
-      <div className="pointer-events-none fixed inset-0 z-[1] bg-[radial-gradient(circle_at_78%_12%,rgba(255,65,54,0.10),transparent_27%),radial-gradient(circle_at_16%_78%,rgba(255,65,54,0.045),transparent_25%),linear-gradient(to_bottom,rgba(5,5,5,0.04),rgba(5,5,5,0.42))]" />
+      <div className="pointer-events-none fixed inset-0 z-[1] bg-[linear-gradient(rgba(255,65,54,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(255,65,54,0.04)_1px,transparent_1px)] bg-[size:32px_32px]" />
+      <div className="pointer-events-none fixed inset-0 z-[1] bg-[radial-gradient(circle_at_78%_12%,rgba(255,65,54,0.09),transparent_27%),radial-gradient(circle_at_16%_78%,rgba(255,65,54,0.04),transparent_25%),linear-gradient(to_bottom,rgba(5,5,5,0.025),rgba(5,5,5,0.27))]" />
       <div className="pointer-events-none fixed inset-0 z-[2] opacity-20 [background-image:repeating-linear-gradient(0deg,transparent_0px,transparent_3px,rgba(255,255,255,0.018)_4px)]" />
 
       <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-[1500px] flex-col px-4 py-4 sm:px-6 lg:h-screen lg:min-h-0 lg:px-8 lg:py-5">
@@ -100,7 +109,7 @@ export default function FormalScienceHub({ nodes }: { nodes: readonly FormalHubN
               </p>
             </div>
 
-            <div className="hidden items-center gap-2 border border-[#ff4136]/20 bg-black/30 px-3 py-2 font-mono text-[9px] uppercase tracking-[0.14em] text-slate-500 lg:flex">
+            <div className="hidden items-center gap-2 border border-[#ff4136]/20 bg-black/25 px-3 py-2 font-mono text-[9px] uppercase tracking-[0.14em] text-slate-500 lg:flex">
               <Stage icon={CircleDot} label="Axioms" />
               <ArrowRight size={11} className="text-[#ff4136]/55" />
               <Stage icon={Braces} label="Rules" />
@@ -110,22 +119,25 @@ export default function FormalScienceHub({ nodes }: { nodes: readonly FormalHubN
           </div>
         </header>
 
-        <section className="relative mt-4 shrink-0 overflow-hidden border border-[#ff4136]/20 bg-black/[0.12] shadow-[inset_0_1px_0_rgba(255,255,255,0.025),0_20px_60px_rgba(0,0,0,0.24)] backdrop-blur-[1px]">
+        <section className="relative mt-4 shrink-0 overflow-hidden border border-[#ff4136]/20 bg-black/[0.08] shadow-[inset_0_1px_0_rgba(255,255,255,0.025),0_20px_60px_rgba(0,0,0,0.20)] backdrop-blur-[1px]">
           <PanelCorners />
 
           <div className="pointer-events-none absolute inset-0 hidden lg:block" aria-hidden="true">
             <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="h-full w-full">
-              <line x1="17" y1="25" x2="83" y2="25" stroke="rgba(255,65,54,0.15)" strokeWidth="0.16" vectorEffect="non-scaling-stroke" />
-              <line x1="17" y1="75" x2="83" y2="75" stroke="rgba(255,65,54,0.15)" strokeWidth="0.16" vectorEffect="non-scaling-stroke" />
-              <line x1="17" y1="25" x2="17" y2="75" stroke="rgba(255,65,54,0.09)" strokeWidth="0.12" strokeDasharray="1 1.4" vectorEffect="non-scaling-stroke" />
-              <line x1="50" y1="25" x2="50" y2="75" stroke="rgba(255,65,54,0.12)" strokeWidth="0.14" strokeDasharray="1 1.4" vectorEffect="non-scaling-stroke" />
-              <line x1="83" y1="25" x2="83" y2="75" stroke="rgba(255,65,54,0.09)" strokeWidth="0.12" strokeDasharray="1 1.4" vectorEffect="non-scaling-stroke" />
+              <line x1="17" y1="22" x2="83" y2="22" stroke="rgba(255,65,54,0.14)" strokeWidth="0.16" vectorEffect="non-scaling-stroke" />
+              <line x1="17" y1="59" x2="83" y2="59" stroke="rgba(255,65,54,0.14)" strokeWidth="0.16" vectorEffect="non-scaling-stroke" />
+              <line x1="17" y1="22" x2="17" y2="59" stroke="rgba(255,65,54,0.08)" strokeWidth="0.12" strokeDasharray="1 1.4" vectorEffect="non-scaling-stroke" />
+              <line x1="50" y1="22" x2="50" y2="59" stroke="rgba(255,65,54,0.11)" strokeWidth="0.14" strokeDasharray="1 1.4" vectorEffect="non-scaling-stroke" />
+              <line x1="83" y1="22" x2="83" y2="59" stroke="rgba(255,65,54,0.08)" strokeWidth="0.12" strokeDasharray="1 1.4" vectorEffect="non-scaling-stroke" />
+              <line x1="6" y1="76" x2="94" y2="76" stroke="rgba(255,65,54,0.12)" strokeWidth="0.12" strokeDasharray="0.7 1.3" vectorEffect="non-scaling-stroke" />
             </svg>
           </div>
 
-          <div className="relative grid gap-3 p-3 sm:p-4 lg:grid-cols-3 lg:grid-rows-2 lg:gap-3 lg:p-4">
+          <div className="relative grid gap-3 p-3 sm:p-4 lg:grid-cols-3 lg:grid-rows-2 lg:gap-3 lg:p-4 lg:pb-3">
             {branches.map((branch) => <BranchNode key={branch.id} branch={branch} />)}
           </div>
+
+          <SharedGrammar />
         </section>
       </div>
     </main>
@@ -190,12 +202,34 @@ function BranchNode({ branch }: { branch: BuiltNode }) {
   const style = {
     borderColor: planned ? "rgba(255,255,255,0.05)" : `rgba(${branch.rgb},0.28)`,
     background: planned
-      ? "rgba(8,8,8,0.45)"
-      : `linear-gradient(135deg, rgba(${branch.rgb},0.045), rgba(7,7,7,0.56) 48%, rgba(7,7,7,0.40))`,
+      ? "rgba(8,8,8,0.40)"
+      : `linear-gradient(135deg, rgba(${branch.rgb},0.04), rgba(7,7,7,0.48) 48%, rgba(7,7,7,0.30))`,
     boxShadow: planned ? undefined : `inset 0 1px 0 rgba(255,255,255,0.025), 0 0 24px rgba(${branch.rgb},0.035)`,
   };
 
   return planned ? <div className={className} style={style}>{body}</div> : <Link href={branch.href} className={className} style={style}>{body}</Link>;
+}
+
+function SharedGrammar() {
+  return (
+    <div className="relative border-t border-[#ff4136]/15 bg-black/[0.14] px-4 py-3 sm:px-5 lg:px-6 lg:py-4">
+      <div className="grid gap-3 lg:grid-cols-[210px_minmax(0,1fr)] lg:items-center">
+        <div>
+          <div className="font-mono text-[8px] uppercase tracking-[0.22em] text-[#ff6258]/70">Shared grammar</div>
+          <p className="mt-1 text-[11px] leading-4 text-slate-600">Define objects, connect them, transform them, and prove what follows.</p>
+        </div>
+
+        <div className="grid grid-cols-3 gap-px bg-[#ff4136]/12 sm:grid-cols-6">
+          {SHARED_GRAMMAR.map((item) => (
+            <div key={item.label} className="flex min-w-0 items-center gap-2 bg-[#080808]/80 px-3 py-2.5">
+              <span className="min-w-8 font-mono text-sm font-semibold text-[#ff756d]">{item.token}</span>
+              <span className="truncate font-mono text-[8px] uppercase tracking-[0.11em] text-slate-500">{item.label}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
 }
 
 function Stage({ icon: Icon, label }: { icon: LucideIcon; label: string }) {
