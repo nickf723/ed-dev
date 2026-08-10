@@ -1,122 +1,37 @@
-'use client';
-
-import { motion } from 'framer-motion';
-import LibraryBackground from '@/app/_homepage/HomepageBackground';
-import NetworkBackground from '@/app/_homepage/NetworkBackground';
-import WireframeBackground from '@/app/_homepage/WireframeBackground';
-import HexGrid from './_homepage/HexGrid';
-import Assessment, { AssessmentQuestion } from '@/app/_components/Assessment';
-import { BookOpen, Zap } from 'lucide-react';
-
-// --- INTERDISCIPLINARY DAILY CHALLENGE ---
-const dailyQuiz: AssessmentQuestion[] = [
-  {
-    id: 'h1',
-    type: 'mcq',
-    prompt: 'Which of the following best describes "Entropy" in the Natural Sciences?',
-    options: [
-      'The exact amount of energy in a closed system.',
-      'A measure of disorder or randomness in a system.',
-      'The force that binds atoms together.',
-      'The rate of acceleration in a vacuum.'
-    ],
-    correctAnswer: 'A measure of disorder or randomness in a system.',
-    explanation: 'In thermodynamics, entropy represents the unavailability of a system\'s thermal energy for conversion into mechanical work, often interpreted as the degree of disorder or randomness in the system.'
-  },
-  {
-    id: 'h2',
-    type: 'matching',
-    prompt: 'Match the overarching Domain to its core focus.',
-    leftItems: ['Formal Sciences', 'Social Sciences', 'Humanities'],
-    rightItems: ['Human Culture & Expression', 'Structure, Logic & Proof', 'Human Patterns & Behavior'],
-    correctPairs: {
-      'Formal Sciences': 'Structure, Logic & Proof',
-      'Social Sciences': 'Human Patterns & Behavior',
-      'Humanities': 'Human Culture & Expression',
-    },
-    explanation: 'Formal sciences build logical frameworks (math, code). Social sciences study how humans interact (sociology, economics). Humanities explore the meaning of the human experience (art, history, philosophy).'
-  },
-  {
-    id: 'h3',
-    type: 'tf',
-    prompt: 'True or False: In the Formal Sciences, an "axiom" is a statement that has been proven true through rigorous physical experimentation.',
-    correctAnswer: false,
-    explanation: 'False. An axiom is a starting assumption or premise that is accepted as true without proof, serving as the starting point for further reasoning and logic.'
-  }
-];
+import { Compass, Network } from "lucide-react";
+import HexGrid from "./_homepage/HexGrid";
+import NetworkBackground from "./_homepage/NetworkBackground";
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-[#020617] text-slate-200 relative selection:bg-cyan-500/30 flex flex-col items-center overflow-x-hidden">
-      
-      {/* Layered Visual Engines */}
-      <div className="fixed inset-0 z-0 pointer-events-none">
-        <NetworkBackground />
-        <LibraryBackground />
-        <WireframeBackground />
-      </div>
+    <main className="relative min-h-screen overflow-x-hidden bg-[#03050a] text-slate-100 selection:bg-cyan-400/30 lg:h-screen lg:overflow-hidden">
+      <NetworkBackground />
 
-      <div className="relative z-10 w-full max-w-7xl px-6 py-12 flex flex-col items-center">       
-        
-        {/* HEADER */}
-        <motion.header 
-          initial={{ opacity: 0, y: -20 }} 
-          animate={{ opacity: 1, y: 0 }} 
-          className="text-center space-y-2 mb-4 mt-12"
-        >
-          <h1 className="text-6xl md:text-8xl font-black text-white tracking-tighter italic leading-none">THE WEB</h1>
-          <p className="text-cyan-400/60 uppercase tracking-widest text-xs font-bold mt-4">
-            Interactive Knowledge Grid
+      <div className="pointer-events-none fixed inset-0 z-0 bg-[radial-gradient(circle_at_50%_48%,rgba(34,211,238,0.07),transparent_30%),radial-gradient(circle_at_18%_18%,rgba(248,113,113,0.06),transparent_24%),radial-gradient(circle_at_82%_18%,rgba(52,211,153,0.07),transparent_24%),radial-gradient(circle_at_82%_82%,rgba(251,191,36,0.05),transparent_24%),radial-gradient(circle_at_18%_82%,rgba(167,139,250,0.06),transparent_24%),linear-gradient(to_bottom,rgba(3,5,10,0.08),rgba(3,5,10,0.72))]" />
+      <div className="pointer-events-none fixed inset-0 z-0 opacity-[0.12] [background-image:radial-gradient(circle_at_center,rgba(255,255,255,0.18)_1px,transparent_1px)] [background-size:46px_46px] [mask-image:radial-gradient(circle_at_center,black,transparent_78%)]" />
+
+      <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-[1540px] flex-col px-4 py-5 sm:px-6 lg:h-screen lg:min-h-0 lg:px-8 lg:py-6">
+        <header className="shrink-0 text-center">
+          <div className="mx-auto inline-flex items-center gap-2 rounded-full border border-cyan-300/15 bg-black/20 px-3 py-2 font-mono text-[9px] uppercase tracking-[0.18em] text-cyan-100/55 backdrop-blur-lg">
+            <Network size={12} className="text-cyan-300/70" /> Education Station 64
+          </div>
+
+          <h1 className="mt-4 text-[clamp(3.8rem,7vw,7.2rem)] font-semibold leading-[0.82] tracking-[-0.065em] text-white">
+            Knowledge <span className="bg-gradient-to-r from-cyan-200 via-emerald-200 to-violet-200 bg-clip-text text-transparent">Map</span>
+          </h1>
+
+          <p className="mx-auto mt-4 max-w-2xl text-sm leading-6 text-slate-400 sm:text-base">
+            Choose a domain, follow its branches, and build a connected picture of what we know.
           </p>
-        </motion.header>
 
-        {/* THE NAVIGATION REACTOR */}
-        <HexGrid />
-
-        {/* --- NEW: THE DAILY HUB --- */}
-        <motion.div 
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          className="w-full mt-12 grid grid-cols-1 lg:grid-cols-3 gap-8 pb-24"
-        >
-          {/* Vocab of the Day Widget */}
-          <div className="col-span-1 flex flex-col gap-8">
-            <div className="bg-black/40 backdrop-blur-md border border-white/5 rounded-3xl p-8 w-full shadow-2xl relative overflow-hidden group hover:border-cyan-500/30 transition-colors">
-                 <div className="absolute top-0 right-0 p-4 text-cyan-500/10 group-hover:text-cyan-500/20 transition-colors">
-                    <BookOpen size={64} />
-                 </div>
-                 <div className="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-cyan-400 mb-6">
-                    <Zap size={14} className="text-amber-400" /> Vocab of the Day
-                 </div>
-                 
-                 <h4 className="text-4xl font-serif italic text-white mb-2">Axiom</h4>
-                 <div className="text-[10px] text-slate-500 font-mono mb-6 uppercase tracking-wider">
-                    noun | [ ak-see-uhm ] | Formal Sciences
-                 </div>
-                 
-                 <p className="text-sm text-slate-300 leading-relaxed mb-6">
-                    A statement or proposition which is regarded as being established, accepted, or self-evidently true, serving as a starting point for further reasoning.
-                 </p>
-
-                 <div className="p-4 bg-cyan-950/30 border-l-2 border-cyan-500 rounded-r-lg">
-                    <p className="text-xs text-cyan-200/80 italic font-serif">
-                      "The entire structure of geometry is built upon a few simple axioms."
-                    </p>
-                 </div>
-            </div>
+          <div className="mt-3 flex items-center justify-center gap-2 font-mono text-[8px] uppercase tracking-[0.16em] text-slate-600">
+            <Compass size={11} /> Select a field to begin
           </div>
+        </header>
 
-          {/* Daily Assessment Widget */}
-          <div className="col-span-1 lg:col-span-2">
-            <Assessment 
-              title="Daily Challenge: Interdisciplinary Hub" 
-              questions={dailyQuiz} 
-              onComplete={(score, total) => console.log(`Daily Challenge Scored: ${score}/${total}`)}
-            />
-          </div>
-        </motion.div>
-
+        <div className="mt-2 flex min-h-0 flex-1 items-center justify-center">
+          <HexGrid />
+        </div>
       </div>
     </main>
   );
