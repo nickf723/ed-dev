@@ -81,35 +81,37 @@ export default function FormalScienceHub({ nodes }: { nodes: readonly FormalHubN
         <FormalNetworkBackground />
       </div>
 
+      <div className="pointer-events-none fixed inset-0 z-[1] bg-black/[0.14]" />
       <div className="pointer-events-none fixed inset-0 z-[1] bg-[linear-gradient(rgba(255,65,54,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(255,65,54,0.04)_1px,transparent_1px)] bg-[size:32px_32px]" />
-      <div className="pointer-events-none fixed inset-0 z-[1] bg-[radial-gradient(circle_at_78%_12%,rgba(255,65,54,0.09),transparent_27%),radial-gradient(circle_at_16%_78%,rgba(255,65,54,0.04),transparent_25%),linear-gradient(to_bottom,rgba(5,5,5,0.025),rgba(5,5,5,0.27))]" />
+      <div className="pointer-events-none fixed inset-0 z-[1] bg-[radial-gradient(circle_at_78%_12%,rgba(255,65,54,0.08),transparent_27%),radial-gradient(circle_at_16%_78%,rgba(255,65,54,0.035),transparent_25%),linear-gradient(to_bottom,rgba(5,5,5,0.04),rgba(5,5,5,0.36))]" />
       <div className="pointer-events-none fixed inset-0 z-[2] opacity-20 [background-image:repeating-linear-gradient(0deg,transparent_0px,transparent_3px,rgba(255,255,255,0.018)_4px)]" />
 
       <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-[1500px] flex-col px-4 py-4 sm:px-6 lg:h-screen lg:min-h-0 lg:px-8 lg:py-5">
         <header className="shrink-0 border-b border-[#ff4136]/20 pb-4">
-          <div className="flex items-center justify-end">
-            <nav aria-label="Breadcrumb" className="flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.14em] text-slate-600">
-              <Link href="/" className="transition-colors hover:text-[#ff8c85]">Home</Link>
-              <ChevronRight size={11} className="text-slate-800" />
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.22em] text-[#ff746b]/70">
+              <span className="h-1.5 w-1.5 bg-[#ff4136] shadow-[0_0_10px_rgba(255,65,54,0.9)]" />
+              Structure & proof
+            </div>
+
+            <nav aria-label="Breadcrumb" className="flex items-center gap-2 rounded-full border border-white/[0.07] bg-black/20 px-3 py-2 font-mono text-[9px] uppercase tracking-[0.13em] text-slate-500 backdrop-blur-lg">
+              <Link href="/" className="transition-colors hover:text-[#ff9a94]">Knowledge map</Link>
+              <ChevronRight size={11} className="text-slate-700" />
               <span className="text-[#ff7c73]">Formal Science</span>
             </nav>
           </div>
 
-          <div className="mt-2 grid items-end gap-4 lg:grid-cols-[minmax(0,1fr)_auto]">
+          <div className="mt-3 grid items-end gap-4 lg:grid-cols-[minmax(0,1fr)_auto]">
             <div>
-              <div className="mb-2 flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.24em] text-[#ff746b]/70">
-                <span className="h-1.5 w-1.5 bg-[#ff4136] shadow-[0_0_10px_rgba(255,65,54,0.9)]" />
-                Structure & proof
-              </div>
               <h1 className="font-mono text-[clamp(3.4rem,6.5vw,6.8rem)] font-semibold uppercase leading-[0.78] tracking-[-0.075em] text-[#fff9f8]">
                 Formal <span className="text-[#ff6258]">Science</span>
               </h1>
-              <p className="mt-4 max-w-3xl text-sm leading-6 text-slate-400 sm:text-base">
+              <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-400 sm:text-base">
                 Abstract structures for reasoning, quantity, computation, information, data, and complex systems.
               </p>
             </div>
 
-            <div className="hidden items-center gap-2 border border-[#ff4136]/20 bg-black/25 px-3 py-2 font-mono text-[9px] uppercase tracking-[0.14em] text-slate-500 lg:flex">
+            <div className="hidden items-center gap-2 rounded-full border border-[#ff4136]/20 bg-black/25 px-3 py-2 font-mono text-[9px] uppercase tracking-[0.14em] text-slate-500 backdrop-blur-md lg:flex">
               <Stage icon={CircleDot} label="Axioms" />
               <ArrowRight size={11} className="text-[#ff4136]/55" />
               <Stage icon={Braces} label="Rules" />
@@ -119,7 +121,7 @@ export default function FormalScienceHub({ nodes }: { nodes: readonly FormalHubN
           </div>
         </header>
 
-        <section className="relative mt-4 shrink-0 overflow-hidden border border-[#ff4136]/20 bg-black/[0.08] shadow-[inset_0_1px_0_rgba(255,255,255,0.025),0_20px_60px_rgba(0,0,0,0.20)] backdrop-blur-[1px]">
+        <section className="relative mt-4 shrink-0 overflow-hidden border border-[#ff4136]/20 bg-black/[0.16] shadow-[inset_0_1px_0_rgba(255,255,255,0.035),0_20px_60px_rgba(0,0,0,0.24)] backdrop-blur-[2px]">
           <PanelCorners />
 
           <div className="pointer-events-none absolute inset-0 hidden lg:block" aria-hidden="true">
@@ -154,7 +156,7 @@ function BranchNode({ branch }: { branch: BuiltNode }) {
     <>
       <div
         className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-        style={{ background: `linear-gradient(120deg, rgba(${branch.rgb},0.10), transparent 46%)` }}
+        style={{ background: `linear-gradient(120deg, rgba(${branch.rgb},0.12), transparent 50%)` }}
       />
       <div className="pointer-events-none absolute right-3 top-3 grid grid-cols-3 gap-1 opacity-35">
         {Array.from({ length: 9 }).map((_, index) => (
@@ -168,14 +170,14 @@ function BranchNode({ branch }: { branch: BuiltNode }) {
             className="flex h-10 w-10 shrink-0 items-center justify-center border shadow-[inset_0_0_18px_rgba(0,0,0,0.45)]"
             style={{
               color: `rgb(${branch.rgb})`,
-              borderColor: `rgba(${branch.rgb},0.42)`,
-              background: `rgba(${branch.rgb},0.07)`,
+              borderColor: `rgba(${branch.rgb},0.46)`,
+              background: `rgba(${branch.rgb},0.09)`,
             }}
           >
             <Icon size={18} strokeWidth={1.5} />
           </span>
           <span>
-            <span className="block font-mono text-[8px] uppercase tracking-[0.2em]" style={{ color: `rgba(${branch.rgb},0.76)` }}>
+            <span className="block font-mono text-[8px] uppercase tracking-[0.2em]" style={{ color: `rgba(${branch.rgb},0.78)` }}>
               Node {branch.code}
             </span>
             <span className="mt-0.5 block font-mono text-[8px] uppercase tracking-[0.16em] text-slate-600">{branch.shortLabel}</span>
@@ -187,24 +189,24 @@ function BranchNode({ branch }: { branch: BuiltNode }) {
           <p className="mt-2 line-clamp-2 max-w-md text-xs leading-5 text-slate-500 sm:text-[13px]">{branch.description}</p>
         </div>
 
-        <div className="mt-4 flex items-center justify-between border-t pt-3 font-mono text-[8px] uppercase tracking-[0.14em]" style={{ borderColor: `rgba(${branch.rgb},0.16)` }}>
-          <span style={{ color: planned ? "rgb(71 85 105)" : `rgba(${branch.rgb},0.78)` }}>{planned ? "Planned" : "Enter branch"}</span>
+        <div className="mt-4 flex items-center justify-between border-t pt-3 font-mono text-[8px] uppercase tracking-[0.14em]" style={{ borderColor: `rgba(${branch.rgb},0.20)` }}>
+          <span style={{ color: planned ? "rgb(71 85 105)" : `rgba(${branch.rgb},0.82)` }}>{planned ? "Planned" : "Enter branch"}</span>
           {!planned ? <ArrowRight size={13} style={{ color: `rgb(${branch.rgb})` }} className="transition-transform group-hover:translate-x-1" /> : null}
         </div>
       </div>
     </>
   );
 
-  const className = `group relative min-h-[174px] overflow-hidden border p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.025)] transition-all duration-300 sm:min-h-[184px] ${
+  const className = `group relative min-h-[174px] overflow-hidden border p-4 backdrop-blur-md shadow-[inset_0_1px_0_rgba(255,255,255,0.045)] transition-all duration-300 sm:min-h-[184px] ${
     planned ? "cursor-default opacity-55" : "hover:-translate-y-0.5"
   }`;
 
   const style = {
-    borderColor: planned ? "rgba(255,255,255,0.05)" : `rgba(${branch.rgb},0.28)`,
+    borderColor: planned ? "rgba(255,255,255,0.05)" : `rgba(${branch.rgb},0.30)`,
     background: planned
-      ? "rgba(8,8,8,0.40)"
-      : `linear-gradient(135deg, rgba(${branch.rgb},0.04), rgba(7,7,7,0.48) 48%, rgba(7,7,7,0.30))`,
-    boxShadow: planned ? undefined : `inset 0 1px 0 rgba(255,255,255,0.025), 0 0 24px rgba(${branch.rgb},0.035)`,
+      ? "rgba(8,8,8,0.54)"
+      : `linear-gradient(135deg, rgba(${branch.rgb},0.055), rgba(8,8,8,0.68) 48%, rgba(8,8,8,0.56))`,
+    boxShadow: planned ? undefined : `inset 0 1px 0 rgba(255,255,255,0.045), 0 0 28px rgba(${branch.rgb},0.045)`,
   };
 
   return planned ? <div className={className} style={style}>{body}</div> : <Link href={branch.href} className={className} style={style}>{body}</Link>;
@@ -212,7 +214,7 @@ function BranchNode({ branch }: { branch: BuiltNode }) {
 
 function SharedGrammar() {
   return (
-    <div className="relative border-t border-[#ff4136]/15 bg-black/[0.14] px-4 py-3 sm:px-5 lg:px-6 lg:py-4">
+    <div className="relative border-t border-[#ff4136]/15 bg-black/[0.34] px-4 py-3 backdrop-blur-md sm:px-5 lg:px-6 lg:py-4">
       <div className="grid gap-3 lg:grid-cols-[210px_minmax(0,1fr)] lg:items-center">
         <div>
           <div className="font-mono text-[8px] uppercase tracking-[0.22em] text-[#ff6258]/70">Shared grammar</div>
@@ -221,7 +223,7 @@ function SharedGrammar() {
 
         <div className="grid grid-cols-3 gap-px bg-[#ff4136]/12 sm:grid-cols-6">
           {SHARED_GRAMMAR.map((item) => (
-            <div key={item.label} className="flex min-w-0 items-center gap-2 bg-[#080808]/80 px-3 py-2.5">
+            <div key={item.label} className="flex min-w-0 items-center gap-2 bg-[#090909]/80 px-3 py-2.5 backdrop-blur-md">
               <span className="min-w-8 font-mono text-sm font-semibold text-[#ff756d]">{item.token}</span>
               <span className="truncate font-mono text-[8px] uppercase tracking-[0.11em] text-slate-500">{item.label}</span>
             </div>
