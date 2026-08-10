@@ -43,47 +43,20 @@ const NODE_ORDER = [
 ] as const;
 
 const PRESENTATION: Record<string, NodePresentation> = {
-  "formal.logic": {
-    code: "01",
-    icon: Scale,
-    shortLabel: "Reasoning",
-  },
-  "formal.mathematics": {
-    code: "02",
-    icon: Sigma,
-    shortLabel: "Structure",
-  },
-  "formal.information-science": {
-    code: "03",
-    icon: Database,
-    shortLabel: "Representation",
-  },
-  "formal.computer-science": {
-    code: "04",
-    icon: Terminal,
-    shortLabel: "Computation",
-  },
-  "formal.data-science": {
-    code: "05",
-    icon: GitGraph,
-    shortLabel: "Evidence",
-  },
-  "formal.systems-science": {
-    code: "06",
-    icon: Network,
-    shortLabel: "Dynamics",
-  },
+  "formal.logic": { code: "01", icon: Scale, shortLabel: "Reasoning" },
+  "formal.mathematics": { code: "02", icon: Sigma, shortLabel: "Structure" },
+  "formal.information-science": { code: "03", icon: Database, shortLabel: "Representation" },
+  "formal.computer-science": { code: "04", icon: Terminal, shortLabel: "Computation" },
+  "formal.data-science": { code: "05", icon: GitGraph, shortLabel: "Evidence" },
+  "formal.systems-science": { code: "06", icon: Network, shortLabel: "Dynamics" },
 };
 
 function buildNodes(nodes: readonly FormalHubNode[]) {
   const byId = new Map(nodes.map((node) => [node.id, node]));
-
   return NODE_ORDER.map((id) => {
     const node = byId.get(id);
     const presentation = PRESENTATION[id];
-    if (!node || !presentation) {
-      throw new Error(`Formal Science node ${id} is incomplete.`);
-    }
+    if (!node || !presentation) throw new Error(`Formal Science node ${id} is incomplete.`);
     return { ...node, ...presentation };
   });
 }
@@ -105,10 +78,7 @@ export default function FormalScienceHub({ nodes }: { nodes: readonly FormalHubN
       <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-[1500px] flex-col px-4 py-4 sm:px-6 lg:h-screen lg:min-h-0 lg:px-8 lg:py-5">
         <header className="shrink-0 border-b border-[#ff4136]/20 pb-4">
           <div className="flex items-center justify-end">
-            <nav
-              aria-label="Breadcrumb"
-              className="flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.14em] text-slate-600"
-            >
+            <nav aria-label="Breadcrumb" className="flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.14em] text-slate-600">
               <Link href="/" className="transition-colors hover:text-[#ff8c85]">Home</Link>
               <ChevronRight size={11} className="text-slate-800" />
               <span className="text-[#ff7c73]">Formal Science</span>
@@ -139,7 +109,7 @@ export default function FormalScienceHub({ nodes }: { nodes: readonly FormalHubN
           </div>
         </header>
 
-        <section className="relative mt-4 min-h-0 flex-1 overflow-hidden border border-[#ff4136]/18 bg-black/28 shadow-[inset_0_1px_0_rgba(255,255,255,0.025),0_24px_70px_rgba(0,0,0,0.34)] backdrop-blur-md">
+        <section className="relative mt-4 min-h-0 flex-1 overflow-hidden border border-[#ff4136]/20 bg-black/30 shadow-[inset_0_1px_0_rgba(255,255,255,0.025),0_24px_70px_rgba(0,0,0,0.34)] backdrop-blur-md">
           <PanelCorners />
 
           <div className="pointer-events-none absolute inset-0 hidden lg:block" aria-hidden="true">
@@ -156,18 +126,14 @@ export default function FormalScienceHub({ nodes }: { nodes: readonly FormalHubN
           </div>
 
           <div className="relative grid h-full min-h-[610px] gap-3 p-4 sm:p-5 lg:grid-cols-3 lg:grid-rows-2 lg:gap-x-10 lg:gap-y-24 lg:p-8 xl:min-h-0">
-            {branches.map((branch) => (
-              <BranchNode key={branch.id} branch={branch} />
-            ))}
+            {branches.map((branch) => <BranchNode key={branch.id} branch={branch} />)}
 
             <div className="pointer-events-none absolute left-1/2 top-1/2 z-30 hidden w-[230px] -translate-x-1/2 -translate-y-1/2 border border-[#ff4136]/30 bg-[#090606]/95 px-5 py-4 text-center shadow-[0_0_50px_rgba(255,65,54,0.09)] backdrop-blur-xl lg:block">
               <div className="font-mono text-[8px] uppercase tracking-[0.22em] text-[#ff6258]/65">Formal core</div>
               <div className="mt-2 font-mono text-sm font-semibold uppercase tracking-[0.12em] text-white">Define → Relate → Prove</div>
               <div className="mt-3 grid grid-cols-3 gap-px bg-[#ff4136]/15">
                 {["symbol", "rule", "result"].map((label) => (
-                  <span key={label} className="bg-[#080808] py-2 font-mono text-[7px] uppercase tracking-[0.12em] text-slate-600">
-                    {label}
-                  </span>
+                  <span key={label} className="bg-[#080808] py-2 font-mono text-[7px] uppercase tracking-[0.12em] text-slate-600">{label}</span>
                 ))}
               </div>
             </div>
@@ -188,23 +154,18 @@ function BranchNode({ branch }: { branch: BuiltNode }) {
     <>
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(120deg,rgba(255,65,54,0.085),transparent_42%)] opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
       <div className="pointer-events-none absolute right-3 top-3 grid grid-cols-3 gap-1 opacity-25">
-        {Array.from({ length: 9 }).map((_, index) => (
-          <span key={index} className="h-1 w-1 bg-[#ff6258]" />
-        ))}
+        {Array.from({ length: 9 }).map((_, index) => <span key={index} className="h-1 w-1 bg-[#ff6258]" />)}
       </div>
 
       <div className="relative flex h-full flex-col">
-        <div className="flex items-start justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <span className="flex h-11 w-11 shrink-0 items-center justify-center border border-[#ff4136]/30 bg-[#ff4136]/[0.06] text-[#ff756d] shadow-[inset_0_0_20px_rgba(0,0,0,0.45)]">
-              <Icon size={20} strokeWidth={1.5} />
-            </span>
-            <span>
-              <span className="block font-mono text-[8px] uppercase tracking-[0.2em] text-[#ff6258]/60">Node {branch.code}</span>
-              <span className="mt-1 block font-mono text-[8px] uppercase tracking-[0.16em] text-slate-600">{branch.shortLabel}</span>
-            </span>
-          </div>
-          <span className="font-mono text-[8px] text-[#ff6258]/45">[{branch.prerequisiteIds?.length ?? 0}:REQ]</span>
+        <div className="flex items-center gap-3">
+          <span className="flex h-11 w-11 shrink-0 items-center justify-center border border-[#ff4136]/30 bg-[#ff4136]/[0.06] text-[#ff756d] shadow-[inset_0_0_20px_rgba(0,0,0,0.45)]">
+            <Icon size={20} strokeWidth={1.5} />
+          </span>
+          <span>
+            <span className="block font-mono text-[8px] uppercase tracking-[0.2em] text-[#ff6258]/60">Node {branch.code}</span>
+            <span className="mt-1 block font-mono text-[8px] uppercase tracking-[0.16em] text-slate-600">{branch.shortLabel}</span>
+          </span>
         </div>
 
         <div className="mt-auto pt-5">
@@ -212,7 +173,7 @@ function BranchNode({ branch }: { branch: BuiltNode }) {
           <p className="mt-2 max-w-md text-xs leading-5 text-slate-500 sm:text-sm sm:leading-6">{branch.description}</p>
         </div>
 
-        <div className="mt-4 flex items-center justify-between border-t border-[#ff4136]/12 pt-3 font-mono text-[8px] uppercase tracking-[0.14em]">
+        <div className="mt-4 flex items-center justify-between border-t border-[#ff4136]/10 pt-3 font-mono text-[8px] uppercase tracking-[0.14em]">
           <span className={planned ? "text-slate-700" : "text-[#ff756d]/70"}>{planned ? "Planned" : "Enter branch"}</span>
           {!planned ? <ArrowRight size={13} className="text-[#ff6258] transition-transform group-hover:translate-x-1" /> : null}
         </div>
@@ -220,22 +181,13 @@ function BranchNode({ branch }: { branch: BuiltNode }) {
     </>
   );
 
-  const className = `group relative min-h-[210px] overflow-hidden border bg-[#080808]/80 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.025)] transition-all duration-300 sm:p-5 ${
-    planned
-      ? "cursor-default border-white/[0.05] opacity-55"
-      : "border-[#ff4136]/20 hover:-translate-y-0.5 hover:border-[#ff4136]/55 hover:bg-[#0d0808]/92 hover:shadow-[0_0_32px_rgba(255,65,54,0.08)]"
-  }`;
+  const className = `group relative min-h-[210px] overflow-hidden border bg-[#080808]/80 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.025)] transition-all duration-300 sm:p-5 ${planned ? "cursor-default border-white/[0.05] opacity-55" : "border-[#ff4136]/20 hover:-translate-y-0.5 hover:border-[#ff4136]/55 hover:bg-[#0d0808]/90 hover:shadow-[0_0_32px_rgba(255,65,54,0.08)]"}`;
 
   return planned ? <div className={className}>{body}</div> : <Link href={branch.href} className={className}>{body}</Link>;
 }
 
 function Stage({ icon: Icon, label }: { icon: LucideIcon; label: string }) {
-  return (
-    <span className="inline-flex items-center gap-1.5">
-      <Icon size={11} className="text-[#ff6258]" />
-      <span>{label}</span>
-    </span>
-  );
+  return <span className="inline-flex items-center gap-1.5"><Icon size={11} className="text-[#ff6258]" /><span>{label}</span></span>;
 }
 
 function PanelCorners() {
