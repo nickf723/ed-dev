@@ -32,9 +32,6 @@ export const CURRICULUM_NODE_METADATA: Record<string, CurriculumNodeMetadata> = 
   "natural.chemistry": {
     description: "Atoms, molecules, bonds, reactions, and the transformations that emerge when matter interacts.",
   },
-  "natural.biology": {
-    description: "Living systems from molecular machinery and cells to organisms, evolution, and ecosystems.",
-  },
   "natural.earth-science": {
     description: "The dynamic planet: rocks, oceans, atmosphere, climate, deep time, and the systems connecting them.",
   },
