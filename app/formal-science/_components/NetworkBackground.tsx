@@ -19,7 +19,7 @@ export default function NetworkBackground() {
     if (!ctx) return;
 
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const nodes: NetworkNode[] = Array.from({ length: 44 }, () => ({
+    const nodes: NetworkNode[] = Array.from({ length: 50 }, () => ({
       x: Math.random() * window.innerWidth,
       y: Math.random() * window.innerHeight,
       vx: (Math.random() - 0.5) * 0.12,
@@ -53,7 +53,7 @@ export default function NetworkBackground() {
         }
       }
 
-      const connectionDistance = 165;
+      const connectionDistance = 170;
       for (let i = 0; i < nodes.length; i += 1) {
         for (let j = i + 1; j < nodes.length; j += 1) {
           const first = nodes[i];
@@ -64,20 +64,20 @@ export default function NetworkBackground() {
           if (distanceSquared > connectionDistance * connectionDistance) continue;
 
           const distance = Math.sqrt(distanceSquared);
-          const alpha = (1 - distance / connectionDistance) * 0.16;
+          const alpha = (1 - distance / connectionDistance) * 0.20;
           ctx.beginPath();
           ctx.moveTo(first.x, first.y);
           ctx.lineTo(second.x, second.y);
           ctx.strokeStyle = `rgba(255,65,54,${alpha})`;
-          ctx.lineWidth = 0.7;
+          ctx.lineWidth = 0.8;
           ctx.stroke();
         }
       }
 
       for (const node of nodes) {
         ctx.beginPath();
-        ctx.arc(node.x, node.y, 1.7, 0, Math.PI * 2);
-        ctx.fillStyle = "rgba(255,98,88,0.42)";
+        ctx.arc(node.x, node.y, 1.8, 0, Math.PI * 2);
+        ctx.fillStyle = "rgba(255,98,88,0.48)";
         ctx.fill();
       }
     };
@@ -101,7 +101,7 @@ export default function NetworkBackground() {
   return (
     <canvas
       ref={canvasRef}
-      className="pointer-events-none fixed inset-0 z-0 opacity-60"
+      className="pointer-events-none fixed inset-0 z-0 opacity-75"
       aria-hidden="true"
     />
   );
