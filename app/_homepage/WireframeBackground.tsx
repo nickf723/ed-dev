@@ -1,4 +1,5 @@
 "use client";
+
 import { useEffect, useRef } from "react";
 
 export default function WireframeBackground() {
@@ -7,108 +8,122 @@ export default function WireframeBackground() {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext("2d", { alpha: true });
     if (!ctx) return;
 
-    let w = (canvas.width = window.innerWidth);
-    let h = (canvas.height = window.innerHeight);
-    let animId: number;
-    
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let width = window.innerWidth;
+    let height = window.innerHeight;
+    let frameId = 0;
+    let hidden = document.hidden;
     let angleX = 0;
     let angleY = 0;
-    
-    // Configuration
-    const r = 400; // Radius
-    const numPoints = 120; // Reduced slightly for aesthetics
-    const basePoints: {x: number, y: number, z: number}[] = [];
 
-    // Initialize Points on a Sphere (Fibonacci Sphere)
-    const phi = Math.PI * (3 - Math.sqrt(5)); 
-    for (let i = 0; i < numPoints; i++) {
-        const y = 1 - (i / (numPoints - 1)) * 2; 
-        const radius = Math.sqrt(1 - y * y);
-        const theta = phi * i;
-        const x = Math.cos(theta) * radius;
-        const z = Math.sin(theta) * radius;
-        basePoints.push({ x: x * r, y: y * r, z: z * r });
+    const radius = 340;
+    const pointCount = 104;
+    const basePoints: { x: number; y: number; z: number }[] = [];
+    const phi = Math.PI * (3 - Math.sqrt(5));
+
+    for (let i = 0; i < pointCount; i += 1) {
+      const y = 1 - (i / (pointCount - 1)) * 2;
+      const ringRadius = Math.sqrt(1 - y * y);
+      const theta = phi * i;
+      basePoints.push({
+        x: Math.cos(theta) * ringRadius * radius,
+        y: y * radius,
+        z: Math.sin(theta) * ringRadius * radius,
+      });
     }
 
-    const animate = () => {
-      ctx.clearRect(0, 0, w, h);
-      const cx = (w / 2) - 300;
-      const cy = (h / 2) + 300;
+    const resize = () => {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    };
 
-      // Pre-calculate rotated points
-      const rotatedPoints = basePoints.map(p => {
-        // Rotate Y
-        const x1 = p.x * Math.cos(angleY) - p.z * Math.sin(angleY);
-        const z1 = p.z * Math.cos(angleY) + p.x * Math.sin(angleY);
-        // Rotate X
-        const y2 = p.y * Math.cos(angleX) - z1 * Math.sin(angleX);
-        const z2 = z1 * Math.cos(angleX) + p.y * Math.sin(angleX);
+    const handleVisibility = () => {
+      hidden = document.hidden;
+    };
+
+    const draw = () => {
+      ctx.clearRect(0, 0, width, height);
+
+      // Keep the wireframe as a separate lower-right layer so it balances the
+      // honeycomb instead of disappearing underneath it.
+      const cx = width * 0.77;
+      const cy = height * 0.76;
+
+      const rotatedPoints = basePoints.map((point) => {
+        const x1 = point.x * Math.cos(angleY) - point.z * Math.sin(angleY);
+        const z1 = point.z * Math.cos(angleY) + point.x * Math.sin(angleY);
+        const y2 = point.y * Math.cos(angleX) - z1 * Math.sin(angleX);
+        const z2 = z1 * Math.cos(angleX) + point.y * Math.sin(angleX);
         return { x: x1, y: y2, z: z2 };
       });
 
-      // Draw Connections
-      ctx.lineWidth = 1;
-      ctx.strokeStyle = "rgba(100, 100, 100, 0.1)";
+      ctx.lineWidth = 0.8;
+      ctx.strokeStyle = "rgba(125,211,252,0.075)";
 
-      // We check distance between projected points to draw lines
-      // This is O(N^2) but N=80 is very fast (3200 pairs)
-      for (let i = 0; i < rotatedPoints.length; i++) {
-        const p1 = rotatedPoints[i];
-        const scale1 = 800 / (800 + p1.z);
-        const x1 = p1.x * scale1 + cx;
-        const y1 = p1.y * scale1 + cy;
+      for (let i = 0; i < rotatedPoints.length; i += 1) {
+        const first = rotatedPoints[i];
+        const firstScale = 820 / (820 + first.z);
+        const x1 = first.x * firstScale + cx;
+        const y1 = first.y * firstScale + cy;
 
-        // Draw Node
-        ctx.fillStyle = "rgba(255, 255, 255, 0.3)";
         ctx.beginPath();
-        ctx.arc(x1, y1, 2 * scale1, 0, Math.PI * 2);
+        ctx.arc(x1, y1, Math.max(0.8, 1.65 * firstScale), 0, Math.PI * 2);
+        ctx.fillStyle = "rgba(226,232,240,0.16)";
         ctx.fill();
 
-        for (let j = i + 1; j < rotatedPoints.length; j++) {
-            const p2 = rotatedPoints[j];
-            
-            // 3D Distance check (connect neighbors on the sphere)
-            const d3 = Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2) + Math.pow(p1.z - p2.z, 2));
+        for (let j = i + 1; j < rotatedPoints.length; j += 1) {
+          const second = rotatedPoints[j];
+          const dx = first.x - second.x;
+          const dy = first.y - second.y;
+          const dz = first.z - second.z;
+          const distanceSquared = dx * dx + dy * dy + dz * dz;
 
-            if (d3 < 150) { // Connection threshold
-                const scale2 = 800 / (800 + p2.z);
-                const x2 = p2.x * scale2 + cx;
-                const y2 = p2.y * scale2 + cy;
+          if (distanceSquared >= 155 * 155) continue;
 
-                ctx.beginPath();
-                ctx.moveTo(x1, y1);
-                ctx.lineTo(x2, y2);
-                ctx.stroke();
-            }
+          const secondScale = 820 / (820 + second.z);
+          const x2 = second.x * secondScale + cx;
+          const y2 = second.y * secondScale + cy;
+
+          ctx.beginPath();
+          ctx.moveTo(x1, y1);
+          ctx.lineTo(x2, y2);
+          ctx.stroke();
         }
       }
 
-      angleY += 0.001;
-      angleX += 0.0005;
-      animId = requestAnimationFrame(animate);
+      if (!reducedMotion.matches) {
+        angleY += 0.0008;
+        angleX += 0.00035;
+      }
     };
 
-    animate();
-
-    const handleResize = () => {
-      w = canvas.width = window.innerWidth;
-      h = canvas.height = window.innerHeight;
+    const animate = () => {
+      if (!hidden) draw();
+      frameId = requestAnimationFrame(animate);
     };
 
-    window.addEventListener("resize", handleResize);
+    resize();
+    if (reducedMotion.matches) draw();
+    else animate();
+
+    window.addEventListener("resize", resize);
+    document.addEventListener("visibilitychange", handleVisibility);
+
     return () => {
-        window.removeEventListener("resize", handleResize);
-        cancelAnimationFrame(animId);
+      window.removeEventListener("resize", resize);
+      document.removeEventListener("visibilitychange", handleVisibility);
+      cancelAnimationFrame(frameId);
     };
   }, []);
 
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 pointer-events-none z-0"
+      className="pointer-events-none fixed inset-0 z-0 opacity-75"
+      aria-hidden="true"
     />
   );
 }
