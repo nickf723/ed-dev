@@ -33,10 +33,10 @@ export const DOMAINS: DomainDefinition[] = [
     title: "Formal Sciences",
     navLabel: "Formal Science",
     subtitle: "Structure & Proof",
-    description: "Abstract systems of mathematics, logic, information, and computation.",
+    description: "Abstract systems of mathematics, logic, computation, information, data, and systems.",
     href: "/formal-science",
     icon: Sigma,
-    tags: ["Mathematics", "Logic", "Computation", "Systems"],
+    tags: ["Mathematics", "Logic", "Computation", "Information", "Data", "Systems"],
     theme: {
       rgb: "255, 65, 54",
       text: "text-[#ff6258]",
