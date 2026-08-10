@@ -14,7 +14,7 @@ import {
 } from "lucide-react";
 import XRayConsole from "@/app/_components/XRayConsole";
 import { DOMAIN_BY_ID, getDomainForPath, type DomainId } from "@/lib/domains";
-import { NAVIGATION_DATA } from "@/lib/navigation";
+import { NAVIGATION_DATA, type NavigationItem } from "@/lib/navigation";
 
 const utilityThemes = {
   meta: "text-neutral-200 border-white/20 bg-white/5",
@@ -30,6 +30,8 @@ type SidebarProps = {
   isCollapsed: boolean;
   onCollapsedChange: (collapsed: boolean) => void;
 };
+
+type SidebarDomain = DomainId | "meta" | "home";
 
 export default function Sidebar({ isCollapsed, onCollapsedChange }: SidebarProps) {
   const pathname = usePathname();
@@ -155,13 +157,13 @@ function NavItem({
   depth = 0,
   parentDomain,
 }: {
-  item: any;
+  item: NavigationItem;
   currentPath: string;
   isCollapsed: boolean;
   depth?: number;
-  parentDomain?: string;
+  parentDomain?: SidebarDomain;
 }) {
-  const itemDomain = item.domain || parentDomain || getDomainForPath(item.href)?.id || "home";
+  const itemDomain: SidebarDomain = item.domain || parentDomain || getDomainForPath(item.href)?.id || "home";
   const isExactMatch = currentPath === item.href;
   const isChildActive = currentPath.startsWith(item.href + "/") && currentPath !== item.href;
   const isActive = isExactMatch || isChildActive;
@@ -238,7 +240,7 @@ function NavItem({
             <div
               className={`${isTopLevel ? "ml-4 pl-3 border-l border-white/10" : "ml-2 pl-2 border-l border-white/5"} py-1 space-y-0.5 mt-1`}
             >
-              {item.children.map((child: any) => (
+              {item.children.map((child) => (
                 <NavItem
                   key={child.href}
                   item={child}
