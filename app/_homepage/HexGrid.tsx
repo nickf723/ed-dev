@@ -6,12 +6,19 @@ import { ArrowRight, LayoutGrid } from "lucide-react";
 import { DOMAINS, type DomainDefinition } from "@/lib/domains";
 
 const HEX_POSITIONS = [
-  { x: -7.5, y: -11.8 },
-  { x: 7.5, y: -11.8 },
-  { x: 15, y: 0 },
-  { x: 7.5, y: 11.8 },
-  { x: -7.5, y: 11.8 },
-  { x: -15, y: 0 },
+  { x: -10, y: -15.5 },
+  { x: 10, y: -15.5 },
+  { x: 20, y: 0 },
+  { x: 10, y: 15.5 },
+  { x: -10, y: 15.5 },
+  { x: -20, y: 0 },
+] as const;
+
+const GHOST_POSITIONS = [
+  { x: -30, y: -15.5 },
+  { x: 30, y: -15.5 },
+  { x: -30, y: 15.5 },
+  { x: 30, y: 15.5 },
 ] as const;
 
 export default function HexGrid() {
@@ -19,16 +26,20 @@ export default function HexGrid() {
 
   return (
     <div className="w-full">
-      <div className="hidden min-h-[680px] w-full items-center justify-center lg:flex">
-        <div className="relative flex h-0 w-0 items-center justify-center">
+      <div className="hidden w-full items-center justify-center lg:flex">
+        <div
+          className="relative mx-auto h-[720px] w-full max-w-[1180px]"
+          onMouseLeave={() => setActive(null)}
+        >
           <CenterNode active={active} />
 
           {DOMAINS.map((domain, index) => (
             <div
               key={domain.id}
-              className="absolute"
+              className="absolute left-1/2 top-1/2"
               style={{
-                transform: `translate(${HEX_POSITIONS[index].x}rem, ${HEX_POSITIONS[index].y}rem)`,
+                marginLeft: `${HEX_POSITIONS[index].x}rem`,
+                marginTop: `${HEX_POSITIONS[index].y}rem`,
               }}
             >
               <DomainHex
@@ -37,6 +48,10 @@ export default function HexGrid() {
                 onActivate={() => setActive(domain)}
               />
             </div>
+          ))}
+
+          {GHOST_POSITIONS.map((position, index) => (
+            <GhostHex key={`${position.x}-${position.y}-${index}`} x={position.x} y={position.y} />
           ))}
         </div>
       </div>
@@ -88,12 +103,12 @@ function CenterNode({ active }: { active: DomainDefinition | null }) {
 
   return (
     <section
-      className="absolute z-40 flex h-64 w-64 -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-full border bg-black/80 p-7 text-center shadow-[0_0_100px_rgba(0,0,0,0.72)] backdrop-blur-2xl transition-all duration-300"
+      className="absolute left-1/2 top-1/2 z-40 flex h-72 w-72 -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-full border bg-black/75 p-8 text-center shadow-[0_0_110px_rgba(0,0,0,0.72)] backdrop-blur-2xl transition-all duration-300"
       style={{
-        borderColor: active ? `rgba(${active.theme.rgb},0.34)` : "rgba(255,255,255,0.10)",
+        borderColor: active ? `rgba(${active.theme.rgb},0.38)` : "rgba(255,255,255,0.10)",
         boxShadow: active
-          ? `0 0 80px rgba(${active.theme.rgb},0.10), 0 28px 90px rgba(0,0,0,0.56)`
-          : "0 28px 90px rgba(0,0,0,0.56)",
+          ? `0 0 92px rgba(${active.theme.rgb},0.12), 0 30px 100px rgba(0,0,0,0.58)`
+          : "0 30px 100px rgba(0,0,0,0.58)",
       }}
     >
       {active && ActiveIcon ? (
@@ -102,21 +117,21 @@ function CenterNode({ active }: { active: DomainDefinition | null }) {
             className="flex h-12 w-12 items-center justify-center rounded-2xl border"
             style={{
               color: `rgb(${active.theme.rgb})`,
-              borderColor: `rgba(${active.theme.rgb},0.34)`,
-              background: `rgba(${active.theme.rgb},0.08)`,
+              borderColor: `rgba(${active.theme.rgb},0.38)`,
+              background: `rgba(${active.theme.rgb},0.09)`,
             }}
           >
             <ActiveIcon size={23} />
           </span>
-          <h2 className="mt-4 text-xl font-semibold tracking-[-0.03em] text-white">{active.title}</h2>
-          <p className="mt-2 max-w-[190px] text-[10px] leading-4 text-slate-400">{active.description}</p>
+          <h2 className="mt-4 text-2xl font-semibold tracking-[-0.035em] text-white">{active.title}</h2>
+          <p className="mt-3 max-w-[210px] text-[11px] leading-5 text-slate-400">{active.description}</p>
           <Link
             href={active.href}
-            className="mt-4 inline-flex items-center gap-2 rounded-full border px-4 py-2 text-[10px] font-semibold transition-all hover:brightness-125"
+            className="mt-5 inline-flex items-center gap-2 rounded-full border px-4 py-2 text-[10px] font-semibold transition-all hover:brightness-125"
             style={{
               color: `rgb(${active.theme.rgb})`,
-              borderColor: `rgba(${active.theme.rgb},0.40)`,
-              background: `rgba(${active.theme.rgb},0.09)`,
+              borderColor: `rgba(${active.theme.rgb},0.42)`,
+              background: `rgba(${active.theme.rgb},0.10)`,
             }}
           >
             Explore <ArrowRight size={12} />
@@ -127,8 +142,8 @@ function CenterNode({ active }: { active: DomainDefinition | null }) {
           <span className="flex h-12 w-12 items-center justify-center rounded-2xl border border-cyan-300/20 bg-cyan-300/[0.06] text-cyan-200/80">
             <LayoutGrid size={22} />
           </span>
-          <div className="mt-4 text-lg font-semibold tracking-[-0.02em] text-white">Education Station 64</div>
-          <p className="mt-2 text-[10px] leading-4 text-slate-500">Choose one of the six fields to explore.</p>
+          <div className="mt-4 text-xl font-semibold tracking-[-0.025em] text-white">Education Station 64</div>
+          <p className="mt-2 max-w-[190px] text-[11px] leading-5 text-slate-500">Choose a field to explore.</p>
         </>
       )}
     </section>
@@ -151,15 +166,15 @@ function DomainHex({
       href={domain.href}
       onMouseEnter={onActivate}
       onFocus={onActivate}
-      className="group relative block h-52 w-44 -translate-x-1/2 -translate-y-1/2 outline-none"
+      className="group relative block h-56 w-48 -translate-x-1/2 -translate-y-1/2 outline-none"
       aria-label={`Explore ${domain.title}`}
     >
       <div
-        className="absolute inset-0 transition-all duration-300 group-hover:scale-[1.035] group-focus-visible:scale-[1.035]"
+        className="absolute inset-0 transition-all duration-300 group-hover:scale-[1.045] group-focus-visible:scale-[1.045]"
         style={{
           clipPath: "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)",
-          background: active ? `rgba(${domain.theme.rgb},0.52)` : `rgba(${domain.theme.rgb},0.18)`,
-          filter: active ? `drop-shadow(0 0 24px rgba(${domain.theme.rgb},0.24))` : undefined,
+          background: active ? `rgba(${domain.theme.rgb},0.62)` : `rgba(${domain.theme.rgb},0.22)`,
+          filter: active ? `drop-shadow(0 0 28px rgba(${domain.theme.rgb},0.28))` : undefined,
         }}
       >
         <div
@@ -167,21 +182,21 @@ function DomainHex({
           style={{
             clipPath: "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)",
             background: active
-              ? `linear-gradient(145deg, rgba(${domain.theme.rgb},0.22), rgba(4,7,12,0.90))`
-              : "linear-gradient(145deg, rgba(12,16,24,0.86), rgba(4,7,12,0.90))",
+              ? `linear-gradient(145deg, rgba(${domain.theme.rgb},0.27), rgba(4,7,12,0.88))`
+              : "linear-gradient(145deg, rgba(14,18,28,0.83), rgba(4,7,12,0.88))",
           }}
         />
 
         <div className="relative flex h-full flex-col items-center justify-center px-5 text-center">
           <span
-            className="flex h-11 w-11 items-center justify-center rounded-2xl border transition-all"
+            className="flex h-12 w-12 items-center justify-center rounded-2xl border transition-all"
             style={{
               color: active ? `rgb(${domain.theme.rgb})` : "rgb(100 116 139)",
-              borderColor: active ? `rgba(${domain.theme.rgb},0.38)` : "rgba(255,255,255,0.08)",
-              background: active ? `rgba(${domain.theme.rgb},0.09)` : "rgba(255,255,255,0.025)",
+              borderColor: active ? `rgba(${domain.theme.rgb},0.42)` : "rgba(255,255,255,0.09)",
+              background: active ? `rgba(${domain.theme.rgb},0.10)` : "rgba(255,255,255,0.03)",
             }}
           >
-            <Icon size={21} />
+            <Icon size={22} />
           </span>
           <strong className={`mt-4 text-sm font-semibold leading-4 ${active ? "text-white" : "text-slate-400"}`}>
             {domain.title}
@@ -189,5 +204,24 @@ function DomainHex({
         </div>
       </div>
     </Link>
+  );
+}
+
+function GhostHex({ x, y }: { x: number; y: number }) {
+  return (
+    <div
+      aria-hidden="true"
+      className="pointer-events-none absolute left-1/2 top-1/2 h-44 w-36 -translate-x-1/2 -translate-y-1/2 opacity-[0.13]"
+      style={{ marginLeft: `${x}rem`, marginTop: `${y}rem` }}
+    >
+      <div
+        className="absolute inset-0 bg-slate-500/25"
+        style={{ clipPath: "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)" }}
+      />
+      <div
+        className="absolute inset-[1px] bg-[#050811]/90"
+        style={{ clipPath: "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)" }}
+      />
+    </div>
   );
 }
