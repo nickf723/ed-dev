@@ -6,7 +6,6 @@ import {
   ArrowRight,
   Atom,
   Bug,
-  ChevronRight,
   Dna,
   Globe2,
   HeartPulse,
@@ -17,6 +16,7 @@ import {
   Sprout,
   type LucideIcon,
 } from "lucide-react";
+import DomainPageHeader from "@/app/_components/DomainPageHeader";
 import DnaBackground from "../DnaBackground";
 
 export type BiologyHubNode = {
@@ -203,35 +203,20 @@ export default function BiologyHub({ nodes }: { nodes: readonly BiologyHubNode[]
       <div className="pointer-events-none fixed inset-0 z-0 opacity-12 [background-image:radial-gradient(circle_at_center,rgba(187,247,208,0.18)_1px,transparent_1px)] [background-size:42px_42px] [mask-image:linear-gradient(to_bottom,black,transparent_85%)]" />
 
       <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-[1500px] flex-col px-4 py-4 sm:px-6 lg:px-8 lg:py-5">
-        <header className="shrink-0 border-b border-emerald-200/10 pb-5">
-          <div className="flex items-center justify-between gap-4">
-            <div className="flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.18em] text-emerald-200/55">
-              <Dna size={12} /> Natural Sciences · Biology
-            </div>
-
-            <nav aria-label="Breadcrumb" className="flex items-center gap-2 rounded-full border border-white/[0.07] bg-black/15 px-3 py-2 font-mono text-[9px] uppercase tracking-[0.13em] text-slate-500 backdrop-blur-lg">
-              <Link href="/" className="transition-colors hover:text-emerald-200">Knowledge map</Link>
-              <ChevronRight size={11} className="text-slate-700" />
-              <Link href="/natural-science" className="transition-colors hover:text-emerald-200">Natural Sciences</Link>
-              <ChevronRight size={11} className="text-slate-700" />
-              <span className="text-green-300">Biology</span>
-            </nav>
-          </div>
-
-          <div className="mt-4 flex items-center gap-5 sm:gap-6">
-            <div className="hidden h-16 w-16 shrink-0 items-center justify-center rounded-[22px] border border-green-300/25 bg-green-400/10 text-green-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_0_35px_rgba(34,197,94,0.12)] sm:flex">
-              <Dna size={31} strokeWidth={1.55} />
-            </div>
-            <div className="min-w-0 flex-1">
-              <h1 className="text-[clamp(3.4rem,6vw,6.2rem)] font-semibold leading-[0.86] tracking-[-0.06em] text-[#f5fff7] drop-shadow-[0_0_28px_rgba(34,197,94,0.11)]">
-                Biology
-              </h1>
-              <p className="mt-4 max-w-3xl text-sm leading-6 text-stone-400 sm:text-base">
-                How living things are built, function, diversify, interact, and change.
-              </p>
-            </div>
-
-            <aside className="hidden max-w-[300px] text-right xl:block">
+        <DomainPageHeader
+          breadcrumbs={[
+            { label: "Home", href: "/" },
+            { label: "Natural Sciences", href: "/natural-science" },
+            { label: "Biology" },
+          ]}
+          eyebrow="Living Systems"
+          icon={Dna}
+          accentRgb="34, 197, 94"
+          title="Biology"
+          titleClassName="text-[clamp(3.4rem,6vw,6.2rem)] font-semibold leading-[0.86] tracking-[-0.06em] text-[#f5fff7] drop-shadow-[0_0_28px_rgba(34,197,94,0.11)]"
+          subtitle="How living things are built, function, diversify, interact, and change."
+          aside={
+            <div className="max-w-[300px] text-right">
               <div className="font-mono text-[8px] uppercase tracking-[0.17em] text-green-300/55">Core themes</div>
               <div className="mt-2 flex flex-wrap justify-end gap-1.5">
                 {CORE_THEMES.map((theme) => (
@@ -243,9 +228,9 @@ export default function BiologyHub({ nodes }: { nodes: readonly BiologyHubNode[]
                   </span>
                 ))}
               </div>
-            </aside>
-          </div>
-        </header>
+            </div>
+          }
+        />
 
         <section className="mt-4 grid flex-1 gap-4 lg:grid-cols-3">
           {groups.map((group) => (
