@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState, type LucideIcon } from "react";
+import { useMemo, useState } from "react";
 import {
   ArrowLeft,
   ArrowRight,
@@ -13,6 +13,7 @@ import {
   Orbit,
   Sparkles,
   Telescope,
+  type LucideIcon,
 } from "lucide-react";
 import { curriculumRegistry } from "@/lib/curriculum/registry";
 import type { CurriculumNode } from "@/lib/curriculum/types";
@@ -179,7 +180,7 @@ export default function ScaleOfNature() {
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_25%_0%,rgba(52,211,153,0.10),transparent_28%),radial-gradient(circle_at_80%_100%,rgba(34,211,238,0.08),transparent_28%)]" />
 
           <div className="relative grid min-h-[720px] lg:grid-cols-[0.92fr_1.45fr]">
-            <div className="flex flex-col justify-between border-b border-white/8 p-6 sm:p-8 lg:border-b-0 lg:border-r lg:p-10">
+            <div className="flex flex-col justify-between border-b border-white/[0.08] p-6 sm:p-8 lg:border-b-0 lg:border-r lg:p-10">
               <div>
                 <div className="mb-5 flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.2em] text-emerald-200/55">
                   <Microscope size={13} /> Domain // Natural Sciences
@@ -204,7 +205,7 @@ export default function ScaleOfNature() {
                     <Orbit size={22} />
                   </div>
                 </div>
-                <div className="mt-5 border-t border-white/8 pt-4">
+                <div className="mt-5 border-t border-white/[0.08] pt-4">
                   <strong className="text-sm font-semibold text-emerald-100">{activeBand.label}</strong>
                   <p className="mt-1 text-xs leading-5 text-slate-500">{activeBand.detail}</p>
                 </div>
@@ -220,7 +221,7 @@ export default function ScaleOfNature() {
                       style={{ background: active.glow }}
                     />
                     <div className="absolute h-52 w-52 rounded-full border border-white/10" />
-                    <div className="absolute h-40 w-40 rounded-full border border-white/8" />
+                    <div className="absolute h-40 w-40 rounded-full border border-white/[0.08]" />
                     <div className="absolute h-28 w-28 rounded-full border border-white/10 bg-black/35 shadow-[inset_0_0_35px_rgba(0,0,0,0.6)]" />
                     <ActiveIcon size={56} strokeWidth={1.25} className={`relative z-10 drop-shadow-[0_0_20px_currentColor] ${active.accent}`} />
                     <div className="absolute bottom-4 left-4 rounded-lg border border-white/10 bg-black/35 px-3 py-2 font-mono text-[9px] uppercase tracking-[0.16em] text-slate-500 backdrop-blur-lg">
@@ -243,7 +244,7 @@ export default function ScaleOfNature() {
                   </div>
                 </div>
 
-                <div className="mt-8 border-t border-white/8 pt-7">
+                <div className="mt-8 border-t border-white/[0.08] pt-7">
                   <div className="mb-4 flex items-center justify-between font-mono text-[9px] uppercase tracking-[0.18em] text-slate-600">
                     <span>10⁻³⁰ m // micro</span>
                     <span>drag magnitude</span>
@@ -301,7 +302,7 @@ export default function ScaleOfNature() {
                       type="button"
                       key={entry.id}
                       onClick={() => jumpTo(entry)}
-                      className={`rounded-xl border p-3 text-left transition-all ${selected ? `${entry.border} bg-white/8` : "border-white/8 bg-black/15 hover:border-white/15 hover:bg-white/5"}`}
+                      className={`rounded-xl border p-3 text-left transition-all ${selected ? `${entry.border} bg-white/[0.08]` : "border-white/[0.08] bg-black/15 hover:border-white/15 hover:bg-white/5"}`}
                     >
                       <Icon size={15} className={selected ? entry.accent : "text-slate-600"} />
                       <div className="mt-3 text-xs font-semibold text-slate-200">{entry.label}</div>
@@ -321,7 +322,7 @@ export default function ScaleOfNature() {
             </div>
             <div className="mt-5 grid gap-3 sm:grid-cols-4">
               {["Observe", "Hypothesize", "Test", "Revise"].map((step, index) => (
-                <div key={step} className="rounded-xl border border-white/8 bg-white/[0.025] p-4">
+                <div key={step} className="rounded-xl border border-white/[0.08] bg-white/[0.025] p-4">
                   <span className="font-mono text-[9px] text-emerald-300/50">0{index + 1}</span>
                   <div className="mt-2 text-sm font-semibold text-slate-200">{step}</div>
                 </div>
