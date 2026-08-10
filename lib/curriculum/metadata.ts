@@ -26,4 +26,19 @@ export const CURRICULUM_NODE_METADATA: Record<string, CurriculumNodeMetadata> = 
   "formal.systems-science": {
     description: "Complex systems, feedback, behavior, and dynamics.",
   },
+  "natural.physics": {
+    description: "Matter, energy, motion, forces, fields, and the physical laws that constrain every scale of nature.",
+  },
+  "natural.chemistry": {
+    description: "Atoms, molecules, bonds, reactions, and the transformations that emerge when matter interacts.",
+  },
+  "natural.biology": {
+    description: "Living systems from molecular machinery and cells to organisms, evolution, and ecosystems.",
+  },
+  "natural.earth-science": {
+    description: "The dynamic planet: rocks, oceans, atmosphere, climate, deep time, and the systems connecting them.",
+  },
+  "natural.astronomy": {
+    description: "Planets, stars, galaxies, cosmic history, and the large-scale structure of the observable universe.",
+  },
 };
