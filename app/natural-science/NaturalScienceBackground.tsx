@@ -6,11 +6,11 @@ interface Props {
 }
 
 const THEMES: Record<string, { r: number; g: number; b: number; shape: string; count: number; speed: number }> = {
-  astronomy: { r: 255, g: 255, b: 255, shape: "circle", count: 150, speed: 0.3 },
-  biology: { r: 16, g: 185, b: 129, shape: "ring", count: 45, speed: 0.6 },
-  physics: { r: 59, g: 130, b: 246, shape: "square", count: 75, speed: 1.0 },
-  chemistry: { r: 6, g: 182, b: 212, shape: "hexagon", count: 60, speed: 0.8 },
-  "earth-science": { r: 249, g: 115, b: 22, shape: "triangle", count: 80, speed: 0.4 },
+  astronomy: { r: 168, g: 85, b: 247, shape: "circle", count: 150, speed: 0.3 },
+  "earth-science": { r: 59, g: 130, b: 246, shape: "triangle", count: 80, speed: 0.4 },
+  biology: { r: 34, g: 197, b: 94, shape: "ring", count: 45, speed: 0.6 },
+  chemistry: { r: 250, g: 204, b: 21, shape: "hexagon", count: 60, speed: 0.8 },
+  physics: { r: 239, g: 68, b: 68, shape: "square", count: 75, speed: 1.0 },
 };
 
 class Particle {
@@ -82,9 +82,9 @@ export function NaturalScienceBackground({ activeId }: Props) {
         const actorCount = reducedMotion.matches ? Math.min(theme.count, 24) : theme.count;
         const speed = reducedMotion.matches ? theme.speed * 0.12 : theme.speed;
 
-        ctx.fillStyle = `rgba(${theme.r}, ${theme.g}, ${theme.b}, 0.6)`;
-        ctx.strokeStyle = `rgba(${theme.r}, ${theme.g}, ${theme.b}, 0.8)`;
-        ctx.lineWidth = 1.5;
+        ctx.fillStyle = `rgba(${theme.r}, ${theme.g}, ${theme.b}, 0.72)`;
+        ctx.strokeStyle = `rgba(${theme.r}, ${theme.g}, ${theme.b}, 0.90)`;
+        ctx.lineWidth = 1.6;
 
         for (let i = 0; i < actorCount; i++) {
           const actor = actors[i];
@@ -126,7 +126,7 @@ export function NaturalScienceBackground({ activeId }: Props) {
 
               if (distance < 120) {
                 ctx.beginPath();
-                ctx.strokeStyle = `rgba(${theme.r}, ${theme.g}, ${theme.b}, ${0.4 * (1 - distance / 120)})`;
+                ctx.strokeStyle = `rgba(${theme.r}, ${theme.g}, ${theme.b}, ${0.5 * (1 - distance / 120)})`;
                 ctx.moveTo(actors[i].x, actors[i].y);
                 ctx.lineTo(actors[j].x, actors[j].y);
                 ctx.stroke();
@@ -155,10 +155,10 @@ export function NaturalScienceBackground({ activeId }: Props) {
       <div
         className="absolute inset-0 transition-colors duration-1000"
         style={{
-          background: `radial-gradient(circle at center, rgba(${currentTheme.r},${currentTheme.g},${currentTheme.b}, 0.15) 0%, rgba(0,0,0,1) 100%)`,
+          background: `radial-gradient(circle at 52% 46%, rgba(${currentTheme.r},${currentTheme.g},${currentTheme.b}, 0.24) 0%, rgba(${currentTheme.r},${currentTheme.g},${currentTheme.b}, 0.06) 34%, rgba(0,0,0,0.97) 78%)`,
         }}
       />
-      <canvas ref={canvasRef} className="absolute inset-0 opacity-80 mix-blend-screen" />
+      <canvas ref={canvasRef} className="absolute inset-0 opacity-90 mix-blend-screen" />
     </div>
   );
 }
