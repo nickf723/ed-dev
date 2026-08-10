@@ -12,6 +12,18 @@ function flatten(nodes: readonly CurriculumNode[]): CurriculumNode[] {
 const nodes = CURRICULUM_DOMAINS.flatMap((domain) => flatten(domain.children));
 const byId = new Map(nodes.map((node) => [node.id, node]));
 const byHref = new Map(nodes.map((node) => [node.href, node]));
+const parentById = new Map<string, CurriculumNode>();
+
+function indexParents(parent: CurriculumNode) {
+  for (const child of parent.children ?? []) {
+    parentById.set(child.id, parent);
+    indexParents(child);
+  }
+}
+
+for (const domain of CURRICULUM_DOMAINS) {
+  for (const root of domain.children) indexParents(root);
+}
 
 function assertUnique(values: readonly string[], label: string) {
   const seen = new Set<string>();
@@ -77,6 +89,10 @@ export const curriculumRegistry = {
 
   getNodeByHref(href: string): CurriculumNode | undefined {
     return byHref.get(href);
+  },
+
+  parentFor(id: string): CurriculumNode | undefined {
+    return parentById.get(id);
   },
 
   prerequisitesFor(id: string): readonly CurriculumNode[] {
