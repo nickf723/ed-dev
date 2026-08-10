@@ -15,7 +15,7 @@ import { earthScienceVocab } from "./e/earth-science";
 import { computerScienceVocab } from "./c/computer-science";
 import { physicsVocab } from "./p/physics";
 import { chemistryVocab } from "./c/chemistry";
-import { biologyVocab } from "./b/biology";
+import { biologyVocab } from "./natural-science/biology";
 import { astronomyVocab } from "./a/astronomy";
 import { psychologyVocab } from "./p/psychology";
 import { sociologyVocab } from "./s/sociology";
