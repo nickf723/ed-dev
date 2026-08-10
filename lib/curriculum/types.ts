@@ -16,6 +16,7 @@ export type CurriculumNode = {
   label: string;
   href: string;
   domainId: DomainId;
+  description?: string;
   status?: CurriculumNodeStatus;
   prerequisiteIds?: readonly string[];
   children?: readonly CurriculumNode[];
