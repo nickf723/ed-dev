@@ -1,5 +1,20 @@
 "use client";
+
 import { useEffect, useRef } from "react";
+import { DOMAINS } from "@/lib/domains";
+
+const DOMAIN_COLORS = DOMAINS.map((domain) =>
+  domain.theme.rgb.split(",").map((value) => Number(value.trim())),
+);
+
+type Particle = {
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+  radius: number;
+  colorIndex: number;
+};
 
 export default function NetworkBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -7,175 +22,101 @@ export default function NetworkBackground() {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext("2d", { alpha: true });
     if (!ctx) return;
 
-    let w = (canvas.width = window.innerWidth);
-    let h = (canvas.height = window.innerHeight);
-    
-    const particleCount = 600; 
-    const connectionDist = 180;
-    const mouse = { x: w/2, y: h/2 };
-    
-    const colors = ["#22d3ee", "#a78bfa", "#f472b6", "#34d399", "#fbbf24"];
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const particles: Particle[] = Array.from({ length: 96 }, (_, index) => ({
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * window.innerHeight,
+      vx: (Math.random() - 0.5) * 0.16,
+      vy: (Math.random() - 0.5) * 0.16,
+      radius: 0.7 + Math.random() * 1.5,
+      colorIndex: index % DOMAIN_COLORS.length,
+    }));
 
-    // --- OBJECTS ---
-    class Particle {
-      x: number;
-      y: number;
-      vx: number;
-      vy: number;
-      size: number;
-      color: string;
-      neighbors: Particle[]; // Store connected neighbors
+    let width = window.innerWidth;
+    let height = window.innerHeight;
+    let frameId = 0;
 
-      constructor() {
-        this.x = Math.random() * w;
-        this.y = Math.random() * h;
-        this.vx = Math.random() * 0.4 - 0.2;
-        this.vy = Math.random() * 0.4 - 0.2;
-        this.size = Math.random() * 2 + 1;
-        this.color = colors[Math.floor(Math.random() * colors.length)];
-        this.neighbors = [];
-      }
-
-      update() {
-        this.x += this.vx;
-        this.y += this.vy;
-        if (this.x < 0 || this.x > w) this.vx *= -1;
-        if (this.y < 0 || this.y > h) this.vy *= -1;
-        this.neighbors = []; // Reset neighbors per frame
-      }
-
-      draw(alpha: number) {
-        if (!ctx) return;
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fillStyle = this.color;
-        ctx.globalAlpha = alpha;
-        ctx.fill();
-        ctx.globalAlpha = 1;
-      }
-    }
-
-    class Packet {
-      start: Particle;
-      end: Particle;
-      progress: number;
-      speed: number;
-      active: boolean;
-
-      constructor(start: Particle, end: Particle) {
-        this.start = start;
-        this.end = end;
-        this.progress = 0;
-        this.speed = Math.random() * 0.02 + 0.01;
-        this.active = true;
-      }
-
-      update() {
-        this.progress += this.speed;
-        if (this.progress >= 1) this.active = false;
-      }
-
-      draw() {
-        if (!ctx) return;
-        const x = this.start.x + (this.end.x - this.start.x) * this.progress;
-        const y = this.start.y + (this.end.y - this.start.y) * this.progress;
-        
-        ctx.beginPath();
-        ctx.arc(x, y, 2, 0, Math.PI*2);
-        ctx.fillStyle = "#fff";
-        ctx.shadowBlur = 5;
-        ctx.shadowColor = "#fff";
-        ctx.fill();
-        ctx.shadowBlur = 0;
-      }
-    }
-
-    const particles: Particle[] = [];
-    for (let i = 0; i < particleCount; i++) particles.push(new Particle());
-    
-    let packets: Packet[] = [];
-
-    // --- ANIMATION ---
-    const animate = () => {
-      ctx.clearRect(0, 0, w, h);
-
-      // 1. Update Particles
-      particles.forEach(p => {
-        p.update();
-        // Calc Alpha based on mouse distance
-        const dx = p.x - mouse.x;
-        const dy = p.y - mouse.y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        const lightRadius = 400;
-        const alpha = dist < lightRadius ? 0.1 + (1 - dist / lightRadius) * 0.9 : 0.1;
-        
-        p.draw(alpha);
-        
-        // Identify Neighbors
-        if (alpha > 0.2) {
-             for (const other of particles) {
-                 if (p === other) continue;
-                 const d = Math.hypot(p.x - other.x, p.y - other.y);
-                 if (d < connectionDist) {
-                     p.neighbors.push(other);
-                     
-                     // Draw Line
-                     ctx.beginPath();
-                     ctx.strokeStyle = "rgba(255,255,255,0.1)";
-                     ctx.lineWidth = 0.2;
-                     ctx.globalAlpha = Math.min(alpha, 1 - d/connectionDist);
-                     ctx.moveTo(p.x, p.y);
-                     ctx.lineTo(other.x, other.y);
-                     ctx.stroke();
-                     ctx.globalAlpha = 1;
-                 }
-             }
-        }
-      });
-
-      // 2. Spawn Packets randomly
-      if (packets.length < 10 && Math.random() > 0.95) {
-          // Find a visible particle with neighbors
-          const activeParticles = particles.filter(p => p.neighbors.length > 0);
-          if (activeParticles.length > 0) {
-              const start = activeParticles[Math.floor(Math.random() * activeParticles.length)];
-              const end = start.neighbors[Math.floor(Math.random() * start.neighbors.length)];
-              packets.push(new Packet(start, end));
-          }
-      }
-
-      // 3. Update & Draw Packets
-      for (let i = packets.length - 1; i >= 0; i--) {
-          const p = packets[i];
-          p.update();
-          p.draw();
-          if (!p.active) packets.splice(i, 1);
-      }
-
-      requestAnimationFrame(animate);
+    const resize = () => {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.round(width * dpr);
+      canvas.height = Math.round(height * dpr);
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     };
 
-    const anim = requestAnimationFrame(animate);
-    const handleResize = () => { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; };
-    const handleMouseMove = (e: MouseEvent) => { mouse.x = e.clientX; mouse.y = e.clientY; };
+    const draw = () => {
+      ctx.clearRect(0, 0, width, height);
+      const shouldMove = !reducedMotion.matches;
 
-    window.addEventListener("resize", handleResize);
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => { 
-        window.removeEventListener("resize", handleResize); 
-        window.removeEventListener("mousemove", handleMouseMove); 
-        cancelAnimationFrame(anim);
+      for (const particle of particles) {
+        if (shouldMove) {
+          particle.x += particle.vx;
+          particle.y += particle.vy;
+
+          if (particle.x < -20) particle.x = width + 20;
+          if (particle.x > width + 20) particle.x = -20;
+          if (particle.y < -20) particle.y = height + 20;
+          if (particle.y > height + 20) particle.y = -20;
+        }
+
+        const [r, g, b] = DOMAIN_COLORS[particle.colorIndex];
+        ctx.beginPath();
+        ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${r},${g},${b},0.34)`;
+        ctx.fill();
+      }
+
+      const connectionDistance = 130;
+      for (let i = 0; i < particles.length; i += 1) {
+        for (let j = i + 1; j < particles.length; j += 1) {
+          const first = particles[i];
+          const second = particles[j];
+          const dx = first.x - second.x;
+          const dy = first.y - second.y;
+          const distanceSquared = dx * dx + dy * dy;
+
+          if (distanceSquared > connectionDistance * connectionDistance) continue;
+
+          const distance = Math.sqrt(distanceSquared);
+          const alpha = (1 - distance / connectionDistance) * 0.075;
+          ctx.beginPath();
+          ctx.moveTo(first.x, first.y);
+          ctx.lineTo(second.x, second.y);
+          ctx.strokeStyle = `rgba(203,213,225,${alpha})`;
+          ctx.lineWidth = 0.7;
+          ctx.stroke();
+        }
+      }
+    };
+
+    const animate = () => {
+      draw();
+      frameId = requestAnimationFrame(animate);
+    };
+
+    resize();
+    if (reducedMotion.matches) draw();
+    else animate();
+
+    window.addEventListener("resize", resize);
+
+    return () => {
+      window.removeEventListener("resize", resize);
+      cancelAnimationFrame(frameId);
     };
   }, []);
 
   return (
-    <>
-        <canvas ref={canvasRef} className="fixed inset-0 pointer-events-none z-0" />
-        <div className="hd-vignette" />
-        <div className="hd-noise" />
-    </>
+    <canvas
+      ref={canvasRef}
+      className="pointer-events-none fixed inset-0 z-0 opacity-70"
+      aria-hidden="true"
+    />
   );
 }
