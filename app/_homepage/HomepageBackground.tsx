@@ -8,7 +8,7 @@ export default function LibraryBackground() {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext("2d", { alpha: true });
     if (!ctx) return;
 
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -29,14 +29,12 @@ export default function LibraryBackground() {
 
     const draw = () => {
       ctx.clearRect(0, 0, width, height);
-      ctx.fillStyle = "#0a0a0a";
-      ctx.fillRect(0, 0, width, height);
+
+      const spacing = 96;
+      if (!reducedMotion.matches) offset = (offset + 0.24) % spacing;
 
       ctx.lineWidth = 1;
-      ctx.strokeStyle = "rgba(255,255,255,0.03)";
-
-      const spacing = 100;
-      if (!reducedMotion.matches) offset = (offset + 0.35) % spacing;
+      ctx.strokeStyle = "rgba(148,163,184,0.045)";
 
       for (let x = 0; x <= width; x += spacing * 2) {
         ctx.beginPath();
@@ -53,15 +51,27 @@ export default function LibraryBackground() {
         ctx.stroke();
       }
 
+      // A second, broader grid makes the "library shelves" layer readable
+      // without turning it into foreground chrome.
+      ctx.strokeStyle = "rgba(34,211,238,0.022)";
+      const majorSpacing = spacing * 4;
+      for (let x = 0; x <= width; x += majorSpacing) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, height);
+        ctx.stroke();
+      }
+
       const glow = ctx.createRadialGradient(
-        width / 2,
-        height / 2,
-        50,
-        width / 2,
-        height / 2,
-        height,
+        width * 0.56,
+        height * 0.44,
+        40,
+        width * 0.56,
+        height * 0.44,
+        Math.max(width, height) * 0.58,
       );
-      glow.addColorStop(0, "rgba(255,215,0,0.045)");
+      glow.addColorStop(0, "rgba(125,211,252,0.035)");
+      glow.addColorStop(0.5, "rgba(167,139,250,0.014)");
       glow.addColorStop(1, "transparent");
       ctx.fillStyle = glow;
       ctx.fillRect(0, 0, width, height);
@@ -89,7 +99,7 @@ export default function LibraryBackground() {
   return (
     <canvas
       ref={canvasRef}
-      className="pointer-events-none fixed inset-0 z-0 opacity-50"
+      className="pointer-events-none fixed inset-0 z-0 opacity-80"
       aria-hidden="true"
     />
   );
