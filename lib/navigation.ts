@@ -1,4 +1,4 @@
-import { BookOpen, Theater, type LucideIcon } from "lucide-react";
+import { BookOpen, type LucideIcon } from "lucide-react";
 import { curriculumRegistry } from "@/lib/curriculum/registry";
 import type { CurriculumNode } from "@/lib/curriculum/types";
 import { DOMAIN_BY_ID, type DomainId } from "@/lib/domains";
@@ -51,7 +51,6 @@ export const NAVIGATION_DATA: NavigationSection[] = [
     title: "Meta",
     items: [
       { label: "Glossary", href: "/glossary", icon: BookOpen, domain: "meta" },
-      { label: "Stage", href: "/stage", icon: Theater, domain: "meta" },
     ],
   },
 ];
