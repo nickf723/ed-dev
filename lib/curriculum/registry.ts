@@ -1,4 +1,5 @@
 import { ALGEBRA_CURRICULUM } from "@/lib/curriculum/algebra";
+import { COMPUTER_SCIENCE_CURRICULUM } from "@/lib/curriculum/computer-science";
 import { GROUP_THEORY_CURRICULUM } from "@/lib/curriculum/group-theory";
 import { LOGIC_CURRICULUM } from "@/lib/curriculum/logic";
 import { CURRICULUM_NODE_METADATA } from "@/lib/curriculum/metadata";
@@ -32,6 +33,7 @@ const curriculumReplacements = [
   ALGEBRA_CURRICULUM,
   GROUP_THEORY_CURRICULUM,
   LOGIC_CURRICULUM,
+  COMPUTER_SCIENCE_CURRICULUM,
 ] as const;
 
 function composeCurriculum(nodes: readonly CurriculumNode[]): readonly CurriculumNode[] {
