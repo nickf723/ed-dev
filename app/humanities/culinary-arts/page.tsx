@@ -307,7 +307,7 @@ export default function CulinaryHub() {
           <section className="relative overflow-hidden rounded-[24px] border border-orange-200/[0.14] bg-black/[0.25] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.03),0_22px_60px_rgba(0,0,0,0.18)] backdrop-blur-xl xl:h-[382px]">
             <div className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full blur-3xl" style={{ background: `rgba(${activeTechnique.rgb},0.08)` }} />
             <div className="relative flex h-full flex-col">
-              <div className="flex items-center justify-between gap-4">
+              <div className="flex h-[44px] shrink-0 items-start justify-between gap-4">
                 <div>
                   <div className="font-mono text-[10px] font-semibold uppercase tracking-[0.18em] text-orange-300/70">Technique lab</div>
                   <p className="mt-1 text-[12px] text-stone-500">Change the energy pathway and the same ingredient becomes different food.</p>
@@ -315,7 +315,7 @@ export default function CulinaryHub() {
                 <Sparkles size={17} className="text-orange-300/35" />
               </div>
 
-              <div className="mt-4 grid grid-cols-3 gap-2 sm:grid-cols-6">
+              <div className="mt-3 grid h-14 shrink-0 grid-cols-3 gap-2 sm:grid-cols-6">
                 {TECHNIQUES.map((technique) => {
                   const Icon = technique.icon;
                   const selected = technique.id === activeTechnique.id;
@@ -339,9 +339,9 @@ export default function CulinaryHub() {
                 })}
               </div>
 
-              <div className="mt-4 grid min-h-0 flex-1 gap-3 lg:grid-cols-[118px_minmax(0,1fr)_250px]">
+              <div className="mt-3 grid h-[229px] min-h-0 shrink-0 gap-3 lg:grid-cols-[118px_minmax(0,1fr)_250px]">
                 <div
-                  className="relative flex min-h-[210px] items-center justify-center overflow-hidden rounded-[18px] border"
+                  className="relative flex h-full items-center justify-center overflow-hidden rounded-[18px] border"
                   style={{
                     borderColor: `rgba(${activeTechnique.rgb},0.22)`,
                     background: `radial-gradient(circle at center, rgba(${activeTechnique.rgb},0.11), rgba(8,6,5,0.82) 64%)`,
@@ -352,29 +352,30 @@ export default function CulinaryHub() {
                   <ActiveTechniqueIcon size={34} strokeWidth={1.3} style={{ color: `rgb(${activeTechnique.rgb})` }} />
                 </div>
 
-                <div className="min-h-0 rounded-[18px] border border-orange-100/[0.055] bg-black/[0.18] p-4">
-                  <div className="flex items-center justify-between gap-3">
-                    <h2 className="text-[22px] font-semibold tracking-[-0.035em] text-white">{activeTechnique.label}</h2>
-                    <span className="h-2.5 w-2.5 rounded-full" style={{ background: `rgb(${activeTechnique.rgb})` }} />
+                <div className="grid h-full min-h-0 grid-rows-[32px_48px_82px_43px] overflow-hidden rounded-[18px] border border-orange-100/[0.055] bg-black/[0.18] p-4">
+                  <div className="flex items-start justify-between gap-3">
+                    <h2 className="truncate text-[22px] font-semibold leading-7 tracking-[-0.035em] text-white">{activeTechnique.label}</h2>
+                    <span className="mt-2 h-2.5 w-2.5 shrink-0 rounded-full" style={{ background: `rgb(${activeTechnique.rgb})` }} />
                   </div>
-                  <p className="mt-2 text-[12px] leading-5 text-stone-400">{activeTechnique.detail}</p>
 
-                  <div className="mt-3 grid gap-2 sm:grid-cols-2">
-                    <div className="rounded-xl border border-white/[0.05] bg-white/[0.015] p-2.5">
+                  <p className="line-clamp-2 self-start text-[12px] leading-5 text-stone-400">{activeTechnique.detail}</p>
+
+                  <div className="grid min-h-0 grid-cols-2 gap-2">
+                    <div className="h-full overflow-hidden rounded-xl border border-white/[0.05] bg-white/[0.015] p-2.5">
                       <div className="text-[9px] font-semibold uppercase tracking-[0.11em] text-stone-600">Best for</div>
-                      <p className="mt-1 text-[11px] leading-4 text-stone-400">{activeTechnique.bestFor}</p>
+                      <p className="mt-1 line-clamp-3 text-[11px] leading-4 text-stone-400">{activeTechnique.bestFor}</p>
                     </div>
-                    <div className="rounded-xl border border-white/[0.05] bg-white/[0.015] p-2.5">
+                    <div className="h-full overflow-hidden rounded-xl border border-white/[0.05] bg-white/[0.015] p-2.5">
                       <div className="text-[9px] font-semibold uppercase tracking-[0.11em] text-stone-600">Watch for</div>
-                      <p className="mt-1 text-[11px] leading-4 text-stone-400">{activeTechnique.watchFor}</p>
+                      <p className="mt-1 line-clamp-3 text-[11px] leading-4 text-stone-400">{activeTechnique.watchFor}</p>
                     </div>
                   </div>
 
-                  <div className="mt-3 flex flex-wrap gap-2">
+                  <div className="grid min-h-0 grid-cols-4 gap-2 pt-2">
                     {activeTechnique.examples.map((example) => (
                       <span
                         key={example}
-                        className="rounded-lg border px-2.5 py-1.5 text-[10px] font-medium"
+                        className="flex h-8 min-w-0 items-center justify-center truncate rounded-lg border px-2 text-[10px] font-medium"
                         style={{
                           color: `rgba(${activeTechnique.rgb},0.78)`,
                           borderColor: `rgba(${activeTechnique.rgb},0.16)`,
@@ -387,23 +388,23 @@ export default function CulinaryHub() {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-2">
+                <div className="grid h-full grid-cols-2 grid-rows-[74px_74px_65px] gap-2">
                   {[
                     ["Medium", activeTechnique.medium],
                     ["Energy", activeTechnique.energy],
                     ["Change", activeTechnique.change],
                     ["Result", activeTechnique.result],
                   ].map(([label, value]) => (
-                    <div key={label} className="rounded-xl border border-orange-100/[0.05] bg-orange-50/[0.012] p-3">
+                    <div key={label} className="overflow-hidden rounded-xl border border-orange-100/[0.05] bg-orange-50/[0.012] p-3">
                       <div className="text-[9px] font-semibold uppercase tracking-[0.1em] text-stone-600">{label}</div>
-                      <div className="mt-1.5 text-[11px] font-semibold leading-4 text-stone-300">{value}</div>
+                      <div className="mt-1.5 line-clamp-2 text-[11px] font-semibold leading-4 text-stone-300">{value}</div>
                     </div>
                   ))}
-                  <div className="col-span-2 rounded-xl border border-orange-100/[0.05] bg-black/[0.15] p-3">
+                  <div className="col-span-2 overflow-hidden rounded-xl border border-orange-100/[0.05] bg-black/[0.15] p-3">
                     <div className="text-[9px] font-semibold uppercase tracking-[0.1em] text-stone-600">Primary controls</div>
-                    <div className="mt-2 flex flex-wrap gap-1.5">
+                    <div className="mt-2 flex h-6 flex-nowrap items-center gap-1.5 overflow-hidden">
                       {activeTechnique.controls.map((control) => (
-                        <span key={control} className="rounded-md bg-white/[0.025] px-2 py-1 text-[10px] text-stone-400">
+                        <span key={control} className="shrink-0 rounded-md bg-white/[0.025] px-2 py-1 text-[10px] text-stone-400">
                           {control}
                         </span>
                       ))}
@@ -415,11 +416,13 @@ export default function CulinaryHub() {
           </section>
 
           <section className="relative overflow-hidden rounded-[24px] border border-orange-200/[0.10] bg-black/[0.26] p-5 backdrop-blur-xl xl:h-[382px]">
-            <div className="flex h-full flex-col">
-              <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-orange-300/70">The five basic tastes</div>
-              <p className="mt-1 text-[12px] leading-5 text-stone-500">Taste is one part of flavor, alongside aroma, texture, temperature, and other sensations.</p>
+            <div className="grid h-full grid-rows-[54px_48px_minmax(0,1fr)]">
+              <div>
+                <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-orange-300/70">The five basic tastes</div>
+                <p className="mt-1 line-clamp-2 text-[12px] leading-5 text-stone-500">Taste is one part of flavor, alongside aroma, texture, temperature, and other sensations.</p>
+              </div>
 
-              <div className="mt-4 grid grid-cols-5 gap-2">
+              <div className="grid h-12 grid-cols-5 gap-2">
                 {TASTES.map((taste) => {
                   const selected = taste.id === activeTaste.id;
                   return (
@@ -441,25 +444,27 @@ export default function CulinaryHub() {
                 })}
               </div>
 
-              <div className="mt-4 flex min-h-0 flex-1 flex-col rounded-[18px] border border-orange-100/[0.055] bg-orange-50/[0.012] p-4">
-                <div className="flex items-center gap-2.5">
-                  <span className="h-2.5 w-2.5 rounded-full" style={{ background: `rgb(${activeTaste.rgb})` }} />
-                  <h2 className="text-xl font-semibold text-white">{activeTaste.label}</h2>
+              <div className="mt-4 grid min-h-0 grid-rows-[30px_58px_68px_44px_42px] overflow-hidden rounded-[18px] border border-orange-100/[0.055] bg-orange-50/[0.012] p-4">
+                <div className="flex items-start gap-2.5">
+                  <span className="mt-2 h-2.5 w-2.5 shrink-0 rounded-full" style={{ background: `rgb(${activeTaste.rgb})` }} />
+                  <h2 className="truncate text-xl font-semibold leading-7 text-white">{activeTaste.label}</h2>
                 </div>
-                <p className="mt-3 text-[12px] leading-5 text-stone-400">{activeTaste.role}</p>
-                <p className="mt-3 border-t border-orange-100/[0.045] pt-3 text-[11px] leading-5 text-stone-500">{activeTaste.balance}</p>
 
-                <div className="mt-4 grid grid-cols-3 gap-2">
+                <p className="line-clamp-2 self-start pt-2 text-[12px] leading-5 text-stone-400">{activeTaste.role}</p>
+
+                <p className="line-clamp-2 self-start border-t border-orange-100/[0.045] pt-3 text-[11px] leading-5 text-stone-500">{activeTaste.balance}</p>
+
+                <div className="grid h-10 grid-cols-3 gap-2 pt-1">
                   {activeTaste.examples.map((example) => (
-                    <div key={example} className="rounded-xl border border-white/[0.05] bg-black/[0.16] px-2 py-2.5 text-center text-[10px] font-medium text-stone-400">
+                    <div key={example} className="flex min-w-0 items-center justify-center truncate rounded-xl border border-white/[0.05] bg-black/[0.16] px-2 text-center text-[10px] font-medium text-stone-400">
                       {example}
                     </div>
                   ))}
                 </div>
 
-                <div className="mt-auto grid grid-cols-3 gap-2 pt-4">
+                <div className="grid h-9 grid-cols-3 gap-2 pt-1">
                   {["aroma", "texture", "temperature"].map((sense) => (
-                    <div key={sense} className="rounded-lg bg-white/[0.018] px-2 py-2 text-center text-[9px] uppercase tracking-[0.08em] text-stone-600">
+                    <div key={sense} className="flex items-center justify-center rounded-lg bg-white/[0.018] px-2 text-center text-[9px] uppercase tracking-[0.08em] text-stone-600">
                       {sense}
                     </div>
                   ))}
