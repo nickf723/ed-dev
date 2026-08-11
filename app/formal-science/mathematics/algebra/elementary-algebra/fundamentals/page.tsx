@@ -40,7 +40,7 @@ const PRESENTATION: Record<string, LessonPresentation> = {
     step: "01",
     thesis: "Read the grammar before trying to manipulate it.",
     specimen: "3x² − 2x + 5",
-    outcome: "Identify terms, coefficients, variables, exponents, constants, and operators.",
+    outcome: "Identify signed terms, coefficients, variables, exponents, and constants.",
   },
   "formal.mathematics.algebra.elementary-algebra.fundamentals.equality-equations": {
     icon: Scale,
@@ -63,8 +63,8 @@ const PRESENTATION: Record<string, LessonPresentation> = {
     rgb: "251, 191, 36",
     step: "04",
     thesis: "Every algebra problem lives inside a universe of allowable values.",
-    specimen: "ℕ ⊂ ℤ ⊂ ℚ ⊂ ℝ ⊂ ℂ",
-    outcome: "Place common values in the number hierarchy and notice when equations require a larger set.",
+    specimen: "ℕ ⊂ ℤ ⊂ ℚ ⊂ ℝ",
+    outcome: "Place natural, integer, rational, irrational, and real values in the real-number hierarchy.",
   },
 };
 
