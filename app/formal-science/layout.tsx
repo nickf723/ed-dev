@@ -11,7 +11,11 @@ export default function FormalScienceLayout({
       {children}
       <VocabularyDrawer
         scopes={formalScienceVocabularyScopes}
-        hiddenTriggerPaths={["/formal-science", "/formal-science/mathematics"]}
+        hiddenTriggerPaths={[
+          "/formal-science",
+          "/formal-science/mathematics",
+          "/formal-science/mathematics/algebra",
+        ]}
       />
     </>
   );
