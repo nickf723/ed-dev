@@ -128,3 +128,25 @@ Before calling a visual pass finished, check:
 ## 15. Current product direction
 
 The site should feel like one coherent knowledge system whose pages become increasingly specialized as the user descends through academia. Consistency lives in the shell, hierarchy, navigation behavior, typography discipline, and interaction quality. Variety lives in the subject-specific instrument inside that shell.
+
+## 16. Page depth changes the job
+
+The deeper a page sits in the knowledge tree, the less it should behave like a directory and the more it should behave like instruction.
+
+- **Hub pages** organize a field. Their primary job is to expose structure, preserve navigation, and communicate the shape of the subject.
+- **Unit pages** chunk a broad topic into a deliberate learning sequence. They should explain the throughline, state what each lesson contributes, and avoid placing several full-sized interactive labs on screen at once.
+- **Atomic lesson pages** teach one coherent idea deeply. Prefer one primary interactive instrument, surrounded by explanation, examples, misconceptions, and a clear connection to adjacent ideas.
+- A lesson should normally introduce the idea before or alongside the interaction rather than expecting the widget to teach itself.
+- Progressive disclosure is preferred to simultaneous stimulation. If several excellent widgets compete for attention, they probably belong on separate lessons.
+- One viewport should have one obvious instructional center of gravity.
+
+## 17. Navigation relationships are semantic
+
+Navigation styling should communicate the relationship between destinations, not merely that they are clickable.
+
+- Breadcrumbs express ancestry and are the default way to move several levels upward.
+- A dedicated **parent / up-one-level** link, when useful, should be compact and visually subordinate to lesson progression.
+- **Previous / next siblings** are sequential navigation and should use explicit direction, sequence labels, and matching visual weight.
+- Moving from the final lesson of a unit into the next topic at the parent level is a different relationship from moving to the next sibling; label it accordingly.
+- Do not place a redundant large “back to parent” card at the bottom of a hub when the breadcrumb and persistent navigation already provide that route.
+- Floating utilities must not cover breadcrumbs, sequence controls, or other primary navigation.
