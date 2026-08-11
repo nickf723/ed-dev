@@ -8,7 +8,6 @@ import {
   Hash,
   RefreshCcw,
   Scale,
-  Variable,
   type LucideIcon,
 } from "lucide-react";
 import Assessment from "@/app/_components/Assessment";
@@ -64,7 +63,7 @@ const PRESENTATION: Record<string, LessonPresentation> = {
     step: "04",
     thesis: "Every algebra problem lives inside a universe of allowable values.",
     specimen: "ℕ ⊂ ℤ ⊂ ℚ ⊂ ℝ",
-    outcome: "Place natural, integer, rational, irrational, and real values in the real-number hierarchy.",
+    outcome: "Place natural, integer, rational, irrational, and real values inside the real-number hierarchy.",
   },
 };
 
@@ -118,7 +117,7 @@ export default function FundamentalsPage() {
           eyebrow="Read · Relate · Rewrite · Locate"
           icon={Hash}
           title={<span>Algebra Fundamentals</span>}
-          subtitle="A four-lesson unit on the grammar beneath algebra: what symbolic expressions contain, what equality asserts, which rewrites are legal, and which numbers are available."
+          subtitle="A four-lesson unit on the grammar beneath algebra: what symbolic expressions contain, what equality asserts, which rewrites are legal, and which real numbers are available."
           accentRgb="52, 211, 153"
           titleClassName="font-mono text-[clamp(2.8rem,5vw,5.2rem)] font-semibold uppercase leading-[0.84] tracking-[-0.06em] text-[#f4fff9]"
           iconClassName="rounded-[16px]"
@@ -150,7 +149,7 @@ export default function FundamentalsPage() {
                   <span className="mx-2 text-stone-700">→</span>
                   <span className="text-amber-300">x = 5</span>
                 </div>
-                <p className="mt-2 text-[11px] leading-5 text-stone-600">Expression → equation → equivalent rewrite → solution inside a number system.</p>
+                <p className="mt-2 text-[11px] leading-5 text-stone-600">Expression → equation → equivalent rewrite → real-number solution.</p>
               </div>
             </div>
 
@@ -226,7 +225,7 @@ export default function FundamentalsPage() {
           <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-4 py-3.5">
             <div>
               <div className="text-[10px] font-semibold uppercase tracking-[0.15em] text-emerald-300/65">Unit checkpoint</div>
-              <p className="mt-1 text-[12px] text-stone-500">A short check spanning variables, operation grammar, and number systems.</p>
+              <p className="mt-1 text-[12px] text-stone-500">A short check spanning variables, operation grammar, and real-number systems.</p>
             </div>
             <span className="rounded-lg border border-emerald-300/[0.11] bg-emerald-400/[0.03] px-3 py-2 text-[11px] font-semibold text-emerald-200/70 group-open:hidden">Open check</span>
           </summary>

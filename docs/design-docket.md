@@ -59,6 +59,8 @@ Tiny type is for metadata, not primary interaction.
 
 - Hover should reveal emphasis, not rearrange the page.
 - Selection-dependent panels should reserve enough height for their longest normal content state.
+- Size interactive containers against the longest known normal title, description, example, or inspector state before styling the shorter states. Short content lives inside the reserved frame; it does not shrink the frame.
+- If a legitimate state would overflow that reserved geometry, rewrite, clamp, or recompose the content rather than allowing the surrounding layout to jump.
 - Avoid content shifts caused by different title lengths, child counts, descriptions, or inspector states.
 - Do not make users chase controls that move after hover/selection.
 - Hover motion should be subtle. Prefer border/glow changes and tiny translations over dramatic card movement.
@@ -78,6 +80,7 @@ Tiny type is for metadata, not primary interaction.
 - Glass surfaces should let some of the page identity through.
 - Background animation should be slow, low-contrast, and pointer-independent unless interaction is genuinely useful.
 - Decorative subject icons/shapes belong primarily in the background layer, not as additional interface chrome.
+- Closely related atomic lessons may share a shell, but should use distinct background or environmental motifs when the lesson concepts naturally suggest different visual grammars.
 
 ## 10. Scrollbars and overflow are designed surfaces
 
