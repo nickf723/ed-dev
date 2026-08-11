@@ -15,6 +15,7 @@ export default function FormalScienceLayout({
           "/formal-science",
           "/formal-science/mathematics",
           "/formal-science/mathematics/algebra",
+          "/formal-science/mathematics/algebra/elementary-algebra",
         ]}
       />
     </>
