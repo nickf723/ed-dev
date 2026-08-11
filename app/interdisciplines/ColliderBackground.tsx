@@ -16,6 +16,10 @@ export default function ColliderBackground() {
     let frameId = 0;
 
     const colors = [
+      "#fb923c",
+      "#fb923c",
+      "#f97316",
+      "#fdba74",
       "#ff4136",
       "#34d399",
       "#60a5fa",
@@ -32,12 +36,12 @@ export default function ColliderBackground() {
       color: string;
     };
 
-    const particles: Particle[] = Array.from({ length: 54 }, (_, index) => ({
+    const particles: Particle[] = Array.from({ length: 58 }, (_, index) => ({
       x: Math.random() * width,
       y: Math.random() * height,
-      vx: (Math.random() - 0.5) * 0.7,
-      vy: (Math.random() - 0.5) * 0.7,
-      radius: 1.2 + Math.random() * 2.4,
+      vx: (Math.random() - 0.5) * 0.68,
+      vy: (Math.random() - 0.5) * 0.68,
+      radius: 1.1 + Math.random() * 2.2,
       color: colors[index % colors.length],
     }));
 
@@ -54,7 +58,7 @@ export default function ColliderBackground() {
 
     const draw = () => {
       ctx.clearRect(0, 0, width, height);
-      ctx.fillStyle = "rgba(5,5,7,0.88)";
+      ctx.fillStyle = "rgba(7,5,3,0.84)";
       ctx.fillRect(0, 0, width, height);
       ctx.lineWidth = 0.65;
 
@@ -73,20 +77,21 @@ export default function ColliderBackground() {
           const dx = first.x - second.x;
           const dy = first.y - second.y;
           const distance = Math.hypot(dx, dy);
-          if (distance > 135) continue;
+          if (distance > 140) continue;
 
           const gradient = ctx.createLinearGradient(first.x, first.y, second.x, second.y);
           gradient.addColorStop(0, first.color);
+          gradient.addColorStop(0.5, "#fb923c");
           gradient.addColorStop(1, second.color);
           ctx.strokeStyle = gradient;
-          ctx.globalAlpha = 0.20 * (1 - distance / 135);
+          ctx.globalAlpha = 0.17 * (1 - distance / 140);
           ctx.beginPath();
           ctx.moveTo(first.x, first.y);
           ctx.lineTo(second.x, second.y);
           ctx.stroke();
         }
 
-        ctx.globalAlpha = 0.62;
+        ctx.globalAlpha = first.color === "#fb923c" || first.color === "#f97316" ? 0.82 : 0.56;
         ctx.fillStyle = first.color;
         ctx.beginPath();
         ctx.arc(first.x, first.y, first.radius, 0, Math.PI * 2);
