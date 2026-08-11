@@ -29,6 +29,8 @@ export default function FormalScienceLayout({
           "/formal-science/mathematics/algebra/elementary-algebra/systems-of-equations/",
           "/formal-science/mathematics/algebra/elementary-algebra/inequalities",
           "/formal-science/mathematics/algebra/elementary-algebra/inequalities/",
+          "/formal-science/mathematics/algebra/elementary-algebra/inequalities/systems",
+          "/formal-science/mathematics/algebra/elementary-algebra/inequalities/systems/",
         ]}
       />
       <style>{`
