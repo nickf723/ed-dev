@@ -3,7 +3,7 @@ import Link from "next/link";
 import NumberLineBackground from "./_components/NumberLineBackground";
 import IntegerElevatorLab from "./_components/IntegerElevatorLab";
 import {
-  Hash, Thermometer,
+  Hash, ArrowRight, Thermometer,
   TrendingDown, CheckCircle, XCircle, ArrowLeft
 } from "lucide-react";
 
@@ -145,6 +145,22 @@ export default function IntegersPage() {
                      onComplete={(score, total) => console.log(`Integers Quiz Scored: ${score}/${total}`)}
                  />
             </div>
+        </div>
+
+        <div className="mt-24 pt-12 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-8">
+            <div className="flex items-center gap-4">
+                <div className="w-16 h-16 rounded-full bg-teal-500/10 border border-teal-500/20 flex items-center justify-center text-teal-400">
+                    <Hash size={30} />
+                </div>
+                <div>
+                    <h3 className="text-xl font-black text-white">Connect Forward</h3>
+                    <p className="text-zinc-400 text-sm font-light">Signed arithmetic becomes part of the expressions whose operations must be interpreted in a consistent order.</p>
+                </div>
+            </div>
+
+            <Link href="/formal-science/mathematics/algebra/pre-algebra/pemdas" className="group flex items-center gap-3 bg-white text-black px-8 py-4 rounded-full font-black uppercase tracking-widest hover:bg-teal-100 transition-all hover:scale-105 active:scale-95 shadow-xl">
+                Next: Order of Operations <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+            </Link>
         </div>
       </div>
     </main>
