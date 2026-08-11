@@ -98,6 +98,62 @@ Verify:
 
 **Status:** Verification required
 
+### Pre-Algebra hub
+
+**Route:** `/formal-science/mathematics/algebra/pre-algebra`
+
+**Why queued:** structurally cleaned while previews were unavailable.
+
+Changed blind:
+
+- removed the duplicated equation-balance lab from the hub
+- removed module count and `Mod_01` / `CH_XX` framing
+- changed `Course Directory` to a learner-facing Learning Path
+- changed `Enter Module` to Study Topic
+- replaced `Verification Protocol` with Reference & Check
+- changed the assessment label to Pre-Algebra Checkpoint
+- added a concise arithmetic-to-symbolic throughline
+- hid the redundant floating Vocabulary trigger on this route
+
+Verify:
+
+- removal of the Simulation Deck did not leave an awkward dead band
+- the eight-topic path feels like the page's center of gravity
+- the throughline block earns its space without becoming decorative chrome
+- learning-path cards remain balanced despite differing descriptions
+- Reference & Check is subordinate to navigation rather than competing with it
+- the existing background still suits the calmer structure
+
+**Status:** Verification required
+
+### Solving for X
+
+**Route:** `/formal-science/mathematics/algebra/pre-algebra/equations`
+
+**Why queued:** instructional copy and semantics were cleaned while previews were unavailable.
+
+Changed blind:
+
+- `Module_08 // The Finale` → `Lesson 08 · Preserving Equality`
+- exaggerated culmination language → equality/invariance framing
+- `The Golden Rule` → Preserve Equality
+- `SADMEP` → Undo the outer operation first, with an explicit scope caveat
+- `Interactive Lab` → Equation Lab
+- `The Ultimate Cheat Code` → Check by Substitution
+- `Verification Protocol` → Reference & Check
+- fake Pre-Algebra mastery declaration → neutral continuation into Integrated Algebra
+- hid the redundant floating Vocabulary trigger on this route
+
+Verify:
+
+- the revised left-column explanation still balances the Equation Lab visually
+- the reverse-order explanation fits without crowding
+- substitution example reads naturally at common widths
+- Reference & Check remains readable and subordinate
+- the final continuation block clearly reads as cross-unit navigation, not a mastery badge
+
+**Status:** Verification required
+
 ---
 
 ## Priority 1: regression verification after container-system changes
@@ -138,45 +194,6 @@ Verify:
 
 ## Priority 2: legacy Algebra pages to inspect before remastering
 
-### Pre-Algebra hub
-
-**Route:** `/formal-science/mathematics/algebra/pre-algebra`
-
-Known source-level debt:
-
-- module-code framing
-- module count
-- Course Directory
-- chapter codes
-- Enter Module copy
-- Simulation Deck
-- duplicated equation-balance interaction
-- Verification Protocol
-
-Visual decisions to defer until preview returns:
-
-- final page composition
-- whether the existing background should survive
-- how the eight-child learning path should occupy the viewport
-- whether unit reference/assessment belongs on the first viewport or lower down
-
-**Status:** Legacy, structural plan ready
-
-### Solving for X
-
-**Route:** `/formal-science/mathematics/algebra/pre-algebra/equations`
-
-Known source-level debt:
-
-- `Module_08 // The Finale`
-- exaggerated culmination language
-- `SADMEP`
-- `The Ultimate Cheat Code`
-- Verification Protocol
-- fake completion/mastery language
-
-**Status:** Legacy, content cleanup ready
-
 ### Remaining Pre-Algebra children
 
 Routes:
@@ -188,6 +205,8 @@ Routes:
 - `/formal-science/mathematics/algebra/pre-algebra/fractions`
 - `/formal-science/mathematics/algebra/pre-algebra/exponents`
 - `/formal-science/mathematics/algebra/pre-algebra/expressions`
+
+Audit them for old module codes, Verification Protocol framing, duplicated widgets, fake completion language, lesson scope, and mathematical accuracy. Do not mechanically apply the same layout to all seven.
 
 **Status:** Legacy audit required
 
@@ -209,11 +228,11 @@ Recommended order:
 
 1. Algebraic Inequalities
 2. Systems of Inequalities
-3. Expressions & Variables regression
-4. Graphing Linear Equations regression
-5. Systems of Equations regression
-6. Pre-Algebra hub screenshot/audit
-7. Solving for X screenshot/audit
+3. Pre-Algebra hub
+4. Solving for X
+5. Expressions & Variables regression
+6. Graphing Linear Equations regression
+7. Systems of Equations regression
 
 Once these are clean, resume new Algebra lesson production.
 
