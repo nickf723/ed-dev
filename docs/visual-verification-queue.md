@@ -134,15 +134,13 @@ Verify:
 
 Changed blind:
 
-- `Module_08 // The Finale` → `Lesson 08 · Preserving Equality`
-- exaggerated culmination language → equality/invariance framing
-- `The Golden Rule` → Preserve Equality
-- `SADMEP` → Undo the outer operation first, with an explicit scope caveat
-- `Interactive Lab` → Equation Lab
-- `The Ultimate Cheat Code` → Check by Substitution
-- `Verification Protocol` → Reference & Check
-- fake Pre-Algebra mastery declaration → neutral continuation into Integrated Algebra
-- hid the redundant floating Vocabulary trigger on this route
+- module/finale framing was replaced with equality/invariance framing
+- `The Golden Rule` became Preserve Equality
+- `SADMEP` was replaced by a scoped explanation of undoing outer operations first
+- `The Ultimate Cheat Code` became Check by Substitution
+- `Verification Protocol` became Reference & Check
+- fake Pre-Algebra mastery language became neutral continuation into Integrated Algebra
+- the redundant floating Vocabulary trigger was hidden
 
 Verify:
 
@@ -151,6 +149,162 @@ Verify:
 - substitution example reads naturally at common widths
 - Reference & Check remains readable and subordinate
 - the final continuation block clearly reads as cross-unit navigation, not a mastery badge
+
+**Status:** Verification required
+
+### Pre-Algebra child lesson sweep
+
+All seven pages below received source-level cohesion and accuracy cleanup while previews were unavailable. Their backgrounds and primary layouts were intentionally preserved.
+
+#### Integers & Negatives
+
+**Route:** `/formal-science/mathematics/algebra/pre-algebra/integers`
+
+Changed blind:
+
+- module code became conceptual metadata
+- negative-number explanation was reframed around reference points and the number line
+- the misleading `− + − = +` visual was replaced with `a − (−b) = a + b`
+- absolute value now says never negative and explicitly includes `|0| = 0`
+- multiplication “cheat sheet” became a sign reference
+- Reference & Check replaced Verification Protocol
+- a Connect Forward block and next-topic link were added
+
+Verify:
+
+- the new subtracting-a-negative card reads cleanly
+- the added footer does not create an overly long dead tail
+- the number-line lab remains the visual center of gravity
+
+**Status:** Verification required
+
+#### Order of Operations
+
+**Route:** `/formal-science/mathematics/algebra/pre-algebra/pemdas`
+
+Changed blind:
+
+- module code became conceptual metadata
+- equation language was corrected to expression language
+- grouping symbols replaced parentheses-only framing
+- multiplication/division and addition/subtraction are explicitly equal-precedence pairs
+- GEMA is labeled as another mnemonic rather than a competing rule system
+- Verification Protocol became Reference & Check
+- fake Rule Mastery became Connect Forward
+
+Verify:
+
+- the G/E/MD/AS hierarchy scans intuitively
+- the left-to-right example remains easy to parse
+- the alternate mnemonic card does not compete with the canonical hierarchy
+
+**Status:** Verification required
+
+#### Number Properties
+
+**Route:** `/formal-science/mathematics/algebra/pre-algebra/properties`
+
+Changed blind:
+
+- module/“physics of math” framing became conceptual metadata
+- properties are described as value-preserving rewrites of expressions
+- commutative and associative scopes are stated explicitly
+- identity language was made canonical
+- the distributive area model is described as a model of equivalent partitioning rather than a universal proof claim
+- Verification Protocol became Reference & Check
+- fake Rule Mastery became Connect Forward
+
+Verify:
+
+- the left rule stack and right area model still feel balanced
+- warnings about noncommutative/nonassociative operations are readable but not visually dominant
+
+**Status:** Verification required
+
+#### Ratios & Proportions
+
+**Route:** `/formal-science/mathematics/algebra/pre-algebra/ratios`
+
+Changed blind:
+
+- module code became conceptual metadata
+- ratios now emphasize ordered comparison and proportions as equality of ratios
+- unit rate language was clarified
+- “Butterfly Method” was demoted to an optional mnemonic
+- cross multiplication is explained through clearing nonzero denominators
+- Verification Protocol became Reference & Check
+- fake Rule Mastery became Connect Forward
+
+Verify:
+
+- the cross-products explanation fits without becoming too text-heavy
+- map scale, unit rate, and proportion lab feel like one lesson rather than three mini-lessons
+
+**Status:** Verification required
+
+#### Advanced Fractions
+
+**Route:** `/formal-science/mathematics/algebra/pre-algebra/fractions`
+
+Changed blind:
+
+- module code became conceptual metadata
+- common denominator vs least common denominator was corrected
+- reciprocal is correctly described as a multiplicative inverse, not an “opposite”
+- Keep/Change/Flip is explicitly labeled as a mnemonic after the actual rule
+- fraction multiplication is described as a fraction of a fraction
+- Verification Protocol became Reference & Check
+- fake Rule Mastery became Connect Forward
+
+Verify:
+
+- addition/subtraction and division explanations fit cleanly in the left column
+- the reciprocal equation remains legible at narrower widths
+- the area model still reads as the primary interaction
+
+**Status:** Verification required
+
+#### Powers & Exponents
+
+**Route:** `/formal-science/mathematics/algebra/pre-algebra/exponents`
+
+Changed blind:
+
+- module code became conceptual metadata
+- repeated multiplication is explicitly scoped to positive whole-number exponents
+- base and exponent definitions were made precise
+- scientific notation copy was tightened
+- Verification Protocol became Reference & Check
+- fake Rule Mastery became Connect Forward
+
+Verify:
+
+- decide whether power anatomy + exponential growth + scientific notation is one coherent lesson or should be split
+- confirm the Growth Model supports the page's primary mental model rather than competing with it
+- check that scientific notation reads as transfer/application, not a second primary lesson
+
+**Status:** Verification + scope review required
+
+#### Algebraic Expressions
+
+**Route:** `/formal-science/mathematics/algebra/pre-algebra/expressions`
+
+Changed blind:
+
+- module code became conceptual metadata
+- coefficient definition became numerical factor rather than “number at the front”
+- constant term and variable language were tightened
+- like terms now require the same variable part and exponents
+- the contrast example now uses `3x² + 2x`
+- translation language highlights order-sensitive phrases
+- Verification Protocol became Reference & Check
+- fake Rule Mastery / Final Module language became Connect Forward / Next: Solving for X
+
+Verify:
+
+- hover labels are supplementary rather than required to understand the anatomy
+- the new not-like-terms example is visually clear
+- translation guide and Expression Lab feel coordinated rather than separate lessons
 
 **Status:** Verification required
 
@@ -192,23 +346,7 @@ Verify:
 
 ---
 
-## Priority 2: legacy Algebra pages to inspect before remastering
-
-### Remaining Pre-Algebra children
-
-Routes:
-
-- `/formal-science/mathematics/algebra/pre-algebra/integers`
-- `/formal-science/mathematics/algebra/pre-algebra/pemdas`
-- `/formal-science/mathematics/algebra/pre-algebra/properties`
-- `/formal-science/mathematics/algebra/pre-algebra/ratios`
-- `/formal-science/mathematics/algebra/pre-algebra/fractions`
-- `/formal-science/mathematics/algebra/pre-algebra/exponents`
-- `/formal-science/mathematics/algebra/pre-algebra/expressions`
-
-Audit them for old module codes, Verification Protocol framing, duplicated widgets, fake completion language, lesson scope, and mathematical accuracy. Do not mechanically apply the same layout to all seven.
-
-**Status:** Legacy audit required
+## Priority 2: legacy Algebra scope audits
 
 ### Quadratic Equations
 
@@ -230,9 +368,10 @@ Recommended order:
 2. Systems of Inequalities
 3. Pre-Algebra hub
 4. Solving for X
-5. Expressions & Variables regression
-6. Graphing Linear Equations regression
-7. Systems of Equations regression
+5. Pre-Algebra children in learning-path order
+6. Expressions & Variables regression
+7. Graphing Linear Equations regression
+8. Systems of Equations regression
 
 Once these are clean, resume new Algebra lesson production.
 
