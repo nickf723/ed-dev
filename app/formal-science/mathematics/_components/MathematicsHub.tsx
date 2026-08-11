@@ -139,6 +139,29 @@ function buildBranches(nodes: readonly MathematicsHubNode[]): BuiltBranch[] {
   });
 }
 
+function sharedLenses(left: BuiltBranch, right: BuiltBranch): LensId[] {
+  const rightLenses = new Set(right.lenses);
+  return left.lenses.filter((lens) => rightLenses.has(lens));
+}
+
+function relatedBranches(branches: readonly BuiltBranch[], active: BuiltBranch): BuiltBranch[] {
+  return branches
+    .filter((branch) => branch.id !== active.id && branch.status !== "placeholder")
+    .map((branch, index) => ({
+      branch,
+      index,
+      score: sharedLenses(active, branch).length,
+    }))
+    .filter((item) => item.score > 0)
+    .sort((left, right) => right.score - left.score || left.index - right.index)
+    .slice(0, 3)
+    .map((item) => item.branch);
+}
+
+function lensLabel(id: LensId): string {
+  return LENSES.find((lens) => lens.id === id)?.label ?? id;
+}
+
 export default function MathematicsHub({
   nodes,
 }: {
@@ -148,6 +171,7 @@ export default function MathematicsHub({
   const [activeId, setActiveId] = useState("formal.mathematics.algebra");
   const active = branches.find((branch) => branch.id === activeId) ?? branches[0];
   const activeLenses = new Set(active.lenses);
+  const related = relatedBranches(branches, active);
 
   return (
     <main className="relative min-h-screen overflow-x-hidden bg-[#050506] text-slate-100 selection:bg-[#ff4136]/30 lg:h-screen lg:overflow-hidden">
@@ -171,9 +195,9 @@ export default function MathematicsHub({
           accentRgb="255, 65, 54"
           titleClassName="font-mono text-[clamp(3.4rem,6vw,6.2rem)] font-semibold uppercase leading-[0.82] tracking-[-0.07em] text-[#fff9f8]"
           iconClassName="rounded-sm"
-          headerClassName="border-[#ff4136]/18"
+          headerClassName="border-[#ff4136]/[0.16]"
           aside={
-            <div className="flex items-center gap-3 rounded-full border border-[#ff4136]/18 bg-black/25 px-4 py-2 font-mono text-sm text-[#ff756d] backdrop-blur-md">
+            <div className="flex items-center gap-3 rounded-full border border-[#ff4136]/[0.16] bg-black/25 px-4 py-2 font-mono text-sm text-[#ff756d] backdrop-blur-md">
               <span>π</span><span className="text-slate-700">·</span>
               <span>∑</span><span className="text-slate-700">·</span>
               <span>∫</span><span className="text-slate-700">·</span>
@@ -182,16 +206,13 @@ export default function MathematicsHub({
           }
         />
 
-        <div className="mt-4 grid min-h-0 flex-1 gap-4 xl:grid-cols-[minmax(0,1fr)_270px]">
-          <section className="relative flex min-h-0 flex-col overflow-hidden rounded-[24px] border border-[#ff4136]/18 bg-black/[0.22] p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.035),0_22px_70px_rgba(0,0,0,0.25)] backdrop-blur-md sm:p-4">
+        <div className="mt-4 grid min-h-0 flex-1 gap-4 xl:grid-cols-[minmax(0,1fr)_286px]">
+          <section className="relative flex min-h-0 flex-col overflow-hidden rounded-[24px] border border-[#ff4136]/[0.14] bg-black/[0.22] p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.025),0_22px_70px_rgba(0,0,0,0.25)] backdrop-blur-md sm:p-4">
             <div className="pointer-events-none absolute inset-0 opacity-45 [background-image:linear-gradient(rgba(255,255,255,0.018)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.018)_1px,transparent_1px)] [background-size:24px_24px]" />
 
-            <div className="relative mb-3 flex items-center justify-between gap-4 px-1">
-              <div>
-                <div className="font-mono text-[8px] uppercase tracking-[0.22em] text-[#ff756d]/70">Branches</div>
-                <p className="mt-1 text-xs text-slate-600">Eight ways to ask mathematical questions.</p>
-              </div>
-              <div className="hidden font-mono text-[8px] uppercase tracking-[0.15em] text-slate-700 sm:block">hover to compare lenses</div>
+            <div className="relative mb-3 px-1">
+              <div className="font-mono text-[10px] font-semibold uppercase tracking-[0.18em] text-[#ff756d]/70">Branches</div>
+              <p className="mt-1 text-xs text-slate-600">Eight ways to ask mathematical questions.</p>
             </div>
 
             <nav
@@ -210,57 +231,87 @@ export default function MathematicsHub({
             </nav>
           </section>
 
-          <aside className="relative min-h-0 overflow-hidden rounded-[24px] border border-white/10 bg-black/30 p-4 backdrop-blur-xl">
-            <div className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full blur-3xl" style={{ background: `rgba(${active.rgb},0.12)` }} />
-            <div className="relative grid h-full min-h-0 grid-rows-[82px_minmax(0,1fr)_62px]">
-              <div className="min-h-0">
-                <div className="font-mono text-[8px] uppercase tracking-[0.22em] text-[#ff756d]/70">Mathematical lenses</div>
-                <h2 className="mt-2 truncate text-xl font-semibold tracking-[-0.03em] text-white">{active.label}</h2>
-                <div className="mt-1 font-mono text-xs" style={{ color: `rgb(${active.rgb})` }}>{active.equation}</div>
-                <p className="mt-2 line-clamp-2 h-8 text-[10px] leading-4 text-slate-500">{active.description}</p>
+          <aside className="relative min-h-0 overflow-hidden rounded-[24px] border border-slate-300/[0.07] bg-black/30 p-4 backdrop-blur-xl">
+            <div
+              className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full blur-3xl"
+              style={{ background: `rgba(${active.rgb},0.12)` }}
+            />
+
+            <div className="relative flex h-full min-h-0 flex-col">
+              <div className="h-[116px] shrink-0 border-b border-slate-300/[0.055] pb-3">
+                <div className="font-mono text-[10px] font-semibold uppercase tracking-[0.18em] text-[#ff756d]/70">Mathematical lenses</div>
+                <h2 className="mt-2 truncate text-[22px] font-semibold tracking-[-0.03em] text-white">{active.label}</h2>
+                <div className="mt-1 font-mono text-[12px]" style={{ color: `rgb(${active.rgb})` }}>{active.equation}</div>
+                <p className="mt-2 line-clamp-2 text-[11px] leading-4 text-slate-500">{active.description}</p>
               </div>
 
-              <div className="grid min-h-0 content-start gap-1.5 pt-2">
+              <div className="grid shrink-0 gap-1.5 py-3">
                 {LENSES.map((lens) => {
                   const enabled = activeLenses.has(lens.id);
                   return (
                     <div
                       key={lens.id}
-                      className={`flex h-[42px] items-center gap-2.5 rounded-xl border px-2.5 transition-all ${enabled ? "border-white/12 bg-white/[0.045]" : "border-white/[0.045] bg-black/10 opacity-42"}`}
+                      className={`flex h-[40px] items-center gap-2.5 rounded-xl border px-2.5 ${enabled ? "bg-white/[0.035]" : "border-slate-400/[0.04] bg-black/10 opacity-[0.48]"}`}
+                      style={enabled ? { borderColor: `rgba(${active.rgb},0.26)` } : undefined}
                     >
                       <span
                         className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border font-mono text-[10px]"
                         style={{
                           color: enabled ? `rgb(${active.rgb})` : "rgb(100 116 139)",
-                          borderColor: enabled ? `rgba(${active.rgb},0.34)` : "rgba(255,255,255,0.07)",
-                          background: enabled ? `rgba(${active.rgb},0.07)` : "rgba(255,255,255,0.02)",
+                          borderColor: enabled ? `rgba(${active.rgb},0.30)` : "rgba(148,163,184,0.07)",
+                          background: enabled ? `rgba(${active.rgb},0.065)` : "rgba(255,255,255,0.015)",
                         }}
                       >
                         {lens.symbol}
                       </span>
                       <span className="min-w-0">
-                        <strong className="block text-[11px] font-semibold text-slate-200">{lens.label}</strong>
-                        <span className="mt-0.5 block truncate text-[8px] leading-3 text-slate-600">{lens.detail}</span>
+                        <strong className="block text-[12px] font-semibold text-slate-200">{lens.label}</strong>
+                        <span className="mt-0.5 block truncate text-[9px] leading-3 text-slate-600">{lens.detail}</span>
                       </span>
                     </div>
                   );
                 })}
               </div>
 
-              <div className="border-t border-white/[0.07] pt-3">
-                <div className="font-mono text-[8px] uppercase tracking-[0.18em] text-slate-600">Lens signature</div>
-                <div className="mt-2 flex h-7 flex-wrap gap-1.5 overflow-hidden">
+              <div className="min-h-0 flex-1 border-t border-slate-300/[0.055] pt-3">
+                <div className="font-mono text-[9px] font-semibold uppercase tracking-[0.16em] text-slate-600">Related branches</div>
+                <div className="mt-2 grid gap-2">
+                  {related.map((branch) => {
+                    const shared = sharedLenses(active, branch);
+                    return (
+                      <Link
+                        key={branch.id}
+                        href={branch.href}
+                        className="group grid min-h-[52px] grid-cols-[8px_minmax(0,1fr)_16px] items-center gap-2 rounded-xl border border-slate-300/[0.055] bg-white/[0.018] px-3 py-2 transition-colors hover:bg-white/[0.035]"
+                      >
+                        <span className="h-2 w-2 rounded-full" style={{ background: `rgb(${branch.rgb})` }} />
+                        <span className="min-w-0">
+                          <strong className="block truncate text-[11px] font-semibold text-slate-300">{branch.label}</strong>
+                          <span className="mt-0.5 block truncate text-[9px] text-slate-600">
+                            {shared.map(lensLabel).join(" · ")}
+                          </span>
+                        </span>
+                        <ArrowRight size={12} className="text-slate-700 transition-transform group-hover:translate-x-0.5" />
+                      </Link>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div className="mt-3 h-[58px] shrink-0 border-t border-slate-300/[0.055] pt-3">
+                <div className="font-mono text-[9px] font-semibold uppercase tracking-[0.16em] text-slate-600">Lens signature</div>
+                <div className="mt-2 flex h-7 flex-nowrap gap-1.5 overflow-hidden">
                   {active.lenses.map((lensId) => {
                     const lens = LENSES.find((item) => item.id === lensId);
                     if (!lens) return null;
                     return (
                       <span
                         key={lens.id}
-                        className="rounded-full border px-2 py-1 font-mono text-[8px] uppercase tracking-[0.1em]"
+                        className="shrink-0 rounded-full border px-2 py-1 font-mono text-[9px] uppercase tracking-[0.08em]"
                         style={{
                           color: `rgba(${active.rgb},0.90)`,
-                          borderColor: `rgba(${active.rgb},0.22)`,
-                          background: `rgba(${active.rgb},0.05)`,
+                          borderColor: `rgba(${active.rgb},0.20)`,
+                          background: `rgba(${active.rgb},0.045)`,
                         }}
                       >
                         {lens.symbol} {lens.label}
@@ -303,22 +354,22 @@ function BranchCard({
             className="flex h-11 w-11 items-center justify-center rounded-xl border"
             style={{
               color: `rgb(${branch.rgb})`,
-              borderColor: `rgba(${branch.rgb},0.34)`,
-              background: `rgba(${branch.rgb},0.07)`,
+              borderColor: `rgba(${branch.rgb},0.30)`,
+              background: `rgba(${branch.rgb},0.065)`,
             }}
           >
             <Icon size={20} strokeWidth={1.55} />
           </span>
-          <span className="font-mono text-[8px] uppercase tracking-[0.16em] text-slate-700">{String(index + 1).padStart(2, "0")}</span>
+          <span className="font-mono text-[9px] uppercase tracking-[0.14em] text-slate-700">{String(index + 1).padStart(2, "0")}</span>
         </div>
 
         <div className="mt-5">
-          <h3 className="text-base font-semibold tracking-[-0.025em] text-white">{branch.label}</h3>
-          <div className="mt-1 font-mono text-[8px] uppercase tracking-[0.14em]" style={{ color: `rgba(${branch.rgb},0.82)` }}>{branch.shortLabel}</div>
+          <h3 className="text-[16px] font-semibold tracking-[-0.025em] text-white">{branch.label}</h3>
+          <div className="mt-1 font-mono text-[9px] font-semibold uppercase tracking-[0.12em]" style={{ color: `rgba(${branch.rgb},0.82)` }}>{branch.shortLabel}</div>
           <p className="mt-2 line-clamp-3 text-[11px] leading-5 text-slate-500">{branch.description}</p>
         </div>
 
-        <div className="mt-auto flex items-center justify-between border-t pt-3" style={{ borderColor: `rgba(${branch.rgb},0.14)` }}>
+        <div className="mt-auto flex items-center justify-between border-t pt-3" style={{ borderColor: `rgba(${branch.rgb},0.13)` }}>
           <span className="font-mono text-[10px] text-slate-500">{branch.equation}</span>
           {!planned ? <ArrowRight size={13} style={{ color: `rgb(${branch.rgb})` }} className="transition-transform group-hover:translate-x-1" /> : null}
         </div>
@@ -328,11 +379,11 @@ function BranchCard({
 
   const className = `group relative h-full min-h-0 overflow-hidden rounded-[18px] border p-4 backdrop-blur-md transition-all duration-300 ${planned ? "cursor-default opacity-50" : "hover:-translate-y-0.5"}`;
   const style = {
-    borderColor: selected ? `rgba(${branch.rgb},0.52)` : `rgba(${branch.rgb},0.20)`,
+    borderColor: selected ? `rgba(${branch.rgb},0.48)` : `rgba(${branch.rgb},0.18)`,
     background: selected
-      ? `linear-gradient(145deg, rgba(${branch.rgb},0.11), rgba(7,7,9,0.76) 52%, rgba(7,7,9,0.62))`
-      : `linear-gradient(145deg, rgba(${branch.rgb},0.035), rgba(7,7,9,0.62))`,
-    boxShadow: selected ? `0 0 34px rgba(${branch.rgb},0.07), inset 0 1px 0 rgba(255,255,255,0.04)` : "inset 0 1px 0 rgba(255,255,255,0.025)",
+      ? `linear-gradient(145deg, rgba(${branch.rgb},0.10), rgba(7,7,9,0.76) 52%, rgba(7,7,9,0.62))`
+      : `linear-gradient(145deg, rgba(${branch.rgb},0.03), rgba(7,7,9,0.62))`,
+    boxShadow: selected ? `0 0 34px rgba(${branch.rgb},0.065), inset 0 1px 0 rgba(255,255,255,0.035)` : "inset 0 1px 0 rgba(255,255,255,0.02)",
   };
 
   if (planned) {
