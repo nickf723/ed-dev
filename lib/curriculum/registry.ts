@@ -38,6 +38,56 @@ const curriculumReplacements = [
   BIOLOGY_CURRICULUM,
 ] as const;
 
+const domainRootAdditions: Partial<
+  Record<CurriculumDomain["domainId"], readonly CurriculumNode[]>
+> = {
+  social: [
+    {
+      id: "social.communications",
+      label: "Communications",
+      href: "/social-science/communications",
+      domainId: "social",
+    },
+    {
+      id: "social.law",
+      label: "Law",
+      href: "/social-science/law",
+      domainId: "social",
+    },
+    {
+      id: "social.geography",
+      label: "Human Geography",
+      href: "/social-science/geography",
+      domainId: "social",
+    },
+  ],
+  applied: [
+    {
+      id: "applied.education",
+      label: "Education",
+      href: "/applied-science/education",
+      domainId: "applied",
+    },
+    {
+      id: "applied.library-science",
+      label: "Library Science",
+      href: "/applied-science/library-science",
+      domainId: "applied",
+    },
+  ],
+};
+
+function appendMissingRoots(domain: CurriculumDomain): readonly CurriculumNode[] {
+  const additions = domainRootAdditions[domain.domainId] ?? [];
+  if (additions.length === 0) return domain.children;
+
+  const existingIds = new Set(domain.children.map((node) => node.id));
+  return [
+    ...domain.children,
+    ...additions.filter((node) => !existingIds.has(node.id)),
+  ];
+}
+
 function composeCurriculum(nodes: readonly CurriculumNode[]): readonly CurriculumNode[] {
   const withMetadata = applyMetadata(nodes);
   return curriculumReplacements.reduce<readonly CurriculumNode[]>(
@@ -49,12 +99,15 @@ function composeCurriculum(nodes: readonly CurriculumNode[]): readonly Curriculu
 /**
  * Dense curriculum branches can live in focused modules while still composing
  * into one validated registry. `tree.ts` remains the broad academic map; this
- * composition layer swaps in richer subtrees as they are migrated.
+ * composition layer swaps in richer subtrees as they are migrated and can also
+ * restore live roots that have not yet been migrated into the broad tree.
  */
-const curriculumDomains: readonly CurriculumDomain[] = CURRICULUM_DOMAINS.map((domain) => ({
-  ...domain,
-  children: composeCurriculum(domain.children),
-}));
+const curriculumDomains: readonly CurriculumDomain[] = CURRICULUM_DOMAINS.map(
+  (domain) => ({
+    ...domain,
+    children: composeCurriculum(appendMissingRoots(domain)),
+  }),
+);
 
 function flatten(nodes: readonly CurriculumNode[]): CurriculumNode[] {
   return nodes.flatMap((node) => [node, ...flatten(node.children ?? [])]);

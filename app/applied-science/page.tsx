@@ -6,8 +6,10 @@ import {
   Briefcase,
   Building,
   Cpu,
+  GraduationCap,
   Hammer,
   HeartPulse,
+  Library,
   PenTool,
   Wheat,
   type LucideIcon,
@@ -100,6 +102,20 @@ const PRESENTATION: Record<string, FieldPresentation> = {
     description: "Coordinate people, capital, markets, operations, and information to create and sustain organizations.",
     output: "Working organizations",
   },
+  "applied.education": {
+    icon: GraduationCap,
+    rgb: "96, 165, 250",
+    shortLabel: "Learning & instruction",
+    description: "Design learning environments, curriculum, assessment, and instruction around how people develop knowledge and skill.",
+    output: "Effective learning",
+  },
+  "applied.library-science": {
+    icon: Library,
+    rgb: "34, 211, 238",
+    shortLabel: "Knowledge organization",
+    description: "Organize, preserve, retrieve, and provide access to information across collections and communities.",
+    output: "Findable knowledge",
+  },
 };
 
 const STAGES = [
@@ -160,7 +176,7 @@ export default function AppliedSciencePage() {
           eyebrow="Design · Build · Test · Deploy"
           icon={Hammer}
           title={<span>Applied Sciences</span>}
-          subtitle="Turn knowledge into things that work: systems, technologies, products, treatments, organizations, materials, food, and spaces shaped by real constraints."
+          subtitle="Turn knowledge into things that work: systems, technologies, products, treatments, organizations, learning environments, information systems, materials, food, and spaces shaped by real constraints."
           accentRgb="167, 139, 250"
           titleClassName="text-[clamp(3.2rem,5.8vw,5.9rem)] font-semibold leading-[0.84] tracking-[-0.065em] text-white"
           iconClassName="rounded-[18px]"
@@ -189,9 +205,13 @@ export default function AppliedSciencePage() {
             ))}
           </div>
 
-          <div className="relative mt-3 grid min-h-0 flex-1 auto-rows-fr gap-3 sm:grid-cols-2 xl:grid-cols-3 xl:grid-rows-3">
-            {fields.map((field) => (
-              <AppliedFieldCard key={field.id} field={field} />
+          <div className="relative mt-3 grid min-h-0 flex-1 auto-rows-fr gap-3 sm:grid-cols-2 xl:grid-cols-4 xl:grid-rows-3">
+            {fields.map((field, index) => (
+              <AppliedFieldCard
+                key={field.id}
+                field={field}
+                wide={index === fields.length - 1 && fields.length % 4 === 3}
+              />
             ))}
           </div>
         </section>
@@ -200,14 +220,14 @@ export default function AppliedSciencePage() {
   );
 }
 
-function AppliedFieldCard({ field }: { field: AppliedField }) {
+function AppliedFieldCard({ field, wide }: { field: AppliedField; wide: boolean }) {
   const Icon = field.icon;
   const planned = field.status === "placeholder";
   const visibleChildren = field.children.slice(0, 3);
 
   return (
     <article
-      className={`group relative flex min-h-[148px] flex-col overflow-hidden rounded-[18px] border p-3.5 backdrop-blur-md transition-all duration-300 ${planned ? "opacity-50" : "hover:-translate-y-0.5"}`}
+      className={`group relative flex min-h-[132px] flex-col overflow-hidden rounded-[18px] border p-3.5 backdrop-blur-md transition-all duration-300 ${wide ? "xl:col-span-2" : ""} ${planned ? "opacity-50" : "hover:-translate-y-0.5"}`}
       style={{
         borderColor: `rgba(${field.rgb},0.24)`,
         background: `linear-gradient(150deg, rgba(${field.rgb},0.105), rgba(8,8,12,0.72) 48%, rgba(7,7,10,0.60))`,
