@@ -1,233 +1,321 @@
 "use client";
 
-import React from "react";
 import Link from "next/link";
-import AlgebraBackground2 from "./_components/AlgebraBackground2";
-import FunctionMachine from "./_components/FunctionMachine";
+import { useState } from "react";
 import {
-  ArrowLeft,
+  ArrowRight,
   Braces,
-  ChevronRight,
-  Divide,
+  Calculator,
+  Check,
   Equal,
   Grid3X3,
   Infinity,
+  Scale,
   Variable,
   type LucideIcon,
 } from "lucide-react";
-import Assessment from "@/app/_components/Assessment";
-import VocabApplet from "@/app/_components/VocabApplet";
-import { algebraVocab } from "@/app/_data/vocab/a/algebra";
+import DomainPageHeader from "@/app/_components/DomainPageHeader";
 import { curriculumRegistry } from "@/lib/curriculum/registry";
-import { algebraQuiz } from "./_components/assessment";
+import AlgebraBackground2 from "./_components/AlgebraBackground2";
 
-type AlgebraBranchPresentation = {
-  subtitle: string;
+type BranchPresentation = {
   icon: LucideIcon;
+  rgb: string;
+  eyebrow: string;
   equation: string;
-  color: string;
-  border: string;
-  bg: string;
-  layout: string;
+  thesis: string;
+  preserves: string;
 };
 
-const ALGEBRA_BRANCH_PRESENTATION: Record<string, AlgebraBranchPresentation> = {
+type AlgebraChild = {
+  id: string;
+  label: string;
+  href: string;
+  status?: "active" | "placeholder";
+};
+
+type AlgebraBranch = AlgebraChild &
+  BranchPresentation & {
+    description: string;
+    children: AlgebraChild[];
+  };
+
+const PRESENTATION: Record<string, BranchPresentation> = {
   "formal.mathematics.algebra.pre-algebra": {
-    subtitle: "Foundations",
-    icon: Divide,
+    icon: Calculator,
+    rgb: "52, 211, 153",
+    eyebrow: "Unknowns enter arithmetic",
     equation: "2(x + 3) = 10",
-    color: "text-emerald-400",
-    border: "group-hover:border-emerald-500/50",
-    bg: "hover:bg-emerald-950/20",
-    layout: "col-span-12 lg:col-span-7",
+    thesis: "Numbers become placeholders, expressions, and equations.",
+    preserves: "equality + arithmetic laws",
   },
   "formal.mathematics.algebra.elementary-algebra": {
-    subtitle: "Solving for X",
     icon: Variable,
-    equation: "ax² + bx + c = 0",
-    color: "text-blue-400",
-    border: "group-hover:border-blue-500/50",
-    bg: "hover:bg-blue-950/20",
-    layout: "col-span-12 lg:col-span-5",
+    rgb: "96, 165, 250",
+    eyebrow: "Relations become objects",
+    equation: "f(x) = y",
+    thesis: "Equations become graphs, functions, systems, and families of relationships.",
+    preserves: "solutions + functional relationships",
   },
   "formal.mathematics.algebra.linear-algebra": {
-    subtitle: "Vectors & Spaces",
     icon: Grid3X3,
-    equation: "Ax = λx",
-    color: "text-indigo-400",
-    border: "group-hover:border-indigo-500/50",
-    bg: "hover:bg-indigo-950/20",
-    layout: "col-span-12 lg:col-span-5",
+    rgb: "129, 140, 248",
+    eyebrow: "Equations become geometry",
+    equation: "A\vec{x} = \vec{b}",
+    thesis: "Coordinates, vectors, and matrices turn systems into transformations of space.",
+    preserves: "linear combinations + vector structure",
   },
   "formal.mathematics.algebra.abstract-algebra": {
-    subtitle: "Structures",
     icon: Infinity,
-    equation: "G/Ker(φ) ≅ Im(φ)",
-    color: "text-violet-400",
-    border: "group-hover:border-violet-500/50",
-    bg: "hover:bg-violet-950/20",
-    layout: "col-span-12 lg:col-span-7",
+    rgb: "192, 132, 252",
+    eyebrow: "Rules become structures",
+    equation: "\varphi(ab)=\varphi(a)\varphi(b)",
+    thesis: "Algebra studies the operations themselves and the structures that survive translation.",
+    preserves: "operations + algebraic structure",
   },
 };
 
-function buildAlgebraBranches() {
+const REWRITE_STEPS = [
+  {
+    label: "Start",
+    equation: "2(x + 3) = 10",
+    operation: "same relationship",
+    note: "An equation states that two expressions represent the same value.",
+  },
+  {
+    label: "Expand",
+    equation: "2x + 6 = 10",
+    operation: "distribute 2",
+    note: "The expression changes form, but its value does not.",
+  },
+  {
+    label: "Isolate",
+    equation: "2x = 4",
+    operation: "subtract 6 from both sides",
+    note: "Applying the same reversible operation preserves the solution set.",
+  },
+  {
+    label: "Normalize",
+    equation: "x = 2",
+    operation: "divide both sides by 2",
+    note: "A simpler representation reveals the hidden value directly.",
+  },
+] as const;
+
+function buildBranches(): AlgebraBranch[] {
   const algebra = curriculumRegistry.getNode("formal.mathematics.algebra");
   if (!algebra) throw new Error("Algebra is missing from the curriculum registry.");
 
   return (algebra.children ?? []).map((branch) => {
-    const presentation = ALGEBRA_BRANCH_PRESENTATION[branch.id];
+    const presentation = PRESENTATION[branch.id];
     if (!presentation) {
-      throw new Error(`Algebra branch ${branch.id} is missing its local presentation config.`);
+      throw new Error(`Algebra branch ${branch.id} is missing presentation metadata.`);
     }
 
     return {
-      ...branch,
-      title: branch.label,
-      desc: branch.description ?? "",
+      id: branch.id,
+      label: branch.label,
+      href: branch.href,
+      status: branch.status,
+      description: branch.description ?? "",
+      children: (branch.children ?? []).map((child) => ({
+        id: child.id,
+        label: child.label,
+        href: child.href,
+        status: child.status,
+      })),
       ...presentation,
     };
   });
 }
 
-const SUBDOMAINS = buildAlgebraBranches();
+const BRANCHES = buildBranches();
 
 export default function AlgebraHubPage() {
+  const [rewriteIndex, setRewriteIndex] = useState(0);
+  const rewrite = REWRITE_STEPS[rewriteIndex];
+
   return (
-    <main className="relative min-h-screen bg-[#0c0a1f] text-white overflow-hidden font-mono selection:bg-indigo-500/50 pb-32">
-      <AlgebraBackground2 />
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(99,102,241,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(99,102,241,0.05)_1px,transparent_1px)] bg-[size:50px_50px] pointer-events-none z-0" />
-      <div className="absolute inset-0 bg-radial-vignette opacity-70 pointer-events-none z-0" />
+    <main className="relative min-h-screen overflow-x-hidden bg-[#080910] text-slate-100 selection:bg-blue-400/25">
+      <div className="pointer-events-none fixed inset-0 z-0 opacity-35">
+        <AlgebraBackground2 />
+      </div>
+      <div className="pointer-events-none fixed inset-0 z-0 bg-[radial-gradient(circle_at_80%_14%,rgba(96,165,250,0.10),transparent_26%),radial-gradient(circle_at_12%_82%,rgba(192,132,252,0.07),transparent_24%),linear-gradient(to_bottom,rgba(5,6,12,0.22),rgba(5,6,12,0.80))]" />
+      <div className="pointer-events-none fixed inset-0 z-[1] opacity-25 [background-image:linear-gradient(rgba(129,140,248,0.025)_1px,transparent_1px),linear-gradient(90deg,rgba(129,140,248,0.025)_1px,transparent_1px)] [background-size:42px_42px]" />
 
-      <div className="relative z-10 max-w-[1200px] mx-auto px-6 py-12 min-h-screen flex flex-col">
-        <header className="flex flex-col mb-20 mt-8">
-          <Link href="/formal-science/mathematics" className="flex items-center gap-2 text-[10px] text-indigo-400 hover:text-white transition-colors mb-8 uppercase tracking-widest group w-max border border-indigo-500/30 bg-black/50 px-4 py-2 rounded-full backdrop-blur-sm">
-            <ArrowLeft size={12} className="group-hover:-translate-x-1 transition-transform" /> Return to Math Hub
-          </Link>
-
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 border-b border-indigo-500/20 pb-8">
-            <div className="flex items-center gap-6">
-              <div className="w-20 h-20 border border-indigo-500/50 flex items-center justify-center bg-black/50 backdrop-blur-sm relative overflow-hidden group rounded-2xl shadow-[0_0_30px_rgba(99,102,241,0.2)]">
-                <div className="absolute inset-0 bg-indigo-500/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
-                <Braces size={40} className="text-indigo-400 relative z-10" />
-              </div>
-              <div>
-                <div className="flex items-center gap-3 text-indigo-500 mb-2 font-mono text-[10px] font-bold tracking-[0.2em] uppercase">
-                  <Variable size={12} /> Domain_02 <span className="w-12 h-px bg-indigo-500/50" />
-                </div>
-                <h1 className="text-5xl md:text-7xl font-bold tracking-tighter text-white drop-shadow-[0_0_20px_rgba(99,102,241,0.3)]">
-                  ALGEBRA
-                </h1>
-              </div>
+      <div className="relative z-10 mx-auto w-full max-w-[1540px] px-4 py-4 sm:px-6 xl:px-8 xl:py-5">
+        <DomainPageHeader
+          breadcrumbs={[
+            { label: "Home", href: "/" },
+            { label: "Formal Sciences", href: "/formal-science" },
+            { label: "Mathematics", href: "/formal-science/mathematics" },
+            { label: "Algebra" },
+          ]}
+          eyebrow="Equivalence · Relation · Transformation · Structure"
+          icon={Braces}
+          title={<span>Algebra</span>}
+          subtitle="Change representations while preserving relationships. Algebra grows from solving for unknowns into the study of transformations and abstract structure."
+          accentRgb="96, 165, 250"
+          titleClassName="font-mono text-[clamp(3.4rem,6vw,6rem)] font-semibold uppercase leading-[0.82] tracking-[-0.065em] text-[#f8fbff]"
+          iconClassName="rounded-[16px]"
+          headerClassName="border-blue-300/[0.14]"
+          aside={
+            <div className="flex items-center gap-3 rounded-full border border-blue-300/[0.14] bg-black/25 px-4 py-2 font-mono text-[12px] text-blue-300/80 backdrop-blur-md">
+              <span>x</span><Equal size={12} /><span className="text-violet-300">?</span>
             </div>
+          }
+        />
 
-            <div className="flex gap-4">
-              <div className="bg-black/60 border border-indigo-500/30 rounded-xl p-4 backdrop-blur-sm shadow-xl flex flex-col justify-center">
-                <div className="text-[9px] text-indigo-400 uppercase tracking-widest mb-1">Modules</div>
-                <div className="text-2xl font-bold text-white leading-none">
-                  {String(SUBDOMAINS.length).padStart(2, "0")}
-                </div>
-              </div>
+        <section className="mt-3 grid gap-3 rounded-[22px] border border-blue-200/[0.12] bg-black/[0.23] p-3.5 backdrop-blur-xl xl:grid-cols-[230px_minmax(0,1fr)_330px]">
+          <div className="flex min-w-0 items-center gap-3">
+            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-blue-300/[0.18] bg-blue-400/[0.055] text-blue-300">
+              <Scale size={19} strokeWidth={1.45} />
+            </span>
+            <div className="min-w-0">
+              <div className="text-[10px] font-semibold uppercase tracking-[0.15em] text-blue-300/65">Equivalence rail</div>
+              <p className="mt-1 text-[11px] leading-4 text-slate-500">Rewrite without changing what is true.</p>
             </div>
           </div>
-        </header>
 
-        <section className="mb-24">
-          <div className="flex items-center gap-3 mb-8">
-            <div className="h-4 w-1 bg-indigo-500 rounded-full" />
-            <h2 className="text-sm font-bold text-indigo-300 uppercase tracking-widest">The Curriculum</h2>
+          <div className="grid grid-cols-4 gap-2">
+            {REWRITE_STEPS.map((step, index) => {
+              const active = index === rewriteIndex;
+              return (
+                <button
+                  key={step.label}
+                  type="button"
+                  onClick={() => setRewriteIndex(index)}
+                  onMouseEnter={() => setRewriteIndex(index)}
+                  className="min-w-0 rounded-xl border px-2 py-2.5 text-left transition-colors"
+                  style={{
+                    borderColor: active ? "rgba(96,165,250,0.34)" : "rgba(255,255,255,0.055)",
+                    background: active ? "rgba(96,165,250,0.075)" : "rgba(0,0,0,0.16)",
+                  }}
+                >
+                  <div className={`text-[9px] font-semibold ${active ? "text-blue-300" : "text-slate-600"}`}>{step.label}</div>
+                  <div className="mt-1 truncate font-mono text-[11px] text-slate-300">{step.equation}</div>
+                </button>
+              );
+            })}
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-            <div className="col-span-12">
-              <div className="bg-zinc-900/60 backdrop-blur-md border border-white/10 rounded-2xl p-8 relative overflow-hidden shadow-2xl mb-4">
-                <div className="absolute top-0 right-0 p-32 bg-indigo-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
-                <div className="relative z-10 max-w-3xl">
-                  <p className="text-sm text-zinc-300 font-sans font-light leading-relaxed mb-6">
-                    Arithmetic teaches us how to calculate real things. Algebra teaches us how to find things that are hidden. By replacing unknown numbers with letters, we stop asking "what does this equal?" and start asking "how is this structured?"
-                  </p>
-                  <div className="flex items-center gap-4 opacity-70">
-                    <span className="text-lg font-mono text-indigo-400">f(x)</span>
-                    <Equal size={16} />
-                    <span className="text-lg font-mono text-fuchsia-400">y</span>
-                  </div>
-                </div>
-              </div>
+          <div className="grid min-h-[70px] grid-cols-[minmax(0,1fr)_auto] items-center gap-3 rounded-xl border border-white/[0.05] bg-white/[0.018] px-3.5 py-2.5">
+            <div className="min-w-0">
+              <div className="truncate font-mono text-[17px] font-semibold text-white">{rewrite.equation}</div>
+              <div className="mt-1 text-[10px] font-medium text-blue-300/70">{rewrite.operation}</div>
+              <p className="mt-1 line-clamp-2 text-[10px] leading-4 text-slate-500">{rewrite.note}</p>
             </div>
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-emerald-300/[0.15] bg-emerald-400/[0.045] text-emerald-300" title="Solution preserved">
+              <Check size={14} />
+            </div>
+          </div>
+        </section>
 
-            {SUBDOMAINS.map((item, i) => (
-              <Link
-                key={item.id}
-                href={item.href}
-                className={`${item.layout} group relative flex flex-col md:flex-row items-start md:items-center gap-6 p-8 border border-white/5 bg-black/40 rounded-2xl backdrop-blur-md transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_10px_30px_rgba(0,0,0,0.5)] hover:border-indigo-500/50 ${item.bg}`}
-              >
-                <div className="absolute left-0 top-4 bottom-4 w-1 border-l-2 border-t-2 border-b-2 border-white/10 rounded-l transition-colors group-hover:border-indigo-500/50" />
-                <div className="absolute right-0 top-4 bottom-4 w-1 border-r-2 border-t-2 border-b-2 border-white/10 rounded-r transition-colors group-hover:border-indigo-500/50" />
+        <section className="mt-3 overflow-hidden rounded-[24px] border border-blue-200/[0.12] bg-black/[0.22] p-3.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.025),0_24px_70px_rgba(0,0,0,0.22)] backdrop-blur-xl">
+          <div className="flex flex-col gap-2 px-1 pb-3 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-blue-300/65">The algebra ladder</div>
+              <p className="mt-1 text-[12px] text-slate-500">The objects get richer; the idea of preserving structure stays the same.</p>
+            </div>
+            <div className="font-mono text-[10px] text-slate-600">number → relation → space → structure</div>
+          </div>
 
-                <div className={`p-4 rounded-xl bg-black/60 border border-white/5 shadow-inner transition-colors ${item.border} ${item.color} shrink-0`}>
-                  <item.icon size={32} strokeWidth={1.5} />
-                </div>
-
-                <div className="flex-1">
-                  <div className="flex items-center gap-3 mb-1">
-                    <span className={`text-[10px] font-black uppercase tracking-widest px-2 py-0.5 rounded bg-white/5 ${item.color}`}>
-                      MOD_0{i + 1}
-                    </span>
-                    <h2 className="text-2xl font-bold text-white group-hover:text-indigo-200 transition-colors font-sans">
-                      {item.title}
-                    </h2>
-                  </div>
-                  <div className={`text-[9px] font-bold uppercase tracking-widest mb-3 opacity-70 ${item.color}`}>
-                    {item.subtitle}
-                  </div>
-                  <p className="text-xs text-zinc-400 font-sans leading-relaxed mb-4">{item.desc}</p>
-
-                  <div className="inline-block px-3 py-1 bg-black rounded text-xs font-mono text-indigo-300 border border-white/5 group-hover:border-indigo-500/30 transition-colors">
-                    {item.equation}
-                  </div>
-                </div>
-
-                <div className="hidden md:flex shrink-0 p-3 rounded-full bg-white/5 text-zinc-500 group-hover:text-white group-hover:bg-indigo-500/20 transition-all">
-                  <ChevronRight size={20} className="group-hover:translate-x-1 transition-transform" />
-                </div>
-              </Link>
+          <nav aria-label="Algebra branches" className="grid gap-3 xl:grid-cols-4">
+            {BRANCHES.map((branch) => (
+              <BranchColumn key={branch.id} branch={branch} />
             ))}
-          </div>
+          </nav>
         </section>
-
-        <section className="mb-24">
-          <div className="flex items-center gap-3 mb-8">
-            <div className="h-4 w-1 bg-indigo-500 rounded-full" />
-            <h2 className="text-sm font-bold text-indigo-300 uppercase tracking-widest">Simulation Deck</h2>
-          </div>
-          <FunctionMachine />
-        </section>
-
-        <section className="mt-auto pb-16">
-          <div className="flex items-center gap-3 mb-8">
-            <div className="h-4 w-1 bg-indigo-500 rounded-full" />
-            <h2 className="text-sm font-bold text-indigo-300 uppercase tracking-widest">Verification Protocol</h2>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div className="col-span-1">
-              <VocabApplet currentDomain="Algebra" localTerms={algebraVocab || []} accentColor="indigo" />
-            </div>
-            <div className="col-span-1 lg:col-span-2">
-              <Assessment
-                title="Domain Check: The Branches of Algebra"
-                questions={algebraQuiz || []}
-                accentColor="indigo"
-                onComplete={(score, total) => console.log(`Algebra Quiz Scored: ${score}/${total}`)}
-              />
-            </div>
-          </div>
-        </section>
-
-        <div className="border-t border-indigo-900/30 pt-6 flex justify-between items-center text-[10px] text-indigo-500/60 font-mono uppercase tracking-widest mt-8">
-          <span>Find X.</span>
-          <span>Architecture v3.1</span>
-        </div>
       </div>
     </main>
+  );
+}
+
+function BranchColumn({ branch }: { branch: AlgebraBranch }) {
+  const Icon = branch.icon;
+  const planned = branch.status === "placeholder";
+
+  return (
+    <article
+      className={`relative flex min-h-[520px] flex-col overflow-hidden rounded-[20px] border p-3.5 ${planned ? "opacity-55" : ""}`}
+      style={{
+        borderColor: `rgba(${branch.rgb},0.20)`,
+        background: `linear-gradient(160deg, rgba(${branch.rgb},0.065), rgba(6,7,12,0.72) 36%, rgba(5,6,10,0.64))`,
+      }}
+    >
+      <div className="pointer-events-none absolute -right-20 -top-20 h-44 w-44 rounded-full blur-3xl" style={{ background: `rgba(${branch.rgb},0.08)` }} />
+
+      <div className="relative flex items-start justify-between gap-3">
+        <span
+          className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border"
+          style={{
+            color: `rgb(${branch.rgb})`,
+            borderColor: `rgba(${branch.rgb},0.28)`,
+            background: `rgba(${branch.rgb},0.06)`,
+          }}
+        >
+          <Icon size={19} strokeWidth={1.5} />
+        </span>
+        <span className="rounded-full border px-2 py-1 text-[9px] font-semibold uppercase tracking-[0.09em]" style={{ color: `rgba(${branch.rgb},0.68)`, borderColor: `rgba(${branch.rgb},0.14)` }}>
+          {branch.eyebrow}
+        </span>
+      </div>
+
+      <div className="relative mt-4">
+        <Link href={branch.href} className="group inline-flex items-center gap-2">
+          <h2 className="text-[21px] font-semibold tracking-[-0.035em] text-white transition-colors group-hover:text-blue-100">{branch.label}</h2>
+          <ArrowRight size={13} style={{ color: `rgb(${branch.rgb})` }} className="transition-transform group-hover:translate-x-0.5" />
+        </Link>
+        <p className="mt-2 min-h-[60px] text-[11px] leading-5 text-slate-500">{branch.thesis}</p>
+
+        <div className="mt-3 grid gap-2 rounded-xl border border-white/[0.045] bg-black/[0.16] p-2.5">
+          <div className="font-mono text-[13px] font-semibold" style={{ color: `rgb(${branch.rgb})` }}>{branch.equation}</div>
+          <div className="flex items-center gap-2 text-[10px] text-slate-500">
+            <Braces size={11} style={{ color: `rgba(${branch.rgb},0.70)` }} />
+            <span>Preserves {branch.preserves}</span>
+          </div>
+        </div>
+      </div>
+
+      <div className="relative mt-3 flex-1 border-t border-white/[0.05] pt-2.5">
+        <div className="mb-2 text-[9px] font-semibold uppercase tracking-[0.12em] text-slate-600">Inside this branch</div>
+        <div className="grid gap-1.5">
+          {branch.children.map((child) => {
+            const childPlanned = child.status === "placeholder";
+            const row = (
+              <>
+                <span className={`truncate text-[10px] font-medium ${childPlanned ? "text-slate-700" : "text-slate-400"}`}>{child.label}</span>
+                {childPlanned ? (
+                  <span className="text-[8px] font-semibold uppercase tracking-[0.07em] text-slate-700">planned</span>
+                ) : (
+                  <ArrowRight size={10} className="shrink-0 text-slate-700 transition-transform group-hover:translate-x-0.5 group-hover:text-slate-400" />
+                )}
+              </>
+            );
+
+            const className = `group flex h-8 min-w-0 items-center justify-between gap-2 rounded-lg border px-2.5 ${
+              childPlanned
+                ? "cursor-default border-white/[0.025] bg-white/[0.008]"
+                : "border-white/[0.045] bg-white/[0.014] transition-colors hover:border-white/[0.10] hover:bg-white/[0.03]"
+            }`;
+
+            return childPlanned ? (
+              <div key={child.id} className={className}>{row}</div>
+            ) : (
+              <Link key={child.id} href={child.href} className={className}>{row}</Link>
+            );
+          })}
+        </div>
+      </div>
+
+      <Link
+        href={branch.href}
+        className="relative mt-3 flex h-9 items-center justify-between rounded-xl border px-3 text-[10px] font-semibold transition-colors hover:bg-white/[0.03]"
+        style={{ color: `rgba(${branch.rgb},0.82)`, borderColor: `rgba(${branch.rgb},0.16)` }}
+      >
+        <span>Open {branch.label}</span>
+        <ArrowRight size={12} />
+      </Link>
+    </article>
   );
 }
