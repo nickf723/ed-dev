@@ -1,6 +1,7 @@
 import Link from "next/link";
 import {
   Accessibility,
+  ArrowLeft,
   ArrowRight,
   Building2,
   Cable,
@@ -69,7 +70,6 @@ export default function ArchitecturePage() {
   const branches = (architecture.children ?? []).map((branch) => ({
     id: branch.id,
     label: branch.label,
-    href: branch.href,
     description: branch.description ?? "",
     status: branch.status,
     presentation: PRESENTATION[branch.id],
@@ -77,11 +77,11 @@ export default function ArchitecturePage() {
 
   return (
     <main className="relative min-h-screen overflow-x-hidden bg-[#06121d] text-slate-100 selection:bg-sky-400/25">
-      <div className="pointer-events-none fixed inset-0 z-0 opacity-62">
+      <div className="pointer-events-none fixed inset-0 z-0 opacity-60">
         <BlueprintBackground />
       </div>
       <div className="pointer-events-none fixed inset-0 z-0 bg-[radial-gradient(circle_at_82%_12%,rgba(56,189,248,0.11),transparent_26%),radial-gradient(circle_at_18%_82%,rgba(251,191,36,0.07),transparent_28%),linear-gradient(to_bottom,rgba(6,18,29,0.18),rgba(3,9,16,0.90))]" />
-      <div className="pointer-events-none fixed inset-0 z-[1] opacity-22 [background-image:linear-gradient(rgba(125,211,252,0.025)_1px,transparent_1px),linear-gradient(90deg,rgba(125,211,252,0.025)_1px,transparent_1px)] [background-size:36px_36px]" />
+      <div className="pointer-events-none fixed inset-0 z-[1] opacity-20 [background-image:linear-gradient(rgba(125,211,252,0.025)_1px,transparent_1px),linear-gradient(90deg,rgba(125,211,252,0.025)_1px,transparent_1px)] [background-size:36px_36px]" />
 
       <div className="relative z-10 mx-auto w-full max-w-[1520px] px-4 py-4 sm:px-6 xl:px-8 xl:py-5">
         <DomainPageHeader
@@ -144,7 +144,7 @@ export default function ArchitecturePage() {
                 return (
                   <article
                     key={branch.id}
-                    className={`relative min-h-[174px] rounded-[18px] border p-4 ${planned ? "opacity-78" : ""}`}
+                    className={`relative min-h-[174px] rounded-[18px] border p-4 ${planned ? "opacity-75" : ""}`}
                     style={{
                       borderColor: `rgba(${presentation.rgb},0.17)`,
                       background: `linear-gradient(145deg, rgba(${presentation.rgb},0.045), rgba(3,10,17,0.72) 56%)`,
@@ -205,7 +205,7 @@ export default function ArchitecturePage() {
 
         <div className="mt-3 pb-8">
           <Link href="/applied-science" className="inline-flex items-center gap-2 rounded-full border border-violet-300/[0.10] bg-black/[0.18] px-3 py-2 text-[10px] font-semibold text-slate-500 transition-colors hover:text-slate-300">
-            Applied Sciences map <ArrowRight size={12} />
+            <ArrowLeft size={12} /> Applied Sciences map
           </Link>
         </div>
       </div>
