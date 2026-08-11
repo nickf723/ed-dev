@@ -7,6 +7,8 @@ Before changing educational UI or curriculum content, read:
 - `docs/design-docket.md` for visual, layout, navigation, density, and interaction rules.
 - `docs/educational-content-playbook.md` for learning design, chunking, modeling, explanation, practice, and assessment rules.
 - `docs/page-planning-template.md` when creating or substantially remastering a hub, unit, or lesson page.
+- `docs/cohesion-audit.md` for site-wide consistency without homogenizing subject identity.
+- `docs/visual-verification-queue.md` before making visual claims or continuing work while rendered previews are unavailable.
 
 ## Non-negotiable rules
 
@@ -25,6 +27,7 @@ Before changing educational UI or curriculum content, read:
 13. **Different navigation relationships must look different.** Parent/up, previous/next sibling, child, cross-link, and planned destinations are semantically distinct.
 14. **Accuracy outranks cleverness.** Use canonical terminology, definitions, notation, and category boundaries. Do not blend informal frameworks with formal ones without labeling the distinction.
 15. **Batch meaningful changes.** Avoid a series of tiny commits that each trigger a deployment. Prefer one coherent commit per development pass when practical.
+16. **Cohesion is not homogenization.** Reuse shell behavior, navigation semantics, geometry rules, and feedback grammar. Let subject-specific structure, models, backgrounds, interactions, and local visual identity become more distinct with depth.
 
 ## Required workflow for substantial page work
 
@@ -55,8 +58,52 @@ Before calling the pass complete:
 - Check the Design Docket audit and the Learning Design audit.
 - Run the available build/type checks when the environment supports them.
 
+## Preview-offline maintenance mode
+
+When a reliable rendered preview is unavailable, development continues in a deliberately narrower mode.
+
+### Safe work while blind
+
+Prefer changes whose correctness can be established from structure, content, or code rather than visual judgment:
+
+- curriculum ontology and route wiring
+- parent / child / sibling relationships
+- prerequisites and dependency structure
+- semantic navigation labels
+- canonical terminology, definitions, notation, and category boundaries
+- page-depth and scope decisions
+- learning contracts and chunk plans
+- clearly implementation-facing copy such as debug labels or arbitrary module codes
+- accessibility and semantic markup
+- type safety and compile fixes
+- documentation and audits
+- removal of known structural anti-patterns when the fix does not depend on rendered composition
+
+### Do not guess at visual composition
+
+Without a trusted render, avoid making claims or tuning decisions about:
+
+- spacing and whitespace balance
+- viewport occupancy
+- panel/card proportions
+- font-size tuning unless a documented readability violation is unambiguous
+- background opacity
+- border intensity
+- palette balance
+- responsive composition
+- whether a page feels visually too busy or too sparse
+- major visual remasters whose success depends on seeing the result
+
+### Verification queue is mandatory
+
+If a change made while blind can affect rendered composition, add the route and its important states to `docs/visual-verification-queue.md` in the same development pass.
+
+A page is not visually finished because it compiles. Once preview capability returns, clear the verification queue before resuming rapid new-page production in that branch.
+
 ## Current development workflow
 
 The current project workflow favors direct, meaningful production improvements and preserving existing routes. Use `main` as the target unless the user explicitly requests a different workflow or a temporary branch is needed to assemble a coherent batch safely.
 
 When a recurring design or pedagogy correction appears more than once, update the appropriate repository rule document so the same correction does not need to be rediscovered page by page.
+
+When auditing a haphazardly developed branch, work branch-by-branch rather than page-by-page at random. Establish its ontology, identify legacy patterns, queue visual verification, then descend deliberately.
