@@ -56,7 +56,7 @@ const spatialDesign: CurriculumNode = {
       "/applied-science/architecture/spatial-design/adjacency-zoning",
       "Organize which spaces should connect, separate, cluster, or transition based on privacy, noise, service, and use.",
     ),
-    plannedLesson(
+    activeLesson(
       "applied.architecture.spatial-design.circulation-wayfinding",
       "Circulation & Wayfinding",
       "/applied-science/architecture/spatial-design/circulation-wayfinding",
