@@ -35,6 +35,7 @@ type AppliedField = {
     id: string;
     label: string;
     href: string;
+    status?: "active" | "placeholder";
   }[];
 } & FieldPresentation;
 
@@ -153,6 +154,7 @@ export default function AppliedSciencePage() {
         id: child.id,
         label: child.label,
         href: child.href,
+        status: child.status,
       })),
       ...presentation,
     };
@@ -269,15 +271,25 @@ function AppliedFieldCard({ field, wide }: { field: AppliedField; wide: boolean 
 
         {visibleChildren.length > 0 ? (
           <div className="mt-2 flex flex-wrap gap-1.5">
-            {visibleChildren.map((child) => (
-              <Link
-                key={child.id}
-                href={child.href}
-                className="rounded-md border border-white/[0.07] bg-black/20 px-2 py-1 text-[7px] text-slate-500 transition-colors hover:border-white/[0.14] hover:text-slate-200"
-              >
-                {child.label}
-              </Link>
-            ))}
+            {visibleChildren.map((child) =>
+              child.status === "placeholder" ? (
+                <span
+                  key={child.id}
+                  className="rounded-md border border-white/[0.055] bg-black/15 px-2 py-1 text-[7px] text-slate-700"
+                  title={`${child.label} is planned`}
+                >
+                  {child.label}
+                </span>
+              ) : (
+                <Link
+                  key={child.id}
+                  href={child.href}
+                  className="rounded-md border border-white/[0.07] bg-black/20 px-2 py-1 text-[7px] text-slate-500 transition-colors hover:border-white/[0.14] hover:text-slate-200"
+                >
+                  {child.label}
+                </Link>
+              ),
+            )}
           </div>
         ) : null}
 
