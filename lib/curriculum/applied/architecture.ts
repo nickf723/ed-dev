@@ -15,7 +15,7 @@ function activeLesson(
   };
 }
 
-function plannedLesson(
+function plannedBranch(
   id: string,
   label: string,
   href: string,
@@ -25,15 +25,6 @@ function plannedLesson(
     ...activeLesson(id, label, href, description),
     status: "placeholder",
   };
-}
-
-function plannedBranch(
-  id: string,
-  label: string,
-  href: string,
-  description: string,
-): CurriculumNode {
-  return plannedLesson(id, label, href, description);
 }
 
 const spatialDesign: CurriculumNode = {
@@ -62,11 +53,11 @@ const spatialDesign: CurriculumNode = {
       "/applied-science/architecture/spatial-design/circulation-wayfinding",
       "Design entrances, paths, decision points, queues, vertical movement, and spatial cues that help people move and orient themselves.",
     ),
-    plannedLesson(
+    activeLesson(
       "applied.architecture.spatial-design.human-scale-accessibility",
       "Human Scale & Accessibility",
       "/applied-science/architecture/spatial-design/human-scale-accessibility",
-      "Use body dimensions, reach, furniture, clearances, turning space, and inclusive access to size spaces around real people.",
+      "Use body and mobility-device envelopes, furniture, clearances, reach, turning space, and inclusive design thinking to size spaces around real people.",
     ),
   ],
 };
