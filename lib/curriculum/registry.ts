@@ -87,7 +87,7 @@ const nodeChildAdditions: Record<string, readonly CurriculumNode[]> = {
     },
     {
       id: "humanities.culinary-arts.market",
-      label: "Ingredient Index",
+      label: "Ingredient Atlas",
       href: "/humanities/culinary-arts/market",
       domainId: "humanities",
     },
