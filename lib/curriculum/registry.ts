@@ -106,6 +106,36 @@ const nodeChildAdditions: Record<string, readonly CurriculumNode[]> = {
       status: "placeholder",
     },
   ],
+  "formal.mathematics.algebra.elementary-algebra.fundamentals": [
+    {
+      id: "formal.mathematics.algebra.elementary-algebra.fundamentals.expressions-variables",
+      label: "Expressions & Variables",
+      href: "/formal-science/mathematics/algebra/elementary-algebra/fundamentals/expressions-variables",
+      description: "Read algebraic expressions structurally: terms, coefficients, variables, constants, exponents, and operators.",
+      domainId: "formal",
+    },
+    {
+      id: "formal.mathematics.algebra.elementary-algebra.fundamentals.equality-equations",
+      label: "Equality & Equations",
+      href: "/formal-science/mathematics/algebra/elementary-algebra/fundamentals/equality-equations",
+      description: "Understand equality as a preserved relationship and distinguish expressions from equations and solution sets.",
+      domainId: "formal",
+    },
+    {
+      id: "formal.mathematics.algebra.elementary-algebra.fundamentals.algebraic-properties",
+      label: "Algebraic Properties",
+      href: "/formal-science/mathematics/algebra/elementary-algebra/fundamentals/algebraic-properties",
+      description: "Use commutative, associative, distributive, identity, and inverse properties as precise rewrite rules.",
+      domainId: "formal",
+    },
+    {
+      id: "formal.mathematics.algebra.elementary-algebra.fundamentals.number-systems",
+      label: "Number Systems",
+      href: "/formal-science/mathematics/algebra/elementary-algebra/fundamentals/number-systems",
+      description: "Place natural, integer, rational, irrational, real, and complex values inside the number-system hierarchy.",
+      domainId: "formal",
+    },
+  ],
 };
 
 function appendMissingRoots(domain: CurriculumDomain): readonly CurriculumNode[] {
