@@ -50,7 +50,7 @@ const spatialDesign: CurriculumNode = {
       "/applied-science/architecture/spatial-design/program-area",
       "Turn activities, users, furniture, equipment, and capacity into a program of required spaces and approximate areas.",
     ),
-    plannedLesson(
+    activeLesson(
       "applied.architecture.spatial-design.adjacency-zoning",
       "Adjacency & Zoning",
       "/applied-science/architecture/spatial-design/adjacency-zoning",
