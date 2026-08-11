@@ -136,6 +136,15 @@ const nodeChildAdditions: Record<string, readonly CurriculumNode[]> = {
       domainId: "formal",
     },
   ],
+  "formal.mathematics.algebra.elementary-algebra.inequalities": [
+    {
+      id: "formal.mathematics.algebra.elementary-algebra.inequalities.systems",
+      label: "Systems of Inequalities",
+      href: "/formal-science/mathematics/algebra/elementary-algebra/inequalities/systems",
+      description: "Graph multiple linear inequalities and identify the intersection of their feasible regions.",
+      domainId: "formal",
+    },
+  ],
 };
 
 function appendMissingRoots(domain: CurriculumDomain): readonly CurriculumNode[] {
