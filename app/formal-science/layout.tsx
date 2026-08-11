@@ -23,6 +23,8 @@ export default function FormalScienceLayout({
           "/formal-science/mathematics/algebra/elementary-algebra/fundamentals/equality-equations",
           "/formal-science/mathematics/algebra/elementary-algebra/fundamentals/algebraic-properties",
           "/formal-science/mathematics/algebra/elementary-algebra/fundamentals/number-systems",
+          "/formal-science/mathematics/algebra/elementary-algebra/linear-equations",
+          "/formal-science/mathematics/algebra/elementary-algebra/linear-equations/",
         ]}
       />
       <style>{`
@@ -30,6 +32,20 @@ export default function FormalScienceLayout({
           button[aria-controls="page-vocabulary-drawer"] {
             top: auto !important;
             bottom: 1.25rem !important;
+          }
+        }
+
+        @media (min-width: 1280px) {
+          section[class~="xl:h-[430px]"] div[class~="grid-rows-[116px_minmax(0,1fr)]"] {
+            grid-template-rows: 158px minmax(0, 1fr) !important;
+          }
+
+          section[class~="xl:h-[430px]"] div[class~="grid-rows-[116px_minmax(0,1fr)]"] > div:first-child > button {
+            height: 46px !important;
+          }
+
+          section[class~="xl:h-[430px]"] div[class~="grid-rows-[116px_minmax(0,1fr)]"] > div:first-child > button:last-child {
+            grid-column: 1 / -1;
           }
         }
       `}</style>
