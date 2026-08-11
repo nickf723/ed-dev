@@ -70,6 +70,7 @@ export default function ArchitecturePage() {
   const branches = (architecture.children ?? []).map((branch) => ({
     id: branch.id,
     label: branch.label,
+    href: branch.href,
     description: branch.description ?? "",
     status: branch.status,
     presentation: PRESENTATION[branch.id],
@@ -131,53 +132,10 @@ export default function ArchitecturePage() {
 
           <div className="grid items-stretch gap-3 xl:grid-cols-[minmax(520px,1.02fr)_minmax(500px,0.98fr)]">
             <div className="grid gap-3 sm:grid-cols-2">
-              {branches.map((branch, index) => {
-                const presentation = branch.presentation ?? {
-                  icon: DraftingCompass,
-                  rgb: "125, 211, 252",
-                  shorthand: "architecture",
-                  question: branch.description,
-                };
-                const Icon = presentation.icon;
-                const planned = branch.status === "placeholder";
-
-                return (
-                  <article
-                    key={branch.id}
-                    className={`relative min-h-[174px] rounded-[18px] border p-4 ${planned ? "opacity-75" : ""}`}
-                    style={{
-                      borderColor: `rgba(${presentation.rgb},0.17)`,
-                      background: `linear-gradient(145deg, rgba(${presentation.rgb},0.045), rgba(3,10,17,0.72) 56%)`,
-                    }}
-                  >
-                    <div className="flex items-start gap-3">
-                      <span
-                        className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border"
-                        style={{
-                          color: `rgb(${presentation.rgb})`,
-                          borderColor: `rgba(${presentation.rgb},0.24)`,
-                          background: `rgba(${presentation.rgb},0.055)`,
-                        }}
-                      >
-                        <Icon size={18} strokeWidth={1.6} />
-                      </span>
-                      <div className="min-w-0 flex-1">
-                        <div className="flex items-center justify-between gap-3">
-                          <span className="font-mono text-[9px] text-slate-700">0{index + 1}</span>
-                          {planned ? (
-                            <span className="rounded-full border border-white/[0.06] bg-white/[0.02] px-2 py-1 text-[8px] font-semibold uppercase tracking-[0.1em] text-slate-600">Planned</span>
-                          ) : null}
-                        </div>
-                        <h3 className="mt-1 text-[16px] font-semibold tracking-[-0.02em] text-slate-100">{branch.label}</h3>
-                        <div className="mt-1 font-mono text-[9px] uppercase tracking-[0.11em]" style={{ color: `rgba(${presentation.rgb},0.70)` }}>{presentation.shorthand}</div>
-                      </div>
-                    </div>
-                    <p className="mt-3 text-[11px] leading-5 text-slate-500">{presentation.question}</p>
-                  </article>
-                );
-              })}
+              {branches.map((branch, index) => (
+                <ArchitectureBranchCard key={branch.id} branch={branch} index={index} />
+              ))}
             </div>
-
             <BuildingSection />
           </div>
         </section>
@@ -211,6 +169,68 @@ export default function ArchitecturePage() {
       </div>
     </main>
   );
+}
+
+function ArchitectureBranchCard({
+  branch,
+  index,
+}: {
+  branch: {
+    id: string;
+    label: string;
+    href: string;
+    description: string;
+    status?: "active" | "placeholder";
+    presentation?: BranchPresentation;
+  };
+  index: number;
+}) {
+  const presentation = branch.presentation ?? {
+    icon: DraftingCompass,
+    rgb: "125, 211, 252",
+    shorthand: "architecture",
+    question: branch.description,
+  };
+  const Icon = presentation.icon;
+  const planned = branch.status === "placeholder";
+
+  const content = (
+    <article
+      className={`relative min-h-[174px] rounded-[18px] border p-4 transition-all ${planned ? "opacity-75" : "group-hover:-translate-y-0.5"}`}
+      style={{
+        borderColor: `rgba(${presentation.rgb},${planned ? "0.17" : "0.25"})`,
+        background: `linear-gradient(145deg, rgba(${presentation.rgb},${planned ? "0.045" : "0.07"}), rgba(3,10,17,0.72) 56%)`,
+      }}
+    >
+      <div className="flex items-start gap-3">
+        <span
+          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border"
+          style={{
+            color: `rgb(${presentation.rgb})`,
+            borderColor: `rgba(${presentation.rgb},0.24)`,
+            background: `rgba(${presentation.rgb},0.055)`,
+          }}
+        >
+          <Icon size={18} strokeWidth={1.6} />
+        </span>
+        <div className="min-w-0 flex-1">
+          <div className="flex items-center justify-between gap-3">
+            <span className="font-mono text-[9px] text-slate-700">0{index + 1}</span>
+            {planned ? (
+              <span className="rounded-full border border-white/[0.06] bg-white/[0.02] px-2 py-1 text-[8px] font-semibold uppercase tracking-[0.1em] text-slate-600">Planned</span>
+            ) : (
+              <ArrowRight size={13} style={{ color: `rgb(${presentation.rgb})` }} />
+            )}
+          </div>
+          <h3 className="mt-1 text-[16px] font-semibold tracking-[-0.02em] text-slate-100">{branch.label}</h3>
+          <div className="mt-1 font-mono text-[9px] uppercase tracking-[0.11em]" style={{ color: `rgba(${presentation.rgb},0.70)` }}>{presentation.shorthand}</div>
+        </div>
+      </div>
+      <p className="mt-3 text-[11px] leading-5 text-slate-500">{presentation.question}</p>
+    </article>
+  );
+
+  return planned ? content : <Link href={branch.href} className="group block">{content}</Link>;
 }
 
 function CoreFact({ icon: Icon, label, text, rgb }: { icon: LucideIcon; label: string; text: string; rgb: string }) {
