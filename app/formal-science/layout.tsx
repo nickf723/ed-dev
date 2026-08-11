@@ -27,6 +27,8 @@ export default function FormalScienceLayout({
           "/formal-science/mathematics/algebra/elementary-algebra/linear-equations/",
           "/formal-science/mathematics/algebra/elementary-algebra/systems-of-equations",
           "/formal-science/mathematics/algebra/elementary-algebra/systems-of-equations/",
+          "/formal-science/mathematics/algebra/elementary-algebra/inequalities",
+          "/formal-science/mathematics/algebra/elementary-algebra/inequalities/",
         ]}
       />
       <style>{`
@@ -39,7 +41,7 @@ export default function FormalScienceLayout({
 
         @media (min-width: 1280px) {
           section[class~="xl:h-[430px]"] {
-            height: 470px !important;
+            height: 505px !important;
           }
 
           section[class~="xl:h-[430px]"] div[class~="grid-rows-[116px_minmax(0,1fr)]"] {
@@ -55,13 +57,17 @@ export default function FormalScienceLayout({
           }
 
           section[class~="xl:h-[430px]"] div[class~="grid-rows-[32px_78px_minmax(0,1fr)]"] {
-            grid-template-rows: 32px 96px 84px !important;
+            grid-template-rows: 32px 108px 112px !important;
             overflow: hidden;
           }
 
           section[class~="xl:h-[430px]"] div[class~="grid-rows-[32px_78px_minmax(0,1fr)]"] > div:last-child {
-            min-height: 84px;
+            min-height: 112px;
             overflow: hidden;
+          }
+
+          section[class~="xl:h-[540px]"] {
+            height: 600px !important;
           }
         }
       `}</style>
