@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-export type MarketMode = "INGREDIENTS" | "PACKAGED";
+export type MarketMode = "INGREDIENTS" | "PACKAGED" | "PRODUCE";
 
 export type IngredientItem = {
   id: string;
@@ -70,13 +70,14 @@ export const useMarket = (mode: MarketMode, search: string) => {
 
   useEffect(() => {
     let cancelled = false;
+    const ingredientMode = mode === "INGREDIENTS" || mode === "PRODUCE";
 
     const fetchItems = async () => {
       setLoading(true);
       setError(null);
 
       try {
-        if (mode === "INGREDIENTS") {
+        if (ingredientMode) {
           const catalog = await loadIngredientCatalog();
           const query = search.trim().toLowerCase();
           const filtered = query
@@ -114,7 +115,7 @@ export const useMarket = (mode: MarketMode, search: string) => {
       }
     };
 
-    const timeout = window.setTimeout(() => void fetchItems(), mode === "PACKAGED" ? 280 : 80);
+    const timeout = window.setTimeout(() => void fetchItems(), ingredientMode ? 80 : 280);
     return () => {
       cancelled = true;
       window.clearTimeout(timeout);
