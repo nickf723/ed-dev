@@ -17,8 +17,18 @@ export default function FormalScienceLayout({
           "/formal-science/mathematics/algebra",
           "/formal-science/mathematics/algebra/elementary-algebra",
           "/formal-science/mathematics/algebra/elementary-algebra/",
+          "/formal-science/mathematics/algebra/elementary-algebra/fundamentals",
+          "/formal-science/mathematics/algebra/elementary-algebra/fundamentals/",
         ]}
       />
+      <style>{`
+        @media (min-width: 768px) {
+          button[aria-controls="page-vocabulary-drawer"] {
+            top: auto !important;
+            bottom: 1.25rem !important;
+          }
+        }
+      `}</style>
     </>
   );
 }
