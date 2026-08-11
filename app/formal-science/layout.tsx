@@ -19,6 +19,10 @@ export default function FormalScienceLayout({
           "/formal-science/mathematics/algebra/elementary-algebra/",
           "/formal-science/mathematics/algebra/elementary-algebra/fundamentals",
           "/formal-science/mathematics/algebra/elementary-algebra/fundamentals/",
+          "/formal-science/mathematics/algebra/elementary-algebra/fundamentals/expressions-variables",
+          "/formal-science/mathematics/algebra/elementary-algebra/fundamentals/equality-equations",
+          "/formal-science/mathematics/algebra/elementary-algebra/fundamentals/algebraic-properties",
+          "/formal-science/mathematics/algebra/elementary-algebra/fundamentals/number-systems",
         ]}
       />
       <style>{`
