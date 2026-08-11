@@ -34,7 +34,6 @@ type HumanitiesField = {
   label: string;
   href: string;
   status?: "active" | "placeholder";
-  childCount: number;
 } & FieldPresentation;
 
 const PRESENTATION: Record<string, FieldPresentation> = {
@@ -134,28 +133,24 @@ const PRESENTATION: Record<string, FieldPresentation> = {
 const CURRENTS: readonly {
   id: CurrentId;
   label: string;
-  index: string;
   detail: string;
   gridClass: string;
 }[] = [
   {
     id: "meaning",
     label: "Meaning & Memory",
-    index: "01",
     detail: "How humans understand existence, remember the past, and imagine what comes next.",
     gridClass: "sm:grid-cols-2 xl:grid-cols-4",
   },
   {
     id: "expression",
     label: "Language & Expression",
-    index: "02",
     detail: "How ideas become words, stories, images, sound, and performance.",
     gridClass: "sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5",
   },
   {
     id: "practice",
     label: "Culture & Practice",
-    index: "03",
     detail: "How culture becomes play, food, sport, identity, custom, and shared life.",
     gridClass: "sm:grid-cols-2 xl:grid-cols-4",
   },
@@ -184,7 +179,6 @@ export default function HumanitiesPage() {
       label: node.label,
       href: node.href,
       status: node.status,
-      childCount: node.children?.length ?? 0,
       ...presentation,
     };
   });
@@ -214,28 +208,13 @@ export default function HumanitiesPage() {
           accentRgb="251, 191, 36"
           titleClassName="font-serif text-[clamp(3.4rem,6vw,6.2rem)] font-semibold leading-[0.82] tracking-[-0.055em] text-[#fffaf0]"
           iconClassName="rounded-[20px]"
-          aside={
-            <div className="flex items-center gap-2 rounded-full border border-amber-300/20 bg-black/20 px-4 py-2 font-mono text-[9px] uppercase tracking-[0.15em] text-amber-200/75 backdrop-blur-md">
-              <span>{fields.length} fields</span>
-              <span className="text-stone-700">·</span>
-              <span>{CURRENTS.length} currents</span>
-            </div>
-          }
         />
 
         <section className="relative mt-4 flex min-h-0 flex-1 flex-col overflow-hidden rounded-[26px] border border-amber-200/15 bg-black/[0.22] p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.035),0_28px_80px_rgba(0,0,0,0.28)] backdrop-blur-xl sm:p-4">
           <div className="pointer-events-none absolute inset-0 opacity-55 [background-image:radial-gradient(circle_at_center,rgba(255,255,255,0.035)_1px,transparent_1.4px)] [background-size:26px_26px]" />
           <div className="pointer-events-none absolute -right-16 -top-20 h-72 w-72 rounded-full bg-amber-300/[0.035] blur-3xl" />
 
-          <div className="relative flex items-end justify-between gap-4 px-1">
-            <div>
-              <div className="font-mono text-[8px] uppercase tracking-[0.22em] text-amber-300/70">Human atlas</div>
-              <p className="mt-1 text-[11px] text-stone-600">Every humanities field, visible at once. No secondary navigation layer.</p>
-            </div>
-            <div className="hidden font-mono text-[8px] uppercase tracking-[0.14em] text-stone-700 sm:block">choose a field to enter</div>
-          </div>
-
-          <div className="relative mt-3 grid min-h-0 flex-1 gap-3 xl:grid-rows-[1fr_1.12fr_1fr]">
+          <div className="relative grid min-h-0 flex-1 gap-3 xl:grid-rows-[1fr_1.12fr_1fr]">
             {CURRENTS.map((current) => {
               const currentFields = fields.filter((field) => field.current === current.id);
 
@@ -244,15 +223,9 @@ export default function HumanitiesPage() {
                   key={current.id}
                   className="grid min-h-0 gap-3 rounded-[20px] border border-white/[0.055] bg-white/[0.012] p-2.5 xl:grid-cols-[138px_minmax(0,1fr)]"
                 >
-                  <div className="flex min-h-[86px] flex-col justify-between rounded-[15px] border border-amber-200/[0.07] bg-[#0b0907]/72 p-3">
-                    <div className="flex items-center justify-between gap-3">
-                      <span className="font-mono text-[8px] uppercase tracking-[0.16em] text-amber-300/70">Current {current.index}</span>
-                      <span className="font-mono text-[8px] text-stone-700">{currentFields.length}</span>
-                    </div>
-                    <div>
-                      <h2 className="text-[13px] font-semibold tracking-[-0.02em] text-stone-200">{current.label}</h2>
-                      <p className="mt-1.5 text-[9px] leading-4 text-stone-600">{current.detail}</p>
-                    </div>
+                  <div className="flex min-h-[86px] flex-col justify-end rounded-[15px] border border-amber-200/[0.07] bg-[#0b0907]/72 p-3">
+                    <h2 className="text-[13px] font-semibold tracking-[-0.02em] text-stone-200">{current.label}</h2>
+                    <p className="mt-1.5 text-[9px] leading-4 text-stone-600">{current.detail}</p>
                   </div>
 
                   <div className={`grid min-h-0 gap-2.5 ${current.gridClass}`}>
@@ -290,24 +263,16 @@ function HumanitiesCard({ field }: { field: HumanitiesField }) {
       />
 
       <div className="relative flex h-full flex-col">
-        <div className="flex items-start justify-between gap-3">
-          <span
-            className="flex h-9 w-9 items-center justify-center rounded-xl border"
-            style={{
-              color: `rgb(${field.rgb})`,
-              borderColor: `rgba(${field.rgb},0.30)`,
-              background: `rgba(${field.rgb},0.07)`,
-            }}
-          >
-            <Icon size={17} strokeWidth={1.5} />
-          </span>
-
-          {field.childCount > 0 ? (
-            <span className="rounded-full border border-white/[0.07] bg-black/20 px-2 py-1 font-mono text-[7px] uppercase tracking-[0.1em] text-stone-600">
-              {field.childCount} paths
-            </span>
-          ) : null}
-        </div>
+        <span
+          className="flex h-9 w-9 items-center justify-center rounded-xl border"
+          style={{
+            color: `rgb(${field.rgb})`,
+            borderColor: `rgba(${field.rgb},0.30)`,
+            background: `rgba(${field.rgb},0.07)`,
+          }}
+        >
+          <Icon size={17} strokeWidth={1.5} />
+        </span>
 
         <div className="mt-3 min-w-0">
           <h3 className="truncate text-[14px] font-semibold tracking-[-0.025em] text-white">{field.label}</h3>
@@ -317,8 +282,7 @@ function HumanitiesCard({ field }: { field: HumanitiesField }) {
           <p className="mt-2 line-clamp-2 text-[9px] leading-4 text-stone-600">{field.description}</p>
         </div>
 
-        <div className="mt-auto flex items-center justify-between pt-2">
-          <span className="font-mono text-[7px] uppercase tracking-[0.11em] text-stone-700">Explore</span>
+        <div className="mt-auto flex justify-end pt-2">
           <ArrowRight size={12} style={{ color: `rgb(${field.rgb})` }} className="transition-transform group-hover:translate-x-1" />
         </div>
       </div>

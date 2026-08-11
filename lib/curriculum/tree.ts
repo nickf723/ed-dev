@@ -181,15 +181,33 @@ export const CURRICULUM_DOMAINS = [
   {
     domainId: "applied",
     children: [
-      node("applied.engineering", "Engineering", "/applied-science/engineering", "applied"),
+      node("applied.engineering", "Engineering", "/applied-science/engineering", "applied", [
+        node("applied.engineering.mechanical", "Mechanical Engineering", "/applied-science/engineering/mechanical", "applied"),
+        node("applied.engineering.civil", "Civil Engineering", "/applied-science/engineering/civil", "applied"),
+        node("applied.engineering.electrical", "Electrical Engineering", "/applied-science/engineering/electrical", "applied"),
+        node("applied.engineering.software", "Software Engineering", "/applied-science/engineering/software", "applied"),
+        node("applied.engineering.aerospace", "Aerospace Engineering", "/applied-science/engineering/aerospace", "applied"),
+        node("applied.engineering.chemical", "Chemical Engineering", "/applied-science/engineering/chemical", "applied"),
+      ]),
       node("applied.technology", "Technology", "/applied-science/technology", "applied", [
         node("applied.technology.web-development", "Web Development", "/applied-science/technology/web-development", "applied"),
         node("applied.technology.embedded-systems", "Embedded Systems", "/applied-science/technology/embedded-systems", "applied"),
         node("applied.technology.telecommunications", "Telecommunications", "/applied-science/technology/telecommunications", "applied"),
       ]),
+      node("applied.materials-science", "Materials Science", "/applied-science/materials-science", "applied"),
       node("applied.industrial-design", "Industrial Design", "/applied-science/industrial-design", "applied"),
-      node("applied.medicine", "Medicine", "/applied-science/medicine", "applied"),
       node("applied.architecture", "Architecture", "/applied-science/architecture", "applied"),
+      node("applied.medicine", "Medicine", "/applied-science/medicine", "applied", [
+        node("applied.medicine.anatomy-physiology", "Anatomy & Physiology", "/applied-science/medicine/anatomy-physiology", "applied"),
+      ]),
+      node("applied.health", "Health Sciences", "/applied-science/health", "applied", [
+        node("applied.health.specializations", "Specializations", "/applied-science/health/specializations", "applied"),
+      ]),
+      node("applied.agriculture", "Agriculture", "/applied-science/agriculture", "applied"),
+      node("applied.business", "Business", "/applied-science/business", "applied", [
+        node("applied.business.accounting", "Accounting", "/applied-science/business/accounting", "applied"),
+        node("applied.business.marketing", "Marketing", "/applied-science/business/marketing", "applied"),
+      ]),
     ],
   },
   {
