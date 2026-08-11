@@ -1,3 +1,4 @@
+import { ARCHITECTURE_CURRICULUM } from "@/lib/curriculum/applied/architecture";
 import { ALGEBRA_CURRICULUM } from "@/lib/curriculum/algebra";
 import { COMPUTER_SCIENCE_CURRICULUM } from "@/lib/curriculum/computer-science";
 import { GROUP_THEORY_CURRICULUM } from "@/lib/curriculum/group-theory";
@@ -36,6 +37,7 @@ const curriculumReplacements = [
   LOGIC_CURRICULUM,
   COMPUTER_SCIENCE_CURRICULUM,
   BIOLOGY_CURRICULUM,
+  ARCHITECTURE_CURRICULUM,
 ] as const;
 
 const domainRootAdditions: Partial<
