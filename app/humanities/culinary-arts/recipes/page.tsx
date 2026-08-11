@@ -1,18 +1,17 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, type FormEvent, type ReactNode } from "react";
 import {
   ArrowLeft,
   Carrot,
   ChefHat,
   Flame,
   Globe2,
-  RefreshCw,
   Search,
-  SlidersHorizontal,
   Sparkles,
   X,
+  type LucideIcon,
 } from "lucide-react";
 import CulinaryBackground from "../CulinaryBackground";
 import { CUISINES, KITCHEN_STATIONS } from "../culinary-data";
@@ -39,6 +38,8 @@ export default function RecipesPage() {
     loading,
     error,
     filters,
+    hasFilters,
+    randomMode,
     setCategory,
     setArea,
     setIngredient,
@@ -47,7 +48,7 @@ export default function RecipesPage() {
     clearAll,
     fetchRandom,
     getRecipeDetails,
-  } = useCulinary("Beef");
+  } = useCulinary();
 
   const activeTickets = [
     filters.category
@@ -78,24 +79,24 @@ export default function RecipesPage() {
       : null,
   ].filter(Boolean) as { key: string; label: string; clear: () => void }[];
 
-  const handleSearch = (event: React.FormEvent) => {
+  const handleSearch = (event: FormEvent) => {
     event.preventDefault();
     searchRecipe(searchInput);
   };
 
-  const handleIngredient = (event: React.FormEvent) => {
+  const handleIngredient = (event: FormEvent) => {
     event.preventDefault();
     const ingredient = ingredientInput.trim();
     if (ingredient) setIngredient(ingredient);
   };
 
-  const handleReset = () => {
+  const reset = () => {
     clearAll();
     setSearchInput("");
     setIngredientInput("");
   };
 
-  const handleRandom = () => {
+  const surprise = () => {
     fetchRandom();
     setSearchInput("");
     setIngredientInput("");
@@ -104,47 +105,35 @@ export default function RecipesPage() {
   return (
     <main className="relative min-h-screen overflow-x-hidden bg-[#130c07] text-stone-100 selection:bg-orange-400/25">
       <CulinaryBackground />
-      <div className="pointer-events-none fixed inset-0 z-0 bg-[radial-gradient(circle_at_78%_14%,rgba(251,146,60,0.14),transparent_28%),radial-gradient(circle_at_16%_80%,rgba(163,230,53,0.05),transparent_28%),linear-gradient(to_bottom,rgba(19,12,7,0.18),rgba(8,6,5,0.78))]" />
-      <div className="pointer-events-none fixed inset-0 z-[1] opacity-25 [background-image:linear-gradient(rgba(251,146,60,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(251,146,60,0.03)_1px,transparent_1px)] [background-size:46px_46px]" />
+      <div className="pointer-events-none fixed inset-0 z-0 bg-[radial-gradient(circle_at_80%_10%,rgba(251,146,60,0.12),transparent_24%),linear-gradient(to_bottom,rgba(19,12,7,0.12),rgba(8,6,5,0.74))]" />
 
-      <div className="relative z-10 mx-auto min-h-screen w-full max-w-[1600px] px-4 py-5 sm:px-6 lg:px-8 lg:py-7">
-        <header className="grid gap-6 border-b border-orange-200/12 pb-6 xl:grid-cols-[minmax(0,1fr)_520px] xl:items-end">
-          <div>
+      <div className="relative z-10 mx-auto min-h-screen w-full max-w-[1640px] px-4 py-4 sm:px-6 lg:px-8">
+        <header className="flex flex-col gap-3 border-b border-orange-200/12 pb-3 xl:flex-row xl:items-center xl:justify-between">
+          <div className="flex min-w-0 items-center gap-3">
             <Link
               href="/humanities/culinary-arts"
-              className="inline-flex items-center gap-2 font-mono text-[8px] uppercase tracking-[0.18em] text-orange-300/60 transition-colors hover:text-orange-200"
+              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-orange-300/15 bg-black/25 text-orange-300/70 transition-colors hover:text-orange-200"
+              aria-label="Back to Culinary Arts"
             >
-              <ArrowLeft size={11} /> Culinary Arts
+              <ArrowLeft size={14} />
             </Link>
-            <div className="mt-4 flex items-start gap-4">
-              <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-[18px] border border-orange-300/20 bg-orange-400/[0.07] text-orange-300">
-                <ChefHat size={25} strokeWidth={1.5} />
-              </span>
-              <div>
-                <div className="font-mono text-[8px] uppercase tracking-[0.22em] text-orange-300/55">
-                  Kitchen index
-                </div>
-                <h1 className="mt-1 font-serif text-[clamp(3.2rem,6vw,5.8rem)] font-semibold leading-[0.84] tracking-[-0.055em] text-[#fff8ef]">
-                  Recipe Library
-                </h1>
-                <p className="mt-3 max-w-2xl text-sm leading-6 text-stone-400">
-                  Build a search from cuisine, station, ingredient, and dish name. Each layer narrows the same service ticket.
-                </p>
-              </div>
+            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-orange-300/18 bg-orange-400/[0.07] text-orange-300">
+              <ChefHat size={20} strokeWidth={1.5} />
+            </span>
+            <div className="min-w-0">
+              <div className="font-mono text-[7px] uppercase tracking-[0.18em] text-orange-300/50">Culinary Arts</div>
+              <h1 className="truncate font-serif text-3xl font-semibold tracking-[-0.04em] text-[#fff8ef] sm:text-4xl">Recipe Library</h1>
             </div>
           </div>
 
-          <div className="grid gap-2 sm:grid-cols-[minmax(0,1fr)_auto]">
-            <form onSubmit={handleSearch} className="relative">
-              <Search
-                size={15}
-                className="absolute left-4 top-1/2 -translate-y-1/2 text-stone-600"
-              />
+          <div className="flex w-full flex-col gap-2 sm:flex-row xl:w-auto">
+            <form onSubmit={handleSearch} className="relative min-w-0 flex-1 xl:w-[360px]">
+              <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-stone-600" />
               <input
                 value={searchInput}
                 onChange={(event) => setSearchInput(event.target.value)}
                 placeholder="Search dish name..."
-                className="h-12 w-full rounded-xl border border-white/[0.08] bg-black/35 pl-11 pr-11 text-sm text-white outline-none transition-colors placeholder:text-stone-700 focus:border-orange-300/30"
+                className="h-10 w-full rounded-xl border border-white/[0.08] bg-black/35 pl-9 pr-9 text-[12px] text-white outline-none placeholder:text-stone-700 focus:border-orange-300/30"
               />
               {filters.query ? (
                 <button
@@ -153,205 +142,163 @@ export default function RecipesPage() {
                     clearSearch();
                     setSearchInput("");
                   }}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 rounded-lg p-1.5 text-stone-600 transition-colors hover:bg-white/[0.05] hover:text-white"
-                  aria-label="Clear title search"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 p-1 text-stone-600 hover:text-white"
+                  aria-label="Clear search"
                 >
-                  <X size={13} />
+                  <X size={12} />
                 </button>
               ) : null}
             </form>
             <button
               type="button"
-              onClick={handleRandom}
-              className="flex h-12 items-center justify-center gap-2 rounded-xl border border-orange-300/20 bg-orange-400/[0.08] px-4 text-[10px] font-semibold uppercase tracking-[0.12em] text-orange-200 transition-colors hover:bg-orange-400/[0.13]"
+              onClick={surprise}
+              className="flex h-10 shrink-0 items-center justify-center gap-2 rounded-xl border border-orange-300/18 bg-orange-400/[0.08] px-3 text-[9px] font-semibold uppercase tracking-[0.1em] text-orange-200 hover:bg-orange-400/[0.13]"
             >
-              <Sparkles size={14} /> Surprise me
+              <Sparkles size={13} /> Surprise me
             </button>
           </div>
         </header>
 
-        <section className="mt-5 overflow-hidden rounded-[24px] border border-orange-200/14 bg-black/[0.25] shadow-[inset_0_1px_0_rgba(255,255,255,0.035),0_20px_55px_rgba(0,0,0,0.18)] backdrop-blur-xl">
-          <div className="grid border-b border-white/[0.06] lg:grid-cols-[132px_minmax(0,1fr)]">
-            <div className="flex items-center gap-2 border-b border-white/[0.05] px-4 py-3 text-stone-500 lg:border-b-0 lg:border-r">
-              <Flame size={14} className="text-orange-300/65" />
-              <span className="font-mono text-[8px] uppercase tracking-[0.16em]">Station</span>
-            </div>
-            <div className="flex flex-wrap gap-2 p-3">
-              <FilterButton
-                label="Any"
-                active={!filters.category}
-                onClick={() => filters.category && setCategory(filters.category)}
-              />
-              {KITCHEN_STATIONS.map((station) => {
-                const Icon = station.icon;
-                const active = filters.category === station.id;
-                return (
-                  <button
-                    key={station.id}
-                    type="button"
-                    onClick={() => setCategory(station.id)}
-                    className={`flex items-center gap-2 rounded-xl border px-3 py-2 text-[9px] font-semibold transition-all ${
-                      active
-                        ? "border-orange-300/32 bg-orange-400/[0.10] text-orange-100"
-                        : "border-white/[0.06] bg-black/15 text-stone-500 hover:border-white/[0.12] hover:text-stone-300"
-                    }`}
-                  >
-                    <Icon size={13} />
-                    {station.label.replace(" (Red)", "")}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-
-          <div className="grid border-b border-white/[0.06] lg:grid-cols-[132px_minmax(0,1fr)]">
-            <div className="flex items-center gap-2 border-b border-white/[0.05] px-4 py-3 text-stone-500 lg:border-b-0 lg:border-r">
-              <Globe2 size={14} className="text-amber-300/65" />
-              <span className="font-mono text-[8px] uppercase tracking-[0.16em]">Cuisine</span>
-            </div>
-            <div className="flex flex-wrap gap-2 p-3">
-              <FilterButton
-                label="Anywhere"
-                active={!filters.area}
-                onClick={() => filters.area && setArea(filters.area)}
-              />
-              {CUISINES.map((area) => (
-                <FilterButton
-                  key={area}
-                  label={area}
-                  active={filters.area === area}
-                  onClick={() => setArea(area)}
-                />
-              ))}
-            </div>
-          </div>
-
-          <div className="grid lg:grid-cols-[132px_minmax(0,1fr)]">
-            <div className="flex items-center gap-2 border-b border-white/[0.05] px-4 py-3 text-stone-500 lg:border-b-0 lg:border-r">
-              <Carrot size={14} className="text-emerald-300/65" />
-              <span className="font-mono text-[8px] uppercase tracking-[0.16em]">Ingredient</span>
-            </div>
-            <div className="grid gap-3 p-3 xl:grid-cols-[330px_minmax(0,1fr)]">
-              <form onSubmit={handleIngredient} className="relative">
-                <input
-                  value={ingredientInput}
-                  onChange={(event) => setIngredientInput(event.target.value)}
-                  placeholder="e.g. chickpeas, garlic, salmon..."
-                  className="h-10 w-full rounded-xl border border-white/[0.07] bg-black/20 px-3 pr-20 text-[11px] text-white outline-none placeholder:text-stone-700 focus:border-emerald-300/25"
-                />
+        <section className="mt-3 overflow-hidden rounded-[18px] border border-orange-200/12 bg-black/[0.22] backdrop-blur-xl">
+          <FilterRow icon={Flame} label="Station" rgb="251,146,60">
+            <FilterPill
+              label="Any"
+              active={!filters.category}
+              onClick={() => filters.category && setCategory(filters.category)}
+            />
+            {KITCHEN_STATIONS.map((station) => {
+              const Icon = station.icon;
+              const active = filters.category === station.id;
+              return (
                 <button
-                  type="submit"
-                  className="absolute right-1.5 top-1.5 h-7 rounded-lg border border-emerald-300/16 bg-emerald-400/[0.06] px-2.5 font-mono text-[7px] uppercase tracking-[0.12em] text-emerald-300"
+                  key={station.id}
+                  type="button"
+                  onClick={() => setCategory(station.id)}
+                  className={`flex h-8 shrink-0 items-center gap-1.5 rounded-lg border px-2.5 text-[8px] font-semibold transition-colors ${
+                    active
+                      ? "border-orange-300/32 bg-orange-400/[0.10] text-orange-100"
+                      : "border-white/[0.055] bg-black/15 text-stone-500 hover:border-white/[0.12] hover:text-stone-300"
+                  }`}
                 >
-                  Add
+                  <Icon size={11} /> {station.label.replace(" (Red)", "")}
                 </button>
-              </form>
-              <div className="flex flex-wrap gap-1.5">
-                {INGREDIENT_SHORTCUTS.map((ingredient) => (
-                  <button
-                    key={ingredient}
-                    type="button"
-                    onClick={() => {
-                      setIngredientInput(ingredient);
-                      setIngredient(ingredient);
-                    }}
-                    className={`rounded-lg border px-2.5 py-2 font-mono text-[7px] uppercase tracking-[0.08em] transition-colors ${
-                      filters.ingredient === ingredient
-                        ? "border-emerald-300/30 bg-emerald-400/[0.09] text-emerald-200"
-                        : "border-white/[0.05] bg-black/15 text-stone-600 hover:text-stone-300"
-                    }`}
-                  >
-                    {ingredient}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
+              );
+            })}
+          </FilterRow>
+
+          <FilterRow icon={Globe2} label="Cuisine" rgb="251,191,36">
+            <FilterPill
+              label="Anywhere"
+              active={!filters.area}
+              onClick={() => filters.area && setArea(filters.area)}
+            />
+            {CUISINES.map((area) => (
+              <FilterPill
+                key={area}
+                label={area}
+                active={filters.area === area}
+                onClick={() => setArea(area)}
+              />
+            ))}
+          </FilterRow>
+
+          <FilterRow icon={Carrot} label="Ingredient" rgb="74,222,128" last>
+            <form onSubmit={handleIngredient} className="relative w-[210px] shrink-0">
+              <input
+                value={ingredientInput}
+                onChange={(event) => setIngredientInput(event.target.value)}
+                placeholder="potato, garlic, salmon..."
+                className="h-8 w-full rounded-lg border border-white/[0.06] bg-black/20 px-2.5 pr-12 text-[9px] text-white outline-none placeholder:text-stone-700 focus:border-emerald-300/25"
+              />
+              <button
+                type="submit"
+                className="absolute right-1 top-1 h-6 rounded-md border border-emerald-300/15 bg-emerald-400/[0.06] px-2 font-mono text-[6px] uppercase tracking-[0.1em] text-emerald-300"
+              >
+                Add
+              </button>
+            </form>
+            {INGREDIENT_SHORTCUTS.map((ingredient) => (
+              <FilterPill
+                key={ingredient}
+                label={ingredient}
+                active={filters.ingredient === ingredient}
+                onClick={() => {
+                  setIngredientInput(ingredient);
+                  setIngredient(ingredient);
+                }}
+              />
+            ))}
+          </FilterRow>
         </section>
 
-        <div className="mt-4 flex min-h-10 flex-wrap items-center gap-2">
-          <div className="mr-1 flex items-center gap-2 font-mono text-[8px] uppercase tracking-[0.14em] text-stone-600">
-            <SlidersHorizontal size={12} />
-            {loading ? "Working ticket" : `${data.length} recipe${data.length === 1 ? "" : "s"}`}
-          </div>
+        <div className="mt-2.5 flex min-h-9 flex-wrap items-center gap-2 rounded-xl border border-white/[0.055] bg-black/20 px-3 py-2 backdrop-blur-md">
+          <span className="font-mono text-[8px] uppercase tracking-[0.12em] text-stone-600">
+            {loading ? "Loading catalog" : `${data.length} recipes`}
+          </span>
+          <span className="h-3 w-px bg-white/[0.07]" />
 
-          {activeTickets.map((ticket) => (
-            <button
-              key={ticket.key}
-              type="button"
-              onClick={ticket.clear}
-              className="inline-flex items-center gap-1.5 rounded-full border border-orange-300/14 bg-orange-400/[0.045] px-2.5 py-1.5 text-[8px] font-medium text-orange-100/80 transition-colors hover:bg-orange-400/[0.08]"
-            >
-              {ticket.label}
-              <X size={9} className="text-orange-300/55" />
-            </button>
-          ))}
+          {randomMode ? (
+            <span className="rounded-md border border-orange-300/16 bg-orange-400/[0.05] px-2 py-1 font-mono text-[7px] uppercase tracking-[0.1em] text-orange-300/75">
+              Chef's shuffle
+            </span>
+          ) : activeTickets.length > 0 ? (
+            activeTickets.map((ticket) => (
+              <button
+                key={ticket.key}
+                type="button"
+                onClick={ticket.clear}
+                className="flex items-center gap-1 rounded-md border border-orange-300/13 bg-orange-400/[0.04] px-2 py-1 text-[8px] text-stone-400 hover:text-white"
+              >
+                {ticket.label} <X size={8} />
+              </button>
+            ))
+          ) : (
+            <span className="font-mono text-[7px] uppercase tracking-[0.1em] text-orange-300/55">Full catalog</span>
+          )}
 
-          {activeTickets.length > 0 ? (
+          {hasFilters || randomMode ? (
             <button
               type="button"
-              onClick={handleReset}
-              className="ml-auto inline-flex items-center gap-1.5 rounded-lg px-2 py-1.5 font-mono text-[7px] uppercase tracking-[0.12em] text-stone-600 transition-colors hover:bg-white/[0.04] hover:text-stone-300"
+              onClick={reset}
+              className="ml-auto font-mono text-[7px] uppercase tracking-[0.1em] text-stone-600 hover:text-orange-300"
             >
-              <RefreshCw size={10} /> Clear ticket
+              Show all
             </button>
           ) : null}
         </div>
 
         {error ? (
-          <div className="mt-2 rounded-xl border border-red-400/15 bg-red-400/[0.05] px-4 py-3 text-sm text-red-200/70">
-            {error}
-          </div>
+          <div className="mt-4 rounded-2xl border border-red-400/15 bg-red-500/[0.05] p-5 text-sm text-red-200/70">{error}</div>
         ) : null}
 
-        <section className="mt-3 grid grid-cols-1 gap-4 pb-16 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+        <section className="mt-3 grid grid-cols-1 gap-3 pb-12 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
           {loading
-            ? Array.from({ length: 10 }, (_, index) => (
-                <div
-                  key={index}
-                  className="aspect-[4/5] animate-pulse rounded-[20px] border border-white/[0.05] bg-white/[0.035]"
-                />
+            ? Array.from({ length: 15 }, (_, index) => (
+                <div key={index} className="aspect-[4/3] animate-pulse rounded-2xl border border-white/[0.05] bg-white/[0.035]" />
               ))
             : data.map((meal) => (
                 <button
                   key={meal.id}
                   type="button"
                   onClick={() => setSelectedMealId(meal.id)}
-                  className="group relative aspect-[4/5] overflow-hidden rounded-[20px] border border-white/[0.06] bg-[#211711] text-left shadow-[0_14px_35px_rgba(0,0,0,0.16)] transition-all duration-300 hover:-translate-y-1 hover:border-orange-300/24"
+                  className="group relative aspect-[4/3] overflow-hidden rounded-2xl border border-white/[0.06] bg-[#201711] text-left transition-all hover:-translate-y-0.5 hover:border-orange-300/25"
                 >
-                  {meal.thumbnail ? (
-                    <img
-                      src={meal.thumbnail}
-                      alt={meal.name}
-                      className="absolute inset-0 h-full w-full object-cover opacity-72 transition-all duration-700 group-hover:scale-105 group-hover:opacity-90"
-                    />
-                  ) : null}
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#090605] via-[#090605]/28 to-black/5" />
-
-                  <div className="absolute inset-x-0 top-0 flex flex-wrap gap-1.5 p-3">
-                    {meal.category ? (
-                      <span className="rounded-full border border-orange-200/16 bg-black/45 px-2 py-1 font-mono text-[7px] uppercase tracking-[0.08em] text-orange-100/75 backdrop-blur-md">
-                        {meal.category}
-                      </span>
-                    ) : null}
-                    {meal.area ? (
-                      <span className="rounded-full border border-white/[0.10] bg-black/45 px-2 py-1 font-mono text-[7px] uppercase tracking-[0.08em] text-stone-300/75 backdrop-blur-md">
-                        {meal.area}
-                      </span>
-                    ) : null}
-                  </div>
-
-                  <div className="absolute inset-x-0 bottom-0 p-4">
-                    <h2 className="text-lg font-semibold leading-tight tracking-[-0.025em] text-white">
-                      {meal.name}
-                    </h2>
-                    <div className="mt-3 flex items-center justify-between border-t border-white/[0.08] pt-3 font-mono text-[7px] uppercase tracking-[0.12em] text-stone-600">
-                      <span>Open recipe</span>
-                      <Flame
-                        size={11}
-                        className="text-orange-300/60 transition-transform group-hover:scale-110"
-                      />
+                  <img
+                    src={meal.thumbnail}
+                    alt={meal.name}
+                    className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/12 to-transparent" />
+                  <div className="absolute inset-x-0 bottom-0 p-3.5">
+                    <div className="mb-1.5 flex flex-wrap gap-1.5">
+                      {meal.category ? (
+                        <span className="rounded-full border border-orange-300/20 bg-black/45 px-2 py-0.5 font-mono text-[6px] uppercase tracking-[0.09em] text-orange-200/80">{meal.category}</span>
+                      ) : null}
+                      {meal.area ? (
+                        <span className="rounded-full border border-white/[0.10] bg-black/45 px-2 py-0.5 font-mono text-[6px] uppercase tracking-[0.09em] text-stone-300/75">{meal.area}</span>
+                      ) : null}
                     </div>
+                    <h2 className="line-clamp-2 text-base font-semibold leading-tight tracking-[-0.02em] text-white">{meal.name}</h2>
                   </div>
                 </button>
               ))}
@@ -359,11 +306,9 @@ export default function RecipesPage() {
 
         {!loading && !error && data.length === 0 ? (
           <div className="py-20 text-center">
-            <ChefHat size={30} className="mx-auto text-stone-700" strokeWidth={1.2} />
-            <h2 className="mt-4 text-lg font-semibold text-stone-400">Nothing on this ticket</h2>
-            <p className="mt-2 text-sm text-stone-600">
-              Remove one filter or try a broader ingredient.
-            </p>
+            <ChefHat size={28} className="mx-auto text-stone-700" />
+            <h2 className="mt-4 text-lg font-semibold text-stone-300">Nothing matches this ticket</h2>
+            <button type="button" onClick={reset} className="mt-3 text-xs font-semibold text-orange-300">Show the full catalog</button>
           </div>
         ) : null}
 
@@ -379,7 +324,31 @@ export default function RecipesPage() {
   );
 }
 
-function FilterButton({
+function FilterRow({
+  icon: Icon,
+  label,
+  rgb,
+  last = false,
+  children,
+}: {
+  icon: LucideIcon;
+  label: string;
+  rgb: string;
+  last?: boolean;
+  children: ReactNode;
+}) {
+  return (
+    <div className={`grid min-w-0 lg:grid-cols-[94px_minmax(0,1fr)] ${last ? "" : "border-b border-white/[0.05]"}`}>
+      <div className="flex h-10 items-center gap-2 border-b border-white/[0.04] px-3 text-stone-600 lg:border-b-0 lg:border-r">
+        <Icon size={12} style={{ color: `rgba(${rgb},0.72)` }} />
+        <span className="font-mono text-[7px] uppercase tracking-[0.13em]">{label}</span>
+      </div>
+      <div className="flex min-w-0 items-center gap-1.5 overflow-x-auto p-1.5 custom-scrollbar">{children}</div>
+    </div>
+  );
+}
+
+function FilterPill({
   label,
   active,
   onClick,
@@ -392,10 +361,10 @@ function FilterButton({
     <button
       type="button"
       onClick={onClick}
-      className={`rounded-xl border px-3 py-2 text-[9px] font-semibold transition-all ${
+      className={`h-8 shrink-0 rounded-lg border px-2.5 text-[8px] font-semibold transition-colors ${
         active
-          ? "border-amber-300/28 bg-amber-400/[0.08] text-amber-100"
-          : "border-white/[0.06] bg-black/15 text-stone-500 hover:border-white/[0.12] hover:text-stone-300"
+          ? "border-orange-300/28 bg-orange-400/[0.08] text-orange-100"
+          : "border-white/[0.055] bg-black/15 text-stone-500 hover:border-white/[0.12] hover:text-stone-300"
       }`}
     >
       {label}

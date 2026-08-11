@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 const API_ROOT = "https://www.themealdb.com/api/json/v1/1";
+const LETTERS = "abcdefghijklmnopqrstuvwxyz".split("");
 
 export interface MealRecord {
   id: string;
@@ -23,82 +24,120 @@ export type CulinaryFilters = {
 
 type RawMeal = Record<string, string | null | undefined>;
 
-type FilterSource = {
-  kind: "category" | "area" | "ingredient";
-  meals: RawMeal[];
+type MealPayload = {
+  meals?: RawMeal[] | null;
 };
 
-function transformMeal(
-  meal: RawMeal,
-  fallback: Partial<Pick<MealRecord, "category" | "area">> = {},
-): MealRecord {
-  return {
-    id: meal.idMeal ?? "",
-    name: meal.strMeal ?? "Untitled recipe",
-    thumbnail: meal.strMealThumb ?? "",
-    category: meal.strCategory ?? fallback.category ?? "",
-    area: meal.strArea ?? fallback.area ?? "",
-  };
-}
+let catalogPromise: Promise<RawMeal[]> | null = null;
 
 async function fetchMeals(url: string): Promise<RawMeal[]> {
   const response = await fetch(url);
   if (!response.ok) throw new Error(`Recipe service returned ${response.status}`);
-  const json = await response.json();
-  return (json.meals ?? []) as RawMeal[];
+  const json = (await response.json()) as MealPayload;
+  return json.meals ?? [];
 }
 
 function normalizeIngredient(value: string): string {
-  return value.trim().toLowerCase().replace(/\s+/g, " ");
+  return value
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, " ")
+    .replace(/[-_]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function singularizeWord(word: string): string {
+  if (word.length <= 3) return word;
+  if (word.endsWith("ies")) return `${word.slice(0, -3)}y`;
+  if (word.endsWith("oes")) return word.slice(0, -2);
+  if (/(ches|shes|xes|zes)$/.test(word)) return word.slice(0, -2);
+  if (word.endsWith("s") && !/(ss|us|is)$/.test(word)) return word.slice(0, -1);
+  return word;
+}
+
+function ingredientKey(value: string): string {
+  return normalizeIngredient(value)
+    .split(" ")
+    .filter(Boolean)
+    .map(singularizeWord)
+    .join(" ");
+}
+
+function ingredientMatches(value: string, target: string): boolean {
+  const candidate = ingredientKey(value);
+  const wanted = ingredientKey(target);
+  if (!candidate || !wanted) return false;
+  return candidate === wanted || candidate.includes(wanted) || wanted.includes(candidate);
 }
 
 function mealHasIngredient(meal: RawMeal, ingredient: string): boolean {
-  const target = normalizeIngredient(ingredient);
-  if (!target) return true;
-
+  if (!ingredient.trim()) return true;
   for (let index = 1; index <= 20; index += 1) {
-    const value = normalizeIngredient(String(meal[`strIngredient${index}`] ?? ""));
-    if (value && value.includes(target)) return true;
+    const value = String(meal[`strIngredient${index}`] ?? "");
+    if (ingredientMatches(value, ingredient)) return true;
   }
-
   return false;
 }
 
-function intersectSources(sources: readonly FilterSource[]): RawMeal[] {
-  if (sources.length === 0) return [];
+function parseIngredients(meal: RawMeal) {
+  const ingredients: { item: string; measure: string }[] = [];
+  for (let index = 1; index <= 20; index += 1) {
+    const item = String(meal[`strIngredient${index}`] ?? "").trim();
+    const measure = String(meal[`strMeasure${index}`] ?? "").trim();
+    if (item) ingredients.push({ item, measure });
+  }
+  return ingredients;
+}
 
-  const maps = sources.map(
-    (source) => new Map(source.meals.map((meal) => [meal.idMeal ?? "", meal])),
-  );
+function toMealRecord(meal: RawMeal, includeDetails = false): MealRecord {
+  return {
+    id: meal.idMeal ?? "",
+    name: meal.strMeal ?? "Untitled recipe",
+    thumbnail: meal.strMealThumb ?? "",
+    category: meal.strCategory ?? "",
+    area: meal.strArea ?? "",
+    ...(includeDetails
+      ? {
+          instructions: meal.strInstructions ?? "",
+          tags: meal.strTags
+            ? meal.strTags.split(",").map((tag) => tag.trim()).filter(Boolean)
+            : [],
+          youtube: meal.strYoutube ?? "",
+          ingredients: parseIngredients(meal),
+        }
+      : {}),
+  };
+}
 
-  return sources[0].meals
-    .filter((meal) => {
-      const id = meal.idMeal ?? "";
-      return id && maps.every((map) => map.has(id));
-    })
-    .map((meal) => {
-      const id = meal.idMeal ?? "";
-      return maps.reduce<RawMeal>(
-        (merged, map) => ({ ...merged, ...(map.get(id) ?? {}) }),
-        meal,
-      );
+async function fetchCatalog(): Promise<RawMeal[]> {
+  if (!catalogPromise) {
+    catalogPromise = Promise.all(
+      LETTERS.map((letter) =>
+        fetchMeals(`${API_ROOT}/search.php?f=${letter}`).catch(() => []),
+      ),
+    ).then((groups) => {
+      const unique = new Map<string, RawMeal>();
+      groups.flat().forEach((meal) => {
+        if (meal.idMeal) unique.set(meal.idMeal, meal);
+      });
+      return [...unique.values()];
     });
+  }
+  return catalogPromise;
 }
 
-async function fetchDiscovery(count = 12): Promise<RawMeal[]> {
-  const responses = await Promise.all(
-    Array.from({ length: count }, () => fetchMeals(`${API_ROOT}/random.php`)),
-  );
-  const unique = new Map<string, RawMeal>();
-  responses.flat().forEach((meal) => {
-    if (meal.idMeal) unique.set(meal.idMeal, meal);
-  });
-  return [...unique.values()];
+function shuffledSample<T>(values: readonly T[], count: number): T[] {
+  const copy = [...values];
+  for (let index = copy.length - 1; index > 0; index -= 1) {
+    const swapIndex = Math.floor(Math.random() * (index + 1));
+    [copy[index], copy[swapIndex]] = [copy[swapIndex], copy[index]];
+  }
+  return copy.slice(0, count);
 }
 
-export const useCulinary = (initialCategory = "Beef") => {
+export const useCulinary = (initialCategory = "") => {
   const [data, setData] = useState<MealRecord[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [filters, setFilters] = useState<CulinaryFilters>({
     category: initialCategory,
@@ -106,8 +145,14 @@ export const useCulinary = (initialCategory = "Beef") => {
     ingredient: "",
     query: "",
   });
-  const [refreshToken, setRefreshToken] = useState(0);
+  const [randomMode, setRandomMode] = useState(false);
+  const [randomSeed, setRandomSeed] = useState(0);
   const requestIdRef = useRef(0);
+
+  const hasFilters = useMemo(
+    () => Boolean(filters.category || filters.area || filters.ingredient || filters.query),
+    [filters],
+  );
 
   useEffect(() => {
     const requestId = ++requestIdRef.current;
@@ -117,148 +162,115 @@ export const useCulinary = (initialCategory = "Beef") => {
       setError(null);
 
       try {
-        const category = filters.category.trim();
-        const area = filters.area.trim();
-        const ingredient = filters.ingredient.trim();
-        const query = filters.query.trim();
+        const catalog = await fetchCatalog();
+        let meals = [...catalog];
 
-        let meals: RawMeal[] = [];
-
-        if (query) {
-          const searched = await fetchMeals(
-            `${API_ROOT}/search.php?s=${encodeURIComponent(query)}`,
-          );
-
-          meals = searched.filter((meal) => {
-            if (category && meal.strCategory !== category) return false;
-            if (area && meal.strArea !== area) return false;
-            if (ingredient && !mealHasIngredient(meal, ingredient)) return false;
-            return true;
-          });
+        if (randomMode) {
+          meals = shuffledSample(meals, 18);
         } else {
-          const requests: Promise<FilterSource>[] = [];
+          const category = filters.category.trim().toLowerCase();
+          const area = filters.area.trim().toLowerCase();
+          const ingredient = filters.ingredient.trim();
+          const query = filters.query.trim().toLowerCase();
 
           if (category) {
-            requests.push(
-              fetchMeals(`${API_ROOT}/filter.php?c=${encodeURIComponent(category)}`).then(
-                (sourceMeals) => ({ kind: "category" as const, meals: sourceMeals }),
-              ),
+            meals = meals.filter(
+              (meal) => String(meal.strCategory ?? "").toLowerCase() === category,
             );
           }
 
           if (area) {
-            requests.push(
-              fetchMeals(`${API_ROOT}/filter.php?a=${encodeURIComponent(area)}`).then(
-                (sourceMeals) => ({ kind: "area" as const, meals: sourceMeals }),
-              ),
+            meals = meals.filter(
+              (meal) => String(meal.strArea ?? "").toLowerCase() === area,
             );
           }
 
           if (ingredient) {
-            const apiIngredient = ingredient.trim().replace(/\s+/g, "_");
-            requests.push(
-              fetchMeals(`${API_ROOT}/filter.php?i=${encodeURIComponent(apiIngredient)}`).then(
-                (sourceMeals) => ({ kind: "ingredient" as const, meals: sourceMeals }),
-              ),
+            meals = meals.filter((meal) => mealHasIngredient(meal, ingredient));
+          }
+
+          if (query) {
+            meals = meals.filter((meal) =>
+              String(meal.strMeal ?? "").toLowerCase().includes(query),
             );
           }
 
-          if (requests.length === 0) {
-            meals = await fetchDiscovery();
-          } else {
-            const sources = await Promise.all(requests);
-            meals = intersectSources(sources);
-          }
+          meals.sort((left, right) =>
+            String(left.strMeal ?? "").localeCompare(String(right.strMeal ?? "")),
+          );
         }
 
         if (requestId !== requestIdRef.current) return;
-
-        const records = meals
-          .map((meal) =>
-            transformMeal(meal, {
-              category: category || undefined,
-              area: area || undefined,
-            }),
-          )
-          .filter((meal) => meal.id)
-          .sort((left, right) => left.name.localeCompare(right.name));
-
-        setData(records);
+        setData(meals.map((meal) => toMealRecord(meal)).filter((meal) => meal.id));
       } catch (caught) {
         if (requestId !== requestIdRef.current) return;
         console.error(caught);
         setData([]);
-        setError("The recipe service could not complete this filter combination.");
+        setError("The recipe catalog could not be loaded.");
       } finally {
         if (requestId === requestIdRef.current) setLoading(false);
       }
     };
 
     void load();
-  }, [filters.category, filters.area, filters.ingredient, filters.query, refreshToken]);
+  }, [filters.category, filters.area, filters.ingredient, filters.query, randomMode, randomSeed]);
+
+  const updateFilters = (next: (current: CulinaryFilters) => CulinaryFilters) => {
+    setRandomMode(false);
+    setFilters(next);
+  };
 
   const setCategory = (category: string) => {
-    setFilters((current) => ({
+    updateFilters((current) => ({
       ...current,
       category: current.category === category ? "" : category,
     }));
   };
 
   const setArea = (area: string) => {
-    setFilters((current) => ({
+    updateFilters((current) => ({
       ...current,
       area: current.area === area ? "" : area,
     }));
   };
 
   const setIngredient = (ingredient: string) => {
-    setFilters((current) => ({
+    updateFilters((current) => ({
       ...current,
       ingredient: current.ingredient === ingredient ? "" : ingredient,
     }));
   };
 
   const searchRecipe = (query: string) => {
-    setFilters((current) => ({ ...current, query: query.trim() }));
+    updateFilters((current) => ({ ...current, query: query.trim() }));
   };
 
   const clearSearch = () => {
-    setFilters((current) => ({ ...current, query: "" }));
+    updateFilters((current) => ({ ...current, query: "" }));
   };
 
   const clearAll = () => {
+    setRandomMode(false);
     setFilters({ category: "", area: "", ingredient: "", query: "" });
   };
 
   const fetchRandom = () => {
     setFilters({ category: "", area: "", ingredient: "", query: "" });
-    setRefreshToken((current) => current + 1);
+    setRandomMode(true);
+    setRandomSeed((current) => current + 1);
   };
 
   const getRecipeDetails = async (id: string): Promise<MealRecord | null> => {
     try {
-      const meals = await fetchMeals(`${API_ROOT}/lookup.php?i=${encodeURIComponent(id)}`);
-      const meal = meals[0];
-      if (!meal) return null;
+      const catalog = await fetchCatalog();
+      let meal = catalog.find((candidate) => candidate.idMeal === id);
 
-      const ingredients: { item: string; measure: string }[] = [];
-      for (let index = 1; index <= 20; index += 1) {
-        const item = String(meal[`strIngredient${index}`] ?? "").trim();
-        const measure = String(meal[`strMeasure${index}`] ?? "").trim();
-        if (item) ingredients.push({ item, measure });
+      if (!meal) {
+        const lookup = await fetchMeals(`${API_ROOT}/lookup.php?i=${encodeURIComponent(id)}`);
+        meal = lookup[0];
       }
 
-      return {
-        id: meal.idMeal ?? id,
-        name: meal.strMeal ?? "Untitled recipe",
-        thumbnail: meal.strMealThumb ?? "",
-        category: meal.strCategory ?? "",
-        area: meal.strArea ?? "",
-        instructions: meal.strInstructions ?? "",
-        tags: meal.strTags ? meal.strTags.split(",").map((tag) => tag.trim()) : [],
-        youtube: meal.strYoutube ?? "",
-        ingredients,
-      };
+      return meal ? toMealRecord(meal, true) : null;
     } catch (caught) {
       console.error(caught);
       return null;
@@ -270,6 +282,8 @@ export const useCulinary = (initialCategory = "Beef") => {
     loading,
     error,
     filters,
+    hasFilters,
+    randomMode,
     setCategory,
     setArea,
     setIngredient,
