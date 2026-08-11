@@ -25,6 +25,8 @@ export default function FormalScienceLayout({
           "/formal-science/mathematics/algebra/elementary-algebra/fundamentals/number-systems",
           "/formal-science/mathematics/algebra/elementary-algebra/linear-equations",
           "/formal-science/mathematics/algebra/elementary-algebra/linear-equations/",
+          "/formal-science/mathematics/algebra/elementary-algebra/systems-of-equations",
+          "/formal-science/mathematics/algebra/elementary-algebra/systems-of-equations/",
         ]}
       />
       <style>{`
@@ -36,16 +38,30 @@ export default function FormalScienceLayout({
         }
 
         @media (min-width: 1280px) {
+          section[class~="xl:h-[430px]"] {
+            height: 470px !important;
+          }
+
           section[class~="xl:h-[430px]"] div[class~="grid-rows-[116px_minmax(0,1fr)]"] {
-            grid-template-rows: 158px minmax(0, 1fr) !important;
+            grid-template-rows: 150px minmax(0, 1fr) !important;
           }
 
           section[class~="xl:h-[430px]"] div[class~="grid-rows-[116px_minmax(0,1fr)]"] > div:first-child > button {
-            height: 46px !important;
+            height: 44px !important;
           }
 
           section[class~="xl:h-[430px]"] div[class~="grid-rows-[116px_minmax(0,1fr)]"] > div:first-child > button:last-child {
             grid-column: 1 / -1;
+          }
+
+          section[class~="xl:h-[430px]"] div[class~="grid-rows-[32px_78px_minmax(0,1fr)]"] {
+            grid-template-rows: 32px 96px 84px !important;
+            overflow: hidden;
+          }
+
+          section[class~="xl:h-[430px]"] div[class~="grid-rows-[32px_78px_minmax(0,1fr)]"] > div:last-child {
+            min-height: 84px;
+            overflow: hidden;
           }
         }
       `}</style>
