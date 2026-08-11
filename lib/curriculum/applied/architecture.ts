@@ -1,6 +1,6 @@
 import type { CurriculumNode } from "@/lib/curriculum/types";
 
-function plannedLesson(
+function activeLesson(
   id: string,
   label: string,
   href: string,
@@ -12,6 +12,17 @@ function plannedLesson(
     href,
     description,
     domainId: "applied",
+  };
+}
+
+function plannedLesson(
+  id: string,
+  label: string,
+  href: string,
+  description: string,
+): CurriculumNode {
+  return {
+    ...activeLesson(id, label, href, description),
     status: "placeholder",
   };
 }
@@ -33,7 +44,7 @@ const spatialDesign: CurriculumNode = {
     "Translate human activities into rooms, relationships, circulation, dimensions, and spatial sequences.",
   domainId: "applied",
   children: [
-    plannedLesson(
+    activeLesson(
       "applied.architecture.spatial-design.program-area",
       "Program & Area",
       "/applied-science/architecture/spatial-design/program-area",
