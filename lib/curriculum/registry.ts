@@ -80,16 +80,30 @@ const domainRootAdditions: Partial<
 const nodeChildAdditions: Record<string, readonly CurriculumNode[]> = {
   "humanities.culinary-arts": [
     {
-      id: "humanities.culinary-arts.recipes",
-      label: "Recipes",
-      href: "/humanities/culinary-arts/recipes",
-      domainId: "humanities",
-    },
-    {
       id: "humanities.culinary-arts.market",
       label: "Ingredient Atlas",
       href: "/humanities/culinary-arts/market",
       domainId: "humanities",
+    },
+    {
+      id: "humanities.culinary-arts.methods",
+      label: "Cooking Methods",
+      href: "/humanities/culinary-arts/methods",
+      domainId: "humanities",
+      status: "placeholder",
+    },
+    {
+      id: "humanities.culinary-arts.recipes",
+      label: "Recipe Library",
+      href: "/humanities/culinary-arts/recipes",
+      domainId: "humanities",
+    },
+    {
+      id: "humanities.culinary-arts.fundamentals",
+      label: "Kitchen Fundamentals",
+      href: "/humanities/culinary-arts/fundamentals",
+      domainId: "humanities",
+      status: "placeholder",
     },
   ],
 };

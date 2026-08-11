@@ -12,6 +12,7 @@ import {
   Fish,
   Flame,
   FlaskConical,
+  ShieldCheck,
   Snowflake,
   Sparkles,
   UtensilsCrossed,
@@ -186,39 +187,53 @@ export default function CulinaryHub() {
       <div className="relative z-10 mx-auto w-full max-w-[1500px] px-4 py-4 sm:px-6 xl:px-8 xl:py-5">
         <DomainPageHeader
           breadcrumbs={[{ label: "Home", href: "/" }, { label: "Humanities", href: "/humanities" }, { label: "Culinary Arts" }]}
-          eyebrow="Ingredient · Technique · Transformation · Taste"
+          eyebrow="Ingredient · Method · Dish · Practice"
           icon={ChefHat}
           title={<span>Culinary Arts</span>}
-          subtitle="Cook by understanding how ingredients, technique, heat, time, microbes, and sensory perception shape food."
+          subtitle="Understand what food is, what cooks do to it, how dishes are assembled, and how a kitchen works safely and deliberately."
           accentRgb="251, 146, 60"
           titleClassName="font-serif text-[clamp(3.2rem,5.8vw,5.8rem)] font-semibold leading-[0.84] tracking-[-0.055em] text-[#fff8ef]"
           iconClassName="rounded-[18px]"
-          headerClassName="border-orange-300/16"
+          headerClassName="border-orange-300/[0.16]"
         />
 
-        <nav className="mt-3 grid gap-3 sm:grid-cols-2" aria-label="Culinary Arts resources">
-          <ResourceNav
-            href="/humanities/culinary-arts/recipes"
-            icon={UtensilsCrossed}
-            rgb="251, 146, 60"
-            eyebrow="Cook from dishes"
-            title="Recipe Library"
-            description="Browse the catalog, combine cuisine and ingredient filters, and inspect full recipes."
-          />
-          <ResourceNav
+        <nav className="mt-3 grid gap-2 sm:grid-cols-2 xl:grid-cols-4" aria-label="Culinary Arts map">
+          <CulinaryShelf
             href="/humanities/culinary-arts/market"
             icon={Carrot}
             rgb="74, 222, 128"
-            eyebrow="Cook from ingredients"
+            eyebrow="Ingredients"
             title="Ingredient Atlas"
-            description="Explore ingredients, transformations, pairings, culinary roles, storage, and prepared foods."
+            description="What food is and how ingredients behave."
+          />
+          <CulinaryShelf
+            icon={Flame}
+            eyebrow="Methods"
+            title="Cooking Methods"
+            description="Baking · roasting · grilling · frying · steaming · fermentation"
+            planned
+          />
+          <CulinaryShelf
+            href="/humanities/culinary-arts/recipes"
+            icon={UtensilsCrossed}
+            rgb="251, 146, 60"
+            eyebrow="Dishes"
+            title="Recipe Library"
+            description="Complete preparations, dishes, and combinations."
+          />
+          <CulinaryShelf
+            icon={ShieldCheck}
+            eyebrow="Kitchen practice"
+            title="Kitchen Fundamentals"
+            description="Prep · knives · tools · mise en place · safety · storage"
+            planned
           />
         </nav>
 
-        <div className="mt-3 grid gap-3 xl:grid-cols-[minmax(0,1.35fr)_minmax(360px,0.65fr)]">
-          <section className="relative overflow-hidden rounded-[24px] border border-orange-200/14 bg-black/[0.25] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.03),0_22px_60px_rgba(0,0,0,0.18)] backdrop-blur-xl">
+        <div className="mt-3 grid gap-3 xl:grid-cols-[minmax(0,1.55fr)_minmax(360px,0.75fr)] xl:items-stretch">
+          <section className="relative overflow-hidden rounded-[24px] border border-orange-200/[0.14] bg-black/[0.25] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.03),0_22px_60px_rgba(0,0,0,0.18)] backdrop-blur-xl xl:h-[292px]">
             <div className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full blur-3xl" style={{ background: `rgba(${activeTechnique.rgb},0.08)` }} />
-            <div className="relative">
+            <div className="relative flex h-full flex-col">
               <div className="flex items-center justify-between gap-4">
                 <div>
                   <div className="font-mono text-[8px] uppercase tracking-[0.2em] text-orange-300/65">Technique lab</div>
@@ -237,7 +252,7 @@ export default function CulinaryHub() {
                       type="button"
                       onClick={() => setActiveTechniqueId(technique.id)}
                       onMouseEnter={() => setActiveTechniqueId(technique.id)}
-                      className="flex h-12 min-w-0 items-center justify-center gap-1.5 rounded-xl border px-2 transition-colors"
+                      className="flex h-11 min-w-0 items-center justify-center gap-1.5 rounded-xl border px-2 transition-colors"
                       style={{
                         color: selected ? `rgb(${technique.rgb})` : "rgb(120 113 108)",
                         borderColor: selected ? `rgba(${technique.rgb},0.38)` : "rgba(255,255,255,0.05)",
@@ -251,9 +266,9 @@ export default function CulinaryHub() {
                 })}
               </div>
 
-              <div className="mt-3 grid gap-3 lg:grid-cols-[112px_minmax(0,1fr)_240px]">
+              <div className="mt-3 grid min-h-0 flex-1 gap-2.5 lg:grid-cols-[104px_minmax(0,1fr)_230px]">
                 <div
-                  className="relative flex min-h-[150px] items-center justify-center overflow-hidden rounded-[18px] border"
+                  className="relative flex min-h-[138px] items-center justify-center overflow-hidden rounded-[18px] border"
                   style={{
                     borderColor: `rgba(${activeTechnique.rgb},0.22)`,
                     background: `radial-gradient(circle at center, rgba(${activeTechnique.rgb},0.11), rgba(8,6,5,0.82) 64%)`,
@@ -264,13 +279,13 @@ export default function CulinaryHub() {
                   <ActiveTechniqueIcon size={28} strokeWidth={1.3} style={{ color: `rgb(${activeTechnique.rgb})` }} />
                 </div>
 
-                <div className="rounded-[18px] border border-white/[0.06] bg-black/18 p-4">
+                <div className="min-h-0 rounded-[18px] border border-orange-100/[0.055] bg-black/[0.18] p-3.5">
                   <div className="flex items-center justify-between gap-3">
                     <h2 className="text-lg font-semibold tracking-[-0.03em] text-white">{activeTechnique.label}</h2>
                     <span className="h-2 w-2 rounded-full" style={{ background: `rgb(${activeTechnique.rgb})` }} />
                   </div>
-                  <p className="mt-2 text-[11px] leading-5 text-stone-400">{activeTechnique.detail}</p>
-                  <div className="mt-3 flex flex-wrap gap-1.5">
+                  <p className="mt-1.5 line-clamp-2 text-[10px] leading-4 text-stone-400">{activeTechnique.detail}</p>
+                  <div className="mt-2.5 flex flex-wrap gap-1.5">
                     {activeTechnique.controls.map((control) => (
                       <span
                         key={control}
@@ -294,7 +309,7 @@ export default function CulinaryHub() {
                     ["Change", activeTechnique.change],
                     ["Result", activeTechnique.result],
                   ].map(([label, value]) => (
-                    <div key={label} className="rounded-xl border border-white/[0.055] bg-white/[0.018] p-2.5">
+                    <div key={label} className="rounded-xl border border-orange-100/[0.05] bg-orange-50/[0.012] p-2.5">
                       <div className="font-mono text-[6px] uppercase tracking-[0.12em] text-stone-700">{label}</div>
                       <div className="mt-1 text-[9px] font-semibold leading-4 text-stone-300">{value}</div>
                     </div>
@@ -304,45 +319,47 @@ export default function CulinaryHub() {
             </div>
           </section>
 
-          <section className="relative overflow-hidden rounded-[24px] border border-white/[0.08] bg-black/[0.26] p-4 backdrop-blur-xl">
-            <div className="font-mono text-[8px] uppercase tracking-[0.2em] text-orange-300/65">The five basic tastes</div>
-            <p className="mt-1 text-[10px] leading-4 text-stone-600">Taste is one component of flavor, alongside aroma, texture, temperature, and other sensations.</p>
+          <section className="relative overflow-hidden rounded-[24px] border border-orange-200/[0.10] bg-black/[0.26] p-4 backdrop-blur-xl xl:h-[292px]">
+            <div className="flex h-full flex-col">
+              <div className="font-mono text-[8px] uppercase tracking-[0.2em] text-orange-300/65">The five basic tastes</div>
+              <p className="mt-1 text-[10px] leading-4 text-stone-600">Taste is one part of flavor, alongside aroma, texture, temperature, and other sensations.</p>
 
-            <div className="mt-3 grid grid-cols-5 gap-1.5">
-              {TASTES.map((taste) => {
-                const selected = taste.id === activeTaste.id;
-                return (
-                  <button
-                    key={taste.id}
-                    type="button"
-                    onClick={() => setActiveTasteId(taste.id)}
-                    onMouseEnter={() => setActiveTasteId(taste.id)}
-                    className="h-11 rounded-xl border px-1 text-center transition-colors"
-                    style={{
-                      color: selected ? `rgb(${taste.rgb})` : "rgb(120 113 108)",
-                      borderColor: selected ? `rgba(${taste.rgb},0.36)` : "rgba(255,255,255,0.05)",
-                      background: selected ? `rgba(${taste.rgb},0.075)` : "rgba(0,0,0,0.14)",
-                    }}
-                  >
-                    <span className="font-mono text-[7px] uppercase tracking-[0.08em]">{taste.label}</span>
-                  </button>
-                );
-              })}
-            </div>
-
-            <div className="mt-3 rounded-[18px] border border-white/[0.06] bg-white/[0.018] p-4">
-              <div className="flex items-center gap-2">
-                <span className="h-2 w-2 rounded-full" style={{ background: `rgb(${activeTaste.rgb})` }} />
-                <h2 className="text-base font-semibold text-white">{activeTaste.label}</h2>
+              <div className="mt-3 grid grid-cols-5 gap-1.5">
+                {TASTES.map((taste) => {
+                  const selected = taste.id === activeTaste.id;
+                  return (
+                    <button
+                      key={taste.id}
+                      type="button"
+                      onClick={() => setActiveTasteId(taste.id)}
+                      onMouseEnter={() => setActiveTasteId(taste.id)}
+                      className="h-10 rounded-xl border px-1 text-center transition-colors"
+                      style={{
+                        color: selected ? `rgb(${taste.rgb})` : "rgb(120 113 108)",
+                        borderColor: selected ? `rgba(${taste.rgb},0.36)` : "rgba(255,255,255,0.05)",
+                        background: selected ? `rgba(${taste.rgb},0.075)` : "rgba(0,0,0,0.14)",
+                      }}
+                    >
+                      <span className="font-mono text-[7px] uppercase tracking-[0.08em]">{taste.label}</span>
+                    </button>
+                  );
+                })}
               </div>
-              <p className="mt-2 text-[10px] leading-4 text-stone-400">{activeTaste.role}</p>
-              <p className="mt-2 border-t border-white/[0.05] pt-2 text-[9px] leading-4 text-stone-600">{activeTaste.balance}</p>
-              <div className="mt-3 flex flex-wrap gap-1.5">
-                {activeTaste.examples.map((example) => (
-                  <span key={example} className="rounded-md border border-white/[0.055] bg-black/20 px-2 py-1 font-mono text-[6px] uppercase tracking-[0.08em] text-stone-500">
-                    {example}
-                  </span>
-                ))}
+
+              <div className="mt-3 flex min-h-0 flex-1 flex-col rounded-[18px] border border-orange-100/[0.055] bg-orange-50/[0.012] p-3.5">
+                <div className="flex items-center gap-2">
+                  <span className="h-2 w-2 rounded-full" style={{ background: `rgb(${activeTaste.rgb})` }} />
+                  <h2 className="text-base font-semibold text-white">{activeTaste.label}</h2>
+                </div>
+                <p className="mt-1.5 line-clamp-2 text-[10px] leading-4 text-stone-400">{activeTaste.role}</p>
+                <p className="mt-2 line-clamp-2 border-t border-orange-100/[0.045] pt-2 text-[9px] leading-4 text-stone-600">{activeTaste.balance}</p>
+                <div className="mt-auto flex flex-wrap gap-1.5 pt-2">
+                  {activeTaste.examples.map((example) => (
+                    <span key={example} className="rounded-md border border-orange-100/[0.05] bg-black/20 px-2 py-1 font-mono text-[6px] uppercase tracking-[0.08em] text-stone-500">
+                      {example}
+                    </span>
+                  ))}
+                </div>
               </div>
             </div>
           </section>
@@ -352,49 +369,67 @@ export default function CulinaryHub() {
   );
 }
 
-function ResourceNav({
+function CulinaryShelf({
   href,
   icon: Icon,
-  rgb,
+  rgb = "148, 163, 184",
   eyebrow,
   title,
   description,
+  planned = false,
 }: {
-  href: string;
+  href?: string;
   icon: LucideIcon;
-  rgb: string;
+  rgb?: string;
   eyebrow: string;
   title: string;
   description: string;
+  planned?: boolean;
 }) {
+  const content = (
+    <>
+      <span
+        className="flex h-10 w-10 items-center justify-center rounded-xl border"
+        style={{
+          color: planned ? "rgb(120 113 108)" : `rgb(${rgb})`,
+          borderColor: planned ? "rgba(168,162,158,0.12)" : `rgba(${rgb},0.25)`,
+          background: planned ? "rgba(255,255,255,0.015)" : `rgba(${rgb},0.055)`,
+        }}
+      >
+        <Icon size={17} strokeWidth={1.5} />
+      </span>
+      <span className="min-w-0">
+        <span
+          className="block font-mono text-[6px] uppercase tracking-[0.14em]"
+          style={{ color: planned ? "rgb(87 83 78)" : `rgba(${rgb},0.68)` }}
+        >
+          {eyebrow}
+        </span>
+        <span className={`mt-0.5 block text-[15px] font-semibold tracking-[-0.025em] ${planned ? "text-stone-500" : "text-white"}`}>{title}</span>
+        <span className="mt-1 block truncate text-[8px] text-stone-600">{description}</span>
+      </span>
+      {planned ? (
+        <span className="rounded-md border border-stone-500/[0.10] bg-white/[0.012] px-2 py-1 font-mono text-[6px] uppercase tracking-[0.10em] text-stone-700">planned</span>
+      ) : (
+        <ArrowRight size={12} style={{ color: `rgb(${rgb})` }} className="transition-transform group-hover:translate-x-0.5" />
+      )}
+    </>
+  );
+
+  const className = `group grid min-h-[82px] grid-cols-[40px_minmax(0,1fr)_auto] items-center gap-3 rounded-[18px] border px-3.5 py-3 backdrop-blur-xl ${planned ? "cursor-default border-stone-400/[0.08] bg-white/[0.012]" : "transition-transform hover:-translate-y-0.5"}`;
+
+  if (!href || planned) return <div className={className}>{content}</div>;
+
   return (
     <Link
       href={href}
-      className="group relative grid min-h-[92px] grid-cols-[46px_minmax(0,1fr)_28px] items-center gap-3 overflow-hidden rounded-[20px] border px-4 py-3 backdrop-blur-xl transition-transform hover:-translate-y-0.5"
+      className={className}
       style={{
-        borderColor: `rgba(${rgb},0.22)`,
-        background: `linear-gradient(135deg, rgba(${rgb},0.09), rgba(10,7,5,0.72) 54%, rgba(7,5,4,0.60))`,
+        borderColor: `rgba(${rgb},0.20)`,
+        background: `linear-gradient(135deg, rgba(${rgb},0.075), rgba(10,7,5,0.68) 58%, rgba(7,5,4,0.56))`,
       }}
     >
-      <span
-        className="flex h-11 w-11 items-center justify-center rounded-xl border"
-        style={{ color: `rgb(${rgb})`, borderColor: `rgba(${rgb},0.28)`, background: `rgba(${rgb},0.06)` }}
-      >
-        <Icon size={19} strokeWidth={1.5} />
-      </span>
-      <span className="min-w-0">
-        <span className="block font-mono text-[6px] uppercase tracking-[0.15em]" style={{ color: `rgba(${rgb},0.70)` }}>
-          {eyebrow}
-        </span>
-        <strong className="mt-0.5 block text-lg font-semibold tracking-[-0.03em] text-white">{title}</strong>
-        <span className="mt-1 block truncate text-[9px] text-stone-500">{description}</span>
-      </span>
-      <span
-        className="flex h-7 w-7 items-center justify-center rounded-lg border transition-transform group-hover:translate-x-0.5"
-        style={{ color: `rgb(${rgb})`, borderColor: `rgba(${rgb},0.18)` }}
-      >
-        <ArrowRight size={12} />
-      </span>
+      {content}
     </Link>
   );
 }

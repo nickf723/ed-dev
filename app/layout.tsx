@@ -1,4 +1,5 @@
 import "./globals.css";
+import "./culinary-ui.css";
 import "katex/dist/katex.min.css";
 
 import { Analytics } from "@vercel/analytics/next";
