@@ -38,38 +38,6 @@ export default function FormalScienceLayout({
             bottom: 1.25rem !important;
           }
         }
-
-        @media (min-width: 1280px) {
-          section[class~="xl:h-[430px]"] {
-            height: 505px !important;
-          }
-
-          section[class~="xl:h-[430px]"] div[class~="grid-rows-[116px_minmax(0,1fr)]"] {
-            grid-template-rows: 150px minmax(0, 1fr) !important;
-          }
-
-          section[class~="xl:h-[430px]"] div[class~="grid-rows-[116px_minmax(0,1fr)]"] > div:first-child > button {
-            height: 44px !important;
-          }
-
-          section[class~="xl:h-[430px]"] div[class~="grid-rows-[116px_minmax(0,1fr)]"] > div:first-child > button:last-child {
-            grid-column: 1 / -1;
-          }
-
-          section[class~="xl:h-[430px]"] div[class~="grid-rows-[32px_78px_minmax(0,1fr)]"] {
-            grid-template-rows: 32px 108px 112px !important;
-            overflow: hidden;
-          }
-
-          section[class~="xl:h-[430px]"] div[class~="grid-rows-[32px_78px_minmax(0,1fr)]"] > div:last-child {
-            min-height: 112px;
-            overflow: hidden;
-          }
-
-          section[class~="xl:h-[540px]"] {
-            height: 600px !important;
-          }
-        }
       `}</style>
     </>
   );

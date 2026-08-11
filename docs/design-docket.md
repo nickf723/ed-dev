@@ -60,7 +60,7 @@ Tiny type is for metadata, not primary interaction.
 - Hover should reveal emphasis, not rearrange the page.
 - Selection-dependent panels should reserve enough height for their longest normal content state.
 - Size interactive containers against the longest known normal title, description, example, or inspector state before styling the shorter states. Short content lives inside the reserved frame; it does not shrink the frame.
-- If a legitimate state would overflow that reserved geometry, rewrite, clamp, or recompose the content rather than allowing the surrounding layout to jump.
+- If a legitimate state would overflow that reserved geometry, rewrite or recompose the content rather than allowing the surrounding layout to jump or clipping the content.
 - Avoid content shifts caused by different title lengths, child counts, descriptions, or inspector states.
 - Do not make users chase controls that move after hover/selection.
 - Hover motion should be subtle. Prefer border/glow changes and tiny translations over dramatic card movement.
@@ -127,6 +127,7 @@ Before calling a visual pass finished, check:
 10. Are disabled/planned routes clearly different from live routes?
 11. Does the page still work at a narrower desktop width without collapsing into a pile of cards?
 12. Is there anything on screen whose only purpose is to fill space?
+13. Does any legitimate content state clip, overlap a sibling, or escape its panel?
 
 ## 15. Current product direction
 
@@ -153,3 +154,14 @@ Navigation styling should communicate the relationship between destinations, not
 - Moving from the final lesson of a unit into the next topic at the parent level is a different relationship from moving to the next sibling; label it accordingly.
 - Do not place a redundant large “back to parent” card at the bottom of a hub when the breadcrumb and persistent navigation already provide that route.
 - Floating utilities must not cover breadcrumbs, sequence controls, or other primary navigation.
+
+## 18. Containers own their content
+
+Stable geometry must never be achieved by hiding legitimate content.
+
+- Text-bearing instruments should use **minimum heights plus natural growth**, not hard heights, unless every state is provably bounded inside the fixed frame.
+- `overflow: hidden` is appropriate for decorative canvases, glows, and intentional clipping. It should not be used to silence overflowing instructional text, examples, controls, or navigation.
+- Reserve enough space for the longest normal state, but let the instrument grow if responsive wrapping or accessibility settings require more room.
+- A parent layout or global stylesheet must not reach into a child page and rewrite its internal grid rows to repair one screenshot. Geometry belongs to the component that owns the content.
+- Neighboring panels should align through shared minimums and grid stretching, not by forcing every descendant into identical pixel heights.
+- Before shipping an interactive panel, test the longest label, longest explanation, multiline equation/example, smallest supported desktop width, and at least one zoomed-text state.

@@ -10,7 +10,6 @@ import {
   GitMerge,
   Layers,
   RefreshCw,
-  Target,
   type LucideIcon,
 } from "lucide-react";
 import DomainPageHeader from "@/app/_components/DomainPageHeader";
@@ -119,7 +118,7 @@ export default function SystemsPage() {
           </div>
         </section>
 
-        <section className="mt-3 overflow-hidden rounded-[26px] border border-cyan-200/[0.12] bg-black/[0.25] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.025),0_28px_80px_rgba(0,0,0,0.22)] backdrop-blur-xl">
+        <section className="mt-3 rounded-[26px] border border-cyan-200/[0.12] bg-black/[0.25] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.025),0_28px_80px_rgba(0,0,0,0.22)] backdrop-blur-xl">
           <div className="flex flex-col gap-2 px-1 pb-3 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-cyan-300/75">Constraint studio</div>
@@ -128,8 +127,8 @@ export default function SystemsPage() {
             <div className="font-mono text-[11px] text-slate-600">two constraints → shared solution set</div>
           </div>
 
-          <div className="grid gap-3 xl:h-[540px] xl:grid-cols-[310px_minmax(520px,1fr)_360px]">
-            <div className="grid min-h-0 grid-rows-[auto_auto_auto_minmax(0,1fr)] gap-3 rounded-[20px] border border-cyan-200/[0.08] bg-[#040a14]/78 p-4">
+          <div className="grid items-stretch gap-3 xl:min-h-[620px] xl:grid-cols-[310px_minmax(520px,1fr)_360px]">
+            <div className="grid content-start gap-3 rounded-[20px] border border-cyan-200/[0.08] bg-[#040a14]/78 p-4">
               <LineControl
                 label="Constraint A"
                 equation={formatLine(m1, b1)}
@@ -160,7 +159,7 @@ export default function SystemsPage() {
 
             <SystemGraph m1={m1} b1={b1} m2={m2} b2={b2} solution={solution} />
 
-            <div className="grid min-h-0 grid-rows-[auto_1fr] rounded-[20px] border border-indigo-200/[0.09] bg-[#080918]/76 p-4">
+            <div className="rounded-[20px] border border-indigo-200/[0.09] bg-[#080918]/76 p-4">
               <div>
                 <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-indigo-300/70">Solve the same system</div>
                 <div className="mt-3 grid grid-cols-3 gap-2">
@@ -170,9 +169,9 @@ export default function SystemsPage() {
                 </div>
               </div>
 
-              <div className="mt-3 grid min-h-0 grid-rows-[auto_1fr] rounded-[16px] border border-white/[0.05] bg-black/[0.16] p-3.5">
+              <div className="mt-3 rounded-[16px] border border-white/[0.05] bg-black/[0.16] p-3.5">
                 <MethodSummary method={method} solution={solution} />
-                <div className="mt-3 grid min-h-0 content-start gap-2">
+                <div className="mt-3 grid gap-2">
                   {methodSteps.map((step, index) => (
                     <MethodStepCard key={`${method}-${index}`} index={index + 1} step={step} />
                   ))}
@@ -262,7 +261,7 @@ function SolutionReadout({ solution }: { solution: Solution }) {
       : { label: "Shared solution", value: "every point on the line", rgb: "163, 230, 53" };
 
   return (
-    <div className="flex min-h-0 flex-col justify-center rounded-[16px] border p-4 text-center" style={{ borderColor: `rgba(${config.rgb},0.17)`, background: `rgba(${config.rgb},0.025)` }}>
+    <div className="flex min-h-[126px] flex-col justify-center rounded-[16px] border p-4 text-center" style={{ borderColor: `rgba(${config.rgb},0.17)`, background: `rgba(${config.rgb},0.025)` }}>
       <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-600">{config.label}</div>
       <div className="mt-2 font-mono text-[20px] font-semibold" style={{ color: `rgb(${config.rgb})` }}>{config.value}</div>
       <p className="mt-2 text-[11px] leading-5 text-slate-500">
@@ -280,7 +279,7 @@ function SystemGraph({ m1, b1, m2, b2, solution }: { m1: number; b1: number; m2:
   const showSolution = solution.status === "one" && inGraph(solution.x ?? 0) && inGraph(solution.y ?? 0);
 
   return (
-    <div className="relative flex min-h-[440px] items-center justify-center overflow-hidden rounded-[20px] border border-cyan-200/[0.10] bg-[#030915]/86 p-4">
+    <div className="relative flex min-h-[460px] items-center justify-center overflow-hidden rounded-[20px] border border-cyan-200/[0.10] bg-[#030915]/86 p-4">
       <div className="pointer-events-none absolute left-4 top-4 z-10">
         <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-500">Shared coordinate plane</div>
         <div className="mt-1 grid gap-0.5 font-mono text-[11px]">
@@ -346,12 +345,12 @@ function MethodSummary({ method, solution }: { method: Method; solution: Solutio
 
 function MethodStepCard({ index, step }: { index: number; step: MethodStep }) {
   return (
-    <div className="grid grid-cols-[28px_minmax(0,1fr)] gap-2 rounded-xl border border-white/[0.045] bg-white/[0.012] p-2.5">
+    <div className="grid min-h-[96px] grid-cols-[28px_minmax(0,1fr)] gap-2 rounded-xl border border-white/[0.045] bg-white/[0.012] p-2.5">
       <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-white/[0.03] font-mono text-[9px] text-slate-600">{String(index).padStart(2, "0")}</span>
       <span className="min-w-0">
         <strong className="block text-[10px] font-semibold text-slate-400">{step.label}</strong>
-        <span className="mt-1 block font-mono text-[12px] text-slate-200">{step.equation}</span>
-        <span className="mt-1 block text-[9px] leading-4 text-slate-600">{step.note}</span>
+        <span className="mt-1 block font-mono text-[12px] leading-5 text-slate-200">{step.equation}</span>
+        <span className="mt-1 block text-[10px] leading-4 text-slate-600">{step.note}</span>
       </span>
     </div>
   );

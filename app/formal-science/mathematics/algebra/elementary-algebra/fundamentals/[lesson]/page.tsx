@@ -555,8 +555,8 @@ function ExpressionAnatomy({
   const activePart = EXPRESSION_PARTS[activeId];
 
   return (
-    <section className="overflow-hidden rounded-[24px] border border-emerald-200/[0.12] bg-black/[0.24] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.025),0_24px_70px_rgba(0,0,0,0.20)] backdrop-blur-xl xl:h-[430px]">
-      <div className="grid h-full grid-rows-[auto_minmax(0,1fr)]">
+    <section className="rounded-[24px] border border-emerald-200/[0.12] bg-black/[0.24] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.025),0_24px_70px_rgba(0,0,0,0.20)] backdrop-blur-xl xl:min-h-[470px]">
+      <div className="grid gap-4">
         <div className="flex items-end justify-between gap-4">
           <div>
             <div className="text-[10px] font-semibold uppercase tracking-[0.15em] text-emerald-300/70">
@@ -569,9 +569,9 @@ function ExpressionAnatomy({
           <Braces size={20} className="text-emerald-300/30" />
         </div>
 
-        <div className="mt-4 grid min-h-0 gap-4 lg:grid-cols-[minmax(0,1fr)_310px]">
-          <div className="grid min-h-0 grid-rows-[minmax(0,1fr)_94px] rounded-[20px] border border-emerald-100/[0.06] bg-[#04140e]/70 p-5">
-            <div className="flex min-h-0 flex-wrap items-center justify-center gap-4 font-mono text-[clamp(2.4rem,5vw,5rem)] font-semibold tracking-[-0.06em] text-white">
+        <div className="grid items-stretch gap-4 lg:grid-cols-[minmax(0,1fr)_310px]">
+          <div className="grid min-h-[340px] grid-rows-[minmax(190px,1fr)_auto] rounded-[20px] border border-emerald-100/[0.06] bg-[#04140e]/70 p-5">
+            <div className="flex flex-wrap items-center justify-center gap-4 font-mono text-[clamp(2.4rem,5vw,5rem)] font-semibold tracking-[-0.06em] text-white">
               <ExpressionTerm active={activeId === "term"} onClick={() => onSelect("term")}>
                 <ExpressionToken active={activeId === "coefficient"} rgb="34, 211, 238" onClick={(event) => { event.stopPropagation(); onSelect("coefficient"); }}>3</ExpressionToken>
                 <ExpressionToken active={activeId === "variable"} rgb="96, 165, 250" onClick={(event) => { event.stopPropagation(); onSelect("variable"); }}>x</ExpressionToken>
@@ -595,7 +595,7 @@ function ExpressionAnatomy({
             </div>
           </div>
 
-          <div className="grid min-h-0 grid-rows-[116px_minmax(0,1fr)] gap-3">
+          <div className="grid content-start gap-3">
             <div className="grid grid-cols-2 gap-2">
               {(Object.keys(EXPRESSION_PARTS) as ExpressionPartId[]).map((id) => {
                 const part = EXPRESSION_PARTS[id];
@@ -605,7 +605,7 @@ function ExpressionAnatomy({
                     key={id}
                     type="button"
                     onClick={() => onSelect(id)}
-                    className="h-[50px] rounded-xl border px-3 text-left text-[11px] font-semibold transition-colors"
+                    className={`h-[48px] rounded-xl border px-3 text-left text-[11px] font-semibold transition-colors ${id === "constant" ? "col-span-2" : ""}`}
                     style={{
                       color: active ? `rgb(${part.rgb})` : "rgb(120 113 108)",
                       borderColor: active ? `rgba(${part.rgb},0.28)` : "rgba(255,255,255,0.045)",
@@ -618,14 +618,14 @@ function ExpressionAnatomy({
               })}
             </div>
 
-            <div className="grid min-h-0 grid-rows-[32px_78px_minmax(0,1fr)] rounded-[18px] border border-white/[0.05] bg-white/[0.014] p-4">
-              <div className="flex items-center gap-2">
+            <div className="flex min-h-[250px] flex-col rounded-[18px] border border-white/[0.05] bg-white/[0.014] p-4">
+              <div className="flex min-h-[32px] items-center gap-2">
                 <span className="h-2.5 w-2.5 rounded-full" style={{ background: `rgb(${activePart.rgb})` }} />
                 <h3 className="text-[20px] font-semibold text-white">{activePart.label}</h3>
               </div>
-              <p className="pt-2 text-[13px] leading-6 text-stone-400">{activePart.definition}</p>
+              <p className="mt-3 min-h-[84px] text-[13px] leading-6 text-stone-400">{activePart.definition}</p>
               <div
-                className="mt-3 flex min-h-0 items-center whitespace-pre-line rounded-xl border border-white/[0.045] bg-black/[0.18] px-3 py-3 font-mono text-[13px] leading-5"
+                className="mt-auto min-h-[104px] whitespace-pre-line rounded-xl border border-white/[0.045] bg-black/[0.18] px-3 py-3 font-mono text-[13px] leading-5"
                 style={{ color: `rgba(${activePart.rgb},0.82)` }}
               >
                 {activePart.example}
@@ -724,8 +724,8 @@ function EqualityLab({
   onReset: () => void;
 }) {
   return (
-    <section className="overflow-hidden rounded-[24px] border border-cyan-200/[0.11] bg-black/[0.24] p-5 backdrop-blur-xl xl:h-[420px]">
-      <div className="grid h-full grid-rows-[auto_minmax(0,1fr)_52px]">
+    <section className="rounded-[24px] border border-cyan-200/[0.11] bg-black/[0.24] p-5 backdrop-blur-xl xl:min-h-[420px]">
+      <div className="grid min-h-[380px] grid-rows-[auto_minmax(0,1fr)_52px]">
         <div className="flex items-end justify-between gap-4">
           <div>
             <div className="text-[10px] font-semibold uppercase tracking-[0.15em] text-cyan-300/70">Equality lab</div>
@@ -734,7 +734,7 @@ function EqualityLab({
           <Scale size={20} className="text-cyan-300/30" />
         </div>
 
-        <div className="mx-auto mt-4 grid w-full max-w-[900px] min-h-0 grid-rows-[minmax(0,1fr)_76px] rounded-[20px] border border-white/[0.05] bg-[#041116]/72 p-5">
+        <div className="mx-auto mt-4 grid w-full max-w-[900px] grid-rows-[minmax(0,1fr)_76px] rounded-[20px] border border-white/[0.05] bg-[#041116]/72 p-5">
           <div>
             <div className="grid grid-cols-[minmax(0,1fr)_52px_minmax(0,1fr)] items-center gap-3">
               <BalanceSide expression={state.left} value={state.leftValue} rgb="34, 211, 238" />
@@ -795,8 +795,8 @@ function PropertyRulebook({
   onSelect: (id: PropertyId) => void;
 }) {
   return (
-    <section className="overflow-hidden rounded-[24px] border border-indigo-200/[0.11] bg-black/[0.23] p-5 backdrop-blur-xl xl:h-[440px]">
-      <div className="grid h-full grid-rows-[auto_52px_minmax(0,1fr)] gap-3">
+    <section className="rounded-[24px] border border-indigo-200/[0.11] bg-black/[0.23] p-5 backdrop-blur-xl xl:min-h-[440px]">
+      <div className="grid min-h-[400px] grid-rows-[auto_52px_minmax(0,1fr)] gap-3">
         <div>
           <div className="text-[10px] font-semibold uppercase tracking-[0.15em] text-indigo-300/70">Property rulebook</div>
           <p className="mt-1 text-[13px] text-stone-500">Each property states reusable equivalent forms, not a one-off trick.</p>
@@ -823,8 +823,8 @@ function PropertyRulebook({
           })}
         </div>
 
-        <div className="grid min-h-0 gap-4 rounded-[18px] border border-white/[0.05] bg-white/[0.012] p-5 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
-          <div className="flex min-h-0 items-center justify-center rounded-[16px] border border-white/[0.045] bg-black/[0.17] p-5 text-center">
+        <div className="grid gap-4 rounded-[18px] border border-white/[0.05] bg-white/[0.012] p-5 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
+          <div className="flex min-h-[190px] items-center justify-center rounded-[16px] border border-white/[0.045] bg-black/[0.17] p-5 text-center">
             <div className="grid w-full gap-3">
               {activeProperty.equations.map((equation) => (
                 <div key={equation} className="rounded-xl border border-white/[0.04] bg-white/[0.012] px-3 py-3 font-mono text-[20px] font-semibold leading-8" style={{ color: `rgb(${activeProperty.rgb})` }}>
@@ -833,7 +833,7 @@ function PropertyRulebook({
               ))}
             </div>
           </div>
-          <div className="grid min-h-0 grid-rows-2 gap-2">
+          <div className="grid auto-rows-fr gap-2">
             <RuleNote icon={Check} label="Allows" text={activeProperty.action} rgb={activeProperty.rgb} />
             <RuleNote icon={Braces} label="Boundary" text={activeProperty.caution} rgb="251, 113, 133" />
           </div>
@@ -845,7 +845,7 @@ function PropertyRulebook({
 
 function RuleNote({ icon: Icon, label, text, rgb }: { icon: LucideIcon; label: string; text: string; rgb: string }) {
   return (
-    <div className="grid min-h-0 grid-cols-[40px_minmax(0,1fr)] items-center gap-3 rounded-[15px] border border-white/[0.045] bg-black/[0.14] p-3">
+    <div className="grid grid-cols-[40px_minmax(0,1fr)] items-center gap-3 rounded-[15px] border border-white/[0.045] bg-black/[0.14] p-3">
       <span className="flex h-10 w-10 items-center justify-center rounded-xl border" style={{ color: `rgb(${rgb})`, borderColor: `rgba(${rgb},0.16)`, background: `rgba(${rgb},0.035)` }}>
         <Icon size={16} />
       </span>
@@ -867,20 +867,20 @@ function NumberSystemExplorer({
   onSelect: (id: NumberSetId) => void;
 }) {
   return (
-    <section className="overflow-hidden rounded-[24px] border border-amber-200/[0.11] bg-black/[0.23] p-5 backdrop-blur-xl xl:h-[500px]">
-      <div className="grid h-full grid-rows-[auto_minmax(0,1fr)]">
+    <section className="rounded-[24px] border border-amber-200/[0.11] bg-black/[0.23] p-5 backdrop-blur-xl xl:min-h-[500px]">
+      <div className="grid min-h-[460px] grid-rows-[auto_minmax(0,1fr)]">
         <div>
           <div className="text-[10px] font-semibold uppercase tracking-[0.15em] text-amber-300/70">Number-system explorer</div>
           <p className="mt-1 text-[13px] text-stone-500">The real numbers contain both rational and irrational values.</p>
         </div>
 
-        <div className="mt-4 grid min-h-0 gap-4 lg:grid-cols-[minmax(0,1.25fr)_350px]">
+        <div className="mt-4 grid gap-4 lg:grid-cols-[minmax(0,1.25fr)_350px]">
           <SetRegion
             id="real"
             active={activeId === "real"}
             rgb="52, 211, 153"
             onSelect={onSelect}
-            className="grid min-h-0 grid-rows-[58px_minmax(0,1fr)] rounded-[22px] border p-3"
+            className="grid min-h-[350px] grid-rows-[58px_minmax(0,1fr)] rounded-[22px] border p-3"
           >
             <div className="flex items-center justify-between gap-3 px-1">
               <div>
@@ -890,14 +890,14 @@ function NumberSystemExplorer({
               <span className="rounded-full border border-emerald-300/[0.12] bg-emerald-400/[0.025] px-2 py-1 text-[9px] font-semibold text-emerald-300/60">contains both regions below</span>
             </div>
 
-            <div className="grid min-h-0 gap-3 lg:grid-cols-[minmax(0,1.35fr)_minmax(190px,0.65fr)]">
-              <SetRegion id="rationals" active={activeId === "rationals"} rgb="96, 165, 250" onSelect={onSelect} className="grid min-h-0 grid-rows-[52px_minmax(0,1fr)] rounded-[18px] border p-3">
+            <div className="grid gap-3 lg:grid-cols-[minmax(0,1.35fr)_minmax(190px,0.65fr)]">
+              <SetRegion id="rationals" active={activeId === "rationals"} rgb="96, 165, 250" onSelect={onSelect} className="grid min-h-[260px] grid-rows-[52px_minmax(0,1fr)] rounded-[18px] border p-3">
                 <div>
                   <div className="font-mono text-[15px] font-semibold text-blue-200">ℚ Rational numbers</div>
                   <div className="mt-1 text-[10px] text-stone-500">Fractions; terminating or repeating decimals</div>
                 </div>
 
-                <SetRegion id="integers" active={activeId === "integers"} rgb="34, 211, 238" onSelect={onSelect} className="grid min-h-0 grid-rows-[48px_minmax(0,1fr)] rounded-[15px] border p-3">
+                <SetRegion id="integers" active={activeId === "integers"} rgb="34, 211, 238" onSelect={onSelect} className="grid min-h-[185px] grid-rows-[48px_minmax(0,1fr)] rounded-[15px] border p-3">
                   <div>
                     <div className="font-mono text-[14px] font-semibold text-cyan-200">ℤ Integers</div>
                     <div className="mt-1 text-[10px] text-stone-500">…, −2, −1, 0, 1, 2, …</div>
@@ -910,7 +910,7 @@ function NumberSystemExplorer({
                 </SetRegion>
               </SetRegion>
 
-              <SetRegion id="irrational" active={activeId === "irrational"} rgb="192, 132, 252" onSelect={onSelect} className="flex min-h-0 flex-col justify-between rounded-[18px] border p-3">
+              <SetRegion id="irrational" active={activeId === "irrational"} rgb="192, 132, 252" onSelect={onSelect} className="flex min-h-[260px] flex-col justify-between rounded-[18px] border p-3">
                 <div>
                   <div className="text-[15px] font-semibold text-violet-200">Irrationals</div>
                   <div className="mt-1 text-[10px] leading-4 text-stone-500">Real values whose decimals do not terminate or repeat</div>
@@ -924,7 +924,7 @@ function NumberSystemExplorer({
             </div>
           </SetRegion>
 
-          <div className="grid min-h-0 grid-rows-[56px_82px_72px_minmax(0,1fr)] rounded-[20px] border border-white/[0.05] bg-white/[0.014] p-4">
+          <div className="flex min-h-[350px] flex-col rounded-[20px] border border-white/[0.05] bg-white/[0.014] p-4">
             <div>
               <div className="text-[9px] font-semibold uppercase tracking-[0.12em] text-stone-600">Selected set</div>
               <div className="mt-1 flex items-baseline gap-2">
@@ -932,9 +932,9 @@ function NumberSystemExplorer({
                 <h3 className="text-[20px] font-semibold text-white">{activeSet.label}</h3>
               </div>
             </div>
-            <p className="pt-2 text-[12px] leading-5 text-stone-400">{activeSet.definition}</p>
-            <div className="whitespace-pre-line rounded-xl border border-white/[0.04] bg-black/[0.16] px-3 py-2 font-mono text-[11px] leading-4" style={{ color: `rgba(${activeSet.rgb},0.78)` }}>{activeSet.example}</div>
-            <div className="mt-2 grid min-h-0 grid-rows-2 gap-2">
+            <p className="mt-3 min-h-[82px] text-[12px] leading-5 text-stone-400">{activeSet.definition}</p>
+            <div className="min-h-[72px] whitespace-pre-line rounded-xl border border-white/[0.04] bg-black/[0.16] px-3 py-2 font-mono text-[11px] leading-4" style={{ color: `rgba(${activeSet.rgb},0.78)` }}>{activeSet.example}</div>
+            <div className="mt-3 grid gap-2">
               <MiniNote label="Operations" text={activeSet.operationNote} rgb={activeSet.rgb} />
               <MiniNote label="Boundary" text={activeSet.boundary} rgb="251, 113, 133" />
             </div>
@@ -992,7 +992,7 @@ function MiniNote({ label, text, rgb }: { label: string; text: string; rgb: stri
   return (
     <div className="rounded-xl border border-white/[0.04] bg-black/[0.14] px-3 py-2">
       <div className="text-[9px] font-semibold uppercase tracking-[0.1em]" style={{ color: `rgba(${rgb},0.68)` }}>{label}</div>
-      <p className="mt-1 line-clamp-2 text-[10px] leading-4 text-stone-500">{text}</p>
+      <p className="mt-1 text-[10px] leading-4 text-stone-500">{text}</p>
     </div>
   );
 }

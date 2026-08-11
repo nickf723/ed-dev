@@ -81,7 +81,7 @@ export default function LinearEquationsPage() {
           </div>
         </section>
 
-        <section className="mt-3 overflow-hidden rounded-[26px] border border-teal-200/[0.12] bg-black/[0.24] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.025),0_28px_80px_rgba(0,0,0,0.22)] backdrop-blur-xl">
+        <section className="mt-3 rounded-[26px] border border-teal-200/[0.12] bg-black/[0.24] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.025),0_28px_80px_rgba(0,0,0,0.22)] backdrop-blur-xl">
           <div className="flex flex-col gap-2 px-1 pb-3 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-teal-300/75">Line studio</div>
@@ -90,7 +90,7 @@ export default function LinearEquationsPage() {
             <div className="font-mono text-[11px] text-slate-600">equation ↔ graph ↔ points ↔ forms</div>
           </div>
 
-          <div className="grid gap-3 xl:h-[520px] xl:grid-cols-[300px_minmax(520px,1fr)_320px]">
+          <div className="grid items-stretch gap-3 xl:min-h-[560px] xl:grid-cols-[300px_minmax(520px,1fr)_320px]">
             <div className="grid content-start gap-3 rounded-[20px] border border-teal-200/[0.08] bg-[#041117]/76 p-4">
               <div>
                 <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-500">Slope-intercept form</div>
@@ -111,8 +111,8 @@ export default function LinearEquationsPage() {
 
             <LineGraph slope={slope} intercept={intercept} probeX={probeX} probeY={probeY} xIntercept={xIntercept} samplePoints={samplePoints} />
 
-            <div className="grid min-h-0 grid-rows-[174px_minmax(0,1fr)] gap-3">
-              <div className="rounded-[20px] border border-teal-200/[0.08] bg-[#041117]/72 p-4">
+            <div className="grid content-start gap-3">
+              <div className="min-h-[214px] rounded-[20px] border border-teal-200/[0.08] bg-[#041117]/72 p-4">
                 <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-500">Read the line</div>
                 <div className="mt-3 grid gap-2">
                   <Readout label="Direction" value={slope === 0 ? "horizontal" : slope > 0 ? "rises left → right" : "falls left → right"} rgb="45, 212, 191" />
@@ -122,12 +122,12 @@ export default function LinearEquationsPage() {
                 </div>
               </div>
 
-              <div className="grid min-h-0 grid-rows-[auto_1fr] rounded-[20px] border border-indigo-200/[0.09] bg-[#080b18]/72 p-4">
+              <div className="rounded-[20px] border border-indigo-200/[0.09] bg-[#080b18]/72 p-4">
                 <div>
                   <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-indigo-300/70">Same line, different forms</div>
                   <p className="mt-1 text-[11px] leading-5 text-slate-600">The notation changes; the solution set does not.</p>
                 </div>
-                <div className="mt-3 grid min-h-0 grid-rows-3 gap-2">
+                <div className="mt-3 grid gap-2">
                   <EquationForm label="Slope-intercept" equation={formatSlopeIntercept(slope, intercept)} rgb="45, 212, 191" />
                   <EquationForm label="Point-slope" equation={formatPointSlope(slope, probeX, probeY)} rgb="96, 165, 250" />
                   <EquationForm label="Standard" equation={formatStandard(slope, intercept)} rgb="129, 140, 248" />
@@ -186,7 +186,7 @@ function LineGraph({ slope, intercept, probeX, probeY, xIntercept, samplePoints 
   const showTriangle = inGraph(intercept) && inGraph(triangleY);
 
   return (
-    <div className="relative flex min-h-[420px] items-center justify-center overflow-hidden rounded-[20px] border border-teal-200/[0.10] bg-[#031018]/82 p-4">
+    <div className="relative flex min-h-[440px] items-center justify-center overflow-hidden rounded-[20px] border border-teal-200/[0.10] bg-[#031018]/82 p-4">
       <div className="pointer-events-none absolute left-4 top-4 z-10">
         <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-500">Coordinate plane</div>
         <div className="mt-1 font-mono text-[12px] text-teal-300/80">{formatSlopeIntercept(slope, intercept)}</div>
@@ -243,11 +243,11 @@ function ConceptFact({ icon: Icon, label, text, rgb }: { icon: LucideIcon; label
 }
 
 function Readout({ label, value, rgb }: { label: string; value: string; rgb: string }) {
-  return <div className="flex items-center justify-between gap-3 rounded-xl border border-white/[0.04] bg-black/[0.15] px-3 py-2"><span className="text-[10px] font-semibold uppercase tracking-[0.08em] text-slate-600">{label}</span><span className="truncate font-mono text-[11px]" style={{ color: `rgba(${rgb},0.82)` }}>{value}</span></div>;
+  return <div className="flex min-h-[36px] items-center justify-between gap-3 rounded-xl border border-white/[0.04] bg-black/[0.15] px-3 py-2"><span className="text-[10px] font-semibold uppercase tracking-[0.08em] text-slate-600">{label}</span><span className="font-mono text-[11px] text-right" style={{ color: `rgba(${rgb},0.82)` }}>{value}</span></div>;
 }
 
 function EquationForm({ label, equation, rgb }: { label: string; equation: string; rgb: string }) {
-  return <div className="grid min-h-0 grid-cols-[92px_minmax(0,1fr)] items-center gap-3 rounded-xl border border-white/[0.045] bg-black/[0.14] px-3 py-2.5"><span className="text-[10px] font-semibold text-slate-600">{label}</span><span className="truncate font-mono text-[12px]" style={{ color: `rgba(${rgb},0.84)` }}>{equation}</span></div>;
+  return <div className="grid min-h-[70px] grid-cols-[92px_minmax(0,1fr)] items-center gap-3 rounded-xl border border-white/[0.045] bg-black/[0.14] px-3 py-2.5"><span className="text-[10px] font-semibold text-slate-600">{label}</span><span className="font-mono text-[12px] leading-5" style={{ color: `rgba(${rgb},0.84)` }}>{equation}</span></div>;
 }
 
 function ProcessStep({ number, title, text, rgb }: { number: string; title: string; text: string; rgb: string }) {
