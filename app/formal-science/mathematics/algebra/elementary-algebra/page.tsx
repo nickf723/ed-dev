@@ -1,286 +1,480 @@
 "use client";
 
-import React from "react";
 import Link from "next/link";
-import GraphingBackground from "./_components/GraphingBackground";
-import SlopeExplorerLab from "./_components/SlopeExplorerLab";
+import { useMemo, useState } from "react";
 import {
-  ArrowLeft,
+  ArrowRight,
   Braces,
   Calculator,
   Divide,
+  Equal,
   FunctionSquare,
   Grip,
   Hash,
   Layers,
   MoveHorizontal,
-  Rocket,
   Scaling,
   TrendingUp,
+  Variable,
   X,
   type LucideIcon,
 } from "lucide-react";
+import DomainPageHeader from "@/app/_components/DomainPageHeader";
 import { curriculumRegistry } from "@/lib/curriculum/registry";
+import GraphingBackground from "./_components/GraphingBackground";
 
-type IntegratedPresentation = {
-  phase: 1 | 2 | 3;
-  subtitle: string;
+type ModulePresentation = {
   icon: LucideIcon;
-  problem: string;
-  color: string;
-  border: string;
-  bg: string;
+  rgb: string;
+  specimen: string;
+  idea: string;
 };
 
-const MODULE_PRESENTATION: Record<string, IntegratedPresentation> = {
+type IntegratedModule = {
+  id: string;
+  label: string;
+  href: string;
+  description: string;
+  status?: "active" | "placeholder";
+} & ModulePresentation;
+
+type Family = {
+  id: string;
+  label: string;
+  note: string;
+  rgb: string;
+  moduleIds: readonly string[];
+};
+
+const PRESENTATION: Record<string, ModulePresentation> = {
   "formal.mathematics.algebra.elementary-algebra.fundamentals": {
-    phase: 1,
-    subtitle: "The Language of Math",
     icon: Hash,
-    problem: "3(x - 5) + 2",
-    color: "text-emerald-400",
-    border: "group-hover:border-emerald-500/50",
-    bg: "hover:bg-emerald-500/10",
+    rgb: "52, 211, 153",
+    specimen: "3(x - 5) + 2",
+    idea: "syntax + equality",
   },
   "formal.mathematics.algebra.elementary-algebra.linear-equations": {
-    phase: 1,
-    subtitle: "Lines & Slopes",
     icon: TrendingUp,
-    problem: "y = -2x + 4",
-    color: "text-teal-400",
-    border: "group-hover:border-teal-500/50",
-    bg: "hover:bg-teal-500/10",
+    rgb: "45, 212, 191",
+    specimen: "y = -2x + 4",
+    idea: "lines + rate",
   },
   "formal.mathematics.algebra.elementary-algebra.systems": {
-    phase: 1,
-    subtitle: "Intersection Points",
     icon: Layers,
-    problem: "{ 2x+y=10, x-y=2 }",
-    color: "text-cyan-400",
-    border: "group-hover:border-cyan-500/50",
-    bg: "hover:bg-cyan-500/10",
+    rgb: "34, 211, 238",
+    specimen: "2x + y = 10",
+    idea: "simultaneous constraints",
   },
   "formal.mathematics.algebra.elementary-algebra.inequalities": {
-    phase: 1,
-    subtitle: "Shaded Regions",
     icon: MoveHorizontal,
-    problem: "-3x < 12",
-    color: "text-sky-400",
-    border: "group-hover:border-sky-500/50",
-    bg: "hover:bg-sky-500/10",
+    rgb: "56, 189, 248",
+    specimen: "-3x < 12",
+    idea: "solution regions",
   },
   "formal.mathematics.algebra.elementary-algebra.quadratics": {
-    phase: 2,
-    subtitle: "Parabolas",
     icon: Scaling,
-    problem: "x = (-b±√Δ)/2a",
-    color: "text-blue-400",
-    border: "group-hover:border-blue-500/50",
-    bg: "hover:bg-blue-500/10",
+    rgb: "96, 165, 250",
+    specimen: "y = ax² + bx + c",
+    idea: "curvature + roots",
   },
   "formal.mathematics.algebra.elementary-algebra.factoring": {
-    phase: 2,
-    subtitle: "Reverse Multiplication",
     icon: Divide,
-    problem: "x² - 9 = (x-3)(x+3)",
-    color: "text-indigo-400",
-    border: "group-hover:border-indigo-500/50",
-    bg: "hover:bg-indigo-500/10",
+    rgb: "129, 140, 248",
+    specimen: "x² - 9 = (x-3)(x+3)",
+    idea: "structure revealed",
   },
   "formal.mathematics.algebra.elementary-algebra.exponents": {
-    phase: 2,
-    subtitle: "Power Rules",
     icon: X,
-    problem: "(x²)³ = x⁶",
-    color: "text-violet-400",
-    border: "group-hover:border-violet-500/50",
-    bg: "hover:bg-violet-500/10",
+    rgb: "167, 139, 250",
+    specimen: "(x²)³ = x⁶",
+    idea: "power rules",
   },
   "formal.mathematics.algebra.elementary-algebra.radicals": {
-    phase: 2,
-    subtitle: "Roots & Exponents",
     icon: Grip,
-    problem: "√(16x⁴) = 4x²",
-    color: "text-fuchsia-400",
-    border: "group-hover:border-fuchsia-500/50",
-    bg: "hover:bg-fuchsia-500/10",
+    rgb: "192, 132, 252",
+    specimen: "√(16x⁴) = 4x²",
+    idea: "roots + fractional powers",
   },
   "formal.mathematics.algebra.elementary-algebra.functions": {
-    phase: 3,
-    subtitle: "Input / Output",
     icon: FunctionSquare,
-    problem: "f(g(x))",
-    color: "text-pink-400",
-    border: "group-hover:border-pink-500/50",
-    bg: "hover:bg-pink-500/10",
+    rgb: "244, 114, 182",
+    specimen: "f(g(x))",
+    idea: "input → output",
   },
   "formal.mathematics.algebra.elementary-algebra.rational": {
-    phase: 3,
-    subtitle: "Algebraic Fractions",
     icon: Calculator,
-    problem: "(x²-1)/(x+1)",
-    color: "text-rose-400",
-    border: "group-hover:border-rose-500/50",
-    bg: "hover:bg-rose-500/10",
+    rgb: "251, 113, 133",
+    specimen: "(x² - 1)/(x + 1)",
+    idea: "algebraic fractions",
   },
   "formal.mathematics.algebra.elementary-algebra.complex": {
-    phase: 3,
-    subtitle: "The Imaginary Unit",
     icon: Braces,
-    problem: "i = √-1",
-    color: "text-amber-400",
-    border: "group-hover:border-amber-500/50",
-    bg: "hover:bg-amber-500/10",
+    rgb: "251, 191, 36",
+    specimen: "i² = -1",
+    idea: "number system extension",
   },
 };
 
-function buildModules() {
+const FAMILIES: readonly Family[] = [
+  {
+    id: "relations",
+    label: "Constraints & Relations",
+    note: "Describe what values may be, how quantities change, and where multiple conditions agree.",
+    rgb: "34, 211, 238",
+    moduleIds: [
+      "formal.mathematics.algebra.elementary-algebra.fundamentals",
+      "formal.mathematics.algebra.elementary-algebra.linear-equations",
+      "formal.mathematics.algebra.elementary-algebra.systems",
+      "formal.mathematics.algebra.elementary-algebra.inequalities",
+    ],
+  },
+  {
+    id: "forms",
+    label: "Forms & Transformations",
+    note: "Rewrite expressions into forms that reveal factors, powers, roots, and restrictions.",
+    rgb: "129, 140, 248",
+    moduleIds: [
+      "formal.mathematics.algebra.elementary-algebra.factoring",
+      "formal.mathematics.algebra.elementary-algebra.exponents",
+      "formal.mathematics.algebra.elementary-algebra.radicals",
+      "formal.mathematics.algebra.elementary-algebra.rational",
+    ],
+  },
+  {
+    id: "behavior",
+    label: "Behavior & Extensions",
+    note: "Treat relationships as objects, study nonlinear behavior, and enlarge the numbers available to algebra.",
+    rgb: "244, 114, 182",
+    moduleIds: [
+      "formal.mathematics.algebra.elementary-algebra.quadratics",
+      "formal.mathematics.algebra.elementary-algebra.functions",
+      "formal.mathematics.algebra.elementary-algebra.complex",
+    ],
+  },
+];
+
+function buildModules(): IntegratedModule[] {
   const integrated = curriculumRegistry.getNode("formal.mathematics.algebra.elementary-algebra");
   if (!integrated) throw new Error("Integrated Algebra is missing from the curriculum registry.");
 
   return (integrated.children ?? []).map((module) => {
-    const presentation = MODULE_PRESENTATION[module.id];
+    const presentation = PRESENTATION[module.id];
     if (!presentation) {
-      throw new Error(`Integrated Algebra module ${module.id} is missing its local presentation config.`);
+      throw new Error(`Integrated Algebra module ${module.id} is missing presentation metadata.`);
     }
 
     return {
-      ...module,
-      title: module.label,
-      desc: module.description ?? "",
+      id: module.id,
+      label: module.label,
+      href: module.href,
+      description: module.description ?? "",
+      status: module.status,
       ...presentation,
     };
   });
 }
 
 const MODULES = buildModules();
-const PHASE_1 = MODULES.filter((module) => module.phase === 1);
-const PHASE_2 = MODULES.filter((module) => module.phase === 2);
-const PHASE_3 = MODULES.filter((module) => module.phase === 3);
-type IntegratedModule = (typeof MODULES)[number];
+const MODULES_BY_ID = new Map(MODULES.map((module) => [module.id, module]));
 
-export default function ElementaryAlgebraPage() {
+export default function IntegratedAlgebraPage() {
+  const [slope, setSlope] = useState(1.5);
+  const [intercept, setIntercept] = useState(-2);
+
+  const table = useMemo(
+    () => [-2, 0, 2].map((x) => ({ x, y: slope * x + intercept })),
+    [intercept, slope],
+  );
+
   return (
-    <main className="relative min-h-screen bg-[#080b14] text-white overflow-hidden font-sans selection:bg-cyan-500/30 pb-32">
-      <GraphingBackground />
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(18,18,23,0)_50%,rgba(0,0,0,0.1)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] z-0 bg-[length:100%_2px,3px_100%] pointer-events-none opacity-20" />
-      <div className="absolute inset-0 bg-radial-vignette opacity-60 pointer-events-none z-0" />
+    <main className="relative min-h-screen overflow-x-hidden bg-[#071018] text-slate-100 selection:bg-cyan-400/25">
+      <div className="pointer-events-none fixed inset-0 z-0 opacity-45">
+        <GraphingBackground />
+      </div>
+      <div className="pointer-events-none fixed inset-0 z-0 bg-[radial-gradient(circle_at_78%_14%,rgba(34,211,238,0.10),transparent_27%),radial-gradient(circle_at_14%_82%,rgba(129,140,248,0.07),transparent_26%),linear-gradient(to_bottom,rgba(5,12,18,0.18),rgba(4,8,14,0.82))]" />
+      <div className="pointer-events-none fixed inset-0 z-[1] opacity-25 [background-image:linear-gradient(rgba(34,211,238,0.022)_1px,transparent_1px),linear-gradient(90deg,rgba(34,211,238,0.022)_1px,transparent_1px)] [background-size:42px_42px]" />
 
-      <div className="relative z-10 max-w-[1200px] mx-auto px-6 py-12 min-h-screen flex flex-col">
-        <header className="flex flex-col mb-16 mt-8">
-          <Link href="/formal-science/mathematics/algebra" className="flex items-center gap-2 text-[10px] text-cyan-400 hover:text-white transition-colors mb-8 uppercase tracking-widest group w-max border border-cyan-500/30 bg-black/40 backdrop-blur-md px-4 py-2 rounded-full shadow-lg">
-            <ArrowLeft size={12} className="group-hover:-translate-x-1 transition-transform" /> Return to Algebra Hub
-          </Link>
-
-          <div className="flex items-center gap-6">
-            <div className="w-20 h-20 border border-cyan-500/50 flex items-center justify-center bg-black/40 backdrop-blur-xl relative overflow-hidden group rounded-2xl shadow-[0_0_30px_rgba(6,182,212,0.3)]">
-              <span className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-br from-cyan-300 to-blue-500 italic relative z-10 font-mono">x</span>
+      <div className="relative z-10 mx-auto w-full max-w-[1540px] px-4 py-4 sm:px-6 xl:px-8 xl:py-5">
+        <DomainPageHeader
+          breadcrumbs={[
+            { label: "Home", href: "/" },
+            { label: "Formal Sciences", href: "/formal-science" },
+            { label: "Mathematics", href: "/formal-science/mathematics" },
+            { label: "Algebra", href: "/formal-science/mathematics/algebra" },
+            { label: "Integrated Algebra" },
+          ]}
+          eyebrow="Equation · Graph · Table · Function"
+          icon={Variable}
+          title={<span>Integrated Algebra</span>}
+          subtitle="Study relationships by moving between symbolic, visual, numerical, and functional representations. The representation changes; the relationship stays connected."
+          accentRgb="34, 211, 238"
+          titleClassName="font-mono text-[clamp(2.8rem,5.2vw,5.5rem)] font-semibold uppercase leading-[0.84] tracking-[-0.06em] text-[#f4fdff]"
+          iconClassName="rounded-[16px]"
+          headerClassName="border-cyan-300/[0.14]"
+          aside={
+            <div className="flex items-center gap-2 rounded-full border border-cyan-300/[0.14] bg-black/25 px-4 py-2 font-mono text-[12px] text-cyan-200/80 backdrop-blur-md">
+              <span>y</span><Equal size={12} /><span>{slope}x {intercept >= 0 ? "+" : "−"} {Math.abs(intercept)}</span>
             </div>
+          }
+        />
+
+        <section className="mt-3 overflow-hidden rounded-[24px] border border-cyan-200/[0.12] bg-black/[0.23] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.025),0_24px_70px_rgba(0,0,0,0.22)] backdrop-blur-xl">
+          <div className="flex flex-col gap-2 px-1 pb-3 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <div className="flex items-center gap-3 text-cyan-400 mb-2 font-mono text-[10px] font-bold tracking-[0.2em] uppercase">
-                <Rocket size={12} /> Domain_02.1 <span className="w-12 h-px bg-cyan-500/50" />
+              <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-cyan-300/70">Representation workbench</div>
+              <p className="mt-1 text-[12px] text-slate-500">One linear relationship, four coordinated views.</p>
+            </div>
+            <div className="font-mono text-[10px] text-slate-600">symbol ↔ graph ↔ table ↔ language</div>
+          </div>
+
+          <div className="grid gap-3 xl:grid-cols-[260px_minmax(320px,0.85fr)_minmax(0,1fr)]">
+            <div className="grid content-start gap-3 rounded-[18px] border border-cyan-200/[0.08] bg-black/[0.18] p-4">
+              <div>
+                <div className="text-[9px] font-semibold uppercase tracking-[0.12em] text-slate-600">Symbolic form</div>
+                <div className="mt-2 font-mono text-[25px] font-semibold tracking-[-0.03em] text-white">
+                  y = <span className="text-cyan-300">{slope}</span>x {intercept >= 0 ? "+" : "−"} <span className="text-fuchsia-300">{Math.abs(intercept)}</span>
+                </div>
               </div>
-              <h1 className="text-5xl md:text-7xl font-black tracking-tighter text-white drop-shadow-lg">
-                INTEGRATED <span className="font-light text-cyan-100/50">ALGEBRA</span>
-              </h1>
+
+              <Control
+                label="Slope"
+                symbol="m"
+                value={slope}
+                min={-4}
+                max={4}
+                step={0.5}
+                rgb="34, 211, 238"
+                onChange={setSlope}
+              />
+              <Control
+                label="Intercept"
+                symbol="b"
+                value={intercept}
+                min={-8}
+                max={8}
+                step={1}
+                rgb="244, 114, 182"
+                onChange={setIntercept}
+              />
+
+              <div className="rounded-xl border border-white/[0.045] bg-white/[0.014] p-3">
+                <div className="text-[9px] font-semibold uppercase tracking-[0.1em] text-slate-600">Verbal rule</div>
+                <p className="mt-1.5 text-[11px] leading-5 text-slate-400">
+                  Start at <strong className="text-fuchsia-300">{intercept}</strong> on the y-axis, then change y by <strong className="text-cyan-300">{slope}</strong> for every 1 unit increase in x.
+                </p>
+              </div>
+            </div>
+
+            <GraphPanel slope={slope} intercept={intercept} />
+
+            <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-1">
+              <div className="rounded-[18px] border border-cyan-200/[0.08] bg-black/[0.18] p-4">
+                <div className="text-[9px] font-semibold uppercase tracking-[0.12em] text-slate-600">Table</div>
+                <div className="mt-3 grid grid-cols-2 overflow-hidden rounded-xl border border-white/[0.05] text-center">
+                  <div className="border-b border-r border-white/[0.05] bg-cyan-400/[0.04] py-2 text-[10px] font-semibold text-cyan-300">x</div>
+                  <div className="border-b border-white/[0.05] bg-fuchsia-400/[0.04] py-2 text-[10px] font-semibold text-fuchsia-300">y</div>
+                  {table.flatMap((row) => [
+                    <div key={`x-${row.x}`} className="border-r border-t border-white/[0.04] py-2 font-mono text-[11px] text-slate-400">{row.x}</div>,
+                    <div key={`y-${row.x}`} className="border-t border-white/[0.04] py-2 font-mono text-[11px] text-slate-300">{formatNumber(row.y)}</div>,
+                  ])}
+                </div>
+              </div>
+
+              <div className="rounded-[18px] border border-cyan-200/[0.08] bg-black/[0.18] p-4">
+                <div className="text-[9px] font-semibold uppercase tracking-[0.12em] text-slate-600">What changes together?</div>
+                <div className="mt-3 grid gap-2">
+                  <RepresentationFact icon={TrendingUp} label="Slope" value={slope === 0 ? "horizontal" : slope > 0 ? "rises left → right" : "falls left → right"} rgb="34, 211, 238" />
+                  <RepresentationFact icon={Equal} label="Y-intercept" value={`crosses at (0, ${intercept})`} rgb="244, 114, 182" />
+                  <RepresentationFact icon={FunctionSquare} label="Function" value="one output for every input" rgb="129, 140, 248" />
+                </div>
+              </div>
             </div>
           </div>
-        </header>
-
-        <section className="mb-24">
-          <div className="flex items-center gap-3 mb-8">
-            <div className="h-4 w-1 bg-cyan-500 rounded-full" />
-            <h2 className="text-sm font-bold text-cyan-300 uppercase tracking-widest">Simulation Deck</h2>
-          </div>
-          <SlopeExplorerLab />
         </section>
 
-        <div className="space-y-20">
-          <section>
-            <div className="flex items-center gap-3 mb-8">
-              <div className="h-px flex-1 bg-gradient-to-r from-emerald-500/50 to-transparent" />
-              <h2 className="text-sm font-bold text-emerald-300 uppercase tracking-widest bg-emerald-950/40 px-4 py-2 rounded-full border border-emerald-500/20 backdrop-blur-md">
-                Phase 1: Linear Realities
-              </h2>
+        <section className="mt-3 overflow-hidden rounded-[24px] border border-cyan-200/[0.10] bg-black/[0.21] p-4 backdrop-blur-xl">
+          <div className="flex flex-col gap-2 px-1 pb-3 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-cyan-300/70">Integrated map</div>
+              <p className="mt-1 text-[12px] text-slate-500">Eleven topics, organized by the kind of algebraic work they train.</p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {PHASE_1.map((item) => <ModuleCard key={item.id} item={item} />)}
-            </div>
-          </section>
-
-          <section>
-            <div className="flex items-center gap-3 mb-8">
-              <div className="h-px flex-1 bg-gradient-to-r from-indigo-500/50 to-transparent" />
-              <h2 className="text-sm font-bold text-indigo-300 uppercase tracking-widest bg-indigo-950/40 px-4 py-2 rounded-full border border-indigo-500/20 backdrop-blur-md">
-                Phase 2: Curves & Powers
-              </h2>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {PHASE_2.map((item) => <ModuleCard key={item.id} item={item} />)}
-            </div>
-          </section>
-
-          <section>
-            <div className="flex items-center gap-3 mb-8">
-              <div className="h-px flex-1 bg-gradient-to-r from-rose-500/50 to-transparent" />
-              <h2 className="text-sm font-bold text-rose-300 uppercase tracking-widest bg-rose-950/40 px-4 py-2 rounded-full border border-rose-500/20 backdrop-blur-md">
-                Phase 3: Abstractions
-              </h2>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {PHASE_3.map((item) => <ModuleCard key={item.id} item={item} />)}
-            </div>
-          </section>
-        </div>
-
-        <section className="mt-24 pt-12 border-t border-white/10">
-          <div className="flex items-center gap-3 mb-8">
-            <div className="h-4 w-1 bg-cyan-500 rounded-full" />
-            <h2 className="text-sm font-bold text-cyan-300 uppercase tracking-widest">Verification Protocol</h2>
+            <div className="font-mono text-[10px] text-slate-600">describe → rewrite → generalize</div>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div className="col-span-1 bg-black/40 backdrop-blur-xl border border-white/10 rounded-3xl p-8 flex items-center justify-center min-h-[300px]">
-              <span className="text-zinc-600 text-sm uppercase tracking-widest font-mono">[Vocab Applet Mounting Point]</span>
-            </div>
-            <div className="col-span-1 lg:col-span-2 bg-black/40 backdrop-blur-xl border border-white/10 rounded-3xl p-8 flex items-center justify-center min-h-[300px]">
-              <span className="text-zinc-600 text-sm uppercase tracking-widest font-mono">[Assessment Mounting Point]</span>
-            </div>
-          </div>
+          <nav aria-label="Integrated Algebra topics" className="grid gap-3 xl:grid-cols-3">
+            {FAMILIES.map((family) => (
+              <FamilyColumn key={family.id} family={family} />
+            ))}
+          </nav>
         </section>
       </div>
     </main>
   );
 }
 
-function ModuleCard({ item }: { item: IntegratedModule }) {
+function Control({
+  label,
+  symbol,
+  value,
+  min,
+  max,
+  step,
+  rgb,
+  onChange,
+}: {
+  label: string;
+  symbol: string;
+  value: number;
+  min: number;
+  max: number;
+  step: number;
+  rgb: string;
+  onChange: (value: number) => void;
+}) {
   return (
-    <Link
-      href={item.href}
-      className={`group relative flex flex-col justify-between p-6 rounded-2xl backdrop-blur-2xl bg-slate-900/40 border border-white/10 transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(0,0,0,0.5)] ${item.bg} ${item.border}`}
-    >
-      <div className={`absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-500 rounded-2xl bg-gradient-to-br from-current to-transparent ${item.color}`} />
-
-      <div className="relative z-10 flex justify-between items-start mb-6">
-        <div className={`p-3 rounded-xl bg-black/50 border border-white/5 shadow-inner transition-colors ${item.color}`}>
-          <item.icon size={24} strokeWidth={1.5} />
-        </div>
-      </div>
-
-      <div className="relative z-10 mb-6">
-        <h2 className="text-lg font-bold text-white mb-1 group-hover:text-white transition-colors">{item.title}</h2>
-        <div className={`text-[10px] font-bold uppercase tracking-widest mb-3 opacity-80 ${item.color}`}>{item.subtitle}</div>
-        <p className="text-xs text-slate-400 font-sans leading-relaxed h-12 line-clamp-3">{item.desc}</p>
-      </div>
-
-      <div className="relative z-10 mt-auto pt-4 border-t border-white/10">
-        <div className="flex justify-between items-center text-xs font-mono">
-          <span className="opacity-40 select-none text-[10px] uppercase tracking-widest">Syntax</span>
-          <span className={`bg-black/60 px-2 py-1 rounded font-bold ${item.color} group-hover:bg-black/80 transition-colors border border-white/5`}>
-            {item.problem}
-          </span>
-        </div>
-      </div>
-    </Link>
+    <label className="block rounded-xl border border-white/[0.045] bg-white/[0.012] p-3">
+      <span className="flex items-center justify-between gap-3">
+        <span className="text-[10px] font-semibold text-slate-400">{label} <span className="font-mono text-slate-600">({symbol})</span></span>
+        <span className="rounded-md px-2 py-1 font-mono text-[10px]" style={{ color: `rgb(${rgb})`, background: `rgba(${rgb},0.06)` }}>{value}</span>
+      </span>
+      <input
+        type="range"
+        min={min}
+        max={max}
+        step={step}
+        value={value}
+        onChange={(event) => onChange(Number(event.target.value))}
+        className="mt-3 h-1.5 w-full cursor-pointer appearance-none rounded-full bg-white/[0.07] accent-cyan-400"
+      />
+    </label>
   );
+}
+
+function GraphPanel({ slope, intercept }: { slope: number; intercept: number }) {
+  const size = 320;
+  const center = size / 2;
+  const scale = 20;
+  const xMin = -10;
+  const xMax = 10;
+  const yFor = (x: number) => center - (slope * x + intercept) * scale;
+  const xFor = (x: number) => center + x * scale;
+  const interceptY = yFor(0);
+
+  return (
+    <div className="relative flex min-h-[320px] items-center justify-center overflow-hidden rounded-[18px] border border-cyan-200/[0.10] bg-[#061019]/78 p-3">
+      <div className="pointer-events-none absolute left-4 top-4 z-10">
+        <div className="text-[9px] font-semibold uppercase tracking-[0.12em] text-slate-600">Graph</div>
+        <div className="mt-1 font-mono text-[11px] text-cyan-300/75">y = mx + b</div>
+      </div>
+      <svg viewBox={`0 0 ${size} ${size}`} className="h-full max-h-[320px] w-full max-w-[320px]">
+        {Array.from({ length: 17 }, (_, index) => {
+          const pos = center + (index - 8) * scale;
+          return (
+            <g key={index} opacity="0.22">
+              <line x1={pos} y1="0" x2={pos} y2={size} stroke="#22d3ee" strokeWidth="0.65" />
+              <line x1="0" y1={pos} x2={size} y2={pos} stroke="#22d3ee" strokeWidth="0.65" />
+            </g>
+          );
+        })}
+        <line x1="0" y1={center} x2={size} y2={center} stroke="#64748b" strokeWidth="1.5" />
+        <line x1={center} y1="0" x2={center} y2={size} stroke="#64748b" strokeWidth="1.5" />
+        <line
+          x1={xFor(xMin)}
+          y1={yFor(xMin)}
+          x2={xFor(xMax)}
+          y2={yFor(xMax)}
+          stroke="#22d3ee"
+          strokeWidth="3"
+        />
+        {interceptY >= -10 && interceptY <= size + 10 ? (
+          <circle cx={center} cy={interceptY} r="5" fill="#f472b6" />
+        ) : null}
+      </svg>
+    </div>
+  );
+}
+
+function RepresentationFact({ icon: Icon, label, value, rgb }: { icon: LucideIcon; label: string; value: string; rgb: string }) {
+  return (
+    <div className="grid grid-cols-[34px_minmax(0,1fr)] items-center gap-2 rounded-xl border border-white/[0.045] bg-white/[0.012] p-2.5">
+      <span className="flex h-8 w-8 items-center justify-center rounded-lg border" style={{ color: `rgb(${rgb})`, borderColor: `rgba(${rgb},0.18)`, background: `rgba(${rgb},0.04)` }}>
+        <Icon size={14} strokeWidth={1.5} />
+      </span>
+      <span className="min-w-0">
+        <strong className="block text-[10px] font-semibold text-slate-300">{label}</strong>
+        <span className="mt-0.5 block truncate text-[9px] text-slate-600">{value}</span>
+      </span>
+    </div>
+  );
+}
+
+function FamilyColumn({ family }: { family: Family }) {
+  const modules = family.moduleIds.flatMap((id) => {
+    const module = MODULES_BY_ID.get(id);
+    return module ? [module] : [];
+  });
+
+  return (
+    <section
+      className="relative flex min-h-[430px] flex-col overflow-hidden rounded-[20px] border p-3.5"
+      style={{
+        borderColor: `rgba(${family.rgb},0.16)`,
+        background: `linear-gradient(160deg, rgba(${family.rgb},0.05), rgba(5,10,16,0.70) 34%, rgba(4,8,13,0.62))`,
+      }}
+    >
+      <div className="pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full blur-3xl" style={{ background: `rgba(${family.rgb},0.07)` }} />
+      <div className="relative border-b border-white/[0.05] pb-3">
+        <div className="text-[9px] font-semibold uppercase tracking-[0.13em]" style={{ color: `rgba(${family.rgb},0.72)` }}>{family.label}</div>
+        <p className="mt-1.5 min-h-[40px] text-[11px] leading-5 text-slate-500">{family.note}</p>
+      </div>
+
+      <div className="relative mt-3 grid gap-2">
+        {modules.map((module) => (
+          <ModuleRow key={module.id} module={module} />
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function ModuleRow({ module }: { module: IntegratedModule }) {
+  const Icon = module.icon;
+  const planned = module.status === "placeholder";
+
+  const content = (
+    <>
+      <span
+        className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border"
+        style={{
+          color: planned ? "rgb(100 116 139)" : `rgb(${module.rgb})`,
+          borderColor: planned ? "rgba(100,116,139,0.12)" : `rgba(${module.rgb},0.20)`,
+          background: planned ? "rgba(100,116,139,0.03)" : `rgba(${module.rgb},0.045)`,
+        }}
+      >
+        <Icon size={16} strokeWidth={1.5} />
+      </span>
+      <span className="min-w-0 flex-1">
+        <strong className={`block truncate text-[13px] font-semibold ${planned ? "text-slate-700" : "text-slate-200"}`}>{module.label}</strong>
+        <span className="mt-0.5 block truncate text-[9px]" style={{ color: planned ? "rgb(71 85 105)" : `rgba(${module.rgb},0.62)` }}>{module.idea}</span>
+        <span className="mt-1 block line-clamp-2 text-[10px] leading-4 text-slate-600">{module.description}</span>
+      </span>
+      <span className="flex shrink-0 flex-col items-end gap-2">
+        <span className="max-w-[130px] truncate rounded-md border border-white/[0.045] bg-black/[0.18] px-2 py-1 font-mono text-[9px] text-slate-500">{module.specimen}</span>
+        {planned ? <span className="text-[8px] font-semibold uppercase tracking-[0.08em] text-slate-700">planned</span> : <ArrowRight size={11} className="text-slate-700 transition-transform group-hover:translate-x-0.5 group-hover:text-slate-400" />}
+      </span>
+    </>
+  );
+
+  const className = `group flex min-h-[82px] items-center gap-3 rounded-[16px] border px-3 py-2.5 ${
+    planned
+      ? "cursor-default border-white/[0.025] bg-white/[0.008]"
+      : "border-white/[0.045] bg-white/[0.012] transition-colors hover:border-white/[0.10] hover:bg-white/[0.025]"
+  }`;
+
+  if (planned) return <div className={className}>{content}</div>;
+  return <Link href={module.href} className={className}>{content}</Link>;
+}
+
+function formatNumber(value: number) {
+  return Number.isInteger(value) ? String(value) : value.toFixed(1).replace(/\.0$/, "");
 }
