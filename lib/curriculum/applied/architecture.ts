@@ -48,8 +48,8 @@ const siteContext: CurriculumNode = {
   description: "Respond to orientation, climate, terrain, access, neighboring conditions, and the larger setting of a building.",
   domainId: "applied",
   children: [
-    plannedLesson("applied.architecture.site-context.analysis-constraints", "Site Analysis & Constraints", "/applied-science/architecture/site-context/analysis-constraints", "Map existing physical, legal, ecological, and infrastructural conditions before choosing a building response."),
-    plannedLesson("applied.architecture.site-context.climate-orientation", "Climate & Orientation", "/applied-science/architecture/site-context/climate-orientation", "Relate solar exposure, shade, wind, seasonal conditions, and orientation to architectural decisions."),
+    activeLesson("applied.architecture.site-context.analysis-constraints", "Site Analysis & Constraints", "/applied-science/architecture/site-context/analysis-constraints", "Map existing physical, legal, ecological, and infrastructural conditions before choosing a building response."),
+    activeLesson("applied.architecture.site-context.climate-orientation", "Climate & Orientation", "/applied-science/architecture/site-context/climate-orientation", "Relate solar exposure, shade, wind, seasonal conditions, and orientation to architectural decisions."),
     plannedLesson("applied.architecture.site-context.topography-water", "Topography & Water", "/applied-science/architecture/site-context/topography-water", "Read contours, slopes, drainage paths, grading implications, and the movement of water across a site."),
     plannedLesson("applied.architecture.site-context.access-surroundings", "Access & Surroundings", "/applied-science/architecture/site-context/access-surroundings", "Coordinate pedestrian, vehicle, service, neighboring-building, street, view, noise, and public-realm relationships."),
   ],
