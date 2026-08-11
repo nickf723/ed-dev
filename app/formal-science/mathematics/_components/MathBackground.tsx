@@ -2,9 +2,12 @@
 
 import { useEffect, useRef } from "react";
 
-type LorenzPoint = { x: number; y: number; z: number };
-
-type NetworkPoint = { x: number; y: number; r: number };
+type SeedPoint = {
+  x: number;
+  y: number;
+  phase: number;
+  weight: number;
+};
 
 const EQUATIONS = [
   "eⁱπ + 1 = 0",
@@ -13,32 +16,9 @@ const EQUATIONS = [
   "Σ 1/n² = π²/6",
   "f′(x) = lim Δx→0 Δf/Δx",
   "P(A|B) = P(A∩B)/P(B)",
+  "G = (V,E)",
+  "∫ₐᵇ f(x) dx",
 ] as const;
-
-function buildLorenz(): LorenzPoint[] {
-  const sigma = 10;
-  const rho = 28;
-  const beta = 8 / 3;
-  const dt = 0.005;
-  let x = 0.1;
-  let y = 0;
-  let z = 0;
-  const points: LorenzPoint[] = [];
-
-  for (let i = 0; i < 5200; i += 1) {
-    const dx = sigma * (y - x) * dt;
-    const dy = (x * (rho - z) - y) * dt;
-    const dz = (x * y - beta * z) * dt;
-    x += dx;
-    y += dy;
-    z += dz;
-    if (i > 900 && i % 2 === 0) points.push({ x, y, z });
-  }
-
-  return points;
-}
-
-const LORENZ = buildLorenz();
 
 export default function MathBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -56,10 +36,11 @@ export default function MathBackground() {
     let phase = 0;
     let lastFrame = 0;
 
-    const network: NetworkPoint[] = Array.from({ length: 38 }, (_, index) => ({
-      x: ((index * 73) % 997) / 997,
-      y: ((index * 137 + 41) % 991) / 991,
-      r: 0.7 + (index % 4) * 0.35,
+    const seeds: SeedPoint[] = Array.from({ length: 34 }, (_, index) => ({
+      x: ((index * 83 + 17) % 997) / 997,
+      y: ((index * 151 + 29) % 991) / 991,
+      phase: index * 0.77,
+      weight: 0.7 + (index % 4) * 0.25,
     }));
 
     const resize = () => {
@@ -73,61 +54,204 @@ export default function MathBackground() {
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     };
 
-    const drawGridDetails = () => {
-      ctx.save();
-      ctx.lineWidth = 1;
-      ctx.strokeStyle = "rgba(255, 96, 78, 0.055)";
+    const warpedPoint = (x: number, y: number) => {
+      const nx = x / Math.max(width, 1);
+      const ny = y / Math.max(height, 1);
+      const dx =
+        Math.sin(ny * Math.PI * 3.2 + phase * 0.42) * 8 +
+        Math.sin((nx + ny) * Math.PI * 2.4 - phase * 0.18) * 4;
+      const dy =
+        Math.sin(nx * Math.PI * 3.0 - phase * 0.34) * 7 +
+        Math.cos((nx - ny) * Math.PI * 2.0 + phase * 0.22) * 3;
+      return [x + dx, y + dy] as const;
+    };
 
-      for (let x = 12; x < width; x += 72) {
+    const drawWarpedGrid = () => {
+      ctx.save();
+      ctx.lineWidth = 0.8;
+
+      const xStep = Math.max(54, Math.min(76, width / 22));
+      const yStep = Math.max(54, Math.min(76, height / 13));
+
+      for (let x = -xStep; x < width + xStep; x += xStep) {
         ctx.beginPath();
-        ctx.moveTo(x, 0);
-        ctx.lineTo(x, height);
+        for (let y = -20; y <= height + 20; y += 10) {
+          const [px, py] = warpedPoint(x, y);
+          if (y === -20) ctx.moveTo(px, py);
+          else ctx.lineTo(px, py);
+        }
+        ctx.strokeStyle = "rgba(255, 92, 72, 0.050)";
         ctx.stroke();
       }
-      for (let y = 20; y < height; y += 72) {
+
+      for (let y = -yStep; y < height + yStep; y += yStep) {
         ctx.beginPath();
-        ctx.moveTo(0, y);
-        ctx.lineTo(width, y);
+        for (let x = -20; x <= width + 20; x += 10) {
+          const [px, py] = warpedPoint(x, y);
+          if (x === -20) ctx.moveTo(px, py);
+          else ctx.lineTo(px, py);
+        }
+        ctx.strokeStyle = "rgba(255, 92, 72, 0.046)";
         ctx.stroke();
       }
+
       ctx.restore();
     };
 
-    const drawEquations = () => {
-      const positions = [
-        [0.24, 0.055],
-        [0.58, 0.10],
-        [0.79, 0.47],
-        [0.36, 0.88],
-        [0.08, 0.62],
-        [0.72, 0.91],
-      ] as const;
+    const drawCurveFamily = () => {
+      const families = [
+        {
+          baseline: height * 0.17,
+          amplitude: Math.min(width, height) * 0.035,
+          frequency: 72,
+          phaseScale: 0.72,
+          alpha: 0.13,
+        },
+        {
+          baseline: height * 0.78,
+          amplitude: Math.min(width, height) * 0.045,
+          frequency: 98,
+          phaseScale: -0.48,
+          alpha: 0.10,
+        },
+        {
+          baseline: height * 0.49,
+          amplitude: Math.min(width, height) * 0.024,
+          frequency: 58,
+          phaseScale: 0.31,
+          alpha: 0.07,
+        },
+      ];
 
       ctx.save();
-      ctx.font = "12px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace";
-      ctx.fillStyle = "rgba(255, 126, 105, 0.13)";
-      EQUATIONS.forEach((equation, index) => {
-        const [px, py] = positions[index];
-        ctx.fillText(equation, width * px, height * py);
+      ctx.lineWidth = 1.1;
+
+      families.forEach((family, familyIndex) => {
+        for (let variant = 0; variant < 3; variant += 1) {
+          ctx.beginPath();
+          for (let x = -10; x <= width + 10; x += 5) {
+            const t = x / family.frequency;
+            const y =
+              family.baseline +
+              Math.sin(t + phase * family.phaseScale + variant * 0.72) *
+                family.amplitude *
+                (1 - variant * 0.15) +
+              Math.sin(t * 0.43 - phase * 0.22) *
+                family.amplitude *
+                0.35;
+            if (x === -10) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+          }
+
+          const alpha = family.alpha * (1 - variant * 0.22);
+          ctx.strokeStyle =
+            familyIndex === 1
+              ? `rgba(34,211,238,${alpha})`
+              : `rgba(255,104,84,${alpha})`;
+          ctx.stroke();
+        }
       });
+
+      ctx.restore();
+    };
+
+    const drawParametricOrbit = () => {
+      const cx = width * 0.79;
+      const cy = height * 0.18;
+      const rx = Math.min(width, height) * 0.12;
+      const ry = rx * 0.58;
+
+      ctx.save();
+      ctx.lineWidth = 0.9;
+
+      for (let ring = 0; ring < 5; ring += 1) {
+        ctx.beginPath();
+        for (let i = 0; i <= 240; i += 1) {
+          const t = (i / 240) * Math.PI * 2;
+          const rScale = 0.58 + ring * 0.11;
+          const wobble = 1 + Math.sin(t * 3 + phase * 0.32 + ring) * 0.06;
+          const x =
+            cx +
+            Math.cos(t + phase * 0.06) *
+              rx *
+              rScale *
+              wobble +
+            Math.cos(t * 3) * 7;
+          const y =
+            cy +
+            Math.sin(t * 2 - phase * 0.08) *
+              ry *
+              rScale +
+            Math.sin(t) * 5;
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.strokeStyle = `rgba(255,104,84,${0.07 + ring * 0.018})`;
+        ctx.stroke();
+      }
+
+      ctx.restore();
+    };
+
+    const drawVectorField = () => {
+      const cols = Math.min(16, Math.max(9, Math.floor(width / 120)));
+      const rows = Math.min(9, Math.max(6, Math.floor(height / 120)));
+      const xGap = width / (cols + 1);
+      const yGap = height / (rows + 1);
+
+      ctx.save();
+      ctx.lineWidth = 0.8;
+
+      for (let row = 1; row <= rows; row += 1) {
+        for (let col = 1; col <= cols; col += 1) {
+          const x = col * xGap;
+          const y = row * yGap;
+          const nx = col / cols - 0.5;
+          const ny = row / rows - 0.5;
+          const angle =
+            Math.atan2(nx, -ny) +
+            Math.sin(phase * 0.18 + col * 0.37 + row * 0.21) * 0.22;
+          const length = 5 + Math.min(7, Math.hypot(nx, ny) * 10);
+          const ex = x + Math.cos(angle) * length;
+          const ey = y + Math.sin(angle) * length;
+
+          ctx.strokeStyle =
+            (row + col) % 4 === 0
+              ? "rgba(34,211,238,0.060)"
+              : "rgba(255,104,84,0.052)";
+          ctx.beginPath();
+          ctx.moveTo(x, y);
+          ctx.lineTo(ex, ey);
+          ctx.stroke();
+        }
+      }
+
       ctx.restore();
     };
 
     const drawNetwork = () => {
+      const points = seeds.map((seed) => {
+        const driftX = Math.sin(phase * 0.16 + seed.phase) * 12;
+        const driftY = Math.cos(phase * 0.13 + seed.phase * 1.3) * 9;
+        return {
+          x: seed.x * width + driftX,
+          y: seed.y * height + driftY,
+          r: seed.weight,
+        };
+      });
+
       ctx.save();
-      const points = network.map((point) => ({
-        x: point.x * width,
-        y: point.y * height,
-        r: point.r,
-      }));
 
       for (let i = 0; i < points.length; i += 1) {
         for (let j = i + 1; j < points.length; j += 1) {
           const dx = points[i].x - points[j].x;
           const dy = points[i].y - points[j].y;
           const distance = Math.hypot(dx, dy);
-          if (distance > 150) continue;
-          ctx.strokeStyle = `rgba(255, 90, 70, ${0.055 * (1 - distance / 150)})`;
+          if (distance > 138) continue;
+
+          ctx.strokeStyle = `rgba(255,96,78,${
+            0.044 * (1 - distance / 138)
+          })`;
           ctx.beginPath();
           ctx.moveTo(points[i].x, points[i].y);
           ctx.lineTo(points[j].x, points[j].y);
@@ -136,171 +260,111 @@ export default function MathBackground() {
       }
 
       for (const point of points) {
-        ctx.fillStyle = "rgba(255, 104, 84, 0.17)";
+        ctx.fillStyle = "rgba(255,112,91,0.14)";
         ctx.beginPath();
         ctx.arc(point.x, point.y, point.r, 0, Math.PI * 2);
         ctx.fill();
       }
+
       ctx.restore();
     };
 
-    const drawLorenz = () => {
-      const centerX = width * 0.78;
-      const centerY = height * 0.20;
-      const scale = Math.min(width, height) * 0.0105;
-      const angle = -0.42 + Math.sin(phase * 0.22) * 0.045;
+    const drawGeometry = () => {
+      const cx = width * 0.22;
+      const cy = height * 0.83;
+      const radius = Math.min(width, height) * 0.068;
+      const rotation = phase * 0.08;
 
       ctx.save();
       ctx.lineWidth = 0.9;
-      ctx.strokeStyle = "rgba(255, 104, 84, 0.17)";
-      ctx.beginPath();
-      LORENZ.forEach((point, index) => {
-        const rx = point.x * Math.cos(angle) - point.y * Math.sin(angle);
-        const sx = centerX + rx * scale;
-        const sy = centerY + (point.z - 25) * scale;
-        if (index === 0) ctx.moveTo(sx, sy);
-        else ctx.lineTo(sx, sy);
-      });
-      ctx.stroke();
-      ctx.restore();
-    };
 
-    const drawUnitCircle = () => {
-      const cx = width * 0.23;
-      const cy = height * 0.83;
-      const radius = Math.min(width, height) * 0.07;
-      const theta = 0.75 + Math.sin(phase * 0.35) * 0.18;
-      const px = cx + Math.cos(theta) * radius;
-      const py = cy - Math.sin(theta) * radius;
-
-      ctx.save();
-      ctx.strokeStyle = "rgba(255, 126, 105, 0.12)";
-      ctx.lineWidth = 1;
-      ctx.beginPath();
-      ctx.moveTo(cx - radius * 1.35, cy);
-      ctx.lineTo(cx + radius * 1.35, cy);
-      ctx.moveTo(cx, cy - radius * 1.35);
-      ctx.lineTo(cx, cy + radius * 1.35);
-      ctx.stroke();
-
-      ctx.strokeStyle = "rgba(255, 126, 105, 0.18)";
+      ctx.strokeStyle = "rgba(255,126,105,0.10)";
       ctx.beginPath();
       ctx.arc(cx, cy, radius, 0, Math.PI * 2);
       ctx.stroke();
 
-      ctx.strokeStyle = "rgba(255, 155, 125, 0.28)";
+      const vertices = Array.from({ length: 6 }, (_, index) => {
+        const angle = rotation + (index / 6) * Math.PI * 2;
+        return [
+          cx + Math.cos(angle) * radius,
+          cy + Math.sin(angle) * radius,
+        ] as const;
+      });
+
+      ctx.strokeStyle = "rgba(255,144,112,0.14)";
       ctx.beginPath();
-      ctx.moveTo(cx, cy);
-      ctx.lineTo(px, py);
-      ctx.lineTo(px, cy);
-      ctx.stroke();
-
-      ctx.fillStyle = "rgba(255, 155, 125, 0.35)";
-      ctx.beginPath();
-      ctx.arc(px, py, 2.3, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.restore();
-    };
-
-    const drawVectorField = () => {
-      const originX = width * 0.055;
-      const originY = height * 0.64;
-      const cols = 10;
-      const rows = 7;
-      const spacing = 24;
-
-      ctx.save();
-      ctx.strokeStyle = "rgba(255, 102, 82, 0.09)";
-      ctx.lineWidth = 0.9;
-      for (let row = 0; row < rows; row += 1) {
-        for (let col = 0; col < cols; col += 1) {
-          const x = originX + col * spacing;
-          const y = originY + row * spacing;
-          const vx = col - cols / 2;
-          const vy = row - rows / 2;
-          const angle = Math.atan2(vx, -vy) + Math.sin(phase * 0.18) * 0.06;
-          const length = 8 + Math.min(6, Math.hypot(vx, vy));
-          const ex = x + Math.cos(angle) * length;
-          const ey = y + Math.sin(angle) * length;
-          ctx.beginPath();
-          ctx.moveTo(x, y);
-          ctx.lineTo(ex, ey);
-          ctx.stroke();
-        }
-      }
-      ctx.restore();
-    };
-
-    const drawWave = () => {
-      const startX = width * 0.62;
-      const endX = width * 0.93;
-      const baseline = height * 0.84;
-      const amplitude = Math.min(width, height) * 0.028;
-
-      ctx.save();
-      ctx.strokeStyle = "rgba(255, 112, 91, 0.13)";
-      ctx.beginPath();
-      for (let x = startX; x <= endX; x += 3) {
-        const t = (x - startX) / 34;
-        const y = baseline + Math.sin(t + phase * 0.45) * amplitude + Math.sin(t * 0.42) * amplitude * 0.45;
-        if (x === startX) ctx.moveTo(x, y);
+      vertices.forEach(([x, y], index) => {
+        if (index === 0) ctx.moveTo(x, y);
         else ctx.lineTo(x, y);
-      }
+      });
+      ctx.closePath();
       ctx.stroke();
+
+      ctx.strokeStyle = "rgba(34,211,238,0.085)";
+      vertices.forEach(([x, y], index) => {
+        const [tx, ty] = vertices[(index + 2) % vertices.length];
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.lineTo(tx, ty);
+        ctx.stroke();
+      });
+
       ctx.restore();
     };
 
-    const drawParaboloid = () => {
-      const cx = width * 0.54;
-      const cy = height * 0.82;
-      const rx = 62;
-      const ry = 24;
+    const drawEquationCloud = () => {
+      const positions = [
+        [0.24, 0.055],
+        [0.57, 0.10],
+        [0.84, 0.46],
+        [0.35, 0.92],
+        [0.075, 0.58],
+        [0.70, 0.90],
+        [0.48, 0.30],
+        [0.12, 0.28],
+      ] as const;
 
       ctx.save();
-      ctx.strokeStyle = "rgba(255, 112, 91, 0.09)";
-      ctx.lineWidth = 0.8;
-      for (let i = -4; i <= 4; i += 1) {
-        ctx.beginPath();
-        ctx.ellipse(cx, cy + i * 5, rx - Math.abs(i) * 7, Math.max(4, ry - Math.abs(i) * 3), 0, 0, Math.PI * 2);
-        ctx.stroke();
-      }
-      for (let i = -4; i <= 4; i += 1) {
-        ctx.beginPath();
-        ctx.moveTo(cx + i * 12, cy - 24);
-        ctx.quadraticCurveTo(cx + i * 7, cy + 6, cx + i * 4, cy + 44);
-        ctx.stroke();
-      }
+      ctx.font =
+        "11px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace";
+
+      EQUATIONS.forEach((equation, index) => {
+        const [px, py] = positions[index];
+        const pulse =
+          0.085 +
+          Math.sin(phase * 0.15 + index * 0.8) * 0.025;
+        ctx.fillStyle = `rgba(255,126,105,${pulse})`;
+        ctx.fillText(equation, width * px, height * py);
+      });
+
       ctx.restore();
     };
 
     const draw = () => {
       ctx.clearRect(0, 0, width, height);
-      drawGridDetails();
+      drawWarpedGrid();
+      drawCurveFamily();
       drawNetwork();
-      drawEquations();
-      drawLorenz();
-      drawUnitCircle();
       drawVectorField();
-      drawWave();
-      drawParaboloid();
+      drawGeometry();
+      drawParametricOrbit();
+      drawEquationCloud();
     };
 
     const animate = (timestamp: number) => {
-      if (timestamp - lastFrame > 32) {
-        if (!document.hidden) {
-          phase += 0.035;
-          draw();
-        }
-        lastFrame = timestamp;
-      }
       frameId = requestAnimationFrame(animate);
+      if (document.hidden) return;
+      if (!reducedMotion.matches && timestamp - lastFrame < 33) return;
+      lastFrame = timestamp;
+      if (!reducedMotion.matches) phase += 0.024;
+      draw();
     };
 
     resize();
     draw();
-    if (!reducedMotion.matches) frameId = requestAnimationFrame(animate);
-
+    frameId = requestAnimationFrame(animate);
     window.addEventListener("resize", resize);
+
     return () => {
       window.removeEventListener("resize", resize);
       cancelAnimationFrame(frameId);
