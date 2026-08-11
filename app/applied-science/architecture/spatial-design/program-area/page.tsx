@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 import {
   ArrowLeft,
+  ArrowRight,
   Boxes,
   Layers,
   Ruler,
@@ -14,35 +15,10 @@ import DomainPageHeader from "@/app/_components/DomainPageHeader";
 import BlueprintBackground from "../../BlueprintBackground";
 
 const PRESETS = [
-  {
-    id: "compact",
-    label: "Compact reading room",
-    users: 12,
-    activityPerUser: 1.8,
-    furniture: 7,
-    clearancePercent: 18,
-    grossingPercent: 18,
-  },
-  {
-    id: "balanced",
-    label: "Balanced reading room",
-    users: 20,
-    activityPerUser: 2.2,
-    furniture: 10,
-    clearancePercent: 25,
-    grossingPercent: 24,
-  },
-  {
-    id: "generous",
-    label: "Generous reading room",
-    users: 28,
-    activityPerUser: 2.6,
-    furniture: 14,
-    clearancePercent: 32,
-    grossingPercent: 28,
-  },
+  { id: "compact", label: "Compact reading room", users: 12, activityPerUser: 1.8, furniture: 7, clearancePercent: 18, grossingPercent: 18 },
+  { id: "balanced", label: "Balanced reading room", users: 20, activityPerUser: 2.2, furniture: 10, clearancePercent: 25, grossingPercent: 24 },
+  { id: "generous", label: "Generous reading room", users: 28, activityPerUser: 2.6, furniture: 14, clearancePercent: 32, grossingPercent: 28 },
 ] as const;
-
 type PresetId = (typeof PRESETS)[number]["id"];
 
 export default function ProgramAreaPage() {
@@ -60,14 +36,7 @@ export default function ProgramAreaPage() {
     const netProgramArea = occupiedSubtotal + clearanceArea;
     const grossAllowance = netProgramArea * (grossingPercent / 100);
     const planningGrossArea = netProgramArea + grossAllowance;
-    return {
-      activityArea,
-      occupiedSubtotal,
-      clearanceArea,
-      netProgramArea,
-      grossAllowance,
-      planningGrossArea,
-    };
+    return { activityArea, occupiedSubtotal, clearanceArea, netProgramArea, grossAllowance, planningGrossArea };
   }, [activityPerUser, clearancePercent, furniture, grossingPercent, users]);
 
   const applyPreset = (id: PresetId) => {
@@ -84,262 +53,37 @@ export default function ProgramAreaPage() {
 
   return (
     <main className="relative min-h-screen overflow-x-hidden bg-[#06121d] text-slate-100 selection:bg-sky-400/25">
-      <div className="pointer-events-none fixed inset-0 z-0 opacity-56">
-        <BlueprintBackground />
-      </div>
+      <div className="pointer-events-none fixed inset-0 z-0 opacity-56"><BlueprintBackground /></div>
       <div className="pointer-events-none fixed inset-0 z-0 bg-[radial-gradient(circle_at_82%_14%,rgba(56,189,248,0.10),transparent_28%),radial-gradient(circle_at_14%_82%,rgba(251,191,36,0.055),transparent_27%),linear-gradient(to_bottom,rgba(6,18,29,0.16),rgba(3,9,16,0.92))]" />
       <div className="pointer-events-none fixed inset-0 z-[1] opacity-20 [background-image:linear-gradient(rgba(125,211,252,0.025)_1px,transparent_1px),linear-gradient(90deg,rgba(125,211,252,0.025)_1px,transparent_1px)] [background-size:36px_36px]" />
 
       <div className="relative z-10 mx-auto w-full max-w-[1500px] px-4 py-4 sm:px-6 xl:px-8 xl:py-5">
-        <DomainPageHeader
-          breadcrumbs={[
-            { label: "Home", href: "/" },
-            { label: "Applied Sciences", href: "/applied-science" },
-            { label: "Architecture", href: "/applied-science/architecture" },
-            { label: "Spatial Design & Program", href: "/applied-science/architecture/spatial-design" },
-            { label: "Program & Area" },
-          ]}
-          eyebrow="Activities · Capacity · Furniture · Clearance · Area"
-          icon={Ruler}
-          title={<span>Program & Area</span>}
-          subtitle="Turn a human activity brief into a provisional area budget before a floor plan fixes the room geometry."
-          accentRgb="56, 189, 248"
-          titleClassName="font-serif text-[clamp(2.8rem,5vw,5.25rem)] font-semibold leading-[0.86] tracking-[-0.055em] text-[#f8fbff]"
-          iconClassName="rounded-[16px]"
-          headerClassName="border-sky-300/[0.13]"
-          aside={
-            <div className="rounded-full border border-sky-300/[0.14] bg-black/25 px-4 py-2 font-mono text-[12px] text-sky-200/85 backdrop-blur-md">
-              program ≠ floor plan
-            </div>
-          }
-        />
+        <DomainPageHeader breadcrumbs={[{ label: "Home", href: "/" }, { label: "Applied Sciences", href: "/applied-science" }, { label: "Architecture", href: "/applied-science/architecture" }, { label: "Spatial Design & Program", href: "/applied-science/architecture/spatial-design" }, { label: "Program & Area" }]} eyebrow="Activities · Capacity · Furniture · Clearance · Area" icon={Ruler} title={<span>Program & Area</span>} subtitle="Turn a human activity brief into a provisional area budget before a floor plan fixes the room geometry." accentRgb="56, 189, 248" titleClassName="font-serif text-[clamp(2.8rem,5vw,5.25rem)] font-semibold leading-[0.86] tracking-[-0.055em] text-[#f8fbff]" iconClassName="rounded-[16px]" headerClassName="border-sky-300/[0.13]" aside={<div className="rounded-full border border-sky-300/[0.14] bg-black/25 px-4 py-2 font-mono text-[12px] text-sky-200/85 backdrop-blur-md">program ≠ floor plan</div>} />
 
-        <section className="mt-3 grid gap-3 rounded-[24px] border border-sky-200/[0.10] bg-black/[0.22] p-5 backdrop-blur-xl lg:grid-cols-[minmax(0,1.15fr)_minmax(330px,0.85fr)]">
-          <div>
-            <div className="text-[10px] font-semibold uppercase tracking-[0.15em] text-sky-300/72">Core idea</div>
-            <h2 className="mt-2 text-[28px] font-semibold tracking-[-0.035em] text-white">A program estimates what must fit before deciding exactly how it fits.</h2>
-            <p className="mt-3 max-w-4xl text-[14px] leading-6 text-slate-400">
-              Begin with people and activities. Add the furniture and equipment those activities require, then reserve space to move, reach, pass, and use them. The resulting area is a planning target, not a finished room shape. Architecture repeatedly revises that target as the actual plan, structure, accessibility, envelope, and codes become clearer.
-            </p>
-          </div>
-          <div className="grid gap-2 sm:grid-cols-3 lg:grid-cols-1">
-            <CoreFact icon={Users} label="Capacity" text="How many people or simultaneous activities must the space support?" rgb="56, 189, 248" />
-            <CoreFact icon={Boxes} label="Contents" text="What furniture, equipment, storage, and work zones occupy floor area?" rgb="74, 222, 128" />
-            <CoreFact icon={Layers} label="Allowances" text="What extra area is needed for clearances, movement, walls, and shared building space?" rgb="251, 191, 36" />
-          </div>
-        </section>
+        <section className="mt-3 grid gap-3 rounded-[24px] border border-sky-200/[0.10] bg-black/[0.22] p-5 backdrop-blur-xl lg:grid-cols-[minmax(0,1.15fr)_minmax(330px,0.85fr)]"><div><div className="text-[10px] font-semibold uppercase tracking-[0.15em] text-sky-300/72">Core idea</div><h2 className="mt-2 text-[28px] font-semibold tracking-[-0.035em] text-white">A program estimates what must fit before deciding exactly how it fits.</h2><p className="mt-3 max-w-4xl text-[14px] leading-6 text-slate-400">Begin with people and activities. Add the furniture and equipment those activities require, then reserve space to move, reach, pass, and use them. The resulting area is a planning target, not a finished room shape. Architecture repeatedly revises that target as the actual plan, structure, accessibility, envelope, and codes become clearer.</p></div><div className="grid gap-2 sm:grid-cols-3 lg:grid-cols-1"><CoreFact icon={Users} label="Capacity" text="How many people or simultaneous activities must the space support?" rgb="56, 189, 248" /><CoreFact icon={Boxes} label="Contents" text="What furniture, equipment, storage, and work zones occupy floor area?" rgb="74, 222, 128" /><CoreFact icon={Layers} label="Allowances" text="What extra area is needed for clearances, movement, walls, and shared building space?" rgb="251, 191, 36" /></div></section>
 
-        <section className="mt-3 rounded-[26px] border border-sky-200/[0.12] bg-black/[0.24] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.025),0_28px_80px_rgba(0,0,0,0.22)] backdrop-blur-xl">
-          <div className="flex flex-col gap-2 px-1 pb-3 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-sky-300/75">Area budget studio</div>
-              <p className="mt-1 text-[13px] text-slate-500">Illustrative reading-room assumptions. Change one component and watch the budget reorganize.</p>
-            </div>
-            <div className="font-mono text-[11px] text-slate-600">assumptions → net program → rough gross</div>
-          </div>
+        <section className="mt-3 rounded-[26px] border border-sky-200/[0.12] bg-black/[0.24] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.025),0_28px_80px_rgba(0,0,0,0.22)] backdrop-blur-xl"><div className="flex flex-col gap-2 px-1 pb-3 sm:flex-row sm:items-end sm:justify-between"><div><div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-sky-300/75">Area budget studio</div><p className="mt-1 text-[13px] text-slate-500">Illustrative reading-room assumptions. Change one component and watch the budget reorganize.</p></div><div className="font-mono text-[11px] text-slate-600">assumptions → net program → rough gross</div></div><div className="grid items-stretch gap-3 xl:grid-cols-[320px_minmax(500px,1fr)_340px]"><div className="rounded-[20px] border border-sky-200/[0.08] bg-[#061221]/76 p-4"><div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-500">Guided assumptions</div><div className="mt-3 grid gap-2">{PRESETS.map((preset) => <button key={preset.id} type="button" onClick={() => applyPreset(preset.id)} className={`rounded-[14px] border p-3 text-left transition-colors ${activePreset === preset.id ? "border-sky-300/[0.28] bg-sky-400/[0.06]" : "border-white/[0.045] bg-black/[0.14] hover:border-white/[0.09]"}`}><strong className="text-[11px] text-slate-200">{preset.label}</strong><div className="mt-1 font-mono text-[9px] text-slate-600">{preset.users} users · {preset.activityPerUser.toFixed(1)} m²/user · {preset.clearancePercent}% clearance</div></button>)}</div><div className="mt-3 grid gap-2"><Control label="Users" value={users} min={6} max={40} step={1} suffix="" rgb="56, 189, 248" onChange={(value) => { setActivePreset(null); setUsers(value); }} /><Control label="Activity allowance / user" value={activityPerUser} min={1.4} max={3.4} step={0.1} suffix=" m²" rgb="74, 222, 128" onChange={(value) => { setActivePreset(null); setActivityPerUser(value); }} /><Control label="Furniture + equipment" value={furniture} min={2} max={24} step={1} suffix=" m²" rgb="192, 132, 252" onChange={(value) => { setActivePreset(null); setFurniture(value); }} /><Control label="Room clearance allowance" value={clearancePercent} min={10} max={45} step={1} suffix="%" rgb="251, 191, 36" onChange={(value) => { setActivePreset(null); setClearancePercent(value); }} /><Control label="Rough grossing allowance" value={grossingPercent} min={10} max={40} step={1} suffix="%" rgb="244, 114, 182" onChange={(value) => { setActivePreset(null); setGrossingPercent(value); }} /></div></div><AreaDiagram budget={budget} squareSide={squareSide} /><div className="rounded-[20px] border border-amber-200/[0.09] bg-[#171109]/72 p-4"><div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-amber-300/70">Read the budget</div><div className="mt-3 grid gap-2"><Readout label="Activity area" value={`${formatArea(budget.activityArea)} m²`} note={`${users} × ${activityPerUser.toFixed(1)} m²/user`} rgb="56, 189, 248" /><Readout label="Furniture + equipment" value={`${formatArea(furniture)} m²`} note="fixed footprint assumption" rgb="192, 132, 252" /><Readout label="Clearance + in-room movement" value={`${formatArea(budget.clearanceArea)} m²`} note={`${clearancePercent}% of occupied subtotal`} rgb="251, 191, 36" /><Readout label="Net programmed area" value={`${formatArea(budget.netProgramArea)} m²`} note="the room-level planning target" rgb="74, 222, 128" /><Readout label="Rough gross planning area" value={`${formatArea(budget.planningGrossArea)} m²`} note={`net + ${grossingPercent}% shared/wall allowance`} rgb="244, 114, 182" /></div><div className="mt-3 rounded-[15px] border border-white/[0.05] bg-black/[0.16] p-3"><div className="text-[9px] font-semibold uppercase tracking-[0.10em] text-slate-600">Important</div><p className="mt-1.5 text-[10px] leading-4 text-slate-500">These are adjustable teaching assumptions, not code-required area factors. Real programming depends on project type, furniture, accessibility, local requirements, operations, structure, and design choices.</p></div></div></div></section>
 
-          <div className="grid items-stretch gap-3 xl:grid-cols-[320px_minmax(500px,1fr)_340px]">
-            <div className="rounded-[20px] border border-sky-200/[0.08] bg-[#061221]/76 p-4">
-              <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-500">Guided assumptions</div>
-              <div className="mt-3 grid gap-2">
-                {PRESETS.map((preset) => (
-                  <button
-                    key={preset.id}
-                    type="button"
-                    onClick={() => applyPreset(preset.id)}
-                    className={`rounded-[14px] border p-3 text-left transition-colors ${activePreset === preset.id ? "border-sky-300/[0.28] bg-sky-400/[0.06]" : "border-white/[0.045] bg-black/[0.14] hover:border-white/[0.09]"}`}
-                  >
-                    <strong className="text-[11px] text-slate-200">{preset.label}</strong>
-                    <div className="mt-1 font-mono text-[9px] text-slate-600">{preset.users} users · {preset.activityPerUser.toFixed(1)} m²/user · {preset.clearancePercent}% clearance</div>
-                  </button>
-                ))}
-              </div>
+        <section className="mt-3 grid gap-3 lg:grid-cols-3"><ReferenceCard title="Program is not plan" text="A program says what spaces and areas are needed. It can be satisfied by many different room shapes and arrangements." /><ReferenceCard title="Net is not gross" text="Net programmed area belongs to usable spaces. Gross building area also absorbs walls, shafts, shared circulation, services, structure, and other common space." /><ReferenceCard title="Precision comes later" text="Early area budgets are intentionally provisional. As geometry and technical constraints develop, the numbers become more specific and often change." /></section>
 
-              <div className="mt-3 grid gap-2">
-                <Control label="Users" value={users} min={6} max={40} step={1} suffix="" rgb="56, 189, 248" onChange={(value) => { setActivePreset(null); setUsers(value); }} />
-                <Control label="Activity allowance / user" value={activityPerUser} min={1.4} max={3.4} step={0.1} suffix=" m²" rgb="74, 222, 128" onChange={(value) => { setActivePreset(null); setActivityPerUser(value); }} />
-                <Control label="Furniture + equipment" value={furniture} min={2} max={24} step={1} suffix=" m²" rgb="192, 132, 252" onChange={(value) => { setActivePreset(null); setFurniture(value); }} />
-                <Control label="Room clearance allowance" value={clearancePercent} min={10} max={45} step={1} suffix="%" rgb="251, 191, 36" onChange={(value) => { setActivePreset(null); setClearancePercent(value); }} />
-                <Control label="Rough grossing allowance" value={grossingPercent} min={10} max={40} step={1} suffix="%" rgb="244, 114, 182" onChange={(value) => { setActivePreset(null); setGrossingPercent(value); }} />
-              </div>
-            </div>
-
-            <AreaDiagram budget={budget} squareSide={squareSide} />
-
-            <div className="rounded-[20px] border border-amber-200/[0.09] bg-[#171109]/72 p-4">
-              <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-amber-300/70">Read the budget</div>
-              <div className="mt-3 grid gap-2">
-                <Readout label="Activity area" value={`${formatArea(budget.activityArea)} m²`} note={`${users} × ${activityPerUser.toFixed(1)} m²/user`} rgb="56, 189, 248" />
-                <Readout label="Furniture + equipment" value={`${formatArea(furniture)} m²`} note="fixed footprint assumption" rgb="192, 132, 252" />
-                <Readout label="Clearance + in-room movement" value={`${formatArea(budget.clearanceArea)} m²`} note={`${clearancePercent}% of occupied subtotal`} rgb="251, 191, 36" />
-                <Readout label="Net programmed area" value={`${formatArea(budget.netProgramArea)} m²`} note="the room-level planning target" rgb="74, 222, 128" />
-                <Readout label="Rough gross planning area" value={`${formatArea(budget.planningGrossArea)} m²`} note={`net + ${grossingPercent}% shared/wall allowance`} rgb="244, 114, 182" />
-              </div>
-
-              <div className="mt-3 rounded-[15px] border border-white/[0.05] bg-black/[0.16] p-3">
-                <div className="text-[9px] font-semibold uppercase tracking-[0.10em] text-slate-600">Important</div>
-                <p className="mt-1.5 text-[10px] leading-4 text-slate-500">These are adjustable teaching assumptions, not code-required area factors. Real programming depends on project type, furniture, accessibility, local requirements, operations, structure, and design choices.</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="mt-3 grid gap-3 lg:grid-cols-3">
-          <ReferenceCard title="Program is not plan" text="A program says what spaces and areas are needed. It can be satisfied by many different room shapes and arrangements." />
-          <ReferenceCard title="Net is not gross" text="Net programmed area belongs to usable spaces. Gross building area also absorbs walls, shafts, shared circulation, services, structure, and other common space." />
-          <ReferenceCard title="Precision comes later" text="Early area budgets are intentionally provisional. As geometry and technical constraints develop, the numbers become more specific and often change." />
-        </section>
-
-        <nav className="mt-3 pb-8" aria-label="Program and area navigation">
-          <div className="grid gap-3 sm:grid-cols-2">
-            <Link href="/applied-science/architecture/spatial-design" className="group flex min-h-[72px] items-center gap-3 rounded-[18px] border border-sky-300/[0.10] bg-black/[0.20] px-4 py-3 transition-colors hover:border-sky-300/[0.18]">
-              <ArrowLeft size={15} className="text-sky-300 transition-transform group-hover:-translate-x-0.5" />
-              <span><span className="block text-[9px] font-semibold uppercase tracking-[0.10em] text-slate-600">Parent unit</span><strong className="mt-0.5 block text-[14px] text-slate-200">Spatial Design & Program</strong></span>
-            </Link>
-            <div className="flex min-h-[72px] items-center justify-end gap-3 rounded-[18px] border border-white/[0.05] bg-black/[0.14] px-4 py-3 opacity-60">
-              <span className="text-right"><span className="block text-[9px] font-semibold uppercase tracking-[0.10em] text-slate-700">Next lesson · planned</span><strong className="mt-0.5 block text-[14px] text-slate-500">Adjacency & Zoning</strong></span>
-            </div>
-          </div>
-        </nav>
+        <nav className="mt-3 pb-8" aria-label="Program and area navigation"><div className="grid gap-3 sm:grid-cols-2"><Link href="/applied-science/architecture/spatial-design" className="group flex min-h-[72px] items-center gap-3 rounded-[18px] border border-sky-300/[0.10] bg-black/[0.20] px-4 py-3 transition-colors hover:border-sky-300/[0.18]"><ArrowLeft size={15} className="text-sky-300 transition-transform group-hover:-translate-x-0.5" /><span><span className="block text-[9px] font-semibold uppercase tracking-[0.10em] text-slate-600">Parent unit</span><strong className="mt-0.5 block text-[14px] text-slate-200">Spatial Design & Program</strong></span></Link><Link href="/applied-science/architecture/spatial-design/adjacency-zoning" className="group flex min-h-[72px] items-center gap-3 rounded-[18px] border border-emerald-300/[0.10] bg-black/[0.20] px-4 py-3 transition-colors hover:border-emerald-300/[0.18]"><span className="min-w-0 flex-1 text-right"><span className="block text-[9px] font-semibold uppercase tracking-[0.10em] text-slate-600">Next lesson</span><strong className="mt-0.5 block text-[14px] text-slate-200">Adjacency & Zoning</strong></span><ArrowRight size={15} className="text-emerald-300 transition-transform group-hover:translate-x-0.5" /></Link></div></nav>
       </div>
     </main>
   );
 }
 
-function AreaDiagram({
-  budget,
-  squareSide,
-}: {
-  budget: {
-    activityArea: number;
-    clearanceArea: number;
-    netProgramArea: number;
-    grossAllowance: number;
-    planningGrossArea: number;
-  };
-  squareSide: number;
-}) {
+function AreaDiagram({ budget, squareSide }: { budget: { activityArea: number; clearanceArea: number; netProgramArea: number; grossAllowance: number; planningGrossArea: number }; squareSide: number }) {
   const total = budget.planningGrossArea;
   const activityPct = (budget.activityArea / total) * 100;
   const furniturePct = ((budget.netProgramArea - budget.activityArea - budget.clearanceArea) / total) * 100;
   const clearancePct = (budget.clearanceArea / total) * 100;
   const grossPct = (budget.grossAllowance / total) * 100;
-
-  return (
-    <div className="relative flex min-h-[560px] flex-col overflow-hidden rounded-[20px] border border-sky-200/[0.10] bg-[#04111c]/86 p-4">
-      <div>
-        <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-500">Area composition</div>
-        <div className="mt-1 font-mono text-[11px] text-sky-300/70">same budget, two views</div>
-      </div>
-
-      <div className="mt-5 rounded-[16px] border border-white/[0.05] bg-black/[0.16] p-4">
-        <div className="flex h-12 overflow-hidden rounded-xl border border-white/[0.05] bg-black/30">
-          <Bar width={activityPct} rgb="56, 189, 248" label="activity" />
-          <Bar width={furniturePct} rgb="192, 132, 252" label="furniture" />
-          <Bar width={clearancePct} rgb="251, 191, 36" label="clearance" />
-          <Bar width={grossPct} rgb="244, 114, 182" label="gross" />
-        </div>
-        <div className="mt-3 flex flex-wrap gap-x-4 gap-y-2 text-[9px] text-slate-600">
-          <Legend rgb="56, 189, 248" label="activity" />
-          <Legend rgb="192, 132, 252" label="furniture/equipment" />
-          <Legend rgb="251, 191, 36" label="room clearance" />
-          <Legend rgb="244, 114, 182" label="grossing allowance" />
-        </div>
-      </div>
-
-      <div className="mt-4 flex flex-1 items-center justify-center rounded-[16px] border border-white/[0.05] bg-black/[0.13] p-5">
-        <svg viewBox="0 0 430 340" className="w-full max-w-[500px]" role="img" aria-label="Square diagram representing the current net programmed area">
-          <defs>
-            <pattern id="area-grid" width="20" height="20" patternUnits="userSpaceOnUse">
-              <path d="M20 0H0V20" fill="none" stroke="rgba(125,211,252,0.08)" strokeWidth="1" />
-            </pattern>
-          </defs>
-          <rect width="430" height="340" fill="url(#area-grid)" />
-          <rect x="90" y="40" width="250" height="250" rx="4" fill="rgba(56,189,248,0.055)" stroke="#38bdf8" strokeWidth="3" />
-          <rect x="112" y="62" width="206" height="206" rx="3" fill="rgba(74,222,128,0.03)" stroke="rgba(74,222,128,0.55)" strokeWidth="2" strokeDasharray="8 6" />
-          <text x="215" y="156" textAnchor="middle" fill="#e0f2fe" fontSize="20" fontWeight="600">{formatArea(budget.netProgramArea)} m²</text>
-          <text x="215" y="180" textAnchor="middle" fill="#7dd3fc" fontSize="11">NET PROGRAMMED AREA</text>
-          <text x="215" y="206" textAnchor="middle" fill="#64748b" fontSize="10">≈ {squareSide.toFixed(1)} m × {squareSide.toFixed(1)} m if shown as a square</text>
-          <line x1="90" y1="312" x2="340" y2="312" stroke="#fbbf24" strokeWidth="1.5" />
-          <line x1="90" y1="305" x2="90" y2="319" stroke="#fbbf24" strokeWidth="1.5" />
-          <line x1="340" y1="305" x2="340" y2="319" stroke="#fbbf24" strokeWidth="1.5" />
-          <text x="215" y="330" textAnchor="middle" fill="#fde68a" fontSize="10">AREA DOES NOT DETERMINE ROOM SHAPE</text>
-        </svg>
-      </div>
-
-      <p className="mt-3 text-[10px] leading-4 text-slate-600">The square is only a scale reference. A {formatArea(budget.netProgramArea)} m² program could become many different proportions and arrangements.</p>
-    </div>
-  );
+  return <div className="relative flex min-h-[560px] flex-col overflow-hidden rounded-[20px] border border-sky-200/[0.10] bg-[#04111c]/86 p-4"><div><div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-500">Area composition</div><div className="mt-1 font-mono text-[11px] text-sky-300/70">same budget, two views</div></div><div className="mt-5 rounded-[16px] border border-white/[0.05] bg-black/[0.16] p-4"><div className="flex h-12 overflow-hidden rounded-xl border border-white/[0.05] bg-black/30"><Bar width={activityPct} rgb="56, 189, 248" label="activity" /><Bar width={furniturePct} rgb="192, 132, 252" label="furniture" /><Bar width={clearancePct} rgb="251, 191, 36" label="clearance" /><Bar width={grossPct} rgb="244, 114, 182" label="gross" /></div><div className="mt-3 flex flex-wrap gap-x-4 gap-y-2 text-[9px] text-slate-600"><Legend rgb="56, 189, 248" label="activity" /><Legend rgb="192, 132, 252" label="furniture/equipment" /><Legend rgb="251, 191, 36" label="room clearance" /><Legend rgb="244, 114, 182" label="grossing allowance" /></div></div><div className="mt-4 flex flex-1 items-center justify-center rounded-[16px] border border-white/[0.05] bg-black/[0.13] p-5"><svg viewBox="0 0 430 340" className="w-full max-w-[500px]" role="img" aria-label="Square diagram representing the current net programmed area"><defs><pattern id="area-grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M20 0H0V20" fill="none" stroke="rgba(125,211,252,0.08)" strokeWidth="1" /></pattern></defs><rect width="430" height="340" fill="url(#area-grid)" /><rect x="90" y="40" width="250" height="250" rx="4" fill="rgba(56,189,248,0.055)" stroke="#38bdf8" strokeWidth="3" /><rect x="112" y="62" width="206" height="206" rx="3" fill="rgba(74,222,128,0.03)" stroke="rgba(74,222,128,0.55)" strokeWidth="2" strokeDasharray="8 6" /><text x="215" y="156" textAnchor="middle" fill="#e0f2fe" fontSize="20" fontWeight="600">{formatArea(budget.netProgramArea)} m²</text><text x="215" y="180" textAnchor="middle" fill="#7dd3fc" fontSize="11">NET PROGRAMMED AREA</text><text x="215" y="206" textAnchor="middle" fill="#64748b" fontSize="10">≈ {squareSide.toFixed(1)} m × {squareSide.toFixed(1)} m if shown as a square</text><line x1="90" y1="312" x2="340" y2="312" stroke="#fbbf24" strokeWidth="1.5" /><line x1="90" y1="305" x2="90" y2="319" stroke="#fbbf24" strokeWidth="1.5" /><line x1="340" y1="305" x2="340" y2="319" stroke="#fbbf24" strokeWidth="1.5" /><text x="215" y="330" textAnchor="middle" fill="#fde68a" fontSize="10">AREA DOES NOT DETERMINE ROOM SHAPE</text></svg></div><p className="mt-3 text-[10px] leading-4 text-slate-600">The square is only a scale reference. A {formatArea(budget.netProgramArea)} m² program could become many different proportions and arrangements.</p></div>;
 }
-
-function Control({
-  label,
-  value,
-  min,
-  max,
-  step,
-  suffix,
-  rgb,
-  onChange,
-}: {
-  label: string;
-  value: number;
-  min: number;
-  max: number;
-  step: number;
-  suffix: string;
-  rgb: string;
-  onChange: (value: number) => void;
-}) {
-  return (
-    <label className="block rounded-[14px] border border-white/[0.045] bg-white/[0.012] p-3">
-      <span className="flex items-center justify-between gap-3">
-        <span className="text-[10px] font-semibold text-slate-400">{label}</span>
-        <span className="rounded-md px-2 py-1 font-mono text-[10px]" style={{ color: `rgb(${rgb})`, background: `rgba(${rgb},0.06)` }}>{Number.isInteger(value) ? value : value.toFixed(1)}{suffix}</span>
-      </span>
-      <input type="range" min={min} max={max} step={step} value={value} onChange={(event) => onChange(Number(event.target.value))} className="mt-2.5 h-1.5 w-full cursor-pointer appearance-none rounded-full bg-white/[0.07] accent-sky-400" />
-    </label>
-  );
-}
-
-function Readout({ label, value, note, rgb }: { label: string; value: string; note: string; rgb: string }) {
-  return (
-    <div className="rounded-[14px] border border-white/[0.045] bg-white/[0.012] px-3 py-2.5">
-      <div className="flex items-start justify-between gap-3">
-        <span className="text-[9px] font-semibold uppercase tracking-[0.09em] text-slate-600">{label}</span>
-        <strong className="font-mono text-[12px]" style={{ color: `rgba(${rgb},0.84)` }}>{value}</strong>
-      </div>
-      <div className="mt-1 text-[9px] leading-4 text-slate-700">{note}</div>
-    </div>
-  );
-}
-
-function CoreFact({ icon: Icon, label, text, rgb }: { icon: LucideIcon; label: string; text: string; rgb: string }) {
-  return (
-    <div className="grid grid-cols-[38px_minmax(0,1fr)] items-center gap-3 rounded-[15px] border border-white/[0.045] bg-black/[0.14] p-3">
-      <span className="flex h-9 w-9 items-center justify-center rounded-xl border" style={{ color: `rgb(${rgb})`, borderColor: `rgba(${rgb},0.16)`, background: `rgba(${rgb},0.035)` }}><Icon size={15} /></span>
-      <span><strong className="block text-[11px] font-semibold text-slate-300">{label}</strong><span className="mt-0.5 block text-[10px] leading-4 text-slate-600">{text}</span></span>
-    </div>
-  );
-}
-
-function ReferenceCard({ title, text }: { title: string; text: string }) {
-  return (
-    <div className="rounded-[18px] border border-sky-200/[0.07] bg-black/[0.18] p-4 backdrop-blur-xl">
-      <h3 className="text-[13px] font-semibold text-slate-200">{title}</h3>
-      <p className="mt-2 text-[11px] leading-5 text-slate-500">{text}</p>
-    </div>
-  );
-}
-
-function Bar({ width, rgb, label }: { width: number; rgb: string; label: string }) {
-  return <div className="flex min-w-[2px] items-center justify-center overflow-hidden" style={{ width: `${Math.max(width, 0)}%`, background: `rgba(${rgb},0.42)` }}><span className="hidden px-2 font-mono text-[8px] text-white/70 xl:block">{width > 18 ? label : ""}</span></div>;
-}
-
-function Legend({ rgb, label }: { rgb: string; label: string }) {
-  return <span className="inline-flex items-center gap-1.5"><span className="h-2 w-2 rounded-sm" style={{ background: `rgb(${rgb})` }} />{label}</span>;
-}
-
-function formatArea(value: number) {
-  return Number(value.toFixed(1)).toString();
-}
+function Control({ label, value, min, max, step, suffix, rgb, onChange }: { label: string; value: number; min: number; max: number; step: number; suffix: string; rgb: string; onChange: (value: number) => void }) { return <label className="block rounded-[14px] border border-white/[0.045] bg-white/[0.012] p-3"><span className="flex items-center justify-between gap-3"><span className="text-[10px] font-semibold text-slate-400">{label}</span><span className="rounded-md px-2 py-1 font-mono text-[10px]" style={{ color: `rgb(${rgb})`, background: `rgba(${rgb},0.06)` }}>{Number.isInteger(value) ? value : value.toFixed(1)}{suffix}</span></span><input type="range" min={min} max={max} step={step} value={value} onChange={(event) => onChange(Number(event.target.value))} className="mt-2.5 h-1.5 w-full cursor-pointer appearance-none rounded-full bg-white/[0.07] accent-sky-400" /></label>; }
+function Readout({ label, value, note, rgb }: { label: string; value: string; note: string; rgb: string }) { return <div className="rounded-[14px] border border-white/[0.045] bg-white/[0.012] px-3 py-2.5"><div className="flex items-start justify-between gap-3"><span className="text-[9px] font-semibold uppercase tracking-[0.09em] text-slate-600">{label}</span><strong className="font-mono text-[12px]" style={{ color: `rgba(${rgb},0.84)` }}>{value}</strong></div><div className="mt-1 text-[9px] leading-4 text-slate-700">{note}</div></div>; }
+function CoreFact({ icon: Icon, label, text, rgb }: { icon: LucideIcon; label: string; text: string; rgb: string }) { return <div className="grid grid-cols-[38px_minmax(0,1fr)] items-center gap-3 rounded-[15px] border border-white/[0.045] bg-black/[0.14] p-3"><span className="flex h-9 w-9 items-center justify-center rounded-xl border" style={{ color: `rgb(${rgb})`, borderColor: `rgba(${rgb},0.16)`, background: `rgba(${rgb},0.035)` }}><Icon size={15} /></span><span><strong className="block text-[11px] font-semibold text-slate-300">{label}</strong><span className="mt-0.5 block text-[10px] leading-4 text-slate-600">{text}</span></span></div>; }
+function ReferenceCard({ title, text }: { title: string; text: string }) { return <div className="rounded-[18px] border border-sky-200/[0.07] bg-black/[0.18] p-4 backdrop-blur-xl"><h3 className="text-[13px] font-semibold text-slate-200">{title}</h3><p className="mt-2 text-[11px] leading-5 text-slate-500">{text}</p></div>; }
+function Bar({ width, rgb, label }: { width: number; rgb: string; label: string }) { return <div className="flex min-w-[2px] items-center justify-center overflow-hidden" style={{ width: `${Math.max(width, 0)}%`, background: `rgba(${rgb},0.42)` }}><span className="hidden px-2 font-mono text-[8px] text-white/70 xl:block">{width > 18 ? label : ""}</span></div>; }
+function Legend({ rgb, label }: { rgb: string; label: string }) { return <span className="inline-flex items-center gap-1.5"><span className="h-2 w-2 rounded-sm" style={{ background: `rgb(${rgb})` }} />{label}</span>; }
+function formatArea(value: number) { return Number(value.toFixed(1)).toString(); }
