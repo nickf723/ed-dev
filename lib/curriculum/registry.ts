@@ -111,7 +111,7 @@ const nodeChildAdditions: Record<string, readonly CurriculumNode[]> = {
       id: "formal.mathematics.algebra.elementary-algebra.fundamentals.expressions-variables",
       label: "Expressions & Variables",
       href: "/formal-science/mathematics/algebra/elementary-algebra/fundamentals/expressions-variables",
-      description: "Read algebraic expressions structurally: terms, coefficients, variables, constants, exponents, and operators.",
+      description: "Read algebraic expressions structurally: signed terms, coefficients, variables, constants, and exponents.",
       domainId: "formal",
     },
     {
@@ -132,7 +132,7 @@ const nodeChildAdditions: Record<string, readonly CurriculumNode[]> = {
       id: "formal.mathematics.algebra.elementary-algebra.fundamentals.number-systems",
       label: "Number Systems",
       href: "/formal-science/mathematics/algebra/elementary-algebra/fundamentals/number-systems",
-      description: "Place natural, integer, rational, irrational, real, and complex values inside the number-system hierarchy.",
+      description: "Place natural, integer, rational, irrational, and real values inside the real-number hierarchy.",
       domainId: "formal",
     },
   ],
