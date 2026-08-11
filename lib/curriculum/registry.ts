@@ -77,6 +77,23 @@ const domainRootAdditions: Partial<
   ],
 };
 
+const nodeChildAdditions: Record<string, readonly CurriculumNode[]> = {
+  "humanities.culinary-arts": [
+    {
+      id: "humanities.culinary-arts.recipes",
+      label: "Recipes",
+      href: "/humanities/culinary-arts/recipes",
+      domainId: "humanities",
+    },
+    {
+      id: "humanities.culinary-arts.market",
+      label: "Ingredient Index",
+      href: "/humanities/culinary-arts/market",
+      domainId: "humanities",
+    },
+  ],
+};
+
 function appendMissingRoots(domain: CurriculumDomain): readonly CurriculumNode[] {
   const additions = domainRootAdditions[domain.domainId] ?? [];
   if (additions.length === 0) return domain.children;
@@ -88,19 +105,38 @@ function appendMissingRoots(domain: CurriculumDomain): readonly CurriculumNode[]
   ];
 }
 
+function appendMissingChildren(nodes: readonly CurriculumNode[]): readonly CurriculumNode[] {
+  return nodes.map((node) => {
+    const existingChildren = node.children ?? [];
+    const additions = nodeChildAdditions[node.id] ?? [];
+    const existingIds = new Set(existingChildren.map((child) => child.id));
+    const children = [
+      ...existingChildren,
+      ...additions.filter((child) => !existingIds.has(child.id)),
+    ];
+
+    return {
+      ...node,
+      children: children.length > 0 ? appendMissingChildren(children) : undefined,
+    };
+  });
+}
+
 function composeCurriculum(nodes: readonly CurriculumNode[]): readonly CurriculumNode[] {
   const withMetadata = applyMetadata(nodes);
-  return curriculumReplacements.reduce<readonly CurriculumNode[]>(
+  const withReplacements = curriculumReplacements.reduce<readonly CurriculumNode[]>(
     (current, replacement) => replaceNode(current, replacement),
     withMetadata,
   );
+  return appendMissingChildren(withReplacements);
 }
 
 /**
  * Dense curriculum branches can live in focused modules while still composing
  * into one validated registry. `tree.ts` remains the broad academic map; this
  * composition layer swaps in richer subtrees as they are migrated and can also
- * restore live roots that have not yet been migrated into the broad tree.
+ * restore live roots and child routes that have not yet been migrated into the
+ * broad tree.
  */
 const curriculumDomains: readonly CurriculumDomain[] = CURRICULUM_DOMAINS.map(
   (domain) => ({
