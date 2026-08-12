@@ -24,6 +24,7 @@ export const LOGIC_CURRICULUM: CurriculumNode = {
   description: "Reasoning, inference, truth, and proof.",
   domainId: "formal",
   status: "active",
+  pageKind: "hub",
   children: [
     node(
       "formal.logic.propositional",

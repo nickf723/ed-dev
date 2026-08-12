@@ -1,5 +1,6 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -14,12 +15,16 @@ import {
   Scan,
   X,
 } from "lucide-react";
-import XRayConsole from "@/app/_components/XRayConsole";
 import { DOMAIN_BY_ID, getDomainForPath, type DomainId } from "@/lib/domains";
 import type { NavigationItem, NavigationSection } from "@/lib/navigation";
 
+const XRayConsole = dynamic(() => import("@/app/_components/XRayConsole"), {
+  ssr: false,
+});
+
 type SidebarProps = {
   navigationData: NavigationSection[];
+  developerToolsEnabled: boolean;
   isCollapsed: boolean;
   onCollapsedChange: (collapsed: boolean) => void;
 };
@@ -32,7 +37,12 @@ function domainRgb(domain: SidebarDomain): string {
   return DOMAIN_BY_ID[domain]?.theme.rgb ?? "148, 163, 184";
 }
 
-export default function Sidebar({ navigationData, isCollapsed, onCollapsedChange }: SidebarProps) {
+export default function Sidebar({
+  navigationData,
+  developerToolsEnabled,
+  isCollapsed,
+  onCollapsedChange,
+}: SidebarProps) {
   const pathname = usePathname();
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [showStructureScan, setShowStructureScan] = useState(false);
@@ -45,12 +55,17 @@ export default function Sidebar({ navigationData, isCollapsed, onCollapsedChange
     setIsMobileOpen(false);
   }, [pathname]);
 
+  useEffect(() => {
+    if (!developerToolsEnabled) setShowStructureScan(false);
+  }, [developerToolsEnabled]);
+
   const toggleMobile = () => {
     if (!isMobileOpen && isCollapsed) onCollapsedChange(false);
     setIsMobileOpen((current) => !current);
   };
 
   const toggleStructureScan = () => {
+    if (!developerToolsEnabled) return;
     if (isCollapsed) {
       onCollapsedChange(false);
       setShowStructureScan(true);
@@ -146,41 +161,43 @@ export default function Sidebar({ navigationData, isCollapsed, onCollapsedChange
           </div>
         </nav>
 
-        <footer className={`shrink-0 border-t border-white/[0.06] bg-black/15 p-2.5 ${isCollapsed ? "md:p-2" : ""}`}>
-          <button
-            type="button"
-            onClick={toggleStructureScan}
-            title={isCollapsed ? "Structure scan" : undefined}
-            className={`flex w-full items-center gap-3 rounded-xl border border-transparent px-3 py-2.5 text-left text-slate-500 transition-all hover:border-white/[0.08] hover:bg-white/[0.035] hover:text-slate-300 ${isCollapsed ? "md:justify-center md:px-0" : ""}`}
-          >
-            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-emerald-400/15 bg-emerald-400/[0.045] text-emerald-300/65">
-              <Scan size={15} />
-            </span>
-            <span className={`min-w-0 flex-1 ${isCollapsed ? "md:hidden" : ""}`}>
-              <strong className="block text-[10px] font-semibold uppercase tracking-[0.12em]">Structure scan</strong>
-              <span className="mt-0.5 block text-[9px] text-slate-700">Developer view</span>
-            </span>
-            <ChevronDown
-              size={12}
-              className={`transition-transform ${showStructureScan ? "rotate-180" : ""} ${isCollapsed ? "md:hidden" : ""}`}
-            />
-          </button>
+        {developerToolsEnabled ? (
+          <footer className={`shrink-0 border-t border-white/[0.06] bg-black/15 p-2.5 ${isCollapsed ? "md:p-2" : ""}`}>
+            <button
+              type="button"
+              onClick={toggleStructureScan}
+              title={isCollapsed ? "Structure scan" : undefined}
+              className={`flex w-full items-center gap-3 rounded-xl border border-transparent px-3 py-2.5 text-left text-slate-500 transition-all hover:border-white/[0.08] hover:bg-white/[0.035] hover:text-slate-300 ${isCollapsed ? "md:justify-center md:px-0" : ""}`}
+            >
+              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-emerald-400/15 bg-emerald-400/[0.045] text-emerald-300/65">
+                <Scan size={15} />
+              </span>
+              <span className={`min-w-0 flex-1 ${isCollapsed ? "md:hidden" : ""}`}>
+                <strong className="block text-[10px] font-semibold uppercase tracking-[0.12em]">Structure scan</strong>
+                <span className="mt-0.5 block text-[9px] text-slate-700">Developer view</span>
+              </span>
+              <ChevronDown
+                size={12}
+                className={`transition-transform ${showStructureScan ? "rotate-180" : ""} ${isCollapsed ? "md:hidden" : ""}`}
+              />
+            </button>
 
-          <AnimatePresence initial={false}>
-            {showStructureScan && !isCollapsed ? (
-              <motion.div
-                initial={{ height: 0, opacity: 0 }}
-                animate={{ height: "auto", opacity: 1 }}
-                exit={{ height: 0, opacity: 0 }}
-                className="overflow-hidden"
-              >
-                <div className="pt-2">
-                  <XRayConsole />
-                </div>
-              </motion.div>
-            ) : null}
-          </AnimatePresence>
-        </footer>
+            <AnimatePresence initial={false}>
+              {showStructureScan && !isCollapsed ? (
+                <motion.div
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: "auto", opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  className="overflow-hidden"
+                >
+                  <div className="pt-2">
+                    <XRayConsole />
+                  </div>
+                </motion.div>
+              ) : null}
+            </AnimatePresence>
+          </footer>
+        ) : null}
       </aside>
     </>
   );

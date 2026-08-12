@@ -67,11 +67,6 @@ export default function AppShell({
 
   return (
     <PagePolicyProvider routePolicies={pagePolicyRoutes}>
-      <style>{`
-        [data-site-shell][data-developer-tools="false"] > aside > footer {
-          display: none;
-        }
-      `}</style>
       <div
         className="flex min-h-screen"
         data-domain={activeDomain?.id ?? "home"}
@@ -82,6 +77,7 @@ export default function AppShell({
         <Sidebar
           key={developerToolsEnabled ? "developer-tools" : "learner-shell"}
           navigationData={navigationData}
+          developerToolsEnabled={developerToolsEnabled}
           isCollapsed={isSidebarCollapsed}
           onCollapsedChange={setIsSidebarCollapsed}
         />
