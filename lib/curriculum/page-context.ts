@@ -1,5 +1,6 @@
 import { DOMAIN_BY_ID, type DomainDefinition } from "@/lib/domains";
 import { curriculumRegistry } from "@/lib/curriculum/registry";
+import { normalizeCurriculumPath } from "@/lib/curriculum/route";
 import type {
   CurriculumNode,
   CurriculumNodeStatus,
@@ -104,10 +105,30 @@ export function getCurriculumPageContext(
   };
 }
 
+/**
+ * Route-facing convenience adapter. It normalizes trailing slashes, repeated
+ * slashes, and query/hash fragments before resolving the canonical node.
+ */
+export function getCurriculumPageContextByHref(
+  href: string,
+): CurriculumPageContext | undefined {
+  const canonicalHref = normalizeCurriculumPath(href);
+  const node = curriculumRegistry.getNodeByHref(canonicalHref);
+  return node ? getCurriculumPageContext(node.id) : undefined;
+}
+
 export function requireCurriculumPageContext(nodeId: string): CurriculumPageContext {
   const context = getCurriculumPageContext(nodeId);
   if (!context) {
     throw new Error(`Curriculum page context not found for ${nodeId}`);
+  }
+  return context;
+}
+
+export function requireCurriculumPageContextByHref(href: string): CurriculumPageContext {
+  const context = getCurriculumPageContextByHref(href);
+  if (!context) {
+    throw new Error(`Curriculum page context not found for route ${normalizeCurriculumPath(href)}`);
   }
   return context;
 }
