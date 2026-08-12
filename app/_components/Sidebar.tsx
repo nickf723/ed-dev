@@ -208,15 +208,13 @@ function NavItem({
   currentPath,
   isCollapsed,
   depth = 0,
-  parentDomain,
 }: {
   item: NavigationItem;
   currentPath: string;
   isCollapsed: boolean;
   depth?: number;
-  parentDomain?: SidebarDomain;
 }) {
-  const itemDomain: SidebarDomain = item.domain || parentDomain || getDomainForPath(item.href)?.id || "home";
+  const itemDomain = item.domain;
   const rgb = domainRgb(itemDomain);
   const isExactMatch = currentPath === item.href;
   const isDescendantActive = currentPath.startsWith(`${item.href}/`);
@@ -226,7 +224,7 @@ function NavItem({
   const isTopLevel = depth === 0;
   const Icon = item.icon === "book-open"
     ? BookOpen
-    : isTopLevel && itemDomain !== "meta" && itemDomain !== "home"
+    : isTopLevel && itemDomain !== "meta"
       ? DOMAIN_BY_ID[itemDomain]?.icon
       : undefined;
 
@@ -324,7 +322,6 @@ function NavItem({
                   currentPath={currentPath}
                   isCollapsed={isCollapsed}
                   depth={depth + 1}
-                  parentDomain={itemDomain}
                 />
               ))}
             </div>

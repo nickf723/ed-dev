@@ -30,12 +30,21 @@ type ModulePresentation = {
   idea: string;
 };
 
+type IntegratedChild = {
+  id: string;
+  label: string;
+  href: string;
+  description: string;
+  status?: "active" | "placeholder";
+};
+
 type IntegratedModule = {
   id: string;
   label: string;
   href: string;
   description: string;
   status?: "active" | "placeholder";
+  children: IntegratedChild[];
 } & ModulePresentation;
 
 type Family = {
@@ -176,6 +185,13 @@ function buildModules(): IntegratedModule[] {
       href: module.href,
       description: module.description ?? "",
       status: module.status,
+      children: (module.children ?? []).map((child) => ({
+        id: child.id,
+        label: child.label,
+        href: child.href,
+        description: child.description ?? "",
+        status: child.status,
+      })),
       ...presentation,
     };
   });
@@ -310,7 +326,7 @@ export default function IntegratedAlgebraPage() {
           <div className="flex flex-col gap-2 px-1 pb-3 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <div className="text-[11px] font-semibold uppercase tracking-[0.15em] text-cyan-300/75">Integrated map</div>
-              <p className="mt-1 text-[13px] text-slate-400">Eleven topics, organized by the kind of algebraic work they train.</p>
+              <p className="mt-1 text-[13px] text-slate-400">Eleven core topics, with deeper lessons nested beneath the topic they extend.</p>
             </div>
             <div className="font-mono text-[11px] text-slate-500">describe → rewrite → generalize</div>
           </div>
@@ -575,8 +591,59 @@ function ModuleRow({ module }: { module: IntegratedModule }) {
       : "border-white/[0.045] bg-white/[0.012] transition-colors hover:border-white/[0.10] hover:bg-white/[0.025]"
   }`;
 
+  const primary = planned ? (
+    <div className={className}>{content}</div>
+  ) : (
+    <Link href={module.href} className={className}>{content}</Link>
+  );
+
+  return (
+    <div className="grid gap-1.5">
+      {primary}
+      {module.children.map((child) => (
+        <NestedModuleRow key={child.id} child={child} rgb={module.rgb} />
+      ))}
+    </div>
+  );
+}
+
+function NestedModuleRow({ child, rgb }: { child: IntegratedChild; rgb: string }) {
+  const planned = child.status === "placeholder";
+  const className = `group ml-6 grid min-h-[58px] grid-cols-[28px_minmax(0,1fr)_auto] items-center gap-2 rounded-[13px] border px-2.5 py-2 ${
+    planned
+      ? "cursor-default border-white/[0.025] bg-white/[0.006]"
+      : "border-white/[0.04] bg-black/[0.12] transition-colors hover:border-white/[0.10] hover:bg-white/[0.02]"
+  }`;
+
+  const content = (
+    <>
+      <span
+        className="flex h-7 w-7 items-center justify-center rounded-lg border font-mono text-[11px]"
+        style={{
+          color: planned ? "rgb(71 85 105)" : `rgba(${rgb},0.78)`,
+          borderColor: planned ? "rgba(71,85,105,0.12)" : `rgba(${rgb},0.18)`,
+          background: planned ? "rgba(71,85,105,0.02)" : `rgba(${rgb},0.035)`,
+        }}
+      >
+        ↳
+      </span>
+      <span className="min-w-0">
+        <span className="flex items-center gap-2">
+          <strong className={`truncate text-[12px] font-semibold ${planned ? "text-slate-700" : "text-slate-300"}`}>{child.label}</strong>
+          <span className="shrink-0 text-[8px] font-semibold uppercase tracking-[0.08em] text-slate-600">deeper lesson</span>
+        </span>
+        <span className="mt-0.5 block truncate text-[10px] text-slate-600">{child.description}</span>
+      </span>
+      {planned ? (
+        <span className="text-[8px] font-semibold uppercase tracking-[0.08em] text-slate-700">planned</span>
+      ) : (
+        <ArrowRight size={11} className="text-slate-700 transition-transform group-hover:translate-x-0.5 group-hover:text-slate-400" />
+      )}
+    </>
+  );
+
   if (planned) return <div className={className}>{content}</div>;
-  return <Link href={module.href} className={className}>{content}</Link>;
+  return <Link href={child.href} className={className}>{content}</Link>;
 }
 
 function clamp(value: number, min: number, max: number) {
