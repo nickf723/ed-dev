@@ -13,6 +13,7 @@ import { formalScienceLocalVocab } from "./f/formal-science-local";
 import { fractionsVocab } from "./f/fractions";
 import { informationScienceVocab } from "./i/information-science";
 import { integersVocab } from "./i/integers";
+import { inequalitiesVocab } from "./i/inequalities";
 import { logicVocab } from "./l/logic";
 import { mathVocab } from "./m/math";
 import { foundationsVocab } from "./m/math-foundations";
@@ -54,6 +55,7 @@ const algebraVocabulary = composeVocabulary(
   algebraVocab,
   preAlgebraVocabulary,
   algebraFundamentalsVocab,
+  inequalitiesVocab,
   quadraticsVocab,
   abstractAlgebraVocab,
 );
@@ -123,6 +125,18 @@ export const formalScienceVocabularyScopes: VocabularyScope[] = [
     ],
   },
   {
+    path: "/formal-science/mathematics/algebra/elementary-algebra/inequalities",
+    title: "Inequalities",
+    accent: "sky",
+    groups: [
+      {
+        id: "inequalities",
+        label: "Inequalities",
+        terms: inequalitiesVocab,
+      },
+    ],
+  },
+  {
     path: "/formal-science/mathematics/algebra/pre-algebra",
     title: "Pre-Algebra",
     accent: "cyan",
@@ -160,7 +174,11 @@ export const formalScienceVocabularyScopes: VocabularyScope[] = [
       {
         id: "elementary-algebra",
         label: "Elementary Algebra",
-        terms: composeVocabulary(algebraFundamentalsVocab, quadraticsVocab),
+        terms: composeVocabulary(
+          algebraFundamentalsVocab,
+          inequalitiesVocab,
+          quadraticsVocab,
+        ),
       },
       {
         id: "abstract-algebra",

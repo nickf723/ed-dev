@@ -26,8 +26,8 @@ export const PAGE_POLICY_BY_DOMAIN_ID: Readonly<
 /**
  * Add node policy only after a page's ownership has been verified.
  *
- * `local` vocabulary means the route owns its own reference/vocabulary
- * experience. `none` means the route intentionally exposes no global trigger.
+ * `local` vocabulary means the route owns its own reference/vocabulary trigger.
+ * `none` means the route intentionally exposes no vocabulary entry point.
  * Foundation mastery entries preserve the existing global mastery dock behavior
  * without making the dock know curriculum ancestry.
  */
@@ -117,7 +117,7 @@ export const PAGE_POLICY_BY_NODE_ID: Readonly<Record<string, Readonly<PagePolicy
     vocabularyTrigger: "none",
   },
   "formal.mathematics.algebra.elementary-algebra.inequalities": {
-    vocabularyTrigger: "none",
+    vocabularyTrigger: "local",
   },
   "formal.mathematics.algebra.elementary-algebra.inequalities.systems": {
     vocabularyTrigger: "none",

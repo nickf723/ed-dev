@@ -46,6 +46,7 @@ import { foundationsVocab } from "./m/math-foundations";
 import { algebraVocab } from "./a/algebra";
 import { preAlgebraVocab } from "./p/pre-algebra";
 import { integersVocab } from "./i/integers";
+import { inequalitiesVocab } from "./i/inequalities";
 import { pemdasVocab } from "./p/pemdas";
 import { propertiesVocab } from "./a/algebra-properties";
 import { ratiosVocab } from "./r/ratios";
@@ -102,6 +103,7 @@ export const ALL_VOCAB: VocabTerm[] = composeVocabulary(
   algebraVocab,
   preAlgebraVocab,
   integersVocab,
+  inequalitiesVocab,
   pemdasVocab,
   propertiesVocab,
   ratiosVocab,
