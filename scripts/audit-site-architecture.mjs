@@ -4,6 +4,15 @@ import path from "node:path";
 const ROOT = process.cwd();
 const SOURCE_EXTENSIONS = new Set([".ts", ".tsx", ".js", ".jsx", ".mjs"]);
 const SKIP_DIRS = new Set(["node_modules", ".next", ".git"]);
+const ACADEMIC_ROUTE_ROOTS = [
+  "/formal-science",
+  "/natural-science",
+  "/social-science",
+  "/humanities",
+  "/applied-science",
+  "/interdisciplines",
+];
+const ACADEMIC_DOMAIN_ROOTS = new Set(ACADEMIC_ROUTE_ROOTS);
 
 function walk(directory) {
   const entries = fs.readdirSync(directory, { withFileTypes: true });
@@ -27,7 +36,81 @@ function read(file) {
   return fs.readFileSync(file, "utf8");
 }
 
-function printSection(title, files) {
+function normalizeRoute(value) {
+  const rawPath = value.split(/[?#]/, 1)[0]?.trim() || "/";
+  const withLeadingSlash = rawPath.startsWith("/") ? rawPath : `/${rawPath}`;
+  const collapsedSlashes = withLeadingSlash.replace(/\/{2,}/g, "/");
+  if (collapsedSlashes === "/") return "/";
+  return collapsedSlashes.replace(/\/+$/, "");
+}
+
+function isAcademicRoute(route) {
+  return ACADEMIC_ROUTE_ROOTS.some(
+    (root) => route === root || route.startsWith(`${root}/`),
+  );
+}
+
+function escapeRegExp(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function routeInfoForPage(file) {
+  const rel = relative(file);
+  const withoutApp = rel.slice("app/".length);
+  const routeSource = withoutApp === "page.tsx"
+    ? ""
+    : withoutApp.replace(/\/page\.tsx$/, "");
+  const rawSegments = routeSource ? routeSource.split("/") : [];
+  const segments = rawSegments.filter(
+    (segment) =>
+      !(segment.startsWith("(") && segment.endsWith(")")) &&
+      !segment.startsWith("@"),
+  );
+
+  let dynamic = false;
+  let pattern = "^";
+
+  for (const segment of segments) {
+    if (/^\[\[\.\.\.[^\]]+\]\]$/.test(segment)) {
+      dynamic = true;
+      pattern += "(?:/.*)?";
+    } else if (/^\[\.\.\.[^\]]+\]$/.test(segment)) {
+      dynamic = true;
+      pattern += "/.+";
+    } else if (/^\[[^\]]+\]$/.test(segment)) {
+      dynamic = true;
+      pattern += "/[^/]+";
+    } else {
+      pattern += `/${escapeRegExp(segment)}`;
+    }
+  }
+
+  if (segments.length === 0) pattern += "/";
+  pattern += "$";
+
+  return {
+    file,
+    route: normalizeRoute(`/${segments.join("/")}`),
+    dynamic,
+    matcher: new RegExp(pattern),
+  };
+}
+
+function curriculumRouteLiterals(files) {
+  const routes = new Set();
+  const routePattern = /["'`](\/(?:formal-science|natural-science|social-science|humanities|applied-science|interdisciplines)(?:\/[^"'`\s${}]*)?)["'`]/g;
+
+  for (const file of files) {
+    const source = read(file);
+    for (const match of source.matchAll(routePattern)) {
+      routes.add(normalizeRoute(match[1]));
+    }
+  }
+
+  return routes;
+}
+
+function printFileSection(title, files) {
   console.log(`\n${title} (${files.length})`);
   if (files.length === 0) {
     console.log("  none");
@@ -36,7 +119,17 @@ function printSection(title, files) {
   for (const file of files) console.log(`  - ${relative(file)}`);
 }
 
+function printValueSection(title, values) {
+  console.log(`\n${title} (${values.length})`);
+  if (values.length === 0) {
+    console.log("  none");
+    return;
+  }
+  for (const value of values) console.log(`  - ${value}`);
+}
+
 const appRoot = path.join(ROOT, "app");
+const curriculumRoot = path.join(ROOT, "lib", "curriculum");
 const sourceFiles = [
   ...walk(appRoot),
   ...walk(path.join(ROOT, "lib")),
@@ -45,6 +138,20 @@ const sourceFiles = [
 const pageFiles = sourceFiles.filter((file) => relative(file).endsWith("/page.tsx"));
 const layoutFiles = sourceFiles.filter((file) => relative(file).endsWith("/layout.tsx"));
 const sharedComponents = sourceFiles.filter((file) => relative(file).startsWith("app/_components/"));
+const routeInfos = pageFiles.map(routeInfoForPage);
+const dynamicAcademicPages = routeInfos.filter(
+  (info) => info.dynamic && isAcademicRoute(info.route),
+);
+const concreteAcademicPages = routeInfos.filter(
+  (info) =>
+    !info.dynamic &&
+    isAcademicRoute(info.route) &&
+    !ACADEMIC_DOMAIN_ROOTS.has(info.route),
+);
+const concreteAcademicRoutes = new Set(
+  concreteAcademicPages.map((info) => info.route),
+);
+const curriculumRoutes = curriculumRouteLiterals(walk(curriculumRoot));
 
 const manualBreadcrumbs = pageFiles.filter((file) => /breadcrumbs\s*=\s*\{/.test(read(file)));
 const hardcodedSequenceNavigation = pageFiles.filter((file) => /Previous lesson|Next lesson/.test(read(file)));
@@ -59,17 +166,48 @@ const sharedCurriculumIdSpecialCases = sharedComponents.filter((file) => {
   return /["'](?:formal|natural|social|humanities|applied|inter)\.[^"']+["']/.test(source);
 });
 
+const pageRoutesMissingCurriculum = concreteAcademicPages
+  .filter((info) => !curriculumRoutes.has(info.route))
+  .map((info) => `${info.route} ← ${relative(info.file)}`)
+  .sort();
+
+const curriculumRoutesWithoutConcretePage = [...curriculumRoutes]
+  .filter((route) => !ACADEMIC_DOMAIN_ROOTS.has(route))
+  .filter((route) => !concreteAcademicRoutes.has(route))
+  .filter(
+    (route) => !dynamicAcademicPages.some((info) => info.matcher.test(route)),
+  )
+  .sort();
+
+const dynamicAcademicRoutePages = dynamicAcademicPages
+  .map((info) => `${info.route} ← ${relative(info.file)}`)
+  .sort();
+
 console.log("Education Station 64 — site architecture audit");
 console.log("Informational only: findings describe migration debt and do not fail the command.");
 console.log(`\nRoute pages scanned: ${pageFiles.length}`);
 console.log(`Source files scanned: ${sourceFiles.length}`);
+console.log(`Curriculum route literals scanned: ${curriculumRoutes.size}`);
 
-printSection("Pages manually declaring breadcrumbs", manualBreadcrumbs);
-printSection("Pages containing hard-coded previous/next lesson language", hardcodedSequenceNavigation);
-printSection("Layouts containing pathname policy/exception lists", pathnamePolicyLists);
-printSection("Shared components rendering a <main> landmark", sharedMainLandmarks);
-printSection("Client components importing the curriculum registry directly", clientRegistryImports);
-printSection("Shared components hard-coding curriculum node IDs", sharedCurriculumIdSpecialCases);
+printFileSection("Pages manually declaring breadcrumbs", manualBreadcrumbs);
+printFileSection("Pages containing hard-coded previous/next lesson language", hardcodedSequenceNavigation);
+printFileSection("Layouts containing pathname policy/exception lists", pathnamePolicyLists);
+printFileSection("Shared components rendering a <main> landmark", sharedMainLandmarks);
+printFileSection("Client components importing the curriculum registry directly", clientRegistryImports);
+printFileSection("Shared components hard-coding curriculum node IDs", sharedCurriculumIdSpecialCases);
+
+printValueSection(
+  "Concrete academic page routes missing a curriculum route literal",
+  pageRoutesMissingCurriculum,
+);
+printValueSection(
+  "Curriculum routes without a concrete or matching dynamic page",
+  curriculumRoutesWithoutConcretePage,
+);
+printValueSection(
+  "Dynamic academic route pages requiring explicit parity review",
+  dynamicAcademicRoutePages,
+);
 
 console.log("\nInterpretation");
 console.log("  • Breadcrumb and sequence findings are migration candidates, not automatic bugs.");
@@ -77,3 +215,6 @@ console.log("  • Pathname policy lists should move toward stable node-ID page 
 console.log("  • Shared <main> findings require semantic review because route pages should normally own the page-level main landmark.");
 console.log("  • Client registry imports are worth reviewing for smaller server-resolved page-context contracts.");
 console.log("  • Shared component node-ID special cases often indicate feature policy living at the wrong layer; review before generalizing them.");
+console.log("  • Page routes missing curriculum literals are strong ontology-audit candidates, but meta/tool routes and migration exceptions may be intentional.");
+console.log("  • Curriculum routes without concrete pages may be planned placeholders; this source-level audit cannot infer runtime status.");
+console.log("  • Dynamic route pages are matched against curriculum routes where possible and are listed separately because catch-all behavior needs human review.");
