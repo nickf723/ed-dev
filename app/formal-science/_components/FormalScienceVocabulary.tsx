@@ -1,10 +1,10 @@
 "use client";
 
-import { useMemo } from "react";
 import { usePathname } from "next/navigation";
 import VocabularyDrawer from "@/app/_components/VocabularyDrawer";
 import type { VocabularyScope } from "@/app/_data/vocab/types";
 import { usePagePolicy } from "@/app/_components/PagePolicyProvider";
+import { normalizeCurriculumHref } from "@/lib/curriculum/route";
 
 type FormalScienceVocabularyProps = {
   scopes: VocabularyScope[];
@@ -14,30 +14,28 @@ type FormalScienceVocabularyProps = {
 /**
  * Bridge the legacy Formal Science vocabulary drawer to node-ID page policy.
  *
- * The legacy path list remains available while branches migrate. Explicit page
- * policy wins for migrated routes without making the drawer import curriculum.
+ * The legacy path list remains available while non-curriculum/domain routes
+ * migrate. Explicit page policy wins for migrated curriculum routes without
+ * making the drawer import curriculum.
  */
 export default function FormalScienceVocabulary({
   scopes,
   legacyHiddenTriggerPaths = [],
 }: FormalScienceVocabularyProps) {
   const pathname = usePathname();
+  const normalizedPathname = normalizeCurriculumHref(pathname);
   const policy = usePagePolicy();
-  const hideGlobalTrigger =
+  const hiddenByPolicy =
     policy.vocabularyTrigger === "local" || policy.vocabularyTrigger === "none";
-
-  const hiddenTriggerPaths = useMemo(
-    () =>
-      hideGlobalTrigger
-        ? [...legacyHiddenTriggerPaths, pathname]
-        : legacyHiddenTriggerPaths,
-    [hideGlobalTrigger, legacyHiddenTriggerPaths, pathname],
+  const hiddenByLegacyPath = legacyHiddenTriggerPaths.some(
+    (path) => normalizeCurriculumHref(path) === normalizedPathname,
   );
+  const hideGlobalTrigger = hiddenByPolicy || hiddenByLegacyPath;
 
   return (
     <VocabularyDrawer
       scopes={scopes}
-      hiddenTriggerPaths={hiddenTriggerPaths}
+      hiddenTriggerPaths={hideGlobalTrigger ? [pathname] : []}
     />
   );
 }

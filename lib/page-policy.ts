@@ -16,11 +16,18 @@ export type PagePolicy = {
 const EMPTY_PAGE_POLICY: Readonly<PagePolicy> = Object.freeze({});
 
 /**
- * Start narrow. Add policy only after the page's ownership has been verified.
- * These Algebra pages already own local reference/vocabulary surfaces, so the
- * global Formal Science vocabulary trigger is redundant there.
+ * Add policy only after a page's ownership has been verified.
+ *
+ * `local` means the route owns its own reference/vocabulary experience.
+ * `none` means the route intentionally exposes no global vocabulary trigger.
  */
 export const PAGE_POLICY_BY_NODE_ID: Readonly<Record<string, Readonly<PagePolicy>>> = {
+  "formal.mathematics": {
+    vocabularyTrigger: "none",
+  },
+  "formal.mathematics.algebra": {
+    vocabularyTrigger: "none",
+  },
   "formal.mathematics.algebra.pre-algebra": {
     vocabularyTrigger: "local",
   },
@@ -48,6 +55,9 @@ export const PAGE_POLICY_BY_NODE_ID: Readonly<Record<string, Readonly<PagePolicy
   "formal.mathematics.algebra.pre-algebra.equations": {
     vocabularyTrigger: "local",
   },
+  "formal.mathematics.algebra.elementary-algebra": {
+    vocabularyTrigger: "none",
+  },
   "formal.mathematics.algebra.elementary-algebra.fundamentals": {
     vocabularyTrigger: "local",
   },
@@ -62,6 +72,18 @@ export const PAGE_POLICY_BY_NODE_ID: Readonly<Record<string, Readonly<PagePolicy
   },
   "formal.mathematics.algebra.elementary-algebra.fundamentals.number-systems": {
     vocabularyTrigger: "local",
+  },
+  "formal.mathematics.algebra.elementary-algebra.linear-equations": {
+    vocabularyTrigger: "none",
+  },
+  "formal.mathematics.algebra.elementary-algebra.systems": {
+    vocabularyTrigger: "none",
+  },
+  "formal.mathematics.algebra.elementary-algebra.inequalities": {
+    vocabularyTrigger: "none",
+  },
+  "formal.mathematics.algebra.elementary-algebra.inequalities.systems": {
+    vocabularyTrigger: "none",
   },
 };
 

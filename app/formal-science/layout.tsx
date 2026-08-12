@@ -11,21 +11,7 @@ export default function FormalScienceLayout({
       {children}
       <FormalScienceVocabulary
         scopes={formalScienceVocabularyScopes}
-        legacyHiddenTriggerPaths={[
-          "/formal-science",
-          "/formal-science/mathematics",
-          "/formal-science/mathematics/algebra",
-          "/formal-science/mathematics/algebra/elementary-algebra",
-          "/formal-science/mathematics/algebra/elementary-algebra/",
-          "/formal-science/mathematics/algebra/elementary-algebra/linear-equations",
-          "/formal-science/mathematics/algebra/elementary-algebra/linear-equations/",
-          "/formal-science/mathematics/algebra/elementary-algebra/systems-of-equations",
-          "/formal-science/mathematics/algebra/elementary-algebra/systems-of-equations/",
-          "/formal-science/mathematics/algebra/elementary-algebra/inequalities",
-          "/formal-science/mathematics/algebra/elementary-algebra/inequalities/",
-          "/formal-science/mathematics/algebra/elementary-algebra/inequalities/systems",
-          "/formal-science/mathematics/algebra/elementary-algebra/inequalities/systems/",
-        ]}
+        legacyHiddenTriggerPaths={["/formal-science"]}
       />
       <style>{`
         @media (min-width: 768px) {
