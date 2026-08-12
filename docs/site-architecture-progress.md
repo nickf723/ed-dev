@@ -23,6 +23,8 @@ The branch contains only product/repository architecture work plus narrow Algebr
 - the root server layout resolves page-policy identity into a small serializable route snapshot
 - `PagePolicyProvider` exposes only resolved policy/current identity to client utilities
 - `npm run audit:architecture` reports migration debt without failing builds
+- route/curriculum parity is included in the architecture audit as an informational source-level report
+- developer tooling now has an explicit visibility gate
 
 ## Global shell boundary
 
@@ -41,6 +43,21 @@ Now:
 - `Sidebar` receives plain labels/routes/domain IDs and owns only interaction state such as expansion and mobile behavior
 - domain icons are resolved locally from the small domain-definition map rather than serialized as component functions
 - the curriculum graph no longer needs to be imported by the client sidebar
+
+### Developer tools
+
+Structure Scan / X-Ray remains available, but it no longer needs to be ordinary learner chrome.
+
+Current gate:
+
+- local development enables developer tools automatically
+- deployed builds hide the sidebar developer footer by default
+- `?devtools=1` enables developer tools for the current browser session
+- `?devtools=0` clears the session gate
+
+The sidebar remounts when the gate changes so an active X-Ray state cannot remain mounted after developer tools are disabled.
+
+This is currently a visibility gate rather than a code-splitting optimization. If bundle size becomes meaningful later, X-Ray can be lazy-loaded or moved behind a dedicated developer surface.
 
 ### Page policy
 
@@ -92,6 +109,20 @@ Now:
 - `MasteryDock` consumes page-policy context only
 - it no longer imports the registry, looks up ancestry, or hard-codes the Foundations parent ID
 - visible eligibility is intended to remain identical to the existing implementation
+
+## Route / graph parity audit
+
+`npm run audit:architecture` now supplements its architecture-smell scan with a source-level route parity report.
+
+It reports:
+
+- concrete academic page routes that have no matching curriculum route literal
+- curriculum route literals that have no concrete page and are not covered by a matching dynamic route
+- dynamic academic route pages separately for human review
+
+Dynamic routes are converted into matchers so a route such as `[lesson]` can cover real curriculum descendants without being compared as a literal string.
+
+The parity report stays informational because source scanning cannot reliably distinguish every active node from every planned placeholder. It is a discovery tool, not an automatic deletion list.
 
 ## Curriculum composition
 
@@ -218,7 +249,7 @@ Do not rewrite it merely for symmetry. Future work may pass semantic breadcrumbs
 
 ### Integrated Algebra
 
-It still owns a larger synchronized equation/graph/table instrument. Migrate it by extracting the actual instrument as a client island rather than performing a blind component split.
+It still imports curriculum data from a client page and owns a larger synchronized line/table instrument. Migrate it by extracting the actual instrument as a client island rather than performing a blind component split.
 
 ### Fundamentals atomic dynamic route
 
@@ -226,46 +257,19 @@ The `[lesson]` page is intentionally interactive and currently owns all four les
 
 Do not duplicate the curriculum into a new client-side lesson map just to eliminate the registry elsewhere.
 
-### Developer tools
+### Shared semantic navigation primitives
 
-Structure Scan / X-Ray still lives in normal sidebar chrome. Add an explicit development-tools visibility contract before removing or relocating it. Do not rewrite the large sidebar blind solely to chase an architecture metric.
-
-### Route / graph parity
-
-Registry validation now has canonical route semantics, duplicate IDs/routes, and prerequisite validation. A future informational route/filesystem parity audit should distinguish active, placeholder, dynamic, and meta/tool routes before becoming a hard check.
-
-## Current verification requirement
-
-Vercel has intermittently rejected branch builds due to the build-rate limit, so none of the server/client boundary migrations above should be treated as visually verified yet.
-
-Once a reliable build is available, first confirm:
-
-1. Algebra hub composition is visually unchanged and the equivalence rail still responds normally
-2. Pre-Algebra navigation, VocabApplet, and Assessment still render and behave normally
-3. Algebra Fundamentals composition and Assessment still render normally
-4. sidebar hierarchy/icons/expand-collapse behavior are unchanged after server snapshot migration
-5. Formal Science vocabulary trigger appears/disappears on the same routes as before
-6. Foundations mastery dock appears on the same seven child pages as before
-
-Only after those checks should the architecture branch be considered ready for promotion or a second visual migration wave.
+Do not introduce a universal page frame yet. Once the pilot pages can be rendered, build only the smallest primitives proven by the migration, likely breadcrumbs, parent/up navigation, and sibling navigation.
 
 ## Next recommended implementation step
 
-While preview remains unavailable, safe architecture work includes:
+Once a reliable preview/build is available:
 
-- documentation/audit improvements
-- source-of-truth cleanup in focused curriculum modules
-- route normalization/validation improvements
-- verifying unused/global component candidates
-- planning the developer-tool gate
-
-When preview returns:
-
-1. run the verification list above
-2. run `npm run audit:architecture`
-3. migrate Integrated Algebra by extracting only its interactive representation studio
-4. introduce the first shared semantic navigation primitive after the pilot pages reveal the actual API
-5. then migrate the Fundamentals atomic route through a server wrapper/client instrument boundary
+1. verify Algebra hub, Pre-Algebra, and Algebra Fundamentals render as intended after server/client boundary changes
+2. run `npm run audit:architecture` and review the new route/graph parity findings
+3. verify learner-mode sidebar with developer tools hidden, then verify `?devtools=1` and `?devtools=0`
+4. migrate Integrated Algebra by extracting only its interactive representation studio
+5. introduce the first shared semantic navigation primitive only after the pilot reveals the real API
 
 ## Success metric
 
@@ -283,5 +287,4 @@ while no longer manually specifying:
 - child status
 - duplicate curriculum descriptions
 - global utility pathname exceptions
-- global feature eligibility through parent-ID special cases
 - client-side access to the full curriculum graph for static semantic facts
