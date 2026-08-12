@@ -84,7 +84,7 @@ export function getCurriculumPageContext(
     ancestors,
     breadcrumbs: [
       { label: "Home", href: "/" },
-      { label: domain.navLabel, href: domain.href },
+      { label: domain.title, href: domain.href },
       ...ancestors.map((ancestor) => ({
         label: ancestor.label,
         href: ancestor.href,
