@@ -35,6 +35,9 @@ export const PAGE_POLICY_BY_NODE_ID: Readonly<Record<string, Readonly<PagePolicy
   "formal.logic": {
     vocabularyTrigger: "local",
   },
+  "formal.mathematics.foundations": {
+    vocabularyTrigger: "local",
+  },
   "formal.mathematics.foundations.arithmetic": {
     masterySurface: "global",
   },

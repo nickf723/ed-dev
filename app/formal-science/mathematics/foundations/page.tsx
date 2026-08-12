@@ -1,6 +1,3 @@
-"use client";
-
-import React from "react";
 import Link from "next/link";
 import NumberBackground from "./_components/NumberBackground";
 import VisualAdder from "./_components/VisualAdder";
@@ -22,7 +19,8 @@ import {
 import Assessment from "@/app/_components/Assessment";
 import VocabApplet from "@/app/_components/VocabApplet";
 import { foundationsVocab } from "@/app/_data/vocab/m/math-foundations";
-import { curriculumRegistry } from "@/lib/curriculum/registry";
+import { requireCurriculumPageContext } from "@/lib/curriculum/page-context";
+import type { CurriculumNode } from "@/lib/curriculum/types";
 import { foundationsQuiz } from "./_components/assessment";
 
 type FoundationPresentation = {
@@ -77,11 +75,8 @@ const FOUNDATION_PRESENTATION: Record<string, FoundationPresentation> = {
   },
 };
 
-function buildFoundationTopics() {
-  const foundations = curriculumRegistry.getNode("formal.mathematics.foundations");
-  if (!foundations) throw new Error("Mathematics Foundations is missing from the curriculum registry.");
-
-  return (foundations.children ?? []).map((topic) => {
+function buildFoundationTopics(nodes: readonly CurriculumNode[]) {
+  return nodes.map((topic) => {
     const presentation = FOUNDATION_PRESENTATION[topic.id];
     if (!presentation) {
       throw new Error(`Foundations topic ${topic.id} is missing its local presentation config.`);
@@ -90,9 +85,10 @@ function buildFoundationTopics() {
   });
 }
 
-const FOUNDATION_TOPICS = buildFoundationTopics();
-
 export default function FoundationsPage() {
+  const context = requireCurriculumPageContext("formal.mathematics.foundations");
+  const foundationTopics = buildFoundationTopics(context.children);
+
   return (
     <main className="relative min-h-screen bg-[#09090b] text-zinc-200 overflow-hidden font-sans selection:bg-rose-500/30">
       <NumberBackground />
@@ -100,7 +96,7 @@ export default function FoundationsPage() {
 
       <header className="relative z-20 flex flex-col md:flex-row md:items-center justify-between px-6 py-6 border-b border-white/5 bg-[#09090b]/80 backdrop-blur-xl sticky top-0">
         <div className="flex items-center gap-6">
-          <Link href="/formal-science/mathematics" className="flex items-center gap-2 text-[10px] font-black text-rose-500 hover:text-white bg-rose-500/10 hover:bg-rose-500/20 px-3 py-1.5 rounded-full transition-all uppercase tracking-widest border border-rose-500/20">
+          <Link href={context.parent?.href ?? "/formal-science/mathematics"} className="flex items-center gap-2 text-[10px] font-black text-rose-500 hover:text-white bg-rose-500/10 hover:bg-rose-500/20 px-3 py-1.5 rounded-full transition-all uppercase tracking-widest border border-rose-500/20">
             <ArrowLeft size={12} /> Math Hub
           </Link>
           <div className="hidden md:block h-4 w-px bg-white/10" />
@@ -118,7 +114,7 @@ export default function FoundationsPage() {
         <div className="hidden lg:flex gap-4">
           <div className="px-4 py-1.5 border border-white/5 bg-black/40 rounded flex gap-3 text-[10px] uppercase font-bold tracking-widest text-zinc-400 items-center">
             <Activity size={12} className="text-rose-500" /> Modules:{" "}
-            <span className="text-white">{String(FOUNDATION_TOPICS.length).padStart(2, "0")}</span>
+            <span className="text-white">{String(foundationTopics.length).padStart(2, "0")}</span>
           </div>
         </div>
       </header>
@@ -155,7 +151,7 @@ export default function FoundationsPage() {
           <div className="absolute left-[11px] md:left-[23px] top-4 bottom-4 w-1 bg-gradient-to-b from-rose-500/50 via-rose-500/10 to-transparent rounded-full" />
 
           <div className="flex flex-col gap-6">
-            {FOUNDATION_TOPICS.map((topic, i) => (
+            {foundationTopics.map((topic, i) => (
               <div key={topic.id} className="relative">
                 <div className="absolute -left-[30px] md:-left-[42px] top-6 w-4 h-4 rounded-full border-4 border-[#09090b] bg-black shadow-[0_0_10px_rgba(244,63,94,0.5)] z-10 flex items-center justify-center">
                   <div className={`w-1.5 h-1.5 rounded-full ${topic.color.replace("text-", "bg-")}`} />
@@ -216,7 +212,7 @@ export default function FoundationsPage() {
             <VocabApplet currentDomain="Math Foundations" localTerms={foundationsVocab || []} accentColor="rose" />
           </div>
           <div className="lg:col-span-2">
-            <Assessment title="Knowledge Check: K-8 Arithmetic" questions={foundationsQuiz || []} accentColor="rose" onComplete={(score, total) => console.log(`Foundations Quiz Scored: ${score}/${total}`)} />
+            <Assessment title="Knowledge Check: K-8 Arithmetic" questions={foundationsQuiz || []} accentColor="rose" />
           </div>
         </div>
       </div>
