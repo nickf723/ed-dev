@@ -27,6 +27,8 @@ function generateSolveQuestion(): GeneratedPracticeQuestion {
     `x ${solvedRelation} ${formatNumber(-boundary)}`,
     `x ${flipDirection(solvedRelation)} ${formatNumber(-boundary)}`,
     `x ${solvedRelation} ${formatNumber(boundary + 1)}`,
+    `x ${flipDirection(solvedRelation)} ${formatNumber(boundary + 1)}`,
+    `x ${solvedRelation} ${formatNumber(boundary - 1)}`,
   ]);
 
   const moveText = constant === 0
@@ -57,6 +59,7 @@ function generateIntervalQuestion(): GeneratedPracticeQuestion {
     intervalFor(boundary, flipDirection(relation)),
     intervalFor(boundary, toggleInclusion(flipDirection(relation))),
     intervalFor(-boundary, relation),
+    intervalFor(boundary + 1, relation),
   ]);
 
   return {
@@ -101,12 +104,7 @@ function makeChoices(correct: string, candidates: string[]) {
     if (choices.size >= 4) break;
     choices.add(candidate);
   }
-  let n = 2;
-  while (choices.size < 4) {
-    choices.add(`${correct} ${" ".repeat(n)}`);
-    n += 1;
-  }
-  return shuffle(Array.from(choices)).map((choice) => choice.trimEnd());
+  return shuffle(Array.from(choices));
 }
 
 function flipDirection(relation: Relation): Relation {
