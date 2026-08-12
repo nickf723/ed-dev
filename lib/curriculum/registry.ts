@@ -1,9 +1,5 @@
-import { ALGEBRA_CURRICULUM } from "@/lib/curriculum/algebra";
-import { COMPUTER_SCIENCE_CURRICULUM } from "@/lib/curriculum/computer-science";
-import { GROUP_THEORY_CURRICULUM } from "@/lib/curriculum/group-theory";
-import { LOGIC_CURRICULUM } from "@/lib/curriculum/logic";
+import { CURRICULUM_MODULES } from "@/lib/curriculum/manifest";
 import { CURRICULUM_NODE_METADATA } from "@/lib/curriculum/metadata";
-import { BIOLOGY_CURRICULUM } from "@/lib/curriculum/natural/biology";
 import { normalizeCurriculumPath } from "@/lib/curriculum/route";
 import { CURRICULUM_DOMAINS } from "@/lib/curriculum/tree";
 import type {
@@ -30,14 +26,6 @@ function applyMetadata(nodes: readonly CurriculumNode[]): readonly CurriculumNod
     children: node.children ? applyMetadata(node.children) : undefined,
   }));
 }
-
-const curriculumReplacements = [
-  ALGEBRA_CURRICULUM,
-  GROUP_THEORY_CURRICULUM,
-  LOGIC_CURRICULUM,
-  COMPUTER_SCIENCE_CURRICULUM,
-  BIOLOGY_CURRICULUM,
-] as const;
 
 const domainRootAdditions: Partial<
   Record<CurriculumDomain["domainId"], readonly CurriculumNode[]>
@@ -139,19 +127,18 @@ function appendMissingChildren(nodes: readonly CurriculumNode[]): readonly Curri
 
 function composeCurriculum(nodes: readonly CurriculumNode[]): readonly CurriculumNode[] {
   const withMetadata = applyMetadata(nodes);
-  const withReplacements = curriculumReplacements.reduce<readonly CurriculumNode[]>(
+  const withModules = CURRICULUM_MODULES.reduce<readonly CurriculumNode[]>(
     (current, replacement) => replaceNode(current, replacement),
     withMetadata,
   );
-  return appendMissingChildren(withReplacements);
+  return appendMissingChildren(withModules);
 }
 
 /**
  * Dense curriculum branches can live in focused modules while still composing
- * into one validated registry. `tree.ts` remains the broad academic map; this
- * composition layer swaps in richer subtrees as they are migrated and can also
- * restore live roots and child routes that have not yet been migrated into the
- * broad tree.
+ * into one validated registry. `tree.ts` remains the broad academic map; the
+ * module manifest swaps in richer subtrees as they migrate and root/child
+ * additions remain temporary compatibility scaffolding for untouched branches.
  */
 const curriculumDomains: readonly CurriculumDomain[] = CURRICULUM_DOMAINS.map(
   (domain) => ({
