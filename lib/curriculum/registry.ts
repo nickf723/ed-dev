@@ -67,6 +67,15 @@ const domainRootAdditions: Partial<
 };
 
 const nodeChildAdditions: Record<string, readonly CurriculumNode[]> = {
+  "humanities.visual-arts": [
+    {
+      id: "humanities.visual-arts.architecture",
+      label: "Architecture",
+      href: "/humanities/visual-arts/architecture",
+      description: "Study architecture as visual art through style, form, history, masterworks, and aesthetic interpretation.",
+      domainId: "humanities",
+    },
+  ],
   "humanities.culinary-arts": [
     {
       id: "humanities.culinary-arts.market",

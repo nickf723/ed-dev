@@ -1,4 +1,5 @@
 import { ALGEBRA_CURRICULUM } from "@/lib/curriculum/algebra";
+import { ARCHITECTURE_CURRICULUM } from "@/lib/curriculum/applied/architecture";
 import { COMPUTER_SCIENCE_CURRICULUM } from "@/lib/curriculum/computer-science";
 import { GROUP_THEORY_CURRICULUM } from "@/lib/curriculum/group-theory";
 import { LOGIC_CURRICULUM } from "@/lib/curriculum/logic";
@@ -19,4 +20,5 @@ export const CURRICULUM_MODULES: readonly CurriculumNode[] = [
   LOGIC_CURRICULUM,
   COMPUTER_SCIENCE_CURRICULUM,
   BIOLOGY_CURRICULUM,
+  ARCHITECTURE_CURRICULUM,
 ];
