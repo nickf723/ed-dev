@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
+  BookOpen,
   ChevronDown,
   LayoutGrid,
   Menu,
@@ -15,9 +16,10 @@ import {
 } from "lucide-react";
 import XRayConsole from "@/app/_components/XRayConsole";
 import { DOMAIN_BY_ID, getDomainForPath, type DomainId } from "@/lib/domains";
-import { NAVIGATION_DATA, type NavigationItem } from "@/lib/navigation";
+import type { NavigationItem, NavigationSection } from "@/lib/navigation";
 
 type SidebarProps = {
+  navigationData: NavigationSection[];
   isCollapsed: boolean;
   onCollapsedChange: (collapsed: boolean) => void;
 };
@@ -30,7 +32,7 @@ function domainRgb(domain: SidebarDomain): string {
   return DOMAIN_BY_ID[domain]?.theme.rgb ?? "148, 163, 184";
 }
 
-export default function Sidebar({ isCollapsed, onCollapsedChange }: SidebarProps) {
+export default function Sidebar({ navigationData, isCollapsed, onCollapsedChange }: SidebarProps) {
   const pathname = usePathname();
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [showStructureScan, setShowStructureScan] = useState(false);
@@ -123,7 +125,7 @@ export default function Sidebar({ isCollapsed, onCollapsedChange }: SidebarProps
           }`}
         >
           <div className="space-y-7">
-            {NAVIGATION_DATA.map((section) => (
+            {navigationData.map((section) => (
               <section key={section.title}>
                 <h2 className={`mb-2 px-3 font-mono text-[8px] uppercase tracking-[0.2em] text-slate-700 ${isCollapsed ? "md:hidden" : ""}`}>
                   {section.title === "Knowledge Graph" ? "Knowledge" : section.title}
@@ -204,8 +206,12 @@ function NavItem({
   const isActiveBranch = isExactMatch || isDescendantActive;
   const hasChildren = Boolean(item.children?.length);
   const [expanded, setExpanded] = useState(isActiveBranch);
-  const Icon = item.icon;
   const isTopLevel = depth === 0;
+  const Icon = item.icon === "book-open"
+    ? BookOpen
+    : isTopLevel && itemDomain !== "meta" && itemDomain !== "home"
+      ? DOMAIN_BY_ID[itemDomain]?.icon
+      : undefined;
 
   useEffect(() => {
     if (isActiveBranch) setExpanded(true);
