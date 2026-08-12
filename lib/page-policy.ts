@@ -17,10 +17,37 @@ const EMPTY_PAGE_POLICY: Readonly<PagePolicy> = Object.freeze({});
 
 /**
  * Start narrow. Add policy only after the page's ownership has been verified.
- * These Fundamentals pages already own local reference/vocabulary surfaces, so
- * the global Formal Science vocabulary trigger is redundant there.
+ * These Algebra pages already own local reference/vocabulary surfaces, so the
+ * global Formal Science vocabulary trigger is redundant there.
  */
 export const PAGE_POLICY_BY_NODE_ID: Readonly<Record<string, Readonly<PagePolicy>>> = {
+  "formal.mathematics.algebra.pre-algebra": {
+    vocabularyTrigger: "local",
+  },
+  "formal.mathematics.algebra.pre-algebra.integers": {
+    vocabularyTrigger: "local",
+  },
+  "formal.mathematics.algebra.pre-algebra.pemdas": {
+    vocabularyTrigger: "local",
+  },
+  "formal.mathematics.algebra.pre-algebra.properties": {
+    vocabularyTrigger: "local",
+  },
+  "formal.mathematics.algebra.pre-algebra.ratios": {
+    vocabularyTrigger: "local",
+  },
+  "formal.mathematics.algebra.pre-algebra.fractions": {
+    vocabularyTrigger: "local",
+  },
+  "formal.mathematics.algebra.pre-algebra.exponents": {
+    vocabularyTrigger: "local",
+  },
+  "formal.mathematics.algebra.pre-algebra.expressions": {
+    vocabularyTrigger: "local",
+  },
+  "formal.mathematics.algebra.pre-algebra.equations": {
+    vocabularyTrigger: "local",
+  },
   "formal.mathematics.algebra.elementary-algebra.fundamentals": {
     vocabularyTrigger: "local",
   },
