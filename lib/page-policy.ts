@@ -18,10 +18,33 @@ const EMPTY_PAGE_POLICY: Readonly<PagePolicy> = Object.freeze({});
 /**
  * Add policy only after a page's ownership has been verified.
  *
- * `local` means the route owns its own reference/vocabulary experience.
- * `none` means the route intentionally exposes no global vocabulary trigger.
+ * `local` vocabulary means the route owns its own reference/vocabulary
+ * experience. `none` means the route intentionally exposes no global trigger.
+ * Foundation mastery entries preserve the existing global mastery dock behavior
+ * without making the dock know curriculum ancestry.
  */
 export const PAGE_POLICY_BY_NODE_ID: Readonly<Record<string, Readonly<PagePolicy>>> = {
+  "formal.mathematics.foundations.arithmetic": {
+    masterySurface: "global",
+  },
+  "formal.mathematics.foundations.fractions": {
+    masterySurface: "global",
+  },
+  "formal.mathematics.foundations.inequalities": {
+    masterySurface: "global",
+  },
+  "formal.mathematics.foundations.geometry": {
+    masterySurface: "global",
+  },
+  "formal.mathematics.foundations.measurement": {
+    masterySurface: "global",
+  },
+  "formal.mathematics.foundations.grouping": {
+    masterySurface: "global",
+  },
+  "formal.mathematics.foundations.statistics": {
+    masterySurface: "global",
+  },
   "formal.mathematics": {
     vocabularyTrigger: "none",
   },
