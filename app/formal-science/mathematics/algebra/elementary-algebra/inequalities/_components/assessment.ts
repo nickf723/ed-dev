@@ -2,34 +2,32 @@ import type { AssessmentQuestion } from "@/app/_components/Assessment";
 
 export const inequalitiesQuiz: AssessmentQuestion[] = [
   {
-    id: "ineq-region",
-    type: "mcq",
-    prompt: "Which description matches x ≤ −2?",
-    options: [
-      "Shade left of −2 and include the endpoint",
-      "Shade left of −2 and exclude the endpoint",
-      "Shade right of −2 and include the endpoint",
+    id: "ineq-symbol-behavior",
+    type: "matching",
+    prompt: "Match each inequality symbol to the region it creates.",
+    leftItems: ["<", "≤", ">", "≥"],
+    rightItems: [
+      "right · boundary included",
+      "left · boundary excluded",
+      "right · boundary excluded",
+      "left · boundary included",
     ],
-    correctAnswer: "Shade left of −2 and include the endpoint",
+    correctPairs: {
+      "<": "left · boundary excluded",
+      "≤": "left · boundary included",
+      ">": "right · boundary excluded",
+      "≥": "right · boundary included",
+    },
     explanation:
-      "≤ means values less than −2 plus the boundary itself, so the region extends left and the endpoint is closed.",
+      "The symbol tells you both direction and inclusion: < and ≤ point left, > and ≥ point right; the equality bar means the boundary is included.",
   },
   {
-    id: "ineq-negative",
-    type: "mcq",
-    prompt: "Solve −2x < 6.",
-    options: ["x < −3", "x > −3", "x > 3"],
-    correctAnswer: "x > −3",
+    id: "ineq-negative-short",
+    type: "short_answer",
+    prompt: "Solve −2x < 6. Type the isolated inequality for x.",
+    acceptableAnswers: ["x > -3", "x>-3", "x > −3", "x>−3"],
     explanation:
       "Dividing both sides by −2 gives −3, and dividing an inequality by a negative reverses < into >.",
-  },
-  {
-    id: "ineq-membership",
-    type: "tf",
-    prompt: "x = 4 satisfies x > 1.",
-    correctAnswer: true,
-    explanation:
-      "Substitution gives 4 > 1, which is true, so 4 belongs to the solution set.",
   },
   {
     id: "ineq-many-solutions",
@@ -39,5 +37,14 @@ export const inequalitiesQuiz: AssessmentQuestion[] = [
     correctAnswers: ["−2", "2"],
     explanation:
       "Every value smaller than 3 works. The boundary 3 is excluded because the inequality is strict, and 4 lies on the wrong side.",
+  },
+  {
+    id: "ineq-interval",
+    type: "mcq",
+    prompt: "Which interval describes x ≥ 4?",
+    options: ["[4, ∞)", "(4, ∞)", "(−∞, 4]"],
+    correctAnswer: "[4, ∞)",
+    explanation:
+      "≥ extends to the right and includes 4, so the finite endpoint gets a bracket while infinity always gets a parenthesis.",
   },
 ];
