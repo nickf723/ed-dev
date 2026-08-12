@@ -7,6 +7,7 @@ function node(
   description: string,
   children?: readonly CurriculumNode[],
   status: CurriculumNode["status"] = "active",
+  pageKind?: CurriculumNode["pageKind"],
 ): CurriculumNode {
   return {
     id,
@@ -15,9 +16,59 @@ function node(
     description,
     domainId: "formal",
     status,
+    pageKind,
     children,
   };
 }
+
+const fundamentalsLessons = [
+  node(
+    "formal.mathematics.algebra.elementary-algebra.fundamentals.expressions-variables",
+    "Expressions & Variables",
+    "/formal-science/mathematics/algebra/elementary-algebra/fundamentals/expressions-variables",
+    "Read algebraic expressions structurally: signed terms, coefficients, variables, constants, and exponents.",
+    undefined,
+    "active",
+    "lesson",
+  ),
+  node(
+    "formal.mathematics.algebra.elementary-algebra.fundamentals.equality-equations",
+    "Equality & Equations",
+    "/formal-science/mathematics/algebra/elementary-algebra/fundamentals/equality-equations",
+    "Understand equality as a preserved relationship and distinguish expressions from equations and solution sets.",
+    undefined,
+    "active",
+    "lesson",
+  ),
+  node(
+    "formal.mathematics.algebra.elementary-algebra.fundamentals.algebraic-properties",
+    "Algebraic Properties",
+    "/formal-science/mathematics/algebra/elementary-algebra/fundamentals/algebraic-properties",
+    "Use commutative, associative, distributive, identity, and inverse properties as precise rewrite rules.",
+    undefined,
+    "active",
+    "lesson",
+  ),
+  node(
+    "formal.mathematics.algebra.elementary-algebra.fundamentals.number-systems",
+    "Number Systems",
+    "/formal-science/mathematics/algebra/elementary-algebra/fundamentals/number-systems",
+    "Place natural, integer, rational, irrational, and real values inside the real-number hierarchy.",
+    undefined,
+    "active",
+    "lesson",
+  ),
+] as const;
+
+const systemsOfInequalities = node(
+  "formal.mathematics.algebra.elementary-algebra.inequalities.systems",
+  "Systems of Inequalities",
+  "/formal-science/mathematics/algebra/elementary-algebra/inequalities/systems",
+  "Graph multiple linear inequalities and identify the intersection of their feasible regions.",
+  undefined,
+  "active",
+  "lesson",
+);
 
 const preAlgebra = node(
   "formal.mathematics.algebra.pre-algebra",
@@ -74,6 +125,8 @@ const preAlgebra = node(
       "Inverse operations and solving one- and two-step equations.",
     ),
   ],
+  "active",
+  "unit",
 );
 
 const integratedAlgebra = node(
@@ -87,24 +140,34 @@ const integratedAlgebra = node(
       "Algebra Fundamentals",
       "/formal-science/mathematics/algebra/elementary-algebra/fundamentals",
       "Real numbers, equality, operation rules, and variable expressions.",
+      fundamentalsLessons,
+      "active",
+      "unit",
     ),
     node(
       "formal.mathematics.algebra.elementary-algebra.linear-equations",
       "Graphing Linear Equations",
       "/formal-science/mathematics/algebra/elementary-algebra/linear-equations",
       "Slope-intercept form, point-slope form, and graphing lines.",
+      undefined,
+      "active",
+      "lesson",
     ),
     node(
       "formal.mathematics.algebra.elementary-algebra.systems",
       "Systems of Equations",
       "/formal-science/mathematics/algebra/elementary-algebra/systems-of-equations",
       "Solving linear systems with graphing, substitution, and elimination.",
+      undefined,
+      "active",
+      "lesson",
     ),
     node(
       "formal.mathematics.algebra.elementary-algebra.inequalities",
       "Algebraic Inequalities",
       "/formal-science/mathematics/algebra/elementary-algebra/inequalities",
       "Solving and graphing single and compound inequalities.",
+      [systemsOfInequalities],
     ),
     node(
       "formal.mathematics.algebra.elementary-algebra.quadratics",
@@ -149,6 +212,8 @@ const integratedAlgebra = node(
       "Imaginary numbers, the complex plane, and arithmetic with complex values.",
     ),
   ],
+  "active",
+  "hub",
 );
 
 const linearAlgebra = node(
@@ -271,4 +336,6 @@ export const ALGEBRA_CURRICULUM = node(
   "/formal-science/mathematics/algebra",
   "The rules for manipulating mathematical symbols and relationships.",
   [preAlgebra, integratedAlgebra, linearAlgebra, abstractAlgebra],
+  "active",
+  "hub",
 );

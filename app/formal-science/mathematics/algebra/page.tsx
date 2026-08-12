@@ -1,22 +1,18 @@
-"use client";
-
 import Link from "next/link";
-import { useState } from "react";
 import {
   ArrowRight,
   Braces,
   Calculator,
-  Check,
   Equal,
   Grid3X3,
   Infinity,
-  Scale,
   Variable,
   type LucideIcon,
 } from "lucide-react";
 import DomainPageHeader from "@/app/_components/DomainPageHeader";
-import { curriculumRegistry } from "@/lib/curriculum/registry";
+import { requireCurriculumPageContext } from "@/lib/curriculum/page-context";
 import AlgebraBackground2 from "./_components/AlgebraBackground2";
+import EquivalenceRail from "./_components/EquivalenceRail";
 
 type BranchPresentation = {
   icon: LucideIcon;
@@ -39,6 +35,13 @@ type AlgebraBranch = AlgebraChild &
     description: string;
     children: AlgebraChild[];
   };
+
+const ALGEBRA_NODE_ID = "formal.mathematics.algebra";
+const ALGEBRA_CONTEXT = requireCurriculumPageContext(ALGEBRA_NODE_ID);
+
+if (ALGEBRA_CONTEXT.pageKind !== "hub") {
+  throw new Error("Algebra must be classified as a curriculum hub.");
+}
 
 const PRESENTATION: Record<string, BranchPresentation> = {
   "formal.mathematics.algebra.pre-algebra": {
@@ -75,38 +78,8 @@ const PRESENTATION: Record<string, BranchPresentation> = {
   },
 };
 
-const REWRITE_STEPS = [
-  {
-    label: "Start",
-    equation: "2(x + 3) = 10",
-    operation: "same relationship",
-    note: "An equation states that two expressions represent the same value.",
-  },
-  {
-    label: "Expand",
-    equation: "2x + 6 = 10",
-    operation: "distribute 2",
-    note: "The expression changes form, but its value does not.",
-  },
-  {
-    label: "Isolate",
-    equation: "2x = 4",
-    operation: "subtract 6 from both sides",
-    note: "Applying the same reversible operation preserves the solution set.",
-  },
-  {
-    label: "Normalize",
-    equation: "x = 2",
-    operation: "divide both sides by 2",
-    note: "A simpler representation reveals the hidden value directly.",
-  },
-] as const;
-
 function buildBranches(): AlgebraBranch[] {
-  const algebra = curriculumRegistry.getNode("formal.mathematics.algebra");
-  if (!algebra) throw new Error("Algebra is missing from the curriculum registry.");
-
-  return (algebra.children ?? []).map((branch) => {
+  return ALGEBRA_CONTEXT.children.map((branch) => {
     const presentation = PRESENTATION[branch.id];
     if (!presentation) {
       throw new Error(`Algebra branch ${branch.id} is missing presentation metadata.`);
@@ -132,9 +105,6 @@ function buildBranches(): AlgebraBranch[] {
 const BRANCHES = buildBranches();
 
 export default function AlgebraHubPage() {
-  const [rewriteIndex, setRewriteIndex] = useState(0);
-  const rewrite = REWRITE_STEPS[rewriteIndex];
-
   return (
     <main className="relative min-h-screen overflow-x-hidden bg-[#080910] text-slate-100 selection:bg-blue-400/25">
       <div className="pointer-events-none fixed inset-0 z-0 opacity-35">
@@ -145,12 +115,7 @@ export default function AlgebraHubPage() {
 
       <div className="relative z-10 mx-auto w-full max-w-[1540px] px-4 py-4 sm:px-6 xl:px-8 xl:py-5">
         <DomainPageHeader
-          breadcrumbs={[
-            { label: "Home", href: "/" },
-            { label: "Formal Sciences", href: "/formal-science" },
-            { label: "Mathematics", href: "/formal-science/mathematics" },
-            { label: "Algebra" },
-          ]}
+          breadcrumbs={ALGEBRA_CONTEXT.breadcrumbs}
           eyebrow="Equivalence · Relation · Transformation · Structure"
           icon={Braces}
           title={<span>Algebra</span>}
@@ -166,50 +131,7 @@ export default function AlgebraHubPage() {
           }
         />
 
-        <section className="mt-3 grid gap-3 rounded-[22px] border border-blue-200/[0.12] bg-black/[0.23] p-3.5 backdrop-blur-xl xl:h-[112px] xl:grid-cols-[230px_minmax(0,1fr)_330px] xl:items-stretch">
-          <div className="flex min-w-0 items-center gap-3 xl:h-[82px]">
-            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-blue-300/[0.18] bg-blue-400/[0.055] text-blue-300">
-              <Scale size={19} strokeWidth={1.45} />
-            </span>
-            <div className="min-w-0">
-              <div className="text-[10px] font-semibold uppercase tracking-[0.15em] text-blue-300/65">Equivalence rail</div>
-              <p className="mt-1 text-[11px] leading-4 text-slate-500">Rewrite without changing what is true.</p>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-4 gap-2 xl:h-[82px]">
-            {REWRITE_STEPS.map((step, index) => {
-              const active = index === rewriteIndex;
-              return (
-                <button
-                  key={step.label}
-                  type="button"
-                  onClick={() => setRewriteIndex(index)}
-                  onMouseEnter={() => setRewriteIndex(index)}
-                  className="h-full min-w-0 rounded-xl border px-2 py-2.5 text-left transition-colors"
-                  style={{
-                    borderColor: active ? "rgba(96,165,250,0.34)" : "rgba(255,255,255,0.055)",
-                    background: active ? "rgba(96,165,250,0.075)" : "rgba(0,0,0,0.16)",
-                  }}
-                >
-                  <div className={`text-[9px] font-semibold ${active ? "text-blue-300" : "text-slate-600"}`}>{step.label}</div>
-                  <div className="mt-1 truncate font-mono text-[11px] text-slate-300">{step.equation}</div>
-                </button>
-              );
-            })}
-          </div>
-
-          <div className="grid h-[82px] grid-cols-[minmax(0,1fr)_auto] items-center gap-3 overflow-hidden rounded-xl border border-white/[0.05] bg-white/[0.018] px-3.5 py-2.5">
-            <div className="grid min-w-0 grid-rows-[24px_18px_32px]">
-              <div className="truncate font-mono text-[17px] font-semibold leading-6 text-white">{rewrite.equation}</div>
-              <div className="truncate text-[10px] font-medium leading-4 text-blue-300/70">{rewrite.operation}</div>
-              <p className="line-clamp-2 text-[10px] leading-4 text-slate-500">{rewrite.note}</p>
-            </div>
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-emerald-300/[0.15] bg-emerald-400/[0.045] text-emerald-300" title="Solution preserved">
-              <Check size={14} />
-            </div>
-          </div>
-        </section>
+        <EquivalenceRail />
 
         <section className="mt-3 overflow-hidden rounded-[24px] border border-blue-200/[0.12] bg-black/[0.22] p-3.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.025),0_24px_70px_rgba(0,0,0,0.22)] backdrop-blur-xl">
           <div className="flex flex-col gap-2 px-1 pb-3 sm:flex-row sm:items-end sm:justify-between">

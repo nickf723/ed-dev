@@ -4,11 +4,15 @@ import "katex/dist/katex.min.css";
 
 import { Analytics } from "@vercel/analytics/next";
 import AppShell from "@/app/_components/AppShell";
+import { NAVIGATION_DATA } from "@/lib/navigation";
+import { buildPagePolicyRouteSnapshot } from "@/lib/page-policy-snapshot";
 
 export const metadata = {
   title: "The Knowledge Web",
   description: "Educational ontological structures",
 };
+
+const PAGE_POLICY_ROUTES = buildPagePolicyRouteSnapshot();
 
 export default function RootLayout({
   children,
@@ -19,7 +23,12 @@ export default function RootLayout({
     <html lang="en">
       <body className="bg-black text-white antialiased">
         <Analytics />
-        <AppShell>{children}</AppShell>
+        <AppShell
+          navigationData={NAVIGATION_DATA}
+          pagePolicyRoutes={PAGE_POLICY_ROUTES}
+        >
+          {children}
+        </AppShell>
       </body>
     </html>
   );

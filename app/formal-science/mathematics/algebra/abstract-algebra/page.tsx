@@ -1,6 +1,3 @@
-"use client";
-
-import React from "react";
 import Link from "next/link";
 import AbstractBackground from "./_components/AbstractBackground";
 import SymmetryBackground from "./_components/SymmetryBackground";
@@ -17,7 +14,8 @@ import {
   RefreshCcw,
   type LucideIcon,
 } from "lucide-react";
-import { curriculumRegistry } from "@/lib/curriculum/registry";
+import { requireCurriculumPageContext } from "@/lib/curriculum/page-context";
+import type { CurriculumNode } from "@/lib/curriculum/types";
 
 type AbstractPresentation = {
   subtitle: string;
@@ -86,11 +84,8 @@ const MODULE_PRESENTATION: Record<string, AbstractPresentation> = {
   },
 };
 
-function buildModules() {
-  const abstractAlgebra = curriculumRegistry.getNode("formal.mathematics.algebra.abstract-algebra");
-  if (!abstractAlgebra) throw new Error("Abstract Algebra is missing from the curriculum registry.");
-
-  return (abstractAlgebra.children ?? []).map((module) => {
+function buildModules(nodes: readonly CurriculumNode[]) {
+  return nodes.map((module) => {
     const presentation = MODULE_PRESENTATION[module.id];
     if (!presentation) {
       throw new Error(`Abstract Algebra module ${module.id} is missing its local presentation config.`);
@@ -105,10 +100,12 @@ function buildModules() {
   });
 }
 
-const MODULES = buildModules();
-type AbstractModule = (typeof MODULES)[number];
+type AbstractModule = ReturnType<typeof buildModules>[number];
 
 export default function AbstractAlgebraPage() {
+  const context = requireCurriculumPageContext("formal.mathematics.algebra.abstract-algebra");
+  const modules = buildModules(context.children);
+
   return (
     <main className="relative min-h-screen bg-[#05020a] text-white overflow-hidden font-sans selection:bg-purple-500/30 flex flex-col pb-20">
       <SymmetryBackground />
@@ -120,7 +117,7 @@ export default function AbstractAlgebraPage() {
       <header className="relative z-10 p-8 pt-16 pb-12">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-end border-b border-white/10 pb-8 gap-6">
           <div>
-            <Link href="/formal-science/mathematics/algebra" className="flex items-center gap-2 text-xs text-purple-400 hover:text-white transition-colors mb-6 uppercase tracking-widest group bg-black/40 px-4 py-2 rounded-full border border-purple-500/30 backdrop-blur-md w-max shadow-lg">
+            <Link href={context.parent?.href ?? "/formal-science/mathematics/algebra"} className="flex items-center gap-2 text-xs text-purple-400 hover:text-white transition-colors mb-6 uppercase tracking-widest group bg-black/40 px-4 py-2 rounded-full border border-purple-500/30 backdrop-blur-md w-max shadow-lg">
               <ArrowLeft size={12} className="group-hover:-translate-x-1 transition-transform" /> Algebra // Domain_04
             </Link>
             <div className="flex items-center gap-6">
@@ -149,7 +146,7 @@ export default function AbstractAlgebraPage() {
 
       <div className="relative z-10 flex-1 px-6 md:px-8">
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {MODULES.map((item, index) => (
+          {modules.map((item, index) => (
             <ModuleCard key={item.id} item={item} index={index} />
           ))}
         </div>

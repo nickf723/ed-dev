@@ -8,7 +8,7 @@ export default function MainContent({
   isCollapsed: boolean;
 }) {
   return (
-    <main
+    <div
       className={`
         relative min-h-screen w-full flex flex-col
         bg-neutral-950 text-slate-200 antialiased selection:bg-cyan-500/30 selection:text-cyan-100
@@ -18,6 +18,6 @@ export default function MainContent({
       `}
     >
       <div className="flex-1 relative z-0 w-full h-full">{children}</div>
-    </main>
+    </div>
   );
 }

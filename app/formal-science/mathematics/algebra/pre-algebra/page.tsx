@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 import PreAlgebraBackground from "./_components/PreAlgebraBackground";
 import {
@@ -19,7 +17,7 @@ import {
 import Assessment from "@/app/_components/Assessment";
 import VocabApplet from "@/app/_components/VocabApplet";
 import { preAlgebraVocab } from "@/app/_data/vocab/p/pre-algebra";
-import { curriculumRegistry } from "@/lib/curriculum/registry";
+import { requireCurriculumPageContext } from "@/lib/curriculum/page-context";
 import { preAlgebraQuiz } from "./_components/assessment";
 
 type ModulePresentation = {
@@ -80,28 +78,31 @@ const MODULE_PRESENTATION: Record<string, ModulePresentation> = {
   },
 };
 
-function buildModules() {
-  const preAlgebra = curriculumRegistry.getNode("formal.mathematics.algebra.pre-algebra");
-  if (!preAlgebra) throw new Error("Pre-Algebra is missing from the curriculum registry.");
+const PAGE_CONTEXT = requireCurriculumPageContext(
+  "formal.mathematics.algebra.pre-algebra",
+);
 
-  return (preAlgebra.children ?? []).map((module) => {
-    const presentation = MODULE_PRESENTATION[module.id];
-    if (!presentation) {
-      throw new Error(`Pre-Algebra module ${module.id} is missing its local presentation config.`);
-    }
-
-    return {
-      ...module,
-      title: module.label,
-      desc: module.description ?? "",
-      ...presentation,
-    };
-  });
+if (PAGE_CONTEXT.pageKind !== "unit") {
+  throw new Error("Pre-Algebra must be classified as a unit.");
 }
 
-const MODULES = buildModules();
+const MODULES = PAGE_CONTEXT.activeChildren.map((module) => {
+  const presentation = MODULE_PRESENTATION[module.id];
+  if (!presentation) {
+    throw new Error(`Pre-Algebra module ${module.id} is missing its local presentation config.`);
+  }
+
+  return {
+    ...module,
+    title: module.label,
+    desc: module.description ?? "",
+    ...presentation,
+  };
+});
 
 export default function PreAlgebraPage() {
+  const parent = PAGE_CONTEXT.parent;
+
   return (
     <main className="relative min-h-screen overflow-hidden bg-[#020617] pb-32 font-sans text-slate-200 selection:bg-blue-500/30">
       <PreAlgebraBackground />
@@ -110,10 +111,10 @@ export default function PreAlgebraPage() {
       <div className="relative z-10 mx-auto flex min-h-screen max-w-[1200px] flex-col px-6 py-12">
         <header className="mb-16 mt-8 border-b border-blue-500/20 pb-8">
           <Link
-            href="/formal-science/mathematics/algebra"
+            href={parent?.href ?? "/formal-science/mathematics/algebra"}
             className="group mb-8 flex w-max items-center gap-2 rounded-full border border-blue-500/30 bg-black/50 px-4 py-2 text-[10px] uppercase tracking-widest text-blue-400 backdrop-blur-sm transition-colors hover:text-white"
           >
-            <ArrowLeft size={12} className="transition-transform group-hover:-translate-x-1" /> Return to Algebra
+            <ArrowLeft size={12} className="transition-transform group-hover:-translate-x-1" /> Return to {parent?.label ?? "Algebra"}
           </Link>
 
           <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
@@ -203,7 +204,6 @@ export default function PreAlgebraPage() {
                 title="Pre-Algebra Checkpoint"
                 questions={preAlgebraQuiz || []}
                 accentColor="blue"
-                onComplete={(score, total) => console.log(`Pre-Algebra Quiz Scored: ${score}/${total}`)}
               />
             </div>
           </div>
