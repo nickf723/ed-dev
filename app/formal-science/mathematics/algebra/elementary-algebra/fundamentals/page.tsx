@@ -39,6 +39,11 @@ if (FUNDAMENTALS_CONTEXT.pageKind !== "unit") {
   throw new Error("Algebra Fundamentals must be classified as a curriculum unit.");
 }
 
+const FUNDAMENTALS_BREADCRUMBS = FUNDAMENTALS_CONTEXT.breadcrumbs.map(
+  (crumb, index, breadcrumbs) =>
+    index === breadcrumbs.length - 1 ? { ...crumb, label: "Fundamentals" } : crumb,
+);
+
 const PRESENTATION: Record<string, LessonPresentation> = {
   "formal.mathematics.algebra.elementary-algebra.fundamentals.expressions-variables": {
     icon: Braces,
@@ -103,17 +108,7 @@ export default function FundamentalsPage() {
 
       <div className="relative z-10 mx-auto w-full max-w-[1460px] px-4 py-4 sm:px-6 xl:px-8 xl:py-5">
         <DomainPageHeader
-          breadcrumbs={[
-            { label: "Home", href: "/" },
-            { label: "Formal Sciences", href: "/formal-science" },
-            { label: "Mathematics", href: "/formal-science/mathematics" },
-            { label: "Algebra", href: "/formal-science/mathematics/algebra" },
-            {
-              label: "Integrated Algebra",
-              href: "/formal-science/mathematics/algebra/elementary-algebra",
-            },
-            { label: "Fundamentals" },
-          ]}
+          breadcrumbs={FUNDAMENTALS_BREADCRUMBS}
           eyebrow="Read · Relate · Rewrite · Locate"
           icon={Hash}
           title={<span>Algebra Fundamentals</span>}
