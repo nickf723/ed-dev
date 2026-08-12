@@ -4,6 +4,7 @@ import { GROUP_THEORY_CURRICULUM } from "@/lib/curriculum/group-theory";
 import { LOGIC_CURRICULUM } from "@/lib/curriculum/logic";
 import { CURRICULUM_NODE_METADATA } from "@/lib/curriculum/metadata";
 import { BIOLOGY_CURRICULUM } from "@/lib/curriculum/natural/biology";
+import { normalizeCurriculumPath } from "@/lib/curriculum/route";
 import { CURRICULUM_DOMAINS } from "@/lib/curriculum/tree";
 import type {
   CurriculumDomain,
@@ -165,7 +166,9 @@ function flatten(nodes: readonly CurriculumNode[]): CurriculumNode[] {
 
 const nodes = curriculumDomains.flatMap((domain) => flatten(domain.children));
 const byId = new Map(nodes.map((node) => [node.id, node]));
-const byHref = new Map(nodes.map((node) => [node.href, node]));
+const byHref = new Map(
+  nodes.map((node) => [normalizeCurriculumPath(node.href), node]),
+);
 const parentById = new Map<string, CurriculumNode>();
 
 function indexParents(parent: CurriculumNode) {
@@ -221,7 +224,10 @@ function validatePrerequisites() {
 }
 
 assertUnique(nodes.map((node) => node.id), "id");
-assertUnique(nodes.map((node) => node.href), "href");
+assertUnique(
+  nodes.map((node) => normalizeCurriculumPath(node.href)),
+  "href",
+);
 validatePrerequisites();
 
 export const curriculumRegistry = {
@@ -242,7 +248,7 @@ export const curriculumRegistry = {
   },
 
   getNodeByHref(href: string): CurriculumNode | undefined {
-    return byHref.get(href);
+    return byHref.get(normalizeCurriculumPath(href));
   },
 
   parentFor(id: string): CurriculumNode | undefined {

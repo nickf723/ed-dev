@@ -2,7 +2,7 @@
 
 import { createContext, useContext, type ReactNode } from "react";
 import { usePathname } from "next/navigation";
-import { normalizeCurriculumHref } from "@/lib/curriculum/route";
+import { normalizeCurriculumPath } from "@/lib/curriculum/route";
 import type { PagePolicy } from "@/lib/page-policy";
 import type { PagePolicyRouteSnapshot } from "@/lib/page-policy-snapshot";
 
@@ -29,7 +29,7 @@ export default function PagePolicyProvider({
   children,
   routePolicies,
 }: PagePolicyProviderProps) {
-  const pathname = normalizeCurriculumHref(usePathname());
+  const pathname = normalizeCurriculumPath(usePathname());
   const resolved = routePolicies[pathname];
   const value: PagePolicyContextValue = resolved
     ? {

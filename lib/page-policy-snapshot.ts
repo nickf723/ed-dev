@@ -1,4 +1,4 @@
-import { normalizeCurriculumHref } from "@/lib/curriculum/route";
+import { normalizeCurriculumPath } from "@/lib/curriculum/route";
 import { curriculumRegistry } from "@/lib/curriculum/registry";
 import { DOMAIN_BY_ID, type DomainId } from "@/lib/domains";
 import {
@@ -32,7 +32,7 @@ export function buildPagePolicyRouteSnapshot(): PagePolicyRouteSnapshot {
       const domain = DOMAIN_BY_ID[domainId];
       return [
         [
-          normalizeCurriculumHref(domain.href),
+          normalizeCurriculumPath(domain.href),
           { pageLabel: domain.title, policy },
         ] as const,
       ];
@@ -45,7 +45,7 @@ export function buildPagePolicyRouteSnapshot(): PagePolicyRouteSnapshot {
       throw new Error(`Page policy references unknown curriculum node ${nodeId}`);
     }
     return [
-      normalizeCurriculumHref(node.href),
+      normalizeCurriculumPath(node.href),
       { curriculumNodeId: nodeId, pageLabel: node.label, policy },
     ] as const;
   });
