@@ -1,9 +1,6 @@
-import { ALGEBRA_CURRICULUM } from "@/lib/curriculum/algebra";
-import { COMPUTER_SCIENCE_CURRICULUM } from "@/lib/curriculum/computer-science";
-import { GROUP_THEORY_CURRICULUM } from "@/lib/curriculum/group-theory";
-import { LOGIC_CURRICULUM } from "@/lib/curriculum/logic";
+import { CURRICULUM_MODULES } from "@/lib/curriculum/manifest";
 import { CURRICULUM_NODE_METADATA } from "@/lib/curriculum/metadata";
-import { BIOLOGY_CURRICULUM } from "@/lib/curriculum/natural/biology";
+import { normalizeCurriculumPath } from "@/lib/curriculum/route";
 import { CURRICULUM_DOMAINS } from "@/lib/curriculum/tree";
 import type {
   CurriculumDomain,
@@ -29,14 +26,6 @@ function applyMetadata(nodes: readonly CurriculumNode[]): readonly CurriculumNod
     children: node.children ? applyMetadata(node.children) : undefined,
   }));
 }
-
-const curriculumReplacements = [
-  ALGEBRA_CURRICULUM,
-  GROUP_THEORY_CURRICULUM,
-  LOGIC_CURRICULUM,
-  COMPUTER_SCIENCE_CURRICULUM,
-  BIOLOGY_CURRICULUM,
-] as const;
 
 const domainRootAdditions: Partial<
   Record<CurriculumDomain["domainId"], readonly CurriculumNode[]>
@@ -106,45 +95,6 @@ const nodeChildAdditions: Record<string, readonly CurriculumNode[]> = {
       status: "placeholder",
     },
   ],
-  "formal.mathematics.algebra.elementary-algebra.fundamentals": [
-    {
-      id: "formal.mathematics.algebra.elementary-algebra.fundamentals.expressions-variables",
-      label: "Expressions & Variables",
-      href: "/formal-science/mathematics/algebra/elementary-algebra/fundamentals/expressions-variables",
-      description: "Read algebraic expressions structurally: signed terms, coefficients, variables, constants, and exponents.",
-      domainId: "formal",
-    },
-    {
-      id: "formal.mathematics.algebra.elementary-algebra.fundamentals.equality-equations",
-      label: "Equality & Equations",
-      href: "/formal-science/mathematics/algebra/elementary-algebra/fundamentals/equality-equations",
-      description: "Understand equality as a preserved relationship and distinguish expressions from equations and solution sets.",
-      domainId: "formal",
-    },
-    {
-      id: "formal.mathematics.algebra.elementary-algebra.fundamentals.algebraic-properties",
-      label: "Algebraic Properties",
-      href: "/formal-science/mathematics/algebra/elementary-algebra/fundamentals/algebraic-properties",
-      description: "Use commutative, associative, distributive, identity, and inverse properties as precise rewrite rules.",
-      domainId: "formal",
-    },
-    {
-      id: "formal.mathematics.algebra.elementary-algebra.fundamentals.number-systems",
-      label: "Number Systems",
-      href: "/formal-science/mathematics/algebra/elementary-algebra/fundamentals/number-systems",
-      description: "Place natural, integer, rational, irrational, and real values inside the real-number hierarchy.",
-      domainId: "formal",
-    },
-  ],
-  "formal.mathematics.algebra.elementary-algebra.inequalities": [
-    {
-      id: "formal.mathematics.algebra.elementary-algebra.inequalities.systems",
-      label: "Systems of Inequalities",
-      href: "/formal-science/mathematics/algebra/elementary-algebra/inequalities/systems",
-      description: "Graph multiple linear inequalities and identify the intersection of their feasible regions.",
-      domainId: "formal",
-    },
-  ],
 };
 
 function appendMissingRoots(domain: CurriculumDomain): readonly CurriculumNode[] {
@@ -177,19 +127,18 @@ function appendMissingChildren(nodes: readonly CurriculumNode[]): readonly Curri
 
 function composeCurriculum(nodes: readonly CurriculumNode[]): readonly CurriculumNode[] {
   const withMetadata = applyMetadata(nodes);
-  const withReplacements = curriculumReplacements.reduce<readonly CurriculumNode[]>(
+  const withModules = CURRICULUM_MODULES.reduce<readonly CurriculumNode[]>(
     (current, replacement) => replaceNode(current, replacement),
     withMetadata,
   );
-  return appendMissingChildren(withReplacements);
+  return appendMissingChildren(withModules);
 }
 
 /**
  * Dense curriculum branches can live in focused modules while still composing
- * into one validated registry. `tree.ts` remains the broad academic map; this
- * composition layer swaps in richer subtrees as they are migrated and can also
- * restore live roots and child routes that have not yet been migrated into the
- * broad tree.
+ * into one validated registry. `tree.ts` remains the broad academic map; the
+ * module manifest swaps in richer subtrees as they migrate and root/child
+ * additions remain temporary compatibility scaffolding for untouched branches.
  */
 const curriculumDomains: readonly CurriculumDomain[] = CURRICULUM_DOMAINS.map(
   (domain) => ({
@@ -204,7 +153,9 @@ function flatten(nodes: readonly CurriculumNode[]): CurriculumNode[] {
 
 const nodes = curriculumDomains.flatMap((domain) => flatten(domain.children));
 const byId = new Map(nodes.map((node) => [node.id, node]));
-const byHref = new Map(nodes.map((node) => [node.href, node]));
+const byHref = new Map(
+  nodes.map((node) => [normalizeCurriculumPath(node.href), node]),
+);
 const parentById = new Map<string, CurriculumNode>();
 
 function indexParents(parent: CurriculumNode) {
@@ -260,7 +211,10 @@ function validatePrerequisites() {
 }
 
 assertUnique(nodes.map((node) => node.id), "id");
-assertUnique(nodes.map((node) => node.href), "href");
+assertUnique(
+  nodes.map((node) => normalizeCurriculumPath(node.href)),
+  "href",
+);
 validatePrerequisites();
 
 export const curriculumRegistry = {
@@ -281,7 +235,7 @@ export const curriculumRegistry = {
   },
 
   getNodeByHref(href: string): CurriculumNode | undefined {
-    return byHref.get(href);
+    return byHref.get(normalizeCurriculumPath(href));
   },
 
   parentFor(id: string): CurriculumNode | undefined {

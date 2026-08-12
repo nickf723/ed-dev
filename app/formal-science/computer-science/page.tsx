@@ -1,6 +1,3 @@
-"use client";
-
-import React from "react";
 import { ComputerScienceBackground } from "./ComputerScienceBackground";
 import { DashboardCard } from "@/app/_components/ui/DashboardCard";
 import {
@@ -13,24 +10,30 @@ import {
   ShieldCheck,
   Terminal,
 } from "lucide-react";
-import { curriculumRegistry } from "@/lib/curriculum/registry";
+import { requireCurriculumPageContext } from "@/lib/curriculum/page-context";
+import type { CurriculumNode } from "@/lib/curriculum/types";
 
-function requireComputerScienceNode(id: string) {
-  const node = curriculumRegistry.getNode(id);
-  if (!node) throw new Error(`Computer Science curriculum node ${id} is missing from the registry.`);
-  return node;
+function requireChild(children: readonly CurriculumNode[], id: string): CurriculumNode {
+  const child = children.find((node) => node.id === id);
+  if (!child) throw new Error(`Computer Science curriculum child ${id} is missing.`);
+  return child;
 }
 
-const HARDWARE = requireComputerScienceNode("formal.computer-science.hardware");
-const SOFTWARE = requireComputerScienceNode("formal.computer-science.software");
-const ALGORITHMS = requireComputerScienceNode("formal.computer-science.algorithms");
-const AI = requireComputerScienceNode("formal.computer-science.artificial-intelligence");
-const THEORY = requireComputerScienceNode("formal.computer-science.theory");
-const SECURITY = requireComputerScienceNode("formal.computer-science.security");
-
 export default function ComputerScienceHub() {
+  const context = requireCurriculumPageContext("formal.computer-science");
+  if (context.pageKind !== "hub") {
+    throw new Error("Computer Science must be classified as a curriculum hub.");
+  }
+
+  const hardware = requireChild(context.children, "formal.computer-science.hardware");
+  const software = requireChild(context.children, "formal.computer-science.software");
+  const algorithms = requireChild(context.children, "formal.computer-science.algorithms");
+  const ai = requireChild(context.children, "formal.computer-science.artificial-intelligence");
+  const theory = requireChild(context.children, "formal.computer-science.theory");
+  const security = requireChild(context.children, "formal.computer-science.security");
+
   return (
-    <div className="p-8 md:p-12 min-h-screen space-y-12 animate-in fade-in duration-500 font-mono">
+    <main className="p-8 md:p-12 min-h-screen space-y-12 animate-in fade-in duration-500 font-mono">
       <ComputerScienceBackground />
 
       <header className="border-b border-emerald-500/30 pb-8 relative">
@@ -58,7 +61,7 @@ export default function ComputerScienceHub() {
         <DashboardCard
           title="Hardware_Arch"
           icon={Cpu}
-          href={HARDWARE.href}
+          href={hardware.href}
           accentColor="emerald"
           className="lg:col-span-2 lg:row-span-2 bg-black/60 border-emerald-500/30"
         >
@@ -80,7 +83,7 @@ export default function ComputerScienceHub() {
         <DashboardCard
           title="Source_Code"
           icon={Code2}
-          href={SOFTWARE.href}
+          href={software.href}
           accentColor="cyan"
           className="bg-black/60"
         >
@@ -94,7 +97,7 @@ export default function ComputerScienceHub() {
         <DashboardCard
           title="Algos & Data"
           icon={Binary}
-          href={ALGORITHMS.href}
+          href={algorithms.href}
           accentColor="purple"
           className="bg-black/60"
         >
@@ -104,7 +107,7 @@ export default function ComputerScienceHub() {
         <DashboardCard
           title="Neural_Net"
           icon={BrainCircuit}
-          href={AI.href}
+          href={ai.href}
           accentColor="orange"
           className="bg-black/60"
         >
@@ -119,7 +122,7 @@ export default function ComputerScienceHub() {
         <DashboardCard
           title="Comp_Theory"
           icon={Layers}
-          href={THEORY.href}
+          href={theory.href}
           accentColor="slate"
           className="bg-black/60"
         >
@@ -129,7 +132,7 @@ export default function ComputerScienceHub() {
         <DashboardCard
           title="Net_Sec"
           icon={ShieldCheck}
-          href={SECURITY.href}
+          href={security.href}
           accentColor="emerald"
           className="lg:col-span-2 bg-emerald-950/10 border-emerald-500/20"
         >
@@ -144,6 +147,6 @@ export default function ComputerScienceHub() {
           </div>
         </DashboardCard>
       </div>
-    </div>
+    </main>
   );
 }
