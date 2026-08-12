@@ -120,7 +120,7 @@ export const PAGE_POLICY_BY_NODE_ID: Readonly<Record<string, Readonly<PagePolicy
     vocabularyTrigger: "local",
   },
   "formal.mathematics.algebra.elementary-algebra.inequalities.systems": {
-    vocabularyTrigger: "none",
+    vocabularyTrigger: "local",
   },
 };
 
