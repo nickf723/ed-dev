@@ -106,45 +106,6 @@ const nodeChildAdditions: Record<string, readonly CurriculumNode[]> = {
       status: "placeholder",
     },
   ],
-  "formal.mathematics.algebra.elementary-algebra.fundamentals": [
-    {
-      id: "formal.mathematics.algebra.elementary-algebra.fundamentals.expressions-variables",
-      label: "Expressions & Variables",
-      href: "/formal-science/mathematics/algebra/elementary-algebra/fundamentals/expressions-variables",
-      description: "Read algebraic expressions structurally: signed terms, coefficients, variables, constants, and exponents.",
-      domainId: "formal",
-    },
-    {
-      id: "formal.mathematics.algebra.elementary-algebra.fundamentals.equality-equations",
-      label: "Equality & Equations",
-      href: "/formal-science/mathematics/algebra/elementary-algebra/fundamentals/equality-equations",
-      description: "Understand equality as a preserved relationship and distinguish expressions from equations and solution sets.",
-      domainId: "formal",
-    },
-    {
-      id: "formal.mathematics.algebra.elementary-algebra.fundamentals.algebraic-properties",
-      label: "Algebraic Properties",
-      href: "/formal-science/mathematics/algebra/elementary-algebra/fundamentals/algebraic-properties",
-      description: "Use commutative, associative, distributive, identity, and inverse properties as precise rewrite rules.",
-      domainId: "formal",
-    },
-    {
-      id: "formal.mathematics.algebra.elementary-algebra.fundamentals.number-systems",
-      label: "Number Systems",
-      href: "/formal-science/mathematics/algebra/elementary-algebra/fundamentals/number-systems",
-      description: "Place natural, integer, rational, irrational, and real values inside the real-number hierarchy.",
-      domainId: "formal",
-    },
-  ],
-  "formal.mathematics.algebra.elementary-algebra.inequalities": [
-    {
-      id: "formal.mathematics.algebra.elementary-algebra.inequalities.systems",
-      label: "Systems of Inequalities",
-      href: "/formal-science/mathematics/algebra/elementary-algebra/inequalities/systems",
-      description: "Graph multiple linear inequalities and identify the intersection of their feasible regions.",
-      domainId: "formal",
-    },
-  ],
 };
 
 function appendMissingRoots(domain: CurriculumDomain): readonly CurriculumNode[] {
