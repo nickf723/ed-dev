@@ -101,7 +101,10 @@ export const PAGE_POLICY_BY_NODE_ID: Readonly<Record<string, Readonly<PagePolicy
   "formal.mathematics.algebra.elementary-algebra.fundamentals.expressions-variables": {
     vocabularyTrigger: "local",
   },
-  "formal.mathematics.algebra.elementary-algebra.fundamentals.equality-equations": {
+  "formal.mathematics.algebra.elementary-algebra.fundamentals.one-step-equations": {
+    vocabularyTrigger: "local",
+  },
+  "formal.mathematics.algebra.elementary-algebra.fundamentals.two-step-equations": {
     vocabularyTrigger: "local",
   },
   "formal.mathematics.algebra.elementary-algebra.fundamentals.algebraic-properties": {

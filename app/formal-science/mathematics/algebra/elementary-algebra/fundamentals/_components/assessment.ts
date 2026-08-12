@@ -12,21 +12,21 @@ export const fundamentalsQuiz: AssessmentQuestion[] = [
       'Rationals (ℚ)': '1/2, 0.75, -4.5',
       'Irrationals': 'π, √2, non-repeating'
     },
-    explanation: 'Integers are whole numbers and their negatives. Rationals are any number that can be written as a fraction. Irrationals go on forever without repeating.'
+    explanation: 'Integers are whole numbers and their negatives. Rationals can be written as fractions of integers. Irrationals cannot be written as ratios of integers.'
   },
   {
     id: 'f2',
     type: 'mcq',
-    prompt: 'Using the Order of Operations, evaluate: 10 - 2 × 3 + 1',
-    options: ['25', '5', '11', '15'],
-    correctAnswer: '5',
-    explanation: 'Multiplication comes first: 2 × 3 = 6. Then addition and subtraction are evaluated left to right: 10 - 6 = 4, and 4 + 1 = 5.'
+    prompt: 'Solve: 2x + 6 = 14',
+    options: ['4', '8', '10', '16'],
+    correctAnswer: '4',
+    explanation: 'Subtract 6 from both sides to get 2x = 8, then divide both sides by 2 to get x = 4.'
   },
   {
     id: 'f3',
     type: 'tf',
     prompt: 'True or False: A variable acts as a permanent label for one specific, unchanging number.',
     correctAnswer: false,
-    explanation: 'False. A variable is a placeholder or a "container". It can represent an unknown number we need to find, or a value that changes depending on the equation.'
+    explanation: 'False. A variable can represent an unknown value, a changing value, or a generalized value depending on the context.'
   }
 ];

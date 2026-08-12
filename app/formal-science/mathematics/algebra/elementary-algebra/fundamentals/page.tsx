@@ -53,18 +53,26 @@ const PRESENTATION: Record<string, LessonPresentation> = {
     specimen: "3x² − 2x + 5",
     outcome: "Identify signed terms, coefficients, variables, exponents, and constants.",
   },
-  "formal.mathematics.algebra.elementary-algebra.fundamentals.equality-equations": {
+  "formal.mathematics.algebra.elementary-algebra.fundamentals.one-step-equations": {
     icon: Scale,
     rgb: "34, 211, 238",
     step: "02",
-    thesis: "An equation is a claim that two expressions share a value.",
+    thesis: "Undo one operation while keeping both sides equal.",
+    specimen: "x + 6 = 14",
+    outcome: "Solve one-step equations with inverse operations and preserve equality.",
+  },
+  "formal.mathematics.algebra.elementary-algebra.fundamentals.two-step-equations": {
+    icon: Equal,
+    rgb: "96, 165, 250",
+    step: "03",
+    thesis: "Peel away operations one layer at a time.",
     specimen: "2x + 6 = 14",
-    outcome: "Distinguish expressions from equations and preserve a solution set while solving.",
+    outcome: "Solve two-step equations by undoing the outer layer, then the inner layer.",
   },
   "formal.mathematics.algebra.elementary-algebra.fundamentals.algebraic-properties": {
     icon: RefreshCcw,
     rgb: "129, 140, 248",
-    step: "03",
+    step: "04",
     thesis: "Properties are permissions for changing form without changing value.",
     specimen: "a(b + c) = ab + ac",
     outcome: "Use commutative, associative, distributive, identity, and inverse rules precisely.",
@@ -72,7 +80,7 @@ const PRESENTATION: Record<string, LessonPresentation> = {
   "formal.mathematics.algebra.elementary-algebra.fundamentals.number-systems": {
     icon: Hash,
     rgb: "251, 191, 36",
-    step: "04",
+    step: "05",
     thesis: "Every algebra problem lives inside a universe of allowable values.",
     specimen: "ℕ ⊂ ℤ ⊂ ℚ ⊂ ℝ",
     outcome: "Place natural, integer, rational, irrational, and real values inside the real-number hierarchy.",
@@ -96,6 +104,7 @@ function buildLessons(): Lesson[] {
 }
 
 const LESSONS = buildLessons();
+const LESSON_TOTAL = String(LESSONS.length).padStart(2, "0");
 
 export default function FundamentalsPage() {
   return (
@@ -109,10 +118,10 @@ export default function FundamentalsPage() {
       <div className="relative z-10 mx-auto w-full max-w-[1460px] px-4 py-4 sm:px-6 xl:px-8 xl:py-5">
         <DomainPageHeader
           breadcrumbs={FUNDAMENTALS_BREADCRUMBS}
-          eyebrow="Read · Relate · Rewrite · Locate"
+          eyebrow="Read · Isolate · Solve · Rewrite · Locate"
           icon={Hash}
           title={<span>Algebra Fundamentals</span>}
-          subtitle="A four-lesson unit on the grammar beneath algebra: what symbolic expressions contain, what equality asserts, which rewrites are legal, and which real numbers are available."
+          subtitle="A five-lesson unit on the grammar beneath algebra: how expressions are built, how equations are solved one layer at a time, which rewrites are legal, and which real numbers are available."
           accentRgb="52, 211, 153"
           titleClassName="font-mono text-[clamp(2.8rem,5vw,5.2rem)] font-semibold uppercase leading-[0.84] tracking-[-0.06em] text-[#f4fff9]"
           iconClassName="rounded-[16px]"
@@ -132,23 +141,25 @@ export default function FundamentalsPage() {
               <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-emerald-300/70">Unit throughline</div>
               <h2 className="mt-2 text-[26px] font-semibold tracking-[-0.035em] text-white">Algebra changes form without losing meaning.</h2>
               <p className="mt-3 text-[14px] leading-6 text-stone-400">
-                Before graphing lines or solving systems, you need to know what the symbols mean and which transformations preserve the relationship they describe. These four lessons build that grammar in order.
+                First read the structure. Then isolate a variable in one move, build up to two moves, justify the transformations you use, and keep track of which numbers are allowed. These five lessons build that grammar in order.
               </p>
               <div className="mt-4 rounded-[16px] border border-white/[0.05] bg-white/[0.012] px-4 py-3">
-                <div className="font-mono text-[15px] text-stone-300">
+                <div className="font-mono text-[14px] text-stone-300">
                   <span className="text-emerald-300">3x + 5</span>
                   <span className="mx-2 text-stone-700">→</span>
-                  <span className="text-cyan-300">3x + 5 = 20</span>
+                  <span className="text-cyan-300">x + 6 = 14</span>
                   <span className="mx-2 text-stone-700">→</span>
-                  <span className="text-indigo-300">3x = 15</span>
+                  <span className="text-blue-300">2x + 6 = 14</span>
                   <span className="mx-2 text-stone-700">→</span>
-                  <span className="text-amber-300">x = 5</span>
+                  <span className="text-indigo-300">legal rewrites</span>
+                  <span className="mx-2 text-stone-700">→</span>
+                  <span className="text-amber-300">x ∈ ℝ</span>
                 </div>
-                <p className="mt-2 text-[11px] leading-5 text-stone-600">Expression → equation → equivalent rewrite → real-number solution.</p>
+                <p className="mt-2 text-[11px] leading-5 text-stone-600">Structure → one-step solve → two-step solve → rewrite rules → number systems.</p>
               </div>
             </div>
 
-            <div className="grid gap-2 sm:grid-cols-4">
+            <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-5">
               {LESSONS.map((lesson) => {
                 const Icon = lesson.icon;
                 return (
@@ -159,7 +170,7 @@ export default function FundamentalsPage() {
                       </span>
                       <span className="font-mono text-[10px] font-semibold text-stone-700">{lesson.step}</span>
                     </div>
-                    <div className="mt-3 text-[12px] font-semibold text-stone-300">{lesson.label}</div>
+                    <div className="mt-3 text-[12px] font-semibold leading-4 text-stone-300">{lesson.label}</div>
                     <div className="mt-1 font-mono text-[10px]" style={{ color: `rgba(${lesson.rgb},0.70)` }}>{lesson.specimen}</div>
                   </div>
                 );
@@ -193,7 +204,7 @@ export default function FundamentalsPage() {
                       <span className="flex h-12 w-12 items-center justify-center rounded-[14px] border" style={{ color: `rgb(${lesson.rgb})`, borderColor: `rgba(${lesson.rgb},0.25)`, background: `rgba(${lesson.rgb},0.055)` }}>
                         <Icon size={21} strokeWidth={1.5} />
                       </span>
-                      <span className="font-mono text-[11px] font-semibold" style={{ color: `rgba(${lesson.rgb},0.55)` }}>{lesson.step} / 04</span>
+                      <span className="font-mono text-[11px] font-semibold" style={{ color: `rgba(${lesson.rgb},0.55)` }}>{lesson.step} / {LESSON_TOTAL}</span>
                     </div>
 
                     <div className="mt-5">
@@ -220,7 +231,7 @@ export default function FundamentalsPage() {
           <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-4 py-3.5">
             <div>
               <div className="text-[10px] font-semibold uppercase tracking-[0.15em] text-emerald-300/65">Unit checkpoint</div>
-              <p className="mt-1 text-[12px] text-stone-500">A short check spanning variables, operation grammar, and real-number systems.</p>
+              <p className="mt-1 text-[12px] text-stone-500">A short check spanning variables, equation solving, and real-number systems.</p>
             </div>
             <span className="rounded-lg border border-emerald-300/[0.11] bg-emerald-400/[0.03] px-3 py-2 text-[11px] font-semibold text-emerald-200/70 group-open:hidden">Open check</span>
           </summary>

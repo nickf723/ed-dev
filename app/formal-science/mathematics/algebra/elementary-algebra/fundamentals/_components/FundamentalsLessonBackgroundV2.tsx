@@ -2,7 +2,8 @@
 
 export type FundamentalsLessonKey =
   | "expressions-variables"
-  | "equality-equations"
+  | "one-step-equations"
+  | "two-step-equations"
   | "algebraic-properties"
   | "number-systems";
 
@@ -12,7 +13,8 @@ export default function FundamentalsLessonBackgroundV2({
   lesson: FundamentalsLessonKey;
 }) {
   if (lesson === "expressions-variables") return <ExpressionField />;
-  if (lesson === "equality-equations") return <EqualityField />;
+  if (lesson === "one-step-equations") return <EqualityField mode="one-step" />;
+  if (lesson === "two-step-equations") return <EqualityField mode="two-step" />;
   if (lesson === "algebraic-properties") return <PropertyField />;
   return <NumberField />;
 }
@@ -43,22 +45,31 @@ function ExpressionField() {
   );
 }
 
-function EqualityField() {
+function EqualityField({ mode }: { mode: "one-step" | "two-step" }) {
+  const oneStep = mode === "one-step";
+  const leftExpression = oneStep ? "x+6" : "2x+6";
+
   return (
     <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden" aria-hidden="true">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_42%,rgba(34,211,238,0.16),transparent_28%),radial-gradient(circle_at_18%_78%,rgba(244,114,182,0.08),transparent_30%),linear-gradient(to_bottom,rgba(3,21,27,0.16),rgba(1,9,14,0.84))]" />
+      <div
+        className={
+          oneStep
+            ? "absolute inset-0 bg-[radial-gradient(circle_at_50%_42%,rgba(34,211,238,0.16),transparent_28%),radial-gradient(circle_at_18%_78%,rgba(52,211,153,0.07),transparent_30%),linear-gradient(to_bottom,rgba(3,21,27,0.16),rgba(1,9,14,0.84))]"
+            : "absolute inset-0 bg-[radial-gradient(circle_at_50%_42%,rgba(96,165,250,0.17),transparent_28%),radial-gradient(circle_at_18%_78%,rgba(192,132,252,0.08),transparent_30%),linear-gradient(to_bottom,rgba(4,17,31,0.18),rgba(1,8,16,0.86))]"
+        }
+      />
       <svg viewBox="0 0 1200 800" className="absolute inset-0 h-full w-full opacity-70">
         <g className="fund-balance">
-          <line x1="300" y1="370" x2="900" y2="370" stroke="rgba(103,232,249,0.16)" strokeWidth="4" strokeLinecap="round" />
-          <line x1="600" y1="370" x2="600" y2="610" stroke="rgba(103,232,249,0.10)" strokeWidth="3" />
-          <path d="M530 610 L670 610 L600 520 Z" fill="rgba(34,211,238,0.035)" stroke="rgba(103,232,249,0.10)" />
-          <circle cx="350" cy="310" r="70" fill="rgba(34,211,238,0.025)" stroke="rgba(103,232,249,0.12)" />
+          <line x1="300" y1="370" x2="900" y2="370" stroke={oneStep ? "rgba(103,232,249,0.16)" : "rgba(147,197,253,0.17)"} strokeWidth="4" strokeLinecap="round" />
+          <line x1="600" y1="370" x2="600" y2="610" stroke={oneStep ? "rgba(103,232,249,0.10)" : "rgba(147,197,253,0.10)"} strokeWidth="3" />
+          <path d="M530 610 L670 610 L600 520 Z" fill={oneStep ? "rgba(34,211,238,0.035)" : "rgba(96,165,250,0.035)"} stroke={oneStep ? "rgba(103,232,249,0.10)" : "rgba(147,197,253,0.10)"} />
+          <circle cx="350" cy="310" r="70" fill={oneStep ? "rgba(34,211,238,0.025)" : "rgba(96,165,250,0.026)"} stroke={oneStep ? "rgba(103,232,249,0.12)" : "rgba(147,197,253,0.12)"} />
           <circle cx="850" cy="310" r="70" fill="rgba(244,114,182,0.022)" stroke="rgba(244,114,182,0.10)" />
-          <text x="285" y="322" fill="rgba(165,243,252,0.18)" fontSize="34" fontFamily="monospace">2x+6</text>
+          <text x={oneStep ? "300" : "285"} y="322" fill={oneStep ? "rgba(165,243,252,0.18)" : "rgba(191,219,254,0.19)"} fontSize="34" fontFamily="monospace">{leftExpression}</text>
           <text x="822" y="322" fill="rgba(251,207,232,0.17)" fontSize="34" fontFamily="monospace">14</text>
         </g>
-        <text className="fund-equals-pulse" x="548" y="260" fill="rgba(110,231,183,0.11)" fontSize="150" fontFamily="monospace">=</text>
-        <line x1="0" y1="650" x2="1200" y2="650" stroke="rgba(34,211,238,0.045)" />
+        <text className="fund-equals-pulse" x="548" y="260" fill={oneStep ? "rgba(110,231,183,0.11)" : "rgba(192,132,252,0.11)"} fontSize="150" fontFamily="monospace">=</text>
+        <line x1="0" y1="650" x2="1200" y2="650" stroke={oneStep ? "rgba(34,211,238,0.045)" : "rgba(96,165,250,0.05)"} />
       </svg>
       <BackgroundAnimationStyles />
     </div>

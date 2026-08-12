@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState, type ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import {
   ArrowLeft,
   ArrowRight,
@@ -13,7 +13,6 @@ import {
   RefreshCcw,
   Scale,
   Sparkles,
-  X,
   type LucideIcon,
 } from "lucide-react";
 import Assessment, { type AssessmentQuestion } from "@/app/_components/Assessment";
@@ -48,6 +47,7 @@ type LessonMeta = {
 };
 
 type ExpressionPart = "term" | "coefficient" | "variable" | "exponent" | "constant";
+type EquationLessonKey = "one-step-equations" | "two-step-equations";
 type PropertyId = "commutative" | "associative" | "distributive" | "identity" | "inverse";
 type NumberSetId = "natural" | "integer" | "rational" | "irrational" | "real";
 
@@ -62,18 +62,28 @@ const META: Record<FundamentalsLessonKey, LessonMeta> = {
     base: "#031912",
     icon: Braces,
   },
-  "equality-equations": {
+  "one-step-equations": {
     step: "02",
-    title: "Equality & Equations",
-    eyebrow: "Preserved relationships",
-    subtitle: "Treat equality as a relationship that solving must preserve from one line to the next.",
-    core: "The equal sign says two expressions have the same value.",
+    title: "Solving One-Step Equations",
+    eyebrow: "Undo one operation",
+    subtitle: "Use one inverse operation to isolate the variable while preserving equality on both sides.",
+    core: "A one-step equation hides the variable behind exactly one operation.",
     accent: "34, 211, 238",
     base: "#03151b",
     icon: Scale,
   },
-  "algebraic-properties": {
+  "two-step-equations": {
     step: "03",
+    title: "Solving Two-Step Equations",
+    eyebrow: "Peel back two layers",
+    subtitle: "Work from the outside inward, undoing one operation at a time until the variable is isolated.",
+    core: "A two-step equation is a one-step equation with one extra layer around the variable.",
+    accent: "96, 165, 250",
+    base: "#04111f",
+    icon: Equal,
+  },
+  "algebraic-properties": {
+    step: "04",
     title: "Algebraic Properties",
     eyebrow: "Rewrite permissions",
     subtitle: "Properties explain exactly which rewrites preserve value and where each permission stops working.",
@@ -83,7 +93,7 @@ const META: Record<FundamentalsLessonKey, LessonMeta> = {
     icon: RefreshCcw,
   },
   "number-systems": {
-    step: "04",
+    step: "05",
     title: "Number Systems",
     eyebrow: "Allowed values",
     subtitle: "Place familiar numbers inside a nested hierarchy and use the smallest set that actually describes a value.",
@@ -93,6 +103,8 @@ const META: Record<FundamentalsLessonKey, LessonMeta> = {
     icon: Hash,
   },
 };
+
+const LESSON_TOTAL = String(Object.keys(META).length).padStart(2, "0");
 
 const EXPRESSION_PARTS: Record<ExpressionPart, { label: string; definition: string; example: string; color: string }> = {
   term: { label: "Term", definition: "A top-level piece separated by addition or subtraction. Its sign travels with it.", example: "3x² · −2x · +5", color: "52, 211, 153" },
@@ -132,10 +144,15 @@ const QUIZZES: Record<FundamentalsLessonKey, AssessmentQuestion[]> = {
     { id: "expr-like", type: "multiselect", prompt: "Which terms are like terms with 3x²?", options: ["−5x²", "7x", "x²/2", "4"], correctAnswers: ["−5x²", "x²/2"], explanation: "Like terms must have the same variable part with the same exponents." },
     { id: "expr-term", type: "tf", prompt: "In 4x − 9, the second term is −9.", correctAnswer: true, explanation: "The subtraction sign travels with the following term, so the term is −9." },
   ],
-  "equality-equations": [
-    { id: "eq-meaning", type: "mcq", prompt: "What does 2x + 6 = 14 claim?", options: ["The left side should be calculated first", "Both expressions have the same value for solutions", "14 is always the final answer"], correctAnswer: "Both expressions have the same value for solutions", explanation: "Equality compares values; it is not an instruction arrow." },
-    { id: "eq-transform", type: "tf", prompt: "Subtracting 6 from both sides of 2x + 6 = 14 preserves the solution set.", correctAnswer: true, explanation: "Applying the same reversible operation to both sides preserves equality." },
-    { id: "eq-solve", type: "short_answer", prompt: "Solve 2x + 6 = 14. Enter x.", acceptableAnswers: ["4", "x=4", "x = 4"], explanation: "Subtract 6 to get 2x = 8, then divide by 2." },
+  "one-step-equations": [
+    { id: "one-inverse", type: "mcq", prompt: "What operation isolates x in x + 6 = 14?", options: ["Subtract 6 from both sides", "Add 6 to both sides", "Divide both sides by 6"], correctAnswer: "Subtract 6 from both sides", explanation: "Subtraction undoes the addition of 6 while keeping both sides equal." },
+    { id: "one-balance", type: "tf", prompt: "Dividing both sides of 5x = 20 by 5 preserves the solution.", correctAnswer: true, explanation: "Applying the same reversible operation to both sides creates an equivalent equation." },
+    { id: "one-solve", type: "short_answer", prompt: "Solve x/4 = 3. Enter x.", acceptableAnswers: ["12", "x=12", "x = 12"], explanation: "Multiply both sides by 4 to undo division by 4." },
+  ],
+  "two-step-equations": [
+    { id: "two-first", type: "mcq", prompt: "What is the cleanest first move for 3x + 5 = 20?", options: ["Subtract 5 from both sides", "Divide both sides by 3", "Add 5 to both sides"], correctAnswer: "Subtract 5 from both sides", explanation: "Undo the outer additive layer first, giving 3x = 15." },
+    { id: "two-balance", type: "tf", prompt: "In 2x + 6 = 14, subtracting 6 only from the left side preserves equality.", correctAnswer: false, explanation: "A solving step must preserve the relationship by applying the operation to both sides." },
+    { id: "two-solve", type: "short_answer", prompt: "Solve 2x + 6 = 14. Enter x.", acceptableAnswers: ["4", "x=4", "x = 4"], explanation: "Subtract 6 to get 2x = 8, then divide by 2." },
   ],
   "algebraic-properties": [
     { id: "prop-dist", type: "mcq", prompt: "Which property justifies 4(x + 3) = 4x + 12?", options: ["Commutative", "Distributive", "Identity"], correctAnswer: "Distributive", explanation: "The factor 4 is distributed to every term inside the parentheses." },
@@ -172,13 +189,12 @@ export default function FundamentalsLessonExperience({
           title={<span>{meta.title}</span>}
           subtitle={meta.subtitle}
           accentRgb={meta.accent}
-          titleClassName="font-mono text-[clamp(2.6rem,4.7vw,4.9rem)] font-semibold uppercase leading-[0.86] tracking-[-0.055em] text-[#f7fff9]"
+          titleClassName="font-mono text-[clamp(2.15rem,4.2vw,4.4rem)] font-semibold uppercase leading-[0.88] tracking-[-0.055em] text-[#f7fff9]"
           iconClassName="rounded-[16px]"
           headerClassName="border-white/[0.12]"
         />
 
         <LessonUtilityBar
-          referenceTargetId="fundamentals-reference"
           practiceTargetId="fundamentals-practice"
           vocabulary
           accentRgb={meta.accent}
@@ -194,12 +210,11 @@ export default function FundamentalsLessonExperience({
 
         <div className="mt-4">
           {lesson === "expressions-variables" ? <ExpressionsLesson /> : null}
-          {lesson === "equality-equations" ? <EqualityLesson /> : null}
+          {lesson === "one-step-equations" ? <EquationLesson lesson="one-step-equations" /> : null}
+          {lesson === "two-step-equations" ? <EquationLesson lesson="two-step-equations" /> : null}
           {lesson === "algebraic-properties" ? <PropertiesLesson /> : null}
           {lesson === "number-systems" ? <NumberSystemsLesson /> : null}
         </div>
-
-        <LessonReference lesson={lesson} />
 
         <section id="fundamentals-practice" className="scroll-mt-24 mt-4">
           <details className="group overflow-hidden rounded-[22px] border border-white/[0.09] bg-black/[0.18] backdrop-blur-2xl">
@@ -232,7 +247,8 @@ export default function FundamentalsLessonExperience({
 function LessonOrientation({ lesson }: { lesson: FundamentalsLessonKey }) {
   const content: Record<FundamentalsLessonKey, { label: string; value: string; note: string }> = {
     "expressions-variables": { label: "Persistent object", value: "3x² − 2x + 5", note: "Zoom from the whole expression into its structural layers." },
-    "equality-equations": { label: "Persistent relationship", value: "2x + 6 = 14", note: "Watch the expressions change while equality stays intact." },
+    "one-step-equations": { label: "One hidden layer", value: "x + 6 = 14", note: "One inverse operation exposes x while equality stays intact." },
+    "two-step-equations": { label: "Two hidden layers", value: "2x + 6 = 14", note: "Peel away one operation at a time without changing the solution." },
     "algebraic-properties": { label: "Persistent question", value: "Why is this rewrite legal?", note: "Every move needs a general permission." },
     "number-systems": { label: "Persistent map", value: "ℕ ⊂ ℤ ⊂ ℚ ⊂ ℝ", note: "Classify a value without forgetting the larger sets containing it." },
   };
@@ -286,7 +302,7 @@ function ExpressionsLesson() {
             <h3 className="mt-1 text-[18px] font-semibold text-white">Like terms share the same variable structure.</h3>
           </div>
           <div className="flex gap-2">
-            {[0,1,2].map((step) => <button key={step} type="button" onClick={() => setCombineStep(step)} className={`h-9 min-w-9 rounded-xl border font-mono text-[10px] ${combineStep === step ? "border-cyan-300/[0.28] bg-cyan-400/[0.06] text-cyan-200" : "border-white/[0.06] text-stone-600"}`}>{step + 1}</button>)}
+            {[0, 1, 2].map((step) => <button key={step} type="button" onClick={() => setCombineStep(step)} className={`h-9 min-w-9 rounded-xl border font-mono text-[10px] ${combineStep === step ? "border-cyan-300/[0.28] bg-cyan-400/[0.06] text-cyan-200" : "border-white/[0.06] text-stone-600"}`}>{step + 1}</button>)}
           </div>
         </div>
         <div className="mt-4 min-h-[86px] rounded-[18px] border border-white/[0.06] bg-black/[0.14] px-4 py-5 text-center font-mono text-[clamp(1.1rem,2.2vw,1.55rem)] text-stone-200">{combine[combineStep]}</div>
@@ -308,64 +324,122 @@ function Mark({ children }: { children: ReactNode }) {
   return <span className="rounded-lg bg-emerald-400/[0.10] px-1.5 text-emerald-200 ring-1 ring-emerald-300/[0.18]">{children}</span>;
 }
 
-function EqualityLesson() {
+function EquationLesson({ lesson }: { lesson: EquationLessonKey }) {
+  const oneStep = lesson === "one-step-equations";
+  const accent = oneStep ? "34, 211, 238" : "96, 165, 250";
   const [step, setStep] = useState(0);
-  const [probe, setProbe] = useState(4);
+  const [probe, setProbe] = useState(oneStep ? 8 : 4);
   const [choice, setChoice] = useState<string | null>(null);
-  const states = [
-    { left: "2x + 6", right: "14", op: "Start" },
-    { left: "2x", right: "8", op: "subtract 6 from both sides" },
-    { left: "x", right: "4", op: "divide both sides by 2" },
-  ];
+  const states = oneStep
+    ? [
+        { left: "x + 6", right: "14", op: "Start" },
+        { left: "x", right: "8", op: "subtract 6 from both sides" },
+      ]
+    : [
+        { left: "2x + 6", right: "14", op: "Start" },
+        { left: "2x", right: "8", op: "subtract 6 from both sides" },
+        { left: "x", right: "4", op: "divide both sides by 2" },
+      ];
+  const probes = oneStep ? [7, 8, 9] : [3, 4, 5];
   const state = states[step];
-  const leftValue = step === 0 ? 2 * probe + 6 : step === 1 ? 2 * probe : probe;
-  const rightValue = step === 0 ? 14 : step === 1 ? 8 : 4;
+  const leftValue = oneStep
+    ? step === 0 ? probe + 6 : probe
+    : step === 0 ? 2 * probe + 6 : step === 1 ? 2 * probe : probe;
+  const rightValue = oneStep ? (step === 0 ? 14 : 8) : (step === 0 ? 14 : step === 1 ? 8 : 4);
   const balanced = leftValue === rightValue;
-  const challenges = [
-    { label: "2x = 8", valid: true },
-    { label: "2x = 14", valid: false },
-    { label: "x + 3 = 7", valid: true },
-  ];
+  const challenges = oneStep
+    ? [
+        { label: "x = 8", valid: true },
+        { label: "x = 20", valid: false },
+        { label: "x + 6 = 8", valid: false },
+      ]
+    : [
+        { label: "2x = 8", valid: true },
+        { label: "2x = 14", valid: false },
+        { label: "x + 3 = 7", valid: true },
+      ];
   const selected = challenges.find((item) => item.label === choice);
+  const solution = oneStep ? 8 : 4;
 
   return (
-    <section className="rounded-[28px] border border-cyan-200/[0.12] bg-[#03131a]/48 p-5 backdrop-blur-2xl">
+    <section className="rounded-[28px] border bg-[#03131a]/48 p-5 backdrop-blur-2xl" style={{ borderColor: `rgba(${accent},0.14)` }}>
       <div className="grid gap-5 lg:grid-cols-[minmax(0,1.2fr)_330px]">
         <div>
           <div className="flex items-end justify-between gap-4">
-            <div><div className="text-[9px] font-semibold uppercase tracking-[0.14em] text-cyan-300/70">Equality lab</div><h3 className="mt-1 text-[18px] font-semibold text-white">Change both sides without changing who solves it.</h3></div>
+            <div>
+              <div className="text-[9px] font-semibold uppercase tracking-[0.14em]" style={{ color: `rgba(${accent},0.72)` }}>{oneStep ? "One-step lab" : "Two-step lab"}</div>
+              <h3 className="mt-1 text-[18px] font-semibold text-white">{oneStep ? "Undo the only operation around x." : "Undo the outer operation, then the inner one."}</h3>
+            </div>
             <span className="font-mono text-[10px] text-stone-600">x = {probe}</span>
           </div>
           <div className={`mt-4 rounded-[22px] border p-5 ${balanced ? "border-emerald-300/[0.16]" : "border-rose-300/[0.16]"} bg-black/[0.14]`}>
             <div className="grid grid-cols-[1fr_56px_1fr] items-center gap-3 text-center">
-              <BalanceExpression expression={state.left} value={leftValue} />
+              <BalanceExpression expression={state.left} value={leftValue} accent={accent} />
               <div className={`font-mono text-[42px] ${balanced ? "text-emerald-300" : "text-rose-300"}`}>=</div>
-              <BalanceExpression expression={state.right} value={rightValue} />
+              <BalanceExpression expression={state.right} value={rightValue} accent={accent} />
             </div>
             <div className="mt-4 flex flex-wrap justify-center gap-2">
-              {[3,4,5].map((value) => <button key={value} type="button" onClick={() => setProbe(value)} className={`rounded-xl border px-4 py-2 font-mono text-[11px] ${probe === value ? "border-cyan-300/[0.28] bg-cyan-400/[0.06] text-cyan-200" : "border-white/[0.06] text-stone-600"}`}>x = {value}</button>)}
+              {probes.map((value) => (
+                <button
+                  key={value}
+                  type="button"
+                  onClick={() => setProbe(value)}
+                  className="rounded-xl border px-4 py-2 font-mono text-[11px]"
+                  style={{
+                    color: probe === value ? `rgb(${accent})` : "rgb(120 113 108)",
+                    borderColor: probe === value ? `rgba(${accent},0.30)` : "rgba(255,255,255,0.06)",
+                    background: probe === value ? `rgba(${accent},0.06)` : "transparent",
+                  }}
+                >
+                  x = {value}
+                </button>
+              ))}
             </div>
           </div>
         </div>
         <div className="flex flex-col justify-center gap-2">
-          {states.map((item, index) => <button key={item.op} type="button" onClick={() => setStep(index)} className={`rounded-[16px] border p-3 text-left ${step === index ? "border-cyan-300/[0.24] bg-cyan-400/[0.05]" : "border-white/[0.05] bg-black/[0.10]"}`}><span className="font-mono text-[9px] text-stone-600">0{index + 1}</span><strong className="ml-2 text-[11px] text-stone-300">{item.op}</strong><div className="mt-1.5 font-mono text-[13px] text-cyan-200">{item.left} = {item.right}</div></button>)}
+          {states.map((item, index) => (
+            <button
+              key={item.op}
+              type="button"
+              onClick={() => setStep(index)}
+              className="rounded-[16px] border p-3 text-left"
+              style={{
+                borderColor: step === index ? `rgba(${accent},0.26)` : "rgba(255,255,255,0.05)",
+                background: step === index ? `rgba(${accent},0.05)` : "rgba(0,0,0,0.10)",
+              }}
+            >
+              <span className="font-mono text-[9px] text-stone-600">0{index + 1}</span>
+              <strong className="ml-2 text-[11px] text-stone-300">{item.op}</strong>
+              <div className="mt-1.5 font-mono text-[13px]" style={{ color: `rgb(${accent})` }}>{item.left} = {item.right}</div>
+            </button>
+          ))}
         </div>
       </div>
 
       <div className="mt-5 border-t border-white/[0.06] pt-5">
         <div className="text-[9px] font-semibold uppercase tracking-[0.13em] text-fuchsia-300/70">Equivalent or not?</div>
-        <p className="mt-1 text-[11px] text-stone-500">Starting from 2x + 6 = 14, which new equation keeps exactly the same solution?</p>
+        <p className="mt-1 text-[11px] text-stone-500">Starting from {oneStep ? "x + 6 = 14" : "2x + 6 = 14"}, does this new equation keep the same solution?</p>
         <div className="mt-3 grid gap-2 sm:grid-cols-3">
-          {challenges.map((item) => <button key={item.label} type="button" onClick={() => setChoice(item.label)} className={`rounded-[16px] border px-4 py-4 font-mono text-[14px] ${choice === item.label ? item.valid ? "border-emerald-300/[0.28] bg-emerald-400/[0.05] text-emerald-200" : "border-rose-300/[0.24] bg-rose-400/[0.04] text-rose-200" : "border-white/[0.06] bg-black/[0.10] text-stone-400"}`}>{item.label}</button>)}
+          {challenges.map((item) => (
+            <button
+              key={item.label}
+              type="button"
+              onClick={() => setChoice(item.label)}
+              className={`rounded-[16px] border px-4 py-4 font-mono text-[14px] ${choice === item.label ? item.valid ? "border-emerald-300/[0.28] bg-emerald-400/[0.05] text-emerald-200" : "border-rose-300/[0.24] bg-rose-400/[0.04] text-rose-200" : "border-white/[0.06] bg-black/[0.10] text-stone-400"}`}
+            >
+              {item.label}
+            </button>
+          ))}
         </div>
-        {selected ? <p className={`mt-2 text-[10px] ${selected.valid ? "text-emerald-300" : "text-rose-300"}`}>{selected.valid ? "Equivalent: x = 4 still satisfies this equation." : "Not equivalent: this changes the solution set."}</p> : null}
+        {selected ? <p className={`mt-2 text-[10px] ${selected.valid ? "text-emerald-300" : "text-rose-300"}`}>{selected.valid ? `Equivalent: x = ${solution} still satisfies this equation.` : "Not equivalent: this changes the solution set."}</p> : null}
       </div>
     </section>
   );
 }
 
-function BalanceExpression({ expression, value }: { expression: string; value: number }) {
-  return <div className="rounded-[16px] border border-white/[0.06] bg-white/[0.012] p-4"><div className="font-mono text-[clamp(1.3rem,3vw,2rem)] text-white">{expression}</div><div className="mt-2 text-[9px] uppercase tracking-[0.1em] text-stone-600">evaluates to</div><div className="mt-1 font-mono text-[14px] text-cyan-300">{value}</div></div>;
+function BalanceExpression({ expression, value, accent }: { expression: string; value: number; accent: string }) {
+  return <div className="rounded-[16px] border border-white/[0.06] bg-white/[0.012] p-4"><div className="font-mono text-[clamp(1.3rem,3vw,2rem)] text-white">{expression}</div><div className="mt-2 text-[9px] uppercase tracking-[0.1em] text-stone-600">evaluates to</div><div className="mt-1 font-mono text-[14px]" style={{ color: `rgb(${accent})` }}>{value}</div></div>;
 }
 
 function PropertiesLesson() {
@@ -455,27 +529,12 @@ function setExample(id: NumberSetId) {
   return "ℚ ∪ irrational values";
 }
 
-function LessonReference({ lesson }: { lesson: FundamentalsLessonKey }) {
-  const rows: Record<FundamentalsLessonKey, readonly [string, string][]> = {
-    "expressions-variables": [["Term", "Top-level signed piece"], ["Coefficient", "Signed numerical factor"], ["Variable", "Symbol for a value"], ["Exponent", "Power on a base"], ["Constant", "Term without a variable"]],
-    "equality-equations": [["Expression", "A mathematical value-form"], ["Equation", "A statement that two expressions are equal"], ["Solution", "A value making the equation true"], ["Equivalent equations", "Same solution set"]],
-    "algebraic-properties": [["Commutative", "Reorder"], ["Associative", "Regroup"], ["Distributive", "Expand or factor across grouping"], ["Identity", "Neutral element"], ["Inverse", "Cancel to identity"]],
-    "number-systems": [["ℕ", "Natural"], ["ℤ", "Integers"], ["ℚ", "Rational"], ["Irrational", "Real but not rational"], ["ℝ", "All real values"]],
-  };
-  return (
-    <section id="fundamentals-reference" className="scroll-mt-24 mt-4 overflow-hidden rounded-[20px] border border-white/[0.08] bg-black/[0.16] backdrop-blur-2xl">
-      <div className="border-b border-white/[0.05] px-4 py-2.5 text-[9px] font-semibold uppercase tracking-[0.12em] text-stone-600">Quick reference</div>
-      <div className="grid sm:grid-cols-2 lg:grid-cols-5">{rows[lesson].map(([term, meaning]) => <div key={term} className="border-b border-white/[0.04] px-4 py-3 sm:border-r lg:border-b-0"><strong className="block font-mono text-[11px] text-stone-300">{term}</strong><span className="mt-1 block text-[10px] leading-4 text-stone-600">{meaning}</span></div>)}</div>
-    </section>
-  );
-}
-
 function LessonNavigation({ previous, next, unitHref, currentStep, accent }: { previous?: FundamentalsLessonNavItem; next?: FundamentalsLessonNavItem; unitHref: string; currentStep: string; accent: string }) {
   return (
     <nav className="mt-4 pb-8" aria-label="Algebra Fundamentals lesson navigation">
-      <div className="mb-2 flex items-center justify-between gap-3"><Link href={unitHref} className="inline-flex items-center gap-2 rounded-full border border-white/[0.07] bg-black/[0.16] px-3 py-2 text-[10px] font-semibold text-stone-500 hover:text-stone-300"><ArrowLeft size={12} /> Algebra Fundamentals</Link><span className="font-mono text-[10px] text-stone-700">{currentStep} / 04</span></div>
+      <div className="mb-2 flex justify-end"><span className="font-mono text-[10px] text-stone-700">{currentStep} / {LESSON_TOTAL}</span></div>
       <div className="grid gap-3 sm:grid-cols-2">
-        {previous ? <NavCard item={previous} direction="previous" accent={accent} /> : <Link href={unitHref} className="flex min-h-[76px] items-center rounded-[18px] border border-white/[0.04] bg-black/[0.10] px-4 text-[11px] text-stone-600"><ArrowLeft size={14} className="mr-3" /> Start from the unit map</Link>}
+        {previous ? <NavCard item={previous} direction="previous" accent={accent} /> : <div className="hidden sm:block" aria-hidden="true" />}
         {next ? <NavCard item={next} direction="next" accent={accent} /> : <Link href={unitHref} className="group flex min-h-[76px] items-center rounded-[18px] border px-4" style={{ borderColor: `rgba(${accent},0.16)`, background: `rgba(${accent},0.035)` }}><span className="min-w-0 flex-1 text-right"><span className="block text-[9px] font-semibold uppercase tracking-[0.10em] text-stone-600">Unit complete</span><strong className="mt-1 block text-[14px] text-stone-200">Return to Algebra Fundamentals</strong></span><Check size={15} className="ml-3" style={{ color: `rgb(${accent})` }} /></Link>}
       </div>
     </nav>
@@ -497,7 +556,7 @@ function MiniTextCard({ label, text, rgb }: { label: string; text: string; rgb: 
 
 function assessmentColor(lesson: FundamentalsLessonKey): "emerald" | "cyan" | "indigo" | "amber" {
   if (lesson === "expressions-variables") return "emerald";
-  if (lesson === "equality-equations") return "cyan";
+  if (lesson === "one-step-equations" || lesson === "two-step-equations") return "cyan";
   if (lesson === "algebraic-properties") return "indigo";
   return "amber";
 }
