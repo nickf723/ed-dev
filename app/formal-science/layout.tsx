@@ -9,10 +9,7 @@ export default function FormalScienceLayout({
   return (
     <>
       {children}
-      <FormalScienceVocabulary
-        scopes={formalScienceVocabularyScopes}
-        legacyHiddenTriggerPaths={["/formal-science"]}
-      />
+      <FormalScienceVocabulary scopes={formalScienceVocabularyScopes} />
       <style>{`
         @media (min-width: 768px) {
           button[aria-controls="page-vocabulary-drawer"] {

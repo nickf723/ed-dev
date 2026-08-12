@@ -1,12 +1,11 @@
+import type { DomainId } from "@/lib/domains";
+
 export type VocabularyTriggerPolicy = "global" | "local" | "none";
 export type MasterySurfacePolicy = "global" | "local" | "none";
 
 /**
- * Product behavior keyed by stable curriculum node ID.
- *
- * This is deliberately separate from CurriculumNode. Academic structure should
- * not have to know whether a page uses a global utility button or a local one.
- * An omitted property means "use the surrounding product/domain default."
+ * Product behavior belongs outside academic ontology. Curriculum-backed routes
+ * are keyed by stable node ID; domain-root behavior is keyed by stable domain ID.
  */
 export type PagePolicy = {
   vocabularyTrigger?: VocabularyTriggerPolicy;
@@ -15,8 +14,17 @@ export type PagePolicy = {
 
 const EMPTY_PAGE_POLICY: Readonly<PagePolicy> = Object.freeze({});
 
+/** Domain roots are product pages but are not CurriculumNode records. */
+export const PAGE_POLICY_BY_DOMAIN_ID: Readonly<
+  Partial<Record<DomainId, Readonly<PagePolicy>>>
+> = {
+  formal: {
+    vocabularyTrigger: "none",
+  },
+};
+
 /**
- * Add policy only after a page's ownership has been verified.
+ * Add node policy only after a page's ownership has been verified.
  *
  * `local` vocabulary means the route owns its own reference/vocabulary
  * experience. `none` means the route intentionally exposes no global trigger.

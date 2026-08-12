@@ -10,7 +10,7 @@ const EMPTY_POLICY: Readonly<PagePolicy> = Object.freeze({});
 
 type PagePolicyContextValue = {
   nodeId?: string;
-  nodeLabel?: string;
+  pageLabel?: string;
   policy: Readonly<PagePolicy>;
 };
 
@@ -33,8 +33,8 @@ export default function PagePolicyProvider({
   const resolved = routePolicies[pathname];
   const value: PagePolicyContextValue = resolved
     ? {
-        nodeId: resolved.nodeId,
-        nodeLabel: resolved.nodeLabel,
+        nodeId: resolved.curriculumNodeId,
+        pageLabel: resolved.pageLabel,
         policy: resolved.policy,
       }
     : EMPTY_CONTEXT;
