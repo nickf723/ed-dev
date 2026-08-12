@@ -1,4 +1,4 @@
-import FundamentalsLessonExperience from "../_components/FundamentalsLessonExperience";
+import EquationLessonExperience from "../_components/EquationLessonExperience";
 import { requireCurriculumPageContext } from "@/lib/curriculum/page-context";
 
 const NODE_ID =
@@ -11,7 +11,7 @@ export default function OneStepEquationsPage() {
   }
 
   return (
-    <FundamentalsLessonExperience
+    <EquationLessonExperience
       lesson="one-step-equations"
       breadcrumbs={context.breadcrumbs}
       previous={context.previousActiveSibling ? { label: context.previousActiveSibling.label, href: context.previousActiveSibling.href } : undefined}
