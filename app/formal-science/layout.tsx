@@ -1,4 +1,4 @@
-import VocabularyDrawer from "@/app/_components/VocabularyDrawer";
+import FormalScienceVocabulary from "@/app/formal-science/_components/FormalScienceVocabulary";
 import { formalScienceVocabularyScopes } from "@/app/_data/vocab/scopes";
 
 export default function FormalScienceLayout({
@@ -9,9 +9,9 @@ export default function FormalScienceLayout({
   return (
     <>
       {children}
-      <VocabularyDrawer
+      <FormalScienceVocabulary
         scopes={formalScienceVocabularyScopes}
-        hiddenTriggerPaths={[
+        legacyHiddenTriggerPaths={[
           "/formal-science",
           "/formal-science/mathematics",
           "/formal-science/mathematics/algebra",
@@ -35,12 +35,6 @@ export default function FormalScienceLayout({
           "/formal-science/mathematics/algebra/pre-algebra/equations/",
           "/formal-science/mathematics/algebra/elementary-algebra",
           "/formal-science/mathematics/algebra/elementary-algebra/",
-          "/formal-science/mathematics/algebra/elementary-algebra/fundamentals",
-          "/formal-science/mathematics/algebra/elementary-algebra/fundamentals/",
-          "/formal-science/mathematics/algebra/elementary-algebra/fundamentals/expressions-variables",
-          "/formal-science/mathematics/algebra/elementary-algebra/fundamentals/equality-equations",
-          "/formal-science/mathematics/algebra/elementary-algebra/fundamentals/algebraic-properties",
-          "/formal-science/mathematics/algebra/elementary-algebra/fundamentals/number-systems",
           "/formal-science/mathematics/algebra/elementary-algebra/linear-equations",
           "/formal-science/mathematics/algebra/elementary-algebra/linear-equations/",
           "/formal-science/mathematics/algebra/elementary-algebra/systems-of-equations",
