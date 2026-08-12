@@ -8,20 +8,116 @@ It is intentionally separate from visual page verification. Architecture changes
 
 `site-architecture`
 
-Base: `main` at the inequality separation work.
+Base: `main` at the inequality separation work (`2bcd870`).
+
+The branch contains only product/repository architecture work plus narrow Algebra migration pilots. It does not contain the separate academic Architecture-subject experiment.
 
 ## Foundation complete on branch
 
-- route pages own the page-level `<main>` landmark; `MainContent` is now a layout `<div>`
+- route pages own the page-level `<main>` landmark; `MainContent` is a layout `<div>`
 - optional curriculum page kinds exist: hub, unit, lesson, reference, tool
 - `lib/curriculum/page-context.ts` resolves ancestry, breadcrumbs, parent, siblings, active previous/next sibling, children, and active/planned child state
-- curriculum route normalization treats trailing slashes and repeated slashes as the same semantic route
-- `lib/page-policy.ts` provides a stable node-ID keyed home for product behavior that should not live in academic ontology
+- `lib/curriculum/route.ts` provides one canonical path-normalization rule
+- registry href indexing, duplicate-route validation, and href lookup all use the same normalized path semantics
+- `lib/page-policy.ts` provides stable node-ID policy plus domain-root policy for product behavior that should not live in academic ontology
+- the root server layout resolves page-policy identity into a small serializable route snapshot
+- `PagePolicyProvider` exposes only resolved policy/current identity to client utilities
 - `npm run audit:architecture` reports migration debt without failing builds
 
-## Algebra curriculum migration
+## Global shell boundary
 
-The focused Algebra module is now self-contained for the refined subtree.
+### Sidebar navigation
+
+Before:
+
+- `Sidebar` imported `NAVIGATION_DATA`
+- `NAVIGATION_DATA` imported the curriculum registry
+- the persistent client sidebar therefore depended directly on curriculum composition machinery
+
+Now:
+
+- root layout builds the serializable navigation snapshot on the server
+- `AppShell` receives that snapshot as data
+- `Sidebar` receives plain labels/routes/domain IDs and owns only interaction state such as expansion and mobile behavior
+- domain icons are resolved locally from the small domain-definition map rather than serialized as component functions
+- the curriculum graph no longer needs to be imported by the client sidebar
+
+### Page policy
+
+Page policy now distinguishes product behavior from academic ontology.
+
+Current policy supports:
+
+- `vocabularyTrigger: global | local | none`
+- `masterySurface: global | local | none`
+
+Curriculum-backed page policy is authored by stable node ID. Domain-root policy is authored by stable domain ID because domain landing pages are not `CurriculumNode` records.
+
+The server resolves those IDs to canonical routes and sends the client shell only:
+
+- optional curriculum node ID
+- canonical page/domain label
+- resolved policy
+
+### Formal Science vocabulary
+
+Before:
+
+- `app/formal-science/layout.tsx` carried a long list of literal routes
+- many entries were duplicated solely for trailing-slash variants
+- every new refined Algebra route required another path exception
+
+Now:
+
+- the Formal Science layout has no vocabulary pathname blacklist
+- Formal Science root policy is keyed by domain ID
+- Mathematics / Algebra / Integrated Algebra and refined Algebra lessons use node-ID policy
+- Pre-Algebra and Algebra Fundamentals families are marked `local` because they own local reference/vocabulary surfaces
+- hubs/refined lessons that intentionally expose no floating global vocabulary control are marked `none`
+- route normalization handles trailing slashes/query/hash variants centrally
+- `FormalScienceVocabulary` consumes only resolved client policy; it does not import curriculum
+
+### MasteryDock
+
+Before:
+
+- the global client dock imported the curriculum registry
+- it compared the current node's parent against one hard-coded Foundations node ID
+- it used that special case to decide whether mastery belonged on the page
+
+Now:
+
+- the seven existing Foundations child pages explicitly declare `masterySurface: "global"`
+- the server-resolved policy snapshot supplies node ID and label
+- `MasteryDock` consumes page-policy context only
+- it no longer imports the registry, looks up ancestry, or hard-codes the Foundations parent ID
+- visible eligibility is intended to remain identical to the existing implementation
+
+## Curriculum composition
+
+### Focused module manifest
+
+Focused curriculum modules now register through:
+
+`lib/curriculum/manifest.ts`
+
+Current modules preserve the existing application order:
+
+1. Algebra
+2. Group Theory
+3. Logic
+4. Computer Science
+5. Biology
+
+Order remains explicit because a more specific module may replace a node inside a broader migrated module.
+
+`registry.ts` now owns composition behavior rather than knowing every focused module import directly.
+
+The broad `tree.ts`, root additions, and child additions remain migration compatibility layers for untouched branches. Do not remove them through a mass rewrite.
+
+### Algebra module migration
+
+The focused Algebra module is self-contained for the refined subtree.
 
 Previously, `registry.ts` had to patch in:
 
@@ -46,25 +142,11 @@ Verified page-kind classifications currently encoded:
 
 Algebraic Inequalities remains deliberately unclassified because its current parent-page-plus-child structure is still an ontology decision rather than a type-system problem.
 
-## Page-policy pilot
+## Server / client migration pilots
 
-The following nodes are explicitly marked as owning local vocabulary/reference behavior:
+### Algebra hub
 
-- Algebra Fundamentals
-- Expressions & Variables
-- Equality & Equations
-- Algebraic Properties
-- Number Systems
-
-The current Formal Science pathname blacklist remains in place for now so visible behavior does not change while preview verification is unavailable.
-
-Do not make the global Vocabulary drawer import the whole curriculum registry merely to consume this policy. The intended future flow is:
-
-server-resolved page context/policy → small serializable contract → client utility
-
-## Algebra hub pilot
-
-`/formal-science/mathematics/algebra`
+Route: `/formal-science/mathematics/algebra`
 
 Before:
 
@@ -82,9 +164,30 @@ Now:
 - the equivalence rail is the only extracted client island
 - visual classes/composition were intentionally preserved
 
-## Algebra Fundamentals unit pilot
+### Pre-Algebra unit
 
-`/formal-science/mathematics/algebra/elementary-algebra/fundamentals`
+Route: `/formal-science/mathematics/algebra/pre-algebra`
+
+Before:
+
+- whole unit was a client component despite having no page-level state
+- client imported the curriculum registry to build the eight-route learning path
+- an Assessment callback existed only to `console.log` the final score
+- the parent Algebra route was hard-coded in the unit component
+
+Now:
+
+- page is a server component
+- eight child destinations come from page context
+- page asserts its classified unit role
+- parent/up navigation comes from curriculum containment
+- VocabApplet and Assessment remain the actual client islands
+- the no-op quiz callback was removed
+- visible composition/copy were intentionally preserved
+
+### Algebra Fundamentals unit
+
+Route: `/formal-science/mathematics/algebra/elementary-algebra/fundamentals`
 
 Before:
 
@@ -100,13 +203,22 @@ Now:
 - breadcrumb ancestry comes from page context
 - the short final crumb `Fundamentals` remains a local presentation alias
 - page asserts its classified unit role
-- Assessment remains a client island and no longer receives an unnecessary no-op callback
+- Assessment remains a client island and no longer receives an unnecessary callback
+
+### Mathematics hub
+
+The Mathematics route already had a healthy partial boundary before this architecture work:
+
+- server route resolves curriculum children
+- interactive `MathematicsHub` receives a plain node snapshot
+
+Do not rewrite it merely for symmetry. Future work may pass semantic breadcrumbs/page role through the same contract, but its existing data boundary is not a priority defect.
 
 ## Deferred until rendered verification
 
 ### Integrated Algebra
 
-It still imports curriculum data from a client page and owns a larger synchronized line/table instrument. Migrate it by extracting the actual instrument as a client island rather than performing a blind component split.
+It still owns a larger synchronized equation/graph/table instrument. Migrate it by extracting the actual instrument as a client island rather than performing a blind component split.
 
 ### Fundamentals atomic dynamic route
 
@@ -114,27 +226,46 @@ The `[lesson]` page is intentionally interactive and currently owns all four les
 
 Do not duplicate the curriculum into a new client-side lesson map just to eliminate the registry elsewhere.
 
-### Formal Science vocabulary policy
-
-The node-ID policy exists, but the visible global/local trigger behavior still uses the legacy pathname list. Replace it only when a server-resolved page policy can reach the client utility without bundling the broad curriculum registry.
-
-### MasteryDock
-
-Still a hard-coded Foundations special case. Keep separate from the vocabulary migration and define mastery semantics before generalizing the UI.
-
 ### Developer tools
 
-Structure Scan / X-Ray still lives in normal sidebar chrome. Add an explicit development-tools visibility contract before removing or relocating it.
+Structure Scan / X-Ray still lives in normal sidebar chrome. Add an explicit development-tools visibility contract before removing or relocating it. Do not rewrite the large sidebar blind solely to chase an architecture metric.
+
+### Route / graph parity
+
+Registry validation now has canonical route semantics, duplicate IDs/routes, and prerequisite validation. A future informational route/filesystem parity audit should distinguish active, placeholder, dynamic, and meta/tool routes before becoming a hard check.
+
+## Current verification requirement
+
+Vercel has intermittently rejected branch builds due to the build-rate limit, so none of the server/client boundary migrations above should be treated as visually verified yet.
+
+Once a reliable build is available, first confirm:
+
+1. Algebra hub composition is visually unchanged and the equivalence rail still responds normally
+2. Pre-Algebra navigation, VocabApplet, and Assessment still render and behave normally
+3. Algebra Fundamentals composition and Assessment still render normally
+4. sidebar hierarchy/icons/expand-collapse behavior are unchanged after server snapshot migration
+5. Formal Science vocabulary trigger appears/disappears on the same routes as before
+6. Foundations mastery dock appears on the same seven child pages as before
+
+Only after those checks should the architecture branch be considered ready for promotion or a second visual migration wave.
 
 ## Next recommended implementation step
 
-Once a reliable preview/build is available:
+While preview remains unavailable, safe architecture work includes:
 
-1. verify Algebra hub and Algebra Fundamentals render identically after the server/client boundary changes
+- documentation/audit improvements
+- source-of-truth cleanup in focused curriculum modules
+- route normalization/validation improvements
+- verifying unused/global component candidates
+- planning the developer-tool gate
+
+When preview returns:
+
+1. run the verification list above
 2. run `npm run audit:architecture`
 3. migrate Integrated Algebra by extracting only its interactive representation studio
-4. introduce the first shared semantic navigation primitive only after the three pilot pages reveal the real API
-5. begin replacing Formal Science pathname utility exceptions with resolved page policy
+4. introduce the first shared semantic navigation primitive after the pilot pages reveal the actual API
+5. then migrate the Fundamentals atomic route through a server wrapper/client instrument boundary
 
 ## Success metric
 
@@ -152,4 +283,5 @@ while no longer manually specifying:
 - child status
 - duplicate curriculum descriptions
 - global utility pathname exceptions
+- global feature eligibility through parent-ID special cases
 - client-side access to the full curriculum graph for static semantic facts
