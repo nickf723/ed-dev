@@ -113,10 +113,19 @@ export const PAGE_POLICY_BY_NODE_ID: Readonly<Record<string, Readonly<PagePolicy
   "formal.mathematics.algebra.elementary-algebra.linear-equations": {
     vocabularyTrigger: "none",
   },
+  "formal.mathematics.algebra.elementary-algebra.linear-equations.graphing-line": {
+    vocabularyTrigger: "none",
+  },
   "formal.mathematics.algebra.elementary-algebra.systems": {
     vocabularyTrigger: "none",
   },
+  "formal.mathematics.algebra.elementary-algebra.systems.solution-types": {
+    vocabularyTrigger: "none",
+  },
   "formal.mathematics.algebra.elementary-algebra.inequalities": {
+    vocabularyTrigger: "none",
+  },
+  "formal.mathematics.algebra.elementary-algebra.inequalities.one-variable": {
     vocabularyTrigger: "local",
   },
   "formal.mathematics.algebra.elementary-algebra.inequalities.systems": {

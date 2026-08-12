@@ -1,4 +1,4 @@
-import { ALGEBRA_CURRICULUM } from "@/lib/curriculum/algebra";
+import { REFINED_ALGEBRA_CURRICULUM } from "@/lib/curriculum/integrated-algebra-refinement";
 import { COMPUTER_SCIENCE_CURRICULUM } from "@/lib/curriculum/computer-science";
 import { GROUP_THEORY_CURRICULUM } from "@/lib/curriculum/group-theory";
 import { LOGIC_CURRICULUM } from "@/lib/curriculum/logic";
@@ -14,7 +14,7 @@ import type { CurriculumNode } from "@/lib/curriculum/types";
  * replace the corresponding node inside the migrated Algebra branch.
  */
 export const CURRICULUM_MODULES: readonly CurriculumNode[] = [
-  ALGEBRA_CURRICULUM,
+  REFINED_ALGEBRA_CURRICULUM,
   GROUP_THEORY_CURRICULUM,
   LOGIC_CURRICULUM,
   COMPUTER_SCIENCE_CURRICULUM,
