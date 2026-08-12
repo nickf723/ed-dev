@@ -134,10 +134,14 @@ const sourceFiles = [
   ...walk(appRoot),
   ...walk(path.join(ROOT, "lib")),
 ].filter((file, index, all) => all.indexOf(file) === index);
+const sourceByFile = new Map(sourceFiles.map((file) => [file, read(file)]));
 
 const pageFiles = sourceFiles.filter((file) => relative(file).endsWith("/page.tsx"));
 const layoutFiles = sourceFiles.filter((file) => relative(file).endsWith("/layout.tsx"));
 const sharedComponents = sourceFiles.filter((file) => relative(file).startsWith("app/_components/"));
+const topLevelSharedComponents = sharedComponents.filter((file) =>
+  /^app\/_components\/[^/]+\.(?:ts|tsx|js|jsx)$/.test(relative(file)),
+);
 const routeInfos = pageFiles.map(routeInfoForPage);
 const dynamicAcademicPages = routeInfos.filter(
   (info) => info.dynamic && isAcademicRoute(info.route),
@@ -153,17 +157,29 @@ const concreteAcademicRoutes = new Set(
 );
 const curriculumRoutes = curriculumRouteLiterals(walk(curriculumRoot));
 
-const manualBreadcrumbs = pageFiles.filter((file) => /breadcrumbs\s*=\s*\{/.test(read(file)));
-const hardcodedSequenceNavigation = pageFiles.filter((file) => /Previous lesson|Next lesson/.test(read(file)));
-const pathnamePolicyLists = layoutFiles.filter((file) => /hiddenTriggerPaths|hiddenPaths|excludedPaths/.test(read(file)));
-const sharedMainLandmarks = sharedComponents.filter((file) => /<main(?:\s|>)/.test(read(file)));
+const manualBreadcrumbs = pageFiles.filter((file) => /breadcrumbs\s*=\s*\{/.test(sourceByFile.get(file) ?? ""));
+const hardcodedSequenceNavigation = pageFiles.filter((file) => /Previous lesson|Next lesson/.test(sourceByFile.get(file) ?? ""));
+const pathnamePolicyLists = layoutFiles.filter((file) => /hiddenTriggerPaths|hiddenPaths|excludedPaths/.test(sourceByFile.get(file) ?? ""));
+const sharedMainLandmarks = sharedComponents.filter((file) => /<main(?:\s|>)/.test(sourceByFile.get(file) ?? ""));
 const clientRegistryImports = sourceFiles.filter((file) => {
-  const source = read(file);
+  const source = sourceByFile.get(file) ?? "";
   return /^\s*["']use client["'];/m.test(source) && source.includes("@/lib/curriculum/registry");
 });
 const sharedCurriculumIdSpecialCases = sharedComponents.filter((file) => {
-  const source = read(file);
+  const source = sourceByFile.get(file) ?? "";
   return /["'](?:formal|natural|social|humanities|applied|inter)\.[^"']+["']/.test(source);
+});
+const unusedTopLevelSharedComponents = topLevelSharedComponents.filter((file) => {
+  const stem = path.basename(file, path.extname(file));
+  const aliasImport = `@/app/_components/${stem}`;
+  const siblingImport = `./${stem}`;
+
+  return !sourceFiles.some((candidate) => {
+    if (candidate === file) return false;
+    const source = sourceByFile.get(candidate) ?? "";
+    if (source.includes(aliasImport)) return true;
+    return relative(candidate).startsWith("app/_components/") && source.includes(siblingImport);
+  });
 });
 
 const pageRoutesMissingCurriculum = concreteAcademicPages
@@ -195,6 +211,7 @@ printFileSection("Layouts containing pathname policy/exception lists", pathnameP
 printFileSection("Shared components rendering a <main> landmark", sharedMainLandmarks);
 printFileSection("Client components importing the curriculum registry directly", clientRegistryImports);
 printFileSection("Shared components hard-coding curriculum node IDs", sharedCurriculumIdSpecialCases);
+printFileSection("Top-level shared components with no direct import reference", unusedTopLevelSharedComponents);
 
 printValueSection(
   "Concrete academic page routes missing a curriculum route literal",
@@ -215,6 +232,7 @@ console.log("  • Pathname policy lists should move toward stable node-ID page 
 console.log("  • Shared <main> findings require semantic review because route pages should normally own the page-level main landmark.");
 console.log("  • Client registry imports are worth reviewing for smaller server-resolved page-context contracts.");
 console.log("  • Shared component node-ID special cases often indicate feature policy living at the wrong layer; review before generalizing them.");
+console.log("  • Unreferenced top-level shared components are deletion/relocalization candidates, not automatic dead code; dynamic imports and unusual resolution still need review.");
 console.log("  • Page routes missing curriculum literals are strong ontology-audit candidates, but meta/tool routes and migration exceptions may be intentional.");
 console.log("  • Curriculum routes without concrete pages may be planned placeholders; this source-level audit cannot infer runtime status.");
 console.log("  • Dynamic route pages are matched against curriculum routes where possible and are listed separately because catch-all behavior needs human review.");
