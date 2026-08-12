@@ -1,6 +1,3 @@
-"use client";
-
-import React from "react";
 import Link from "next/link";
 import {
   AlertTriangle,
@@ -14,28 +11,33 @@ import {
   SearchCode,
   Waypoints,
 } from "lucide-react";
-import LogicBackground from "./_components/LogicBackground";
-import TruthEngine from "./_components/TruthEngine";
-import QuantifierEngine from "./_components/QuantifierEngine";
 import Assessment from "@/app/_components/Assessment";
 import VocabApplet from "@/app/_components/VocabApplet";
-import { M } from "@/app/_components/Math";
 import { logicVocab } from "@/app/_data/vocab/l/logic";
-import { curriculumRegistry } from "@/lib/curriculum/registry";
+import { requireCurriculumPageContext } from "@/lib/curriculum/page-context";
+import type { CurriculumNode } from "@/lib/curriculum/types";
+import LogicBackground from "./_components/LogicBackground";
+import QuantifierEngine from "./_components/QuantifierEngine";
+import TruthEngine from "./_components/TruthEngine";
 import { logicQuiz } from "./_components/assessment";
 
-function requireLogicNode(id: string) {
-  const node = curriculumRegistry.getNode(id);
-  if (!node) throw new Error(`Logic curriculum node ${id} is missing from the registry.`);
-  return node;
+function requireChild(children: readonly CurriculumNode[], id: string): CurriculumNode {
+  const child = children.find((node) => node.id === id);
+  if (!child) throw new Error(`Logic curriculum child ${id} is missing.`);
+  return child;
 }
 
-const PROPOSITIONAL = requireLogicNode("formal.logic.propositional");
-const FIRST_ORDER = requireLogicNode("formal.logic.first-order");
-const SET_THEORY = requireLogicNode("formal.logic.set-theory");
-const FALLACIES = requireLogicNode("formal.logic.fallacies");
-
 export default function LogicHubPage() {
+  const context = requireCurriculumPageContext("formal.logic");
+  if (context.pageKind !== "hub") {
+    throw new Error("Logic must be classified as a curriculum hub.");
+  }
+
+  const propositional = requireChild(context.children, "formal.logic.propositional");
+  const firstOrder = requireChild(context.children, "formal.logic.first-order");
+  const setTheory = requireChild(context.children, "formal.logic.set-theory");
+  const fallacies = requireChild(context.children, "formal.logic.fallacies");
+
   return (
     <main className="relative min-h-screen bg-[#05030a] overflow-hidden selection:bg-purple-900/30 font-sans pb-32">
       <LogicBackground />
@@ -47,8 +49,8 @@ export default function LogicHubPage() {
         <div className="relative pl-16 md:pl-40 pr-6 mb-32">
           <div className="absolute left-[21px] md:left-[93px] top-4 w-3 h-3 rounded-full bg-purple-500 shadow-[0_0_15px_rgba(168,85,247,0.8)] ring-4 ring-black" />
 
-          <Link href="/formal-science" className="inline-flex items-center gap-2 text-[10px] font-black tracking-widest text-neutral-500 hover:text-purple-400 mb-8 transition-colors uppercase border border-neutral-800 hover:border-purple-500/30 bg-black/50 px-4 py-2 rounded-full backdrop-blur-sm">
-            <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" /> Formal Sciences
+          <Link href={context.domain.href} className="inline-flex items-center gap-2 text-[10px] font-black tracking-widest text-neutral-500 hover:text-purple-400 mb-8 transition-colors uppercase border border-neutral-800 hover:border-purple-500/30 bg-black/50 px-4 py-2 rounded-full backdrop-blur-sm">
+            <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" /> {context.domain.title}
           </Link>
 
           <div className="flex items-center gap-3 text-purple-500 mb-4 font-mono text-xs font-bold tracking-[0.2em] uppercase">
@@ -95,14 +97,14 @@ export default function LogicHubPage() {
             <TruthEngine />
           </div>
 
-          <Link href={PROPOSITIONAL.href} className="group flex items-center justify-between p-6 bg-purple-950/10 border border-purple-500/30 rounded-2xl hover:bg-purple-900/20 transition-all max-w-2xl">
+          <Link href={propositional.href} className="group flex items-center justify-between p-6 bg-purple-950/10 border border-purple-500/30 rounded-2xl hover:bg-purple-900/20 transition-all max-w-2xl">
             <div className="flex items-center gap-4">
               <div className="p-3 bg-black border border-purple-500/30 rounded-xl text-purple-400 group-hover:bg-purple-500 group-hover:text-white transition-colors">
                 <GitCommit size={20} />
               </div>
               <div>
-                <h4 className="text-white font-bold text-lg group-hover:text-purple-300 transition-colors">Module: {PROPOSITIONAL.label}</h4>
-                <p className="text-xs text-neutral-500 mt-1">{PROPOSITIONAL.description}</p>
+                <h4 className="text-white font-bold text-lg group-hover:text-purple-300 transition-colors">Module: {propositional.label}</h4>
+                <p className="text-xs text-neutral-500 mt-1">{propositional.description}</p>
               </div>
             </div>
             <ArrowRight size={16} className="text-purple-500 group-hover:translate-x-1 transition-transform" />
@@ -130,17 +132,17 @@ export default function LogicHubPage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl">
-            <Link href={FIRST_ORDER.href} className="group p-6 bg-blue-950/10 border border-blue-500/30 rounded-2xl hover:bg-blue-900/20 transition-all">
+            <Link href={firstOrder.href} className="group p-6 bg-blue-950/10 border border-blue-500/30 rounded-2xl hover:bg-blue-900/20 transition-all">
               <div className="mb-4 text-blue-400 group-hover:text-blue-300 transition-colors"><SearchCode size={24} /></div>
-              <h4 className="text-white font-bold mb-1 group-hover:text-blue-300 transition-colors">{FIRST_ORDER.label}</h4>
-              <p className="text-xs text-neutral-500">{FIRST_ORDER.description}</p>
+              <h4 className="text-white font-bold mb-1 group-hover:text-blue-300 transition-colors">{firstOrder.label}</h4>
+              <p className="text-xs text-neutral-500">{firstOrder.description}</p>
             </Link>
 
             <article className="relative p-6 bg-cyan-950/10 border border-dashed border-cyan-500/25 rounded-2xl opacity-65">
               <span className="absolute right-4 top-4 rounded-full border border-cyan-500/20 bg-black/40 px-2 py-1 text-[8px] font-bold uppercase tracking-widest text-cyan-300/70">Planned</span>
               <div className="mb-4 text-cyan-400"><Infinity size={24} /></div>
-              <h4 className="text-white font-bold mb-1">{SET_THEORY.label}</h4>
-              <p className="text-xs text-neutral-500">{SET_THEORY.description}</p>
+              <h4 className="text-white font-bold mb-1">{setTheory.label}</h4>
+              <p className="text-xs text-neutral-500">{setTheory.description}</p>
             </article>
           </div>
         </div>
@@ -164,8 +166,8 @@ export default function LogicHubPage() {
                 <AlertTriangle size={20} />
               </div>
               <div>
-                <h4 className="text-white font-bold text-lg">Module: {FALLACIES.label}</h4>
-                <p className="text-xs text-neutral-500 mt-1">{FALLACIES.description}</p>
+                <h4 className="text-white font-bold text-lg">Module: {fallacies.label}</h4>
+                <p className="text-xs text-neutral-500 mt-1">{fallacies.description}</p>
               </div>
             </div>
           </article>
@@ -186,7 +188,6 @@ export default function LogicHubPage() {
                 title="Proof of Comprehension"
                 questions={logicQuiz}
                 accentColor="purple"
-                onComplete={(score, total) => console.log(`Logic Quiz Scored: ${score}/${total}`)}
               />
             </div>
           </div>

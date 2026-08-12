@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 import {
   ArrowRight,
@@ -12,7 +10,7 @@ import {
 } from "lucide-react";
 import Assessment from "@/app/_components/Assessment";
 import DomainPageHeader from "@/app/_components/DomainPageHeader";
-import { curriculumRegistry } from "@/lib/curriculum/registry";
+import { requireCurriculumPageContext } from "@/lib/curriculum/page-context";
 import FundamentalsBackground from "./_components/FundamentalsBackground";
 import { fundamentalsQuiz } from "./_components/assessment";
 
@@ -31,6 +29,20 @@ type Lesson = {
   href: string;
   description: string;
 } & LessonPresentation;
+
+const FUNDAMENTALS_NODE_ID =
+  "formal.mathematics.algebra.elementary-algebra.fundamentals";
+
+const FUNDAMENTALS_CONTEXT = requireCurriculumPageContext(FUNDAMENTALS_NODE_ID);
+
+if (FUNDAMENTALS_CONTEXT.pageKind !== "unit") {
+  throw new Error("Algebra Fundamentals must be classified as a curriculum unit.");
+}
+
+const FUNDAMENTALS_BREADCRUMBS = FUNDAMENTALS_CONTEXT.breadcrumbs.map(
+  (crumb, index, breadcrumbs) =>
+    index === breadcrumbs.length - 1 ? { ...crumb, label: "Fundamentals" } : crumb,
+);
 
 const PRESENTATION: Record<string, LessonPresentation> = {
   "formal.mathematics.algebra.elementary-algebra.fundamentals.expressions-variables": {
@@ -68,14 +80,7 @@ const PRESENTATION: Record<string, LessonPresentation> = {
 };
 
 function buildLessons(): Lesson[] {
-  const fundamentals = curriculumRegistry.getNode(
-    "formal.mathematics.algebra.elementary-algebra.fundamentals",
-  );
-  if (!fundamentals) {
-    throw new Error("Algebra Fundamentals is missing from the curriculum registry.");
-  }
-
-  return (fundamentals.children ?? []).map((child) => {
+  return FUNDAMENTALS_CONTEXT.activeChildren.map((child) => {
     const presentation = PRESENTATION[child.id];
     if (!presentation) {
       throw new Error(`Fundamentals lesson ${child.id} is missing presentation metadata.`);
@@ -103,17 +108,7 @@ export default function FundamentalsPage() {
 
       <div className="relative z-10 mx-auto w-full max-w-[1460px] px-4 py-4 sm:px-6 xl:px-8 xl:py-5">
         <DomainPageHeader
-          breadcrumbs={[
-            { label: "Home", href: "/" },
-            { label: "Formal Sciences", href: "/formal-science" },
-            { label: "Mathematics", href: "/formal-science/mathematics" },
-            { label: "Algebra", href: "/formal-science/mathematics/algebra" },
-            {
-              label: "Integrated Algebra",
-              href: "/formal-science/mathematics/algebra/elementary-algebra",
-            },
-            { label: "Fundamentals" },
-          ]}
+          breadcrumbs={FUNDAMENTALS_BREADCRUMBS}
           eyebrow="Read · Relate · Rewrite · Locate"
           icon={Hash}
           title={<span>Algebra Fundamentals</span>}
@@ -234,7 +229,6 @@ export default function FundamentalsPage() {
               title="Algebra Fundamentals Unit Check"
               questions={fundamentalsQuiz}
               accentColor="emerald"
-              onComplete={() => undefined}
             />
           </div>
         </details>

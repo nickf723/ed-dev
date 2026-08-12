@@ -1,12 +1,13 @@
-import { BookOpen, type LucideIcon } from "lucide-react";
 import { curriculumRegistry } from "@/lib/curriculum/registry";
 import type { CurriculumNode } from "@/lib/curriculum/types";
 import { DOMAIN_BY_ID, type DomainId } from "@/lib/domains";
 
+export type NavigationIconKey = "book-open";
+
 export type NavigationItem = {
   label: string;
   href: string;
-  icon?: LucideIcon;
+  icon?: NavigationIconKey;
   domain: DomainId | "meta";
   children?: NavigationItem[];
 };
@@ -36,12 +37,16 @@ const academicDomains: NavigationItem[] = curriculumRegistry.allDomains().map((e
   return {
     label: domain.navLabel,
     href: domain.href,
-    icon: domain.icon,
     domain: domain.id,
     children: children.map(curriculumNodeToNavigation),
   };
 });
 
+/**
+ * Serializable navigation snapshot built on the server from the curriculum.
+ * Client navigation components receive this data as props rather than importing
+ * the curriculum registry and its composition machinery into the browser.
+ */
 export const NAVIGATION_DATA: NavigationSection[] = [
   {
     title: "Knowledge Graph",
@@ -50,7 +55,7 @@ export const NAVIGATION_DATA: NavigationSection[] = [
   {
     title: "Meta",
     items: [
-      { label: "Glossary", href: "/glossary", icon: BookOpen, domain: "meta" },
+      { label: "Glossary", href: "/glossary", icon: "book-open", domain: "meta" },
     ],
   },
 ];

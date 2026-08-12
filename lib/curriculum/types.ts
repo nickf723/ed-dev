@@ -3,6 +3,18 @@ import type { DomainId } from "@/lib/domains";
 export type CurriculumNodeStatus = "active" | "placeholder";
 
 /**
+ * Page kind describes the educational job of a route, not its visual style.
+ * It is optional during migration so legacy branches can be classified
+ * incrementally instead of requiring a site-wide rewrite.
+ */
+export type CurriculumPageKind =
+  | "hub"
+  | "unit"
+  | "lesson"
+  | "reference"
+  | "tool";
+
+/**
  * A curriculum node participates in two structures at once:
  *
  * 1. `children` describes containment for browsing and navigation.
@@ -18,6 +30,7 @@ export type CurriculumNode = {
   domainId: DomainId;
   description?: string;
   status?: CurriculumNodeStatus;
+  pageKind?: CurriculumPageKind;
   prerequisiteIds?: readonly string[];
   children?: readonly CurriculumNode[];
 };
