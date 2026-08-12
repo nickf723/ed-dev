@@ -44,17 +44,19 @@ const sourceFiles = [
 
 const pageFiles = sourceFiles.filter((file) => relative(file).endsWith("/page.tsx"));
 const layoutFiles = sourceFiles.filter((file) => relative(file).endsWith("/layout.tsx"));
+const sharedComponents = sourceFiles.filter((file) => relative(file).startsWith("app/_components/"));
 
 const manualBreadcrumbs = pageFiles.filter((file) => /breadcrumbs\s*=\s*\{/.test(read(file)));
 const hardcodedSequenceNavigation = pageFiles.filter((file) => /Previous lesson|Next lesson/.test(read(file)));
 const pathnamePolicyLists = layoutFiles.filter((file) => /hiddenTriggerPaths|hiddenPaths|excludedPaths/.test(read(file)));
-const sharedMainLandmarks = sourceFiles.filter((file) => {
-  const rel = relative(file);
-  return rel.startsWith("app/_components/") && /<main(?:\s|>)/.test(read(file));
-});
+const sharedMainLandmarks = sharedComponents.filter((file) => /<main(?:\s|>)/.test(read(file)));
 const clientRegistryImports = sourceFiles.filter((file) => {
   const source = read(file);
   return /^\s*["']use client["'];/m.test(source) && source.includes("@/lib/curriculum/registry");
+});
+const sharedCurriculumIdSpecialCases = sharedComponents.filter((file) => {
+  const source = read(file);
+  return /["'](?:formal|natural|social|humanities|applied|inter)\.[^"']+["']/.test(source);
 });
 
 console.log("Education Station 64 — site architecture audit");
@@ -67,9 +69,11 @@ printSection("Pages containing hard-coded previous/next lesson language", hardco
 printSection("Layouts containing pathname policy/exception lists", pathnamePolicyLists);
 printSection("Shared components rendering a <main> landmark", sharedMainLandmarks);
 printSection("Client components importing the curriculum registry directly", clientRegistryImports);
+printSection("Shared components hard-coding curriculum node IDs", sharedCurriculumIdSpecialCases);
 
 console.log("\nInterpretation");
 console.log("  • Breadcrumb and sequence findings are migration candidates, not automatic bugs.");
 console.log("  • Pathname policy lists should move toward stable node-ID page policy when practical.");
 console.log("  • Shared <main> findings require semantic review because route pages should normally own the page-level main landmark.");
 console.log("  • Client registry imports are worth reviewing for smaller server-resolved page-context contracts.");
+console.log("  • Shared component node-ID special cases often indicate feature policy living at the wrong layer; review before generalizing them.");
