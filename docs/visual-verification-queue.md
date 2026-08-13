@@ -338,11 +338,9 @@ Verify:
 
 Verify:
 
-- all graph/substitution/elimination steps fit
-- the third method step is fully visible
-- changing method does not create a major layout jump
+- legacy regression entry is superseded by the four constitution-built Systems lessons below
 
-**Status:** Quick regression check
+**Status:** Superseded by atomic lesson verification
 
 ---
 
@@ -370,8 +368,8 @@ Recommended order:
 4. Solving for X
 5. Pre-Algebra children in learning-path order
 6. Expressions & Variables regression
-7. Graphing Linear Equations regression
-8. Systems of Equations regression
+7. constitution-built Linear lessons
+8. constitution-built Systems lessons
 
 Once these are clean, resume new Algebra lesson production.
 
@@ -424,5 +422,108 @@ Verify:
 - current equation, sample values, and highlighted intercept remain synchronized
 - horizontal and vertical boundary cases are visually distinct and do not compete with the primary model
 - no graph or parameter controls overlap at narrower desktop widths
+
+**Status:** Verification required
+
+### Graphing a Line
+
+**Route:** `/formal-science/mathematics/algebra/elementary-algebra/linear-equations/graphing-line`
+
+**Why queued:** legacy all-in-one line studio was replaced by a constitution-built atomic lesson without a trusted rendered preview.
+
+Verify:
+
+- plot b → use m → extend reads as a clear construction sequence
+- positive, negative, and fractional slope cases keep all required points visible
+- candidate point buttons remain synchronized with the graph
+- the line does not appear before the learner establishes the required construction points in a confusing way
+- point-verification feedback remains subordinate to the primary graph-construction task
+- no graph labels or controls overlap at narrower desktop widths
+
+**Status:** Verification required
+
+### Line Forms & Special Cases
+
+**Route:** `/formal-science/mathematics/algebra/elementary-algebra/linear-equations/forms-special-cases`
+
+**Why queued:** new atomic lesson built without a trusted rendered preview.
+
+Verify:
+
+- the three forms read as alternate lenses on one solution set rather than three unrelated formulas
+- rewrite-workbench states fit without content jumps
+- horizontal and vertical special cases remain visually subordinate but clear
+- vertical-line treatment does not imply a finite slope
+- transfer-check disclosure and navigation do not create an awkward tail
+
+**Status:** Verification required
+
+---
+
+## Current constitution-built Systems lesson verification
+
+### Intersections & Solution Types
+
+**Route:** `/formal-science/mathematics/algebra/elementary-algebra/systems-of-equations/solution-types`
+
+**Why queued:** legacy all-methods Systems page was replaced by a constitution-built atomic lesson without a trusted rendered preview.
+
+Verify:
+
+- the worked intersection makes “satisfies A AND B” visually obvious
+- one / none / infinite geometry cards remain subordinate to the shared-solution model
+- all three classification presets render correctly
+- coincident-line rendering clearly communicates infinitely many shared points
+- point stress-test feedback does not become confusing after switching presets
+- no graph labels or feedback panels overlap at narrower widths
+
+**Status:** Verification required
+
+### Solving by Graphing
+
+**Route:** `/formal-science/mathematics/algebra/elementary-algebra/systems-of-equations/graphing`
+
+**Why queued:** new atomic lesson built without a trusted rendered preview.
+
+Verify:
+
+- graph → choose intersection → verify both equations reads as one coherent method
+- all curated candidate points remain visible and distinguishable
+- selected/correct point states remain synchronized with the graph
+- the approximate-intersection boundary note feels like a limitation of the method, not a second lesson
+- no graph labels or candidate controls overlap at narrower widths
+
+**Status:** Verification required
+
+### Substitution
+
+**Route:** `/formal-science/mathematics/algebra/elementary-algebra/systems-of-equations/substitution`
+
+**Why queued:** new atomic lesson built without a trusted rendered preview.
+
+Verify:
+
+- the equality → replacement → one-variable equation sequence is visually obvious
+- both y-isolated and x-isolated cases fit cleanly
+- invalid replacement feedback remains readable without expanding over adjacent content
+- staged solve and back-substitution states remain stable
+- shared-solution conclusion does not visually compete with the core replacement idea
+
+**Status:** Verification required
+
+### Elimination
+
+**Route:** `/formal-science/mathematics/algebra/elementary-algebra/systems-of-equations/elimination`
+
+**Why queued:** new atomic lesson built without a trusted rendered preview.
+
+Verify:
+
+- aligned equations and cancellation read clearly in the worked model
+- direct-cancellation and scale-then-cancel cases remain visually distinct
+- the prepared/scaled equation is obvious before combination
+- legal-but-unhelpful versus invalid move feedback is clear
+- every whole-equation operation fits at narrower desktop widths
+- final back-substitution and ordered-pair state remain subordinate to the cancellation model
 
 **Status:** Verification required
