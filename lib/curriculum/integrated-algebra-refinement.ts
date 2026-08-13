@@ -46,6 +46,7 @@ const graphingLinearEquationsChildren: readonly CurriculumNode[] = [
     "Line Forms & Special Cases",
     "/formal-science/mathematics/algebra/elementary-algebra/linear-equations/forms-special-cases",
     "Compare slope-intercept, point-slope, and standard forms, including horizontal and vertical lines.",
+    "active",
   ),
 ];
 

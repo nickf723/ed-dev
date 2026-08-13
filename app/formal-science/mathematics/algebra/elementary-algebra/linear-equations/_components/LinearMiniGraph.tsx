@@ -8,6 +8,7 @@ type LinearMiniGraphProps = {
   verticalX?: number;
   points?: readonly Point[];
   showRiseRun?: boolean;
+  showLine?: boolean;
   accentRgb?: string;
   secondaryRgb?: string;
   ariaLabel?: string;
@@ -33,6 +34,7 @@ export default function LinearMiniGraph({
   verticalX,
   points = [],
   showRiseRun = false,
+  showLine = true,
   accentRgb = "45, 212, 191",
   secondaryRgb = "244, 114, 182",
   ariaLabel = "Coordinate graph of a linear relationship",
@@ -71,15 +73,17 @@ export default function LinearMiniGraph({
         <line x1="0" y1={CENTER} x2={SIZE} y2={CENTER} stroke="#94a3b8" strokeWidth="1.2" opacity="0.52" />
         <line x1={CENTER} y1="0" x2={CENTER} y2={SIZE} stroke="#94a3b8" strokeWidth="1.2" opacity="0.52" />
 
-        <line
-          x1={lineStart.x}
-          y1={lineStart.y}
-          x2={lineEnd.x}
-          y2={lineEnd.y}
-          stroke={`rgb(${accentRgb})`}
-          strokeWidth="3"
-          opacity="0.86"
-        />
+        {showLine ? (
+          <line
+            x1={lineStart.x}
+            y1={lineStart.y}
+            x2={lineEnd.x}
+            y2={lineEnd.y}
+            stroke={`rgb(${accentRgb})`}
+            strokeWidth="3"
+            opacity="0.86"
+          />
+        ) : null}
 
         {showRiseRun && first && second && first.x !== second.x ? (
           <g>

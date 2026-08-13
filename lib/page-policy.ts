@@ -123,7 +123,10 @@ export const PAGE_POLICY_BY_NODE_ID: Readonly<Record<string, Readonly<PagePolicy
     vocabularyTrigger: "local",
   },
   "formal.mathematics.algebra.elementary-algebra.linear-equations.graphing-line": {
-    vocabularyTrigger: "none",
+    vocabularyTrigger: "local",
+  },
+  "formal.mathematics.algebra.elementary-algebra.linear-equations.forms-special-cases": {
+    vocabularyTrigger: "local",
   },
   "formal.mathematics.algebra.elementary-algebra.systems": {
     vocabularyTrigger: "none",
