@@ -27,7 +27,7 @@ type Props = {
   icon: LucideIcon;
   practiceId: string;
   questions: AssessmentQuestion[];
-  assessmentColor: ThemeColor | "violet";
+  assessmentColor: ThemeColor;
   children: ReactNode;
 };
 
@@ -48,8 +48,6 @@ export default function InequalitiesLessonShell({
   assessmentColor,
   children,
 }: Props) {
-  const resolvedAssessmentColor: ThemeColor = assessmentColor === "violet" ? "purple" : assessmentColor;
-
   return (
     <main className="relative min-h-screen overflow-x-hidden text-slate-100" style={{ backgroundColor: base }}>
       <div className="pointer-events-none fixed inset-0 z-0 opacity-65">
@@ -86,7 +84,7 @@ export default function InequalitiesLessonShell({
               <Sparkles size={16} style={{ color: `rgb(${accentRgb})` }} />
             </summary>
             <div className="inequality-assessment border-t border-white/[0.06] p-3 sm:p-4">
-              <Assessment title={`${title} check`} questions={questions} accentColor={resolvedAssessmentColor} />
+              <Assessment title={`${title} check`} questions={questions} accentColor={assessmentColor} />
             </div>
           </details>
         </section>
