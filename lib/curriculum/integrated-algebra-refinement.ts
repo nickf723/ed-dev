@@ -62,19 +62,22 @@ const systemsOfEquationsChildren: readonly CurriculumNode[] = [
     "formal.mathematics.algebra.elementary-algebra.systems.graphing",
     "Solving by Graphing",
     "/formal-science/mathematics/algebra/elementary-algebra/systems-of-equations/graphing",
-    "Find a system solution by locating the intersection of its graphs.",
+    "Find a system solution by locating the intersection of its graphs and verifying the shared ordered pair.",
+    "active",
   ),
   lesson(
     "formal.mathematics.algebra.elementary-algebra.systems.substitution",
     "Substitution",
     "/formal-science/mathematics/algebra/elementary-algebra/systems-of-equations/substitution",
     "Replace one variable with an equivalent expression so the system becomes a one-variable equation.",
+    "active",
   ),
   lesson(
     "formal.mathematics.algebra.elementary-algebra.systems.elimination",
     "Elimination",
     "/formal-science/mathematics/algebra/elementary-algebra/systems-of-equations/elimination",
     "Combine equivalent equations so one variable cancels and the shared solution is exposed.",
+    "active",
   ),
 ];
 
