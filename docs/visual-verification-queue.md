@@ -6,123 +6,222 @@ A successful type check is not visual verification. A page leaves this queue onl
 
 ---
 
-## Preview-offline mode
-
-When Vercel or another trusted preview path is unavailable, work may continue on high-confidence structural tasks:
-
-- curriculum ontology and route wiring
-- parent / child / sibling relationships
-- prerequisite structure
-- canonical terminology and notation
-- educational chunk plans
-- learner-facing copy when the correction is unambiguous
-- accessibility and semantic markup
-- type safety and compile errors
-- removal of known implementation-facing labels
-- documentation and audit work
-- known structural anti-patterns whose fix does not depend on rendered composition
-
-Do **not** make blind judgment calls about:
-
-- spacing or whitespace balance
-- viewport occupancy
-- card/panel proportions
-- font-size tuning beyond an obvious documented violation
-- background opacity
-- palette balance
-- border intensity
-- responsive composition
-- whether a panel is visually too busy or too sparse
-- major page redesigns whose success depends on seeing the result
-
-If a structural change affects rendered composition anyway, add the page here.
-
----
-
 ## Verification protocol
 
 For each queued page:
 
 1. Open at a normal desktop width.
 2. Open at a narrower desktop/tablet width.
-3. Check the first viewport's hierarchy and density.
-4. Exercise every curated example/preset.
+3. Check first-viewport hierarchy and density.
+4. Exercise every curated example or preset.
 5. Exercise the longest text/equation state.
-6. Check hover, selected, empty, error, and boundary states where applicable.
-7. Confirm no instructional content clips or bleeds.
+6. Check selected, wrong-answer, boundary, empty, and completed states where applicable.
+7. Confirm no instructional content clips, overlaps, or bleeds.
 8. Confirm navigation relationships are visually distinct.
-9. Confirm the background remains visible without fighting content.
+9. Confirm the background participates without competing with reading.
 10. Confirm required text meets the readability floor.
-11. Check that the page's primary learning goal is clearer than its controls.
-12. Record any issue in this file before starting the next new page.
+11. Check that the learning goal is clearer than the controls.
+12. Record any issue here before starting another visual polish pass.
 
 ---
 
-## Priority 0: verify before new Algebra production
+## Priority 0: constitution-built Algebra lessons
+
+These lessons were built or substantially rebuilt without a trusted rendered preview. Their instructional structure is intentional; visual claims remain provisional until inspected.
 
 ### Algebraic Inequalities
 
-**Route:** `/formal-science/mathematics/algebra/elementary-algebra/inequalities`
+#### One-Variable Inequalities
 
-**Why queued:** latest restructuring occurred while Vercel previews were rate-limited.
+**Route:** `/formal-science/mathematics/algebra/elementary-algebra/inequalities/one-variable`
 
 Verify:
 
-- Boundary Reference reads as a reference, not another overwhelming widget.
-- Test a Value clearly demonstrates valid and invalid cases.
-- `x = 0` against `x < 3` reads naturally as true.
-- `x = 4` against `x < 3` reads naturally as false.
-- Guided examples dominate before the optional sandbox.
-- Number-line and half-plane modes feel like a progression rather than two competing lessons.
-- Optional sandbox disclosure does not distort layout.
-- Compound inequality material still feels subordinate to the central lesson.
-- No container bleed at long states or narrow widths.
+- solve → region → test reads as one sequence rather than three separate widgets
+- positive-divisor, negative-divisor, and inclusive-boundary cases all remain stable
+- the negative-reflection explanation makes the order reversal intuitive without overpowering the main lesson
+- correct operations advance cleanly and legal-but-unhelpful feedback remains readable
+- open/closed endpoints and interval notation remain synchronized
+- probe markers do not collide with number-line labels
 
 **Status:** Verification required
 
-### Systems of Inequalities
+#### Compound Inequalities
+
+**Route:** `/formal-science/mathematics/algebra/elementary-algebra/inequalities/compound`
+
+Verify:
+
+- AND visually reads as intersection and OR as union before the terminology becomes abstract
+- separate input regions and the combined region are easy to distinguish
+- bounded intersection, split union, and empty intersection all render correctly
+- the empty-intersection case shows no misleading solution endpoints
+- chained notation `−2 < x ≤ 5` remains clearly connected to the overlap model
+- point probes stay synchronized with the combined region
+
+**Status:** Verification required
+
+#### Systems of Inequalities
 
 **Route:** `/formal-science/mathematics/algebra/elementary-algebra/inequalities/systems`
 
-**Why queued:** new page created without rendered verification.
+Verify:
+
+- the builder shows the boundary without pre-revealing the correct shaded side
+- solid/dashed boundary conventions are visually obvious
+- above/below choices correspond correctly to the inequality symbols
+- wedge, horizontal-band, and empty-overlap cases all render geometrically correctly
+- final feasible-region shading is visibly the intersection, not merely two transparent overlays
+- point testing reports each individual constraint and the final verdict accurately
+- no SVG polygon clips or label collisions occur at narrower widths
+
+**Status:** Verification required
+
+---
+
+### Graphing Linear Equations
+
+#### Slope & Rate of Change
+
+**Route:** `/formal-science/mathematics/algebra/elementary-algebra/linear-equations/slope-rate`
 
 Verify:
 
-- Overlap shading is geometrically accurate and legible.
-- Constraint A, Constraint B, and the final feasible region are visually distinguishable.
-- Wedge, horizontal-band, and empty-region presets all render correctly.
-- Point-testing feedback is synchronized with the graph.
-- Solid/dashed boundary conventions are correct.
-- No SVG polygon or boundary clips unexpectedly.
-- The page feels like a child of Algebraic Inequalities but has its own identity.
+- table → change ratio → graph reads as one coherent lesson
+- all same-line point-pair presets produce the same slope
+- reversing point order reverses both deltas while preserving slope
+- rise/run labels do not collide with point labels
+- positive, negative, zero, and undefined slope cases stay subordinate to the constant-rate model
 
 **Status:** Verification required
+
+#### Slope-Intercept Form
+
+**Route:** `/formal-science/mathematics/algebra/elementary-algebra/linear-equations/slope-intercept`
+
+Verify:
+
+- b-as-anchor and m-as-rate are obvious before the parameter lab
+- changing b keeps m fixed and visually creates parallel translation
+- changing m keeps b fixed and visually pivots through the same y-intercept
+- equation, graph, sample values, and highlighted intercept stay synchronized
+- horizontal/vertical boundary notes remain subordinate to the main model
+
+**Status:** Verification required
+
+#### Graphing a Line
+
+**Route:** `/formal-science/mathematics/algebra/elementary-algebra/linear-equations/graphing-line`
+
+Verify:
+
+- plot b → use m → extend reads as a clear construction sequence
+- positive, negative, and fractional slope cases keep required points visible
+- candidate points stay synchronized with the graph
+- the line does not appear early enough to give away the construction task
+- point verification remains subordinate to graph construction
+
+**Status:** Verification required
+
+#### Line Forms & Special Cases
+
+**Route:** `/formal-science/mathematics/algebra/elementary-algebra/linear-equations/forms-special-cases`
+
+Verify:
+
+- slope-intercept, point-slope, and standard forms read as lenses on one solution set
+- rewrite-workbench states fit without layout jumps
+- horizontal and vertical cases remain clear but subordinate
+- vertical-line treatment never implies a finite slope
+
+**Status:** Verification required
+
+---
+
+### Systems of Equations
+
+#### Intersections & Solution Types
+
+**Route:** `/formal-science/mathematics/algebra/elementary-algebra/systems-of-equations/solution-types`
+
+Verify:
+
+- the worked intersection makes “satisfies A AND B” visually obvious
+- one / none / infinite classifications remain subordinate to the shared-solution definition
+- coincident-line rendering communicates infinitely many shared points
+- point stress-test feedback stays correct after switching presets
+
+**Status:** Verification required
+
+#### Solving by Graphing
+
+**Route:** `/formal-science/mathematics/algebra/elementary-algebra/systems-of-equations/graphing`
+
+Verify:
+
+- graph → choose intersection → verify both equations reads as one method
+- all curated candidate points remain visible and distinguishable
+- selected/correct point states remain synchronized with the graph
+- approximate-intersection limitations read as a method boundary, not a second lesson
+
+**Status:** Verification required
+
+#### Substitution
+
+**Route:** `/formal-science/mathematics/algebra/elementary-algebra/systems-of-equations/substitution`
+
+Verify:
+
+- equality → replacement → one-variable equation is visually obvious
+- y-isolated and x-isolated cases both fit cleanly
+- invalid replacement feedback remains readable without covering adjacent content
+- solve and back-substitution states stay stable
+- the ordered-pair conclusion remains subordinate to the replacement idea
+
+**Status:** Verification required
+
+#### Elimination
+
+**Route:** `/formal-science/mathematics/algebra/elementary-algebra/systems-of-equations/elimination`
+
+Verify:
+
+- aligned equations and cancellation read clearly
+- direct-cancellation and scale-then-cancel cases remain distinct
+- prepared/scaled equations are obvious before combination
+- legal-but-unhelpful versus invalid feedback is clear
+- whole-equation operations fit at narrower widths
+- final back-substitution remains subordinate to cancellation
+
+**Status:** Verification required
+
+---
+
+## Priority 1: existing Algebra regression / cleanup verification
+
+### Expressions & Variables
+
+**Route:** `/formal-science/mathematics/algebra/elementary-algebra/fundamentals/expressions-variables`
+
+Verify:
+
+- the symbolic hierarchy reads clearly before the sorter
+- all sorter states fit naturally
+- negative signs remain visibly attached to their terms
+- the inspector/workbench does not change outer geometry unexpectedly
+
+**Status:** Quick regression check
 
 ### Pre-Algebra hub
 
 **Route:** `/formal-science/mathematics/algebra/pre-algebra`
 
-**Why queued:** structurally cleaned while previews were unavailable.
-
-Changed blind:
-
-- removed the duplicated equation-balance lab from the hub
-- removed module count and `Mod_01` / `CH_XX` framing
-- changed `Course Directory` to a learner-facing Learning Path
-- changed `Enter Module` to Study Topic
-- replaced `Verification Protocol` with Reference & Check
-- changed the assessment label to Pre-Algebra Checkpoint
-- added a concise arithmetic-to-symbolic throughline
-- hid the redundant floating Vocabulary trigger on this route
-
 Verify:
 
-- removal of the Simulation Deck did not leave an awkward dead band
-- the eight-topic path feels like the page's center of gravity
-- the throughline block earns its space without becoming decorative chrome
-- learning-path cards remain balanced despite differing descriptions
-- Reference & Check is subordinate to navigation rather than competing with it
-- the existing background still suits the calmer structure
+- the eight-topic learning path remains the center of gravity
+- throughline/reference material earns its space without becoming dashboard chrome
+- cards remain balanced despite differing descriptions
+- the background still suits the calmer structure
 
 **Status:** Verification required
 
@@ -130,217 +229,30 @@ Verify:
 
 **Route:** `/formal-science/mathematics/algebra/pre-algebra/equations`
 
-**Why queued:** instructional copy and semantics were cleaned while previews were unavailable.
-
-Changed blind:
-
-- module/finale framing was replaced with equality/invariance framing
-- `The Golden Rule` became Preserve Equality
-- `SADMEP` was replaced by a scoped explanation of undoing outer operations first
-- `The Ultimate Cheat Code` became Check by Substitution
-- `Verification Protocol` became Reference & Check
-- fake Pre-Algebra mastery language became neutral continuation into Integrated Algebra
-- the redundant floating Vocabulary trigger was hidden
-
 Verify:
 
-- the revised left-column explanation still balances the Equation Lab visually
-- the reverse-order explanation fits without crowding
-- substitution example reads naturally at common widths
-- Reference & Check remains readable and subordinate
-- the final continuation block clearly reads as cross-unit navigation, not a mastery badge
+- equality/invariance explanation balances the Equation Lab
+- reverse-order explanation fits without crowding
+- substitution verification reads naturally
+- continuation into Integrated Algebra looks like navigation, not a mastery badge
 
 **Status:** Verification required
 
-### Pre-Algebra child lesson sweep
+### Pre-Algebra child sweep
 
-All seven pages below received source-level cohesion and accuracy cleanup while previews were unavailable. Their backgrounds and primary layouts were intentionally preserved.
+Routes:
 
-#### Integers & Negatives
+- `/formal-science/mathematics/algebra/pre-algebra/integers`
+- `/formal-science/mathematics/algebra/pre-algebra/pemdas`
+- `/formal-science/mathematics/algebra/pre-algebra/properties`
+- `/formal-science/mathematics/algebra/pre-algebra/ratios`
+- `/formal-science/mathematics/algebra/pre-algebra/fractions`
+- `/formal-science/mathematics/algebra/pre-algebra/exponents`
+- `/formal-science/mathematics/algebra/pre-algebra/expressions`
 
-**Route:** `/formal-science/mathematics/algebra/pre-algebra/integers`
+Verify the preserved primary instrument, revised canonical terminology, new continuation footer, longest copy state, and narrower desktop layout on each route. For **Powers & Exponents**, also decide whether power anatomy + exponential growth + scientific notation should remain one lesson or be split.
 
-Changed blind:
-
-- module code became conceptual metadata
-- negative-number explanation was reframed around reference points and the number line
-- the misleading `− + − = +` visual was replaced with `a − (−b) = a + b`
-- absolute value now says never negative and explicitly includes `|0| = 0`
-- multiplication “cheat sheet” became a sign reference
-- Reference & Check replaced Verification Protocol
-- a Connect Forward block and next-topic link were added
-
-Verify:
-
-- the new subtracting-a-negative card reads cleanly
-- the added footer does not create an overly long dead tail
-- the number-line lab remains the visual center of gravity
-
-**Status:** Verification required
-
-#### Order of Operations
-
-**Route:** `/formal-science/mathematics/algebra/pre-algebra/pemdas`
-
-Changed blind:
-
-- module code became conceptual metadata
-- equation language was corrected to expression language
-- grouping symbols replaced parentheses-only framing
-- multiplication/division and addition/subtraction are explicitly equal-precedence pairs
-- GEMA is labeled as another mnemonic rather than a competing rule system
-- Verification Protocol became Reference & Check
-- fake Rule Mastery became Connect Forward
-
-Verify:
-
-- the G/E/MD/AS hierarchy scans intuitively
-- the left-to-right example remains easy to parse
-- the alternate mnemonic card does not compete with the canonical hierarchy
-
-**Status:** Verification required
-
-#### Number Properties
-
-**Route:** `/formal-science/mathematics/algebra/pre-algebra/properties`
-
-Changed blind:
-
-- module/“physics of math” framing became conceptual metadata
-- properties are described as value-preserving rewrites of expressions
-- commutative and associative scopes are stated explicitly
-- identity language was made canonical
-- the distributive area model is described as a model of equivalent partitioning rather than a universal proof claim
-- Verification Protocol became Reference & Check
-- fake Rule Mastery became Connect Forward
-
-Verify:
-
-- the left rule stack and right area model still feel balanced
-- warnings about noncommutative/nonassociative operations are readable but not visually dominant
-
-**Status:** Verification required
-
-#### Ratios & Proportions
-
-**Route:** `/formal-science/mathematics/algebra/pre-algebra/ratios`
-
-Changed blind:
-
-- module code became conceptual metadata
-- ratios now emphasize ordered comparison and proportions as equality of ratios
-- unit rate language was clarified
-- “Butterfly Method” was demoted to an optional mnemonic
-- cross multiplication is explained through clearing nonzero denominators
-- Verification Protocol became Reference & Check
-- fake Rule Mastery became Connect Forward
-
-Verify:
-
-- the cross-products explanation fits without becoming too text-heavy
-- map scale, unit rate, and proportion lab feel like one lesson rather than three mini-lessons
-
-**Status:** Verification required
-
-#### Advanced Fractions
-
-**Route:** `/formal-science/mathematics/algebra/pre-algebra/fractions`
-
-Changed blind:
-
-- module code became conceptual metadata
-- common denominator vs least common denominator was corrected
-- reciprocal is correctly described as a multiplicative inverse, not an “opposite”
-- Keep/Change/Flip is explicitly labeled as a mnemonic after the actual rule
-- fraction multiplication is described as a fraction of a fraction
-- Verification Protocol became Reference & Check
-- fake Rule Mastery became Connect Forward
-
-Verify:
-
-- addition/subtraction and division explanations fit cleanly in the left column
-- the reciprocal equation remains legible at narrower widths
-- the area model still reads as the primary interaction
-
-**Status:** Verification required
-
-#### Powers & Exponents
-
-**Route:** `/formal-science/mathematics/algebra/pre-algebra/exponents`
-
-Changed blind:
-
-- module code became conceptual metadata
-- repeated multiplication is explicitly scoped to positive whole-number exponents
-- base and exponent definitions were made precise
-- scientific notation copy was tightened
-- Verification Protocol became Reference & Check
-- fake Rule Mastery became Connect Forward
-
-Verify:
-
-- decide whether power anatomy + exponential growth + scientific notation is one coherent lesson or should be split
-- confirm the Growth Model supports the page's primary mental model rather than competing with it
-- check that scientific notation reads as transfer/application, not a second primary lesson
-
-**Status:** Verification + scope review required
-
-#### Algebraic Expressions
-
-**Route:** `/formal-science/mathematics/algebra/pre-algebra/expressions`
-
-Changed blind:
-
-- module code became conceptual metadata
-- coefficient definition became numerical factor rather than “number at the front”
-- constant term and variable language were tightened
-- like terms now require the same variable part and exponents
-- the contrast example now uses `3x² + 2x`
-- translation language highlights order-sensitive phrases
-- Verification Protocol became Reference & Check
-- fake Rule Mastery / Final Module language became Connect Forward / Next: Solving for X
-
-Verify:
-
-- hover labels are supplementary rather than required to understand the anatomy
-- the new not-like-terms example is visually clear
-- translation guide and Expression Lab feel coordinated rather than separate lessons
-
-**Status:** Verification required
-
----
-
-## Priority 1: regression verification after container-system changes
-
-These pages were visually refined before the global geometry patch tower was removed. They should receive a fast regression pass before being treated as locked.
-
-### Expressions & Variables
-
-Verify:
-
-- all three term examples `3x²`, `−2x`, `+5` remain visible
-- every selector state fits naturally
-- the inspector no longer changes outer geometry unexpectedly
-
-**Status:** Quick regression check
-
-### Graphing Linear Equations
-
-Verify:
-
-- Read the Line does not bleed into Same Line, Different Forms
-- all alternate equation forms remain legible
-- graph/control/right-inspector columns stay balanced
-
-**Status:** Quick regression check
-
-### Systems of Equations
-
-Verify:
-
-- legacy regression entry is superseded by the four constitution-built Systems lessons below
-
-**Status:** Superseded by atomic lesson verification
+**Status:** Verification required; Powers & Exponents also needs scope review
 
 ---
 
@@ -350,28 +262,28 @@ Verify:
 
 **Route:** `/formal-science/mathematics/algebra/elementary-algebra/quadratic-equations`
 
-Do not visually remaster blind. First decide whether Quadratics is one lesson or a unit containing roots, graph/vertex, forms, completing the square, and quadratic formula.
+Before visually remastering, decide whether Quadratics is one lesson or a unit containing roots, graph/vertex, forms, completing the square, and quadratic formula.
 
 **Status:** Legacy scope audit required
 
 ---
 
-## First session when previews return
-
-Do not immediately create the next page.
+## First session when trusted previews are available
 
 Recommended order:
 
-1. Algebraic Inequalities
-2. Systems of Inequalities
-3. Pre-Algebra hub
-4. Solving for X
-5. Pre-Algebra children in learning-path order
-6. Expressions & Variables regression
-7. constitution-built Linear lessons
-8. constitution-built Systems lessons
+1. One-Variable Inequalities
+2. Compound Inequalities
+3. Systems of Inequalities
+4. Slope & Rate of Change
+5. Slope-Intercept Form
+6. Graphing a Line
+7. Line Forms & Special Cases
+8. Systems of Equations lessons in order
+9. Expressions & Variables regression
+10. Pre-Algebra hub / children
 
-Once these are clean, resume new Algebra lesson production.
+Do not tune several pages at once. Inspect one atomic lesson, diagnose against the constitution, fix the actual layer, then continue.
 
 ---
 
@@ -380,150 +292,6 @@ Once these are clean, resume new Algebra lesson production.
 Whenever a page changes without reliable visual verification:
 
 - add it here in the same development pass
-- state what changed
 - state the exact states that need checking
 - do not silently declare it visually finished
-
-Remove or mark an entry verified only after rendered inspection.
-
----
-
-## Current constitution-built Linear lesson verification
-
-### Slope & Rate of Change
-
-**Route:** `/formal-science/mathematics/algebra/elementary-algebra/linear-equations/slope-rate`
-
-**Why queued:** new atomic lesson built without a trusted rendered preview.
-
-Verify:
-
-- the table → change ratio → graph sequence reads as one lesson rather than three competing widgets
-- all three same-line point-pair presets remain inside the graph and produce slope 2
-- reversing the point order updates both signs while preserving the displayed slope
-- rise/run labels do not collide with point labels at normal or narrower desktop widths
-- positive, negative, zero, and undefined boundary cards remain subordinate to the main constant-rate model
-- transfer-check disclosure does not create overlap or an awkward dead tail
-
-**Status:** Verification required
-
-### Slope-Intercept Form
-
-**Route:** `/formal-science/mathematics/algebra/elementary-algebra/linear-equations/slope-intercept`
-
-**Why queued:** new atomic lesson built without a trusted rendered preview.
-
-Verify:
-
-- the worked model makes b-as-start and m-as-rate obvious before the parameter lab
-- Change b keeps m fixed and reads visually as parallel translation
-- Change m keeps b fixed and reads visually as pivoting through the same y-intercept
-- all curated m and b presets stay inside the graph's useful viewing range
-- current equation, sample values, and highlighted intercept remain synchronized
-- horizontal and vertical boundary cases are visually distinct and do not compete with the primary model
-- no graph or parameter controls overlap at narrower desktop widths
-
-**Status:** Verification required
-
-### Graphing a Line
-
-**Route:** `/formal-science/mathematics/algebra/elementary-algebra/linear-equations/graphing-line`
-
-**Why queued:** legacy all-in-one line studio was replaced by a constitution-built atomic lesson without a trusted rendered preview.
-
-Verify:
-
-- plot b → use m → extend reads as a clear construction sequence
-- positive, negative, and fractional slope cases keep all required points visible
-- candidate point buttons remain synchronized with the graph
-- the line does not appear before the learner establishes the required construction points in a confusing way
-- point-verification feedback remains subordinate to the primary graph-construction task
-- no graph labels or controls overlap at narrower desktop widths
-
-**Status:** Verification required
-
-### Line Forms & Special Cases
-
-**Route:** `/formal-science/mathematics/algebra/elementary-algebra/linear-equations/forms-special-cases`
-
-**Why queued:** new atomic lesson built without a trusted rendered preview.
-
-Verify:
-
-- the three forms read as alternate lenses on one solution set rather than three unrelated formulas
-- rewrite-workbench states fit without content jumps
-- horizontal and vertical special cases remain visually subordinate but clear
-- vertical-line treatment does not imply a finite slope
-- transfer-check disclosure and navigation do not create an awkward tail
-
-**Status:** Verification required
-
----
-
-## Current constitution-built Systems lesson verification
-
-### Intersections & Solution Types
-
-**Route:** `/formal-science/mathematics/algebra/elementary-algebra/systems-of-equations/solution-types`
-
-**Why queued:** legacy all-methods Systems page was replaced by a constitution-built atomic lesson without a trusted rendered preview.
-
-Verify:
-
-- the worked intersection makes “satisfies A AND B” visually obvious
-- one / none / infinite geometry cards remain subordinate to the shared-solution model
-- all three classification presets render correctly
-- coincident-line rendering clearly communicates infinitely many shared points
-- point stress-test feedback does not become confusing after switching presets
-- no graph labels or feedback panels overlap at narrower widths
-
-**Status:** Verification required
-
-### Solving by Graphing
-
-**Route:** `/formal-science/mathematics/algebra/elementary-algebra/systems-of-equations/graphing`
-
-**Why queued:** new atomic lesson built without a trusted rendered preview.
-
-Verify:
-
-- graph → choose intersection → verify both equations reads as one coherent method
-- all curated candidate points remain visible and distinguishable
-- selected/correct point states remain synchronized with the graph
-- the approximate-intersection boundary note feels like a limitation of the method, not a second lesson
-- no graph labels or candidate controls overlap at narrower widths
-
-**Status:** Verification required
-
-### Substitution
-
-**Route:** `/formal-science/mathematics/algebra/elementary-algebra/systems-of-equations/substitution`
-
-**Why queued:** new atomic lesson built without a trusted rendered preview.
-
-Verify:
-
-- the equality → replacement → one-variable equation sequence is visually obvious
-- both y-isolated and x-isolated cases fit cleanly
-- invalid replacement feedback remains readable without expanding over adjacent content
-- staged solve and back-substitution states remain stable
-- shared-solution conclusion does not visually compete with the core replacement idea
-
-**Status:** Verification required
-
-### Elimination
-
-**Route:** `/formal-science/mathematics/algebra/elementary-algebra/systems-of-equations/elimination`
-
-**Why queued:** new atomic lesson built without a trusted rendered preview.
-
-Verify:
-
-- aligned equations and cancellation read clearly in the worked model
-- direct-cancellation and scale-then-cancel cases remain visually distinct
-- the prepared/scaled equation is obvious before combination
-- legal-but-unhelpful versus invalid move feedback is clear
-- every whole-equation operation fits at narrower desktop widths
-- final back-substitution and ordered-pair state remain subordinate to the cancellation model
-
-**Status:** Verification required
+- remove or mark an entry verified only after rendered inspection
