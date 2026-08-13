@@ -387,3 +387,42 @@ Whenever a page changes without reliable visual verification:
 - do not silently declare it visually finished
 
 Remove or mark an entry verified only after rendered inspection.
+
+---
+
+## Current constitution-built Linear lesson verification
+
+### Slope & Rate of Change
+
+**Route:** `/formal-science/mathematics/algebra/elementary-algebra/linear-equations/slope-rate`
+
+**Why queued:** new atomic lesson built without a trusted rendered preview.
+
+Verify:
+
+- the table → change ratio → graph sequence reads as one lesson rather than three competing widgets
+- all three same-line point-pair presets remain inside the graph and produce slope 2
+- reversing the point order updates both signs while preserving the displayed slope
+- rise/run labels do not collide with point labels at normal or narrower desktop widths
+- positive, negative, zero, and undefined boundary cards remain subordinate to the main constant-rate model
+- transfer-check disclosure does not create overlap or an awkward dead tail
+
+**Status:** Verification required
+
+### Slope-Intercept Form
+
+**Route:** `/formal-science/mathematics/algebra/elementary-algebra/linear-equations/slope-intercept`
+
+**Why queued:** new atomic lesson built without a trusted rendered preview.
+
+Verify:
+
+- the worked model makes b-as-start and m-as-rate obvious before the parameter lab
+- Change b keeps m fixed and reads visually as parallel translation
+- Change m keeps b fixed and reads visually as pivoting through the same y-intercept
+- all curated m and b presets stay inside the graph's useful viewing range
+- current equation, sample values, and highlighted intercept remain synchronized
+- horizontal and vertical boundary cases are visually distinct and do not compete with the primary model
+- no graph or parameter controls overlap at narrower desktop widths
+
+**Status:** Verification required

@@ -116,6 +116,12 @@ export const PAGE_POLICY_BY_NODE_ID: Readonly<Record<string, Readonly<PagePolicy
   "formal.mathematics.algebra.elementary-algebra.linear-equations": {
     vocabularyTrigger: "none",
   },
+  "formal.mathematics.algebra.elementary-algebra.linear-equations.slope-rate": {
+    vocabularyTrigger: "local",
+  },
+  "formal.mathematics.algebra.elementary-algebra.linear-equations.slope-intercept": {
+    vocabularyTrigger: "local",
+  },
   "formal.mathematics.algebra.elementary-algebra.linear-equations.graphing-line": {
     vocabularyTrigger: "none",
   },

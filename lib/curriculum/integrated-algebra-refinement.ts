@@ -25,12 +25,14 @@ const graphingLinearEquationsChildren: readonly CurriculumNode[] = [
     "Slope & Rate of Change",
     "/formal-science/mathematics/algebra/elementary-algebra/linear-equations/slope-rate",
     "Interpret slope as a constant rate of change and connect rise/run to changes in x and y.",
+    "active",
   ),
   lesson(
     "formal.mathematics.algebra.elementary-algebra.linear-equations.slope-intercept",
     "Slope-Intercept Form",
     "/formal-science/mathematics/algebra/elementary-algebra/linear-equations/slope-intercept",
     "Read y = mx + b by connecting slope and y-intercept to one linear relationship.",
+    "active",
   ),
   lesson(
     "formal.mathematics.algebra.elementary-algebra.linear-equations.graphing-line",
