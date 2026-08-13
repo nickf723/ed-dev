@@ -1,4 +1,4 @@
-import FundamentalsLessonExperience from "../_components/FundamentalsLessonExperience";
+import NumberSystemsLessonExperience from "../_components/NumberSystemsLessonExperience";
 import { requireCurriculumPageContext } from "@/lib/curriculum/page-context";
 
 const NODE_ID = "formal.mathematics.algebra.elementary-algebra.fundamentals.number-systems";
@@ -8,8 +8,7 @@ export default function NumberSystemsPage() {
   if (context.pageKind !== "lesson") throw new Error("Number Systems must be a lesson.");
 
   return (
-    <FundamentalsLessonExperience
-      lesson="number-systems"
+    <NumberSystemsLessonExperience
       breadcrumbs={context.breadcrumbs}
       previous={context.previousActiveSibling ? { label: context.previousActiveSibling.label, href: context.previousActiveSibling.href } : undefined}
       next={context.nextActiveSibling ? { label: context.nextActiveSibling.label, href: context.nextActiveSibling.href } : undefined}
