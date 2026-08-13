@@ -94,6 +94,7 @@ const inequalitiesChildren: readonly CurriculumNode[] = [
     "Compound Inequalities",
     "/formal-science/mathematics/algebra/elementary-algebra/inequalities/compound",
     "Combine two one-dimensional constraints using AND/intersection or OR/union.",
+    "active",
   ),
   lesson(
     "formal.mathematics.algebra.elementary-algebra.inequalities.systems",
