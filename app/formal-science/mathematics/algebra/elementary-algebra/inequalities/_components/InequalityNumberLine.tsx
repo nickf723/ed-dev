@@ -38,6 +38,7 @@ export default function InequalityNumberLine({
   const xFor = (value: number) => left + ((value - min) / span) * (right - left);
 
   const intervalSegments = buildSegments(regions, mode, min, max);
+  const showBoundaryMarkers = mode === "single" || intervalSegments.length > 0;
 
   return (
     <div className="overflow-hidden rounded-[22px] border border-white/[0.07] bg-black/[0.14] p-3">
@@ -78,15 +79,17 @@ export default function InequalityNumberLine({
           );
         })}
 
-        {regions.map((region, index) => {
-          const x = xFor(region.boundary);
-          const inclusive = region.relation === "≤" || region.relation === "≥";
-          return (
-            <g key={`${region.boundary}-${region.relation}-${index}`}>
-              <circle cx={x} cy={y} r="9" fill={inclusive ? `rgb(${region.rgb})` : "#07101e"} stroke={`rgb(${region.rgb})`} strokeWidth="3" />
-            </g>
-          );
-        })}
+        {showBoundaryMarkers
+          ? regions.map((region, index) => {
+              const x = xFor(region.boundary);
+              const inclusive = region.relation === "≤" || region.relation === "≥";
+              return (
+                <g key={`${region.boundary}-${region.relation}-${index}`}>
+                  <circle cx={x} cy={y} r="9" fill={inclusive ? `rgb(${region.rgb})` : "#07101e"} stroke={`rgb(${region.rgb})`} strokeWidth="3" />
+                </g>
+              );
+            })
+          : null}
 
         {marker ? (
           <g>
