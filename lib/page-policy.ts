@@ -149,6 +149,9 @@ export const PAGE_POLICY_BY_NODE_ID: Readonly<Record<string, Readonly<PagePolicy
   "formal.mathematics.algebra.elementary-algebra.inequalities.one-variable": {
     vocabularyTrigger: "local",
   },
+  "formal.mathematics.algebra.elementary-algebra.inequalities.compound": {
+    vocabularyTrigger: "local",
+  },
   "formal.mathematics.algebra.elementary-algebra.inequalities.systems": {
     vocabularyTrigger: "local",
   },
