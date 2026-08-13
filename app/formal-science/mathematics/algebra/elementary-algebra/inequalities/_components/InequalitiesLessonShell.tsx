@@ -3,7 +3,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { ArrowLeft, ArrowRight, Check, Sparkles, type LucideIcon } from "lucide-react";
-import Assessment, { type AssessmentQuestion } from "@/app/_components/Assessment";
+import Assessment, { type AssessmentQuestion, type ThemeColor } from "@/app/_components/Assessment";
 import DomainPageHeader from "@/app/_components/DomainPageHeader";
 import LessonUtilityBar from "@/app/_components/LessonUtilityBar";
 import InequalitiesBackground from "./InequalitiesBackgroundV2";
@@ -27,7 +27,7 @@ type Props = {
   icon: LucideIcon;
   practiceId: string;
   questions: AssessmentQuestion[];
-  assessmentColor: "cyan" | "indigo" | "violet";
+  assessmentColor: ThemeColor;
   children: ReactNode;
 };
 
