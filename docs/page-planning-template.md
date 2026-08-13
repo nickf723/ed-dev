@@ -2,6 +2,49 @@
 
 Use this before creating or substantially remastering a page. A small change does not need a formal document, but the questions should still guide the work.
 
+For an **atomic lesson**, complete the fast brief below before any visual composition. Then use the fuller sections as needed. The binding lesson workflow lives in `docs/atomic-lesson-constitution.md`.
+
+---
+
+## 0. Atomic lesson fast brief
+
+Skip this section for hubs, units, reference pages, and tools.
+
+**Learner outcome**  
+After this page, the learner can...
+
+**Prerequisite**  
+This assumes the learner already understands...
+
+**Mental model**  
+The learner should picture / understand...
+
+**Core rule or relationship**  
+In one sentence...
+
+**Primary action**  
+The learner will physically/intellectually do...
+
+**Likely misconception**  
+The tempting wrong idea is...
+
+**Transfer check**  
+A new case proves understanding if the learner can...
+
+### Text storyboard
+
+Write the lesson in plain vertical order before designing containers:
+
+1. **Orient:**  
+2. **Model / worked example:**  
+3. **Distill the rule / why:**  
+4. **Do / primary instrument:**  
+5. **Stress-test / misconception / boundary:**  
+6. **Check transfer:**  
+7. **Connect forward:**  
+
+The instructional jobs must exist, but they do not each need a separate card or section. If this storyboard does not teach the idea clearly without visual polish, fix the lesson before coding.
+
 ---
 
 ## 1. Identity
@@ -91,6 +134,8 @@ Write the learner question for each chunk, not merely a component name.
 
 Remove or reorder steps when the subject warrants it. Avoid adding chunks that do not answer a distinct learner question.
 
+For atomic lessons, make sure these chunks collectively satisfy **Explain → Do → Check**. The primary interaction may combine several jobs, but it may not replace the explanatory spine.
+
 ---
 
 ## 6. Representations
@@ -117,6 +162,14 @@ If several views share a state, describe the shared object here.
 
 **Meaningful default state:**  
 
+**What learner action enacts the actual concept?**  
+
+**What changes because of that action?**  
+
+**What remains invariant?**  
+
+**What should the learner notice afterward?**  
+
 **Curated examples / presets:**
 
 1. simplest case:  
@@ -130,6 +183,9 @@ What controls become available after the guided model is clear?
 
 **Cause and effect:**  
 For each control, where does its consequence appear?
+
+**Forbidden inversion check:**  
+Does the instrument accidentally require the learner to know the untaught answer before it can teach the process? If yes, redesign it.
 
 ---
 
@@ -145,6 +201,8 @@ What conventions or comparisons will the learner need repeatedly?
 
 Place reference material close to the decisions it supports.
 
+Do not add a separate quick-reference block by default when the lesson already states the needed rule at the point of use.
+
 ---
 
 ## 9. Test cases and feedback
@@ -155,9 +213,13 @@ Place reference material close to the decisions it supports.
 
 **Boundary case:**  
 
+**Legal but unhelpful case, if relevant:**  
+
 **What feedback explains the verdict?**  
 
 If the lesson defines membership, validity, or satisfaction, explicitly show rule → case → substitution/application → verdict → interpretation.
+
+Feedback should explain the conceptual difference, not merely mark the choice red or green.
 
 ---
 
@@ -194,6 +256,9 @@ What structure, motion, background, typography, or interaction belongs specifica
 
 **What should remain visually quiet?**  
 
+**Instructional center of gravity:**  
+What should dominate the first viewport? What should dominate the next?
+
 ---
 
 ## 12. Geometry and responsive states
@@ -206,11 +271,16 @@ What structure, motion, background, typography, or interaction belongs specifica
 
 **Important selection states:**  
 
+**Sticky utility clearance:**  
+Which headings, controls, or feedback could sit beneath sticky UI, and how is clearance guaranteed?
+
 **Smallest target desktop width:**  
 
 **Mobile/tablet fallback:**  
 
 Use minimum heights and natural growth. Do not solve content overflow by clipping instructional content.
+
+Instructional content should remain in normal document flow unless intrinsic diagram geometry requires bounded positioning. Do not use absolute positioning or z-index patchwork to repair a lesson-sequence problem.
 
 ---
 
@@ -247,6 +317,16 @@ A page is ready when:
 - the page has been checked against `docs/educational-content-playbook.md`
 - available build/type checks pass
 
+For an atomic lesson, additionally require:
+
+- Explain → Do → Check is visibly present
+- one worked/model example exists
+- the reusable rule or relationship is stated explicitly
+- the primary instrument enacts the concept instead of pre-testing it
+- the main misconception or boundary is addressed
+- the transfer check uses a fresh case
+- the page passes the definition of done in `docs/atomic-lesson-constitution.md`
+
 ---
 
 ## 15. One-sentence postmortem
@@ -256,3 +336,5 @@ After implementation, finish this sentence:
 > This page is better for learning because...
 
 If the answer is primarily about appearance, the educational design probably needs another pass.
+
+If two rounds of small fixes have not resolved the lesson, stop implementation and revisit the atomic lesson brief/storyboard instead of continuing cosmetic patchwork.

@@ -7,9 +7,12 @@ Before changing educational UI or curriculum content, read:
 - `docs/site-architecture.md` for repository/product architecture, source-of-truth boundaries, page context, shared shell responsibilities, and migration strategy.
 - `docs/design-docket.md` for visual, layout, navigation, density, and interaction rules.
 - `docs/educational-content-playbook.md` for learning design, chunking, modeling, explanation, practice, and assessment rules.
+- `docs/atomic-lesson-constitution.md` before creating or substantially remastering an atomic lesson. It is the binding Explain → Do → Check build contract for lesson structure and workflow.
 - `docs/page-planning-template.md` when creating or substantially remastering a hub, unit, or lesson page.
 - `docs/cohesion-audit.md` for site-wide consistency without homogenizing subject identity.
 - `docs/visual-verification-queue.md` before making visual claims or continuing work while rendered previews are unavailable.
+
+For atomic lessons, the constitution is not optional guidance. Do not begin visual composition until the seven-line lesson brief and a simple text storyboard are clear. If repeated small fixes fail to resolve a lesson, return to that brief instead of continuing cosmetic patchwork.
 
 ## Non-negotiable rules
 
@@ -31,6 +34,7 @@ Before changing educational UI or curriculum content, read:
 16. **Batch meaningful changes.** Avoid a series of tiny commits that each trigger a deployment. Prefer one coherent commit per development pass when practical.
 17. **Cohesion is not homogenization.** Reuse shell behavior, navigation semantics, geometry rules, and feedback grammar. Let subject-specific structure, models, backgrounds, interactions, and local visual identity become more distinct with depth.
 18. **Keep shell, context, and presentation separate.** The shell owns persistent product behavior, page context owns semantic curriculum relationships, and route-local code owns the learning experience and subject-specific vibe.
+19. **Atomic lessons must Explain → Do → Check.** An interaction cannot substitute for explanation, and a quiz cannot substitute for guided practice. The primary instrument must enact the concept rather than require the learner to know the untaught answer first.
 
 ## Required workflow for substantial page work
 
@@ -39,28 +43,36 @@ Before coding:
 1. Inspect the current page and its existing live routes.
 2. Inspect the curriculum registry for the page, parent, siblings, and children.
 3. Decide whether the page is a hub, unit, atomic lesson, reference tool, or application/tool page.
-4. Resolve or define the page's semantic context rather than manually inventing ancestry/navigation.
-5. Fill out the questions in `docs/page-planning-template.md` at least mentally, and write them down for large changes.
-6. Identify the primary mental model and the learner sequence.
-7. Decide which content belongs here and which content deserves a deeper child page.
+4. If it is an atomic lesson, write the seven-line lesson brief from `docs/atomic-lesson-constitution.md` and a simple text storyboard before choosing visual composition.
+5. Resolve or define the page's semantic context rather than manually inventing ancestry/navigation.
+6. Fill out the questions in `docs/page-planning-template.md` at least mentally, and write them down for large changes.
+7. Identify the primary mental model and the learner sequence.
+8. Decide which content belongs here and which content deserves a deeper child page.
 
 While coding:
 
 - Keep one obvious instructional center of gravity per viewport.
 - Prefer one primary instrument on an atomic lesson.
+- Build the model and instructional sequence before spending time on decorative polish.
 - Use meaningful defaults and curated examples.
 - Keep reference material close to the decision it supports.
 - Preserve live navigation and semantic breadcrumbs.
 - Let each component own its geometry. Global layouts must not reach into descendant components to patch internal rows.
 - Prefer server-side curriculum/page-context resolution and pass small serializable contracts into client instruments.
+- Keep instructional content in normal document flow unless intrinsic diagram geometry requires bounded positioning. Do not repair lesson-structure problems with z-index or overlap patches.
 
 Before calling the pass complete:
 
+- Check that an atomic lesson visibly contains Explain → Do → Check.
+- Check that the learner sees a worked/model example and an explicit reusable rule or relationship.
+- Check that the primary instrument enacts the concept rather than pre-testing knowledge that has not been taught.
+- Check that the main misconception or boundary is addressed and that practice transfers to a fresh case.
 - Test the default state, longest text state, multiline equation/example state, important edge cases, and narrower desktop widths.
 - Check that interactive selections do not unexpectedly resize or overlap adjacent content.
+- Check that sticky utilities never cover headings, equations, controls, breadcrumbs, or feedback.
 - Check that every control teaches or reveals something specific.
 - Check that the learner can explain what the page is about without first discovering how the UI works.
-- Check the Design Docket audit and the Learning Design audit.
+- Check the Design Docket audit, Learning Design audit, and Atomic Lesson Constitution definition of done.
 - Run the available build/type checks when the environment supports them.
 
 ## Preview-offline maintenance mode
