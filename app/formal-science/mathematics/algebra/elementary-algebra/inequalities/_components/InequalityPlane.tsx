@@ -29,6 +29,7 @@ const yFor = (y: number) => (MAX - y) * SCALE;
 
 export default function InequalityPlane({ constraints, showOverlap = false, marker, ariaLabel }: Props) {
   const overlap = constraints.reduce<Point[]>((polygon, constraint) => clipPolygon(polygon, constraint), graphRectangle());
+  const shouldShade = showOverlap || constraints.length > 1 || marker !== undefined;
 
   return (
     <div className="relative overflow-hidden rounded-[22px] border border-white/[0.07] bg-[#050817]/88 p-3">
@@ -48,16 +49,18 @@ export default function InequalityPlane({ constraints, showOverlap = false, mark
         <line x1="0" y1={yFor(0)} x2={SIZE} y2={yFor(0)} stroke="rgba(226,232,240,0.34)" strokeWidth="1.4" />
         <line x1={xFor(0)} y1="0" x2={xFor(0)} y2={SIZE} stroke="rgba(226,232,240,0.34)" strokeWidth="1.4" />
 
-        {constraints.map((constraint, index) => {
-          const region = clipPolygon(graphRectangle(), constraint);
-          return region.length >= 3 ? (
-            <polygon
-              key={`shade-${index}`}
-              points={region.map((point) => `${xFor(point.x)},${yFor(point.y)}`).join(" ")}
-              fill={`rgba(${constraint.rgb},${showOverlap ? 0.08 : 0.14})`}
-            />
-          ) : null;
-        })}
+        {shouldShade
+          ? constraints.map((constraint, index) => {
+              const region = clipPolygon(graphRectangle(), constraint);
+              return region.length >= 3 ? (
+                <polygon
+                  key={`shade-${index}`}
+                  points={region.map((point) => `${xFor(point.x)},${yFor(point.y)}`).join(" ")}
+                  fill={`rgba(${constraint.rgb},${showOverlap ? 0.08 : 0.14})`}
+                />
+              ) : null;
+            })
+          : null}
 
         {showOverlap && overlap.length >= 3 ? (
           <polygon
