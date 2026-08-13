@@ -132,7 +132,16 @@ export const PAGE_POLICY_BY_NODE_ID: Readonly<Record<string, Readonly<PagePolicy
     vocabularyTrigger: "none",
   },
   "formal.mathematics.algebra.elementary-algebra.systems.solution-types": {
-    vocabularyTrigger: "none",
+    vocabularyTrigger: "local",
+  },
+  "formal.mathematics.algebra.elementary-algebra.systems.graphing": {
+    vocabularyTrigger: "local",
+  },
+  "formal.mathematics.algebra.elementary-algebra.systems.substitution": {
+    vocabularyTrigger: "local",
+  },
+  "formal.mathematics.algebra.elementary-algebra.systems.elimination": {
+    vocabularyTrigger: "local",
   },
   "formal.mathematics.algebra.elementary-algebra.inequalities": {
     vocabularyTrigger: "none",
