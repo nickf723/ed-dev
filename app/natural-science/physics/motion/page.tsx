@@ -41,14 +41,14 @@ export default function MotionPage() {
       <div className="relative z-10 mx-auto w-full max-w-[1400px] px-4 py-5 sm:px-6 xl:px-8">
         <DomainPageHeader
           breadcrumbs={[
-            { label: "Natural Science", href: "/natural-science" },
             { label: "Physics", href: "/natural-science/physics" },
+            { label: "Mechanics", href: "/natural-science/physics/mechanics" },
             { label: "Motion" },
           ]}
           eyebrow="Position · velocity · acceleration"
           icon={MoveRight}
           title={<span>Motion</span>}
-          subtitle="Describe change in position before asking what caused it. Motion gives physics its first shared language for location, time, direction, rate, and change of rate."
+          subtitle="Describe change in position before asking what caused it. Motion gives mechanics its first shared language for location, time, direction, rate, and change of rate."
           accentRgb="251, 146, 60"
           titleClassName="font-mono text-[clamp(2.75rem,5vw,5.3rem)] font-semibold uppercase leading-[0.86] tracking-[-0.058em] text-[#fffaf7]"
           headerClassName="border-white/[0.10]"
@@ -137,8 +137,8 @@ export default function MotionPage() {
         </section>
 
         <div className="mt-4 pb-8">
-          <Link href="/natural-science/physics" className="inline-flex items-center gap-2 rounded-full border border-white/[0.07] bg-black/[0.18] px-3 py-2 text-[10px] font-semibold text-slate-500 transition-colors hover:text-slate-300">
-            ← Physics map
+          <Link href="/natural-science/physics/mechanics" className="inline-flex items-center gap-2 rounded-full border border-white/[0.07] bg-black/[0.18] px-3 py-2 text-[10px] font-semibold text-slate-500 transition-colors hover:text-slate-300">
+            ← Mechanics map
           </Link>
         </div>
       </div>
