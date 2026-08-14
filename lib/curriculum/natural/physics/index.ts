@@ -72,8 +72,8 @@ export const PHYSICS_CURRICULUM: CurriculumNode = node(
               "/natural-science/physics/mechanics/energy/momentum",
               "Linear momentum, impulse, collisions, and conservation in interacting systems.",
               [
-                node("natural.physics.mechanics.energy.momentum.fundamentals", "Momentum", "/natural-science/physics/mechanics/energy/momentum/fundamentals", "Treat momentum as a directional quantity combining mass and velocity.", undefined, "placeholder"),
-                node("natural.physics.mechanics.energy.momentum.impulse", "Impulse", "/natural-science/physics/mechanics/energy/momentum/impulse", "Connect force acting over time to change in momentum.", undefined, "placeholder"),
+                node("natural.physics.mechanics.energy.momentum.fundamentals", "Momentum", "/natural-science/physics/mechanics/energy/momentum/fundamentals", "Treat momentum as a directional quantity combining mass and velocity."),
+                node("natural.physics.mechanics.energy.momentum.impulse", "Impulse", "/natural-science/physics/mechanics/energy/momentum/impulse", "Connect force acting over time to change in momentum."),
                 node("natural.physics.mechanics.energy.momentum.conservation", "Conservation of Momentum", "/natural-science/physics/mechanics/energy/momentum/conservation", "Track total momentum of an isolated system before and after an interaction.", undefined, "placeholder"),
                 node("natural.physics.mechanics.energy.momentum.collisions", "Collisions", "/natural-science/physics/mechanics/energy/momentum/collisions", "Compare elastic and inelastic collisions using momentum and energy bookkeeping.", undefined, "placeholder"),
               ],
