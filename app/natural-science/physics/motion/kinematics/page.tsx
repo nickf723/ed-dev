@@ -97,27 +97,30 @@ export default function KinematicsPage() {
       <PhysicsBackground mode="motion" />
       <div className="pointer-events-none fixed inset-0 z-0 bg-[radial-gradient(circle_at_48%_28%,rgba(251,146,60,0.045),transparent_24%)]" />
 
-      <div className="relative z-10 mx-auto w-full max-w-[1400px] px-4 py-5 sm:px-6 xl:px-8">
-        <DomainPageHeader
-          breadcrumbs={[
-            { label: "Natural Science", href: "/natural-science" },
-            { label: "Physics", href: "/natural-science/physics" },
-            { label: "Motion", href: "/natural-science/physics/motion" },
-            { label: "Kinematics" },
-          ]}
-          eyebrow="Motion without causes"
-          icon={MoveRight}
-          title={<span>Kinematics</span>}
-          subtitle="Describe where an object is, how its position changes, and how its velocity changes. The graphs and equations below are different views of the same motion."
-          accentRgb="251, 146, 60"
-          titleClassName="font-mono text-[clamp(2.6rem,4.8vw,5rem)] font-semibold uppercase leading-[0.86] tracking-[-0.058em] text-[#fffaf7]"
-          headerClassName="border-white/[0.10]"
-          aside={
-            <div className="rounded-full border border-orange-200/[0.10] bg-black/25 px-4 py-2 font-mono text-[10px] uppercase tracking-[0.11em] text-orange-100/65 backdrop-blur-md">
-              Motion · 01 / 03
-            </div>
-          }
-        />
+      <div className="relative z-10 mx-auto w-full max-w-[1400px] px-4 pb-12 sm:px-6 xl:px-8">
+        <div className="sticky top-0 z-30 -mx-4 border-b border-white/[0.07] bg-[#040910]/76 px-4 pb-4 pt-5 backdrop-blur-2xl sm:-mx-6 sm:px-6 xl:-mx-8 xl:px-8">
+          <DomainPageHeader
+            breadcrumbs={[
+              { label: "Natural Science", href: "/natural-science" },
+              { label: "Physics", href: "/natural-science/physics" },
+              { label: "Mechanics", href: "/natural-science/physics/mechanics" },
+              { label: "Motion", href: "/natural-science/physics/motion" },
+              { label: "Kinematics" },
+            ]}
+            eyebrow="Motion without causes"
+            icon={MoveRight}
+            title={<span>Kinematics</span>}
+            subtitle="Describe where an object is, how its position changes, and how its velocity changes. The graphs and equations below are different views of the same motion."
+            accentRgb="251, 146, 60"
+            titleClassName="font-mono text-[clamp(2.6rem,4.8vw,5rem)] font-semibold uppercase leading-[0.86] tracking-[-0.058em] text-[#fffaf7]"
+            headerClassName="border-transparent"
+            aside={
+              <div className="rounded-full border border-orange-200/[0.10] bg-black/25 px-4 py-2 font-mono text-[10px] uppercase tracking-[0.11em] text-orange-100/65 backdrop-blur-md">
+                Motion · 01 / 03
+              </div>
+            }
+          />
+        </div>
 
         <section className="mt-4 grid gap-4 rounded-[26px] border border-white/[0.08] bg-black/[0.20] p-5 backdrop-blur-2xl lg:grid-cols-[minmax(0,1.08fr)_minmax(300px,0.92fr)] sm:p-6">
           <div>
@@ -284,7 +287,7 @@ export default function KinematicsPage() {
 
         <div className="mt-4 flex flex-wrap items-center justify-between gap-3 pb-8">
           <Link href="/natural-science/physics/motion" className="inline-flex items-center gap-2 rounded-full border border-white/[0.07] bg-black/[0.18] px-3 py-2 text-[10px] font-semibold text-slate-500 transition-colors hover:text-slate-300">← Motion map</Link>
-          <div className="rounded-full border border-white/[0.05] bg-black/[0.14] px-3 py-2 text-[10px] text-slate-700">Next: Projectile Motion · planned</div>
+          <Link href="/natural-science/physics/motion/projectile-motion" className="inline-flex items-center gap-2 rounded-full border border-cyan-200/[0.12] bg-cyan-400/[0.035] px-4 py-2 text-[10px] font-semibold text-cyan-100/75">Next: Projectile Motion <ArrowRight size={13} /></Link>
         </div>
       </div>
     </main>
