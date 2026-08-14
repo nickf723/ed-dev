@@ -13,16 +13,16 @@ export default function ClassicalMechanicsPage() {
         <div className="flex justify-between items-start mb-16 pointer-events-auto">
           <div>
             <Link href="/natural-science/physics" className="flex items-center gap-2 text-xs text-slate-400 hover:text-white transition-colors mb-4">
-              <ArrowLeft size={12} /> PHYSICS_ENGINE // SECTOR_01
+              <ArrowLeft size={12} /> PHYSICS // CLASSICAL MECHANICS
             </Link>
             <div className="border-l-4 border-orange-500 pl-6">
               <h1 className="text-5xl md:text-7xl font-black text-white mb-2">
                 CLASSICAL<br />MECHANICS
               </h1>
               <p className="text-slate-400 max-w-lg">
-                The study of motion, the forces that change it, and the energy carried through physical systems.
+                The classical framework connecting motion, interactions, momentum, and energy at everyday scales.
                 <span className="block mt-2 text-orange-400 text-xs">
-                  // INSTRUCTION: CLICK & DRAG ON BACKGROUND TO LAUNCH PROJECTILES.
+                  // THIS PAGE WILL BE REBUILT AFTER THE FOUNDATIONAL MOTION UNIT.
                 </span>
               </p>
             </div>
@@ -40,31 +40,31 @@ export default function ClassicalMechanicsPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pointer-events-auto max-w-7xl mx-auto w-full">
           <Link
-            href="/natural-science/physics/classical-mechanics/kinematics"
+            href="/natural-science/physics/motion"
             className="bg-slate-900/80 backdrop-blur-md border border-slate-700 p-6 hover:border-orange-500/70 hover:bg-slate-900/90 transition-all group"
           >
             <div className="flex justify-between items-start mb-6 border-b border-slate-700 pb-4">
               <div className="flex items-center gap-3">
                 <Move className="text-orange-400" size={20} />
-                <h3 className="font-bold tracking-widest text-slate-200">KINEMATICS</h3>
+                <h3 className="font-bold tracking-widest text-slate-200">MOTION</h3>
               </div>
               <div className="flex items-center gap-2">
-                <span className="rounded-full border border-orange-500/20 bg-orange-500/5 px-2 py-1 text-[8px] text-orange-300">START HERE</span>
+                <span className="rounded-full border border-orange-500/20 bg-orange-500/5 px-2 py-1 text-[8px] text-orange-300">FOUNDATION</span>
                 <ArrowRight size={14} className="text-slate-600 transition-transform group-hover:translate-x-1 group-hover:text-orange-300" />
               </div>
             </div>
 
             <p className="text-xs text-slate-400 mb-6 leading-relaxed">
-              Describe motion before asking what caused it. Position, displacement, velocity, and acceleration stay synchronized in one interactive lab.
+              Kinematics now lives in its own Motion unit instead of being buried under Classical Mechanics. Start there for position, velocity, acceleration, projectiles, and reference frames.
             </p>
 
             <div className="space-y-4">
               <div className="bg-black/30 p-3 rounded border border-slate-800 group-hover:border-orange-500/20 transition-colors">
-                <div className="text-[10px] text-slate-500 mb-1">POSITION</div>
-                <div className="text-lg text-white"><M>{"x = x_0 + v_0t + \\frac{1}{2}at^2"}</M></div>
+                <div className="text-[10px] text-slate-500 mb-1">KINEMATICS</div>
+                <div className="text-lg text-white"><M>{"x(t) \\rightarrow v(t) \\rightarrow a(t)"}</M></div>
               </div>
               <div className="bg-black/30 p-3 rounded border border-slate-800 group-hover:border-orange-500/20 transition-colors">
-                <div className="text-[10px] text-slate-500 mb-1">VELOCITY</div>
+                <div className="text-[10px] text-slate-500 mb-1">CONSTANT ACCELERATION</div>
                 <div className="text-lg text-white"><M>{"v = v_0 + at"}</M></div>
               </div>
             </div>
@@ -76,7 +76,7 @@ export default function ClassicalMechanicsPage() {
                 <Box className="text-orange-400" size={20} />
                 <h3 className="font-bold tracking-widest text-slate-200">DYNAMICS</h3>
               </div>
-              <span className="text-[10px] text-slate-500">MOD_B</span>
+              <span className="text-[10px] text-slate-500">PLANNED</span>
             </div>
 
             <p className="text-xs text-slate-400 mb-6 leading-relaxed">
@@ -105,7 +105,7 @@ export default function ClassicalMechanicsPage() {
                 <Activity className="text-orange-400" size={20} />
                 <h3 className="font-bold tracking-widest text-slate-200">WORK / ENERGY</h3>
               </div>
-              <span className="text-[10px] text-slate-500">MOD_C</span>
+              <span className="text-[10px] text-slate-500">PLANNED</span>
             </div>
 
             <p className="text-xs text-slate-400 mb-6 leading-relaxed">
