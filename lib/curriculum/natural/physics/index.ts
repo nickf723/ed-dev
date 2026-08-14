@@ -77,9 +77,7 @@ export const PHYSICS_CURRICULUM: CurriculumNode = node(
               "natural.physics.mechanics.forces.common-forces",
               "Common Forces",
               "/natural-science/physics/mechanics/forces/common-forces",
-              "Recognize gravity, normal force, tension, friction, drag, spring force, and applied forces by their interactions.",
-              undefined,
-              "placeholder",
+              "Recognize gravity, normal force, tension, friction, drag, and spring force by their interaction partners and geometry.",
             ),
             node(
               "natural.physics.mechanics.forces.free-body-diagrams",
