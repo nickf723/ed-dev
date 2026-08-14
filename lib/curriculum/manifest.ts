@@ -3,6 +3,7 @@ import { COMPUTER_SCIENCE_CURRICULUM } from "@/lib/curriculum/computer-science";
 import { GROUP_THEORY_CURRICULUM } from "@/lib/curriculum/group-theory";
 import { LOGIC_CURRICULUM } from "@/lib/curriculum/logic";
 import { BIOLOGY_CURRICULUM } from "@/lib/curriculum/natural/biology";
+import { PHYSICS_CURRICULUM } from "@/lib/curriculum/natural/physics";
 import type { CurriculumNode } from "@/lib/curriculum/types";
 
 /**
@@ -19,4 +20,5 @@ export const CURRICULUM_MODULES: readonly CurriculumNode[] = [
   LOGIC_CURRICULUM,
   COMPUTER_SCIENCE_CURRICULUM,
   BIOLOGY_CURRICULUM,
+  PHYSICS_CURRICULUM,
 ];
