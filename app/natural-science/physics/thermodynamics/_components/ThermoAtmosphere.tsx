@@ -1,11 +1,30 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Activity, Thermometer } from "lucide-react";
-import ThermoField from "./ThermoField";
+import ThermoField, { type ThermoFieldMode } from "./ThermoField";
 
 export default function ThermoAtmosphere() {
   const [energy, setEnergy] = useState(0.58);
+  const [mode, setMode] = useState<ThermoFieldMode>("overview");
+
+  useEffect(() => {
+    function handleMode(event: Event) {
+      const detail = (event as CustomEvent<ThermoFieldMode>).detail;
+      if (detail) setMode(detail);
+    }
+
+    function handleReset() {
+      setMode("overview");
+    }
+
+    window.addEventListener("thermo:mode", handleMode);
+    window.addEventListener("thermo:reset", handleReset);
+    return () => {
+      window.removeEventListener("thermo:mode", handleMode);
+      window.removeEventListener("thermo:reset", handleReset);
+    };
+  }, []);
 
   const state =
     energy < 0.34
@@ -16,7 +35,7 @@ export default function ThermoAtmosphere() {
 
   return (
     <>
-      <ThermoField mode="overview" intensity={1.28} energyLevel={energy} />
+      <ThermoField mode={mode} intensity={1.28} energyLevel={energy} />
 
       <div className="fixed bottom-5 right-5 z-20 hidden w-[270px] rounded-[20px] border border-white/[0.09] bg-[#09080e]/58 p-4 shadow-[0_20px_65px_rgba(0,0,0,0.28)] backdrop-blur-2xl xl:block">
         <div className="flex items-start justify-between gap-3">
