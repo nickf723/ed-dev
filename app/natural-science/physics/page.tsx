@@ -1,273 +1,304 @@
 "use client";
+
 import { useState } from "react";
 import Link from "next/link";
-import PlasmaBackground from "@/app/natural-science/physics/PlasmaBackground";
-import { M } from "@/app/_components/Math";
-import { motion, AnimatePresence } from "framer-motion";
+import DomainPageHeader from "@/app/_components/DomainPageHeader";
+import PhysicsBackground, { type PhysicsBackgroundMode } from "./_components/PhysicsBackground";
 import {
+  Activity,
+  ArrowRight,
   Atom,
+  CircleDashed,
   Flame,
-  Zap,
-  Waves,
+  Gauge,
   Hourglass,
   Microscope,
+  MoveRight,
   Orbit,
-  ArrowRight,
+  Radio,
   RefreshCw,
-  Sliders,
+  Waves,
+  Zap,
+  type LucideIcon,
 } from "lucide-react";
 
-const domains = [
+type PhysicsBranch = {
+  id: PhysicsBackgroundMode;
+  title: string;
+  eyebrow: string;
+  description: string;
+  question: string;
+  href: string;
+  icon: LucideIcon;
+  rgb: string;
+  specimen: string;
+};
+
+const BRANCHES: readonly PhysicsBranch[] = [
   {
     id: "classical",
     title: "Classical Mechanics",
-    year: "1687",
-    desc: "Motion, forces, momentum, and energy at everyday scales.",
-    question: "How does motion change, and what interactions caused the change?",
-    concepts: ["motion", "forces", "momentum", "energy"],
-    eq: <M>{"F = \\frac{dp}{dt}"}</M>,
-    icon: Orbit,
+    eyebrow: "Everyday scales",
+    description: "Motion, forces, momentum, rotation, and energy in systems where classical models work beautifully.",
+    question: "How do objects move and interact?",
     href: "/natural-science/physics/classical-mechanics",
-    startHref: "/natural-science/physics/classical-mechanics/kinematics",
-    color: "text-orange-400",
-    glow: "shadow-orange-500/50",
-    fact: "The same Newtonian framework can describe a tossed ball, a pendulum, and a planet in orbit when speeds and scales stay far from relativistic or quantum extremes.",
+    icon: Orbit,
+    rgb: "251, 146, 60",
+    specimen: "motion · forces · energy",
   },
   {
     id: "thermo",
     title: "Thermodynamics",
-    year: "1824",
-    desc: "Energy transfer, temperature, entropy, and equilibrium.",
-    question: "Which changes are possible, and which direction will a process naturally run?",
-    concepts: ["temperature", "heat", "entropy", "equilibrium"],
-    eq: "dS \\geq 0",
-    icon: Flame,
+    eyebrow: "Energy in crowds",
+    description: "Temperature, heat, entropy, equilibrium, and the direction large collections of particles naturally evolve.",
+    question: "Which changes can happen, and which way do they go?",
     href: "/natural-science/physics/thermodynamics",
-    color: "text-red-400",
-    glow: "shadow-red-500/50",
-    fact: "Absolute zero can be approached, but the third law prevents reaching it through a finite sequence of thermodynamic operations.",
+    icon: Flame,
+    rgb: "248, 113, 113",
+    specimen: "heat · entropy · equilibrium",
   },
   {
-    id: "electromag",
+    id: "electromagnetism",
     title: "Electromagnetism",
-    year: "1865",
-    desc: "Charges, electric and magnetic fields, circuits, and radiation.",
-    question: "How do charges create fields, and how do fields move energy and matter?",
-    concepts: ["charge", "fields", "circuits", "radiation"],
-    eq: <M>{"\\nabla \\times B = \\mu_0 J"}</M>,
-    icon: Zap,
+    eyebrow: "Fields & charge",
+    description: "Electricity, magnetism, circuits, fields, and electromagnetic radiation as one connected theory.",
+    question: "How do charges influence matter across space?",
     href: "/natural-science/physics/electromagnetism",
-    color: "text-cyan-400",
-    glow: "shadow-cyan-500/50",
-    fact: "Visible light, radio, microwaves, ultraviolet, and X-rays are all electromagnetic radiation with different frequencies and wavelengths.",
+    icon: Zap,
+    rgb: "34, 211, 238",
+    specimen: "charge · fields · circuits",
   },
   {
-    id: "optics",
+    id: "waves",
     title: "Waves & Optics",
-    year: "1704",
-    desc: "Oscillation, interference, sound, light, and image formation.",
-    question: "How does a disturbance carry energy, combine with other waves, and interact with boundaries?",
-    concepts: ["waves", "interference", "refraction", "images"],
-    eq: <M>{"n_1 \\sin \\theta_1 = n_2 \\sin \\theta_2"}</M>,
-    icon: Waves,
+    eyebrow: "Patterns that travel",
+    description: "Oscillation, interference, sound, light, reflection, refraction, diffraction, and image formation.",
+    question: "How can a disturbance carry information and energy?",
     href: "/natural-science/physics/waves-optics",
-    color: "text-blue-400",
-    glow: "shadow-blue-500/50",
-    fact: "A prism separates white light because different wavelengths refract by different amounts inside the material.",
+    icon: Waves,
+    rgb: "96, 165, 250",
+    specimen: "waves · light · interference",
   },
   {
     id: "relativity",
     title: "Relativity",
-    year: "1905",
-    desc: "Spacetime, high-speed motion, gravity, and invariant laws.",
-    question: "What stays the same when observers move differently or spacetime itself curves?",
-    concepts: ["spacetime", "invariants", "gravity", "causality"],
-    eq: <M>{"E = mc^2"}</M>,
-    icon: Hourglass,
+    eyebrow: "Space, time & gravity",
+    description: "Special and general relativity, invariant laws, spacetime, gravity, and motion near the speed of light.",
+    question: "What stays invariant when observers and spacetime differ?",
     href: "/natural-science/physics/relativity",
-    color: "text-violet-400",
-    glow: "shadow-violet-500/50",
-    fact: "Satellite navigation systems need relativistic clock corrections because orbital speed and weaker gravity both shift the rate at which satellite clocks tick.",
+    icon: Hourglass,
+    rgb: "167, 139, 250",
+    specimen: "spacetime · gravity · invariance",
   },
   {
     id: "quantum",
     title: "Quantum Mechanics",
-    year: "1925",
-    desc: "States, probability amplitudes, quantization, and measurement.",
-    question: "How do physical systems behave when classical trajectories stop being enough?",
-    concepts: ["states", "probability", "quantization", "measurement"],
-    eq: <M>{"i\\hbar\\dot{\\Psi} = \\hat{H}\\Psi"}</M>,
-    icon: Atom,
+    eyebrow: "Physics of possibility",
+    description: "Quantum states, probability amplitudes, measurement, uncertainty, and behavior beyond classical trajectories.",
+    question: "What replaces a definite trajectory at tiny scales?",
     href: "/natural-science/physics/quantum-mechanics",
-    color: "text-fuchsia-400",
-    glow: "shadow-fuchsia-500/50",
-    fact: "Quantum states can exist in superpositions, while measurements produce outcomes according to probabilities encoded by the state.",
+    icon: Atom,
+    rgb: "232, 121, 249",
+    specimen: "states · probability · measurement",
   },
   {
     id: "nuclear",
     title: "Nuclear Physics",
-    year: "1932",
-    desc: "Nuclei, radioactivity, binding energy, fission, and fusion.",
-    question: "What holds atomic nuclei together, and how can nuclei transform into new ones?",
-    concepts: ["nuclei", "binding", "decay", "reactions"],
-    eq: <M>{"E = \\Delta mc^2"}</M>,
-    icon: Microscope,
+    eyebrow: "Inside the nucleus",
+    description: "Binding energy, radioactivity, nuclear reactions, fission, fusion, and the forces acting inside nuclei.",
+    question: "Why are some nuclei stable while others transform?",
     href: "/natural-science/physics/nuclear",
-    color: "text-pink-400",
-    glow: "shadow-pink-500/50",
-    fact: "Nuclear reactions release energy when the final products have greater binding energy per nucleon, with the mass difference appearing as released energy.",
+    icon: Microscope,
+    rgb: "244, 114, 182",
+    specimen: "binding · decay · reactions",
   },
   {
     id: "atomic",
     title: "Atomic Physics",
-    year: "1913",
-    desc: "Electron structure, spectra, transitions, and atom-light interactions.",
-    question: "Why do atoms absorb and emit only particular energies of light?",
-    concepts: ["electrons", "spectra", "energy levels", "photons"],
-    eq: <M>{"E_n = -13.6 \\frac{Z^2}{n^2} \\text{ eV}"}</M>,
-    icon: RefreshCw,
+    eyebrow: "Atoms & light",
+    description: "Electron structure, spectra, transitions, quantized energies, and the interaction between atoms and photons.",
+    question: "Why do atoms absorb and emit specific energies?",
     href: "/natural-science/physics/atomic",
-    color: "text-emerald-400",
-    glow: "shadow-emerald-500/50",
-    fact: "Atoms produce characteristic spectra because bound electrons can change only between allowed energy states, absorbing or emitting matching photon energies.",
+    icon: RefreshCw,
+    rgb: "52, 211, 153",
+    specimen: "spectra · levels · photons",
   },
-];
+] as const;
 
-export default function PhysicsCollider() {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [timeScale, setTimeScale] = useState(1);
-  const active = domains[activeIndex];
+const FOUNDATIONS = [
+  {
+    title: "Motion",
+    description: "Start by learning the language used to describe change in position over time.",
+    href: "/natural-science/physics/motion",
+    icon: MoveRight,
+    rgb: "251, 146, 60",
+    status: "live",
+  },
+  {
+    title: "Forces",
+    description: "Ask what interactions change motion, then build free-body diagrams and Newtonian models.",
+    href: "/natural-science/physics/classical-mechanics",
+    icon: Gauge,
+    rgb: "250, 204, 21",
+    status: "partial",
+  },
+  {
+    title: "Energy",
+    description: "Track how physical systems change without following every instant of their motion.",
+    href: "/natural-science/physics/classical-mechanics",
+    icon: Activity,
+    rgb: "45, 212, 191",
+    status: "partial",
+  },
+] as const;
+
+export default function PhysicsPage() {
+  const [backgroundMode, setBackgroundMode] = useState<PhysicsBackgroundMode>("overview");
 
   return (
-    <main className="relative h-screen w-full bg-black text-white overflow-hidden flex flex-col font-sans selection:bg-white/30">
-      <PlasmaBackground timeScale={timeScale} />
-      <div className="absolute inset-0 bg-radial-vignette opacity-60 pointer-events-none z-0" />
+    <main className="relative min-h-screen overflow-x-hidden bg-[#040910] text-slate-100 selection:bg-cyan-400/25">
+      <PhysicsBackground mode={backgroundMode} />
 
-      <header className="relative z-20 px-6 py-5 md:px-8 md:py-6 flex justify-between items-start">
-        <div>
-          <div className="flex items-center gap-3">
-            <div className="w-3 h-3 rounded-full bg-green-500 animate-pulse" />
-            <h1 className="text-xl font-bold tracking-widest text-white/80">PHYSICS ENGINE</h1>
-          </div>
-          <p className="text-[10px] font-mono text-neutral-400 mt-1">V.2.1 // MODEL REALITY</p>
-        </div>
-
-        <div className="flex flex-col items-end gap-2 bg-black/40 p-3 rounded-lg border border-white/10 backdrop-blur-md">
-          <div className="flex items-center gap-2 text-xs font-mono text-neutral-300">
-            <Sliders size={12} /> REALITY DISTORTION
-          </div>
-          <input
-            aria-label="Reality distortion"
-            type="range"
-            min="0"
-            max="5"
-            step="0.1"
-            value={timeScale}
-            onChange={(event) => setTimeScale(parseFloat(event.target.value))}
-            className="w-32 h-1 bg-white/20 rounded-lg appearance-none cursor-pointer hover:bg-white/40 accent-white"
-          />
-        </div>
-      </header>
-
-      <div className="relative z-10 flex-1 flex items-center justify-center px-5 min-h-0">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={active.id}
-            initial={{ opacity: 0, scale: 0.9, filter: "blur(10px)" }}
-            animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-            exit={{ opacity: 0, scale: 1.1, filter: "blur(10px)" }}
-            transition={{ duration: 0.4 }}
-            className="max-w-5xl w-full"
-          >
-            <div className="flex flex-col md:flex-row items-center gap-8 lg:gap-12">
-              <div className={`relative flex-shrink-0 w-36 h-36 md:w-52 md:h-52 lg:w-60 lg:h-60 rounded-full border-4 border-white/10 flex items-center justify-center bg-black/20 backdrop-blur-xl ${active.glow} shadow-[0_0_100px_-20px]`}>
-                <active.icon size={72} className="text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.8)]" />
-                <div className="absolute inset-0 border border-white/20 rounded-full animate-[spin_10s_linear_infinite]" />
-                <div className="absolute inset-4 border border-white/10 rounded-full animate-[spin_7s_linear_infinite_reverse]" />
-              </div>
-
-              <div className="text-center md:text-left space-y-4 lg:space-y-5 min-w-0">
-                <div>
-                  <span className={`text-xs font-bold px-2 py-1 rounded bg-white/10 border border-white/20 ${active.color}`}>
-                    EST. {active.year}
-                  </span>
-                  <h2 className="text-5xl md:text-6xl lg:text-7xl font-black tracking-tighter text-white mt-3 drop-shadow-xl">
-                    {active.title}
-                  </h2>
-                </div>
-
-                <p className="text-lg md:text-xl text-white/80 font-light leading-relaxed">
-                  {active.desc}
-                </p>
-
-                <div className="hidden md:block rounded-2xl border border-white/10 bg-black/25 px-4 py-3 backdrop-blur-md">
-                  <div className="text-[9px] font-semibold uppercase tracking-[0.15em] text-white/35">Core question</div>
-                  <div className="mt-1 text-sm text-white/75">{active.question}</div>
-                  <div className="mt-3 flex flex-wrap gap-2">
-                    {active.concepts.map((concept) => (
-                      <span key={concept} className="rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-1 text-[9px] font-medium uppercase tracking-[0.08em] text-white/45">
-                        {concept}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="hidden lg:block py-1">
-                  <div className="text-3xl font-serif text-white/50">
-                    {typeof active.eq === "string" ? <M>{active.eq}</M> : active.eq}
-                  </div>
-                </div>
-
-                <div className="flex flex-col lg:flex-row gap-3 items-center md:items-start lg:items-center">
-                  <div className="flex flex-wrap items-center justify-center md:justify-start gap-2">
-                    <Link
-                      href={active.href}
-                      className="px-6 py-3 rounded-full font-bold text-black bg-white hover:scale-105 transition-transform shadow-[0_0_40px_-10px_rgba(255,255,255,0.5)] flex items-center gap-2 text-sm"
-                    >
-                      Enter Domain <ArrowRight size={16} />
-                    </Link>
-                    {active.startHref ? (
-                      <Link
-                        href={active.startHref}
-                        className="px-4 py-3 rounded-full border border-orange-300/20 bg-orange-400/[0.08] text-xs font-semibold text-orange-100 hover:bg-orange-400/[0.13] transition-colors"
-                      >
-                        Start with motion
-                      </Link>
-                    ) : null}
-                  </div>
-
-                  <div className="hidden xl:block px-5 py-3 rounded-2xl border border-white/20 bg-black/20 backdrop-blur-md text-[10px] leading-4 text-white/60 max-w-md">
-                    <span className="font-bold text-white/85 block mb-1">FIELD NOTE</span>
-                    {active.fact}
-                  </div>
-                </div>
-              </div>
+      <div className="relative z-10 mx-auto w-full max-w-[1400px] px-4 py-5 sm:px-6 xl:px-8">
+        <DomainPageHeader
+          breadcrumbs={[
+            { label: "Natural Science", href: "/natural-science" },
+            { label: "Physics" },
+          ]}
+          eyebrow="Matter · motion · energy · fields"
+          icon={Atom}
+          title={<span>Physics</span>}
+          subtitle="Build models of how the universe changes, interacts, and constrains what can happen. Start with observable motion, then branch outward into forces, fields, matter, waves, spacetime, and quantum behavior."
+          accentRgb="56, 189, 248"
+          titleClassName="font-mono text-[clamp(2.8rem,5vw,5.5rem)] font-semibold uppercase leading-[0.86] tracking-[-0.058em] text-[#f7fbff]"
+          headerClassName="border-white/[0.10]"
+          aside={
+            <div className="rounded-full border border-white/[0.08] bg-black/25 px-4 py-2 font-mono text-[10px] uppercase tracking-[0.12em] text-slate-400 backdrop-blur-md">
+              hover a field to retune the lab
             </div>
-          </motion.div>
-        </AnimatePresence>
-      </div>
+          }
+        />
 
-      <div className="relative z-20 h-28 md:h-32 border-t border-white/10 bg-black/40 backdrop-blur-xl flex items-center overflow-x-auto px-6 md:px-8 gap-4 snap-x">
-        {domains.map((domain, index) => {
-          const isActive = index === activeIndex;
-          return (
-            <button
-              key={domain.id}
-              type="button"
-              onClick={() => setActiveIndex(index)}
-              className={`relative flex-shrink-0 px-5 py-3 md:px-6 md:py-4 rounded-xl border transition-all duration-300 snap-center flex flex-col items-center gap-2 min-w-[132px] md:min-w-[140px] ${isActive ? "bg-white/10 border-white scale-105" : "bg-transparent border-white/5 hover:bg-white/5 hover:border-white/20 opacity-60 hover:opacity-100"}`}
-            >
-              <domain.icon size={20} className={isActive ? "text-white" : domain.color} />
-              <span className="text-xs font-bold uppercase tracking-wider">{domain.title.split(" ")[0]}</span>
-              {isActive ? (
-                <motion.div
-                  layoutId="rail-glow"
-                  className="absolute inset-0 rounded-xl bg-white/5 shadow-[inset_0_0_20px_rgba(255,255,255,0.1)]"
-                />
-              ) : null}
-            </button>
-          );
-        })}
+        <section className="mt-4 overflow-hidden rounded-[25px] border border-white/[0.08] bg-black/[0.22] p-5 shadow-[0_24px_70px_rgba(0,0,0,0.24)] backdrop-blur-2xl sm:p-6">
+          <div className="grid gap-6 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:items-center">
+            <div>
+              <div className="text-[10px] font-semibold uppercase tracking-[0.15em] text-cyan-300/70">Throughline</div>
+              <h2 className="mt-2 max-w-2xl text-[clamp(1.65rem,3vw,2.5rem)] font-semibold tracking-[-0.04em] text-white">
+                Observe a change. Measure it. Build the smallest model that explains it.
+              </h2>
+              <p className="mt-3 max-w-2xl text-[13px] leading-6 text-slate-400">
+                Physics is less a collection of formulas than a connected modeling language. The same ideas repeat at different scales: state, change, interaction, conservation, symmetry, and uncertainty.
+              </p>
+            </div>
+
+            <div className="grid gap-2 sm:grid-cols-3">
+              {FOUNDATIONS.map((foundation) => {
+                const Icon = foundation.icon;
+                return (
+                  <Link
+                    key={foundation.title}
+                    href={foundation.href}
+                    onMouseEnter={() => setBackgroundMode(foundation.title === "Motion" ? "motion" : "classical")}
+                    onMouseLeave={() => setBackgroundMode("overview")}
+                    className="group rounded-[18px] border border-white/[0.06] bg-black/[0.16] p-4 transition hover:-translate-y-0.5"
+                  >
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="flex h-9 w-9 items-center justify-center rounded-[13px] border" style={{ color: `rgb(${foundation.rgb})`, borderColor: `rgba(${foundation.rgb},0.20)`, background: `rgba(${foundation.rgb},0.055)` }}>
+                        <Icon size={17} />
+                      </div>
+                      <ArrowRight size={14} className="text-slate-700 transition group-hover:translate-x-0.5 group-hover:text-slate-300" />
+                    </div>
+                    <strong className="mt-4 block text-[13px] text-white">{foundation.title}</strong>
+                    <p className="mt-1.5 text-[11px] leading-5 text-slate-500">{foundation.description}</p>
+                    <div className="mt-3 font-mono text-[9px] uppercase tracking-[0.11em]" style={{ color: `rgba(${foundation.rgb},0.62)` }}>
+                      {foundation.status === "live" ? "start here" : "building outward"}
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        <section className="mt-5">
+          <div className="mb-3 px-1">
+            <div className="flex flex-wrap items-end justify-between gap-3">
+              <div>
+                <div className="text-[10px] font-semibold uppercase tracking-[0.15em] text-cyan-300/68">Fields of physics</div>
+                <h2 className="mt-1 text-[20px] font-semibold tracking-[-0.025em] text-white">Same universe, different scales and questions.</h2>
+              </div>
+              <p className="max-w-xl text-[11px] leading-5 text-slate-600">Every destination stays visible even while its lessons are being rebuilt, so this page remains the map for the subject.</p>
+            </div>
+          </div>
+
+          <nav aria-label="Physics fields" className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+            {BRANCHES.map((branch, index) => {
+              const Icon = branch.icon;
+              return (
+                <Link
+                  key={branch.id}
+                  href={branch.href}
+                  onMouseEnter={() => setBackgroundMode(branch.id)}
+                  onFocus={() => setBackgroundMode(branch.id)}
+                  onMouseLeave={() => setBackgroundMode("overview")}
+                  onBlur={() => setBackgroundMode("overview")}
+                  className="group relative min-h-[214px] overflow-hidden rounded-[22px] border p-5 backdrop-blur-xl transition duration-200 hover:-translate-y-0.5"
+                  style={{
+                    borderColor: `rgba(${branch.rgb},0.13)`,
+                    background: `linear-gradient(145deg, rgba(${branch.rgb},0.052), rgba(2,7,13,0.68))`,
+                  }}
+                >
+                  <div className="flex items-start justify-between gap-4">
+                    <span className="font-mono text-[9px] font-semibold" style={{ color: `rgba(${branch.rgb},0.58)` }}>
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+                    <div className="flex h-9 w-9 items-center justify-center rounded-[13px] border" style={{ color: `rgb(${branch.rgb})`, borderColor: `rgba(${branch.rgb},0.18)`, background: `rgba(${branch.rgb},0.045)` }}>
+                      <Icon size={17} />
+                    </div>
+                  </div>
+
+                  <div className="mt-5 text-[9px] font-semibold uppercase tracking-[0.12em]" style={{ color: `rgba(${branch.rgb},0.66)` }}>
+                    {branch.eyebrow}
+                  </div>
+                  <h3 className="mt-1 text-[19px] font-semibold tracking-[-0.025em] text-white">{branch.title}</h3>
+                  <p className="mt-2 text-[11px] leading-5 text-slate-500">{branch.description}</p>
+
+                  <div className="mt-4 border-t border-white/[0.05] pt-3">
+                    <div className="text-[10px] leading-5 text-slate-400">{branch.question}</div>
+                    <div className="mt-2 flex items-center justify-between gap-3">
+                      <span className="font-mono text-[9px]" style={{ color: `rgba(${branch.rgb},0.58)` }}>{branch.specimen}</span>
+                      <ArrowRight size={14} className="text-slate-700 transition group-hover:translate-x-1" style={{ color: `rgba(${branch.rgb},0.62)` }} />
+                    </div>
+                  </div>
+                </Link>
+              );
+            })}
+          </nav>
+        </section>
+
+        <section className="mt-4 grid gap-3 lg:grid-cols-[minmax(0,1fr)_minmax(300px,0.34fr)]">
+          <div className="rounded-[22px] border border-white/[0.07] bg-black/[0.18] px-5 py-4 backdrop-blur-xl">
+            <div className="flex flex-wrap items-center gap-x-5 gap-y-2 font-mono text-[10px] text-slate-500">
+              <span className="text-cyan-300/65">state</span>
+              <span>→</span>
+              <span className="text-orange-300/65">change</span>
+              <span>→</span>
+              <span className="text-yellow-300/65">interaction</span>
+              <span>→</span>
+              <span className="text-emerald-300/65">conservation</span>
+              <span>→</span>
+              <span className="text-violet-300/65">symmetry</span>
+              <span>→</span>
+              <span className="text-fuchsia-300/65">uncertainty</span>
+            </div>
+          </div>
+          <div className="flex items-center justify-between rounded-[22px] border border-white/[0.06] bg-black/[0.14] px-5 py-4 text-[10px] text-slate-600 backdrop-blur-xl">
+            <span className="inline-flex items-center gap-2"><Radio size={12} /> models refine with scale</span>
+            <CircleDashed size={13} />
+          </div>
+        </section>
+
+        <div className="pb-8" />
       </div>
     </main>
   );
