@@ -5,7 +5,7 @@ import Link from "next/link";
 import DomainPageHeader from "@/app/_components/DomainPageHeader";
 import { M } from "@/app/_components/Math";
 import ThermoField from "../_components/ThermoField";
-import { ArrowRight, Gauge, RefreshCw, Route, Scale } from "lucide-react";
+import { ArrowRight, Gauge, RefreshCw, Route } from "lucide-react";
 
 type Process = "isobaric" | "isochoric" | "isothermal";
 
@@ -15,8 +15,8 @@ const PROCESS_INFO = {
   isothermal: { title: "Isothermal ideal gas", constraint: "constant temperature", formula: "PV=\\text{constant}", rgb: "167, 139, 250" },
 } as const;
 
-const P1 = 200; // kPa
-const V1 = 2; // L
+const P1 = 200;
+const V1 = 2;
 
 export default function ThermodynamicProcessesPage() {
   const [process, setProcess] = useState<Process>("isobaric");
@@ -49,7 +49,7 @@ export default function ThermodynamicProcessesPage() {
 
         <section className="mt-4 grid gap-4 lg:grid-cols-[minmax(0,1.2fr)_minmax(320px,0.8fr)]">
           <div className="rounded-[30px] border border-white/[0.08] bg-black/[0.11] p-5 backdrop-blur-xl sm:p-6">
-            <div className="flex flex-wrap items-start justify-between gap-3"><div><div className="text-[9px] font-semibold uppercase tracking-[0.14em] text-violet-300/70">State-space lab</div><h2 className="mt-1 text-[21px] font-semibold tracking-[-0.025em] text-white">Move one idealized gas process through \(P\)-\(V\) space.</h2></div><div className="rounded-full border border-white/[0.07] bg-black/[0.18] px-3 py-1.5 font-mono text-[10px] text-slate-500">1 kPa·L = 1 J</div></div>
+            <div className="flex flex-wrap items-start justify-between gap-3"><div><div className="text-[9px] font-semibold uppercase tracking-[0.14em] text-violet-300/70">State-space lab</div><h2 className="mt-1 text-[21px] font-semibold tracking-[-0.025em] text-white">Move one idealized gas process through pressure–volume space.</h2></div><div className="rounded-full border border-white/[0.07] bg-black/[0.18] px-3 py-1.5 font-mono text-[10px] text-slate-500">1 kPa·L = 1 J</div></div>
 
             <div className="relative mt-4 min-h-[390px] overflow-hidden rounded-[24px] border border-white/[0.07] bg-[#0c0a18]/82 p-5">
               <PVGraph process={process} extent={extent} state={state} rgb={active.rgb} />
@@ -67,13 +67,13 @@ export default function ThermodynamicProcessesPage() {
         </section>
 
         <section className="mt-4 grid gap-3 md:grid-cols-3">
-          <ProcessCard title="Isobaric" formula="W=P\\Delta V" text="A horizontal path on a P-V diagram. Expansion creates a rectangular positive work area; compression gives negative work by the gas." rgb="251, 146, 60" />
-          <ProcessCard title="Isochoric" formula="W=0" text="A vertical path. Volume does not change, so there is no P dV boundary work even though pressure, temperature, and internal energy can change." rgb="34, 211, 238" />
+          <ProcessCard title="Isobaric" formula="W=P\\Delta V" text="A horizontal path on a pressure-volume diagram. Expansion creates a rectangular positive work area; compression gives negative work by the gas." rgb="251, 146, 60" />
+          <ProcessCard title="Isochoric" formula="W=0" text="A vertical path. Volume does not change, so there is no boundary work even though pressure, temperature, and internal energy can change." rgb="34, 211, 238" />
           <ProcessCard title="Isothermal ideal gas" formula="PV=\\text{constant}" text="For an ideal gas at constant temperature, internal energy stays constant, so the first law requires heat transfer to balance the boundary work." rgb="167, 139, 250" />
         </section>
 
         <section className="mt-4 rounded-[26px] border border-white/[0.08] bg-black/[0.11] p-5 backdrop-blur-xl sm:p-6">
-          <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(300px,0.6fr)]"><div><div className="text-[9px] font-semibold uppercase tracking-[0.14em] text-violet-300/65">Cycles and engines</div><h2 className="mt-1 text-[20px] font-semibold text-white">A closed loop in state space can convert recurring heat transfers into net work.</h2><p className="mt-2 text-[12px] leading-6 text-slate-400">When a system returns to its initial thermodynamic state, its net change in internal energy over the cycle is zero. The enclosed P-V area represents net boundary work, so the first law connects that work to net heat transferred over the cycle.</p></div><div className="rounded-[18px] border border-white/[0.06] bg-black/[0.12] p-4"><div className="text-[9px] uppercase tracking-[0.12em] text-slate-600">over a complete cycle</div><div className="mt-3 space-y-2 text-[15px] text-white"><M>{"\\Delta U_{cycle}=0"}</M><br /><M>{"Q_{net}=W_{net}"}</M></div></div></div>
+          <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(300px,0.6fr)]"><div><div className="text-[9px] font-semibold uppercase tracking-[0.14em] text-violet-300/65">Cycles and engines</div><h2 className="mt-1 text-[20px] font-semibold text-white">A closed loop in state space can convert recurring heat transfers into net work.</h2><p className="mt-2 text-[12px] leading-6 text-slate-400">When a system returns to its initial thermodynamic state, its net change in internal energy over the cycle is zero. The enclosed pressure-volume area represents net boundary work, so the first law connects that work to net heat transferred over the cycle.</p></div><div className="rounded-[18px] border border-white/[0.06] bg-black/[0.12] p-4"><div className="text-[9px] uppercase tracking-[0.12em] text-slate-600">over a complete cycle</div><div className="mt-3 space-y-2 text-[15px] text-white"><M>{"\\Delta U_{cycle}=0"}</M><br /><M>{"Q_{net}=W_{net}"}</M></div></div></div>
         </section>
 
         <section className="mt-4 rounded-[26px] border border-white/[0.08] bg-black/[0.11] p-5 backdrop-blur-xl sm:p-6">
@@ -87,8 +87,38 @@ export default function ThermodynamicProcessesPage() {
   );
 }
 
-function getFinalState(process: Process, extent: number) { const volumeFactor = Math.max(0.35, 1 + 0.65 * extent); if (process === "isochoric") { const p2 = Math.max(60, P1 * (1 + 0.65 * extent)); return { p2, v2: V1, work: 0 }; } const v2 = V1 * volumeFactor; if (process === "isobaric") return { p2: P1, v2, work: P1 * (v2 - V1) }; const p2 = (P1 * V1) / v2; return { p2, v2, work: P1 * V1 * Math.log(v2 / V1) }; }
-function PVGraph({ process, extent, state, rgb }: { process: Process; extent: number; state: { p2: number; v2: number; work: number }; rgb: string }) { const x = (v: number) => 80 + ((v - 0.5) / 3.8) * 600; const y = (p: number) => 280 - ((p - 40) / 300) * 220; const x1 = x(V1); const y1 = y(P1); const x2 = x(state.v2); const y2 = y(state.p2); let path = `M ${x1},${y1} L ${x2},${y2}`; if (process === "isothermal") { const steps = Array.from({ length: 28 }, (_, i) => { const t = i / 27; const v = V1 + (state.v2 - V1) * t; const p = P1 * V1 / v; return `${i === 0 ? "M" : "L"} ${x(v)},${y(p)}`; }); path = steps.join(" "); } const areaPath = process === "isochoric" ? "" : `${path} L ${x2},${y(40)} L ${x1},${y(40)} Z`; return <svg viewBox="0 0 760 330" className="absolute inset-x-5 top-4 h-[300px] w-[calc(100%-2.5rem)]" preserveAspectRatio="none" role="img" aria-label="Pressure-volume process diagram"><line x1="65" y1="280" x2="710" y2="280" stroke="rgba(148,163,184,0.17)" /><line x1="65" y1="280" x2="65" y2="35" stroke="rgba(148,163,184,0.17)" />{areaPath ? <path d={areaPath} fill={`rgba(${rgb},0.075)`} stroke="none" /> : null}<path d={path} fill="none" stroke={`rgb(${rgb})`} strokeOpacity="0.80" strokeWidth="3" vectorEffect="non-scaling-stroke" /><circle cx={x1} cy={y1} r="6" fill="rgb(250,204,21)" /><circle cx={x2} cy={y2} r="7" fill={`rgb(${rgb})`} /><text x={x1 + 10} y={y1 - 10} fill="rgba(250,204,21,0.65)" fontSize="12">1</text><text x={x2 + 10} y={y2 - 10} fill={`rgba(${rgb},0.72)`} fontSize="12">2</text><text x="675" y="305" fill="rgba(148,163,184,0.48)" fontSize="11">V (L)</text><text x="22" y="47" fill="rgba(148,163,184,0.48)" fontSize="11">P (kPa)</text></svg>; }
+function getFinalState(process: Process, extent: number) {
+  const volumeFactor = Math.max(0.35, 1 + 0.65 * extent);
+  if (process === "isochoric") {
+    const p2 = Math.max(60, P1 * (1 + 0.65 * extent));
+    return { p2, v2: V1, work: 0 };
+  }
+  const v2 = V1 * volumeFactor;
+  if (process === "isobaric") return { p2: P1, v2, work: P1 * (v2 - V1) };
+  const p2 = (P1 * V1) / v2;
+  return { p2, v2, work: P1 * V1 * Math.log(v2 / V1) };
+}
+
+function PVGraph({ process, state, rgb }: { process: Process; extent: number; state: { p2: number; v2: number; work: number }; rgb: string }) {
+  const x = (v: number) => 80 + ((v - 0.5) / 3.8) * 600;
+  const y = (p: number) => 280 - ((p - 40) / 300) * 220;
+  const x1 = x(V1);
+  const y1 = y(P1);
+  const x2 = x(state.v2);
+  const y2 = y(state.p2);
+  let path = `M ${x1},${y1} L ${x2},${y2}`;
+  if (process === "isothermal") {
+    path = Array.from({ length: 28 }, (_, i) => {
+      const t = i / 27;
+      const v = V1 + (state.v2 - V1) * t;
+      const p = P1 * V1 / v;
+      return `${i === 0 ? "M" : "L"} ${x(v)},${y(p)}`;
+    }).join(" ");
+  }
+  const areaPath = process === "isochoric" ? "" : `${path} L ${x2},${y(40)} L ${x1},${y(40)} Z`;
+  return <svg viewBox="0 0 760 330" className="absolute inset-x-5 top-4 h-[300px] w-[calc(100%-2.5rem)]" preserveAspectRatio="none" role="img" aria-label="Pressure-volume process diagram"><line x1="65" y1="280" x2="710" y2="280" stroke="rgba(148,163,184,0.17)" /><line x1="65" y1="280" x2="65" y2="35" stroke="rgba(148,163,184,0.17)" />{areaPath ? <path d={areaPath} fill={`rgba(${rgb},0.075)`} stroke="none" /> : null}<path d={path} fill="none" stroke={`rgb(${rgb})`} strokeOpacity="0.80" strokeWidth="3" vectorEffect="non-scaling-stroke" /><circle cx={x1} cy={y1} r="6" fill="rgb(250,204,21)" /><circle cx={x2} cy={y2} r="7" fill={`rgb(${rgb})`} /><text x={x1 + 10} y={y1 - 10} fill="rgba(250,204,21,0.65)" fontSize="12">1</text><text x={x2 + 10} y={y2 - 10} fill={`rgba(${rgb},0.72)`} fontSize="12">2</text><text x="675" y="305" fill="rgba(148,163,184,0.48)" fontSize="11">V (L)</text><text x="22" y="47" fill="rgba(148,163,184,0.48)" fontSize="11">P (kPa)</text></svg>;
+}
+
 function Readout({ label, value, rgb }: { label: string; value: string; rgb: string }) { return <div className="rounded-[13px] border border-white/[0.06] bg-black/[0.28] px-3 py-2.5 text-center"><div className="text-[8px] uppercase tracking-[0.1em] text-slate-600">{label}</div><div className="mt-1 font-mono text-[9px]" style={{ color: `rgba(${rgb},0.78)` }}>{value}</div></div>; }
 function Insight({ icon: Icon, title, text, rgb }: { icon: typeof Route; title: string; text: string; rgb: string }) { return <div className="rounded-[22px] border border-white/[0.07] bg-black/[0.10] p-5"><div className="flex items-center gap-2 text-[9px] font-semibold uppercase tracking-[0.12em]" style={{ color: `rgba(${rgb},0.68)` }}><Icon size={13} /> {title}</div><p className="mt-2 text-[11px] leading-5 text-slate-500">{text}</p></div>; }
 function ProcessCard({ title, formula, text, rgb }: { title: string; formula: string; text: string; rgb: string }) { return <div className="rounded-[19px] border border-white/[0.06] bg-black/[0.10] p-4"><div className="text-[9px] uppercase tracking-[0.12em]" style={{ color: `rgba(${rgb},0.66)` }}>{title}</div><div className="mt-3 text-[15px] text-white"><M>{formula}</M></div><p className="mt-2 text-[11px] leading-5 text-slate-500">{text}</p></div>; }
