@@ -123,6 +123,9 @@ A background is part of the page identity, not an almost-invisible texture hidde
 - Glass and panel surfaces must preserve enough transparency for the environment to participate.
 - Avoid full-page dark overlays whose main effect is to erase the visual system underneath them.
 - Dynamic motion is encouraged when it expresses the subject: trajectories, fields, waves, particles, flow, orbit, growth, diffusion, topology, chronology, or other meaningful structure.
+- **Clarity is the floor, not a mandate for restraint.** When a subject naturally supports spectacle, the page may be flashy, saturated, animated, and dramatic as long as the spectacle communicates something true about the subject and preserves readability.
+- A high-level subject or branch with a naturally dynamic visual language should aim for at least one **memorable environmental behavior**: a particle field, reactive atmosphere, field-line system, living map, wave environment, orbital structure, dynamic geometry, or equivalent subject-specific moment.
+- Do not remove a distinctive legacy visual merely because it is less minimal than the new shell. Preserve it or replace it with something at least as memorable, intuitive, and semantically appropriate.
 - Hover or selection may retune the background when that reinforces branch identity, as long as layout geometry remains stable.
 - Motion should be perceptible but not frantic. Prefer slow continuous motion, phase shifts, drift, pulse, rotation, field movement, and smooth palette transitions.
 - Respect reduced-motion preferences by preserving the visual state without requiring animation.
@@ -136,6 +139,7 @@ At default state and at one meaningful hover/selection state:
 2. Does it communicate subject identity rather than generic neon ambience?
 3. Does it change enough to be noticed when the interaction is supposed to retune it?
 4. Can all required text still be read comfortably?
+5. Is there at least one visual behavior a learner is likely to remember after leaving the page?
 
 ---
 
@@ -311,7 +315,8 @@ Tune:
 - panel hierarchy;
 - selected/hover states;
 - meaningful density;
-- subject-specific detail.
+- subject-specific detail;
+- memorable truthful spectacle when the subject supports it.
 
 ### Pass 6: Preflight
 
@@ -345,7 +350,8 @@ Run the checks below before asking for screenshot feedback.
 - background motif belongs to the subject;
 - dynamic behavior is noticeable but readable;
 - glass surfaces reveal the environment;
-- grayscale structure still feels subject-specific.
+- grayscale structure still feels subject-specific;
+- cleanup has not sterilized a distinctive visual behavior that should have been preserved or evolved.
 
 ### FLOW: Can the learner move and understand naturally?
 
@@ -386,6 +392,7 @@ Before moving immediately to the next page, verify:
 - local context remains anchored on long pages when appropriate;
 - the background is visible and meaningfully subject-specific;
 - dynamic background behavior works where specified;
+- a naturally visual subject has at least one memorable visual behavior rather than being reduced to generic glass panels;
 - the page is neither accidentally sparse nor padded with filler;
 - first viewport has one clear center of gravity;
 - live, planned, parent, child, sequence, and cross-link relationships are visually distinct;
