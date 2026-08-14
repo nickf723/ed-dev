@@ -44,7 +44,7 @@ export const PHYSICS_CURRICULUM: CurriculumNode = node(
             node("natural.physics.mechanics.forces.common-forces", "Common Forces", "/natural-science/physics/mechanics/forces/common-forces", "Recognize gravity, normal force, tension, friction, drag, and spring force by their interaction partners and geometry."),
             node("natural.physics.mechanics.forces.free-body-diagrams", "Free-Body Diagrams", "/natural-science/physics/mechanics/forces/free-body-diagrams", "Isolate one system and represent every external force acting on it as a vector."),
             node("natural.physics.mechanics.forces.net-force", "Net Force & Equilibrium", "/natural-science/physics/mechanics/forces/net-force", "Combine force vectors and distinguish balanced forces from a nonzero net force."),
-            node("natural.physics.mechanics.forces.newtons-second-law", "Newton's Second Law", "/natural-science/physics/mechanics/forces/newtons-second-law", "Relate net force, mass, and acceleration through a = Fnet/m and reason about how each variable changes the motion.", undefined, "placeholder"),
+            node("natural.physics.mechanics.forces.newtons-second-law", "Newton's Second Law", "/natural-science/physics/mechanics/forces/newtons-second-law", "Relate net force, mass, and acceleration through a = Fnet/m and reason about how each variable changes the motion."),
           ],
         ),
         node("natural.physics.mechanics.energy", "Energy & Momentum", "/natural-science/physics/mechanics/energy", "Work, energy transfer, momentum, impulse, collisions, and conservation laws.", undefined, "placeholder"),
