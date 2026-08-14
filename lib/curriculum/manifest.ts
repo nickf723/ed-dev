@@ -5,6 +5,7 @@ import { LOGIC_CURRICULUM } from "@/lib/curriculum/logic";
 import { BIOLOGY_CURRICULUM } from "@/lib/curriculum/natural/biology";
 import { ELECTROMAGNETISM_CURRICULUM } from "@/lib/curriculum/natural/electromagnetism";
 import { PHYSICS_CURRICULUM } from "@/lib/curriculum/natural/physics";
+import { WAVES_OPTICS_CURRICULUM } from "@/lib/curriculum/natural/waves-optics";
 import type { CurriculumNode } from "@/lib/curriculum/types";
 
 /**
@@ -14,7 +15,7 @@ import type { CurriculumNode } from "@/lib/curriculum/types";
  * Order matters when one focused module lives inside another. Algebra is
  * applied before Group Theory so the more specific Group Theory subtree can
  * replace the corresponding node inside the migrated Algebra branch. Physics
- * is applied before Electromagnetism for the same reason.
+ * is applied before its focused child branches for the same reason.
  */
 export const CURRICULUM_MODULES: readonly CurriculumNode[] = [
   REFINED_ALGEBRA_CURRICULUM,
@@ -24,4 +25,5 @@ export const CURRICULUM_MODULES: readonly CurriculumNode[] = [
   BIOLOGY_CURRICULUM,
   PHYSICS_CURRICULUM,
   ELECTROMAGNETISM_CURRICULUM,
+  WAVES_OPTICS_CURRICULUM,
 ];
