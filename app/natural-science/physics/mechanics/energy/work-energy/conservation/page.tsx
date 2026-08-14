@@ -5,7 +5,7 @@ import Link from "next/link";
 import DomainPageHeader from "@/app/_components/DomainPageHeader";
 import { M } from "@/app/_components/Math";
 import EnergyField from "../../_components/EnergyField";
-import { Activity, ArrowRight, Flame, Scale } from "lucide-react";
+import { ArrowRight, Scale } from "lucide-react";
 
 const TOTAL = 100;
 
@@ -54,7 +54,6 @@ export default function ConservationEnergyPage() {
             <div className="relative mt-4 min-h-[330px] overflow-hidden rounded-[24px] border border-white/[0.07] bg-[#100b1c]/82 p-5">
               <div className="absolute left-[10%] right-[10%] top-[27%] h-px rotate-[12deg] bg-gradient-to-r from-yellow-300/60 to-slate-500/20" />
               <div className="absolute h-6 w-6 rounded-full border border-violet-200/[0.32] bg-violet-300/[0.12] shadow-[0_0_24px_rgba(167,139,250,0.20)]" style={{ left: `${12 + position * 72}%`, top: `${22 + position * 15}%` }} />
-
               <div className="absolute bottom-6 left-5 right-5 space-y-3">
                 <EnergyBar label="gravitational" value={potential} rgb="250, 204, 21" />
                 <EnergyBar label="kinetic" value={kinetic} rgb="34, 211, 238" />
@@ -83,7 +82,7 @@ export default function ConservationEnergyPage() {
           <div className="text-[9px] font-semibold uppercase tracking-[0.14em] text-emerald-300/65">Transfer check</div><h2 className="mt-1 text-[20px] font-semibold text-white">A sliding block slows because of friction. Its kinetic energy decreases. Which statement is best?</h2>
           <div className="mt-4 flex flex-wrap gap-2">{["energy was destroyed", "kinetic became thermal", "momentum became energy"].map((option) => <button key={option} type="button" onClick={() => setAnswer(option)} className="rounded-full border px-4 py-2 text-[11px]" style={{ borderColor: answer === option ? "rgba(45,212,191,0.35)" : "rgba(255,255,255,0.07)", background: answer === option ? "rgba(45,212,191,0.06)" : "rgba(0,0,0,0.12)", color: answer === option ? "rgb(209,250,229)" : "rgb(148,163,184)" }}>{option}</button>)}</div>
           {answer ? <div className={`mt-4 rounded-[16px] border p-4 ${answer === "kinetic became thermal" ? "border-emerald-300/[0.16] bg-emerald-400/[0.03]" : "border-amber-300/[0.16] bg-amber-400/[0.025]"}`}><strong className={`text-[11px] ${answer === "kinetic became thermal" ? "text-emerald-200" : "text-amber-200"}`}>{answer === "kinetic became thermal" ? "Exactly" : "Follow the ledger"}</strong><p className="mt-1 text-[11px] leading-5 text-slate-500">Friction redistributes energy into thermal stores. The total accounting still balances.</p></div> : null}
-          <div className="mt-5 flex justify-between"><Link href="/natural-science/physics/mechanics/energy/work-energy/potential-energy" className="text-[10px] text-slate-500 hover:text-slate-300">← Potential Energy</Link><Link href="/natural-science/physics/mechanics/energy/momentum" className="inline-flex items-center gap-2 rounded-full border border-blue-200/[0.12] bg-blue-400/[0.035] px-4 py-2 text-[10px] font-semibold text-blue-100/75">Next pathway: Momentum <ArrowRight size={13} /></Link></div>
+          <div className="mt-5 flex justify-between"><Link href="/natural-science/physics/mechanics/energy/work-energy/potential-energy" className="text-[10px] text-slate-500 hover:text-slate-300">← Potential Energy</Link><Link href="/natural-science/physics/mechanics/energy/work-energy/power" className="inline-flex items-center gap-2 rounded-full border border-rose-200/[0.12] bg-rose-400/[0.035] px-4 py-2 text-[10px] font-semibold text-rose-100/75">Next: Power <ArrowRight size={13} /></Link></div>
         </section>
       </div>
     </main>
