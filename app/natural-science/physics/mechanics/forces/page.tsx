@@ -21,7 +21,7 @@ const PRESENTATIONS: Record<string, { step: string; question: string; specimen: 
   "natural.physics.mechanics.forces.common-forces": { step: "02", question: "Which interactions produce gravity, normal force, tension, friction, drag, and spring forces?", specimen: "interaction → force name", icon: Compass, rgb: "251, 146, 60" },
   "natural.physics.mechanics.forces.free-body-diagrams": { step: "03", question: "How can every external force on one system be represented without drawing the entire world?", specimen: "system + force vectors", icon: MoveRight, rgb: "34, 211, 238" },
   "natural.physics.mechanics.forces.net-force": { step: "04", question: "What changes when force vectors balance, and what changes when they do not?", specimen: "ΣF = 0 or ΣF ≠ 0", icon: Scale, rgb: "45, 212, 191" },
-  "natural.physics.mechanics.forces.newtons-laws": { step: "05", question: "How does the net interaction on a system determine its acceleration?", specimen: "ΣF = ma", icon: Orbit, rgb: "167, 139, 250" },
+  "natural.physics.mechanics.forces.newtons-second-law": { step: "05", question: "How do net force and mass determine the acceleration of a system?", specimen: "ΣF = ma", icon: Orbit, rgb: "167, 139, 250" },
 };
 
 export default function ForcesPage() {
