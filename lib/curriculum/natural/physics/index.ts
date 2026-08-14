@@ -84,8 +84,6 @@ export const PHYSICS_CURRICULUM: CurriculumNode = node(
               "Free-Body Diagrams",
               "/natural-science/physics/mechanics/forces/free-body-diagrams",
               "Isolate one system and represent every external force acting on it as a vector.",
-              undefined,
-              "placeholder",
             ),
             node(
               "natural.physics.mechanics.forces.net-force",
