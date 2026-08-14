@@ -63,7 +63,7 @@ export const PHYSICS_CURRICULUM: CurriculumNode = node(
                 node("natural.physics.mechanics.energy.energy.kinetic", "Kinetic Energy", "/natural-science/physics/mechanics/energy/work-energy/kinetic-energy", "Relate mass and speed to kinetic energy and understand the quadratic dependence on speed."),
                 node("natural.physics.mechanics.energy.energy.potential", "Potential Energy", "/natural-science/physics/mechanics/energy/work-energy/potential-energy", "Model stored interaction energy using gravitational and elastic systems and distinguish value from change in potential energy."),
                 node("natural.physics.mechanics.energy.energy.conservation", "Conservation of Energy", "/natural-science/physics/mechanics/energy/work-energy/conservation", "Track energy as it changes form or crosses a system boundary while total energy remains conserved."),
-                node("natural.physics.mechanics.energy.energy.power", "Power", "/natural-science/physics/mechanics/energy/work-energy/power", "Measure how quickly energy is transferred or transformed.", undefined, "placeholder"),
+                node("natural.physics.mechanics.energy.energy.power", "Power", "/natural-science/physics/mechanics/energy/work-energy/power", "Measure how quickly energy is transferred or transformed."),
               ],
             ),
             node(
@@ -74,8 +74,8 @@ export const PHYSICS_CURRICULUM: CurriculumNode = node(
               [
                 node("natural.physics.mechanics.energy.momentum.fundamentals", "Momentum", "/natural-science/physics/mechanics/energy/momentum/fundamentals", "Treat momentum as a directional quantity combining mass and velocity."),
                 node("natural.physics.mechanics.energy.momentum.impulse", "Impulse", "/natural-science/physics/mechanics/energy/momentum/impulse", "Connect force acting over time to change in momentum."),
-                node("natural.physics.mechanics.energy.momentum.conservation", "Conservation of Momentum", "/natural-science/physics/mechanics/energy/momentum/conservation", "Track total momentum of an isolated system before and after an interaction.", undefined, "placeholder"),
-                node("natural.physics.mechanics.energy.momentum.collisions", "Collisions", "/natural-science/physics/mechanics/energy/momentum/collisions", "Compare elastic and inelastic collisions using momentum and energy bookkeeping.", undefined, "placeholder"),
+                node("natural.physics.mechanics.energy.momentum.conservation", "Conservation of Momentum", "/natural-science/physics/mechanics/energy/momentum/conservation", "Track total momentum of an isolated system before and after an interaction."),
+                node("natural.physics.mechanics.energy.momentum.collisions", "Collisions", "/natural-science/physics/mechanics/energy/momentum/collisions", "Compare elastic and inelastic collisions using momentum and energy bookkeeping."),
               ],
             ),
           ],
