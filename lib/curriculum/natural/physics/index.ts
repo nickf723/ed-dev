@@ -30,8 +30,8 @@ export const PHYSICS_CURRICULUM: CurriculumNode = node(
           "Position, displacement, velocity, acceleration, trajectories, and reference frames.",
           [
             node("natural.physics.mechanics.motion.kinematics", "Kinematics", "/natural-science/physics/motion/kinematics", "Describe motion through position, displacement, velocity, and acceleration without yet modeling its causes."),
-            node("natural.physics.mechanics.motion.projectile-motion", "Projectile Motion", "/natural-science/physics/motion/projectile-motion", "Combine independent horizontal and vertical motion into a two-dimensional trajectory.", undefined, "placeholder"),
-            node("natural.physics.mechanics.motion.relative-motion", "Relative Motion", "/natural-science/physics/motion/relative-motion", "Describe how measured motion depends on the chosen observer and reference frame.", undefined, "placeholder"),
+            node("natural.physics.mechanics.motion.projectile-motion", "Projectile Motion", "/natural-science/physics/motion/projectile-motion", "Combine independent horizontal and vertical motion into a two-dimensional trajectory."),
+            node("natural.physics.mechanics.motion.relative-motion", "Relative Motion", "/natural-science/physics/motion/relative-motion", "Describe how measured motion depends on the chosen observer and reference frame."),
           ],
         ),
         node(
