@@ -42,10 +42,16 @@ export default function ThermoField({ mode = "overview", intensity = 1, energyLe
   const energy = Math.max(0.08, Math.min(1, energyLevel));
 
   useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const context = canvas.getContext("2d");
-    if (!context) return;
+    const canvasElement = canvasRef.current;
+    if (!canvasElement) return;
+    const drawingContext = canvasElement.getContext("2d");
+    if (!drawingContext) return;
+
+    // Pin the checked browser objects to explicitly non-null locals before
+    // nested animation callbacks capture them. Strict TypeScript otherwise
+    // drops the narrowing inside those closures.
+    const canvas: HTMLCanvasElement = canvasElement;
+    const context: CanvasRenderingContext2D = drawingContext;
 
     let width = window.innerWidth;
     let height = window.innerHeight;
