@@ -1,20 +1,9 @@
-import Link from "next/link";
 import DomainPageHeader from "@/app/_components/DomainPageHeader";
 import { requireCurriculumPageContext } from "@/lib/curriculum/page-context";
 import ThermoAtmosphere from "./_components/ThermoAtmosphere";
+import ThermoPathway, { type ThermoIconKey } from "./_components/ThermoPathway";
 import type { ThermoFieldMode } from "./_components/ThermoField";
-import {
-  ArrowRight,
-  Atom,
-  CircleDashed,
-  Flame,
-  Gauge,
-  Layers3,
-  RefreshCw,
-  Thermometer,
-  Waves,
-  type LucideIcon,
-} from "lucide-react";
+import { ArrowRight, Flame } from "lucide-react";
 
 const NODE_ID = "natural.physics.thermodynamics";
 
@@ -22,7 +11,7 @@ type Presentation = {
   step: string;
   question: string;
   specimen: string;
-  icon: LucideIcon;
+  icon: ThermoIconKey;
   rgb: string;
   mode: ThermoFieldMode;
 };
@@ -32,7 +21,7 @@ const PRESENTATIONS: Record<string, Presentation> = {
     step: "01",
     question: "What does temperature measure, and what does equilibrium actually mean?",
     specimen: "T_A = T_B",
-    icon: Thermometer,
+    icon: "thermometer",
     rgb: "250, 204, 21",
     mode: "equilibrium",
   },
@@ -40,7 +29,7 @@ const PRESENTATIONS: Record<string, Presentation> = {
     step: "02",
     question: "Why does energy move from hotter regions toward colder ones?",
     specimen: "hot → cold",
-    icon: Waves,
+    icon: "waves",
     rgb: "251, 146, 60",
     mode: "transfer",
   },
@@ -48,7 +37,7 @@ const PRESENTATIONS: Record<string, Presentation> = {
     step: "03",
     question: "How do heat and work change the energy inside a system?",
     specimen: "ΔU = Q − W",
-    icon: Gauge,
+    icon: "gauge",
     rgb: "45, 212, 191",
     mode: "first-law",
   },
@@ -56,7 +45,7 @@ const PRESENTATIONS: Record<string, Presentation> = {
     step: "04",
     question: "How can energy enter matter while temperature stays constant?",
     specimen: "Q = mL",
-    icon: Layers3,
+    icon: "layers",
     rgb: "34, 211, 238",
     mode: "phase",
   },
@@ -64,7 +53,7 @@ const PRESENTATIONS: Record<string, Presentation> = {
     step: "05",
     question: "Why do spontaneous processes have a preferred direction?",
     specimen: "S = k ln Ω",
-    icon: Atom,
+    icon: "atom",
     rgb: "232, 121, 249",
     mode: "entropy",
   },
@@ -72,7 +61,7 @@ const PRESENTATIONS: Record<string, Presentation> = {
     step: "06",
     question: "How do constraints create thermodynamic paths, cycles, and engines?",
     specimen: "P ↔ V ↔ T",
-    icon: RefreshCw,
+    icon: "refresh",
     rgb: "167, 139, 250",
     mode: "process",
   },
@@ -86,10 +75,23 @@ export default function ThermodynamicsPage() {
       step: String(index + 1).padStart(2, "0"),
       question: child.description ?? "",
       specimen: child.label,
-      icon: Flame,
+      icon: "flame" as ThermoIconKey,
       rgb: "248, 113, 113",
       mode: "overview" as ThermoFieldMode,
     },
+  }));
+
+  const pathwayLessons = lessons.map(({ child, presentation }) => ({
+    id: child.id,
+    label: child.label,
+    href: child.href,
+    live: child.status !== "placeholder",
+    step: presentation.step,
+    question: presentation.question,
+    specimen: presentation.specimen,
+    rgb: presentation.rgb,
+    mode: presentation.mode,
+    icon: presentation.icon,
   }));
 
   return (
@@ -143,59 +145,7 @@ export default function ThermodynamicsPage() {
           <ThermalWindow />
         </section>
 
-        <section className="mt-5 overflow-hidden rounded-[32px] border border-white/[0.09] bg-black/[0.035] p-5 shadow-[0_24px_90px_rgba(0,0,0,0.18)] backdrop-blur-[2px] sm:p-6">
-          <div className="flex flex-wrap items-end justify-between gap-4">
-            <div>
-              <div className="text-[10px] font-semibold uppercase tracking-[0.15em] text-orange-300/75">Thermal pathway</div>
-              <h2 className="mt-1 text-[23px] font-semibold tracking-[-0.03em] text-white">Follow energy from state to direction.</h2>
-            </div>
-            <p className="max-w-xl text-[11px] leading-5 text-slate-400/75">The laws appear where they become useful. They are consequences and constraints on the physical ideas, not the table of contents.</p>
-          </div>
-
-          <div className="relative mt-7 hidden min-h-[360px] lg:block">
-            <div className="absolute left-[6%] right-[6%] top-[172px] h-1 rounded-full bg-gradient-to-r from-cyan-300/35 via-yellow-300/42 via-orange-300/44 to-fuchsia-300/38 shadow-[0_0_28px_rgba(251,146,60,0.08)]" />
-            <div className="absolute left-[6%] top-[154px] font-mono text-[9px] uppercase tracking-[0.13em] text-cyan-200/60">state</div>
-            <div className="absolute right-[6%] top-[154px] font-mono text-[9px] uppercase tracking-[0.13em] text-fuchsia-200/60">direction & cycles</div>
-
-            {lessons.map(({ child, presentation }, index) => {
-              const Icon = presentation.icon;
-              const live = child.status !== "placeholder";
-              const top = index % 2 === 0 ? 74 : 205;
-              const left = 7 + index * 17.2;
-              const inner = (
-                <div className="group flex w-[150px] flex-col items-center text-center">
-                  <div className="relative flex h-16 w-16 items-center justify-center rounded-full border bg-[#09090d]/66 transition-all duration-200 group-hover:scale-110" style={{ color: `rgb(${presentation.rgb})`, borderColor: `rgba(${presentation.rgb},${live ? "0.38" : "0.10"})`, boxShadow: live ? `0 0 42px rgba(${presentation.rgb},0.16), inset 0 0 22px rgba(${presentation.rgb},0.035)` : undefined }}>
-                    <div className="absolute inset-[-7px] rounded-full border opacity-0 transition-opacity group-hover:opacity-100" style={{ borderColor: `rgba(${presentation.rgb},0.16)` }} />
-                    <Icon size={20} />
-                  </div>
-                  <div className="mt-3 font-mono text-[9px]" style={{ color: `rgba(${presentation.rgb},0.72)` }}>{presentation.step}</div>
-                  <strong className={`mt-1 text-[12px] ${live ? "text-white" : "text-slate-600"}`}>{child.label}</strong>
-                  <span className="mt-1 font-mono text-[9px]" style={{ color: `rgba(${presentation.rgb},${live ? "0.68" : "0.24"})` }}>{presentation.specimen}</span>
-                </div>
-              );
-              return (
-                <div key={child.id} className="absolute -translate-x-1/2" style={{ left: `${left}%`, top }}>
-                  {live ? <Link href={child.href}>{inner}</Link> : <div aria-disabled="true">{inner}</div>}
-                </div>
-              );
-            })}
-          </div>
-
-          <div className="mt-6 space-y-2 lg:hidden">
-            {lessons.map(({ child, presentation }) => {
-              const Icon = presentation.icon;
-              const live = child.status !== "placeholder";
-              const inner = (
-                <div className="flex items-center gap-3 rounded-[16px] border px-4 py-3" style={{ borderColor: `rgba(${presentation.rgb},${live ? "0.20" : "0.06"})`, background: `rgba(${presentation.rgb},${live ? "0.035" : "0.008"})` }}>
-                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[12px] border" style={{ color: `rgb(${presentation.rgb})`, borderColor: `rgba(${presentation.rgb},0.22)` }}><Icon size={15} /></div>
-                  <div className="min-w-0 flex-1"><span className="font-mono text-[9px]" style={{ color: `rgba(${presentation.rgb},0.65)` }}>{presentation.step}</span><strong className={`block text-[12px] ${live ? "text-white" : "text-slate-600"}`}>{child.label}</strong></div>
-                  {live ? <ArrowRight size={14} style={{ color: `rgb(${presentation.rgb})` }} /> : <CircleDashed size={13} className="text-slate-700" />}
-                </div>
-              );
-              return live ? <Link key={child.id} href={child.href}>{inner}</Link> : <div key={child.id} aria-disabled="true">{inner}</div>;
-            })}
-          </div>
-        </section>
+        <ThermoPathway lessons={pathwayLessons} />
 
         <section className="mt-4 grid gap-3 md:grid-cols-3">
           <Idea title="Temperature is a state variable" text="It is not heat and it is not the total energy stored by an object. It helps describe the distribution of microscopic energy." rgb="250, 204, 21" />
