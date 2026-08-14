@@ -22,7 +22,7 @@ const THREADS = [
     href: "/natural-science/physics/mechanics/forces",
     icon: Gauge,
     rgb: "250, 204, 21",
-    status: "planned",
+    status: "live",
   },
   {
     step: "03",
