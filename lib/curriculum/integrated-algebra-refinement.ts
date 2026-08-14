@@ -105,6 +105,44 @@ const inequalitiesChildren: readonly CurriculumNode[] = [
   ),
 ];
 
+const quadraticsChildren: readonly CurriculumNode[] = [
+  lesson(
+    "formal.mathematics.algebra.elementary-algebra.quadratics.patterns-parabolas",
+    "Quadratic Patterns & Parabolas",
+    "/formal-science/mathematics/algebra/elementary-algebra/quadratic-equations/patterns-parabolas",
+    "Recognize constant second differences and connect degree-two patterns to parabolic graphs.",
+    "active",
+  ),
+  lesson(
+    "formal.mathematics.algebra.elementary-algebra.quadratics.vertex-form",
+    "Vertex Form & Transformations",
+    "/formal-science/mathematics/algebra/elementary-algebra/quadratic-equations/vertex-form",
+    "Read y = a(x − h)² + k through opening, width, vertex, and axis of symmetry.",
+    "active",
+  ),
+  lesson(
+    "formal.mathematics.algebra.elementary-algebra.quadratics.roots-intercepts",
+    "Roots & X-Intercepts",
+    "/formal-science/mathematics/algebra/elementary-algebra/quadratic-equations/roots-intercepts",
+    "Connect roots, zeros, solutions, and x-intercepts as the places where a quadratic output becomes zero.",
+    "active",
+  ),
+  lesson(
+    "formal.mathematics.algebra.elementary-algebra.quadratics.completing-square",
+    "Completing the Square",
+    "/formal-science/mathematics/algebra/elementary-algebra/quadratic-equations/completing-square",
+    "Create a perfect-square trinomial while preserving equality, then solve or expose vertex form.",
+    "active",
+  ),
+  lesson(
+    "formal.mathematics.algebra.elementary-algebra.quadratics.quadratic-formula",
+    "Quadratic Formula & Discriminant",
+    "/formal-science/mathematics/algebra/elementary-algebra/quadratic-equations/quadratic-formula",
+    "Use the general quadratic formula and interpret the discriminant as a forecast of real-root geometry.",
+    "active",
+  ),
+];
+
 function refine(node: CurriculumNode): CurriculumNode {
   if (node.id === "formal.mathematics.algebra.elementary-algebra.linear-equations") {
     return {
@@ -133,6 +171,15 @@ function refine(node: CurriculumNode): CurriculumNode {
     };
   }
 
+  if (node.id === "formal.mathematics.algebra.elementary-algebra.quadratics") {
+    return {
+      ...node,
+      description: "Quadratic patterns, parabolic geometry, roots, square construction, and the general solution formula.",
+      pageKind: "unit",
+      children: quadraticsChildren,
+    };
+  }
+
   return node.children
     ? { ...node, children: node.children.map(refine) }
     : node;
@@ -142,7 +189,7 @@ function refine(node: CurriculumNode): CurriculumNode {
  * Transitional refinement of the Integrated Algebra branch.
  *
  * The base Algebra module remains the source for the rest of Algebra. This
- * adapter only corrects page depth for the three Integrated Algebra topics
- * that had grown into units before their child lessons were modeled.
+ * adapter corrects page depth for Integrated Algebra topics that have grown
+ * into units before their child lessons were modeled in the base curriculum.
  */
 export const REFINED_ALGEBRA_CURRICULUM = refine(ALGEBRA_CURRICULUM);

@@ -155,6 +155,24 @@ export const PAGE_POLICY_BY_NODE_ID: Readonly<Record<string, Readonly<PagePolicy
   "formal.mathematics.algebra.elementary-algebra.inequalities.systems": {
     vocabularyTrigger: "local",
   },
+  "formal.mathematics.algebra.elementary-algebra.quadratics": {
+    vocabularyTrigger: "none",
+  },
+  "formal.mathematics.algebra.elementary-algebra.quadratics.patterns-parabolas": {
+    vocabularyTrigger: "local",
+  },
+  "formal.mathematics.algebra.elementary-algebra.quadratics.vertex-form": {
+    vocabularyTrigger: "local",
+  },
+  "formal.mathematics.algebra.elementary-algebra.quadratics.roots-intercepts": {
+    vocabularyTrigger: "local",
+  },
+  "formal.mathematics.algebra.elementary-algebra.quadratics.completing-square": {
+    vocabularyTrigger: "local",
+  },
+  "formal.mathematics.algebra.elementary-algebra.quadratics.quadratic-formula": {
+    vocabularyTrigger: "local",
+  },
 };
 
 export function getPagePolicy(nodeId: string): Readonly<PagePolicy> {
