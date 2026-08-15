@@ -1,6 +1,7 @@
 import { REFINED_ALGEBRA_CURRICULUM } from "@/lib/curriculum/integrated-algebra-refinement";
 import { COMPUTER_SCIENCE_CURRICULUM } from "@/lib/curriculum/computer-science";
 import { GROUP_THEORY_CURRICULUM } from "@/lib/curriculum/group-theory";
+import { HISTORY_CURRICULUM } from "@/lib/curriculum/humanities/history";
 import { LOGIC_CURRICULUM } from "@/lib/curriculum/logic";
 import { BIOLOGY_CURRICULUM } from "@/lib/curriculum/natural/biology";
 import { ELECTROMAGNETISM_CURRICULUM } from "@/lib/curriculum/natural/electromagnetism";
@@ -28,4 +29,5 @@ export const CURRICULUM_MODULES: readonly CurriculumNode[] = [
   ELECTROMAGNETISM_CURRICULUM,
   WAVES_OPTICS_CURRICULUM,
   RELATIVITY_CURRICULUM,
+  HISTORY_CURRICULUM,
 ];
