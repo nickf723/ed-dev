@@ -13,9 +13,8 @@ import {
   bodyFontClass,
   contentWidth,
   headerColor,
-  labelFontClass,
+  pageBackground,
   regionRing,
-  subtitleClass,
   titleClass,
 } from "@/app/_page-system/page-style";
 import { selectionKey, type PageRendererProps } from "@/app/_page-system/types";
@@ -25,6 +24,9 @@ export type { StudioSelection } from "@/app/_page-system/types";
 type RecipeStyle = CSSProperties & {
   "--recipe-accent": string;
   "--recipe-radius": string;
+  "--recipe-text": string;
+  "--recipe-muted": string;
+  "--recipe-border": string;
 };
 
 export default function PageRenderer({
@@ -36,18 +38,20 @@ export default function PageRenderer({
   onSelect,
 }: PageRendererProps) {
   const Icon = resolvePageIcon(recipe.identity.icon);
-  const familyBackground =
-    recipe.theme.family === "history" ? "#070503" : "#03070d";
   const motion = motionEnabled ?? recipe.theme.motion !== "off";
+  const palette = recipe.theme.resolvedPalette;
   const style: RecipeStyle = {
     "--recipe-accent": `rgb(${recipe.theme.accentRgb})`,
     "--recipe-radius": RADIUS[recipe.theme.panelRadius],
+    "--recipe-text": `rgb(${palette?.text ?? "248, 250, 252"})`,
+    "--recipe-muted": `rgb(${palette?.muted ?? "148, 163, 184"})`,
+    "--recipe-border": `rgb(${palette?.border ?? recipe.theme.accentRgb})`,
   };
 
   return (
     <main
       className={`relative min-h-screen overflow-x-hidden text-slate-100 selection:bg-white/20 ${bodyFontClass(recipe)} ${preview ? "isolate" : ""}`}
-      style={{ ...style, background: familyBackground }}
+      style={{ ...style, background: pageBackground(recipe) }}
       data-page-recipe={recipe.id}
       data-page-family={recipe.theme.family}
     >
@@ -64,46 +68,24 @@ export default function PageRenderer({
           style={{ background: headerColor(recipe) }}
         >
           <DomainPageHeader
-            breadcrumbs={
-              recipe.identity.breadcrumbs ?? [
-                { label: recipe.identity.title },
-              ]
-            }
+            breadcrumbs={recipe.identity.breadcrumbs ?? [{ label: recipe.identity.title }]}
             eyebrow={recipe.identity.eyebrow}
-            eyebrowClassName={labelFontClass(recipe)}
-            eyebrowStyle={
-              recipe.theme.eyebrowStyle ??
-              (recipe.theme.family === "history" ? "rule" : "dot")
-            }
+            eyebrowStyle={recipe.theme.eyebrowStyle}
             icon={Icon}
             title={<span>{recipe.identity.title}</span>}
             subtitle={recipe.identity.subtitle}
             accentRgb={recipe.theme.accentRgb}
             titleClassName={titleClass(recipe)}
-            subtitleClassName={subtitleClass(recipe)}
             headerClassName="border-white/[0.08]"
           />
         </div>
 
-        <LensTopology
-          recipe={recipe}
-          selected={selected}
-          showGuides={showGuides}
-          preview={preview}
-          onSelect={onSelect}
-        />
-        <RegimeTopology
-          recipe={recipe}
-          selected={selected}
-          showGuides={showGuides}
-          preview={preview}
-          onSelect={onSelect}
-        />
+        <LensTopology recipe={recipe} selected={selected} showGuides={showGuides} preview={preview} onSelect={onSelect} />
+        <RegimeTopology recipe={recipe} selected={selected} showGuides={showGuides} preview={preview} onSelect={onSelect} />
 
         {recipe.sections.map((section) => {
           if (section.hidden && !preview) return null;
-          const selectedSection =
-            selectionKey(selected) === `section:${section.id}`;
+          const selectedSection = selectionKey(selected) === `section:${section.id}`;
           return (
             <div
               key={section.id}
@@ -120,23 +102,9 @@ export default function PageRenderer({
               }
             >
               {section.type === "case-study" ? (
-                <CaseStudy
-                  recipe={recipe}
-                  section={section}
-                  selected={selected}
-                  showGuides={showGuides}
-                  preview={preview}
-                  onSelect={onSelect}
-                />
+                <CaseStudy recipe={recipe} section={section} selected={selected} showGuides={showGuides} preview={preview} onSelect={onSelect} />
               ) : (
-                <ModelGuide
-                  recipe={recipe}
-                  section={section}
-                  selected={selected}
-                  showGuides={showGuides}
-                  preview={preview}
-                  onSelect={onSelect}
-                />
+                <ModelGuide recipe={recipe} section={section} selected={selected} showGuides={showGuides} preview={preview} onSelect={onSelect} />
               )}
             </div>
           );

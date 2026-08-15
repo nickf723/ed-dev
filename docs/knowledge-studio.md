@@ -1,97 +1,69 @@
 # Knowledge Studio
 
-Knowledge Studio is the local authoring environment for Education Station 64. It turns page development from direct TSX/Tailwind editing into a higher-level recipe workflow.
+Knowledge Studio is the local authoring environment for Education Station 64. It turns page development from direct TSX/Tailwind editing into a higher-level recipe and design-system workflow.
 
-Run the site with `npm run dev`, then open:
+Run `npm run dev`, then open `http://localhost:3000/studio`. The route and its write APIs are unavailable outside local development.
+
+## Three editing views
+
+### Page
+
+Judge the full composition, hierarchy, spacing, responsiveness, and section flow.
+
+### Style guide
+
+Inspect one page as a component system: palette, typography, eyebrows, iconography, children, and supporting widgets.
+
+### Parameters
+
+Use the spreadsheet-like workbook for rapid cross-page editing. It contains five sheets:
+
+- **Palettes** — editable global semantic color roles
+- **Typography** — editable global font and eyebrow systems
+- **Pages** — one row per recipe with palette, typography, icon, width, density, surface, radius, spacing, and motion
+- **Children** — one row per direct destination with label, icon, color role, status, and tags
+- **Widgets** — one row per supporting section with type, eyebrow, title, icon, visibility, and part count
+
+## Global design registry
+
+Global styles live in:
 
 ```text
-http://localhost:3000/studio
+content/design-system/globals.json
 ```
 
-The route and its write API are deliberately unavailable outside `next dev`.
+A palette is a named set of semantic roles rather than one primary color:
+
+```text
+primary · secondary · tertiary · quaternary
+success · warning · danger
+background · surface · text · muted · border
+```
+
+A page links to a palette with `theme.paletteId`. Children and widget parts link to roles such as `primary`, `secondary`, or `danger`. Editing a global role immediately updates every linked page in the Studio preview and every recipe-rendered route after saving.
+
+Typography presets similarly define:
+
+```text
+display font · body font · title case · eyebrow style
+```
+
+Pages link through `theme.typographyId`.
+
+## Save behavior
+
+`Ctrl+S` or **Save all** validates and writes every changed recipe plus the global design registry. Timestamped backups are stored under `.next/studio-backups`. GitHub Desktop then shows a small set of readable JSON changes.
 
 ## Architecture
 
 ```text
-Curriculum registry  -> what exists and how it is related
-Page recipe          -> how a page presents that knowledge
-PageRenderer         -> compiles the recipe into React UI
-Knowledge Studio     -> edits recipes through semantic controls
-Custom instruments  -> escape hatch for specialized simulations and diagrams
+Curriculum registry       -> what exists and how it is related
+Global design registry    -> reusable palettes and typography
+Page recipe               -> how one page presents the knowledge
+Design resolver           -> compiles global references into render values
+PageRenderer              -> turns the resolved recipe into React UI
+Knowledge Studio          -> edits recipes and global systems semantically
+Custom instruments        -> escape hatch for specialized simulations
 ```
 
-The curriculum remains the ontology source of truth. Recipes hold presentation parameters and reference curriculum nodes through `nodeId`.
-
-## Page canvas
-
-The Page view edits a complete page in context. Current controls include:
-
-- page identity, eyebrow, subtitle, and icon
-- constrained density, spacing, width, radius, surface, border, shadow, and motion tokens
-- child navigation topology
-- lens, regime, and navigation-item content
-- supporting sections and their nested parts
-- desktop, tablet, and mobile widths
-- zoom, alignment guides, motion freeze, undo, redo, reset, and save
-
-## Parameterized style guide
-
-The Style guide view lays the page's design system out as a component workbench. It uses the same recipe and immediately reflects every parameter change.
-
-### Palette
-
-System palettes update coordinated color roles rather than only the title color. They propagate through:
-
-- page accent
-- child navigation accents
-- regime accents
-- supporting widget accents
-- the ambient background field
-
-Included starting systems cover mathematics red, physics cyan, history archive, biology green, social-science blue, and humanities rose. Every resulting color remains individually editable.
-
-### Typography and eyebrows
-
-Recipes can independently choose:
-
-- display font: serif, sans, or mono
-- body font: serif, sans, or mono
-- natural or uppercase title treatment
-- compact, standard, or display header scale
-- dot, rule, pill, or plain eyebrow treatment
-
-These roles apply to the real page renderer, not only to the workbench preview.
-
-### Iconography
-
-The style guide displays page and child icons together. The inspector uses a visual icon grid rather than a name-only dropdown. The registry includes general educational symbols such as a line chart, trend line, scales, globe, laboratory flask, DNA, landmark, network, and domain-specific physics icons.
-
-### Children and navigation
-
-The Children section exposes direct destinations as a coordinated component family. It supports:
-
-- adding, duplicating, deleting, and reordering children
-- changing icons, labels, summaries, tags, status, routes, and accents
-- changing lens or regime column structure
-- preserving planned destinations without fake links
-
-### Supporting widgets
-
-The Widgets section previews all supporting sections with shared shell parameters. Case studies and model guides can be added, hidden, reordered, duplicated, or broken into nested parts.
-
-## Saving
-
-`Ctrl+S` validates and writes the active recipe under `content/pages`. Timestamped backups are stored under `.next/studio-backups`. GitHub Desktop then shows one readable recipe diff instead of a large set of class-string edits.
-
-## Deliberate constraints
-
-Knowledge Studio is not a freeform drag-and-drop builder. Semantic parameters preserve coherence while still allowing strong subject identity. New topology types should correspond to real knowledge relationships: hierarchy, sequence, scale, containment, process, map, comparison, or independent lenses.
-
-## Next slices
-
-1. Global -> domain -> branch -> page inheritance with promote/reset controls.
-2. Atomic lesson recipes with Explain -> Do -> Check and configurable content pieces.
-3. A widget/component registry for custom instruments and simulations.
-4. Automated TREE / FRAME / FIELD / FLOW checks.
-5. An add-child workflow that creates curriculum node, route, and recipe together.
-6. More subject recipes, beginning with Mathematics and Economics, to validate palette and icon-system reuse.
+The editor remains constrained rather than freeform. Semantic parameters preserve cohesion while still allowing page-level overrides and custom instruments.
