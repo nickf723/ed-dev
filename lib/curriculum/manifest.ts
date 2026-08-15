@@ -19,7 +19,7 @@ import type { CurriculumNode } from "@/lib/curriculum/types";
  * is applied before its focused child branches for the same reason.
  */
 export const CURRICULUM_MODULES: readonly CurriculumNode[] = [
-  REFINED_ALGRA_CURRICULUM,
+  REFINED_ALGEBRA_CURRICULUM,
   GROUP_THEORY_CURRICULUM,
   LOGIC_CURRICULUM,
   COMPUTER_SCIENCE_CURRICULUM,
