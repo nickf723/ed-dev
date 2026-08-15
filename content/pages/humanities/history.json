@@ -29,13 +29,23 @@
     "surfaceOpacity": 0.12,
     "panelRadius": "xl",
     "sectionGap": "md",
-    "motion": "subtle"
+    "motion": "subtle",
+    "contentWidth": "standard",
+    "headerScale": "standard",
+    "borderStrength": "standard",
+    "shadow": "soft",
+    "displayFont": "serif",
+    "bodyFont": "sans",
+    "titleCase": "natural",
+    "eyebrowStyle": "rule"
   },
   "organization": {
     "kind": "multiple-lenses",
     "eyebrow": "Three ways into the past",
     "title": "One history. Three coordinate systems.",
     "description": "Each lens keeps different relationships visible. None is complete alone, and none is merely a different menu for the same list.",
+    "columns": 3,
+    "cardHeight": "standard",
     "items": [
       {
         "id": "time",

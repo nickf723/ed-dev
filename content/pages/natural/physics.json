@@ -29,10 +29,20 @@
     "surfaceOpacity": 0.11,
     "panelRadius": "xl",
     "sectionGap": "md",
-    "motion": "subtle"
+    "motion": "subtle",
+    "contentWidth": "standard",
+    "headerScale": "standard",
+    "borderStrength": "standard",
+    "shadow": "soft",
+    "displayFont": "mono",
+    "bodyFont": "sans",
+    "titleCase": "uppercase",
+    "eyebrowStyle": "dot"
   },
   "organization": {
     "kind": "split-regimes",
+    "groupColumns": 2,
+    "itemColumns": 2,
     "groups": [
       {
         "id": "classical",

@@ -11,13 +11,22 @@ import {
   REGIME_COLUMNS,
   SECTION_GAP,
   borderAlpha,
+  headingClass,
   itemEdgeClass,
+  labelFontClass,
   panelShadow,
   regionRing,
   surfaceColor,
 } from "@/app/_page-system/page-style";
-import { selectionKey, type RendererStudioProps } from "@/app/_page-system/types";
-import type { PageRecipe, RecipeLink, RegimeGroup } from "@/lib/page-system/schema";
+import {
+  selectionKey,
+  type RendererStudioProps,
+} from "@/app/_page-system/types";
+import type {
+  PageRecipe,
+  RecipeLink,
+  RegimeGroup,
+} from "@/lib/page-system/schema";
 
 export default function RegimeTopology({
   recipe,
@@ -31,7 +40,9 @@ export default function RegimeTopology({
   const groupColumns = organization.groupColumns ?? 2;
 
   return (
-    <section className={`${SECTION_GAP[recipe.theme.sectionGap]} grid items-stretch gap-5 ${REGIME_COLUMNS[groupColumns]}`}>
+    <section
+      className={`${SECTION_GAP[recipe.theme.sectionGap]} grid items-stretch gap-5 ${REGIME_COLUMNS[groupColumns]}`}
+    >
       {organization.groups.map((group) => (
         <RegimePanel
           key={group.id}
@@ -85,28 +96,53 @@ function RegimePanel({
       }
     >
       <RegimeArtwork visual={group.visual} accentRgb={group.accentRgb} />
-      <div className={`relative z-10 min-h-[238px] border-b border-white/[0.07] ${DENSITY_PADDING[recipe.theme.density]}`}>
-        <div className="font-mono text-[10px] font-semibold uppercase tracking-[0.16em]" style={{ color: `rgba(${group.accentRgb},0.78)` }}>
+      <div
+        className={`relative z-10 min-h-[238px] border-b border-white/[0.07] ${DENSITY_PADDING[recipe.theme.density]}`}
+      >
+        <div
+          className={`${labelFontClass(recipe)} text-[10px] font-semibold uppercase tracking-[0.16em]`}
+          style={{ color: `rgba(${group.accentRgb},0.78)` }}
+        >
           {group.kicker}
         </div>
-        <h2 className="mt-2 text-[clamp(1.9rem,3vw,2.7rem)] font-semibold tracking-[-0.045em] text-white">{group.label}</h2>
+        <h2
+          className={`mt-2 text-[clamp(1.9rem,3vw,2.7rem)] text-white ${headingClass(recipe)}`}
+        >
+          {group.label}
+        </h2>
         <p
-          className="mt-4 flex min-h-[42px] max-w-xl items-center border-l-2 pl-3 font-mono text-[9px] uppercase leading-5 tracking-[0.10em]"
-          style={{ color: `rgba(${group.accentRgb},0.72)`, borderColor: `rgba(${group.accentRgb},0.42)` }}
+          className={`${labelFontClass(recipe)} mt-4 flex min-h-[42px] max-w-xl items-center border-l-2 pl-3 text-[9px] uppercase leading-5 tracking-[0.10em]`}
+          style={{
+            color: `rgba(${group.accentRgb},0.72)`,
+            borderColor: `rgba(${group.accentRgb},0.42)`,
+          }}
         >
           {group.condition}
         </p>
-        <p className="mt-3 max-w-3xl text-[13px] leading-6 text-slate-300/78">{group.description}</p>
+        <p className="mt-3 max-w-3xl text-[13px] leading-6 text-slate-300/78">
+          {group.description}
+        </p>
       </div>
 
-      <nav aria-label={`${group.label} fields`} className={`relative z-10 grid flex-1 ${ITEM_COLUMNS[itemColumns]}`}>
+      <nav
+        aria-label={`${group.label} fields`}
+        className={`relative z-10 grid flex-1 ${ITEM_COLUMNS[itemColumns]}`}
+      >
         {group.items.map((item, index) => (
           <FieldLink
             key={item.id}
+            recipe={recipe}
             item={item}
             groupId={group.id}
-            edgeClass={itemEdgeClass(index, group.items.length, itemColumns)}
-            isSelected={selectionKey(selected) === `navigation-item:${group.id}:${item.id}`}
+            edgeClass={itemEdgeClass(
+              index,
+              group.items.length,
+              itemColumns,
+            )}
+            isSelected={
+              selectionKey(selected) ===
+              `navigation-item:${group.id}:${item.id}`
+            }
             showGuides={showGuides}
             preview={preview}
             onSelect={onSelect}
@@ -118,6 +154,7 @@ function RegimePanel({
 }
 
 function FieldLink({
+  recipe,
   item,
   groupId,
   edgeClass,
@@ -126,6 +163,7 @@ function FieldLink({
   preview,
   onSelect,
 }: {
+  recipe: PageRecipe;
   item: RecipeLink;
   groupId: string;
   edgeClass: string;
@@ -139,7 +177,12 @@ function FieldLink({
       style={{ borderColor: "rgba(255,255,255,0.07)" }}
       data-studio-region={`navigation-item:${groupId}:${item.id}`}
     >
-      <div className="absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100" style={{ background: `radial-gradient(circle at 24% 20%, rgba(${item.accentRgb},0.105), transparent 56%)` }} />
+      <div
+        className="absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+        style={{
+          background: `radial-gradient(circle at 24% 20%, rgba(${item.accentRgb},0.105), transparent 56%)`,
+        }}
+      />
       <div className="relative z-10 flex items-start justify-between gap-4">
         <div
           className="flex h-11 w-11 items-center justify-center rounded-[15px] border"
@@ -153,17 +196,32 @@ function FieldLink({
           <Icon size={19} />
         </div>
         {active ? (
-          <ArrowRight size={15} className="mt-2 transition-transform duration-300 group-hover:translate-x-1" style={{ color: `rgba(${item.accentRgb},0.58)` }} />
+          <ArrowRight
+            size={15}
+            className="mt-2 transition-transform duration-300 group-hover:translate-x-1"
+            style={{ color: `rgba(${item.accentRgb},0.58)` }}
+          />
         ) : (
-          <CircleDashed size={15} className="mt-2" style={{ color: `rgba(${item.accentRgb},0.42)` }} />
+          <CircleDashed
+            size={15}
+            className="mt-2"
+            style={{ color: `rgba(${item.accentRgb},0.42)` }}
+          />
         )}
       </div>
       <div className="relative z-10 mt-5">
-        <h3 className="text-[19px] font-semibold tracking-[-0.025em] text-white">{item.label}</h3>
-        <p className="mt-2 text-[12px] leading-5 text-slate-400">{item.summary}</p>
+        <h3 className={`text-[19px] text-white ${headingClass(recipe)}`}>
+          {item.label}
+        </h3>
+        <p className="mt-2 text-[12px] leading-5 text-slate-400">
+          {item.summary}
+        </p>
       </div>
       {item.tags?.length ? (
-        <div className="relative z-10 mt-auto pt-5 font-mono text-[9px] uppercase tracking-[0.11em]" style={{ color: `rgba(${item.accentRgb},0.64)` }}>
+        <div
+          className={`relative z-10 mt-auto pt-5 text-[9px] uppercase tracking-[0.11em] ${labelFontClass(recipe)}`}
+          style={{ color: `rgba(${item.accentRgb},0.64)` }}
+        >
           {item.tags.join(" · ")}
         </div>
       ) : null}
@@ -177,7 +235,12 @@ function FieldLink({
       preview={preview}
       onSelect={
         onSelect
-          ? () => onSelect({ kind: "navigation-item", groupId, id: item.id })
+          ? () =>
+              onSelect({
+                kind: "navigation-item",
+                groupId,
+                id: item.id,
+              })
           : undefined
       }
     >

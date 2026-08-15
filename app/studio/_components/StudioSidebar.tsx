@@ -9,13 +9,25 @@ import {
   History,
   LayoutPanelTop,
   ListTree,
+  Palette,
   Sparkles,
 } from "lucide-react";
 import type { ReactNode } from "react";
-import type { StudioSelection } from "@/app/_page-system/types";
+import type {
+  DesignGuideCategory,
+  StudioSelection,
+} from "@/app/_page-system/types";
+import { DESIGN_CATEGORY_META } from "@/app/studio/_components/DesignGuideInspector";
 import type { PageRecipeCatalogEntry } from "@/lib/page-system/catalog";
 import type { PageRecipe } from "@/lib/page-system/schema";
-import type { DraftState } from "@/app/studio/_components/studio-types";
+import type {
+  DraftState,
+  StudioView,
+} from "@/app/studio/_components/studio-types";
+
+const DESIGN_CATEGORIES = Object.keys(
+  DESIGN_CATEGORY_META,
+) as DesignGuideCategory[];
 
 export default function StudioSidebar({
   catalog,
@@ -23,16 +35,20 @@ export default function StudioSidebar({
   recipe,
   selectedRecipeId,
   selection,
+  view,
   onSwitchRecipe,
   onSelect,
+  onView,
 }: {
   catalog: readonly PageRecipeCatalogEntry[];
   drafts: Record<string, DraftState>;
   recipe: PageRecipe;
   selectedRecipeId: string;
   selection: StudioSelection;
+  view: StudioView;
   onSwitchRecipe: (id: string) => void;
   onSelect: (selection: StudioSelection) => void;
+  onView: (view: StudioView) => void;
 }) {
   const catalogEntry = catalog.find((entry) => entry.id === selectedRecipeId);
 
@@ -55,7 +71,8 @@ export default function StudioSidebar({
           {catalog.map((entry) => {
             const state = drafts[entry.id];
             const dirty = state
-              ? JSON.stringify(state.present) !== JSON.stringify(state.baseline)
+              ? JSON.stringify(state.present) !==
+                JSON.stringify(state.baseline)
               : false;
             return (
               <button
@@ -75,7 +92,11 @@ export default function StudioSidebar({
                       : "border-cyan-300/16 bg-cyan-400/[0.04] text-cyan-200"
                   }`}
                 >
-                  {entry.domain === "Humanities" ? <History size={15} /> : <Circle size={15} />}
+                  {entry.domain === "Humanities" ? (
+                    <History size={15} />
+                  ) : (
+                    <Circle size={15} />
+                  )}
                 </div>
                 <div className="min-w-0 flex-1">
                   <span className="block truncate text-[11px] font-semibold text-white">
@@ -85,13 +106,51 @@ export default function StudioSidebar({
                     {entry.domain}
                   </span>
                 </div>
-                {dirty ? <span className="h-2 w-2 rounded-full bg-amber-300" title="Unsaved changes" /> : null}
+                {dirty ? (
+                  <span
+                    className="h-2 w-2 rounded-full bg-amber-300"
+                    title="Unsaved changes"
+                  />
+                ) : null}
               </button>
             );
           })}
         </div>
 
-        <StructureTree recipe={recipe} selection={selection} onSelect={onSelect} />
+        <div className="mt-6 grid grid-cols-2 gap-2">
+          <button
+            type="button"
+            onClick={() => onView("page")}
+            className={`rounded-[11px] border px-3 py-2.5 text-[9px] font-medium transition ${
+              view === "page"
+                ? "border-cyan-300/18 bg-cyan-400/[0.06] text-cyan-100"
+                : "border-white/[0.07] bg-white/[0.018] text-slate-600 hover:text-slate-300"
+            }`}
+          >
+            Page canvas
+          </button>
+          <button
+            type="button"
+            onClick={() => onView("style-guide")}
+            className={`rounded-[11px] border px-3 py-2.5 text-[9px] font-medium transition ${
+              view === "style-guide"
+                ? "border-cyan-300/18 bg-cyan-400/[0.06] text-cyan-100"
+                : "border-white/[0.07] bg-white/[0.018] text-slate-600 hover:text-slate-300"
+            }`}
+          >
+            Style guide
+          </button>
+        </div>
+
+        {view === "style-guide" ? (
+          <DesignTree selection={selection} onSelect={onSelect} />
+        ) : (
+          <StructureTree
+            recipe={recipe}
+            selection={selection}
+            onSelect={onSelect}
+          />
+        )}
       </div>
 
       <div className="border-t border-white/[0.08] p-3">
@@ -107,34 +166,111 @@ export default function StudioSidebar({
   );
 }
 
-function StructureTree({ recipe, selection, onSelect }: { recipe: PageRecipe; selection: StudioSelection; onSelect: (selection: StudioSelection) => void }) {
+function DesignTree({
+  selection,
+  onSelect,
+}: {
+  selection: StudioSelection;
+  onSelect: (selection: StudioSelection) => void;
+}) {
+  return (
+    <div className="mt-6">
+      <div className="flex items-center gap-2 px-2 text-[9px] font-semibold uppercase tracking-[0.15em] text-slate-600">
+        <Palette size={12} /> Parameter groups
+      </div>
+      <div className="mt-2 space-y-1">
+        {DESIGN_CATEGORIES.map((category) => {
+          const meta = DESIGN_CATEGORY_META[category];
+          const Icon = meta.icon;
+          return (
+            <TreeButton
+              key={category}
+              active={
+                selection.kind === "design-category" &&
+                selection.id === category
+              }
+              label={meta.label}
+              icon={<Icon size={12} />}
+              onClick={() =>
+                onSelect({ kind: "design-category", id: category })
+              }
+            />
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function StructureTree({
+  recipe,
+  selection,
+  onSelect,
+}: {
+  recipe: PageRecipe;
+  selection: StudioSelection;
+  onSelect: (selection: StudioSelection) => void;
+}) {
   return (
     <div className="mt-6">
       <div className="px-2 text-[9px] font-semibold uppercase tracking-[0.15em] text-slate-600">
         Page structure
       </div>
       <div className="mt-2 space-y-1">
-        <TreeButton active={selection.kind === "page"} label="Page identity & theme" icon={<LayoutPanelTop size={13} />} onClick={() => onSelect({ kind: "page" })} />
+        <TreeButton
+          active={selection.kind === "page"}
+          label="Page identity & theme"
+          icon={<LayoutPanelTop size={13} />}
+          onClick={() => onSelect({ kind: "page" })}
+        />
 
         {recipe.organization.kind === "multiple-lenses" ? (
           <TreeBranch>
             {recipe.organization.items.map((item) => (
-              <TreeButton key={item.id} active={selection.kind === "lens" && selection.id === item.id} label={item.label} icon={<ChevronRight size={12} />} onClick={() => onSelect({ kind: "lens", id: item.id })} />
+              <TreeButton
+                key={item.id}
+                active={
+                  selection.kind === "lens" && selection.id === item.id
+                }
+                label={item.label}
+                icon={<ChevronRight size={12} />}
+                onClick={() => onSelect({ kind: "lens", id: item.id })}
+              />
             ))}
           </TreeBranch>
         ) : (
           <TreeBranch>
             {recipe.organization.groups.map((group) => (
               <div key={group.id} className="mb-1">
-                <TreeButton active={selection.kind === "regime" && selection.id === group.id} label={group.label} icon={<Columns3 size={12} />} onClick={() => onSelect({ kind: "regime", id: group.id })} />
+                <TreeButton
+                  active={
+                    selection.kind === "regime" &&
+                    selection.id === group.id
+                  }
+                  label={group.label}
+                  icon={<Columns3 size={12} />}
+                  onClick={() =>
+                    onSelect({ kind: "regime", id: group.id })
+                  }
+                />
                 <TreeBranch subtle>
                   {group.items.map((item) => (
                     <TreeButton
                       key={item.id}
-                      active={selection.kind === "navigation-item" && selection.groupId === group.id && selection.id === item.id}
+                      active={
+                        selection.kind === "navigation-item" &&
+                        selection.groupId === group.id &&
+                        selection.id === item.id
+                      }
                       label={item.label}
                       icon={<ChevronRight size={11} />}
-                      onClick={() => onSelect({ kind: "navigation-item", groupId: group.id, id: item.id })}
+                      onClick={() =>
+                        onSelect({
+                          kind: "navigation-item",
+                          groupId: group.id,
+                          id: item.id,
+                        })
+                      }
                     />
                   ))}
                 </TreeBranch>
@@ -147,30 +283,61 @@ function StructureTree({ recipe, selection, onSelect }: { recipe: PageRecipe; se
           {recipe.sections.map((section) => (
             <div key={section.id} className="mb-1">
               <TreeButton
-                active={selection.kind === "section" && selection.id === section.id}
+                active={
+                  selection.kind === "section" &&
+                  selection.id === section.id
+                }
                 label={section.title}
-                icon={section.hidden ? <EyeOff size={12} /> : <ListTree size={12} />}
+                icon={
+                  section.hidden ? (
+                    <EyeOff size={12} />
+                  ) : (
+                    <ListTree size={12} />
+                  )
+                }
                 muted={section.hidden}
-                onClick={() => onSelect({ kind: "section", id: section.id })}
+                onClick={() =>
+                  onSelect({ kind: "section", id: section.id })
+                }
               />
               <TreeBranch subtle>
                 {section.type === "case-study"
                   ? section.columns.map((column) => (
                       <TreeButton
                         key={column.id}
-                        active={selection.kind === "case-column" && selection.sectionId === section.id && selection.id === column.id}
+                        active={
+                          selection.kind === "case-column" &&
+                          selection.sectionId === section.id &&
+                          selection.id === column.id
+                        }
                         label={column.label}
                         icon={<ChevronRight size={11} />}
-                        onClick={() => onSelect({ kind: "case-column", sectionId: section.id, id: column.id })}
+                        onClick={() =>
+                          onSelect({
+                            kind: "case-column",
+                            sectionId: section.id,
+                            id: column.id,
+                          })
+                        }
                       />
                     ))
                   : section.choices.map((choice) => (
                       <TreeButton
                         key={choice.id}
-                        active={selection.kind === "model-choice" && selection.sectionId === section.id && selection.id === choice.id}
+                        active={
+                          selection.kind === "model-choice" &&
+                          selection.sectionId === section.id &&
+                          selection.id === choice.id
+                        }
                         label={choice.answer}
                         icon={<ChevronRight size={11} />}
-                        onClick={() => onSelect({ kind: "model-choice", sectionId: section.id, id: choice.id })}
+                        onClick={() =>
+                          onSelect({
+                            kind: "model-choice",
+                            sectionId: section.id,
+                            id: choice.id,
+                          })
+                        }
                       />
                     ))}
               </TreeBranch>
@@ -182,11 +349,37 @@ function StructureTree({ recipe, selection, onSelect }: { recipe: PageRecipe; se
   );
 }
 
-function TreeBranch({ children, subtle = false }: { children: ReactNode; subtle?: boolean }) {
-  return <div className={`ml-3 border-l pl-2 ${subtle ? "border-white/[0.045]" : "border-white/[0.07]"}`}>{children}</div>;
+function TreeBranch({
+  children,
+  subtle = false,
+}: {
+  children: ReactNode;
+  subtle?: boolean;
+}) {
+  return (
+    <div
+      className={`ml-3 border-l pl-2 ${
+        subtle ? "border-white/[0.045]" : "border-white/[0.07]"
+      }`}
+    >
+      {children}
+    </div>
+  );
 }
 
-function TreeButton({ active, label, icon, onClick, muted = false }: { active: boolean; label: string; icon: ReactNode; onClick: () => void; muted?: boolean }) {
+function TreeButton({
+  active,
+  label,
+  icon,
+  onClick,
+  muted = false,
+}: {
+  active: boolean;
+  label: string;
+  icon: ReactNode;
+  onClick: () => void;
+  muted?: boolean;
+}) {
   return (
     <button
       type="button"

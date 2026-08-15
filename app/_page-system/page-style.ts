@@ -2,6 +2,7 @@ import type {
   PageBorderStrength,
   PageCardHeight,
   PageContentWidth,
+  PageFontFamily,
   PageHeaderScale,
   PageRecipe,
   PageShadow,
@@ -65,6 +66,33 @@ export const ITEM_COLUMNS = {
   2: "sm:grid-cols-2",
 } as const;
 
+const FONT_CLASS: Record<PageFontFamily, string> = {
+  serif: "font-serif",
+  sans: "font-sans",
+  mono: "font-mono",
+};
+
+export function displayFont(recipe: PageRecipe): PageFontFamily {
+  return recipe.theme.displayFont ??
+    (recipe.theme.family === "history" ? "serif" : "mono");
+}
+
+export function bodyFont(recipe: PageRecipe): PageFontFamily {
+  return recipe.theme.bodyFont ?? "sans";
+}
+
+export function displayFontClass(recipe: PageRecipe) {
+  return FONT_CLASS[displayFont(recipe)];
+}
+
+export function bodyFontClass(recipe: PageRecipe) {
+  return FONT_CLASS[bodyFont(recipe)];
+}
+
+export function labelFontClass(recipe: PageRecipe) {
+  return displayFont(recipe) === "mono" ? "font-mono" : "font-sans";
+}
+
 export function surfaceColor(recipe: PageRecipe) {
   const opacity =
     recipe.theme.surface === "clear"
@@ -83,7 +111,8 @@ export function headerColor(recipe: PageRecipe) {
 }
 
 export function borderAlpha(recipe: PageRecipe, base = 0.09) {
-  const strength: PageBorderStrength = recipe.theme.borderStrength ?? "standard";
+  const strength: PageBorderStrength =
+    recipe.theme.borderStrength ?? "standard";
   if (strength === "subtle") return base * 0.62;
   if (strength === "strong") return Math.min(0.42, base * 1.7);
   return base;
@@ -99,28 +128,38 @@ export function contentWidth(recipe: PageRecipe) {
 
 export function titleClass(recipe: PageRecipe) {
   const scale: PageHeaderScale = recipe.theme.headerScale ?? "standard";
-  if (recipe.theme.family === "history") {
-    if (scale === "compact") {
-      return "font-serif text-[clamp(2.35rem,4.3vw,4.8rem)] font-semibold leading-[0.88] tracking-[-0.05em] text-[#fffaf0]";
-    }
-    if (scale === "display") {
-      return "font-serif text-[clamp(3.5rem,6.4vw,7rem)] font-semibold leading-[0.8] tracking-[-0.06em] text-[#fffaf0]";
-    }
-    return "font-serif text-[clamp(3rem,5.4vw,6rem)] font-semibold leading-[0.84] tracking-[-0.055em] text-[#fffaf0]";
-  }
+  const font = displayFontClass(recipe);
+  const titleCase =
+    recipe.theme.titleCase ??
+    (recipe.theme.family === "history" ? "natural" : "uppercase");
+  const transform = titleCase === "uppercase" ? "uppercase" : "";
+  const color = recipe.theme.family === "history" ? "text-[#fffaf0]" : "text-[#f7fbff]";
 
-  if (scale === "compact") {
-    return "font-mono text-[clamp(2rem,3.8vw,4.1rem)] font-semibold uppercase leading-[0.9] tracking-[-0.05em] text-[#f7fbff]";
-  }
-  if (scale === "display") {
-    return "font-mono text-[clamp(3.1rem,5.7vw,6.3rem)] font-semibold uppercase leading-[0.82] tracking-[-0.064em] text-[#f7fbff]";
-  }
-  return "font-mono text-[clamp(2.6rem,4.6vw,5rem)] font-semibold uppercase leading-[0.86] tracking-[-0.058em] text-[#f7fbff]";
+  const size =
+    scale === "compact"
+      ? "text-[clamp(2.35rem,4.1vw,4.7rem)] leading-[0.89] tracking-[-0.05em]"
+      : scale === "display"
+        ? "text-[clamp(3.5rem,6.2vw,6.9rem)] leading-[0.81] tracking-[-0.062em]"
+        : "text-[clamp(2.9rem,5.2vw,5.8rem)] leading-[0.85] tracking-[-0.056em]";
+
+  return `${font} ${size} ${transform} font-semibold ${color}`.trim();
+}
+
+export function subtitleClass(recipe: PageRecipe) {
+  return `${bodyFontClass(recipe)} text-sm leading-6 text-slate-400 sm:text-base`;
+}
+
+export function headingClass(recipe: PageRecipe) {
+  return `${displayFontClass(recipe)} font-semibold tracking-[-0.035em]`;
 }
 
 export function regionRing(showGuides = false, selected = false) {
-  if (selected) return "outline outline-2 outline-cyan-200/90 outline-offset-[-2px]";
-  if (showGuides) return "outline outline-1 outline-cyan-300/30 outline-offset-[-1px]";
+  if (selected) {
+    return "outline outline-2 outline-cyan-200/90 outline-offset-[-2px]";
+  }
+  if (showGuides) {
+    return "outline outline-1 outline-cyan-300/30 outline-offset-[-1px]";
+  }
   return "";
 }
 
@@ -131,7 +170,11 @@ export function columnGridClass(count: number) {
   return "md:grid-cols-2 xl:grid-cols-4";
 }
 
-export function itemEdgeClass(index: number, count: number, columns: 1 | 2) {
+export function itemEdgeClass(
+  index: number,
+  count: number,
+  columns: 1 | 2,
+) {
   if (columns === 1) return index < count - 1 ? "border-b" : "";
   const lastRowStart = Math.floor((count - 1) / 2) * 2;
   const bottom = index < lastRowStart ? "border-b" : "";

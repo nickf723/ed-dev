@@ -10,9 +10,12 @@ import { CaseStudy, ModelGuide } from "@/app/_page-system/SupportingSections";
 import {
   RADIUS,
   SECTION_GAP,
+  bodyFontClass,
   contentWidth,
   headerColor,
+  labelFontClass,
   regionRing,
+  subtitleClass,
   titleClass,
 } from "@/app/_page-system/page-style";
 import { selectionKey, type PageRendererProps } from "@/app/_page-system/types";
@@ -33,7 +36,8 @@ export default function PageRenderer({
   onSelect,
 }: PageRendererProps) {
   const Icon = resolvePageIcon(recipe.identity.icon);
-  const familyBackground = recipe.theme.family === "history" ? "#070503" : "#03070d";
+  const familyBackground =
+    recipe.theme.family === "history" ? "#070503" : "#03070d";
   const motion = motionEnabled ?? recipe.theme.motion !== "off";
   const style: RecipeStyle = {
     "--recipe-accent": `rgb(${recipe.theme.accentRgb})`,
@@ -42,7 +46,7 @@ export default function PageRenderer({
 
   return (
     <main
-      className={`relative min-h-screen overflow-x-hidden text-slate-100 selection:bg-white/20 ${preview ? "isolate" : ""}`}
+      className={`relative min-h-screen overflow-x-hidden text-slate-100 selection:bg-white/20 ${bodyFontClass(recipe)} ${preview ? "isolate" : ""}`}
       style={{ ...style, background: familyBackground }}
       data-page-recipe={recipe.id}
       data-page-family={recipe.theme.family}
@@ -60,23 +64,46 @@ export default function PageRenderer({
           style={{ background: headerColor(recipe) }}
         >
           <DomainPageHeader
-            breadcrumbs={recipe.identity.breadcrumbs ?? [{ label: recipe.identity.title }]}
+            breadcrumbs={
+              recipe.identity.breadcrumbs ?? [
+                { label: recipe.identity.title },
+              ]
+            }
             eyebrow={recipe.identity.eyebrow}
+            eyebrowClassName={labelFontClass(recipe)}
+            eyebrowStyle={
+              recipe.theme.eyebrowStyle ??
+              (recipe.theme.family === "history" ? "rule" : "dot")
+            }
             icon={Icon}
             title={<span>{recipe.identity.title}</span>}
             subtitle={recipe.identity.subtitle}
             accentRgb={recipe.theme.accentRgb}
             titleClassName={titleClass(recipe)}
+            subtitleClassName={subtitleClass(recipe)}
             headerClassName="border-white/[0.08]"
           />
         </div>
 
-        <LensTopology recipe={recipe} selected={selected} showGuides={showGuides} preview={preview} onSelect={onSelect} />
-        <RegimeTopology recipe={recipe} selected={selected} showGuides={showGuides} preview={preview} onSelect={onSelect} />
+        <LensTopology
+          recipe={recipe}
+          selected={selected}
+          showGuides={showGuides}
+          preview={preview}
+          onSelect={onSelect}
+        />
+        <RegimeTopology
+          recipe={recipe}
+          selected={selected}
+          showGuides={showGuides}
+          preview={preview}
+          onSelect={onSelect}
+        />
 
         {recipe.sections.map((section) => {
           if (section.hidden && !preview) return null;
-          const selectedSection = selectionKey(selected) === `section:${section.id}`;
+          const selectedSection =
+            selectionKey(selected) === `section:${section.id}`;
           return (
             <div
               key={section.id}

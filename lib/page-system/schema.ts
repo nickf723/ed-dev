@@ -18,6 +18,9 @@ export type PageHeaderScale = "compact" | "standard" | "display";
 export type PageBorderStrength = "subtle" | "standard" | "strong";
 export type PageShadow = "none" | "soft" | "dramatic";
 export type PageCardHeight = "compact" | "standard" | "tall";
+export type PageFontFamily = "serif" | "sans" | "mono";
+export type PageTitleCase = "natural" | "uppercase";
+export type PageEyebrowStyle = "dot" | "rule" | "pill" | "plain";
 
 export type PageBreadcrumb = {
   label: string;
@@ -47,6 +50,10 @@ export type PageTheme = {
   headerScale?: PageHeaderScale;
   borderStrength?: PageBorderStrength;
   shadow?: PageShadow;
+  displayFont?: PageFontFamily;
+  bodyFont?: PageFontFamily;
+  titleCase?: PageTitleCase;
+  eyebrowStyle?: PageEyebrowStyle;
 };
 
 export type RecipeLink = {
@@ -175,7 +182,12 @@ function isFiniteNumber(value: unknown): value is number {
 function isRgb(value: unknown): value is string {
   if (typeof value !== "string") return false;
   const parts = value.split(",").map((part) => Number(part.trim()));
-  return parts.length === 3 && parts.every((part) => Number.isInteger(part) && part >= 0 && part <= 255);
+  return (
+    parts.length === 3 &&
+    parts.every(
+      (part) => Number.isInteger(part) && part >= 0 && part <= 255,
+    )
+  );
 }
 
 function requireString(
@@ -184,7 +196,9 @@ function requireString(
   path: string,
   errors: string[],
 ) {
-  if (!isString(value[key])) errors.push(`${path}.${key} must be a non-empty string`);
+  if (!isString(value[key])) {
+    errors.push(`${path}.${key} must be a non-empty string`);
+  }
 }
 
 function requireRgb(
@@ -193,7 +207,11 @@ function requireRgb(
   path: string,
   errors: string[],
 ) {
-  if (!isRgb(value[key])) errors.push(`${path}.${key} must be an RGB string such as "217, 119, 6"`);
+  if (!isRgb(value[key])) {
+    errors.push(
+      `${path}.${key} must be an RGB string such as "217, 119, 6"`,
+    );
+  }
 }
 
 function requireEnum(
@@ -220,7 +238,11 @@ function optionalEnum(
   }
 }
 
-function validateRecipeLink(value: unknown, path: string, errors: string[]) {
+function validateRecipeLink(
+  value: unknown,
+  path: string,
+  errors: string[],
+) {
   if (!isRecord(value)) {
     errors.push(`${path} must be an object`);
     return;
@@ -238,13 +260,18 @@ function validateRecipeLink(value: unknown, path: string, errors: string[]) {
   if (value.href !== undefined && !isString(value.href)) {
     errors.push(`${path}.href must be a non-empty string when provided`);
   }
-  if (value.status !== undefined && value.status !== "active" && value.status !== "planned") {
+  if (
+    value.status !== undefined &&
+    value.status !== "active" &&
+    value.status !== "planned"
+  ) {
     errors.push(`${path}.status must be "active" or "planned"`);
   }
-  if (value.tags !== undefined) {
-    if (!Array.isArray(value.tags) || value.tags.some((tag) => !isString(tag))) {
-      errors.push(`${path}.tags must be an array of non-empty strings`);
-    }
+  if (
+    value.tags !== undefined &&
+    (!Array.isArray(value.tags) || value.tags.some((tag) => !isString(tag)))
+  ) {
+    errors.push(`${path}.tags must be an array of non-empty strings`);
   }
 }
 
@@ -259,17 +286,29 @@ function validateOrganization(value: unknown, errors: string[]) {
     requireString(value, "title", "organization", errors);
     requireString(value, "description", "organization", errors);
     optionalEnum(value, "columns", [1, 2, 3], "organization", errors);
-    optionalEnum(value, "cardHeight", ["compact", "standard", "tall"], "organization", errors);
+    optionalEnum(
+      value,
+      "cardHeight",
+      ["compact", "standard", "tall"],
+      "organization",
+      errors,
+    );
+
     if (!Array.isArray(value.items) || value.items.length === 0) {
       errors.push("organization.items must contain at least one lens");
       return;
     }
+
     value.items.forEach((item, index) => {
       const path = `organization.items[${index}]`;
       validateRecipeLink(item, path, errors);
       if (!isRecord(item)) return;
       requireString(item, "question", path, errors);
-      if (item.visual !== "timeline" && item.visual !== "map" && item.visual !== "network") {
+      if (
+        item.visual !== "timeline" &&
+        item.visual !== "map" &&
+        item.visual !== "network"
+      ) {
         errors.push(`${path}.visual must be timeline, map, or network`);
       }
     });
@@ -279,29 +318,39 @@ function validateOrganization(value: unknown, errors: string[]) {
   if (value.kind === "split-regimes") {
     optionalEnum(value, "groupColumns", [1, 2], "organization", errors);
     optionalEnum(value, "itemColumns", [1, 2], "organization", errors);
+
     if (!Array.isArray(value.groups) || value.groups.length === 0) {
       errors.push("organization.groups must contain at least one regime");
       return;
     }
+
     value.groups.forEach((group, groupIndex) => {
       const path = `organization.groups[${groupIndex}]`;
       if (!isRecord(group)) {
         errors.push(`${path} must be an object`);
         return;
       }
+
       requireString(group, "id", path, errors);
       requireString(group, "label", path, errors);
       requireString(group, "kicker", path, errors);
       requireString(group, "condition", path, errors);
       requireString(group, "description", path, errors);
       requireRgb(group, "accentRgb", path, errors);
-      if (group.visual !== "classical" && group.visual !== "modern" && group.visual !== "neutral") {
+
+      if (
+        group.visual !== "classical" &&
+        group.visual !== "modern" &&
+        group.visual !== "neutral"
+      ) {
         errors.push(`${path}.visual must be classical, modern, or neutral`);
       }
+
       if (!Array.isArray(group.items) || group.items.length === 0) {
         errors.push(`${path}.items must contain at least one field`);
         return;
       }
+
       group.items.forEach((item, itemIndex) =>
         validateRecipeLink(item, `${path}.items[${itemIndex}]`, errors),
       );
@@ -324,11 +373,13 @@ function validateSections(value: unknown, errors: string[]) {
       errors.push(`${path} must be an object`);
       return;
     }
+
     requireString(section, "id", path, errors);
     requireString(section, "eyebrow", path, errors);
     requireString(section, "title", path, errors);
     requireString(section, "summary", path, errors);
     requireString(section, "icon", path, errors);
+
     if (section.hidden !== undefined && typeof section.hidden !== "boolean") {
       errors.push(`${path}.hidden must be boolean when provided`);
     }
@@ -338,6 +389,7 @@ function validateSections(value: unknown, errors: string[]) {
         errors.push(`${path}.columns must contain at least one column`);
         return;
       }
+
       section.columns.forEach((column, columnIndex) => {
         const columnPath = `${path}.columns[${columnIndex}]`;
         if (!isRecord(column)) {
@@ -358,6 +410,7 @@ function validateSections(value: unknown, errors: string[]) {
         errors.push(`${path}.choices must contain at least one choice`);
         return;
       }
+
       section.choices.forEach((choice, choiceIndex) => {
         const choicePath = `${path}.choices[${choiceIndex}]`;
         if (!isRecord(choice)) {
@@ -380,7 +433,9 @@ function validateSections(value: unknown, errors: string[]) {
 
 export function validatePageRecipe(input: unknown): PageRecipeValidation {
   const errors: string[] = [];
-  if (!isRecord(input)) return { ok: false, errors: ["Recipe must be an object"] };
+  if (!isRecord(input)) {
+    return { ok: false, errors: ["Recipe must be an object"] };
+  }
 
   if (input.version !== PAGE_RECIPE_VERSION) {
     errors.push(`version must equal ${PAGE_RECIPE_VERSION}`);
@@ -407,6 +462,7 @@ export function validatePageRecipe(input: unknown): PageRecipeValidation {
     requireString(input.identity, "eyebrow", "identity", errors);
     requireString(input.identity, "subtitle", "identity", errors);
     requireString(input.identity, "icon", "identity", errors);
+
     if (input.identity.breadcrumbs !== undefined) {
       if (!Array.isArray(input.identity.breadcrumbs)) {
         errors.push("identity.breadcrumbs must be an array");
@@ -419,7 +475,9 @@ export function validatePageRecipe(input: unknown): PageRecipeValidation {
           }
           requireString(crumb, "label", path, errors);
           if (crumb.href !== undefined && !isString(crumb.href)) {
-            errors.push(`${path}.href must be a non-empty string when provided`);
+            errors.push(
+              `${path}.href must be a non-empty string when provided`,
+            );
           }
         });
       }
@@ -433,21 +491,113 @@ export function validatePageRecipe(input: unknown): PageRecipeValidation {
     requireString(input.theme, "background", "theme", errors);
     requireRgb(input.theme, "accentRgb", "theme", errors);
 
-    if (!isFiniteNumber(input.theme.backgroundStrength) || input.theme.backgroundStrength < 0 || input.theme.backgroundStrength > 2) {
+    if (
+      !isFiniteNumber(input.theme.backgroundStrength) ||
+      input.theme.backgroundStrength < 0 ||
+      input.theme.backgroundStrength > 2
+    ) {
       errors.push("theme.backgroundStrength must be between 0 and 2");
     }
-    if (!isFiniteNumber(input.theme.surfaceOpacity) || input.theme.surfaceOpacity < 0 || input.theme.surfaceOpacity > 0.8) {
+    if (
+      !isFiniteNumber(input.theme.surfaceOpacity) ||
+      input.theme.surfaceOpacity < 0 ||
+      input.theme.surfaceOpacity > 0.8
+    ) {
       errors.push("theme.surfaceOpacity must be between 0 and 0.8");
     }
-    requireEnum(input.theme, "density", ["compact", "balanced", "spacious"], "theme", errors);
-    requireEnum(input.theme, "surface", ["clear", "glass", "dense-glass"], "theme", errors);
-    requireEnum(input.theme, "panelRadius", ["md", "lg", "xl"], "theme", errors);
-    requireEnum(input.theme, "sectionGap", ["sm", "md", "lg"], "theme", errors);
-    requireEnum(input.theme, "motion", ["off", "subtle", "expressive"], "theme", errors);
-    optionalEnum(input.theme, "contentWidth", ["focused", "standard", "wide"], "theme", errors);
-    optionalEnum(input.theme, "headerScale", ["compact", "standard", "display"], "theme", errors);
-    optionalEnum(input.theme, "borderStrength", ["subtle", "standard", "strong"], "theme", errors);
-    optionalEnum(input.theme, "shadow", ["none", "soft", "dramatic"], "theme", errors);
+
+    requireEnum(
+      input.theme,
+      "density",
+      ["compact", "balanced", "spacious"],
+      "theme",
+      errors,
+    );
+    requireEnum(
+      input.theme,
+      "surface",
+      ["clear", "glass", "dense-glass"],
+      "theme",
+      errors,
+    );
+    requireEnum(
+      input.theme,
+      "panelRadius",
+      ["md", "lg", "xl"],
+      "theme",
+      errors,
+    );
+    requireEnum(
+      input.theme,
+      "sectionGap",
+      ["sm", "md", "lg"],
+      "theme",
+      errors,
+    );
+    requireEnum(
+      input.theme,
+      "motion",
+      ["off", "subtle", "expressive"],
+      "theme",
+      errors,
+    );
+
+    optionalEnum(
+      input.theme,
+      "contentWidth",
+      ["focused", "standard", "wide"],
+      "theme",
+      errors,
+    );
+    optionalEnum(
+      input.theme,
+      "headerScale",
+      ["compact", "standard", "display"],
+      "theme",
+      errors,
+    );
+    optionalEnum(
+      input.theme,
+      "borderStrength",
+      ["subtle", "standard", "strong"],
+      "theme",
+      errors,
+    );
+    optionalEnum(
+      input.theme,
+      "shadow",
+      ["none", "soft", "dramatic"],
+      "theme",
+      errors,
+    );
+    optionalEnum(
+      input.theme,
+      "displayFont",
+      ["serif", "sans", "mono"],
+      "theme",
+      errors,
+    );
+    optionalEnum(
+      input.theme,
+      "bodyFont",
+      ["serif", "sans", "mono"],
+      "theme",
+      errors,
+    );
+    optionalEnum(
+      input.theme,
+      "titleCase",
+      ["natural", "uppercase"],
+      "theme",
+      errors,
+    );
+    optionalEnum(
+      input.theme,
+      "eyebrowStyle",
+      ["dot", "rule", "pill", "plain"],
+      "theme",
+      errors,
+    );
   }
 
   validateOrganization(input.organization, errors);
@@ -459,7 +609,11 @@ export function validatePageRecipe(input: unknown): PageRecipeValidation {
 export function parsePageRecipe(input: unknown): PageRecipe {
   const validation = validatePageRecipe(input);
   if (!validation.ok) {
-    throw new Error(`Invalid page recipe:\n${validation.errors.map((error) => `- ${error}`).join("\n")}`);
+    throw new Error(
+      `Invalid page recipe:\n${validation.errors
+        .map((error) => `- ${error}`)
+        .join("\n")}`,
+    );
   }
   return input as PageRecipe;
 }

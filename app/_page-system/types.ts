@@ -1,7 +1,15 @@
 import type { PageRecipe } from "@/lib/page-system/schema";
 
+export type DesignGuideCategory =
+  | "palette"
+  | "typography"
+  | "iconography"
+  | "children"
+  | "widgets";
+
 export type StudioSelection =
   | { kind: "page" }
+  | { kind: "design-category"; id: DesignGuideCategory }
   | { kind: "lens"; id: string }
   | { kind: "regime"; id: string }
   | { kind: "navigation-item"; groupId?: string; id: string }
@@ -24,6 +32,9 @@ export type PageRendererProps = RendererStudioProps & {
 export function selectionKey(selection: StudioSelection | undefined) {
   if (!selection) return "";
   if (selection.kind === "page") return "page";
+  if (selection.kind === "design-category") {
+    return `design-category:${selection.id}`;
+  }
   if (selection.kind === "navigation-item") {
     return `navigation-item:${selection.groupId ?? "root"}:${selection.id}`;
   }

@@ -5,8 +5,10 @@ import {
   Check,
   Eye,
   EyeOff,
+  LayoutTemplate,
   Minus,
   Monitor,
+  Palette,
   PanelLeft,
   PanelRight,
   Plus,
@@ -18,9 +20,14 @@ import {
   Undo2,
 } from "lucide-react";
 import type { ReactNode } from "react";
-import type { SaveState, Viewport } from "@/app/studio/_components/studio-types";
+import type {
+  SaveState,
+  StudioView,
+  Viewport,
+} from "@/app/studio/_components/studio-types";
 
 export default function StudioToolbar({
+  view,
   viewport,
   zoom,
   showTree,
@@ -31,6 +38,7 @@ export default function StudioToolbar({
   canRedo,
   dirty,
   saveState,
+  onView,
   onViewport,
   onZoom,
   onToggleTree,
@@ -42,6 +50,7 @@ export default function StudioToolbar({
   onReset,
   onSave,
 }: {
+  view: StudioView;
   viewport: Viewport;
   zoom: number;
   showTree: boolean;
@@ -52,6 +61,7 @@ export default function StudioToolbar({
   canRedo: boolean;
   dirty: boolean;
   saveState: SaveState;
+  onView: (view: StudioView) => void;
   onViewport: (viewport: Viewport) => void;
   onZoom: (zoom: number) => void;
   onToggleTree: () => void;
@@ -66,9 +76,31 @@ export default function StudioToolbar({
   return (
     <div className="flex h-14 shrink-0 items-center gap-4 overflow-x-auto border-b border-white/[0.08] bg-[#0b0e14] px-4">
       <div className="flex shrink-0 items-center gap-2">
-        <ToolbarButton label={showTree ? "Hide structure" : "Show structure"} active={showTree} onClick={onToggleTree}>
+        <ToolbarButton
+          label={showTree ? "Hide structure" : "Show structure"}
+          active={showTree}
+          onClick={onToggleTree}
+        >
           <PanelLeft size={14} />
         </ToolbarButton>
+
+        <div className="flex items-center rounded-[10px] border border-white/[0.08] bg-black/20 p-1">
+          <ViewButton
+            active={view === "page"}
+            label="Page canvas"
+            onClick={() => onView("page")}
+          >
+            <LayoutTemplate size={13} /> Page
+          </ViewButton>
+          <ViewButton
+            active={view === "style-guide"}
+            label="Style guide"
+            onClick={() => onView("style-guide")}
+          >
+            <Palette size={13} /> Style guide
+          </ViewButton>
+        </div>
+
         <div className="mx-1 h-5 w-px bg-white/[0.08]" />
         <ToolbarButton label="Undo" onClick={onUndo} disabled={!canUndo}>
           <Undo2 size={14} />
@@ -77,17 +109,35 @@ export default function StudioToolbar({
           <Redo2 size={14} />
         </ToolbarButton>
         <div className="mx-1 h-5 w-px bg-white/[0.08]" />
-        <ViewportButton active={viewport === "desktop"} label="Desktop" onClick={() => onViewport("desktop")}>
+        <ViewportButton
+          active={viewport === "desktop"}
+          label="Desktop"
+          onClick={() => onViewport("desktop")}
+        >
           <Monitor size={14} />
         </ViewportButton>
-        <ViewportButton active={viewport === "tablet"} label="Tablet" onClick={() => onViewport("tablet")}>
+        <ViewportButton
+          active={viewport === "tablet"}
+          label="Tablet"
+          onClick={() => onViewport("tablet")}
+        >
           <Tablet size={14} />
         </ViewportButton>
-        <ViewportButton active={viewport === "mobile"} label="Mobile" onClick={() => onViewport("mobile")}>
+        <ViewportButton
+          active={viewport === "mobile"}
+          label="Mobile"
+          onClick={() => onViewport("mobile")}
+        >
           <Smartphone size={14} />
         </ViewportButton>
         <div className="mx-1 h-5 w-px bg-white/[0.08]" />
-        <ToolbarButton label="Zoom out" onClick={() => onZoom(Math.max(0.5, Number((zoom - 0.1).toFixed(2))))} disabled={zoom <= 0.5}>
+        <ToolbarButton
+          label="Zoom out"
+          onClick={() =>
+            onZoom(Math.max(0.5, Number((zoom - 0.1).toFixed(2))))
+          }
+          disabled={zoom <= 0.5}
+        >
           <Minus size={14} />
         </ToolbarButton>
         <button
@@ -98,22 +148,44 @@ export default function StudioToolbar({
         >
           {Math.round(zoom * 100)}%
         </button>
-        <ToolbarButton label="Zoom in" onClick={() => onZoom(Math.min(1.2, Number((zoom + 0.1).toFixed(2))))} disabled={zoom >= 1.2}>
+        <ToolbarButton
+          label="Zoom in"
+          onClick={() =>
+            onZoom(Math.min(1.2, Number((zoom + 0.1).toFixed(2))))
+          }
+          disabled={zoom >= 1.2}
+        >
           <Plus size={14} />
         </ToolbarButton>
       </div>
 
       <div className="ml-auto flex shrink-0 items-center gap-2">
-        <ToolbarButton label={showInspector ? "Hide inspector" : "Show inspector"} active={showInspector} onClick={onToggleInspector}>
+        <ToolbarButton
+          label={showInspector ? "Hide inspector" : "Show inspector"}
+          active={showInspector}
+          onClick={onToggleInspector}
+        >
           <PanelRight size={14} />
         </ToolbarButton>
-        <ToolbarButton label={showGuides ? "Hide alignment guides" : "Show alignment guides"} active={showGuides} onClick={onToggleGuides}>
+        <ToolbarButton
+          label={showGuides ? "Hide alignment guides" : "Show alignment guides"}
+          active={showGuides}
+          onClick={onToggleGuides}
+        >
           <AlignJustify size={14} />
         </ToolbarButton>
-        <ToolbarButton label={motionEnabled ? "Freeze motion" : "Enable motion"} active={motionEnabled} onClick={onToggleMotion}>
+        <ToolbarButton
+          label={motionEnabled ? "Freeze motion" : "Enable motion"}
+          active={motionEnabled}
+          onClick={onToggleMotion}
+        >
           {motionEnabled ? <Eye size={14} /> : <EyeOff size={14} />}
         </ToolbarButton>
-        <ToolbarButton label="Reset to saved" onClick={onReset} disabled={!dirty}>
+        <ToolbarButton
+          label="Reset to saved"
+          onClick={onReset}
+          disabled={!dirty}
+        >
           <RefreshCcw size={14} />
         </ToolbarButton>
         <button
@@ -122,7 +194,13 @@ export default function StudioToolbar({
           disabled={!dirty || saveState === "saving"}
           className="ml-1 inline-flex h-9 items-center gap-2 rounded-[11px] border border-cyan-300/20 bg-cyan-400/[0.08] px-3 text-[10px] font-semibold text-cyan-100 transition hover:bg-cyan-400/[0.13] disabled:cursor-not-allowed disabled:opacity-35"
         >
-          {saveState === "saving" ? <RefreshCcw size={13} className="animate-spin" /> : saveState === "saved" && !dirty ? <Check size={13} /> : <Save size={13} />}
+          {saveState === "saving" ? (
+            <RefreshCcw size={13} className="animate-spin" />
+          ) : saveState === "saved" && !dirty ? (
+            <Check size={13} />
+          ) : (
+            <Save size={13} />
+          )}
           Save recipe
         </button>
       </div>
@@ -130,7 +208,19 @@ export default function StudioToolbar({
   );
 }
 
-function ToolbarButton({ label, onClick, disabled, active, children }: { label: string; onClick: () => void; disabled?: boolean; active?: boolean; children: ReactNode }) {
+function ToolbarButton({
+  label,
+  onClick,
+  disabled,
+  active,
+  children,
+}: {
+  label: string;
+  onClick: () => void;
+  disabled?: boolean;
+  active?: boolean;
+  children: ReactNode;
+}) {
   return (
     <button
       type="button"
@@ -149,7 +239,44 @@ function ToolbarButton({ label, onClick, disabled, active, children }: { label: 
   );
 }
 
-function ViewportButton({ active, label, onClick, children }: { active: boolean; label: string; onClick: () => void; children: ReactNode }) {
+function ViewButton({
+  active,
+  label,
+  onClick,
+  children,
+}: {
+  active: boolean;
+  label: string;
+  onClick: () => void;
+  children: ReactNode;
+}) {
+  return (
+    <button
+      type="button"
+      title={label}
+      onClick={onClick}
+      className={`inline-flex h-7 items-center gap-1.5 rounded-[7px] px-2.5 text-[9px] font-medium transition ${
+        active
+          ? "bg-white/[0.08] text-white"
+          : "text-slate-600 hover:text-slate-300"
+      }`}
+    >
+      {children}
+    </button>
+  );
+}
+
+function ViewportButton({
+  active,
+  label,
+  onClick,
+  children,
+}: {
+  active: boolean;
+  label: string;
+  onClick: () => void;
+  children: ReactNode;
+}) {
   return (
     <button
       type="button"
@@ -157,7 +284,9 @@ function ViewportButton({ active, label, onClick, children }: { active: boolean;
       aria-label={label}
       onClick={onClick}
       className={`flex h-8 w-8 items-center justify-center rounded-[9px] border transition ${
-        active ? "border-white/[0.12] bg-white/[0.07] text-white" : "border-transparent text-slate-600 hover:text-slate-300"
+        active
+          ? "border-white/[0.12] bg-white/[0.07] text-white"
+          : "border-transparent text-slate-600 hover:text-slate-300"
       }`}
     >
       {children}

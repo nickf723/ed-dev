@@ -1,7 +1,10 @@
 "use client";
 
 import { useEffect, useState, type CSSProperties } from "react";
-import PageRenderer, { type StudioSelection } from "@/app/_page-system/PageRenderer";
+import PageRenderer, {
+  type StudioSelection,
+} from "@/app/_page-system/PageRenderer";
+import StyleGuideCanvas from "@/app/studio/_components/StyleGuideCanvas";
 import StudioInspector from "@/app/studio/_components/StudioInspector";
 import StudioSidebar from "@/app/studio/_components/StudioSidebar";
 import StudioToolbar from "@/app/studio/_components/StudioToolbar";
@@ -11,6 +14,7 @@ import {
   createDraftState,
   type DraftState,
   type SaveState,
+  type StudioView,
   type Viewport,
 } from "@/app/studio/_components/studio-types";
 import type { PageRecipeCatalogEntry } from "@/lib/page-system/catalog";
@@ -21,12 +25,22 @@ type KnowledgeStudioProps = {
   catalog: readonly PageRecipeCatalogEntry[];
 };
 
-export default function KnowledgeStudio({ initialRecipes, catalog }: KnowledgeStudioProps) {
+export default function KnowledgeStudio({
+  initialRecipes,
+  catalog,
+}: KnowledgeStudioProps) {
   const [drafts, setDrafts] = useState<Record<string, DraftState>>(() =>
-    Object.fromEntries(initialRecipes.map((recipe) => [recipe.id, createDraftState(recipe)])),
+    Object.fromEntries(
+      initialRecipes.map((recipe) => [recipe.id, createDraftState(recipe)]),
+    ),
   );
-  const [selectedRecipeId, setSelectedRecipeId] = useState(initialRecipes[0]?.id ?? "");
-  const [selection, setSelection] = useState<StudioSelection>({ kind: "page" });
+  const [selectedRecipeId, setSelectedRecipeId] = useState(
+    initialRecipes[0]?.id ?? "",
+  );
+  const [view, setView] = useState<StudioView>("page");
+  const [selection, setSelection] = useState<StudioSelection>({
+    kind: "page",
+  });
   const [viewport, setViewport] = useState<Viewport>("desktop");
   const [zoom, setZoom] = useState(0.8);
   const [showGuides, setShowGuides] = useState(false);
@@ -38,12 +52,15 @@ export default function KnowledgeStudio({ initialRecipes, catalog }: KnowledgeSt
 
   const draft = drafts[selectedRecipeId];
   const recipe = draft?.present;
-  const dirty = draft ? JSON.stringify(draft.present) !== JSON.stringify(draft.baseline) : false;
+  const dirty = draft
+    ? JSON.stringify(draft.present) !== JSON.stringify(draft.baseline)
+    : false;
 
   useEffect(() => {
     function handleBeforeUnload(event: BeforeUnloadEvent) {
       const anyDirty = Object.values(drafts).some(
-        (entry) => JSON.stringify(entry.present) !== JSON.stringify(entry.baseline),
+        (entry) =>
+          JSON.stringify(entry.present) !== JSON.stringify(entry.baseline),
       );
       if (!anyDirty) return;
       event.preventDefault();
@@ -68,19 +85,34 @@ export default function KnowledgeStudio({ initialRecipes, catalog }: KnowledgeSt
         setZoom(1);
       } else if (event.key === "-") {
         event.preventDefault();
-        setZoom((value) => Math.max(0.5, Number((value - 0.1).toFixed(2))));
+        setZoom((value) =>
+          Math.max(0.5, Number((value - 0.1).toFixed(2))),
+        );
       } else if (event.key === "=" || event.key === "+") {
         event.preventDefault();
-        setZoom((value) => Math.min(1.2, Number((value + 0.1).toFixed(2))));
+        setZoom((value) =>
+          Math.min(1.2, Number((value + 0.1).toFixed(2))),
+        );
       }
     }
     window.addEventListener("keydown", handleShortcut);
     return () => window.removeEventListener("keydown", handleShortcut);
   });
 
+  function defaultSelection(nextView: StudioView): StudioSelection {
+    return nextView === "page"
+      ? { kind: "page" }
+      : { kind: "design-category", id: "palette" };
+  }
+
+  function switchView(nextView: StudioView) {
+    setView(nextView);
+    setSelection(defaultSelection(nextView));
+  }
+
   function switchRecipe(id: string) {
     setSelectedRecipeId(id);
-    setSelection({ kind: "page" });
+    setSelection(defaultSelection(view));
     setSaveState("idle");
     setSaveMessage("");
   }
@@ -142,8 +174,10 @@ export default function KnowledgeStudio({ initialRecipes, catalog }: KnowledgeSt
 
   function resetCurrent() {
     if (!draft) return;
-    updateCurrent((next) => Object.assign(next, cloneRecipe(draft.baseline)));
-    setSelection({ kind: "page" });
+    updateCurrent((next) =>
+      Object.assign(next, cloneRecipe(draft.baseline)),
+    );
+    setSelection(defaultSelection(view));
   }
 
   async function saveCurrent() {
@@ -163,7 +197,9 @@ export default function KnowledgeStudio({ initialRecipes, catalog }: KnowledgeSt
         errors?: string[];
       };
       if (!response.ok || !payload.ok) {
-        throw new Error(payload.errors?.join("\n") || payload.error || "Save failed");
+        throw new Error(
+          payload.errors?.join("\n") || payload.error || "Save failed",
+        );
       }
 
       setDrafts((current) => {
@@ -178,7 +214,9 @@ export default function KnowledgeStudio({ initialRecipes, catalog }: KnowledgeSt
         };
       });
       setSaveState("saved");
-      setSaveMessage("Saved to the recipe file. GitHub Desktop will show one readable change.");
+      setSaveMessage(
+        "Saved to the recipe file. GitHub Desktop will show one readable change.",
+      );
     } catch (error) {
       setSaveState("error");
       setSaveMessage(error instanceof Error ? error.message : "Save failed");
@@ -186,7 +224,11 @@ export default function KnowledgeStudio({ initialRecipes, catalog }: KnowledgeSt
   }
 
   if (!recipe || !draft) {
-    return <div className="flex min-h-screen items-center justify-center bg-slate-950 text-slate-400">No page recipes found.</div>;
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-slate-950 text-slate-400">
+        No page recipes found.
+      </div>
+    );
   }
 
   const canvasStyle = {
@@ -198,7 +240,9 @@ export default function KnowledgeStudio({ initialRecipes, catalog }: KnowledgeSt
     <div className="bg-[#080a0f] text-slate-100">
       <div
         className="grid h-screen overflow-hidden transition-[grid-template-columns] duration-200"
-        style={{ gridTemplateColumns: `${showTree ? "250px" : "0px"} minmax(0, 1fr) ${showInspector ? "350px" : "0px"}` }}
+        style={{
+          gridTemplateColumns: `${showTree ? "250px" : "0px"} minmax(0, 1fr) ${showInspector ? "350px" : "0px"}`,
+        }}
       >
         <StudioSidebar
           catalog={catalog}
@@ -206,12 +250,15 @@ export default function KnowledgeStudio({ initialRecipes, catalog }: KnowledgeSt
           recipe={recipe}
           selectedRecipeId={selectedRecipeId}
           selection={selection}
+          view={view}
           onSwitchRecipe={switchRecipe}
           onSelect={setSelection}
+          onView={switchView}
         />
 
         <section className="flex min-h-0 min-w-0 flex-col bg-[#07090d]">
           <StudioToolbar
+            view={view}
             viewport={viewport}
             zoom={zoom}
             showTree={showTree}
@@ -222,12 +269,17 @@ export default function KnowledgeStudio({ initialRecipes, catalog }: KnowledgeSt
             canRedo={draft.future.length > 0}
             dirty={dirty}
             saveState={saveState}
+            onView={switchView}
             onViewport={setViewport}
             onZoom={setZoom}
             onToggleTree={() => setShowTree((value) => !value)}
-            onToggleInspector={() => setShowInspector((value) => !value)}
+            onToggleInspector={() =>
+              setShowInspector((value) => !value)
+            }
             onToggleGuides={() => setShowGuides((value) => !value)}
-            onToggleMotion={() => setMotionEnabled((value) => !value)}
+            onToggleMotion={() =>
+              setMotionEnabled((value) => !value)
+            }
             onUndo={undo}
             onRedo={redo}
             onReset={resetCurrent}
@@ -236,9 +288,17 @@ export default function KnowledgeStudio({ initialRecipes, catalog }: KnowledgeSt
 
           <div className="flex min-h-0 flex-1 flex-col">
             <div className="flex h-9 shrink-0 items-center justify-between border-b border-white/[0.06] bg-[#090b10] px-4 font-mono text-[9px] uppercase tracking-[0.10em] text-slate-600">
-              <span>{recipe.route}</span>
-              <span className={dirty ? "text-amber-300/80" : "text-emerald-300/65"}>
-                {dirty ? "unsaved recipe changes" : "matches saved recipe"}
+              <span>
+                {recipe.route} · {view === "page" ? "page canvas" : "style guide"}
+              </span>
+              <span
+                className={
+                  dirty ? "text-amber-300/80" : "text-emerald-300/65"
+                }
+              >
+                {dirty
+                  ? "unsaved recipe changes"
+                  : "matches saved recipe"}
               </span>
             </div>
 
@@ -247,14 +307,24 @@ export default function KnowledgeStudio({ initialRecipes, catalog }: KnowledgeSt
                 className="mx-auto min-h-full overflow-hidden rounded-[14px] border border-white/[0.09] bg-black shadow-[0_30px_100px_rgba(0,0,0,0.36)] transition-[width] duration-300"
                 style={canvasStyle}
               >
-                <PageRenderer
-                  recipe={recipe}
-                  preview
-                  selected={selection}
-                  showGuides={showGuides}
-                  motionEnabled={motionEnabled}
-                  onSelect={setSelection}
-                />
+                {view === "page" ? (
+                  <PageRenderer
+                    recipe={recipe}
+                    preview
+                    selected={selection}
+                    showGuides={showGuides}
+                    motionEnabled={motionEnabled}
+                    onSelect={setSelection}
+                  />
+                ) : (
+                  <StyleGuideCanvas
+                    recipe={recipe}
+                    selected={selection}
+                    showGuides={showGuides}
+                    motionEnabled={motionEnabled}
+                    onSelect={setSelection}
+                  />
+                )}
               </div>
             </div>
           </div>
