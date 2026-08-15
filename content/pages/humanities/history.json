@@ -23,7 +23,7 @@
     "family": "history",
     "accentRgb": "217, 119, 6",
     "background": "archival-river",
-    "backgroundStrength": 0.92,
+    "backgroundStrength": 1.35,
     "density": "balanced",
     "surface": "glass",
     "surfaceOpacity": 0.12,
@@ -54,7 +54,7 @@
         "question": "When?",
         "summary": "Follow sequence, duration, turning points, change, and continuity from deep human history to the present.",
         "icon": "Clock",
-        "accentRgb": "245, 158, 11",
+        "accentRgb": "217, 119, 6",
         "visual": "timeline",
         "status": "active"
       },
@@ -96,7 +96,7 @@
           "label": "Time",
           "question": "What changed before and after print became widespread?",
           "answer": "Compare manuscript culture, expanding print networks, and later mass publishing.",
-          "accentRgb": "245, 158, 11"
+          "accentRgb": "217, 119, 6"
         },
         {
           "id": "place",
