@@ -27,8 +27,8 @@ export const RELATIVITY_CURRICULUM: CurriculumNode = node(
         node("natural.physics.relativity.special.simultaneity", "Relativity of Simultaneity", "/natural-science/physics/relativity/special/simultaneity", "Show why spatially separated events that are simultaneous in one inertial frame need not be simultaneous in another."),
         node("natural.physics.relativity.special.interval", "Spacetime Interval", "/natural-science/physics/relativity/special/spacetime-interval", "Use invariant spacetime intervals to classify event separation and connect different observers' coordinates."),
         node("natural.physics.relativity.special.time-dilation", "Time Dilation", "/natural-science/physics/relativity/special/time-dilation", "Relate proper time to coordinate time and understand moving clocks without treating time as mechanically slowed."),
-        node("natural.physics.relativity.special.length-contraction", "Length Contraction", "/natural-science/physics/relativity/special/length-contraction", "Connect proper length, simultaneity, and frame-dependent spatial measurement.", undefined, "placeholder"),
-        node("natural.physics.relativity.special.energy-momentum", "Relativistic Energy & Momentum", "/natural-science/physics/relativity/special/energy-momentum", "Replace Newtonian momentum and kinetic energy with the relativistic energy-momentum relationship.", undefined, "placeholder"),
+        node("natural.physics.relativity.special.length-contraction", "Length Contraction", "/natural-science/physics/relativity/special/length-contraction", "Connect proper length, simultaneity, and frame-dependent spatial measurement."),
+        node("natural.physics.relativity.special.energy-momentum", "Relativistic Energy & Momentum", "/natural-science/physics/relativity/special/energy-momentum", "Replace Newtonian momentum and kinetic energy with the relativistic energy-momentum relationship."),
       ],
     ),
     node(
