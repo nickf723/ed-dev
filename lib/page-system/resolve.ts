@@ -1,3 +1,6 @@
+import { GLOBAL_DESIGN_SYSTEM } from "@/lib/design-system/globals";
+import { applyGlobalDesign } from "@/lib/design-system/resolve";
+import type { GlobalDesignSystem } from "@/lib/design-system/schema";
 import { getCurriculumPageContext } from "@/lib/curriculum/page-context";
 import { curriculumRegistry } from "@/lib/curriculum/registry";
 import type {
@@ -21,17 +24,23 @@ function resolveLink<T extends RecipeLink>(link: T): T {
   };
 }
 
-export function resolvePageRecipe(recipe: PageRecipe): PageRecipe {
-  const context = getCurriculumPageContext(recipe.nodeId);
+export function resolvePageRecipe(
+  recipe: PageRecipe,
+  designSystem: GlobalDesignSystem = GLOBAL_DESIGN_SYSTEM,
+): PageRecipe {
+  const designed = applyGlobalDesign(recipe, designSystem);
+  const context = getCurriculumPageContext(designed.nodeId);
   const organization =
-    recipe.organization.kind === "multiple-lenses"
+    designed.organization.kind === "multiple-lenses"
       ? {
-          ...recipe.organization,
-          items: recipe.organization.items.map((item): LensItem => resolveLink(item)),
+          ...designed.organization,
+          items: designed.organization.items.map(
+            (item): LensItem => resolveLink(item),
+          ),
         }
       : {
-          ...recipe.organization,
-          groups: recipe.organization.groups.map(
+          ...designed.organization,
+          groups: designed.organization.groups.map(
             (group): RegimeGroup => ({
               ...group,
               items: group.items.map((item) => resolveLink(item)),
@@ -40,10 +49,10 @@ export function resolvePageRecipe(recipe: PageRecipe): PageRecipe {
         };
 
   return {
-    ...recipe,
+    ...designed,
     identity: {
-      ...recipe.identity,
-      breadcrumbs: context?.breadcrumbs ?? recipe.identity.breadcrumbs,
+      ...designed.identity,
+      breadcrumbs: context?.breadcrumbs ?? designed.identity.breadcrumbs,
     },
     organization,
   };

@@ -1,3 +1,8 @@
+import type {
+  DesignAccentRole,
+  DesignPaletteRoles,
+} from "@/lib/design-system/schema";
+
 export const PAGE_RECIPE_VERSION = 1 as const;
 
 export type PageDepth =
@@ -6,7 +11,6 @@ export type PageDepth =
   | "unit"
   | "lesson"
   | "reference";
-
 export type PageDensity = "compact" | "balanced" | "spacious";
 export type PageSurface = "clear" | "glass" | "dense-glass";
 export type PagePanelRadius = "md" | "lg" | "xl";
@@ -22,10 +26,7 @@ export type PageFontFamily = "serif" | "sans" | "mono";
 export type PageTitleCase = "natural" | "uppercase";
 export type PageEyebrowStyle = "dot" | "rule" | "pill" | "plain";
 
-export type PageBreadcrumb = {
-  label: string;
-  href?: string;
-};
+export type PageBreadcrumb = { label: string; href?: string };
 
 export type PageIdentity = {
   title: string;
@@ -54,6 +55,10 @@ export type PageTheme = {
   bodyFont?: PageFontFamily;
   titleCase?: PageTitleCase;
   eyebrowStyle?: PageEyebrowStyle;
+  paletteId?: string;
+  typographyId?: string;
+  /** Transient values injected by the global design-system resolver. */
+  resolvedPalette?: DesignPaletteRoles;
 };
 
 export type RecipeLink = {
@@ -63,17 +68,14 @@ export type RecipeLink = {
   summary: string;
   icon: string;
   accentRgb: string;
+  colorRole?: DesignAccentRole;
   href?: string;
   status?: PageLinkStatus;
   tags?: string[];
 };
 
 export type LensVisual = "timeline" | "map" | "network";
-
-export type LensItem = RecipeLink & {
-  question: string;
-  visual: LensVisual;
-};
+export type LensItem = RecipeLink & { question: string; visual: LensVisual };
 
 export type MultipleLensesOrganization = {
   kind: "multiple-lenses";
@@ -86,7 +88,6 @@ export type MultipleLensesOrganization = {
 };
 
 export type RegimeVisual = "classical" | "modern" | "neutral";
-
 export type RegimeGroup = {
   id: string;
   label: string;
@@ -94,6 +95,7 @@ export type RegimeGroup = {
   condition: string;
   description: string;
   accentRgb: string;
+  colorRole?: DesignAccentRole;
   visual: RegimeVisual;
   items: RecipeLink[];
 };
@@ -115,6 +117,7 @@ export type CaseStudyColumn = {
   question: string;
   answer: string;
   accentRgb: string;
+  colorRole?: DesignAccentRole;
 };
 
 export type CaseStudySection = {
@@ -135,6 +138,7 @@ export type ModelChoice = {
   detail: string;
   icon: string;
   accentRgb: string;
+  colorRole?: DesignAccentRole;
 };
 
 export type ModelGuideSection = {
@@ -162,45 +166,43 @@ export type PageRecipe = {
   sections: PageSection[];
 };
 
-export type PageRecipeValidation = {
-  ok: boolean;
-  errors: string[];
-};
+export type PageRecipeValidation = { ok: boolean; errors: string[] };
+
+const ACCENT_ROLES = [
+  "primary",
+  "secondary",
+  "tertiary",
+  "quaternary",
+  "success",
+  "warning",
+  "danger",
+] as const;
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }
-
 function isString(value: unknown): value is string {
   return typeof value === "string" && value.trim().length > 0;
 }
-
 function isFiniteNumber(value: unknown): value is number {
   return typeof value === "number" && Number.isFinite(value);
 }
-
 function isRgb(value: unknown): value is string {
   if (typeof value !== "string") return false;
   const parts = value.split(",").map((part) => Number(part.trim()));
   return (
     parts.length === 3 &&
-    parts.every(
-      (part) => Number.isInteger(part) && part >= 0 && part <= 255,
-    )
+    parts.every((part) => Number.isInteger(part) && part >= 0 && part <= 255)
   );
 }
-
 function requireString(
   value: Record<string, unknown>,
   key: string,
   path: string,
   errors: string[],
 ) {
-  if (!isString(value[key])) {
-    errors.push(`${path}.${key} must be a non-empty string`);
-  }
+  if (!isString(value[key])) errors.push(`${path}.${key} must be a non-empty string`);
 }
-
 function requireRgb(
   value: Record<string, unknown>,
   key: string,
@@ -208,12 +210,9 @@ function requireRgb(
   errors: string[],
 ) {
   if (!isRgb(value[key])) {
-    errors.push(
-      `${path}.${key} must be an RGB string such as "217, 119, 6"`,
-    );
+    errors.push(`${path}.${key} must be an RGB string such as "217, 119, 6"`);
   }
 }
-
 function requireEnum(
   value: Record<string, unknown>,
   key: string,
@@ -225,7 +224,6 @@ function requireEnum(
     errors.push(`${path}.${key} must be one of ${allowed.join(", ")}`);
   }
 }
-
 function optionalEnum(
   value: Record<string, unknown>,
   key: string,
@@ -237,36 +235,38 @@ function optionalEnum(
     errors.push(`${path}.${key} must be one of ${allowed.join(", ")}`);
   }
 }
-
-function validateRecipeLink(
-  value: unknown,
+function optionalString(
+  value: Record<string, unknown>,
+  key: string,
   path: string,
   errors: string[],
 ) {
+  if (value[key] !== undefined && !isString(value[key])) {
+    errors.push(`${path}.${key} must be a non-empty string when provided`);
+  }
+}
+function validateColorRole(
+  value: Record<string, unknown>,
+  path: string,
+  errors: string[],
+) {
+  optionalEnum(value, "colorRole", ACCENT_ROLES, path, errors);
+}
+
+function validateRecipeLink(value: unknown, path: string, errors: string[]) {
   if (!isRecord(value)) {
     errors.push(`${path} must be an object`);
     return;
   }
-
   requireString(value, "id", path, errors);
   requireString(value, "label", path, errors);
   requireString(value, "summary", path, errors);
   requireString(value, "icon", path, errors);
   requireRgb(value, "accentRgb", path, errors);
-
-  if (value.nodeId !== undefined && !isString(value.nodeId)) {
-    errors.push(`${path}.nodeId must be a non-empty string when provided`);
-  }
-  if (value.href !== undefined && !isString(value.href)) {
-    errors.push(`${path}.href must be a non-empty string when provided`);
-  }
-  if (
-    value.status !== undefined &&
-    value.status !== "active" &&
-    value.status !== "planned"
-  ) {
-    errors.push(`${path}.status must be "active" or "planned"`);
-  }
+  validateColorRole(value, path, errors);
+  optionalString(value, "nodeId", path, errors);
+  optionalString(value, "href", path, errors);
+  optionalEnum(value, "status", ["active", "planned"], path, errors);
   if (
     value.tags !== undefined &&
     (!Array.isArray(value.tags) || value.tags.some((tag) => !isString(tag)))
@@ -280,7 +280,6 @@ function validateOrganization(value: unknown, errors: string[]) {
     errors.push("organization must be an object");
     return;
   }
-
   if (value.kind === "multiple-lenses") {
     requireString(value, "eyebrow", "organization", errors);
     requireString(value, "title", "organization", errors);
@@ -293,71 +292,50 @@ function validateOrganization(value: unknown, errors: string[]) {
       "organization",
       errors,
     );
-
     if (!Array.isArray(value.items) || value.items.length === 0) {
       errors.push("organization.items must contain at least one lens");
       return;
     }
-
     value.items.forEach((item, index) => {
       const path = `organization.items[${index}]`;
       validateRecipeLink(item, path, errors);
       if (!isRecord(item)) return;
       requireString(item, "question", path, errors);
-      if (
-        item.visual !== "timeline" &&
-        item.visual !== "map" &&
-        item.visual !== "network"
-      ) {
-        errors.push(`${path}.visual must be timeline, map, or network`);
-      }
+      requireEnum(item, "visual", ["timeline", "map", "network"], path, errors);
     });
     return;
   }
-
   if (value.kind === "split-regimes") {
     optionalEnum(value, "groupColumns", [1, 2], "organization", errors);
     optionalEnum(value, "itemColumns", [1, 2], "organization", errors);
-
     if (!Array.isArray(value.groups) || value.groups.length === 0) {
       errors.push("organization.groups must contain at least one regime");
       return;
     }
-
     value.groups.forEach((group, groupIndex) => {
       const path = `organization.groups[${groupIndex}]`;
       if (!isRecord(group)) {
         errors.push(`${path} must be an object`);
         return;
       }
-
       requireString(group, "id", path, errors);
       requireString(group, "label", path, errors);
       requireString(group, "kicker", path, errors);
       requireString(group, "condition", path, errors);
       requireString(group, "description", path, errors);
       requireRgb(group, "accentRgb", path, errors);
-
-      if (
-        group.visual !== "classical" &&
-        group.visual !== "modern" &&
-        group.visual !== "neutral"
-      ) {
-        errors.push(`${path}.visual must be classical, modern, or neutral`);
-      }
-
+      validateColorRole(group, path, errors);
+      requireEnum(group, "visual", ["classical", "modern", "neutral"], path, errors);
       if (!Array.isArray(group.items) || group.items.length === 0) {
         errors.push(`${path}.items must contain at least one field`);
         return;
       }
-
       group.items.forEach((item, itemIndex) =>
         validateRecipeLink(item, `${path}.items[${itemIndex}]`, errors),
       );
     });
     return;
   }
-
   errors.push("organization.kind must be multiple-lenses or split-regimes");
 }
 
@@ -366,30 +344,25 @@ function validateSections(value: unknown, errors: string[]) {
     errors.push("sections must be an array");
     return;
   }
-
   value.forEach((section, index) => {
     const path = `sections[${index}]`;
     if (!isRecord(section)) {
       errors.push(`${path} must be an object`);
       return;
     }
-
     requireString(section, "id", path, errors);
     requireString(section, "eyebrow", path, errors);
     requireString(section, "title", path, errors);
     requireString(section, "summary", path, errors);
     requireString(section, "icon", path, errors);
-
     if (section.hidden !== undefined && typeof section.hidden !== "boolean") {
       errors.push(`${path}.hidden must be boolean when provided`);
     }
-
     if (section.type === "case-study") {
       if (!Array.isArray(section.columns) || section.columns.length === 0) {
         errors.push(`${path}.columns must contain at least one column`);
         return;
       }
-
       section.columns.forEach((column, columnIndex) => {
         const columnPath = `${path}.columns[${columnIndex}]`;
         if (!isRecord(column)) {
@@ -401,16 +374,15 @@ function validateSections(value: unknown, errors: string[]) {
         requireString(column, "question", columnPath, errors);
         requireString(column, "answer", columnPath, errors);
         requireRgb(column, "accentRgb", columnPath, errors);
+        validateColorRole(column, columnPath, errors);
       });
       return;
     }
-
     if (section.type === "model-guide") {
       if (!Array.isArray(section.choices) || section.choices.length === 0) {
         errors.push(`${path}.choices must contain at least one choice`);
         return;
       }
-
       section.choices.forEach((choice, choiceIndex) => {
         const choicePath = `${path}.choices[${choiceIndex}]`;
         if (!isRecord(choice)) {
@@ -423,37 +395,30 @@ function validateSections(value: unknown, errors: string[]) {
         requireString(choice, "detail", choicePath, errors);
         requireString(choice, "icon", choicePath, errors);
         requireRgb(choice, "accentRgb", choicePath, errors);
+        validateColorRole(choice, choicePath, errors);
       });
       return;
     }
-
     errors.push(`${path}.type must be case-study or model-guide`);
   });
 }
 
 export function validatePageRecipe(input: unknown): PageRecipeValidation {
   const errors: string[] = [];
-  if (!isRecord(input)) {
-    return { ok: false, errors: ["Recipe must be an object"] };
-  }
-
+  if (!isRecord(input)) return { ok: false, errors: ["Recipe must be an object"] };
   if (input.version !== PAGE_RECIPE_VERSION) {
     errors.push(`version must equal ${PAGE_RECIPE_VERSION}`);
   }
-
   requireString(input, "id", "recipe", errors);
   requireString(input, "nodeId", "recipe", errors);
   requireString(input, "route", "recipe", errors);
-
-  if (
-    input.depth !== "subject-hub" &&
-    input.depth !== "branch-hub" &&
-    input.depth !== "unit" &&
-    input.depth !== "lesson" &&
-    input.depth !== "reference"
-  ) {
-    errors.push("depth must be a supported page depth");
-  }
+  requireEnum(
+    input,
+    "depth",
+    ["subject-hub", "branch-hub", "unit", "lesson", "reference"],
+    "recipe",
+    errors,
+  );
 
   if (!isRecord(input.identity)) {
     errors.push("identity must be an object");
@@ -462,7 +427,6 @@ export function validatePageRecipe(input: unknown): PageRecipeValidation {
     requireString(input.identity, "eyebrow", "identity", errors);
     requireString(input.identity, "subtitle", "identity", errors);
     requireString(input.identity, "icon", "identity", errors);
-
     if (input.identity.breadcrumbs !== undefined) {
       if (!Array.isArray(input.identity.breadcrumbs)) {
         errors.push("identity.breadcrumbs must be an array");
@@ -474,11 +438,7 @@ export function validatePageRecipe(input: unknown): PageRecipeValidation {
             return;
           }
           requireString(crumb, "label", path, errors);
-          if (crumb.href !== undefined && !isString(crumb.href)) {
-            errors.push(
-              `${path}.href must be a non-empty string when provided`,
-            );
-          }
+          optionalString(crumb, "href", path, errors);
         });
       }
     }
@@ -490,7 +450,8 @@ export function validatePageRecipe(input: unknown): PageRecipeValidation {
     requireString(input.theme, "family", "theme", errors);
     requireString(input.theme, "background", "theme", errors);
     requireRgb(input.theme, "accentRgb", "theme", errors);
-
+    optionalString(input.theme, "paletteId", "theme", errors);
+    optionalString(input.theme, "typographyId", "theme", errors);
     if (
       !isFiniteNumber(input.theme.backgroundStrength) ||
       input.theme.backgroundStrength < 0 ||
@@ -505,104 +466,23 @@ export function validatePageRecipe(input: unknown): PageRecipeValidation {
     ) {
       errors.push("theme.surfaceOpacity must be between 0 and 0.8");
     }
-
-    requireEnum(
-      input.theme,
-      "density",
-      ["compact", "balanced", "spacious"],
-      "theme",
-      errors,
-    );
-    requireEnum(
-      input.theme,
-      "surface",
-      ["clear", "glass", "dense-glass"],
-      "theme",
-      errors,
-    );
-    requireEnum(
-      input.theme,
-      "panelRadius",
-      ["md", "lg", "xl"],
-      "theme",
-      errors,
-    );
-    requireEnum(
-      input.theme,
-      "sectionGap",
-      ["sm", "md", "lg"],
-      "theme",
-      errors,
-    );
-    requireEnum(
-      input.theme,
-      "motion",
-      ["off", "subtle", "expressive"],
-      "theme",
-      errors,
-    );
-
-    optionalEnum(
-      input.theme,
-      "contentWidth",
-      ["focused", "standard", "wide"],
-      "theme",
-      errors,
-    );
-    optionalEnum(
-      input.theme,
-      "headerScale",
-      ["compact", "standard", "display"],
-      "theme",
-      errors,
-    );
-    optionalEnum(
-      input.theme,
-      "borderStrength",
-      ["subtle", "standard", "strong"],
-      "theme",
-      errors,
-    );
-    optionalEnum(
-      input.theme,
-      "shadow",
-      ["none", "soft", "dramatic"],
-      "theme",
-      errors,
-    );
-    optionalEnum(
-      input.theme,
-      "displayFont",
-      ["serif", "sans", "mono"],
-      "theme",
-      errors,
-    );
-    optionalEnum(
-      input.theme,
-      "bodyFont",
-      ["serif", "sans", "mono"],
-      "theme",
-      errors,
-    );
-    optionalEnum(
-      input.theme,
-      "titleCase",
-      ["natural", "uppercase"],
-      "theme",
-      errors,
-    );
-    optionalEnum(
-      input.theme,
-      "eyebrowStyle",
-      ["dot", "rule", "pill", "plain"],
-      "theme",
-      errors,
-    );
+    requireEnum(input.theme, "density", ["compact", "balanced", "spacious"], "theme", errors);
+    requireEnum(input.theme, "surface", ["clear", "glass", "dense-glass"], "theme", errors);
+    requireEnum(input.theme, "panelRadius", ["md", "lg", "xl"], "theme", errors);
+    requireEnum(input.theme, "sectionGap", ["sm", "md", "lg"], "theme", errors);
+    requireEnum(input.theme, "motion", ["off", "subtle", "expressive"], "theme", errors);
+    optionalEnum(input.theme, "contentWidth", ["focused", "standard", "wide"], "theme", errors);
+    optionalEnum(input.theme, "headerScale", ["compact", "standard", "display"], "theme", errors);
+    optionalEnum(input.theme, "borderStrength", ["subtle", "standard", "strong"], "theme", errors);
+    optionalEnum(input.theme, "shadow", ["none", "soft", "dramatic"], "theme", errors);
+    optionalEnum(input.theme, "displayFont", ["serif", "sans", "mono"], "theme", errors);
+    optionalEnum(input.theme, "bodyFont", ["serif", "sans", "mono"], "theme", errors);
+    optionalEnum(input.theme, "titleCase", ["natural", "uppercase"], "theme", errors);
+    optionalEnum(input.theme, "eyebrowStyle", ["dot", "rule", "pill", "plain"], "theme", errors);
   }
 
   validateOrganization(input.organization, errors);
   validateSections(input.sections, errors);
-
   return { ok: errors.length === 0, errors };
 }
 
@@ -610,9 +490,7 @@ export function parsePageRecipe(input: unknown): PageRecipe {
   const validation = validatePageRecipe(input);
   if (!validation.ok) {
     throw new Error(
-      `Invalid page recipe:\n${validation.errors
-        .map((error) => `- ${error}`)
-        .join("\n")}`,
+      `Invalid page recipe:\n${validation.errors.map((error) => `- ${error}`).join("\n")}`,
     );
   }
   return input as PageRecipe;

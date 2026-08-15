@@ -2,10 +2,17 @@ import type {
   DesignGuideCategory,
   StudioSelection,
 } from "@/app/_page-system/types";
+import type { GlobalDesignSystem } from "@/lib/design-system/schema";
 import type { PageRecipe } from "@/lib/page-system/schema";
 
 export type Viewport = "desktop" | "tablet" | "mobile";
-export type StudioView = "page" | "style-guide";
+export type StudioView = "page" | "style-guide" | "parameters";
+export type ParameterSheet =
+  | "palettes"
+  | "typography"
+  | "pages"
+  | "children"
+  | "widgets";
 export type SaveState = "idle" | "saving" | "saved" | "error";
 
 export type DraftState = {
@@ -13,6 +20,13 @@ export type DraftState = {
   present: PageRecipe;
   future: PageRecipe[];
   baseline: PageRecipe;
+};
+
+export type DesignSystemDraftState = {
+  past: GlobalDesignSystem[];
+  present: GlobalDesignSystem;
+  future: GlobalDesignSystem[];
+  baseline: GlobalDesignSystem;
 };
 
 export const VIEWPORT_WIDTH: Record<Viewport, number> = {
@@ -29,8 +43,22 @@ export const DESIGN_CATEGORY_LABELS: Record<DesignGuideCategory, string> = {
   widgets: "Supporting widgets",
 };
 
+export const PARAMETER_SHEET_LABELS: Record<ParameterSheet, string> = {
+  palettes: "Global palettes",
+  typography: "Global typography",
+  pages: "Page matrix",
+  children: "Children matrix",
+  widgets: "Widgets matrix",
+};
+
 export function cloneRecipe(recipe: PageRecipe): PageRecipe {
   return structuredClone(recipe);
+}
+
+export function cloneDesignSystem(
+  designSystem: GlobalDesignSystem,
+): GlobalDesignSystem {
+  return structuredClone(designSystem);
 }
 
 export function createDraftState(recipe: PageRecipe): DraftState {
@@ -40,6 +68,25 @@ export function createDraftState(recipe: PageRecipe): DraftState {
     future: [],
     baseline: cloneRecipe(recipe),
   };
+}
+
+export function createDesignSystemDraftState(
+  designSystem: GlobalDesignSystem,
+): DesignSystemDraftState {
+  return {
+    past: [],
+    present: cloneDesignSystem(designSystem),
+    future: [],
+    baseline: cloneDesignSystem(designSystem),
+  };
+}
+
+export function recipeIsDirty(state: DraftState) {
+  return JSON.stringify(state.present) !== JSON.stringify(state.baseline);
+}
+
+export function designSystemIsDirty(state: DesignSystemDraftState) {
+  return JSON.stringify(state.present) !== JSON.stringify(state.baseline);
 }
 
 export function selectionTitle(
@@ -116,10 +163,7 @@ export function moveInArray<T>(
   array.splice(target, 0, item);
 }
 
-/**
- * Create a stable, human-readable id that does not collide with sibling ids.
- * Studio operations use this when adding or duplicating recipe regions.
- */
+/** Create a stable human-readable id that does not collide with siblings. */
 export function uniqueId(base: string, existingIds: readonly string[]) {
   const normalized =
     base
@@ -127,13 +171,9 @@ export function uniqueId(base: string, existingIds: readonly string[]) {
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, "-")
       .replace(/^-+|-+$/g, "") || "item";
-
   if (!existingIds.includes(normalized)) return normalized;
-
   let suffix = 2;
-  while (existingIds.includes(`${normalized}-${suffix}`)) {
-    suffix += 1;
-  }
+  while (existingIds.includes(`${normalized}-${suffix}`)) suffix += 1;
   return `${normalized}-${suffix}`;
 }
 

@@ -10,17 +10,14 @@
     "subtitle": "Physics builds models of the physical world. Begin with the regime that matches the system: familiar macroscopic conditions, or the high-speed, strong-gravity, atomic, and subatomic regimes where classical assumptions stop working.",
     "icon": "Atom",
     "breadcrumbs": [
-      {
-        "label": "Natural Science",
-        "href": "/natural-science"
-      },
-      {
-        "label": "Physics"
-      }
+      { "label": "Natural Science", "href": "/natural-science" },
+      { "label": "Physics" }
     ]
   },
   "theme": {
     "family": "physics",
+    "paletteId": "physics-field",
+    "typographyId": "scientific-instrument",
     "accentRgb": "56, 189, 248",
     "background": "field-grid",
     "backgroundStrength": 0.82,
@@ -51,6 +48,7 @@
         "condition": "Best fit: ordinary speeds, macroscopic scales, and weak gravity.",
         "description": "Classical models describe most everyday systems extremely well. They treat motion, fields, waves, and bulk matter with continuous quantities and deterministic laws.",
         "accentRgb": "251, 146, 60",
+        "colorRole": "secondary",
         "visual": "classical",
         "items": [
           {
@@ -60,12 +58,9 @@
             "summary": "Describe motion, identify interactions, and track energy and momentum through physical systems.",
             "icon": "Orbit",
             "accentRgb": "251, 146, 60",
+            "colorRole": "secondary",
             "status": "active",
-            "tags": [
-              "motion",
-              "forces",
-              "energy"
-            ]
+            "tags": ["motion", "forces", "energy"]
           },
           {
             "id": "waves",
@@ -74,12 +69,9 @@
             "summary": "Study oscillation, propagation, interference, sound, light, reflection, refraction, and imaging.",
             "icon": "Waves",
             "accentRgb": "96, 165, 250",
+            "colorRole": "primary",
             "status": "active",
-            "tags": [
-              "oscillation",
-              "light",
-              "sound"
-            ]
+            "tags": ["oscillation", "light", "sound"]
           },
           {
             "id": "thermodynamics",
@@ -88,12 +80,9 @@
             "summary": "Connect microscopic motion to temperature, heat, internal energy, entropy, and macroscopic change.",
             "icon": "Flame",
             "accentRgb": "248, 113, 113",
+            "colorRole": "danger",
             "status": "active",
-            "tags": [
-              "temperature",
-              "transfer",
-              "entropy"
-            ]
+            "tags": ["temperature", "transfer", "entropy"]
           },
           {
             "id": "electromagnetism",
@@ -102,12 +91,9 @@
             "summary": "Model charge, electric and magnetic fields, circuits, induction, and electromagnetic radiation.",
             "icon": "Zap",
             "accentRgb": "34, 211, 238",
+            "colorRole": "primary",
             "status": "active",
-            "tags": [
-              "charge",
-              "fields",
-              "circuits"
-            ]
+            "tags": ["charge", "fields", "circuits"]
           }
         ]
       },
@@ -118,6 +104,7 @@
         "condition": "Required for near-light speed, strong gravity, and atomic or subatomic scales.",
         "description": "Modern physics extends the classical picture when its assumptions fail. Relativity changes spacetime; quantum theory changes how physical states and measurements behave.",
         "accentRgb": "192, 132, 252",
+        "colorRole": "tertiary",
         "visual": "modern",
         "items": [
           {
@@ -127,12 +114,9 @@
             "summary": "Rebuild space, time, motion, and gravity when speed or gravitational curvature becomes significant.",
             "icon": "Hourglass",
             "accentRgb": "167, 139, 250",
+            "colorRole": "tertiary",
             "status": "active",
-            "tags": [
-              "spacetime",
-              "speed",
-              "gravity"
-            ]
+            "tags": ["spacetime", "speed", "gravity"]
           },
           {
             "id": "quantum",
@@ -141,12 +125,9 @@
             "summary": "Describe states, amplitudes, quantization, uncertainty, measurement, and nonclassical behavior.",
             "icon": "Atom",
             "accentRgb": "232, 121, 249",
+            "colorRole": "quaternary",
             "status": "active",
-            "tags": [
-              "states",
-              "probability",
-              "measurement"
-            ]
+            "tags": ["states", "probability", "measurement"]
           },
           {
             "id": "atomic",
@@ -155,12 +136,9 @@
             "summary": "Apply quantum theory to electron structure, spectra, energy levels, transitions, and atom-light interactions.",
             "icon": "RefreshCw",
             "accentRgb": "52, 211, 153",
+            "colorRole": "success",
             "status": "active",
-            "tags": [
-              "electrons",
-              "spectra",
-              "photons"
-            ]
+            "tags": ["electrons", "spectra", "photons"]
           },
           {
             "id": "nuclear",
@@ -169,12 +147,9 @@
             "summary": "Study nuclei, binding energy, radioactivity, fission, fusion, and nuclear reactions.",
             "icon": "Microscope",
             "accentRgb": "244, 114, 182",
+            "colorRole": "danger",
             "status": "active",
-            "tags": [
-              "nuclei",
-              "decay",
-              "reactions"
-            ]
+            "tags": ["nuclei", "decay", "reactions"]
           }
         ]
       }
@@ -195,7 +170,8 @@
           "answer": "Start with classical physics.",
           "detail": "Mechanics, thermodynamics, electromagnetism, and waves cover most human-scale phenomena.",
           "icon": "Orbit",
-          "accentRgb": "251, 146, 60"
+          "accentRgb": "251, 146, 60",
+          "colorRole": "secondary"
         },
         {
           "id": "relativity",
@@ -203,7 +179,8 @@
           "answer": "Use relativity.",
           "detail": "Special relativity handles inertial high-speed motion; general relativity handles gravity as geometry.",
           "icon": "Hourglass",
-          "accentRgb": "167, 139, 250"
+          "accentRgb": "167, 139, 250",
+          "colorRole": "tertiary"
         },
         {
           "id": "quantum",
@@ -211,7 +188,8 @@
           "answer": "Use quantum physics.",
           "detail": "Atomic and nuclear physics apply quantum rules to particular kinds of matter and interaction.",
           "icon": "Atom",
-          "accentRgb": "232, 121, 249"
+          "accentRgb": "232, 121, 249",
+          "colorRole": "quaternary"
         }
       ]
     }
