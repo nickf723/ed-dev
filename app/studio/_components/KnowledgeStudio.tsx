@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
 import PageRenderer, { type StudioSelection } from "@/app/_page-system/PageRenderer";
 import StudioInspector from "@/app/studio/_components/StudioInspector";
 import StudioSidebar from "@/app/studio/_components/StudioSidebar";
@@ -23,33 +23,27 @@ type KnowledgeStudioProps = {
 
 export default function KnowledgeStudio({ initialRecipes, catalog }: KnowledgeStudioProps) {
   const [drafts, setDrafts] = useState<Record<string, DraftState>>(() =>
-    Object.fromEntries(
-      initialRecipes.map((recipe) => [recipe.id, createDraftState(recipe)]),
-    ),
+    Object.fromEntries(initialRecipes.map((recipe) => [recipe.id, createDraftState(recipe)])),
   );
-  const [selectedRecipeId, setSelectedRecipeId] = useState(
-    initialRecipes[0]?.id ?? "",
-  );
+  const [selectedRecipeId, setSelectedRecipeId] = useState(initialRecipes[0]?.id ?? "");
   const [selection, setSelection] = useState<StudioSelection>({ kind: "page" });
   const [viewport, setViewport] = useState<Viewport>("desktop");
+  const [zoom, setZoom] = useState(0.8);
   const [showGuides, setShowGuides] = useState(false);
   const [motionEnabled, setMotionEnabled] = useState(true);
-  const [showTree, setShowTree] = useState(false);
+  const [showTree, setShowTree] = useState(true);
   const [showInspector, setShowInspector] = useState(true);
   const [saveState, setSaveState] = useState<SaveState>("idle");
   const [saveMessage, setSaveMessage] = useState("");
 
   const draft = drafts[selectedRecipeId];
   const recipe = draft?.present;
-  const dirty = draft
-    ? JSON.stringify(draft.present) !== JSON.stringify(draft.baseline)
-    : false;
+  const dirty = draft ? JSON.stringify(draft.present) !== JSON.stringify(draft.baseline) : false;
 
   useEffect(() => {
     function handleBeforeUnload(event: BeforeUnloadEvent) {
       const anyDirty = Object.values(drafts).some(
-        (entry) =>
-          JSON.stringify(entry.present) !== JSON.stringify(entry.baseline),
+        (entry) => JSON.stringify(entry.present) !== JSON.stringify(entry.baseline),
       );
       if (!anyDirty) return;
       event.preventDefault();
@@ -69,6 +63,15 @@ export default function KnowledgeStudio({ initialRecipes, catalog }: KnowledgeSt
         event.preventDefault();
         if (event.shiftKey) redo();
         else undo();
+      } else if (event.key === "0") {
+        event.preventDefault();
+        setZoom(1);
+      } else if (event.key === "-") {
+        event.preventDefault();
+        setZoom((value) => Math.max(0.5, Number((value - 0.1).toFixed(2))));
+      } else if (event.key === "=" || event.key === "+") {
+        event.preventDefault();
+        setZoom((value) => Math.min(1.2, Number((value + 0.1).toFixed(2))));
       }
     }
     window.addEventListener("keydown", handleShortcut);
@@ -160,9 +163,7 @@ export default function KnowledgeStudio({ initialRecipes, catalog }: KnowledgeSt
         errors?: string[];
       };
       if (!response.ok || !payload.ok) {
-        throw new Error(
-          payload.errors?.join("\n") || payload.error || "Save failed",
-        );
+        throw new Error(payload.errors?.join("\n") || payload.error || "Save failed");
       }
 
       setDrafts((current) => {
@@ -177,9 +178,7 @@ export default function KnowledgeStudio({ initialRecipes, catalog }: KnowledgeSt
         };
       });
       setSaveState("saved");
-      setSaveMessage(
-        "Saved to the recipe file. GitHub Desktop will show the change.",
-      );
+      setSaveMessage("Saved to the recipe file. GitHub Desktop will show one readable change.");
     } catch (error) {
       setSaveState("error");
       setSaveMessage(error instanceof Error ? error.message : "Save failed");
@@ -187,20 +186,19 @@ export default function KnowledgeStudio({ initialRecipes, catalog }: KnowledgeSt
   }
 
   if (!recipe || !draft) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-slate-950 text-slate-400">
-        No page recipes found.
-      </div>
-    );
+    return <div className="flex min-h-screen items-center justify-center bg-slate-950 text-slate-400">No page recipes found.</div>;
   }
+
+  const canvasStyle = {
+    width: VIEWPORT_WIDTH[viewport],
+    zoom,
+  } as CSSProperties;
 
   return (
     <div className="bg-[#080a0f] text-slate-100">
       <div
         className="grid h-screen overflow-hidden transition-[grid-template-columns] duration-200"
-        style={{
-          gridTemplateColumns: `${showTree ? "240px" : "0px"} minmax(0, 1fr) ${showInspector ? "330px" : "0px"}`,
-        }}
+        style={{ gridTemplateColumns: `${showTree ? "250px" : "0px"} minmax(0, 1fr) ${showInspector ? "350px" : "0px"}` }}
       >
         <StudioSidebar
           catalog={catalog}
@@ -215,6 +213,7 @@ export default function KnowledgeStudio({ initialRecipes, catalog }: KnowledgeSt
         <section className="flex min-h-0 min-w-0 flex-col bg-[#07090d]">
           <StudioToolbar
             viewport={viewport}
+            zoom={zoom}
             showTree={showTree}
             showInspector={showInspector}
             showGuides={showGuides}
@@ -224,6 +223,7 @@ export default function KnowledgeStudio({ initialRecipes, catalog }: KnowledgeSt
             dirty={dirty}
             saveState={saveState}
             onViewport={setViewport}
+            onZoom={setZoom}
             onToggleTree={() => setShowTree((value) => !value)}
             onToggleInspector={() => setShowInspector((value) => !value)}
             onToggleGuides={() => setShowGuides((value) => !value)}
@@ -245,7 +245,7 @@ export default function KnowledgeStudio({ initialRecipes, catalog }: KnowledgeSt
             <div className="min-h-0 flex-1 overflow-auto p-5">
               <div
                 className="mx-auto min-h-full overflow-hidden rounded-[14px] border border-white/[0.09] bg-black shadow-[0_30px_100px_rgba(0,0,0,0.36)] transition-[width] duration-300"
-                style={{ width: VIEWPORT_WIDTH[viewport] }}
+                style={canvasStyle}
               >
                 <PageRenderer
                   recipe={recipe}
@@ -266,6 +266,7 @@ export default function KnowledgeStudio({ initialRecipes, catalog }: KnowledgeSt
           saveState={saveState}
           saveMessage={saveMessage}
           update={updateCurrent}
+          onSelect={setSelection}
         />
       </div>
     </div>

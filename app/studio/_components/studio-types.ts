@@ -44,6 +44,18 @@ export function selectionTitle(recipe: PageRecipe, selection: StudioSelection) {
   if (selection.kind === "section") {
     return recipe.sections.find((section) => section.id === selection.id)?.title ?? "Section";
   }
+  if (selection.kind === "case-column") {
+    const section = recipe.sections.find((candidate) => candidate.id === selection.sectionId);
+    return section?.type === "case-study"
+      ? section.columns.find((column) => column.id === selection.id)?.label ?? "Case-study column"
+      : "Case-study column";
+  }
+  if (selection.kind === "model-choice") {
+    const section = recipe.sections.find((candidate) => candidate.id === selection.sectionId);
+    return section?.type === "model-guide"
+      ? section.choices.find((choice) => choice.id === selection.id)?.answer ?? "Model choice"
+      : "Model choice";
+  }
   return "Selection";
 }
 
@@ -52,6 +64,18 @@ export function moveInArray<T>(array: T[], index: number, direction: -1 | 1) {
   if (index < 0 || target < 0 || target >= array.length) return;
   const [item] = array.splice(index, 1);
   array.splice(target, 0, item);
+}
+
+export function uniqueId(base: string, existingIds: readonly string[]) {
+  const normalized = base
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "") || "item";
+  if (!existingIds.includes(normalized)) return normalized;
+  let suffix = 2;
+  while (existingIds.includes(`${normalized}-${suffix}`)) suffix += 1;
+  return `${normalized}-${suffix}`;
 }
 
 export function rgbToHex(rgb: string) {

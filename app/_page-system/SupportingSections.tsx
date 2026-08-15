@@ -1,13 +1,39 @@
+"use client";
+
+import type { MouseEvent as ReactMouseEvent } from "react";
 import { resolvePageIcon } from "@/app/_page-system/icon-registry";
-import { DENSITY_PADDING, SURFACE_BLUR, columnGridClass, surfaceColor } from "@/app/_page-system/page-style";
+import {
+  DENSITY_PADDING,
+  SURFACE_BLUR,
+  borderAlpha,
+  columnGridClass,
+  panelShadow,
+  regionRing,
+  surfaceColor,
+} from "@/app/_page-system/page-style";
+import { selectionKey, type RendererStudioProps } from "@/app/_page-system/types";
 import type { CaseStudySection, ModelGuideSection, PageRecipe } from "@/lib/page-system/schema";
 
-export function CaseStudy({ recipe, section }: { recipe: PageRecipe; section: CaseStudySection }) {
+type SectionStudioProps = RendererStudioProps & {
+  recipe: PageRecipe;
+};
+
+export function CaseStudy({
+  recipe,
+  section,
+  selected,
+  showGuides,
+  onSelect,
+}: SectionStudioProps & { section: CaseStudySection }) {
   const Icon = resolvePageIcon(section.icon);
   return (
     <section
-      className={`overflow-hidden border shadow-[0_28px_90px_rgba(0,0,0,0.20)] ${SURFACE_BLUR[recipe.theme.surface]}`}
-      style={{ borderRadius: "var(--recipe-radius)", borderColor: "rgba(255,255,255,0.09)", background: surfaceColor(recipe) }}
+      className={`overflow-hidden border ${SURFACE_BLUR[recipe.theme.surface]} ${panelShadow(recipe)}`}
+      style={{
+        borderRadius: "var(--recipe-radius)",
+        borderColor: `rgba(255,255,255,${borderAlpha(recipe, 0.09)})`,
+        background: surfaceColor(recipe),
+      }}
     >
       <div className="grid lg:grid-cols-[330px_1fr]">
         <div className={`border-b border-white/[0.07] lg:border-b-0 lg:border-r ${DENSITY_PADDING[recipe.theme.density]}`}>
@@ -28,25 +54,50 @@ export function CaseStudy({ recipe, section }: { recipe: PageRecipe; section: Ca
           </div>
         </div>
         <div className={`grid ${columnGridClass(section.columns.length)}`}>
-          {section.columns.map((column, index) => (
-            <div key={column.id} className={`${DENSITY_PADDING[recipe.theme.density]} ${index < section.columns.length - 1 ? "border-b border-white/[0.07] md:border-b-0 md:border-r" : ""}`}>
-              <div className="font-mono text-[9px] font-semibold uppercase tracking-[0.13em]" style={{ color: `rgba(${column.accentRgb},0.70)` }}>{column.label}</div>
-              <p className="mt-4 text-[13px] font-medium leading-6 text-slate-300">{column.question}</p>
-              <p className="mt-3 text-[11px] leading-5 text-slate-500">{column.answer}</p>
-            </div>
-          ))}
+          {section.columns.map((column, index) => {
+            const selectedColumn = selectionKey(selected) === `case-column:${section.id}:${column.id}`;
+            return (
+              <div
+                key={column.id}
+                className={`${DENSITY_PADDING[recipe.theme.density]} ${index < section.columns.length - 1 ? "border-b border-white/[0.07] md:border-b-0 md:border-r" : ""} ${regionRing(showGuides, selectedColumn)}`}
+                data-studio-region={`case-column:${section.id}:${column.id}`}
+                onClick={
+                  onSelect
+                    ? (event: ReactMouseEvent<HTMLDivElement>) => {
+                        event.stopPropagation();
+                        onSelect({ kind: "case-column", sectionId: section.id, id: column.id });
+                      }
+                    : undefined
+                }
+              >
+                <div className="font-mono text-[9px] font-semibold uppercase tracking-[0.13em]" style={{ color: `rgba(${column.accentRgb},0.70)` }}>{column.label}</div>
+                <p className="mt-4 text-[13px] font-medium leading-6 text-slate-300">{column.question}</p>
+                <p className="mt-3 text-[11px] leading-5 text-slate-500">{column.answer}</p>
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>
   );
 }
 
-export function ModelGuide({ recipe, section }: { recipe: PageRecipe; section: ModelGuideSection }) {
+export function ModelGuide({
+  recipe,
+  section,
+  selected,
+  showGuides,
+  onSelect,
+}: SectionStudioProps & { section: ModelGuideSection }) {
   const Icon = resolvePageIcon(section.icon);
   return (
     <section
-      className={`overflow-hidden border shadow-[0_28px_90px_rgba(0,0,0,0.18)] ${SURFACE_BLUR[recipe.theme.surface]}`}
-      style={{ borderRadius: "var(--recipe-radius)", borderColor: "rgba(255,255,255,0.09)", background: surfaceColor(recipe) }}
+      className={`overflow-hidden border ${SURFACE_BLUR[recipe.theme.surface]} ${panelShadow(recipe)}`}
+      style={{
+        borderRadius: "var(--recipe-radius)",
+        borderColor: `rgba(255,255,255,${borderAlpha(recipe, 0.09)})`,
+        background: surfaceColor(recipe),
+      }}
     >
       <div className="grid lg:grid-cols-[310px_1fr]">
         <div className={`border-b border-white/[0.07] lg:border-b-0 lg:border-r ${DENSITY_PADDING[recipe.theme.density]}`}>
@@ -56,11 +107,24 @@ export function ModelGuide({ recipe, section }: { recipe: PageRecipe; section: M
           <h2 className="mt-2 text-[24px] font-semibold tracking-[-0.035em] text-white">{section.title}</h2>
           <p className="mt-3 text-[12px] leading-6 text-slate-400">{section.summary}</p>
         </div>
-        <div className="grid md:grid-cols-3">
+        <div className={`grid ${columnGridClass(section.choices.length)}`}>
           {section.choices.map((choice, index) => {
             const ChoiceIcon = resolvePageIcon(choice.icon);
+            const selectedChoice = selectionKey(selected) === `model-choice:${section.id}:${choice.id}`;
             return (
-              <div key={choice.id} className={`${DENSITY_PADDING[recipe.theme.density]} ${index < section.choices.length - 1 ? "border-b border-white/[0.07] md:border-b-0 md:border-r" : ""}`}>
+              <div
+                key={choice.id}
+                className={`${DENSITY_PADDING[recipe.theme.density]} ${index < section.choices.length - 1 ? "border-b border-white/[0.07] md:border-b-0 md:border-r" : ""} ${regionRing(showGuides, selectedChoice)}`}
+                data-studio-region={`model-choice:${section.id}:${choice.id}`}
+                onClick={
+                  onSelect
+                    ? (event: ReactMouseEvent<HTMLDivElement>) => {
+                        event.stopPropagation();
+                        onSelect({ kind: "model-choice", sectionId: section.id, id: choice.id });
+                      }
+                    : undefined
+                }
+              >
                 <div className="flex items-center gap-2 font-mono text-[9px] font-semibold uppercase tracking-[0.13em]" style={{ color: `rgba(${choice.accentRgb},0.68)` }}>
                   <ChoiceIcon size={13} /> condition
                 </div>

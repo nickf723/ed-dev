@@ -4,7 +4,17 @@ import { ArrowRight, CircleDashed } from "lucide-react";
 import { resolvePageIcon } from "@/app/_page-system/icon-registry";
 import { MapLens, NetworkLens, TimelineLens } from "@/app/_page-system/RecipeDiagrams";
 import RecipeLinkFrame from "@/app/_page-system/RecipeLinkFrame";
-import { DENSITY_PADDING, SECTION_GAP, SURFACE_BLUR, regionRing, surfaceColor } from "@/app/_page-system/page-style";
+import {
+  DENSITY_PADDING,
+  LENS_CARD_HEIGHT,
+  LENS_COLUMNS,
+  SECTION_GAP,
+  SURFACE_BLUR,
+  borderAlpha,
+  panelShadow,
+  regionRing,
+  surfaceColor,
+} from "@/app/_page-system/page-style";
 import { selectionKey, type RendererStudioProps } from "@/app/_page-system/types";
 import type { LensItem, PageRecipe } from "@/lib/page-system/schema";
 
@@ -15,29 +25,35 @@ export default function LensTopology({
   preview,
   onSelect,
 }: { recipe: PageRecipe } & RendererStudioProps) {
-  if (recipe.organization.kind !== "multiple-lenses") return null;
+  const organization = recipe.organization;
+  if (organization.kind !== "multiple-lenses") return null;
+  const columns = organization.columns ?? 3;
 
   return (
     <>
       <section className={`${SECTION_GAP[recipe.theme.sectionGap]} flex flex-col gap-2 px-1 sm:flex-row sm:items-end sm:justify-between`}>
         <div>
           <div className="font-mono text-[10px] font-semibold uppercase tracking-[0.16em]" style={{ color: `rgba(${recipe.theme.accentRgb},0.72)` }}>
-            {recipe.organization.eyebrow}
+            {organization.eyebrow}
           </div>
           <h2 className="mt-1 text-[clamp(1.7rem,3vw,2.55rem)] font-semibold tracking-[-0.04em] text-white">
-            {recipe.organization.title}
+            {organization.title}
           </h2>
         </div>
-        <p className="max-w-xl text-[12px] leading-6 text-slate-400">{recipe.organization.description}</p>
+        <p className="max-w-xl text-[12px] leading-6 text-slate-400">{organization.description}</p>
       </section>
 
-      <nav aria-label={recipe.organization.title} className={`${SECTION_GAP[recipe.theme.sectionGap]} grid items-stretch gap-4 xl:grid-cols-3`}>
-        {recipe.organization.items.map((item, index) => (
+      <nav
+        aria-label={organization.title}
+        className={`${SECTION_GAP[recipe.theme.sectionGap]} grid items-stretch gap-4 ${LENS_COLUMNS[columns]}`}
+      >
+        {organization.items.map((item, index) => (
           <LensCard
             key={item.id}
             recipe={recipe}
             item={item}
             index={index}
+            cardHeight={organization.cardHeight ?? "standard"}
             isSelected={selectionKey(selected) === `lens:${item.id}`}
             showGuides={showGuides}
             preview={preview}
@@ -53,6 +69,7 @@ function LensCard({
   recipe,
   item,
   index,
+  cardHeight,
   isSelected,
   showGuides,
   preview,
@@ -61,16 +78,17 @@ function LensCard({
   recipe: PageRecipe;
   item: LensItem;
   index: number;
+  cardHeight: "compact" | "standard" | "tall";
   isSelected: boolean;
 } & Omit<RendererStudioProps, "selected">) {
   const Icon = resolvePageIcon(item.icon);
   const live = item.status !== "planned";
   const body = (
     <article
-      className={`group relative flex h-full min-h-[470px] flex-col overflow-hidden border ${DENSITY_PADDING[recipe.theme.density]} ${SURFACE_BLUR[recipe.theme.surface]} ${regionRing(showGuides, isSelected)}`}
+      className={`group relative flex h-full flex-col overflow-hidden border ${LENS_CARD_HEIGHT[cardHeight]} ${DENSITY_PADDING[recipe.theme.density]} ${SURFACE_BLUR[recipe.theme.surface]} ${panelShadow(recipe)} ${regionRing(showGuides, isSelected)}`}
       style={{
         borderRadius: "var(--recipe-radius)",
-        borderColor: `rgba(${item.accentRgb},${live ? "0.18" : "0.08"})`,
+        borderColor: `rgba(${item.accentRgb},${live ? borderAlpha(recipe, 0.18) : borderAlpha(recipe, 0.08)})`,
         background: `linear-gradient(155deg, rgba(${item.accentRgb},0.055), ${surfaceColor(recipe)} 44%, rgba(0,0,0,0.22))`,
       }}
       data-studio-region={`lens:${item.id}`}
@@ -90,7 +108,7 @@ function LensCard({
           className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[15px] border"
           style={{
             color: `rgb(${item.accentRgb})`,
-            borderColor: `rgba(${item.accentRgb},0.24)`,
+            borderColor: `rgba(${item.accentRgb},${borderAlpha(recipe, 0.24)})`,
             background: `rgba(${item.accentRgb},0.055)`,
           }}
         >

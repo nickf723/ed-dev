@@ -5,7 +5,17 @@ import { ArrowRight, CircleDashed } from "lucide-react";
 import { resolvePageIcon } from "@/app/_page-system/icon-registry";
 import { RegimeArtwork } from "@/app/_page-system/RecipeDiagrams";
 import RecipeLinkFrame from "@/app/_page-system/RecipeLinkFrame";
-import { DENSITY_PADDING, SECTION_GAP, fieldEdgeClass, regionRing, surfaceColor } from "@/app/_page-system/page-style";
+import {
+  DENSITY_PADDING,
+  ITEM_COLUMNS,
+  REGIME_COLUMNS,
+  SECTION_GAP,
+  borderAlpha,
+  itemEdgeClass,
+  panelShadow,
+  regionRing,
+  surfaceColor,
+} from "@/app/_page-system/page-style";
 import { selectionKey, type RendererStudioProps } from "@/app/_page-system/types";
 import type { PageRecipe, RecipeLink, RegimeGroup } from "@/lib/page-system/schema";
 
@@ -16,15 +26,18 @@ export default function RegimeTopology({
   preview,
   onSelect,
 }: { recipe: PageRecipe } & RendererStudioProps) {
-  if (recipe.organization.kind !== "split-regimes") return null;
+  const organization = recipe.organization;
+  if (organization.kind !== "split-regimes") return null;
+  const groupColumns = organization.groupColumns ?? 2;
 
   return (
-    <section className={`${SECTION_GAP[recipe.theme.sectionGap]} grid items-stretch gap-5 xl:grid-cols-2`}>
-      {recipe.organization.groups.map((group) => (
+    <section className={`${SECTION_GAP[recipe.theme.sectionGap]} grid items-stretch gap-5 ${REGIME_COLUMNS[groupColumns]}`}>
+      {organization.groups.map((group) => (
         <RegimePanel
           key={group.id}
           recipe={recipe}
           group={group}
+          itemColumns={organization.itemColumns ?? 2}
           selected={selected}
           showGuides={showGuides}
           preview={preview}
@@ -38,6 +51,7 @@ export default function RegimeTopology({
 function RegimePanel({
   recipe,
   group,
+  itemColumns,
   selected,
   showGuides,
   preview,
@@ -45,15 +59,16 @@ function RegimePanel({
 }: {
   recipe: PageRecipe;
   group: RegimeGroup;
+  itemColumns: 1 | 2;
 } & RendererStudioProps) {
   const selectedGroup = selectionKey(selected) === `regime:${group.id}`;
 
   return (
     <section
-      className={`relative flex h-full flex-col overflow-hidden border shadow-[0_34px_100px_rgba(0,0,0,0.20)] ${regionRing(showGuides, selectedGroup)}`}
+      className={`relative flex h-full flex-col overflow-hidden border ${panelShadow(recipe)} ${regionRing(showGuides, selectedGroup)}`}
       style={{
         borderRadius: "var(--recipe-radius)",
-        borderColor: `rgba(${group.accentRgb},0.16)`,
+        borderColor: `rgba(${group.accentRgb},${borderAlpha(recipe, 0.16)})`,
         background:
           group.visual === "classical"
             ? `linear-gradient(145deg, rgba(${group.accentRgb},0.055), ${surfaceColor(recipe)} 48%, rgba(34,211,238,0.025))`
@@ -84,13 +99,13 @@ function RegimePanel({
         <p className="mt-3 max-w-3xl text-[13px] leading-6 text-slate-300/78">{group.description}</p>
       </div>
 
-      <nav aria-label={`${group.label} fields`} className="relative z-10 grid flex-1 sm:grid-cols-2">
+      <nav aria-label={`${group.label} fields`} className={`relative z-10 grid flex-1 ${ITEM_COLUMNS[itemColumns]}`}>
         {group.items.map((item, index) => (
           <FieldLink
             key={item.id}
             item={item}
             groupId={group.id}
-            edgeClass={fieldEdgeClass(index)}
+            edgeClass={itemEdgeClass(index, group.items.length, itemColumns)}
             isSelected={selectionKey(selected) === `navigation-item:${group.id}:${item.id}`}
             showGuides={showGuides}
             preview={preview}

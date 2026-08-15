@@ -7,7 +7,14 @@ import LensTopology from "@/app/_page-system/LensTopology";
 import RecipeBackground from "@/app/_page-system/RecipeBackground";
 import RegimeTopology from "@/app/_page-system/RegimeTopology";
 import { CaseStudy, ModelGuide } from "@/app/_page-system/SupportingSections";
-import { RADIUS, SECTION_GAP, headerColor, regionRing } from "@/app/_page-system/page-style";
+import {
+  RADIUS,
+  SECTION_GAP,
+  contentWidth,
+  headerColor,
+  regionRing,
+  titleClass,
+} from "@/app/_page-system/page-style";
 import { selectionKey, type PageRendererProps } from "@/app/_page-system/types";
 
 export type { StudioSelection } from "@/app/_page-system/types";
@@ -44,7 +51,7 @@ export default function PageRenderer({
       {showGuides ? <GuideOverlay /> : null}
 
       <div
-        className={`relative z-10 mx-auto w-full max-w-[1480px] px-4 pb-12 sm:px-6 xl:px-8 ${regionRing(false, selectionKey(selected) === "page")}`}
+        className={`relative z-10 mx-auto w-full px-4 pb-12 sm:px-6 xl:px-8 ${contentWidth(recipe)} ${regionRing(false, selectionKey(selected) === "page")}`}
         data-studio-region="page"
         onClick={onSelect ? () => onSelect({ kind: "page" }) : undefined}
       >
@@ -59,11 +66,7 @@ export default function PageRenderer({
             title={<span>{recipe.identity.title}</span>}
             subtitle={recipe.identity.subtitle}
             accentRgb={recipe.theme.accentRgb}
-            titleClassName={
-              recipe.theme.family === "history"
-                ? "font-serif text-[clamp(3rem,5.4vw,6rem)] font-semibold leading-[0.84] tracking-[-0.055em] text-[#fffaf0]"
-                : "font-mono text-[clamp(2.6rem,4.6vw,5rem)] font-semibold uppercase leading-[0.86] tracking-[-0.058em] text-[#f7fbff]"
-            }
+            titleClassName={titleClass(recipe)}
             headerClassName="border-white/[0.08]"
           />
         </div>
@@ -72,11 +75,12 @@ export default function PageRenderer({
         <RegimeTopology recipe={recipe} selected={selected} showGuides={showGuides} preview={preview} onSelect={onSelect} />
 
         {recipe.sections.map((section) => {
+          if (section.hidden && !preview) return null;
           const selectedSection = selectionKey(selected) === `section:${section.id}`;
           return (
             <div
               key={section.id}
-              className={`${SECTION_GAP[recipe.theme.sectionGap]} ${regionRing(showGuides, selectedSection)}`}
+              className={`${SECTION_GAP[recipe.theme.sectionGap]} ${regionRing(showGuides, selectedSection)} ${section.hidden ? "opacity-40 grayscale-[0.35]" : ""}`}
               style={{ borderRadius: "var(--recipe-radius)" }}
               data-studio-region={`section:${section.id}`}
               onClick={
@@ -89,9 +93,23 @@ export default function PageRenderer({
               }
             >
               {section.type === "case-study" ? (
-                <CaseStudy recipe={recipe} section={section} />
+                <CaseStudy
+                  recipe={recipe}
+                  section={section}
+                  selected={selected}
+                  showGuides={showGuides}
+                  preview={preview}
+                  onSelect={onSelect}
+                />
               ) : (
-                <ModelGuide recipe={recipe} section={section} />
+                <ModelGuide
+                  recipe={recipe}
+                  section={section}
+                  selected={selected}
+                  showGuides={showGuides}
+                  preview={preview}
+                  onSelect={onSelect}
+                />
               )}
             </div>
           );

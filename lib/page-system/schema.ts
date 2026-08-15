@@ -13,6 +13,11 @@ export type PagePanelRadius = "md" | "lg" | "xl";
 export type PageSectionGap = "sm" | "md" | "lg";
 export type PageMotion = "off" | "subtle" | "expressive";
 export type PageLinkStatus = "active" | "planned";
+export type PageContentWidth = "focused" | "standard" | "wide";
+export type PageHeaderScale = "compact" | "standard" | "display";
+export type PageBorderStrength = "subtle" | "standard" | "strong";
+export type PageShadow = "none" | "soft" | "dramatic";
+export type PageCardHeight = "compact" | "standard" | "tall";
 
 export type PageBreadcrumb = {
   label: string;
@@ -38,6 +43,10 @@ export type PageTheme = {
   panelRadius: PagePanelRadius;
   sectionGap: PageSectionGap;
   motion: PageMotion;
+  contentWidth?: PageContentWidth;
+  headerScale?: PageHeaderScale;
+  borderStrength?: PageBorderStrength;
+  shadow?: PageShadow;
 };
 
 export type RecipeLink = {
@@ -64,6 +73,8 @@ export type MultipleLensesOrganization = {
   eyebrow: string;
   title: string;
   description: string;
+  columns?: 1 | 2 | 3;
+  cardHeight?: PageCardHeight;
   items: LensItem[];
 };
 
@@ -82,6 +93,8 @@ export type RegimeGroup = {
 
 export type SplitRegimesOrganization = {
   kind: "split-regimes";
+  groupColumns?: 1 | 2;
+  itemColumns?: 1 | 2;
   groups: RegimeGroup[];
 };
 
@@ -104,6 +117,7 @@ export type CaseStudySection = {
   title: string;
   summary: string;
   icon: string;
+  hidden?: boolean;
   columns: CaseStudyColumn[];
 };
 
@@ -123,6 +137,7 @@ export type ModelGuideSection = {
   title: string;
   summary: string;
   icon: string;
+  hidden?: boolean;
   choices: ModelChoice[];
 };
 
@@ -181,6 +196,30 @@ function requireRgb(
   if (!isRgb(value[key])) errors.push(`${path}.${key} must be an RGB string such as "217, 119, 6"`);
 }
 
+function requireEnum(
+  value: Record<string, unknown>,
+  key: string,
+  allowed: readonly unknown[],
+  path: string,
+  errors: string[],
+) {
+  if (!allowed.includes(value[key])) {
+    errors.push(`${path}.${key} must be one of ${allowed.join(", ")}`);
+  }
+}
+
+function optionalEnum(
+  value: Record<string, unknown>,
+  key: string,
+  allowed: readonly unknown[],
+  path: string,
+  errors: string[],
+) {
+  if (value[key] !== undefined && !allowed.includes(value[key])) {
+    errors.push(`${path}.${key} must be one of ${allowed.join(", ")}`);
+  }
+}
+
 function validateRecipeLink(value: unknown, path: string, errors: string[]) {
   if (!isRecord(value)) {
     errors.push(`${path} must be an object`);
@@ -219,6 +258,8 @@ function validateOrganization(value: unknown, errors: string[]) {
     requireString(value, "eyebrow", "organization", errors);
     requireString(value, "title", "organization", errors);
     requireString(value, "description", "organization", errors);
+    optionalEnum(value, "columns", [1, 2, 3], "organization", errors);
+    optionalEnum(value, "cardHeight", ["compact", "standard", "tall"], "organization", errors);
     if (!Array.isArray(value.items) || value.items.length === 0) {
       errors.push("organization.items must contain at least one lens");
       return;
@@ -236,6 +277,8 @@ function validateOrganization(value: unknown, errors: string[]) {
   }
 
   if (value.kind === "split-regimes") {
+    optionalEnum(value, "groupColumns", [1, 2], "organization", errors);
+    optionalEnum(value, "itemColumns", [1, 2], "organization", errors);
     if (!Array.isArray(value.groups) || value.groups.length === 0) {
       errors.push("organization.groups must contain at least one regime");
       return;
@@ -286,6 +329,9 @@ function validateSections(value: unknown, errors: string[]) {
     requireString(section, "title", path, errors);
     requireString(section, "summary", path, errors);
     requireString(section, "icon", path, errors);
+    if (section.hidden !== undefined && typeof section.hidden !== "boolean") {
+      errors.push(`${path}.hidden must be boolean when provided`);
+    }
 
     if (section.type === "case-study") {
       if (!Array.isArray(section.columns) || section.columns.length === 0) {
@@ -393,21 +439,15 @@ export function validatePageRecipe(input: unknown): PageRecipeValidation {
     if (!isFiniteNumber(input.theme.surfaceOpacity) || input.theme.surfaceOpacity < 0 || input.theme.surfaceOpacity > 0.8) {
       errors.push("theme.surfaceOpacity must be between 0 and 0.8");
     }
-    if (input.theme.density !== "compact" && input.theme.density !== "balanced" && input.theme.density !== "spacious") {
-      errors.push("theme.density must be compact, balanced, or spacious");
-    }
-    if (input.theme.surface !== "clear" && input.theme.surface !== "glass" && input.theme.surface !== "dense-glass") {
-      errors.push("theme.surface must be clear, glass, or dense-glass");
-    }
-    if (input.theme.panelRadius !== "md" && input.theme.panelRadius !== "lg" && input.theme.panelRadius !== "xl") {
-      errors.push("theme.panelRadius must be md, lg, or xl");
-    }
-    if (input.theme.sectionGap !== "sm" && input.theme.sectionGap !== "md" && input.theme.sectionGap !== "lg") {
-      errors.push("theme.sectionGap must be sm, md, or lg");
-    }
-    if (input.theme.motion !== "off" && input.theme.motion !== "subtle" && input.theme.motion !== "expressive") {
-      errors.push("theme.motion must be off, subtle, or expressive");
-    }
+    requireEnum(input.theme, "density", ["compact", "balanced", "spacious"], "theme", errors);
+    requireEnum(input.theme, "surface", ["clear", "glass", "dense-glass"], "theme", errors);
+    requireEnum(input.theme, "panelRadius", ["md", "lg", "xl"], "theme", errors);
+    requireEnum(input.theme, "sectionGap", ["sm", "md", "lg"], "theme", errors);
+    requireEnum(input.theme, "motion", ["off", "subtle", "expressive"], "theme", errors);
+    optionalEnum(input.theme, "contentWidth", ["focused", "standard", "wide"], "theme", errors);
+    optionalEnum(input.theme, "headerScale", ["compact", "standard", "display"], "theme", errors);
+    optionalEnum(input.theme, "borderStrength", ["subtle", "standard", "strong"], "theme", errors);
+    optionalEnum(input.theme, "shadow", ["none", "soft", "dramatic"], "theme", errors);
   }
 
   validateOrganization(input.organization, errors);

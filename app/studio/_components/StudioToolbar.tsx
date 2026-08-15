@@ -5,9 +5,11 @@ import {
   Check,
   Eye,
   EyeOff,
+  Minus,
   Monitor,
   PanelLeft,
   PanelRight,
+  Plus,
   Redo2,
   RefreshCcw,
   Save,
@@ -20,6 +22,7 @@ import type { SaveState, Viewport } from "@/app/studio/_components/studio-types"
 
 export default function StudioToolbar({
   viewport,
+  zoom,
   showTree,
   showInspector,
   showGuides,
@@ -29,6 +32,7 @@ export default function StudioToolbar({
   dirty,
   saveState,
   onViewport,
+  onZoom,
   onToggleTree,
   onToggleInspector,
   onToggleGuides,
@@ -39,6 +43,7 @@ export default function StudioToolbar({
   onSave,
 }: {
   viewport: Viewport;
+  zoom: number;
   showTree: boolean;
   showInspector: boolean;
   showGuides: boolean;
@@ -48,6 +53,7 @@ export default function StudioToolbar({
   dirty: boolean;
   saveState: SaveState;
   onViewport: (viewport: Viewport) => void;
+  onZoom: (zoom: number) => void;
   onToggleTree: () => void;
   onToggleInspector: () => void;
   onToggleGuides: () => void;
@@ -80,6 +86,21 @@ export default function StudioToolbar({
         <ViewportButton active={viewport === "mobile"} label="Mobile" onClick={() => onViewport("mobile")}>
           <Smartphone size={14} />
         </ViewportButton>
+        <div className="mx-1 h-5 w-px bg-white/[0.08]" />
+        <ToolbarButton label="Zoom out" onClick={() => onZoom(Math.max(0.5, Number((zoom - 0.1).toFixed(2))))} disabled={zoom <= 0.5}>
+          <Minus size={14} />
+        </ToolbarButton>
+        <button
+          type="button"
+          title="Reset zoom (Ctrl+0)"
+          onClick={() => onZoom(1)}
+          className="h-8 min-w-[48px] rounded-[9px] border border-white/[0.07] bg-white/[0.02] px-2 font-mono text-[9px] text-slate-500 hover:text-white"
+        >
+          {Math.round(zoom * 100)}%
+        </button>
+        <ToolbarButton label="Zoom in" onClick={() => onZoom(Math.min(1.2, Number((zoom + 0.1).toFixed(2))))} disabled={zoom >= 1.2}>
+          <Plus size={14} />
+        </ToolbarButton>
       </div>
 
       <div className="ml-auto flex shrink-0 items-center gap-2">
@@ -101,13 +122,7 @@ export default function StudioToolbar({
           disabled={!dirty || saveState === "saving"}
           className="ml-1 inline-flex h-9 items-center gap-2 rounded-[11px] border border-cyan-300/20 bg-cyan-400/[0.08] px-3 text-[10px] font-semibold text-cyan-100 transition hover:bg-cyan-400/[0.13] disabled:cursor-not-allowed disabled:opacity-35"
         >
-          {saveState === "saving" ? (
-            <RefreshCcw size={13} className="animate-spin" />
-          ) : saveState === "saved" && !dirty ? (
-            <Check size={13} />
-          ) : (
-            <Save size={13} />
-          )}
+          {saveState === "saving" ? <RefreshCcw size={13} className="animate-spin" /> : saveState === "saved" && !dirty ? <Check size={13} /> : <Save size={13} />}
           Save recipe
         </button>
       </div>
@@ -115,19 +130,7 @@ export default function StudioToolbar({
   );
 }
 
-function ToolbarButton({
-  label,
-  onClick,
-  disabled,
-  active,
-  children,
-}: {
-  label: string;
-  onClick: () => void;
-  disabled?: boolean;
-  active?: boolean;
-  children: ReactNode;
-}) {
+function ToolbarButton({ label, onClick, disabled, active, children }: { label: string; onClick: () => void; disabled?: boolean; active?: boolean; children: ReactNode }) {
   return (
     <button
       type="button"
@@ -146,17 +149,7 @@ function ToolbarButton({
   );
 }
 
-function ViewportButton({
-  active,
-  label,
-  onClick,
-  children,
-}: {
-  active: boolean;
-  label: string;
-  onClick: () => void;
-  children: ReactNode;
-}) {
+function ViewportButton({ active, label, onClick, children }: { active: boolean; label: string; onClick: () => void; children: ReactNode }) {
   return (
     <button
       type="button"
@@ -164,9 +157,7 @@ function ViewportButton({
       aria-label={label}
       onClick={onClick}
       className={`flex h-8 w-8 items-center justify-center rounded-[9px] border transition ${
-        active
-          ? "border-white/[0.12] bg-white/[0.07] text-white"
-          : "border-transparent text-slate-600 hover:text-slate-300"
+        active ? "border-white/[0.12] bg-white/[0.07] text-white" : "border-transparent text-slate-600 hover:text-slate-300"
       }`}
     >
       {children}

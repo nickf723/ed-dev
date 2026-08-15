@@ -5,8 +5,10 @@ import {
   ChevronRight,
   Circle,
   Columns3,
+  EyeOff,
   History,
   LayoutPanelTop,
+  ListTree,
   Sparkles,
 } from "lucide-react";
 import type { ReactNode } from "react";
@@ -41,13 +43,13 @@ export default function StudioSidebar({
           <Sparkles size={15} /> Knowledge Studio
         </div>
         <p className="mt-2 text-[10px] leading-4 text-slate-500">
-          Local authoring environment · recipe files · no Vercel deployment
+          Select structure on the left, edit meaning on the right, and save one readable recipe.
         </p>
       </div>
 
       <div className="min-h-0 flex-1 overflow-y-auto px-3 py-4">
         <div className="px-2 text-[9px] font-semibold uppercase tracking-[0.15em] text-slate-600">
-          Ontology pilots
+          Recipe pilots
         </div>
         <div className="mt-2 space-y-1">
           {catalog.map((entry) => {
@@ -83,9 +85,7 @@ export default function StudioSidebar({
                     {entry.domain}
                   </span>
                 </div>
-                {dirty ? (
-                  <span className="h-2 w-2 rounded-full bg-amber-300" title="Unsaved changes" />
-                ) : null}
+                {dirty ? <span className="h-2 w-2 rounded-full bg-amber-300" title="Unsaved changes" /> : null}
               </button>
             );
           })}
@@ -107,103 +107,86 @@ export default function StudioSidebar({
   );
 }
 
-function StructureTree({
-  recipe,
-  selection,
-  onSelect,
-}: {
-  recipe: PageRecipe;
-  selection: StudioSelection;
-  onSelect: (selection: StudioSelection) => void;
-}) {
+function StructureTree({ recipe, selection, onSelect }: { recipe: PageRecipe; selection: StudioSelection; onSelect: (selection: StudioSelection) => void }) {
   return (
     <div className="mt-6">
       <div className="px-2 text-[9px] font-semibold uppercase tracking-[0.15em] text-slate-600">
         Page structure
       </div>
       <div className="mt-2 space-y-1">
-        <TreeButton
-          active={selection.kind === "page"}
-          label="Page identity & theme"
-          icon={<LayoutPanelTop size={13} />}
-          onClick={() => onSelect({ kind: "page" })}
-        />
+        <TreeButton active={selection.kind === "page"} label="Page identity & theme" icon={<LayoutPanelTop size={13} />} onClick={() => onSelect({ kind: "page" })} />
 
         {recipe.organization.kind === "multiple-lenses" ? (
-          <div className="ml-3 border-l border-white/[0.07] pl-2">
+          <TreeBranch>
             {recipe.organization.items.map((item) => (
-              <TreeButton
-                key={item.id}
-                active={selection.kind === "lens" && selection.id === item.id}
-                label={item.label}
-                icon={<ChevronRight size={12} />}
-                onClick={() => onSelect({ kind: "lens", id: item.id })}
-              />
+              <TreeButton key={item.id} active={selection.kind === "lens" && selection.id === item.id} label={item.label} icon={<ChevronRight size={12} />} onClick={() => onSelect({ kind: "lens", id: item.id })} />
             ))}
-          </div>
+          </TreeBranch>
         ) : (
-          <div className="ml-3 border-l border-white/[0.07] pl-2">
+          <TreeBranch>
             {recipe.organization.groups.map((group) => (
               <div key={group.id} className="mb-1">
-                <TreeButton
-                  active={selection.kind === "regime" && selection.id === group.id}
-                  label={group.label}
-                  icon={<Columns3 size={12} />}
-                  onClick={() => onSelect({ kind: "regime", id: group.id })}
-                />
-                <div className="ml-3 border-l border-white/[0.06] pl-2">
+                <TreeButton active={selection.kind === "regime" && selection.id === group.id} label={group.label} icon={<Columns3 size={12} />} onClick={() => onSelect({ kind: "regime", id: group.id })} />
+                <TreeBranch subtle>
                   {group.items.map((item) => (
                     <TreeButton
                       key={item.id}
-                      active={
-                        selection.kind === "navigation-item" &&
-                        selection.groupId === group.id &&
-                        selection.id === item.id
-                      }
+                      active={selection.kind === "navigation-item" && selection.groupId === group.id && selection.id === item.id}
                       label={item.label}
                       icon={<ChevronRight size={11} />}
-                      onClick={() =>
-                        onSelect({
-                          kind: "navigation-item",
-                          groupId: group.id,
-                          id: item.id,
-                        })
-                      }
+                      onClick={() => onSelect({ kind: "navigation-item", groupId: group.id, id: item.id })}
                     />
                   ))}
-                </div>
+                </TreeBranch>
               </div>
             ))}
-          </div>
+          </TreeBranch>
         )}
 
-        <div className="ml-3 border-l border-white/[0.07] pl-2">
+        <TreeBranch>
           {recipe.sections.map((section) => (
-            <TreeButton
-              key={section.id}
-              active={selection.kind === "section" && selection.id === section.id}
-              label={section.title}
-              icon={<ChevronRight size={12} />}
-              onClick={() => onSelect({ kind: "section", id: section.id })}
-            />
+            <div key={section.id} className="mb-1">
+              <TreeButton
+                active={selection.kind === "section" && selection.id === section.id}
+                label={section.title}
+                icon={section.hidden ? <EyeOff size={12} /> : <ListTree size={12} />}
+                muted={section.hidden}
+                onClick={() => onSelect({ kind: "section", id: section.id })}
+              />
+              <TreeBranch subtle>
+                {section.type === "case-study"
+                  ? section.columns.map((column) => (
+                      <TreeButton
+                        key={column.id}
+                        active={selection.kind === "case-column" && selection.sectionId === section.id && selection.id === column.id}
+                        label={column.label}
+                        icon={<ChevronRight size={11} />}
+                        onClick={() => onSelect({ kind: "case-column", sectionId: section.id, id: column.id })}
+                      />
+                    ))
+                  : section.choices.map((choice) => (
+                      <TreeButton
+                        key={choice.id}
+                        active={selection.kind === "model-choice" && selection.sectionId === section.id && selection.id === choice.id}
+                        label={choice.answer}
+                        icon={<ChevronRight size={11} />}
+                        onClick={() => onSelect({ kind: "model-choice", sectionId: section.id, id: choice.id })}
+                      />
+                    ))}
+              </TreeBranch>
+            </div>
           ))}
-        </div>
+        </TreeBranch>
       </div>
     </div>
   );
 }
 
-function TreeButton({
-  active,
-  label,
-  icon,
-  onClick,
-}: {
-  active: boolean;
-  label: string;
-  icon: ReactNode;
-  onClick: () => void;
-}) {
+function TreeBranch({ children, subtle = false }: { children: ReactNode; subtle?: boolean }) {
+  return <div className={`ml-3 border-l pl-2 ${subtle ? "border-white/[0.045]" : "border-white/[0.07]"}`}>{children}</div>;
+}
+
+function TreeButton({ active, label, icon, onClick, muted = false }: { active: boolean; label: string; icon: ReactNode; onClick: () => void; muted?: boolean }) {
   return (
     <button
       type="button"
@@ -211,7 +194,9 @@ function TreeButton({
       className={`flex w-full items-center gap-2 rounded-[9px] px-2 py-2 text-left text-[10px] transition ${
         active
           ? "bg-cyan-400/[0.07] text-cyan-100"
-          : "text-slate-500 hover:bg-white/[0.025] hover:text-slate-300"
+          : muted
+            ? "text-slate-700 hover:bg-white/[0.02] hover:text-slate-500"
+            : "text-slate-500 hover:bg-white/[0.025] hover:text-slate-300"
       }`}
     >
       <span className="text-slate-700">{icon}</span>
