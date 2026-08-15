@@ -116,6 +116,27 @@ export function moveInArray<T>(
   array.splice(target, 0, item);
 }
 
+/**
+ * Create a stable, human-readable id that does not collide with sibling ids.
+ * Studio operations use this when adding or duplicating recipe regions.
+ */
+export function uniqueId(base: string, existingIds: readonly string[]) {
+  const normalized =
+    base
+      .trim()
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "") || "item";
+
+  if (!existingIds.includes(normalized)) return normalized;
+
+  let suffix = 2;
+  while (existingIds.includes(`${normalized}-${suffix}`)) {
+    suffix += 1;
+  }
+  return `${normalized}-${suffix}`;
+}
+
 export function rgbToHex(rgb: string) {
   const parts = rgb
     .split(",")
