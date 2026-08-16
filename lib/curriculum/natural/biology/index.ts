@@ -82,7 +82,7 @@ export const BIOLOGY_CURRICULUM: CurriculumNode = {
           "Animal Diversity & Taxonomy",
           "/natural-science/biology/zoology/diversity",
           "Animal classification, body plans, phylogeny, species concepts, and the major lineages of the animal kingdom.",
-          "placeholder",
+          "active",
           "unit",
         ),
         node(
