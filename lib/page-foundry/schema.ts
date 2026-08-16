@@ -1,4 +1,9 @@
-export const PAGE_FOUNDRY_VERSION = 1 as const;
+import {
+  ACADEMIC_WORLD_IDS,
+  type AcademicWorldId,
+} from "@/lib/page-system/academic-worlds";
+
+export const PAGE_FOUNDRY_VERSION = 2 as const;
 
 export const FOUNDRY_STATUSES = [
   "queued",
@@ -57,9 +62,20 @@ export type FoundryDataSource = {
   adapter?: string;
 };
 
+export type FoundryNavigationBrief = {
+  primaryTask: string;
+  topology: string;
+  directChildren: string[];
+  firstViewport: string;
+  secondaryNavigation: string;
+};
+
 export type FoundryVisualBrief = {
+  academicWorld: AcademicWorldId;
   topology: string;
   evocation: string;
+  environmentMetaphor: string;
+  interactionMetaphor: string;
   backgroundMood: string;
   backgroundMeaning: string;
   backgroundMotion: string;
@@ -88,6 +104,8 @@ export type FoundryPageBrief = {
   organizingPrinciple: string;
   learnerQuestion: string;
   contentScope: string[];
+  contentHierarchy: string[];
+  navigation: FoundryNavigationBrief;
   dataSource: FoundryDataSource;
   visual: FoundryVisualBrief;
   studioContributions: FoundryContribution[];
@@ -138,7 +156,9 @@ export type PageFoundryQueue = {
 
 export type FoundryValidation = { ok: boolean; errors: string[] };
 
-function record(value: unknown): value is Record<string, unknown> {
+type UnknownRecord = Record<string, unknown>;
+
+function record(value: unknown): value is UnknownRecord {
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }
 function text(value: unknown): value is string {
@@ -156,11 +176,16 @@ function uniqueIds(values: unknown[], path: string, errors: string[]) {
     .map((value) => value.id)
     .filter((id): id is string => typeof id === "string");
   const duplicates = ids.filter((id, index) => ids.indexOf(id) !== index);
-  for (const id of new Set(duplicates)) errors.push(`${path} contains duplicate id "${id}"`);
+  for (const id of new Set(duplicates)) {
+    errors.push(`${path} contains duplicate id "${id}"`);
+  }
 }
 
 function validateContribution(value: unknown, path: string, errors: string[]) {
-  if (!record(value)) return errors.push(`${path} must be an object`);
+  if (!record(value)) {
+    errors.push(`${path} must be an object`);
+    return;
+  }
   for (const key of ["id", "label", "description"] as const) {
     if (!text(value[key])) errors.push(`${path}.${key} must be a non-empty string`);
   }
@@ -169,9 +194,30 @@ function validateContribution(value: unknown, path: string, errors: string[]) {
   if (!oneOf(value.status, FOUNDRY_CONTRIBUTION_STATUSES)) errors.push(`${path}.status is invalid`);
 }
 
+function validateNavigation(value: unknown, path: string, errors: string[]) {
+  if (!record(value)) {
+    errors.push(`${path} must be an object`);
+    return;
+  }
+  for (const key of [
+    "primaryTask",
+    "topology",
+    "firstViewport",
+    "secondaryNavigation",
+  ] as const) {
+    if (!text(value[key])) errors.push(`${path}.${key} is required`);
+  }
+  if (!strings(value.directChildren)) {
+    errors.push(`${path}.directChildren must be a string array`);
+  }
+}
+
 function validateBrief(value: unknown, index: number, errors: string[]) {
   const path = `items[${index}]`;
-  if (!record(value)) return errors.push(`${path} must be an object`);
+  if (!record(value)) {
+    errors.push(`${path} must be an object`);
+    return;
+  }
   for (const key of [
     "id",
     "title",
@@ -187,12 +233,15 @@ function validateBrief(value: unknown, index: number, errors: string[]) {
   if (!oneOf(value.priority, FOUNDRY_PRIORITIES)) errors.push(`${path}.priority is invalid`);
   if (!oneOf(value.pageType, FOUNDRY_PAGE_TYPES)) errors.push(`${path}.pageType is invalid`);
   if (!strings(value.contentScope)) errors.push(`${path}.contentScope must be a string array`);
+  if (!strings(value.contentHierarchy)) errors.push(`${path}.contentHierarchy must be a string array`);
   if (!strings(value.qualityGates)) errors.push(`${path}.qualityGates must be a string array`);
   if (!strings(value.blockers)) errors.push(`${path}.blockers must be a string array`);
   if (typeof value.notes !== "string") errors.push(`${path}.notes must be a string`);
   if (value.commit !== undefined && !text(value.commit)) errors.push(`${path}.commit must be non-empty when provided`);
   if (!text(value.createdAt)) errors.push(`${path}.createdAt is required`);
   if (value.updatedAt !== undefined && !text(value.updatedAt)) errors.push(`${path}.updatedAt must be non-empty when provided`);
+
+  validateNavigation(value.navigation, `${path}.navigation`, errors);
 
   if (!record(value.dataSource)) {
     errors.push(`${path}.dataSource must be an object`);
@@ -204,9 +253,14 @@ function validateBrief(value: unknown, index: number, errors: string[]) {
   if (!record(value.visual)) {
     errors.push(`${path}.visual must be an object`);
   } else {
+    if (!oneOf(value.visual.academicWorld, ACADEMIC_WORLD_IDS)) {
+      errors.push(`${path}.visual.academicWorld is invalid`);
+    }
     for (const key of [
       "topology",
       "evocation",
+      "environmentMetaphor",
+      "interactionMetaphor",
       "backgroundMood",
       "backgroundMeaning",
       "backgroundMotion",
@@ -225,6 +279,71 @@ function validateBrief(value: unknown, index: number, errors: string[]) {
     );
     uniqueIds(value.studioContributions, `${path}.studioContributions`, errors);
   }
+}
+
+function inferAcademicWorld(route: string): AcademicWorldId {
+  if (route.includes("zoology") || route.includes("biology")) return "living-exhibit";
+  if (route.includes("astronomy")) return "galactic-expedition";
+  if (route.includes("history")) return "archive";
+  if (route.includes("philosophy")) return "debate-chamber";
+  if (route.includes("music") || route.includes("visual-arts")) return "creative-studio";
+  if (route.includes("economics") || route.includes("business")) return "marketplace";
+  if (route.includes("chemistry") || route.includes("physics")) return "laboratory";
+  return "workshop";
+}
+
+function migrateBrief(value: unknown): unknown {
+  if (!record(value)) return value;
+  const route = typeof value.route === "string" ? value.route : "";
+  const visual = record(value.visual) ? value.visual : {};
+  const contentScope = strings(value.contentScope) ? value.contentScope : [];
+  return {
+    ...value,
+    contentHierarchy: strings(value.contentHierarchy)
+      ? value.contentHierarchy
+      : [
+          "Orientation: establish the organizing question",
+          "Primary navigation: expose direct children or principal destinations",
+          ...contentScope.slice(0, 3),
+          "Supporting instruments and deeper routes",
+        ],
+    navigation: record(value.navigation)
+      ? value.navigation
+      : {
+          primaryTask: "Choose the next meaningful destination without scanning unrelated content.",
+          topology: text(visual.topology) ? visual.topology : "Subject-shaped navigation",
+          directChildren: [],
+          firstViewport: "Anchored identity followed immediately by the primary navigation structure.",
+          secondaryNavigation: "Tools, cross-links, and supporting collections follow the direct-child navigation.",
+        },
+    visual: {
+      ...visual,
+      academicWorld: oneOf(visual.academicWorld, ACADEMIC_WORLD_IDS)
+        ? visual.academicWorld
+        : inferAcademicWorld(route),
+      environmentMetaphor: text(visual.environmentMetaphor)
+        ? visual.environmentMetaphor
+        : text(visual.evocation)
+          ? visual.evocation
+          : "A subject-specific academic environment.",
+      interactionMetaphor: text(visual.interactionMetaphor)
+        ? visual.interactionMetaphor
+        : text(visual.interaction)
+          ? visual.interaction
+          : "Navigate and manipulate the central academic structure.",
+    },
+  };
+}
+
+function normalizePageFoundryInput(input: unknown): unknown {
+  if (!record(input)) return input;
+  if (input.version === PAGE_FOUNDRY_VERSION) return input;
+  if (input.version !== 1) return input;
+  return {
+    ...input,
+    version: PAGE_FOUNDRY_VERSION,
+    items: Array.isArray(input.items) ? input.items.map(migrateBrief) : input.items,
+  };
 }
 
 export function validatePageFoundryQueue(input: unknown): FoundryValidation {
@@ -261,7 +380,10 @@ export function validatePageFoundryQueue(input: unknown): FoundryValidation {
   } else {
     input.patterns.forEach((pattern, index) => {
       const path = `patterns[${index}]`;
-      if (!record(pattern)) return errors.push(`${path} must be an object`);
+      if (!record(pattern)) {
+        errors.push(`${path} must be an object`);
+        return;
+      }
       for (const key of ["id", "label", "sourcePage", "description"] as const) {
         if (!text(pattern[key])) errors.push(`${path}.${key} is required`);
       }
@@ -276,9 +398,12 @@ export function validatePageFoundryQueue(input: unknown): FoundryValidation {
 }
 
 export function parsePageFoundryQueue(input: unknown): PageFoundryQueue {
-  const validation = validatePageFoundryQueue(input);
+  const normalized = normalizePageFoundryInput(input);
+  const validation = validatePageFoundryQueue(normalized);
   if (!validation.ok) {
-    throw new Error(`Invalid Page Foundry queue:\n${validation.errors.map((error) => `- ${error}`).join("\n")}`);
+    throw new Error(
+      `Invalid Page Foundry queue:\n${validation.errors.map((error) => `- ${error}`).join("\n")}`,
+    );
   }
-  return input as PageFoundryQueue;
+  return normalized as PageFoundryQueue;
 }
