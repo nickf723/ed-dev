@@ -23,17 +23,12 @@
       "parentNodeId": "natural.biology.zoology",
       "parentLabel": "Zoology",
       "route": "/natural-science/biology/zoology/diversity",
-      "status": "queued",
+      "status": "committed",
       "priority": "urgent",
       "pageType": "unit",
       "organizingPrinciple": "Nested evolutionary lineage, taxonomic rank, and divergence in animal body plans.",
       "learnerQuestion": "How can one branching history produce the enormous variety of animal forms?",
-      "contentScope": [
-        "Taxonomy and phylogeny",
-        "Major animal lineages and body plans",
-        "Homology, analogy, and convergence",
-        "Species concepts and the limits of rank"
-      ],
+      "contentScope": ["Taxonomy and phylogeny", "Major animal lineages and body plans", "Homology, analogy, and convergence", "Species concepts and the limits of rank"],
       "dataSource": {
         "kind": "hybrid",
         "label": "Curated phylogeny with live taxon records",
@@ -47,44 +42,20 @@
         "backgroundMood": "Bioluminescent, ancient, branching, dense, alive",
         "backgroundMeaning": "Roots are older ancestry; forks are divergence; leaf clusters are living lineages.",
         "backgroundMotion": "Slow pulses travel from trunk to tips while selected clades illuminate.",
-        "avoid": [
-          "Flat animal-card grid",
-          "Generic node graph",
-          "Evolutionary ladder",
-          "Reuse of the Zoology atlas modal rhythm"
-        ],
+        "avoid": ["Flat animal-card grid", "Generic node graph", "Evolutionary ladder", "Reuse of the Zoology atlas modal rhythm"],
         "interaction": "Move through ranks, open a clade, pin two lineages, and compare inherited body-plan features."
       },
       "studioContributions": [
-        {
-          "id": "branching-tree-topology",
-          "kind": "topology",
-          "label": "Branching tree topology",
-          "description": "A reusable hierarchy for ancestry, dependencies, and branching concepts.",
-          "scope": "global",
-          "status": "planned"
-        },
-        {
-          "id": "taxonomic-path-widget",
-          "kind": "widget",
-          "label": "Taxonomic path",
-          "description": "A rank-aware path that can compare parallel branches.",
-          "scope": "global",
-          "status": "planned"
-        },
-        {
-          "id": "phylogenetic-canopy-background",
-          "kind": "background",
-          "label": "Phylogenetic canopy",
-          "description": "A vivid background whose branches communicate ancestry and divergence.",
-          "scope": "domain",
-          "status": "planned"
-        }
+        {"id":"branching-tree-topology","kind":"topology","label":"Branching tree topology","description":"A reusable hierarchy for ancestry, dependencies, and branching concepts.","scope":"global","status":"registered"},
+        {"id":"taxonomic-path-widget","kind":"widget","label":"Taxonomic path","description":"A rank-aware path that can compare parallel branches.","scope":"global","status":"registered"},
+        {"id":"phylogenetic-canopy-background","kind":"background","label":"Phylogenetic canopy","description":"A vivid background whose branches communicate ancestry and divergence.","scope":"domain","status":"registered"}
       ],
       "qualityGates": ["TREE", "FRAME", "FIELD", "FLOW", "EXTRACT"],
       "blockers": [],
-      "notes": "Teach lineage rather than reproducing the collection atlas.",
-      "createdAt": "2026-08-16"
+      "notes": "Built as a rank-aware branching canopy rather than another collection grid. Awaiting local visual review.",
+      "commit": "4d97f8cbd9e960368b68d2de2a25bccb192cd582",
+      "createdAt": "2026-08-16",
+      "updatedAt": "2026-08-16"
     },
     {
       "id": "comparative-zoology",
@@ -92,19 +63,12 @@
       "parentNodeId": "natural.biology.zoology",
       "parentLabel": "Zoology",
       "route": "/natural-science/biology/zoology/comparative",
-      "status": "queued",
+      "status": "committed",
       "priority": "high",
       "pageType": "unit",
       "organizingPrinciple": "Compare how different body plans solve the same functional problem.",
       "learnerQuestion": "How can different structures perform similar jobs—and similar structures perform different jobs?",
-      "contentScope": [
-        "Locomotion",
-        "Feeding and digestion",
-        "Respiration and circulation",
-        "Support and skeletons",
-        "Sensory systems",
-        "Homology and functional tradeoffs"
-      ],
+      "contentScope": ["Locomotion", "Feeding and digestion", "Respiration and circulation", "Support and skeletons", "Sensory systems", "Homology and functional tradeoffs"],
       "dataSource": {
         "kind": "hybrid",
         "label": "Curated trait matrix with live animal profiles",
@@ -118,44 +82,20 @@
         "backgroundMood": "Translucent, anatomical, mechanical, precise, luminous",
         "backgroundMeaning": "Layered silhouettes expose shared constraints while active systems glow.",
         "backgroundMotion": "Matched actions play in parallel and functional systems pulse together.",
-        "avoid": [
-          "Spreadsheet-only trait table",
-          "Static textbook anatomy plate",
-          "Collection cards and modal",
-          "Branching tree from the previous page"
-        ],
+        "avoid": ["Spreadsheet-only trait table", "Static textbook anatomy plate", "Collection cards and modal", "Branching tree from the previous page"],
         "interaction": "Choose a function and specimens, align structures, scrub matched motion, and reveal tradeoffs."
       },
       "studioContributions": [
-        {
-          "id": "synchronized-comparison-topology",
-          "kind": "topology",
-          "label": "Synchronized comparison",
-          "description": "Parallel specimens sharing one control timeline and semantic row system.",
-          "scope": "global",
-          "status": "planned"
-        },
-        {
-          "id": "trait-matrix-widget",
-          "kind": "widget",
-          "label": "Trait matrix",
-          "description": "A compact comparison matrix linked to visual specimens.",
-          "scope": "global",
-          "status": "planned"
-        },
-        {
-          "id": "anatomical-layer-background",
-          "kind": "background",
-          "label": "Anatomical layer field",
-          "description": "A subject-aware field of translucent silhouettes and active systems.",
-          "scope": "domain",
-          "status": "planned"
-        }
+        {"id":"synchronized-comparison-topology","kind":"topology","label":"Synchronized comparison","description":"Parallel specimens sharing one control timeline and semantic row system.","scope":"global","status":"registered"},
+        {"id":"trait-matrix-widget","kind":"widget","label":"Trait matrix","description":"A compact comparison matrix linked to visual specimens.","scope":"global","status":"registered"},
+        {"id":"anatomical-layer-background","kind":"background","label":"Anatomical layer field","description":"A subject-aware field of translucent silhouettes and active systems.","scope":"domain","status":"registered"}
       ],
       "qualityGates": ["TREE", "FRAME", "FIELD", "FLOW", "EXTRACT"],
       "blockers": [],
-      "notes": "Make function visible before naming every structure.",
-      "createdAt": "2026-08-16"
+      "notes": "Built around synchronized functional comparison so anatomy follows the problem rather than preceding it. Awaiting local visual review.",
+      "commit": "ab50cb3ae3764f0dec10dfa1f462841b818b435f",
+      "createdAt": "2026-08-16",
+      "updatedAt": "2026-08-16"
     },
     {
       "id": "ethology",
@@ -163,18 +103,12 @@
       "parentNodeId": "natural.biology.zoology",
       "parentLabel": "Zoology",
       "route": "/natural-science/biology/zoology/ethology",
-      "status": "queued",
+      "status": "committed",
       "priority": "high",
       "pageType": "unit",
       "organizingPrinciple": "Behavior unfolds as signals, decisions, feedback, learning, and social interaction.",
       "learnerQuestion": "How does an animal turn information into action?",
-      "contentScope": [
-        "Innate and learned behavior",
-        "Signals and sensory channels",
-        "Foraging and navigation",
-        "Mating, parenting, cooperation, and conflict",
-        "Ethograms and observational evidence"
-      ],
+      "contentScope": ["Innate and learned behavior", "Signals and sensory channels", "Foraging and navigation", "Mating, parenting, cooperation, and conflict", "Ethograms and observational evidence"],
       "dataSource": {
         "kind": "hybrid",
         "label": "Curated behavior sequences with optional media and taxon records",
@@ -188,91 +122,36 @@
         "backgroundMood": "Nocturnal, alert, rhythmic, social, full of faint traces",
         "backgroundMeaning": "Paths, waves, and links represent observable behavior and communication.",
         "backgroundMotion": "Signals propagate between animals while the timeline records changing states.",
-        "avoid": [
-          "Static behavior vocabulary list",
-          "Generic social network",
-          "Anatomical comparison chamber",
-          "Barely visible signal traces"
-        ],
+        "avoid": ["Static behavior vocabulary list", "Generic social network", "Anatomical comparison chamber", "Barely visible signal traces"],
         "interaction": "Choose a scenario, scrub a sequence, code events in an ethogram, and compare individual and group outcomes."
       },
       "studioContributions": [
-        {
-          "id": "behavior-sequence-topology",
-          "kind": "topology",
-          "label": "Behavior sequence",
-          "description": "A causal timeline for stimulus, state, action, consequence, and feedback.",
-          "scope": "global",
-          "status": "planned"
-        },
-        {
-          "id": "ethogram-widget",
-          "kind": "widget",
-          "label": "Ethogram",
-          "description": "An observation table and timeline for coding events and duration.",
-          "scope": "global",
-          "status": "planned"
-        },
-        {
-          "id": "field-trace-background",
-          "kind": "background",
-          "label": "Field trace environment",
-          "description": "A vivid layer of tracks, calls, motion trails, and social signals.",
-          "scope": "domain",
-          "status": "planned"
-        }
+        {"id":"behavior-sequence-topology","kind":"topology","label":"Behavior sequence","description":"A causal timeline for stimulus, state, action, consequence, and feedback.","scope":"global","status":"registered"},
+        {"id":"ethogram-widget","kind":"widget","label":"Ethogram","description":"An observation table and timeline for coding events and duration.","scope":"global","status":"registered"},
+        {"id":"field-trace-background","kind":"background","label":"Field trace environment","description":"A vivid layer of tracks, calls, motion trails, and social signals.","scope":"domain","status":"registered"}
       ],
       "qualityGates": ["TREE", "FRAME", "FIELD", "FLOW", "EXTRACT"],
       "blockers": [],
-      "notes": "Learners should classify behavior from evidence, not only read definitions.",
-      "createdAt": "2026-08-16"
+      "notes": "Built as an evidence-coding field station with editable ethograms and Tinbergen's four explanatory questions. Awaiting local visual review.",
+      "commit": "5a07f79408871e006dc27029ba761c4768f69d7d",
+      "createdAt": "2026-08-16",
+      "updatedAt": "2026-08-16"
     }
   ],
   "patterns": [
-    {
-      "id": "multiple-lenses",
-      "label": "Multiple lenses",
-      "kind": "topology",
-      "sourcePage": "/humanities/history",
-      "scope": "global",
-      "status": "registered",
-      "description": "Organize one body of knowledge through complementary coordinate systems."
-    },
-    {
-      "id": "split-regimes",
-      "label": "Split regimes",
-      "kind": "topology",
-      "sourcePage": "/natural-science/physics",
-      "scope": "global",
-      "status": "registered",
-      "description": "Separate model families by the conditions under which each applies."
-    },
-    {
-      "id": "collection-atlas",
-      "label": "Collection atlas",
-      "kind": "topology",
-      "sourcePage": "/natural-science/biology/zoology",
-      "scope": "global",
-      "status": "registered",
-      "description": "Browse overlapping sets, switch organizing lenses, search, filter, and open rich records."
-    },
-    {
-      "id": "semantic-environment",
-      "label": "Semantic environment",
-      "kind": "background",
-      "sourcePage": "/natural-science/biology/zoology",
-      "scope": "global",
-      "status": "registered",
-      "description": "Change environmental motifs with the concept while preserving branch identity."
-    },
-    {
-      "id": "collection-source-adapter",
-      "label": "Collection source adapter",
-      "kind": "adapter",
-      "sourcePage": "/natural-science/biology/zoology",
-      "scope": "global",
-      "status": "candidate",
-      "description": "Normalize API-backed collections into cacheable cards, search, attribution, and detail views."
-    }
+    {"id":"multiple-lenses","label":"Multiple lenses","kind":"topology","sourcePage":"/humanities/history","scope":"global","status":"registered","description":"Organize one body of knowledge through complementary coordinate systems."},
+    {"id":"split-regimes","label":"Split regimes","kind":"topology","sourcePage":"/natural-science/physics","scope":"global","status":"registered","description":"Separate model families by the conditions under which each applies."},
+    {"id":"collection-atlas","label":"Collection atlas","kind":"topology","sourcePage":"/natural-science/biology/zoology","scope":"global","status":"registered","description":"Browse overlapping sets, switch organizing lenses, search, filter, and open rich records."},
+    {"id":"semantic-environment","label":"Semantic environment","kind":"background","sourcePage":"/natural-science/biology/zoology","scope":"global","status":"registered","description":"Change environmental motifs with the concept while preserving branch identity."},
+    {"id":"collection-source-adapter","label":"Collection source adapter","kind":"adapter","sourcePage":"/natural-science/biology/zoology","scope":"global","status":"candidate","description":"Normalize API-backed collections into cacheable cards, search, attribution, and detail views."},
+    {"id":"branching-tree-topology","label":"Branching tree topology","kind":"topology","sourcePage":"/natural-science/biology/zoology/diversity","scope":"global","status":"registered","description":"A reusable hierarchy for ancestry, dependencies, and branching concepts."},
+    {"id":"taxonomic-path-widget","label":"Taxonomic path","kind":"widget","sourcePage":"/natural-science/biology/zoology/diversity","scope":"global","status":"registered","description":"A rank-aware path that can compare parallel branches."},
+    {"id":"phylogenetic-canopy-background","label":"Phylogenetic canopy","kind":"background","sourcePage":"/natural-science/biology/zoology/diversity","scope":"domain","status":"registered","description":"A vivid background whose branches communicate ancestry and divergence."},
+    {"id":"synchronized-comparison-topology","label":"Synchronized comparison","kind":"topology","sourcePage":"/natural-science/biology/zoology/comparative","scope":"global","status":"registered","description":"Parallel specimens sharing one control timeline and semantic row system."},
+    {"id":"trait-matrix-widget","label":"Trait matrix","kind":"widget","sourcePage":"/natural-science/biology/zoology/comparative","scope":"global","status":"registered","description":"A compact comparison matrix linked to visual specimens."},
+    {"id":"anatomical-layer-background","label":"Anatomical layer field","kind":"background","sourcePage":"/natural-science/biology/zoology/comparative","scope":"domain","status":"registered","description":"A subject-aware field of translucent silhouettes and active systems."},
+    {"id":"behavior-sequence-topology","label":"Behavior sequence","kind":"topology","sourcePage":"/natural-science/biology/zoology/ethology","scope":"global","status":"registered","description":"A causal timeline for stimulus, state, action, consequence, and feedback."},
+    {"id":"ethogram-widget","label":"Ethogram","kind":"widget","sourcePage":"/natural-science/biology/zoology/ethology","scope":"global","status":"registered","description":"An observation table and timeline for coding events and duration."},
+    {"id":"field-trace-background","label":"Field trace environment","kind":"background","sourcePage":"/natural-science/biology/zoology/ethology","scope":"domain","status":"registered","description":"A vivid layer of tracks, calls, motion trails, and social signals."}
   ]
 }

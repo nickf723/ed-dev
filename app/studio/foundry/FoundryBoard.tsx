@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import type { FoundryPageBrief, PageFoundryQueue } from "@/lib/page-foundry/schema";
 import FoundryBriefEditor from "./FoundryBriefEditor";
+import FoundryPatternLibrary from "./FoundryPatternLibrary";
 import FoundryQueueRail from "./FoundryQueueRail";
 import FoundryRunPanel from "./FoundryRunPanel";
 import { blankBrief, buildRunCommand, uniqueId } from "./foundry-utils";
@@ -206,6 +207,8 @@ export default function FoundryBoard({ initialQueue }: { initialQueue: PageFound
         </section>
         <FoundryRunPanel queue={queue} message={message} error={saveState === "error"} update={updateQueue} prepareRun={prepareRun} />
       </div>
+
+      <FoundryPatternLibrary ledgerPatterns={queue.patterns} />
     </main>
   );
 }
