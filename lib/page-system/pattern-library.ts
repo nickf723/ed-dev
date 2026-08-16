@@ -1,3 +1,4 @@
+import { ACADEMIC_WORLD_PATTERNS } from "@/lib/page-system/patterns/academic-worlds";
 import { CHEMISTRY_LINGUISTICS_PATTERNS } from "@/lib/page-system/patterns/chemistry-linguistics";
 import { MUSIC_PHILOSOPHY_PATTERNS } from "@/lib/page-system/patterns/music-philosophy";
 import { TIME_ECONOMY_SPACE_PATTERNS } from "@/lib/page-system/patterns/time-economy-space";
@@ -13,6 +14,7 @@ export type { PagePattern, PagePatternKind } from "@/lib/page-system/patterns/ty
  * The registry stays composable as the Foundry produces more page families.
  */
 export const PAGE_PATTERN_LIBRARY: PagePattern[] = [
+  ...ACADEMIC_WORLD_PATTERNS,
   ...ZOOLOGY_PATTERNS,
   ...TIME_ECONOMY_SPACE_PATTERNS,
   ...MUSIC_PHILOSOPHY_PATTERNS,
