@@ -90,7 +90,7 @@ export const BIOLOGY_CURRICULUM: CurriculumNode = {
           "Comparative Zoology",
           "/natural-science/biology/zoology/comparative",
           "Compare anatomy, physiology, development, and functional adaptations across animal groups.",
-          "placeholder",
+          "active",
           "unit",
         ),
         node(
