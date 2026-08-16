@@ -12,6 +12,10 @@ import {
   type FoundryContribution,
   type FoundryPageBrief,
 } from "@/lib/page-foundry/schema";
+import {
+  ACADEMIC_WORLD_IDS,
+  academicWorldById,
+} from "@/lib/page-system/academic-worlds";
 import { Field, Panel, Select, StringList, TextArea, TextInput } from "./FoundryFields";
 
 export default function FoundryBriefEditor({
@@ -21,23 +25,30 @@ export default function FoundryBriefEditor({
   brief: FoundryPageBrief;
   update: (mutator: (brief: FoundryPageBrief) => void) => void;
 }) {
-  function set<K extends keyof FoundryPageBrief>(key: K, value: FoundryPageBrief[K]) {
+  const world = academicWorldById(brief.visual.academicWorld);
+
+  function mutate(mutator: (next: FoundryPageBrief) => void) {
     update((next) => {
-      next[key] = value;
+      mutator(next);
       next.updatedAt = new Date().toISOString();
+    });
+  }
+
+  function set<K extends keyof FoundryPageBrief>(key: K, value: FoundryPageBrief[K]) {
+    mutate((next) => {
+      next[key] = value;
     });
   }
 
   function updateContribution(id: string, mutator: (item: FoundryContribution) => void) {
-    update((next) => {
+    mutate((next) => {
       const item = next.studioContributions.find((candidate) => candidate.id === id);
       if (item) mutator(item);
-      next.updatedAt = new Date().toISOString();
     });
   }
 
   function addContribution() {
-    update((next) => {
+    mutate((next) => {
       const id = uniqueId("new-pattern", next.studioContributions.map((item) => item.id));
       next.studioContributions.push({
         id,
@@ -67,28 +78,54 @@ export default function FoundryBriefEditor({
       <Panel title="Knowledge architecture" note="TREE before styling">
         <Field label="Organizing principle"><TextArea value={brief.organizingPrinciple} rows={3} onChange={(value) => set("organizingPrinciple", value)} /></Field>
         <Field label="Primary learner question"><TextArea value={brief.learnerQuestion} rows={3} onChange={(value) => set("learnerQuestion", value)} /></Field>
-        <Field label="Content scope"><StringList value={brief.contentScope} rows={5} onChange={(value) => set("contentScope", value)} /></Field>
+        <Field label="Content boundaries"><StringList value={brief.contentScope} rows={5} onChange={(value) => set("contentScope", value)} /></Field>
+        <Field label="Content hierarchy · top to bottom"><StringList value={brief.contentHierarchy} rows={6} onChange={(value) => set("contentHierarchy", value)} /></Field>
+      </Panel>
+
+      <Panel title="Navigation-first contract" note="The first job of layout">
+        <Field label="Primary navigation task"><TextArea value={brief.navigation.primaryTask} rows={3} onChange={(value) => mutate((next) => { next.navigation.primaryTask = value; })} /></Field>
+        <div className="grid gap-3 lg:grid-cols-2">
+          <Field label="Navigation topology"><TextArea value={brief.navigation.topology} rows={3} onChange={(value) => mutate((next) => { next.navigation.topology = value; })} /></Field>
+          <Field label="First viewport center"><TextArea value={brief.navigation.firstViewport} rows={3} onChange={(value) => mutate((next) => { next.navigation.firstViewport = value; })} /></Field>
+        </div>
+        <Field label="Direct children / principal destinations"><StringList value={brief.navigation.directChildren} rows={5} onChange={(value) => mutate((next) => { next.navigation.directChildren = value; })} /></Field>
+        <Field label="Secondary navigation"><TextArea value={brief.navigation.secondaryNavigation} rows={3} onChange={(value) => mutate((next) => { next.navigation.secondaryNavigation = value; })} /></Field>
+      </Panel>
+
+      <Panel title="Academic world" note="One shell · many disciplines">
+        <Field label="World family"><Select value={brief.visual.academicWorld} options={ACADEMIC_WORLD_IDS} onChange={(value) => mutate((next) => { next.visual.academicWorld = value as FoundryPageBrief["visual"]["academicWorld"]; })} /></Field>
+        {world ? (
+          <div className="rounded-[12px] border border-violet-300/[0.10] bg-violet-400/[0.025] p-3">
+            <strong className="text-[10px] text-violet-100">{world.label}</strong>
+            <p className="mt-1 text-[9px] leading-4 text-slate-500">{world.promise}</p>
+            <div className="mt-2 flex flex-wrap gap-1.5">
+              {world.preferredTopologies.map((topology) => <span key={topology} className="rounded-full border border-violet-200/[0.08] px-2 py-1 font-mono text-[7px] text-violet-100/40">{topology}</span>)}
+            </div>
+          </div>
+        ) : null}
+        <Field label="Environment metaphor"><TextArea value={brief.visual.environmentMetaphor} rows={3} onChange={(value) => mutate((next) => { next.visual.environmentMetaphor = value; })} /></Field>
+        <Field label="Interaction metaphor"><TextArea value={brief.visual.interactionMetaphor} rows={3} onChange={(value) => mutate((next) => { next.visual.interactionMetaphor = value; })} /></Field>
       </Panel>
 
       <Panel title="Visual novelty contract" note="Different by design">
-        <Field label="Visual topology"><TextInput value={brief.visual.topology} onChange={(value) => update((next) => { next.visual.topology = value; })} /></Field>
-        <Field label="What should the page evoke?"><TextArea value={brief.visual.evocation} rows={3} onChange={(value) => update((next) => { next.visual.evocation = value; })} /></Field>
+        <Field label="Visual topology"><TextInput value={brief.visual.topology} onChange={(value) => mutate((next) => { next.visual.topology = value; })} /></Field>
+        <Field label="What should the page evoke?"><TextArea value={brief.visual.evocation} rows={3} onChange={(value) => mutate((next) => { next.visual.evocation = value; })} /></Field>
         <div className="grid gap-3 lg:grid-cols-2">
-          <Field label="Background mood"><TextArea value={brief.visual.backgroundMood} rows={3} onChange={(value) => update((next) => { next.visual.backgroundMood = value; })} /></Field>
-          <Field label="Background meaning"><TextArea value={brief.visual.backgroundMeaning} rows={3} onChange={(value) => update((next) => { next.visual.backgroundMeaning = value; })} /></Field>
+          <Field label="Background mood"><TextArea value={brief.visual.backgroundMood} rows={3} onChange={(value) => mutate((next) => { next.visual.backgroundMood = value; })} /></Field>
+          <Field label="Background meaning"><TextArea value={brief.visual.backgroundMeaning} rows={3} onChange={(value) => mutate((next) => { next.visual.backgroundMeaning = value; })} /></Field>
         </div>
-        <Field label="Background motion"><TextArea value={brief.visual.backgroundMotion} rows={3} onChange={(value) => update((next) => { next.visual.backgroundMotion = value; })} /></Field>
-        <Field label="Primary interaction"><TextArea value={brief.visual.interaction} rows={3} onChange={(value) => update((next) => { next.visual.interaction = value; })} /></Field>
-        <Field label="Must not resemble"><StringList value={brief.visual.avoid} rows={4} onChange={(value) => update((next) => { next.visual.avoid = value; })} /></Field>
+        <Field label="Background motion"><TextArea value={brief.visual.backgroundMotion} rows={3} onChange={(value) => mutate((next) => { next.visual.backgroundMotion = value; })} /></Field>
+        <Field label="Primary interaction"><TextArea value={brief.visual.interaction} rows={3} onChange={(value) => mutate((next) => { next.visual.interaction = value; })} /></Field>
+        <Field label="Must not resemble"><StringList value={brief.visual.avoid} rows={5} onChange={(value) => mutate((next) => { next.visual.avoid = value; })} /></Field>
       </Panel>
 
       <Panel title="Data contract" note="API with honest fallback">
         <div className="grid gap-3 lg:grid-cols-2">
-          <Field label="Source kind"><Select value={brief.dataSource.kind} options={FOUNDRY_DATA_KINDS} onChange={(value) => update((next) => { next.dataSource.kind = value as FoundryPageBrief["dataSource"]["kind"]; })} /></Field>
-          <Field label="Label"><TextInput value={brief.dataSource.label} onChange={(value) => update((next) => { next.dataSource.label = value; })} /></Field>
-          <Field label="Provider"><TextInput value={brief.dataSource.provider ?? ""} onChange={(value) => update((next) => { next.dataSource.provider = value || undefined; })} /></Field>
-          <Field label="Endpoint"><TextInput value={brief.dataSource.endpoint ?? ""} onChange={(value) => update((next) => { next.dataSource.endpoint = value || undefined; })} /></Field>
-          <div className="lg:col-span-2"><Field label="Adapter"><TextInput value={brief.dataSource.adapter ?? ""} onChange={(value) => update((next) => { next.dataSource.adapter = value || undefined; })} /></Field></div>
+          <Field label="Source kind"><Select value={brief.dataSource.kind} options={FOUNDRY_DATA_KINDS} onChange={(value) => mutate((next) => { next.dataSource.kind = value as FoundryPageBrief["dataSource"]["kind"]; })} /></Field>
+          <Field label="Label"><TextInput value={brief.dataSource.label} onChange={(value) => mutate((next) => { next.dataSource.label = value; })} /></Field>
+          <Field label="Provider"><TextInput value={brief.dataSource.provider ?? ""} onChange={(value) => mutate((next) => { next.dataSource.provider = value || undefined; })} /></Field>
+          <Field label="Endpoint"><TextInput value={brief.dataSource.endpoint ?? ""} onChange={(value) => mutate((next) => { next.dataSource.endpoint = value || undefined; })} /></Field>
+          <div className="lg:col-span-2"><Field label="Adapter"><TextInput value={brief.dataSource.adapter ?? ""} onChange={(value) => mutate((next) => { next.dataSource.adapter = value || undefined; })} /></Field></div>
         </div>
       </Panel>
 
@@ -103,7 +140,7 @@ export default function FoundryBriefEditor({
                 <Select value={item.scope} options={FOUNDRY_SCOPES} onChange={(value) => updateContribution(item.id, (next) => { next.scope = value as FoundryContribution["scope"]; })} />
                 <div className="lg:col-span-2"><TextArea value={item.description} rows={2} onChange={(value) => updateContribution(item.id, (next) => { next.description = value; })} /></div>
                 <Select value={item.status} options={FOUNDRY_CONTRIBUTION_STATUSES} onChange={(value) => updateContribution(item.id, (next) => { next.status = value as FoundryContribution["status"]; })} />
-                <button type="button" onClick={() => update((next) => { next.studioContributions = next.studioContributions.filter((candidate) => candidate.id !== item.id); })} className="inline-flex h-10 items-center justify-center gap-2 rounded-[10px] border border-red-300/10 text-[9px] text-red-200/55 hover:bg-red-400/[0.04]"><Trash2 size={12} /> Remove</button>
+                <button type="button" onClick={() => mutate((next) => { next.studioContributions = next.studioContributions.filter((candidate) => candidate.id !== item.id); })} className="inline-flex h-10 items-center justify-center gap-2 rounded-[10px] border border-red-300/10 text-[9px] text-red-200/55 hover:bg-red-400/[0.04]"><Trash2 size={12} /> Remove</button>
               </div>
             </div>
           ))}
