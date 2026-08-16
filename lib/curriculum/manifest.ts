@@ -7,6 +7,7 @@ import { PHILOSOPHY_CURRICULUM } from "@/lib/curriculum/humanities/philosophy";
 import { LOGIC_CURRICULUM } from "@/lib/curriculum/logic";
 import { ASTRONOMY_CURRICULUM } from "@/lib/curriculum/natural/astronomy";
 import { BIOLOGY_CURRICULUM } from "@/lib/curriculum/natural/biology";
+import { CHEMISTRY_CURRICULUM } from "@/lib/curriculum/natural/chemistry";
 import { ELECTROMAGNETISM_CURRICULUM } from "@/lib/curriculum/natural/electromagnetism";
 import { PHYSICS_CURRICULUM } from "@/lib/curriculum/natural/physics";
 import { RELATIVITY_CURRICULUM } from "@/lib/curriculum/natural/relativity";
@@ -30,6 +31,7 @@ export const CURRICULUM_MODULES: readonly CurriculumNode[] = [
   COMPUTER_SCIENCE_CURRICULUM,
   BIOLOGY_CURRICULUM,
   ASTRONOMY_CURRICULUM,
+  CHEMISTRY_CURRICULUM,
   PHYSICS_CURRICULUM,
   ELECTROMAGNETISM_CURRICULUM,
   WAVES_OPTICS_CURRICULUM,
