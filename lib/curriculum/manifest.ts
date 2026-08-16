@@ -3,6 +3,7 @@ import { COMPUTER_SCIENCE_CURRICULUM } from "@/lib/curriculum/computer-science";
 import { GROUP_THEORY_CURRICULUM } from "@/lib/curriculum/group-theory";
 import { HISTORY_CURRICULUM } from "@/lib/curriculum/humanities/history";
 import { MUSIC_CURRICULUM } from "@/lib/curriculum/humanities/music";
+import { PHILOSOPHY_CURRICULUM } from "@/lib/curriculum/humanities/philosophy";
 import { LOGIC_CURRICULUM } from "@/lib/curriculum/logic";
 import { ASTRONOMY_CURRICULUM } from "@/lib/curriculum/natural/astronomy";
 import { BIOLOGY_CURRICULUM } from "@/lib/curriculum/natural/biology";
@@ -36,4 +37,5 @@ export const CURRICULUM_MODULES: readonly CurriculumNode[] = [
   ECONOMICS_CURRICULUM,
   HISTORY_CURRICULUM,
   MUSIC_CURRICULUM,
+  PHILOSOPHY_CURRICULUM,
 ];
