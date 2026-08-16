@@ -37,8 +37,8 @@ export default function MediaDetailDrawer({
 
         <div className="p-5 sm:p-7">
           <div className="grid gap-5 sm:grid-cols-[190px_minmax(0,1fr)]">
-            <div className="aspect-square overflow-hidden rounded-[20px] border border-white/[0.08] bg-black/30 shadow-[0_20px_70px_rgba(0,0,0,0.28)]">
-              {record.imageUrl ? <img src={record.imageUrl} alt="" className="h-full w-full object-cover" referrerPolicy="no-referrer" /> : <div className="h-full w-full bg-[radial-gradient(circle_at_30%_20%,rgba(244,114,182,0.15),transparent_42%),linear-gradient(145deg,#18101b,#050508)]" />}
+            <div className="aspect-square overflow-hidden rounded-[20px] border border-white/[0.08] bg-[radial-gradient(circle_at_30%_20%,rgba(244,114,182,0.15),transparent_42%),linear-gradient(145deg,#18101b,#050508)] shadow-[0_20px_70px_rgba(0,0,0,0.28)]">
+              {record.imageUrl ? <img src={record.imageUrl} alt="" className="h-full w-full object-cover" referrerPolicy="no-referrer" onError={(event) => { event.currentTarget.style.display = "none"; }} /> : null}
             </div>
             <div className="self-end">
               {record.year ? <div className="font-mono text-[8px] uppercase tracking-[0.1em] text-slate-700">{record.year}</div> : null}
