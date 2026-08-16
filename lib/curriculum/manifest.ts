@@ -4,6 +4,7 @@ import { GROUP_THEORY_CURRICULUM } from "@/lib/curriculum/group-theory";
 import { HISTORY_CURRICULUM } from "@/lib/curriculum/humanities/history";
 import { MUSIC_CURRICULUM } from "@/lib/curriculum/humanities/music";
 import { PHILOSOPHY_CURRICULUM } from "@/lib/curriculum/humanities/philosophy";
+import { VISUAL_ARTS_CURRICULUM } from "@/lib/curriculum/humanities/visual-arts";
 import { LOGIC_CURRICULUM } from "@/lib/curriculum/logic";
 import { ASTRONOMY_CURRICULUM } from "@/lib/curriculum/natural/astronomy";
 import { BIOLOGY_CURRICULUM } from "@/lib/curriculum/natural/biology";
@@ -42,4 +43,5 @@ export const CURRICULUM_MODULES: readonly CurriculumNode[] = [
   HISTORY_CURRICULUM,
   MUSIC_CURRICULUM,
   PHILOSOPHY_CURRICULUM,
+  VISUAL_ARTS_CURRICULUM,
 ];
