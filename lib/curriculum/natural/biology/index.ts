@@ -98,7 +98,7 @@ export const BIOLOGY_CURRICULUM: CurriculumNode = {
           "Ethology",
           "/natural-science/biology/zoology/ethology",
           "Animal behavior, communication, learning, mating, cooperation, conflict, and behavioral ecology.",
-          "placeholder",
+          "active",
           "unit",
         ),
         node(
