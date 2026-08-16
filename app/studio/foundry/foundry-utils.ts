@@ -23,16 +23,32 @@ export function blankBrief(id: string): FoundryPageBrief {
     priority: "normal",
     pageType: "unit",
     organizingPrinciple: "Describe the real organizing principle.",
-    learnerQuestion: "What should the learner be able to see or decide?",
+    learnerQuestion: "What should the learner be able to see, choose, or explain?",
     contentScope: ["First content boundary"],
+    contentHierarchy: [
+      "Orientation: establish the page question",
+      "Primary navigation or central academic model",
+      "Supporting explanation and evidence",
+      "Secondary tools and deeper routes",
+    ],
+    navigation: {
+      primaryTask: "Help the learner choose the next meaningful destination.",
+      topology: "Choose the relationship-shaped navigation topology.",
+      directChildren: [],
+      firstViewport: "Anchored page identity followed immediately by primary navigation.",
+      secondaryNavigation: "Cross-links, tools, and supporting collections follow the direct children.",
+    },
     dataSource: { kind: "curated", label: "Curated content" },
     visual: {
+      academicWorld: "workshop",
       topology: "Choose a visual topology",
       evocation: "Describe what the page should feel like.",
+      environmentMetaphor: "Describe the academic place the learner enters.",
+      interactionMetaphor: "Describe what the learner is doing inside that place.",
       backgroundMood: "Vivid and subject-specific",
-      backgroundMeaning: "Explain what the environment represents.",
-      backgroundMotion: "Explain meaningful motion.",
-      avoid: ["Generic cards", "Decorative particles"],
+      backgroundMeaning: "Explain what every major environmental element represents.",
+      backgroundMotion: "Explain meaningful motion rather than decorative drift.",
+      avoid: ["Generic cards", "Decorative particles", "A recolored version of the previous page"],
       interaction: "Describe the primary learner action.",
     },
     studioContributions: [],
@@ -47,10 +63,16 @@ export function buildRunCommand(
   queue: PageFoundryQueue,
   items: FoundryPageBrief[],
 ) {
-  const titles = items
-    .map((item, index) => `${index + 1}. ${item.title} — ${item.route}`)
+  const briefs = items
+    .map(
+      (item, index) =>
+        `${index + 1}. ${item.title} — ${item.route}\n` +
+        `   Navigation: ${item.navigation.primaryTask}\n` +
+        `   World: ${item.visual.academicWorld} · ${item.visual.environmentMetaphor}`,
+    )
     .join("\n");
-  return `Work on the studio branch. Process these Page Foundry briefs in order:\n${titles}\n\nFor each page: read its Foundry brief, verify ontology and routes, build the page, make the background vivid and semantically meaningful, extract or register reusable Studio systems, run validation, commit the page separately, update the queue, and continue immediately. ${
+
+  return `Work on the studio branch. Process these Page Foundry briefs in order:\n${briefs}\n\nFor each page: read its complete Foundry brief; verify ontology, direct children, routes, and sidebar ancestry; put primary navigation before supporting content; build the declared academic world rather than another generic glass dashboard; make the environment vivid, semantic, and memorable; keep one clear first-viewport center of gravity; extract or register reusable Studio systems; run validation; commit the page separately; update the queue; and continue immediately. ${
     queue.settings.pauseAfterEach
       ? "Pause after each page."
       : "Do not pause between non-blocked pages."
