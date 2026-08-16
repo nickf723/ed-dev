@@ -95,20 +95,23 @@ function ShelfRecord({
     <button
       type="button"
       onClick={() => onSelect(record)}
-      className="group relative shrink-0 overflow-hidden rounded-[14px] border text-left transition duration-300 hover:-translate-y-2"
+      className="group relative shrink-0 overflow-hidden rounded-[14px] border bg-[radial-gradient(circle_at_30%_20%,rgba(244,114,182,0.13),transparent_40%),linear-gradient(145deg,#17101b,#07070b)] text-left transition duration-300 hover:-translate-y-2"
       style={{
         width: wide ? 146 : 118,
         height: wide ? 146 : 132,
         borderColor: active ? `rgba(${accentRgb},0.36)` : "rgba(255,255,255,0.08)",
-        background: active ? `rgba(${accentRgb},0.055)` : "rgba(255,255,255,0.018)",
         boxShadow: active ? `0 0 36px rgba(${accentRgb},0.11)` : undefined,
       }}
     >
       {record.imageUrl ? (
-        <img src={record.imageUrl} alt="" className="absolute inset-0 h-full w-full object-cover opacity-75 transition duration-500 group-hover:scale-105 group-hover:opacity-95" referrerPolicy="no-referrer" />
-      ) : (
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(244,114,182,0.13),transparent_40%),linear-gradient(145deg,#17101b,#07070b)]" />
-      )}
+        <img
+          src={record.imageUrl}
+          alt=""
+          className="absolute inset-0 h-full w-full object-cover opacity-75 transition duration-500 group-hover:scale-105 group-hover:opacity-95"
+          referrerPolicy="no-referrer"
+          onError={(event) => { event.currentTarget.style.display = "none"; }}
+        />
+      ) : null}
       <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
       <div className="absolute inset-x-0 bottom-0 p-3">
         <strong className="line-clamp-2 block text-[10px] leading-4 text-white">{record.title}</strong>
@@ -136,8 +139,8 @@ function MediaTile({
       className="group overflow-hidden rounded-[20px] border bg-white/[0.018] text-left transition hover:-translate-y-1"
       style={{ borderColor: active ? `rgba(${accentRgb},0.32)` : "rgba(255,255,255,0.07)" }}
     >
-      <div className="aspect-square overflow-hidden bg-black/30">
-        {record.imageUrl ? <img src={record.imageUrl} alt="" className="h-full w-full object-cover opacity-80 transition duration-500 group-hover:scale-105 group-hover:opacity-100" referrerPolicy="no-referrer" /> : <div className="h-full w-full bg-[radial-gradient(circle_at_30%_20%,rgba(244,114,182,0.13),transparent_42%),linear-gradient(145deg,#17101b,#07070b)]" />}
+      <div className="aspect-square overflow-hidden bg-[radial-gradient(circle_at_30%_20%,rgba(244,114,182,0.13),transparent_42%),linear-gradient(145deg,#17101b,#07070b)]">
+        {record.imageUrl ? <img src={record.imageUrl} alt="" className="h-full w-full object-cover opacity-80 transition duration-500 group-hover:scale-105 group-hover:opacity-100" referrerPolicy="no-referrer" onError={(event) => { event.currentTarget.style.display = "none"; }} /> : null}
       </div>
       <div className="p-3">
         <strong className="line-clamp-1 block text-[11px] text-white">{record.title}</strong>
