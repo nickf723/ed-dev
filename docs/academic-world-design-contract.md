@@ -92,7 +92,19 @@ The first viewport should not contain several equally loud systems.
 
 A Zoology hub may center an exhibit campus. An Astronomy hub may center an expedition route. A Chemistry hub may center a transformation chamber. Supporting stats, filters, and explanations should frame that object rather than compete with it.
 
-## 7. Extraction grows Studio without flattening pages
+## 7. Keep one interaction loop together
+
+A signature widget is not merely a large visual. It is a loop connecting a prompt, controls, a visible response, and an interpretable result.
+
+- Do not place a large introduction between the learner and the controls it explains.
+- Do not separate a selector from the object it changes or a result from the controls that produced it.
+- At 1440×900, the primary control-response loop should normally fit below the sticky header without requiring a scroll.
+- At 1366×768, the control and response should remain together even when supporting prose moves below.
+- Use the compact scene composition for control-rich laboratories and observatories.
+- Reserve roomy stages for navigation or exploration that does not depend on simultaneous readouts.
+- Large titles establish hierarchy, but may not consume the space required for the page's first usable action.
+
+## 8. Extraction grows Studio without flattening pages
 
 Every new academic world should leave behind reusable parameters, not a mandate to reuse its entire composition.
 
@@ -107,7 +119,7 @@ Useful extraction includes:
 
 Reuse the grammar when the relationship matches. Do not force a Zoology exhibit campus onto History merely because the component exists.
 
-## 8. Academic-world preflight
+## 9. Academic-world preflight
 
 Before a page enters review, verify:
 
@@ -116,6 +128,7 @@ Before a page enters review, verify:
 - **Meaning:** Major visual elements correspond to real subject relationships.
 - **Difference:** The page is not a recolored version of the previous page.
 - **Focus:** The first viewport has one primary object or decision.
+- **Viewport:** The primary control-response loop remains together at 1440×900 and substantially intact at 1366×768.
 - **Hierarchy:** Supporting content follows the navigation rather than obscuring it.
 - **Extraction:** Reusable ideas are registered without erasing page-specific character.
 

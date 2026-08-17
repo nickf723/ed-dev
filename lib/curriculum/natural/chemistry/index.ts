@@ -41,6 +41,8 @@ export const CHEMISTRY_CURRICULUM: CurriculumNode = {
           "Atomic Structure & Periodicity",
           "/natural-science/chemistry/general/atomic-structure",
           "Atoms, isotopes, electron configurations, periodic organization, and trends in elemental properties.",
+          undefined,
+          "active",
         ),
         node(
           "natural.chemistry.general.bonding",
@@ -79,7 +81,6 @@ export const CHEMISTRY_CURRICULUM: CurriculumNode = {
           "Oxidation-reduction, electrochemical cells, potentials, batteries, electrolysis, and electron-transfer processes.",
         ),
       ],
-      "active",
     ),
     node(
       "natural.chemistry.organic",
