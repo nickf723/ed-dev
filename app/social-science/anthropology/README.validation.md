@@ -1,1 +1,1 @@
-Anthropology parent validation marker.
+Anthropology validation marker.
