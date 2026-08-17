@@ -99,6 +99,21 @@ Rules:
 - A memorable environment can be calm. Spectacle is not measured in frame velocity.
 - Increasing blur must not be paired with stronger black overlays that erase the world.
 
+### Memorable-background gate
+
+A background must be both **exciting enough to remember and calm enough to ignore when the learner needs to focus**.
+
+- Give each subject one dominant environmental idea before adding secondary effects. A torch revealing stratigraphy, a weather field bending around pressure, or a globe carrying migration flows is stronger than six unrelated particle systems.
+- The dominant idea should be recognizable in a static screenshot. Motion enriches the scene; it cannot be the only reason the scene is interesting.
+- Prefer composed focal scenery, silhouettes, depth, layers, terrain, diagrams, or large-scale structures over evenly distributed dots, circles, generic grids, and ambient noise.
+- Decorative particles may support a scene but may not be the scene.
+- Keep most ambient cycles slow enough to read as environmental change rather than UI activity. Avoid flicker, rapid pulsing, constant full-screen response, or several equally fast systems competing at once.
+- Dense widget regions need quiet pockets. Background complexity should fall behind sustained reading and precision controls without disappearing from the rest of the viewport.
+- Excitement comes from a truthful visual transformation, reveal, scale shift, physical process, spatial metaphor, or memorable composition, not from increasing animation count.
+- Neighboring pages must differ in dominant silhouette and behavior, not merely palette.
+
+Before publishing, ask: **What single background behavior or scene would someone remember ten minutes after leaving this page?** If the answer is only “moving particles” or “a glowing grid,” the world is not finished.
+
 ---
 
 ## 6. Density and world visibility are simultaneous requirements
@@ -206,11 +221,11 @@ For each substantial page round:
 4. **NAVIGATION**: make direct descent prominent before secondary content.
 5. **QUESTION**: define one center of gravity and one learner question per signature widget.
 6. **GRAMMAR**: choose distinct visual roles for navigation, instruments, reference, metrics, and explanation.
-7. **WORLD**: choose ambient, showcase, and quiet behavior with an explicit motion budget.
+7. **WORLD**: choose one memorable environmental idea, then assign ambient, showcase, and quiet behavior with an explicit motion budget.
 8. **GLASS**: set local blur and opacity together so text separates without erasing the world.
 9. **DENSITY**: add meaningful structure while preserving visible scenery corridors.
 10. **SCALE**: verify axes, transformations, units, and comparisons.
-11. **FRAME**: test viewport budget, readability, responsive fallback, stable geometry, and before-versus-after preservation.
+11. **FRAME**: test viewport budget, readability, responsive fallback, stable geometry, background memorability, and before-versus-after preservation.
 12. **VALIDATE**: run repository checks.
 13. **PUBLISH**: commit, push to `studio`, verify the remote ref, and inspect CI.
 
@@ -228,7 +243,8 @@ A substantial development pass is done only when:
 - independent learner questions use independent widgets;
 - controls and consequences remain together;
 - the page is meaningfully dense without filler;
-- the background is visible, subject-specific, and attention-aware;
+- the background is visible, subject-specific, attention-aware, and memorable in a static composition;
+- one dominant environmental idea carries the background instead of generic ambient noise;
 - glass blur separates content without turning the page opaque;
 - reactive motion does not compete with the active task;
 - chart scales and transformations are honest and labeled;
