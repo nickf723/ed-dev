@@ -1,4 +1,11 @@
-export type PagePatternKind = "topology" | "widget" | "background" | "adapter" | "card-grammar" | "instrument";
+export type PagePatternKind =
+  | "topology"
+  | "widget"
+  | "background"
+  | "adapter"
+  | "card-grammar"
+  | "instrument"
+  | "design-token";
 
 export type PagePattern = {
   id: string;
