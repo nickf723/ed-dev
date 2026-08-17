@@ -67,11 +67,24 @@ const CHILD_META: Record<string, ChildMeta> = {
   "formal.computer-science.security": {
     icon: ShieldCheck,
     layer: "communication and trust",
-    question: "How can information move between systems without losing confidentiality or integrity?",
+    question: "How can information move without losing confidentiality or integrity?",
     rgb: "96,165,250",
     index: "06",
   },
 };
+
+const LOOP_STEPS = [
+  { number: "01", label: "Represent", note: "encode information as machine state", rgb: "52,211,153" },
+  { number: "02", label: "Transform", note: "apply a procedure under explicit rules", rgb: "34,211,238" },
+  { number: "03", label: "Execute", note: "change memory, processor, or network state", rgb: "167,139,250" },
+  { number: "04", label: "Communicate", note: "expose a result through an interface", rgb: "96,165,250" },
+] as const;
+
+const TRACE_CASES = [
+  { label: "Load a webpage", path: "network → software → hardware", rgb: "34,211,238" },
+  { label: "Train a model", path: "data → algorithm → processor", rgb: "251,146,60" },
+  { label: "Secure a message", path: "theory → software → network", rgb: "96,165,250" },
+] as const;
 
 export default function ComputerScienceHub() {
   const context = requireCurriculumPageContext(NODE_ID);
@@ -81,7 +94,7 @@ export default function ComputerScienceHub() {
       background={<ComputerScienceBackground />}
       className="bg-[#02080b] text-slate-100 selection:bg-emerald-400/25"
       maxWidthClassName="max-w-[1580px]"
-      headerBackground="rgba(2,8,11,0.60)"
+      headerBackground="rgba(2,8,11,0.52)"
       header={
         <DomainPageHeader
           breadcrumbs={context.breadcrumbs}
@@ -96,89 +109,70 @@ export default function ComputerScienceHub() {
         />
       }
     >
-      <section className="mt-5 overflow-hidden rounded-[32px] border border-emerald-100/[0.13] bg-[#020a0d]/70 shadow-[0_34px_120px_rgba(0,0,0,0.29)] backdrop-blur-lg">
-        <div className="grid border-b border-emerald-100/[0.09] lg:grid-cols-[minmax(0,1fr)_380px]">
-          <div className="p-5 sm:p-6">
-            <div className="font-mono text-[11px] font-semibold uppercase tracking-[0.13em] text-emerald-200/72">
-              Primary navigation · computing stack
-            </div>
-            <h2 className="mt-2 max-w-4xl text-[clamp(2rem,4vw,4.2rem)] font-semibold leading-[0.93] tracking-[-0.055em] text-white">
-              The same computation looks different at each layer of the machine.
-            </h2>
-            <p className="mt-3 max-w-3xl text-[14px] leading-6 text-slate-300/68">
-              These six routes are the direct children of Computer Science. Their order moves from physical execution toward abstraction, reasoning, limits, and communication without pretending the layers are independent.
-            </p>
-          </div>
-          <div className="border-t border-emerald-100/[0.08] bg-emerald-300/[0.025] p-5 lg:border-l lg:border-t-0">
-            <div className="font-mono text-[11px] font-semibold uppercase tracking-[0.10em] text-cyan-200/65">
-              Shared computation loop
-            </div>
-            <div className="mt-4 space-y-2">
-              <LoopStep number="01" label="Represent information" />
-              <LoopStep number="02" label="Apply a procedure" />
-              <LoopStep number="03" label="Change machine state" />
-              <LoopStep number="04" label="Observe and communicate the result" />
-            </div>
-          </div>
-        </div>
+      <section className="relative isolate mt-5 overflow-hidden border-y border-emerald-100/[0.12] py-5 sm:py-6">
+        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(1,10,12,0.34),rgba(1,10,12,0.10)_48%,transparent_72%)]" />
+        <div className="pointer-events-none absolute left-[61%] top-0 hidden h-full w-px bg-gradient-to-b from-transparent via-cyan-200/[0.16] to-transparent xl:block" />
 
-        <nav aria-label="Computer Science branches" className="relative">
-          <div className="pointer-events-none absolute bottom-0 left-[47px] top-0 hidden w-px bg-gradient-to-b from-emerald-300/35 via-cyan-300/24 to-blue-300/18 sm:block" />
-          <div className="divide-y divide-white/[0.07]">
-            {context.children.map((child) => (
-              <StackRow key={child.id} child={child} />
-            ))}
+        <div className="relative grid gap-5 xl:grid-cols-[minmax(0,1.08fr)_minmax(380px,0.72fr)]">
+          <div className="min-w-0">
+            <div className="max-w-4xl px-1">
+              <div className="font-mono text-[11px] font-semibold uppercase tracking-[0.13em] text-emerald-200/72">
+                Primary navigation · computing stack
+              </div>
+              <h2 className="mt-2 text-[clamp(2rem,4vw,4.1rem)] font-semibold leading-[0.93] tracking-[-0.055em] text-white">
+                Follow computation from physical state to abstract behavior.
+              </h2>
+              <p className="mt-3 max-w-3xl text-[14px] leading-6 text-slate-300/72">
+                These six routes are the direct children of Computer Science. The stack is compact enough to preserve the runtime world around it, but every destination remains unmistakably navigational.
+              </p>
+            </div>
+
+            <nav aria-label="Computer Science branches" className="relative mt-5 space-y-2.5">
+              <div className="pointer-events-none absolute bottom-5 left-[20px] top-5 hidden w-px bg-gradient-to-b from-emerald-300/38 via-cyan-300/24 to-blue-300/20 sm:block" />
+              {context.children.map((child) => (
+                <StackRow key={child.id} child={child} />
+              ))}
+            </nav>
           </div>
-        </nav>
+
+          <RuntimeMap />
+        </div>
       </section>
 
-      <section className="mt-10 grid gap-5 lg:grid-cols-[minmax(0,1fr)_420px] lg:items-end">
-        <div>
-          <div className="flex items-center gap-2 font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-cyan-200/68">
-            <Braces size={14} /> One field, several abstractions
-          </div>
-          <h2 className="mt-3 max-w-5xl text-[clamp(2rem,3.8vw,3.8rem)] font-semibold leading-[0.95] tracking-[-0.052em] text-white">
-            Abstraction hides detail so another question can become tractable.
-          </h2>
-        </div>
-        <p className="text-[14px] leading-6 text-slate-400/72">
-          A software function can ignore transistor timing. An algorithm can ignore programming syntax. Computation theory can ignore the brand of processor. The hidden details still matter, but not at every layer at once.
-        </p>
-      </section>
-
-      <section className="mt-5 overflow-hidden rounded-[24px] border-y border-white/[0.10] bg-black/[0.12] backdrop-blur-md">
-        <div className="flex flex-col gap-2 border-b border-white/[0.08] px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
+      <section className="mt-8 border-t border-white/[0.10] pt-5">
+        <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_430px] lg:items-end">
           <div>
-            <div className="font-mono text-[11px] font-semibold uppercase tracking-[0.11em] text-slate-400">
-              Field principles · reference, not navigation
+            <div className="flex items-center gap-2 font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-cyan-200/68">
+              <Braces size={14} /> Field principles · reference, not navigation
             </div>
-            <h2 className="mt-1 text-[20px] font-semibold tracking-[-0.03em] text-white">
-              Three ideas recur across every branch.
+            <h2 className="mt-2 max-w-5xl text-[clamp(1.9rem,3.6vw,3.6rem)] font-semibold leading-[0.95] tracking-[-0.052em] text-white">
+              Abstraction hides detail so another question can become tractable.
             </h2>
           </div>
-          <span className="font-mono text-[11px] uppercase tracking-[0.08em] text-slate-600">
-            no routes in this band
-          </span>
+          <p className="text-[14px] leading-6 text-slate-400/74">
+            A function can ignore transistor timing, an algorithm can ignore syntax, and computation theory can ignore the processor brand. Hidden layers still matter, but not every layer must be solved at once.
+          </p>
         </div>
-        <div className="grid md:grid-cols-3">
+
+        <div className="mt-5 grid border-y border-white/[0.08] md:grid-cols-3">
           <Principle
             icon={Binary}
             label="Representation"
-            title="A problem changes when its data structure changes."
+            title="Data structure changes the available moves."
             text="Arrays, graphs, trees, streams, machine words, and symbolic expressions expose different operations and hide different costs."
             rgb="52,211,153"
           />
           <Principle
             icon={Cpu}
             label="Execution"
-            title="A description becomes computation only through state change."
-            text="Instructions, interpreters, runtimes, processors, memory, and networks cooperate to turn formal procedures into actual behavior."
+            title="A description becomes computation through state change."
+            text="Instructions, runtimes, processors, memory, and networks cooperate to turn formal procedures into actual behavior."
             rgb="34,211,238"
           />
           <Principle
             icon={Network}
             label="Composition"
-            title="Large systems are built from contracts between smaller ones."
+            title="Large systems depend on contracts between layers."
             text="Interfaces let components cooperate without requiring every layer to understand every implementation detail beneath it."
             rgb="167,139,250"
           />
@@ -200,22 +194,27 @@ function StackRow({ child }: { child: CurriculumNode }) {
   const planned = child.status === "placeholder";
   const body = (
     <div
-      className={`group grid min-h-[104px] gap-4 px-5 py-4 sm:grid-cols-[52px_54px_220px_minmax(0,1fr)_28px] sm:items-center sm:px-6 ${
-        planned ? "opacity-58" : "transition hover:bg-white/[0.026]"
+      className={`group relative grid min-h-[78px] gap-3 overflow-hidden rounded-l-[16px] rounded-r-[30px] border px-4 py-3 sm:grid-cols-[40px_42px_185px_minmax(0,1fr)_24px] sm:items-center sm:px-5 ${
+        planned ? "opacity-58" : "transition hover:translate-x-1"
       }`}
+      style={{
+        borderColor: `rgba(${meta.rgb},${planned ? 0.08 : 0.18})`,
+        background: `linear-gradient(90deg,rgba(1,10,13,0.72),rgba(${meta.rgb},0.045) 52%,rgba(1,8,11,0.10))`,
+        boxShadow: planned ? undefined : `inset 3px 0 0 rgba(${meta.rgb},0.48)`,
+      }}
     >
-      <span className="relative z-10 flex h-8 w-8 items-center justify-center rounded-full border border-white/[0.10] bg-[#031014] font-mono text-[11px] text-slate-500">
+      <span className="relative z-10 flex h-7 w-7 items-center justify-center rounded-full border border-white/[0.10] bg-[#031014]/76 font-mono text-[11px] text-slate-500">
         {meta.index}
       </span>
       <span
-        className="flex h-11 w-11 items-center justify-center rounded-[13px] border"
+        className="flex h-10 w-10 items-center justify-center rounded-[12px] border"
         style={{
           color: `rgb(${meta.rgb})`,
-          borderColor: `rgba(${meta.rgb},0.25)`,
-          background: `rgba(${meta.rgb},0.05)`,
+          borderColor: `rgba(${meta.rgb},0.24)`,
+          background: `rgba(${meta.rgb},0.045)`,
         }}
       >
-        <Icon size={18} />
+        <Icon size={17} />
       </span>
       <span>
         <span
@@ -224,11 +223,11 @@ function StackRow({ child }: { child: CurriculumNode }) {
         >
           {meta.layer}
         </span>
-        <strong className="mt-1 block text-[18px] font-semibold text-white">
+        <strong className="mt-0.5 block text-[17px] font-semibold text-white">
           {child.label}
         </strong>
       </span>
-      <span className="text-[14px] leading-6 text-slate-400/72">
+      <span className="text-[13px] leading-5 text-slate-400/76">
         {meta.question}
       </span>
       {planned ? (
@@ -236,7 +235,7 @@ function StackRow({ child }: { child: CurriculumNode }) {
       ) : (
         <ArrowRight
           size={16}
-          className="text-white/28 transition group-hover:translate-x-1 group-hover:text-white/78"
+          className="text-white/30 transition group-hover:translate-x-1 group-hover:text-white/82"
         />
       )}
     </div>
@@ -249,12 +248,70 @@ function StackRow({ child }: { child: CurriculumNode }) {
   );
 }
 
-function LoopStep({ number, label }: { number: string; label: string }) {
+function RuntimeMap() {
   return (
-    <div className="grid grid-cols-[34px_minmax(0,1fr)] items-center gap-3 rounded-[12px] border border-white/[0.07] bg-black/[0.16] px-3 py-2.5">
-      <span className="font-mono text-[11px] text-emerald-200/58">{number}</span>
-      <span className="text-[13px] text-slate-200/76">{label}</span>
-    </div>
+    <aside className="relative min-h-[590px] overflow-hidden rounded-[30px] border border-white/[0.08] bg-black/[0.035]">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_52%_42%,rgba(34,211,238,0.08),transparent_25%),linear-gradient(180deg,rgba(2,12,15,0.14),transparent_72%)]" />
+      <div className="pointer-events-none absolute bottom-[116px] left-1/2 top-[84px] w-px -translate-x-1/2 bg-gradient-to-b from-emerald-200/[0.08] via-cyan-200/[0.32] to-blue-200/[0.10]" />
+
+      <div className="relative px-5 pt-5">
+        <div className="font-mono text-[11px] font-semibold uppercase tracking-[0.11em] text-cyan-200/68">
+          Shared computation loop
+        </div>
+        <p className="mt-2 max-w-md text-[13px] leading-5 text-slate-400/70">
+          Different branches inspect different layers of the same state-changing process.
+        </p>
+      </div>
+
+      <div className="relative mt-4 h-[350px]">
+        {LOOP_STEPS.map((step, index) => {
+          const top = 18 + index * 25;
+          const leftSide = index % 2 === 0;
+          return (
+            <div key={step.number} className="absolute inset-x-4" style={{ top: `${top}%` }}>
+              <div className="relative flex items-center justify-center">
+                <div
+                  className={`absolute w-[42%] border-t ${leftSide ? "left-[7%]" : "right-[7%]"}`}
+                  style={{ borderColor: `rgba(${step.rgb},0.18)` }}
+                />
+                <span
+                  className="relative z-10 flex h-9 w-9 items-center justify-center rounded-full border bg-[#041017]/82 font-mono text-[11px] font-semibold"
+                  style={{ color: `rgb(${step.rgb})`, borderColor: `rgba(${step.rgb},0.34)` }}
+                >
+                  {step.number}
+                </span>
+                <div
+                  className={`absolute w-[42%] max-w-[210px] rounded-[13px] border px-3 py-2 ${leftSide ? "right-[4%] text-left" : "left-[4%] text-right"}`}
+                  style={{
+                    borderColor: `rgba(${step.rgb},0.15)`,
+                    background: `linear-gradient(${leftSide ? "90deg" : "270deg"},rgba(${step.rgb},0.055),rgba(1,8,12,0.34))`,
+                  }}
+                >
+                  <strong className="block text-[13px] text-white/88">{step.label}</strong>
+                  <span className="mt-0.5 block text-[11px] leading-4 text-slate-500">{step.note}</span>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      <div className="absolute inset-x-5 bottom-5 border-t border-white/[0.08] pt-4">
+        <div className="font-mono text-[11px] font-semibold uppercase tracking-[0.10em] text-slate-500">
+          Cross-layer traces
+        </div>
+        <div className="mt-3 grid gap-2">
+          {TRACE_CASES.map((trace) => (
+            <div key={trace.label} className="grid grid-cols-[120px_minmax(0,1fr)] items-center gap-3 text-[12px]">
+              <strong className="text-slate-200/82">{trace.label}</strong>
+              <span className="border-l pl-3 font-mono text-[11px]" style={{ color: `rgba(${trace.rgb},0.72)`, borderColor: `rgba(${trace.rgb},0.22)` }}>
+                {trace.path}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </aside>
   );
 }
 
@@ -272,7 +329,8 @@ function Principle({
   rgb: string;
 }) {
   return (
-    <article className="min-h-[205px] border-b border-white/[0.07] px-5 py-5 last:border-b-0 md:border-b-0 md:border-r md:last:border-r-0">
+    <article className="relative min-h-[185px] border-b border-white/[0.07] px-5 py-5 last:border-b-0 md:border-b-0 md:border-r md:last:border-r-0">
+      <div className="absolute left-0 top-5 h-12 w-px" style={{ background: `rgba(${rgb},0.46)` }} />
       <Icon size={18} style={{ color: `rgb(${rgb})` }} />
       <div
         className="mt-4 font-mono text-[11px] font-semibold uppercase tracking-[0.10em]"
@@ -283,7 +341,7 @@ function Principle({
       <h3 className="mt-2 text-[18px] font-semibold tracking-[-0.025em] text-white">
         {title}
       </h3>
-      <p className="mt-2 text-[14px] leading-6 text-slate-400/70">{text}</p>
+      <p className="mt-2 text-[14px] leading-6 text-slate-400/72">{text}</p>
     </article>
   );
 }
