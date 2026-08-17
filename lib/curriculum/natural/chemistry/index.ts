@@ -49,6 +49,8 @@ export const CHEMISTRY_CURRICULUM: CurriculumNode = {
           "Bonding & Molecular Structure",
           "/natural-science/chemistry/general/bonding",
           "Ionic, covalent, and metallic bonding; molecular geometry; polarity; intermolecular forces; and structure-property relationships.",
+          undefined,
+          "active",
         ),
         node(
           "natural.chemistry.general.stoichiometry",

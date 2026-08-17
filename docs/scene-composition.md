@@ -21,6 +21,9 @@ Academic worlds are behavioral visual systems, not wallpapers. A page should exp
 8. A world state should respond to page state whenever the relationship is academically meaningful.
 9. Mobile layouts should include a dedicated world window instead of relying on narrow gutters.
 10. Every new world engine should support ambient, showcase, and thumbnail presentations over time.
+11. Every first viewport must expose at least one unobstructed focal behavior from the world engine. A visible color wash without readable motion or relationships does not count.
+12. Adjacent pages in the same branch must use different dominant motion grammars. Recoloring the previous page’s particles, orbits, or node field is not a new academic world.
+13. The page foreground and background should share state. When the learner changes a meaningful control, the ambient world should acknowledge the same concept whenever practical.
 
 ## Functional viewport budget
 
@@ -56,6 +59,10 @@ A signature interaction is one reasoning loop: prompt, controls, visual response
 - `elements`: identity, periodic organization, and electronic inventory
 - `structures`: bonding, geometry, and emergent material properties
 - `reactions`: collisions, rearrangement, conservation, and energy flow
+- `sharing`: covalent density distributed across nuclei
+- `transfer`: charge separation, electric fields, and ionic lattices
+- `shape`: electron-domain repulsion and molecular geometry
+- `forces`: dipole alignment, intermolecular networks, and thermal disruption
 - control-rich chemistry laboratories use the compact world-window composition
 
 ## Review loop
@@ -67,4 +74,4 @@ npm run audit:readability
 npm run build
 ```
 
-Then inspect 1440×900, 1366×768, tablet, mobile, reduced-motion, and the longest-content state before calling a page visually complete.
+Then inspect 1440×900, 1366×768, tablet, mobile, reduced-motion, and the longest-content state before calling a page visually complete. The first desktop screenshot must show both the signature interaction and at least one legible behavior from the academic world behind it.
