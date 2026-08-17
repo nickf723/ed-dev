@@ -15,6 +15,7 @@ import { RELATIVITY_CURRICULUM } from "@/lib/curriculum/natural/relativity";
 import { WAVES_OPTICS_CURRICULUM } from "@/lib/curriculum/natural/waves-optics";
 import { ECONOMICS_CURRICULUM } from "@/lib/curriculum/social/economics";
 import { LINGUISTICS_CURRICULUM } from "@/lib/curriculum/social/linguistics";
+import { SOCIOLOGY_CURRICULUM } from "@/lib/curriculum/social/sociology";
 import type { CurriculumNode } from "@/lib/curriculum/types";
 
 /**
@@ -40,6 +41,7 @@ export const CURRICULUM_MODULES: readonly CurriculumNode[] = [
   RELATIVITY_CURRICULUM,
   ECONOMICS_CURRICULUM,
   LINGUISTICS_CURRICULUM,
+  SOCIOLOGY_CURRICULUM,
   HISTORY_CURRICULUM,
   MUSIC_CURRICULUM,
   PHILOSOPHY_CURRICULUM,
