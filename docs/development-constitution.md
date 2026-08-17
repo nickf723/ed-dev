@@ -4,7 +4,7 @@ This is the operating contract for autonomous and collaborative page development
 
 The purpose is to turn repeated feedback into durable production defaults.
 
-> **A development pass is complete only when the correct parent structure exists, the learner can navigate it, the interaction is coherent, the visual system protects attention, every design gate passes simultaneously, validation succeeds, and the commit is pushed.**
+> **A development pass is complete only when the correct parent structure exists, the learner can navigate it, the interaction is coherent, the visual system protects attention, every design gate passes simultaneously, existing strengths are preserved, validation succeeds, and the commit is pushed.**
 
 ---
 
@@ -143,7 +143,43 @@ Ask:
 
 ---
 
-## 9. Validation and publishing are implementation
+## 9. Existing-page preservation is a hard gate
+
+An existing page is not a blank canvas. Its successful traits are part of the product contract.
+
+Before changing an existing page, inventory its distinctive systems:
+
+- background engine and motion grammar;
+- navigation topology and spatial composition;
+- signature widgets and interactions;
+- typography, imagery, material language, and component silhouettes;
+- useful content, data, examples, and route relationships;
+- responsive behaviors and memorable visual moments.
+
+Rules:
+
+- The requested adjustment defines the maximum scope. A request for blur, readability, spacing, navigation emphasis, or one widget fix does **not** authorize a page remaster.
+- Default to surgical evolution. Preserve the page's identity and change the smallest layer that solves the problem.
+- Do not delete, replace, flatten, or genericize a distinctive system unless the user explicitly requested its removal or the replacement preserves every valued capability and is demonstrably stronger in the same dimensions.
+- New shared conventions must wrap around successful local identity rather than overwrite it.
+- When a global rule conflicts with a page's proven strength, satisfy both through composition or a local exception. Do not silently trade one away.
+- If the value of an existing feature is uncertain, keep it and build beside it until comparison is possible.
+- Compare the before and after page, not merely the new code in isolation. A change fails when the new version is cleaner but less distinctive, less useful, less legible, less navigable, less complete, or less memorable.
+- Restoration of accidentally removed strengths takes priority over further page expansion.
+
+### Preservation gate
+
+Before publishing an existing-page change, verify:
+
+1. Which distinctive systems existed before the edit?
+2. Which were intentionally changed, and why was that within scope?
+3. Is every untouched strength still present and functioning?
+4. Does the new version add value without erasing identity?
+5. Would a user familiar with the page recognize it as an evolution rather than an unrelated replacement?
+
+---
+
+## 10. Validation and publishing are implementation
 
 A code change is not complete while it exists only as a local file, patch, unreferenced blob, draft tree, or unpushed commit.
 
@@ -160,28 +196,29 @@ Do not describe an unpublished change as made, completed, live, or implemented. 
 
 ---
 
-## 10. Production sequence
+## 11. Production sequence
 
 For each substantial page round:
 
-1. **TREE**: inspect ancestry, parent, direct children, live routes, planned routes, and registry state.
-2. **PARENT**: repair or establish the parent before deeper child expansion.
-3. **NAVIGATION**: make direct descent prominent before secondary content.
-4. **QUESTION**: define one center of gravity and one learner question per signature widget.
-5. **GRAMMAR**: choose distinct visual roles for navigation, instruments, reference, metrics, and explanation.
-6. **WORLD**: choose ambient, showcase, and quiet behavior with an explicit motion budget.
-7. **GLASS**: set local blur and opacity together so text separates without erasing the world.
-8. **DENSITY**: add meaningful structure while preserving visible scenery corridors.
-9. **SCALE**: verify axes, transformations, units, and comparisons.
-10. **FRAME**: test viewport budget, readability, responsive fallback, and stable geometry.
-11. **VALIDATE**: run repository checks.
-12. **PUBLISH**: commit, push to `studio`, verify the remote ref, and inspect CI.
+1. **PRESERVE**: inventory the existing page's distinctive systems and constrain the edit to the requested scope.
+2. **TREE**: inspect ancestry, parent, direct children, live routes, planned routes, and registry state.
+3. **PARENT**: repair or establish the parent before deeper child expansion.
+4. **NAVIGATION**: make direct descent prominent before secondary content.
+5. **QUESTION**: define one center of gravity and one learner question per signature widget.
+6. **GRAMMAR**: choose distinct visual roles for navigation, instruments, reference, metrics, and explanation.
+7. **WORLD**: choose ambient, showcase, and quiet behavior with an explicit motion budget.
+8. **GLASS**: set local blur and opacity together so text separates without erasing the world.
+9. **DENSITY**: add meaningful structure while preserving visible scenery corridors.
+10. **SCALE**: verify axes, transformations, units, and comparisons.
+11. **FRAME**: test viewport budget, readability, responsive fallback, stable geometry, and before-versus-after preservation.
+12. **VALIDATE**: run repository checks.
+13. **PUBLISH**: commit, push to `studio`, verify the remote ref, and inspect CI.
 
-No page round advances to the next target before step 12.
+No page round advances to the next target before step 13.
 
 ---
 
-## 11. Definition of done
+## 12. Definition of done
 
 A substantial development pass is done only when:
 
@@ -197,6 +234,8 @@ A substantial development pass is done only when:
 - chart scales and transformations are honest and labeled;
 - route, curriculum, sidebar, and breadcrumbs agree;
 - readability and responsive geometry meet the shared rules;
+- every successful pre-existing system outside the requested scope remains intact;
+- the page is an evolution of its established identity rather than a generic replacement;
 - every design gate passes at the same time;
 - available validation succeeds or any failure is reported precisely;
 - the commit is pushed and the remote branch is verified.
