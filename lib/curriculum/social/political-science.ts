@@ -18,6 +18,7 @@ function child(
   };
 }
 
+/** Focused Political Science subtree used by the hub, sidebar, and future child pages. */
 export const POLITICAL_SCIENCE_CURRICULUM: CurriculumNode = {
   id: "social.political-science",
   label: "Political Science",
