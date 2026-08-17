@@ -52,7 +52,9 @@ export function resolvePageRecipe(
     ...designed,
     identity: {
       ...designed.identity,
-      breadcrumbs: context?.breadcrumbs ?? designed.identity.breadcrumbs,
+      breadcrumbs: context?.breadcrumbs
+        ? [...context.breadcrumbs]
+        : designed.identity.breadcrumbs,
     },
     organization,
   };
