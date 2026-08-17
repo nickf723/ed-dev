@@ -89,9 +89,9 @@ export function ComputerScienceBackground() {
       aria-hidden="true"
     >
       <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
-      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(1,8,10,0.22),transparent_28%,transparent_76%,rgba(2,5,9,0.42))]" />
-      <div className="absolute inset-x-0 top-0 h-[21%] bg-gradient-to-b from-[#010609]/82 to-transparent" />
-      <div className="absolute inset-x-0 bottom-0 h-[20%] bg-gradient-to-t from-[#010304]/76 to-transparent" />
+      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(1,8,10,0.12),transparent_25%,transparent_80%,rgba(2,5,9,0.24))]" />
+      <div className="absolute inset-x-0 top-0 h-[21%] bg-gradient-to-b from-[#010609]/62 to-transparent" />
+      <div className="absolute inset-x-0 bottom-0 h-[20%] bg-gradient-to-t from-[#010304]/54 to-transparent" />
     </div>
   );
 }
@@ -112,14 +112,14 @@ function drawBase(
   context.save();
   context.lineWidth = 1;
   for (let x = 0; x < width; x += spacing) {
-    context.strokeStyle = "rgba(52,211,153,0.032)";
+    context.strokeStyle = "rgba(52,211,153,0.046)";
     context.beginPath();
     context.moveTo(x, 0);
     context.lineTo(x, height);
     context.stroke();
   }
   for (let y = 0; y < height; y += spacing) {
-    context.strokeStyle = "rgba(34,211,238,0.028)";
+    context.strokeStyle = "rgba(34,211,238,0.040)";
     context.beginPath();
     context.moveTo(0, y);
     context.lineTo(width, y);
@@ -146,11 +146,11 @@ function drawMemoryBanks(
     const y = top + row * rowHeight;
     const bright = row === active;
     context.fillStyle = bright
-      ? "rgba(52,211,153,0.10)"
-      : "rgba(15,23,42,0.18)";
+      ? "rgba(52,211,153,0.13)"
+      : "rgba(15,23,42,0.20)";
     context.strokeStyle = bright
-      ? "rgba(52,211,153,0.30)"
-      : "rgba(52,211,153,0.075)";
+      ? "rgba(52,211,153,0.38)"
+      : "rgba(52,211,153,0.11)";
     context.beginPath();
     context.roundRect(left, y, bankWidth, 18, 5);
     context.fill();
@@ -159,8 +159,8 @@ function drawMemoryBanks(
     for (let cell = 0; cell < 6; cell += 1) {
       const value = (row * 7 + cell * 3) % 5;
       context.fillStyle = value < 2
-        ? "rgba(52,211,153,0.18)"
-        : "rgba(148,163,184,0.045)";
+        ? "rgba(52,211,153,0.24)"
+        : "rgba(148,163,184,0.06)";
       context.fillRect(left + 12 + cell * 29, y + 6, 15, 6);
     }
   }
@@ -180,8 +180,8 @@ function drawRuntimeBus(
 
   BUS_PATHS.forEach((path, index) => {
     const y = height * path.y;
-    context.strokeStyle = `rgba(${path.rgb},0.13)`;
-    context.lineWidth = index === 0 ? 1.6 : 1.1;
+    context.strokeStyle = `rgba(${path.rgb},0.18)`;
+    context.lineWidth = index === 0 ? 1.7 : 1.2;
     context.beginPath();
     context.moveTo(startX, y);
     context.lineTo(endX, y);
@@ -190,12 +190,12 @@ function drawRuntimeBus(
     const progress = (path.phase + time * path.speed) % 1;
     const normalized = path.direction === 1 ? progress : 1 - progress;
     const x = startX + (endX - startX) * normalized;
-    const glow = context.createRadialGradient(x, y, 0, x, y, 18);
-    glow.addColorStop(0, `rgba(${path.rgb},0.68)`);
+    const glow = context.createRadialGradient(x, y, 0, x, y, 20);
+    glow.addColorStop(0, `rgba(${path.rgb},0.78)`);
     glow.addColorStop(1, `rgba(${path.rgb},0)`);
     context.fillStyle = glow;
-    context.fillRect(x - 20, y - 20, 40, 40);
-    context.fillStyle = `rgba(${path.rgb},0.82)`;
+    context.fillRect(x - 22, y - 22, 44, 44);
+    context.fillStyle = `rgba(${path.rgb},0.88)`;
     context.fillRect(x - 3, y - 3, 6, 6);
   });
   context.restore();
@@ -215,7 +215,7 @@ function drawExecutionCore(
   context.save();
   context.translate(x, y);
   context.rotate(time * 0.012);
-  context.strokeStyle = "rgba(167,139,250,0.20)";
+  context.strokeStyle = "rgba(167,139,250,0.28)";
   context.lineWidth = 1.2;
   for (let ring = 1; ring <= 3; ring += 1) {
     context.beginPath();
@@ -225,8 +225,8 @@ function drawExecutionCore(
   context.rotate(-time * 0.012);
 
   const core = context.createRadialGradient(0, 0, 0, 0, 0, radius * 1.2);
-  core.addColorStop(0, "rgba(167,139,250,0.22)");
-  core.addColorStop(0.46, "rgba(34,211,238,0.08)");
+  core.addColorStop(0, "rgba(167,139,250,0.28)");
+  core.addColorStop(0.46, "rgba(34,211,238,0.12)");
   core.addColorStop(1, "rgba(0,0,0,0)");
   context.fillStyle = core;
   context.beginPath();
@@ -239,10 +239,10 @@ function drawExecutionCore(
     const px = Math.cos(angle) * radius * 0.78;
     const py = Math.sin(angle) * radius * 0.78;
     context.fillStyle = index % 2 === 0
-      ? "rgba(34,211,238,0.45)"
-      : "rgba(167,139,250,0.42)";
+      ? "rgba(34,211,238,0.56)"
+      : "rgba(167,139,250,0.54)";
     context.beginPath();
-    context.arc(px, py, 2.3, 0, Math.PI * 2);
+    context.arc(px, py, 2.4, 0, Math.PI * 2);
     context.fill();
   }
   context.restore();
@@ -262,16 +262,16 @@ function drawNetworkPorts(
     const y = centerY + (index - 3) * 42;
     const phase = (time * 0.05 + index * 0.13) % 1;
     const x = right - phase * Math.min(240, width * 0.18);
-    context.strokeStyle = "rgba(96,165,250,0.12)";
+    context.strokeStyle = "rgba(96,165,250,0.18)";
     context.beginPath();
     context.moveTo(right, y);
     context.lineTo(right - Math.min(260, width * 0.2), y);
     context.stroke();
-    context.fillStyle = "rgba(96,165,250,0.45)";
+    context.fillStyle = "rgba(96,165,250,0.58)";
     context.beginPath();
-    context.arc(x, y, 2.2, 0, Math.PI * 2);
+    context.arc(x, y, 2.3, 0, Math.PI * 2);
     context.fill();
-    context.strokeStyle = "rgba(96,165,250,0.20)";
+    context.strokeStyle = "rgba(96,165,250,0.28)";
     context.strokeRect(right - 12, y - 7, 12, 14);
   }
   context.restore();
@@ -291,8 +291,8 @@ function drawVignette(
     Math.max(width, height) * 0.78,
   );
   vignette.addColorStop(0, "rgba(0,0,0,0)");
-  vignette.addColorStop(0.72, "rgba(0,0,0,0.08)");
-  vignette.addColorStop(1, "rgba(0,0,0,0.68)");
+  vignette.addColorStop(0.72, "rgba(0,0,0,0.05)");
+  vignette.addColorStop(1, "rgba(0,0,0,0.48)");
   context.fillStyle = vignette;
   context.fillRect(0, 0, width, height);
 }
