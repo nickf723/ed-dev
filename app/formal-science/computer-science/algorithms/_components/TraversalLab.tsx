@@ -47,8 +47,9 @@ export default function TraversalLab() {
   }
 
   return (
-    <section className="overflow-hidden rounded-[30px] border border-cyan-100/[0.13] bg-[#021014]/78 shadow-[0_28px_100px_rgba(0,0,0,0.26)] backdrop-blur-xl">
-      <div className="grid border-b border-cyan-100/[0.09] lg:grid-cols-[minmax(0,1fr)_330px]">
+    <section className="relative overflow-hidden rounded-[32px_12px_32px_12px] border border-cyan-100/[0.14] bg-black/[0.26] shadow-[0_24px_90px_rgba(0,0,0,0.22)] backdrop-blur-md">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_28%_54%,rgba(34,211,238,0.055),transparent_28%),linear-gradient(90deg,rgba(1,11,15,0.16),transparent_58%)]" />
+      <div className="relative grid border-b border-cyan-100/[0.09] lg:grid-cols-[minmax(0,1fr)_330px]">
         <div className="p-5 sm:p-6">
           <div className="flex items-center gap-2 font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-cyan-200/72">
             <Network size={14} /> Widget 01 · graph traversal
@@ -56,23 +57,23 @@ export default function TraversalLab() {
           <h2 className="mt-2 text-[clamp(1.8rem,3vw,3rem)] font-semibold tracking-[-0.045em] text-white">
             The graph stays fixed. The frontier rule changes the route.
           </h2>
-          <p className="mt-3 max-w-3xl text-[14px] leading-6 text-slate-300/68">
+          <p className="mt-3 max-w-3xl text-[14px] leading-6 text-slate-300/72">
             Breadth-first search removes the oldest discovered node from a queue. Depth-first search removes the newest discovered node from a stack. Both avoid cycles by recording discovery before expansion.
           </p>
         </div>
-        <div className="border-t border-cyan-100/[0.08] bg-cyan-300/[0.025] p-5 lg:border-l lg:border-t-0">
+        <div className="border-t border-cyan-100/[0.08] bg-black/[0.20] p-5 lg:border-l lg:border-t-0">
           <div className="font-mono text-[11px] font-semibold uppercase tracking-[0.10em] text-emerald-200/65">
             Traversal invariant
           </div>
-          <p className="mt-3 text-[13px] leading-6 text-slate-300/70">
+          <p className="mt-3 text-[13px] leading-6 text-slate-300/72">
             Every node enters the frontier at most once. The frontier contains discovered work that has not yet been expanded.
           </p>
         </div>
       </div>
 
-      <div className="grid lg:grid-cols-[minmax(0,1fr)_320px]">
+      <div className="relative grid lg:grid-cols-[minmax(0,1fr)_320px]">
         <div className="border-b border-cyan-100/[0.08] p-4 lg:border-b-0 lg:border-r sm:p-5">
-          <div className="relative min-h-[300px] overflow-hidden rounded-[22px] border border-cyan-100/[0.08] bg-[#02090d]/82">
+          <div className="relative min-h-[300px] overflow-hidden rounded-[22px_8px_22px_8px] border border-cyan-100/[0.10] bg-[#02090d]/58">
             <TraversalGraph state={state} />
           </div>
           <div className="mt-3 grid gap-2 sm:grid-cols-3">
@@ -82,7 +83,7 @@ export default function TraversalLab() {
           </div>
         </div>
 
-        <div className="bg-[#041319]/70 p-4 sm:p-5">
+        <div className="bg-black/[0.25] p-4 sm:p-5">
           <div className="flex items-center gap-2 font-mono text-[11px] font-semibold uppercase tracking-[0.10em] text-amber-200/68">
             <ListOrdered size={14} /> Frontier controls
           </div>
@@ -127,11 +128,11 @@ export default function TraversalLab() {
             onReset={reset}
           />
 
-          <div className="mt-4 rounded-[15px] border border-white/[0.08] bg-black/[0.16] p-3">
+          <div className="mt-4 border-l border-cyan-200/[0.20] pl-3">
             <div className="font-mono text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-500">
               Current discipline
             </div>
-            <p className="mt-2 text-[13px] leading-5 text-slate-300/72">
+            <p className="mt-2 text-[13px] leading-5 text-slate-300/74">
               {strategy === "bfs"
                 ? "Queue: expand the earliest discovered node first. This finds minimum-edge paths in an unweighted graph."
                 : "Stack: expand the most recently discovered node first. This follows one branch deeply before backtracking."}
@@ -207,7 +208,7 @@ function TraversalGraph({ state }: { state: TraversalState }) {
                     ? "rgba(52,211,153,0.21)"
                     : frontier
                       ? "rgba(34,211,238,0.19)"
-                      : "rgba(15,23,42,0.94)"
+                      : "rgba(15,23,42,0.82)"
               }
               stroke={
                 current
@@ -282,7 +283,7 @@ function PlaybackControls({
 
 function Readout({ label, value, rgb }: { label: string; value: string; rgb: string }) {
   return (
-    <div className="min-w-0 rounded-[13px] border border-white/[0.08] bg-black/[0.16] p-3">
+    <div className="min-w-0 border-l border-white/[0.10] bg-black/[0.12] px-3 py-2.5">
       <div className="font-mono text-[11px] font-semibold uppercase tracking-[0.07em] text-slate-500">
         {label}
       </div>
