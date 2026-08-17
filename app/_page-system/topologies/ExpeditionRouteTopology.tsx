@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { WorldSceneFocus } from "@/app/_page-system/scene/WorldDirector";
 import {
   Aperture,
   ArrowRight,
@@ -33,6 +34,7 @@ export type ExpeditionStop = {
   scaleLabel: string;
   accentRgb: string;
   icon: ExpeditionStopIcon;
+  scene?: string;
   href?: string;
   status?: "active" | "planned";
 };
@@ -42,150 +44,310 @@ export default function ExpeditionRouteTopology({
   description,
   stops,
   accentRgb = "167, 139, 250",
+  presentation = "panel",
 }: {
   title: string;
   description: string;
   stops: ExpeditionStop[];
   accentRgb?: string;
+  presentation?: "panel" | "world";
 }) {
-  return (
-    <section className="overflow-hidden rounded-[36px] border border-violet-100/[0.14] bg-[#050718]/[0.84] shadow-[0_38px_140px_rgba(0,0,0,0.42)]">
-      <div className="grid border-b border-violet-100/[0.09] bg-[#090d25]/[0.88] lg:grid-cols-[minmax(0,1fr)_330px]">
-        <div className="p-5 sm:p-7">
-          <div className="flex items-center gap-2 font-mono text-[9px] font-semibold uppercase tracking-[0.17em] text-cyan-100/65">
-            <Navigation size={13} /> Primary navigation · expedition route
-          </div>
-          <h2 className="mt-2 text-[clamp(2rem,4vw,3.8rem)] font-semibold leading-[0.92] tracking-[-0.056em] text-white">
-            {title}
-          </h2>
-          <p className="mt-3 max-w-3xl text-[11px] leading-6 text-slate-300/55">
-            {description}
-          </p>
-        </div>
-        <div className="border-t border-violet-100/[0.08] p-5 lg:border-l lg:border-t-0">
-          <div className="flex items-center gap-2 font-mono text-[8px] font-semibold uppercase tracking-[0.14em] text-violet-200/60">
-            <Compass size={12} /> Navigation principle
-          </div>
-          <p className="mt-3 text-[10px] leading-5 text-slate-400/65">
-            The route follows the direct astronomy branches outward by scale. Methods belong in the instrument bay because every destination uses them.
-          </p>
-        </div>
-      </div>
+  const route = (
+    <>
+      <div
+        className={`relative hidden overflow-hidden lg:block ${
+          presentation === "world" ? "min-h-[560px]" : "min-h-[570px]"
+        }`}
+      >
+        <RouteField
+          accentRgb={accentRgb}
+          stopCount={stops.length}
+          transparent={presentation === "world"}
+        />
 
-      <div className="relative hidden min-h-[560px] overflow-hidden lg:block">
-        <RouteField accentRgb={accentRgb} stopCount={stops.length} />
-        <div className="absolute left-[5%] top-1/2 z-20 -translate-y-1/2">
-          <div className="flex h-20 w-20 items-center justify-center rounded-full border border-cyan-100/[0.20] bg-cyan-300/[0.065] text-cyan-100 shadow-[0_0_70px_rgba(34,211,238,0.15)]">
-            <Rocket size={27} />
+        <div className="absolute left-[4.5%] top-1/2 z-20 -translate-y-1/2">
+          <div className="flex h-20 w-20 items-center justify-center rounded-full border border-cyan-100/[0.24] bg-cyan-300/[0.075] text-cyan-100 shadow-[0_0_70px_rgba(34,211,238,0.17)] backdrop-blur-md">
+            <Rocket size={28} />
           </div>
-          <div className="mt-3 text-center font-mono text-[7px] uppercase tracking-[0.13em] text-cyan-100/45">launch</div>
+          <div className="mt-3 text-center font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-cyan-100/[0.64]">
+            local launch
+          </div>
         </div>
 
         {stops.map((stop, index) => {
           const position = routePosition(index, stops.length);
           return (
             <div
-              key={stop.id}
-              className="absolute z-30 w-[210px] -translate-x-1/2 -translate-y-1/2"
+              key={`visible-${stop.id}`}
+              className="absolute z-30 w-[242px] -translate-x-1/2 -translate-y-1/2"
               style={{ left: `${position.left}%`, top: `${position.top}%` }}
             >
-              <StopBeacon stop={stop} number={index + 1} />
+              <WorldSceneFocus scene={stop.scene}>
+                <StopBeacon
+                  stop={stop}
+                  number={index + 1}
+                  presentation={presentation}
+                />
+              </WorldSceneFocus>
             </div>
           );
         })}
 
-        <div className="absolute bottom-4 left-5 right-5 z-20 flex items-center justify-between rounded-full border border-violet-100/[0.08] bg-[#070a18]/80 px-5 py-3 font-mono text-[7px] uppercase tracking-[0.12em] text-violet-100/30 backdrop-blur-md">
-          <span>local worlds</span>
-          <span>stars · galaxies · large-scale structure</span>
-          <span>observable universe</span>
+        <div
+          className={`absolute bottom-4 left-5 right-5 z-20 grid grid-cols-5 rounded-[18px] border px-5 py-3 font-mono text-[11px] font-semibold uppercase tracking-[0.09em] backdrop-blur-md ${
+            presentation === "world"
+              ? "border-white/[0.10] bg-black/[0.22] text-white/[0.48]"
+              : "border-violet-100/[0.10] bg-[#070a18]/[0.78] text-violet-100/[0.44]"
+          }`}
+        >
+          <span>world</span>
+          <span className="text-center">star</span>
+          <span className="text-center">galaxy</span>
+          <span className="text-center">cosmic web</span>
+          <span className="text-right">universe</span>
         </div>
       </div>
 
       <div className="grid gap-3 p-4 sm:grid-cols-2 lg:hidden">
-        <div className="flex items-center gap-3 rounded-[20px] border border-cyan-100/[0.12] bg-cyan-300/[0.035] p-4 sm:col-span-2">
-          <span className="flex h-11 w-11 items-center justify-center rounded-full border border-cyan-100/[0.15] text-cyan-100"><Rocket size={17} /></span>
-          <div><strong className="text-[11px] text-white">Expedition launch</strong><p className="mt-1 text-[8px] leading-4 text-slate-500">Choose the scale of system you want to investigate.</p></div>
+        <div className="flex items-center gap-4 rounded-[20px] border border-cyan-100/[0.14] bg-black/[0.20] p-5 backdrop-blur-md sm:col-span-2">
+          <span className="flex h-12 w-12 items-center justify-center rounded-full border border-cyan-100/[0.18] text-cyan-100">
+            <Rocket size={19} />
+          </span>
+          <div>
+            <strong className="text-[15px] text-white">Begin near home</strong>
+            <p className="mt-1 text-[13px] leading-5 text-slate-300/[0.68]">
+              Move outward as the system under study becomes larger.
+            </p>
+          </div>
         </div>
-        {stops.map((stop, index) => <StopBeacon key={stop.id} stop={stop} number={index + 1} />)}
+        {stops.map((stop, index) => (
+          <WorldSceneFocus key={stop.id} scene={stop.scene}>
+            <StopBeacon
+              stop={stop}
+              number={index + 1}
+              presentation={presentation}
+            />
+          </WorldSceneFocus>
+        ))}
       </div>
+    </>
+  );
+
+  if (presentation === "world") return <div className="relative">{route}</div>;
+
+  return (
+    <section className="overflow-hidden rounded-[36px] border border-violet-100/[0.14] bg-[#050718]/[0.70] shadow-[0_38px_140px_rgba(0,0,0,0.34)] backdrop-blur-xl">
+      <div className="grid border-b border-violet-100/[0.10] bg-[#090d25]/[0.70] lg:grid-cols-[minmax(0,1fr)_360px]">
+        <div className="p-6 sm:p-8">
+          <div className="flex items-center gap-2 font-mono text-[11px] font-semibold uppercase tracking-[0.14em] text-cyan-100/[0.72]">
+            <Navigation size={14} /> Direct branches by physical scale
+          </div>
+          <h2 className="mt-3 text-[clamp(2.1rem,4vw,4rem)] font-semibold leading-[0.94] tracking-[-0.055em] text-white">
+            {title}
+          </h2>
+          <p className="mt-4 max-w-4xl text-[15px] leading-7 text-slate-300/[0.70]">
+            {description}
+          </p>
+        </div>
+        <div className="border-t border-violet-100/[0.09] p-6 lg:border-l lg:border-t-0 lg:p-7">
+          <div className="flex items-center gap-2 font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-violet-200/[0.68]">
+            <Compass size={13} /> Organizing principle
+          </div>
+          <p className="mt-3 text-[13px] leading-6 text-slate-300/[0.62]">
+            Each step changes the size of the system, the useful timescale, and the
+            model that can explain it. Methods remain shared across the entire route.
+          </p>
+        </div>
+      </div>
+      {route}
     </section>
   );
 }
 
-function StopBeacon({ stop, number }: { stop: ExpeditionStop; number: number }) {
+function StopBeacon({
+  stop,
+  number,
+  presentation,
+}: {
+  stop: ExpeditionStop;
+  number: number;
+  presentation: "panel" | "world";
+}) {
   const Icon = STOP_ICONS[stop.icon];
   const active = stop.status !== "planned" && Boolean(stop.href);
   const body = (
     <article
-      className={`group relative min-h-[166px] overflow-hidden rounded-[22px] border p-4 text-left backdrop-blur-md transition ${
+      className={`group relative min-h-[194px] overflow-hidden rounded-[23px] border p-5 text-left backdrop-blur-md transition ${
         active
-          ? "border-white/[0.11] bg-[#0b1028]/92 hover:-translate-y-1 hover:border-white/[0.20]"
-          : "border-white/[0.06] bg-[#070a17]/88 opacity-55"
+          ? presentation === "world"
+            ? "border-white/[0.14] bg-[#071020]/[0.48] hover:-translate-y-1 hover:border-white/[0.26] hover:bg-[#071020]/[0.64]"
+            : "border-white/[0.12] bg-[#0b1028]/[0.88] hover:-translate-y-1 hover:border-white/[0.22]"
+          : "border-white/[0.07] bg-[#070a17]/[0.64] opacity-[0.62]"
       }`}
-      style={{ boxShadow: active ? `0 18px 60px rgba(${stop.accentRgb},0.10)` : undefined }}
+      style={{
+        boxShadow: active
+          ? `0 20px 65px rgba(${stop.accentRgb},${presentation === "world" ? 0.09 : 0.12})`
+          : undefined,
+      }}
     >
       <div className="flex items-start justify-between gap-3">
         <span
           className="relative flex h-12 w-12 items-center justify-center rounded-full border"
           style={{
             color: `rgb(${stop.accentRgb})`,
-            borderColor: `rgba(${stop.accentRgb},0.30)`,
-            background: `radial-gradient(circle,rgba(${stop.accentRgb},0.14),rgba(4,7,20,0.9))`,
-            boxShadow: `0 0 30px rgba(${stop.accentRgb},0.13)`,
+            borderColor: `rgba(${stop.accentRgb},0.34)`,
+            background: `radial-gradient(circle,rgba(${stop.accentRgb},0.18),rgba(4,7,20,0.62))`,
+            boxShadow: `0 0 34px rgba(${stop.accentRgb},0.15)`,
           }}
         >
-          <Icon size={18} />
-          <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full border border-white/[0.10] bg-[#090d20] font-mono text-[6px] text-white/50">{String(number).padStart(2, "0")}</span>
+          <Icon size={20} />
+          <span className="absolute -right-1 -top-1 flex h-6 w-6 items-center justify-center rounded-full border border-white/[0.13] bg-[#090d20]/90 font-mono text-[11px] text-white/[0.68]">
+            {String(number).padStart(2, "0")}
+          </span>
         </span>
-        {active ? <ArrowRight size={13} className="mt-2 text-white/25 transition group-hover:translate-x-1 group-hover:text-white/70" /> : <CircleDashed size={13} className="mt-2 text-white/18" />}
+        {active ? (
+          <ArrowRight
+            size={15}
+            className="mt-2 text-white/[0.32] transition group-hover:translate-x-1 group-hover:text-white/[0.78]"
+          />
+        ) : (
+          <CircleDashed size={15} className="mt-2 text-white/[0.24]" />
+        )}
       </div>
-      <div className="mt-4 font-mono text-[7px] uppercase tracking-[0.10em]" style={{ color: `rgba(${stop.accentRgb},0.60)` }}>{stop.scaleLabel}</div>
-      <h3 className="mt-1 text-[13px] font-semibold text-white">{stop.label}</h3>
-      <p className="mt-1.5 line-clamp-3 text-[8px] leading-4 text-slate-500">{stop.summary}</p>
-      <div className="mt-3 flex items-center gap-1.5 font-mono text-[7px] uppercase tracking-[0.09em] text-slate-700">
-        {active ? <Flag size={9} /> : <CircleDashed size={9} />} {active ? "open waypoint" : "planned waypoint"}
+      <div
+        className="mt-4 font-mono text-[11px] font-semibold uppercase tracking-[0.08em]"
+        style={{ color: `rgba(${stop.accentRgb},0.76)` }}
+      >
+        {stop.scaleLabel}
+      </div>
+      <h3 className="mt-2 text-[18px] font-semibold text-white">{stop.label}</h3>
+      <p className="mt-2 line-clamp-3 text-[13px] leading-5 text-slate-200/[0.68]">
+        {stop.summary}
+      </p>
+      <div className="mt-4 flex items-center gap-1.5 font-mono text-[11px] font-semibold uppercase tracking-[0.07em] text-slate-400/[0.72]">
+        {active ? <Flag size={11} /> : <CircleDashed size={11} />} {active ? "open field" : "planned field"}
       </div>
     </article>
   );
 
-  return active && stop.href ? <Link href={stop.href}>{body}</Link> : <div aria-disabled="true">{body}</div>;
+  return active && stop.href ? (
+    <Link href={stop.href}>{body}</Link>
+  ) : (
+    <div aria-disabled="true">{body}</div>
+  );
 }
 
 function routePosition(index: number, count: number) {
-  const start = 18;
+  const start = 17;
   const end = 90;
   const left = count <= 1 ? 54 : start + (index / (count - 1)) * (end - start);
-  const wave = [28, 68, 22, 64, 30, 60];
+  const wave = [30, 68, 25, 65, 32, 61];
   return { left, top: wave[index % wave.length] };
 }
 
-function RouteField({ accentRgb, stopCount }: { accentRgb: string; stopCount: number }) {
-  const points = Array.from({ length: stopCount }, (_, index) => routePosition(index, stopCount));
+function RouteField({
+  accentRgb,
+  stopCount,
+  transparent,
+}: {
+  accentRgb: string;
+  stopCount: number;
+  transparent: boolean;
+}) {
+  const points = Array.from({ length: stopCount }, (_, index) =>
+    routePosition(index, stopCount),
+  );
   const path = points.length
-    ? `M 60 280 ${points.map((point, index) => `${index === 0 ? "Q" : "T"} ${point.left * 12 - 35} ${point.top * 5.6} ${point.left * 12} ${point.top * 5.6}`).join(" ")}`
-    : "M 60 280 L 1120 280";
+    ? `M 56 285 ${points
+        .map(
+          (point, index) =>
+            `${index === 0 ? "Q" : "T"} ${point.left * 12 - 34} ${point.top * 5.7} ${point.left * 12} ${point.top * 5.7}`,
+        )
+        .join(" ")}`
+    : "M 56 285 L 1120 285";
 
   return (
     <div className="absolute inset-0" aria-hidden="true">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_8%_50%,rgba(34,211,238,0.12),transparent_20%),radial-gradient(circle_at_82%_28%,rgba(192,132,252,0.11),transparent_32%),linear-gradient(180deg,#040616,#070820_55%,#03040d)]" />
-      <svg viewBox="0 0 1200 560" preserveAspectRatio="none" className="absolute inset-0 h-full w-full">
+      <div
+        className={`absolute inset-0 ${
+          transparent
+            ? "bg-[linear-gradient(180deg,rgba(4,6,22,0.10),transparent_34%,transparent_70%,rgba(3,4,13,0.22))]"
+            : "bg-[linear-gradient(180deg,rgba(4,6,22,0.74),rgba(7,8,32,0.62)_55%,rgba(3,4,13,0.80))]"
+        }`}
+      />
+      <svg
+        viewBox="0 0 1200 570"
+        preserveAspectRatio="none"
+        className="absolute inset-0 h-full w-full"
+      >
         <defs>
           <linearGradient id="expedition-route" x1="0" x2="1">
-            <stop offset="0" stopColor="rgba(34,211,238,0.42)" />
-            <stop offset="0.52" stopColor={`rgba(${accentRgb},0.48)`} />
-            <stop offset="1" stopColor="rgba(244,114,182,0.40)" />
+            <stop offset="0" stopColor="rgba(34,211,238,0.58)" />
+            <stop offset="0.52" stopColor={`rgba(${accentRgb},0.62)`} />
+            <stop offset="1" stopColor="rgba(244,114,182,0.56)" />
+          </linearGradient>
+          <linearGradient id="scale-cone" x1="0" x2="1">
+            <stop offset="0" stopColor="rgba(34,211,238,0.07)" />
+            <stop offset="0.65" stopColor={`rgba(${accentRgb},0.045)`} />
+            <stop offset="1" stopColor="rgba(244,114,182,0.07)" />
           </linearGradient>
         </defs>
-        <path d={path} fill="none" stroke="rgba(255,255,255,0.045)" strokeWidth="18" strokeLinecap="round" />
-        <path d={path} fill="none" stroke="url(#expedition-route)" strokeWidth="2" strokeDasharray="7 10" strokeLinecap="round" className="animate-[expedition-dash_18s_linear_infinite]" />
-        <ellipse cx="172" cy="282" rx="90" ry="34" fill="none" stroke="rgba(34,211,238,0.11)" transform="rotate(-17 172 282)" />
-        <ellipse cx="876" cy="182" rx="176" ry="48" fill="none" stroke={`rgba(${accentRgb},0.09)`} transform="rotate(18 876 182)" />
-        <path d="M-40 480 C230 360 356 550 610 430 S980 340 1260 458" fill="none" stroke="rgba(129,140,248,0.055)" strokeWidth="2" />
+
+        <path
+          d="M50 285 L1165 45 L1165 525 Z"
+          fill="url(#scale-cone)"
+          stroke="rgba(255,255,255,0.045)"
+        />
+        {[160, 360, 580, 800, 1020].map((x, index) => (
+          <g key={x}>
+            <line
+              x1={x}
+              y1="62"
+              x2={x}
+              y2="508"
+              stroke="rgba(255,255,255,0.055)"
+              strokeDasharray="3 12"
+            />
+            <line
+              x1={x - 13}
+              y1={82 + index * 13}
+              x2={x + 13}
+              y2={82 + index * 13}
+              stroke="rgba(255,255,255,0.10)"
+            />
+          </g>
+        ))}
+        <path
+          d={path}
+          fill="none"
+          stroke="rgba(255,255,255,0.055)"
+          strokeWidth="20"
+          strokeLinecap="round"
+        />
+        <path
+          d={path}
+          fill="none"
+          stroke="url(#expedition-route)"
+          strokeWidth="2.4"
+          strokeDasharray="8 11"
+          strokeLinecap="round"
+          className="expedition-route-motion"
+        />
       </svg>
-      <div className="absolute inset-0 opacity-55" style={{ backgroundImage: "radial-gradient(circle,rgba(255,255,255,0.28) 0 1px,transparent 1.5px)", backgroundSize: "74px 74px", maskImage: "radial-gradient(circle at center,black,transparent 86%)" }} />
       <style jsx>{`
-        @keyframes expedition-dash { to { stroke-dashoffset: -220; } }
-        @media (prefers-reduced-motion: reduce) { path { animation: none !important; } }
+        @keyframes expedition-route-motion {
+          to {
+            stroke-dashoffset: -240;
+          }
+        }
+        .expedition-route-motion {
+          animation: expedition-route-motion 18s linear infinite;
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .expedition-route-motion {
+            animation: none !important;
+          }
+        }
       `}</style>
     </div>
   );

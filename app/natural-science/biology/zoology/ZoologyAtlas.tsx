@@ -2,6 +2,9 @@
 
 import { useMemo, useState, type FormEvent } from "react";
 import DomainPageHeader from "@/app/_components/DomainPageHeader";
+import SceneFrame from "@/app/_page-system/scene/SceneFrame";
+import Surface from "@/app/_page-system/scene/Surface";
+import WorldWindow from "@/app/_page-system/scene/WorldWindow";
 import ExhibitCampusTopology, {
   type ExhibitDestination,
 } from "@/app/_page-system/topologies/ExhibitCampusTopology";
@@ -9,7 +12,6 @@ import type { DesignPaletteRoles } from "@/lib/design-system/schema";
 import {
   Activity,
   Bone,
-  Dna,
   GitBranch,
   Map as MapIcon,
   Microscope,
@@ -24,7 +26,6 @@ import ZoologyControls, { type SortMode } from "./ZoologyControls";
 import ZoologyAnimalGrid from "./ZoologyAnimalGrid";
 import { useAnimalAtlas } from "./useAnimalAtlas";
 import {
-  ANIMAL_SEEDS,
   ZOOLOGY_COLLECTIONS,
   ZOOLOGY_COLLECTION_BY_ID,
   ZOOLOGY_LENSES,
@@ -52,6 +53,27 @@ const BRANCH_STYLE = [
   { match: "ethology", icon: Activity, rgb: "250, 204, 21" },
   { match: "paleozoology", icon: Bone, rgb: "244, 114, 182" },
 ];
+
+const ZOOLOGY_SCENES = [
+  {
+    id: "habitat",
+    label: "Habitat",
+    description: "Follow movement through climate, terrain, water, and available resources.",
+    accentRgb: "52, 211, 153",
+  },
+  {
+    id: "lineage",
+    label: "Lineage",
+    description: "Reveal inherited structure as a branching history of shared traits.",
+    accentRgb: "34, 211, 238",
+  },
+  {
+    id: "ecology",
+    label: "Ecology",
+    description: "Watch energy, predation, mutualism, and decomposition connect a community.",
+    accentRgb: "250, 204, 21",
+  },
+] as const;
 
 export default function ZoologyAtlas({ palette, branches }: Props) {
   const [lens, setLens] = useState<ZoologyLens>("habitat");
@@ -217,129 +239,136 @@ export default function ZoologyAtlas({ palette, branches }: Props) {
   }
 
   return (
-    <main
-      className="relative min-h-screen overflow-x-hidden selection:bg-emerald-400/[0.24]"
+    <SceneFrame
+      background={
+        <ZoologyBackground
+          accentRgb={collection.accentRgb}
+          environment={collection.environment}
+        />
+      }
+      className="selection:bg-emerald-400/[0.24]"
+      maxWidthClassName="max-w-[1640px]"
+      headerBackground={`rgba(${palette.background},0.56)`}
       style={{
         background: `rgb(${palette.background})`,
         color: `rgb(${palette.text})`,
       }}
+      header={
+        <DomainPageHeader
+          breadcrumbs={[
+            { label: "Natural Science", href: "/natural-science" },
+            { label: "Biology", href: "/natural-science/biology" },
+            { label: "Zoology" },
+          ]}
+          eyebrow="Animal diversity · anatomy · behavior · ecological relationships"
+          eyebrowStyle="rule"
+          icon={PawPrint}
+          title={<span>Zoology</span>}
+          subtitle="Study animals through the structures they inherit, the environments they inhabit, and the relationships they create inside living communities."
+          accentRgb={palette.primary}
+          titleClassName="font-sans text-[clamp(3rem,5.6vw,6.4rem)] font-semibold leading-[0.82] tracking-[-0.065em] text-[#f4fff7]"
+          headerClassName="border-white/[0.08]"
+        />
+      }
     >
-      <ZoologyBackground
-        accentRgb={collection.accentRgb}
-        environment={collection.environment}
-      />
-
-      <div className="relative z-10 mx-auto w-full max-w-[1640px] px-4 pb-14 sm:px-6 xl:px-8">
-        <div
-          className="sticky top-0 z-40 -mx-4 border-b border-emerald-50/[0.08] px-4 pb-3 pt-5 shadow-[0_18px_55px_rgba(0,0,0,0.26)] backdrop-blur-2xl sm:-mx-6 sm:px-6 xl:-mx-8 xl:px-8"
-          style={{ background: `rgba(${palette.background},0.78)` }}
+      <section className="mt-5">
+        <WorldWindow
+          eyebrow="Living world · research pavilions · overlapping biological maps"
+          title="Enter zoology through a living system, not a filing cabinet."
+          description="The pavilions are direct academic branches. The central atlas reorganizes the same animals through habitat, lineage, and ecology without burying the living simulation behind another wall of cards."
+          scenes={[...ZOOLOGY_SCENES]}
+          activeScene={lens}
+          onSceneChange={(scene) => chooseLens(scene as ZoologyLens)}
         >
-          <DomainPageHeader
-            breadcrumbs={[
-              { label: "Natural Science", href: "/natural-science" },
-              { label: "Biology", href: "/natural-science/biology" },
-              { label: "Zoology" },
-            ]}
-            eyebrow="Living collection · research pavilions · field evidence"
-            eyebrowStyle="rule"
-            icon={PawPrint}
-            title={<span>Zoology</span>}
-            subtitle="Enter the animal kingdom as a conservation park: direct research branches form the pavilions, while the central atlas lets the same species reappear across habitats, lineages, and ecological roles."
-            accentRgb={palette.primary}
-            titleClassName="font-sans text-[clamp(2.8rem,5.4vw,6.2rem)] font-semibold leading-[0.82] tracking-[-0.065em] text-[#f4fff7]"
-            headerClassName="border-white/[0.08]"
-          />
-        </div>
-
-        <section className="mt-5">
           <ExhibitCampusTopology
-            title="Choose a zoology pavilion before entering the exhibits."
-            description="Animal Diversity, Comparative Zoology, Ethology, and Paleozoology are the direct academic branches. Their placement around one shared habitat makes the hierarchy visible before the collection browser begins."
+            title="Enter one of zoology’s research pavilions."
+            description="Animal Diversity, Comparative Zoology, Ethology, and Paleozoology are the direct branches."
             centerLabel="Living Animal Atlas"
-            centerSummary="Browse species as overlapping sets. Habitat shows environmental constraints; lineage shows inherited structure; ecology shows the work an animal performs in a community."
+            centerSummary="Browse the same species through habitat, lineage, and ecological role. Each lens reveals a different relationship while preserving the animal itself."
             destinations={destinations}
             accentRgb={palette.primary}
+            presentation="world"
           />
-        </section>
+        </WorldWindow>
+      </section>
 
-        <section className="mt-6 grid gap-4 xl:grid-cols-[minmax(0,1fr)_390px] xl:items-end">
-          <div>
-            <div className="flex items-center gap-2 font-mono text-[9px] font-semibold uppercase tracking-[0.16em] text-amber-100/60">
-              <MapIcon size={12} /> Exhibit districts
-            </div>
-            <h2 className="mt-2 max-w-4xl text-[clamp(1.8rem,3.4vw,3.2rem)] font-semibold leading-[0.96] tracking-[-0.045em] text-white">
-              The same animal belongs in several parts of the park.
-            </h2>
-            <p className="mt-3 max-w-3xl text-[12px] leading-6 text-emerald-50/52">
-              A jaguar is simultaneously a rainforest animal, a mammal, and an apex predator. Change the district map to reveal a different biological relationship without changing the animal itself.
-            </p>
-          </div>
-          <div className="grid grid-cols-3 gap-2">
-            <MiniStat label="Curated species" value={String(ANIMAL_SEEDS.length)} rgb={palette.primary} />
-            <MiniStat label="Exhibits" value={String(ZOOLOGY_COLLECTIONS.length)} rgb={palette.secondary} />
-            <MiniStat label="Live records" value={String(liveCount)} rgb={palette.tertiary} />
-          </div>
-        </section>
+      <section className="mt-10 max-w-5xl">
+        <div className="flex items-center gap-2 font-mono text-[11px] font-semibold uppercase tracking-[0.13em] text-amber-100/[0.72]">
+          <MapIcon size={14} /> One animal, several biological maps
+        </div>
+        <h2 className="mt-3 text-[clamp(2rem,3.8vw,3.7rem)] font-semibold leading-[0.96] tracking-[-0.048em] text-white">
+          Change the organizing question, not the animal.
+        </h2>
+        <p className="mt-4 max-w-4xl text-[16px] leading-7 text-emerald-50/[0.72]">
+          A jaguar is simultaneously a rainforest animal, a mammal, and an apex
+          predator. The atlas lets those memberships overlap instead of forcing
+          every species into one permanent drawer.
+        </p>
+      </section>
 
-        <section className="mt-5 grid gap-4 xl:grid-cols-[280px_minmax(0,1fr)]">
-          <ZoologyCollectionRail
-            lenses={ZOOLOGY_LENSES}
-            lens={lens}
-            collections={collections}
-            activeId={collection.id}
-            onLens={chooseLens}
-            onCollection={chooseCollection}
+      <section className="mt-7 grid gap-5 xl:grid-cols-[310px_minmax(0,1fr)]">
+        <ZoologyCollectionRail
+          lenses={ZOOLOGY_LENSES}
+          lens={lens}
+          collections={collections}
+          activeId={collection.id}
+          onLens={chooseLens}
+          onCollection={chooseCollection}
+        />
+
+        <div className="min-w-0">
+          <CollectionHeader
+            collection={collection}
+            lensLabel={activeLens.label}
+            lensQuestion={activeLens.question}
+            count={animals.length}
+            liveCount={liveCount}
+            overlaps={overlaps}
+            onOverlap={chooseCollection}
           />
 
-          <div className="min-w-0">
-            <CollectionHeader
-              collection={collection}
-              lensQuestion={activeLens.question}
-              count={animals.length}
-              liveCount={liveCount}
-              overlaps={overlaps}
-              onOverlap={chooseCollection}
+          <div className="mt-4">
+            <ZoologyControls
+              query={query}
+              classFilter={classFilter}
+              classes={classes}
+              sort={sort}
+              searching={loading}
+              onQuery={setQuery}
+              onSearch={submitSearch}
+              onClear={() => void resetSearch()}
+              onClass={setClassFilter}
+              onSort={setSort}
+              onRefresh={() => refresh()}
             />
-
-            <div className="mt-4">
-              <ZoologyControls
-                query={query}
-                classFilter={classFilter}
-                classes={classes}
-                sort={sort}
-                searching={loading}
-                onQuery={setQuery}
-                onSearch={submitSearch}
-                onClear={() => void resetSearch()}
-                onClass={setClassFilter}
-                onSort={setSort}
-                onRefresh={() => refresh()}
-              />
-            </div>
-
-            {mode.kind === "search" ? (
-              <div className="mt-3 flex flex-col gap-2 rounded-[14px] border border-cyan-300/[0.12] bg-[#071b1d]/75 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
-                <span className="flex items-center gap-2 text-[9px] text-cyan-100/[0.68]">
-                  <Search size={12} /> Global animal search · {animals.length} taxon records
-                </span>
-                <button type="button" onClick={() => void resetSearch()} className="text-left text-[8px] font-semibold uppercase tracking-[0.12em] text-cyan-200 sm:text-right">
-                  Return to {collection.label}
-                </button>
-              </div>
-            ) : null}
-
-            <div className="mt-4">
-              <ZoologyAnimalGrid
-                animals={visible}
-                loading={loading}
-                error={error}
-                accentRgb={collection.accentRgb}
-                onSelect={setSelected}
-              />
-            </div>
           </div>
-        </section>
-      </div>
+
+          {mode.kind === "search" ? (
+            <div className="mt-3 flex flex-col gap-2 rounded-[15px] border border-cyan-300/[0.14] bg-[#071b1d]/[0.58] px-4 py-3 backdrop-blur-md sm:flex-row sm:items-center sm:justify-between">
+              <span className="flex items-center gap-2 text-[13px] text-cyan-100/[0.76]">
+                <Search size={14} /> Global animal search · {animals.length} taxon records
+              </span>
+              <button
+                type="button"
+                onClick={() => void resetSearch()}
+                className="text-left text-[12px] font-semibold text-cyan-200 sm:text-right"
+              >
+                Return to {collection.label}
+              </button>
+            </div>
+          ) : null}
+
+          <div className="mt-4">
+            <ZoologyAnimalGrid
+              animals={visible}
+              loading={loading}
+              error={error}
+              accentRgb={collection.accentRgb}
+              onSelect={setSelected}
+            />
+          </div>
+        </div>
+      </section>
 
       {selected ? (
         <ZoologyModal
@@ -349,12 +378,13 @@ export default function ZoologyAtlas({ palette, branches }: Props) {
           onSelectRelated={setSelected}
         />
       ) : null}
-    </main>
+    </SceneFrame>
   );
 }
 
 function CollectionHeader({
   collection,
+  lensLabel,
   lensQuestion,
   count,
   liveCount,
@@ -362,6 +392,7 @@ function CollectionHeader({
   onOverlap,
 }: {
   collection: ZoologyCollection;
+  lensLabel: string;
   lensQuestion: string;
   count: number;
   liveCount: number;
@@ -369,55 +400,73 @@ function CollectionHeader({
   onOverlap: (collection: ZoologyCollection) => void;
 }) {
   return (
-    <div className="overflow-hidden rounded-[30px] border border-amber-100/[0.12] bg-[#16231a]/[0.88] shadow-[0_30px_100px_rgba(0,0,0,0.28)]">
-      <div className="grid lg:grid-cols-[minmax(0,1fr)_340px]">
-        <div className="relative p-6 sm:p-7">
-          <div className="absolute inset-x-0 top-0 h-1" style={{ background: `linear-gradient(90deg,rgba(${collection.accentRgb},0.82),transparent)` }} />
-          <div className="flex items-center gap-2 font-mono text-[8px] font-semibold uppercase tracking-[0.15em]" style={{ color: `rgba(${collection.accentRgb},0.74)` }}>
-            <Sparkles size={11} /> {lensQuestion}
+    <Surface variant="glass" className="overflow-hidden rounded-[30px] border-amber-100/[0.14] bg-[#16231a]/[0.58]">
+      <div className="grid lg:grid-cols-[minmax(0,1fr)_370px]">
+        <div className="relative p-6 sm:p-8">
+          <div
+            className="absolute inset-x-0 top-0 h-1"
+            style={{
+              background: `linear-gradient(90deg,rgba(${collection.accentRgb},0.88),transparent)`,
+            }}
+          />
+          <div
+            className="flex items-center gap-2 font-mono text-[11px] font-semibold uppercase tracking-[0.13em]"
+            style={{ color: `rgba(${collection.accentRgb},0.78)` }}
+          >
+            <Sparkles size={13} /> {lensLabel} · {lensQuestion}
           </div>
-          <h2 className="mt-3 text-[clamp(2rem,4vw,4.4rem)] font-semibold leading-[0.9] tracking-[-0.055em] text-[#fff9e8]">
+          <h2 className="mt-3 text-[clamp(2.4rem,4.5vw,4.8rem)] font-semibold leading-[0.9] tracking-[-0.055em] text-[#fff9e8]">
             {collection.label}
           </h2>
-          <p className="mt-3 max-w-3xl text-[12px] leading-6 text-emerald-50/48">
+          <p className="mt-4 max-w-3xl text-[15px] leading-7 text-emerald-50/[0.68]">
             {collection.description}
           </p>
-          <div className="mt-5 flex flex-wrap gap-2 font-mono text-[7px] uppercase tracking-[0.1em] text-amber-50/30">
-            <span>{count} records</span><span>·</span><span>{liveCount} live</span><span>·</span><span>{collection.speciesIds.length} curated members</span>
+          <div className="mt-6 flex flex-wrap gap-x-3 gap-y-1 font-mono text-[11px] font-semibold uppercase tracking-[0.09em] text-amber-50/[0.42]">
+            <span>{count} records</span>
+            <span>·</span>
+            <span>{liveCount} live records</span>
+            <span>·</span>
+            <span>{collection.speciesIds.length} curated members</span>
           </div>
         </div>
 
-        <div className="border-t border-amber-100/[0.10] bg-[#222719]/70 p-5 lg:border-l lg:border-t-0">
-          <div className="font-mono text-[8px] font-semibold uppercase tracking-[0.14em] text-amber-100/48">Trail connections</div>
-          <p className="mt-2 text-[9px] leading-4 text-amber-50/32">Take a cross-trail into another district without losing the shared species.</p>
-          <div className="mt-3 space-y-1.5">
-            {overlaps.length ? overlaps.map(({ item, count: overlapCount }) => (
-              <button key={item.id} type="button" onClick={() => onOverlap(item)} className="group flex w-full items-center justify-between rounded-[10px] border border-amber-100/[0.08] bg-black/[0.16] px-3 py-2.5 text-left hover:border-amber-100/[0.16] hover:bg-black/[0.24]">
-                <span className="text-[9px] text-amber-50/44 group-hover:text-amber-50/78">{item.label}</span>
-                <span className="font-mono text-[8px]" style={{ color: `rgb(${item.accentRgb})` }}>{overlapCount} shared</span>
-              </button>
-            )) : <span className="text-[9px] text-amber-50/25">No curated cross-trail yet.</span>}
+        <div className="border-t border-amber-100/[0.10] bg-[#222719]/[0.62] p-5 lg:border-l lg:border-t-0 lg:p-6">
+          <div className="font-mono text-[11px] font-semibold uppercase tracking-[0.13em] text-amber-100/[0.58]">
+            Cross-lens connections
+          </div>
+          <p className="mt-2 text-[12px] leading-5 text-amber-50/[0.48]">
+            Follow a shared species into another biological view without losing the
+            relationship that connected it here.
+          </p>
+          <div className="mt-4 space-y-2">
+            {overlaps.length ? (
+              overlaps.map(({ item, count: overlapCount }) => (
+                <button
+                  key={item.id}
+                  type="button"
+                  onClick={() => onOverlap(item)}
+                  className="group flex min-h-11 w-full items-center justify-between gap-3 rounded-[12px] border border-amber-100/[0.09] bg-black/[0.14] px-3 py-2.5 text-left hover:border-amber-100/[0.18] hover:bg-black/[0.22]"
+                >
+                  <span className="text-[12px] text-amber-50/[0.58] group-hover:text-amber-50/[0.86]">
+                    {item.label}
+                  </span>
+                  <span
+                    className="shrink-0 font-mono text-[11px] font-semibold"
+                    style={{ color: `rgb(${item.accentRgb})` }}
+                  >
+                    {overlapCount} shared
+                  </span>
+                </button>
+              ))
+            ) : (
+              <span className="text-[12px] text-amber-50/[0.34]">
+                No curated cross-lens trail yet.
+              </span>
+            )}
           </div>
         </div>
       </div>
-    </div>
-  );
-}
-
-function MiniStat({
-  label,
-  value,
-  rgb,
-}: {
-  label: string;
-  value: string;
-  rgb: string;
-}) {
-  return (
-    <div className="rounded-[16px] border border-amber-100/[0.10] bg-[#1c2419]/80 p-3 text-center shadow-[0_14px_36px_rgba(0,0,0,0.22)]">
-      <div className="font-mono text-[18px] font-semibold" style={{ color: `rgb(${rgb})` }}>{value}</div>
-      <div className="mt-1 font-mono text-[7px] uppercase tracking-[0.09em] text-amber-50/32">{label}</div>
-    </div>
+    </Surface>
   );
 }
 
@@ -426,9 +475,13 @@ function relationScore(a: AnimalRecord, b: AnimalRecord) {
   if (
     a.taxonomy.className &&
     a.taxonomy.className === b.taxonomy.className
-  ) score += 4;
+  )
+    score += 4;
   if (a.diet && a.diet === b.diet) score += 2;
-  score += a.ecologicalRoles.filter((role) => b.ecologicalRoles.includes(role)).length * 3;
-  score += a.habitats.filter((habitat) => b.habitats.includes(habitat)).length * 2;
+  score +=
+    a.ecologicalRoles.filter((role) => b.ecologicalRoles.includes(role)).length *
+    3;
+  score +=
+    a.habitats.filter((habitat) => b.habitats.includes(habitat)).length * 2;
   return score;
 }

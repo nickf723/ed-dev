@@ -76,18 +76,19 @@ export default function ZoologyCollectionRail({
   onCollection: (collection: ZoologyCollection) => void;
 }) {
   return (
-    <aside className="overflow-hidden rounded-[26px] border border-amber-100/[0.14] bg-[#1a2419]/[0.92] shadow-[0_26px_90px_rgba(0,0,0,0.30)] xl:sticky xl:top-[188px] xl:max-h-[calc(100vh-214px)] xl:overflow-y-auto">
-      <div className="border-b border-amber-100/[0.10] bg-[#2a3020]/85 px-4 py-4">
-        <div className="flex items-center gap-2 font-mono text-[8px] font-semibold uppercase tracking-[0.16em] text-amber-100/55">
-          <Signpost size={12} /> Exhibit guide
+    <aside className="overflow-hidden rounded-[27px] border border-amber-100/[0.15] bg-[#1a2419]/[0.66] shadow-[0_26px_90px_rgba(0,0,0,0.26)] backdrop-blur-xl xl:sticky xl:top-[196px] xl:max-h-[calc(100vh_-_222px)] xl:overflow-y-auto">
+      <div className="border-b border-amber-100/[0.10] bg-[#2a3020]/[0.54] px-5 py-5">
+        <div className="flex items-center gap-2 font-mono text-[11px] font-semibold uppercase tracking-[0.14em] text-amber-100/[0.64]">
+          <Signpost size={13} /> Atlas lens
         </div>
-        <p className="mt-2 text-[9px] leading-4 text-amber-50/34">
-          Choose a district, then follow its trail of habitats, lineages, or ecological roles.
+        <p className="mt-2 text-[12px] leading-5 text-amber-50/[0.50]">
+          First choose the biological relationship, then choose a collection inside
+          that view.
         </p>
       </div>
 
-      <div className="p-3">
-        <div className="grid gap-2">
+      <div className="p-3.5">
+        <div className="grid gap-2.5">
           {lenses.map((item) => {
             const Icon = ICONS[item.icon] ?? Dna;
             const active = item.id === lens;
@@ -96,32 +97,50 @@ export default function ZoologyCollectionRail({
                 key={item.id}
                 type="button"
                 onClick={() => onLens(item.id)}
-                className={`relative overflow-hidden rounded-[15px] border px-3 py-3 text-left transition ${
+                className={`relative overflow-hidden rounded-[16px] border px-4 py-4 text-left transition ${
                   active
-                    ? "border-amber-100/[0.20] bg-[#36402b] shadow-[0_12px_30px_rgba(0,0,0,0.22)]"
-                    : "border-transparent bg-black/[0.08] hover:border-amber-100/[0.10] hover:bg-black/[0.15]"
+                    ? "border-amber-100/[0.22] bg-[#36402b]/[0.78] shadow-[0_12px_30px_rgba(0,0,0,0.20)]"
+                    : "border-transparent bg-black/[0.07] hover:border-amber-100/[0.12] hover:bg-black/[0.14]"
                 }`}
               >
-                {active ? <span className="absolute inset-y-2 left-0 w-1 rounded-r-full bg-emerald-300/60" /> : null}
-                <div className="flex items-center gap-2.5">
-                  <span className={`flex h-8 w-8 items-center justify-center rounded-[10px] border ${active ? "border-emerald-100/[0.18] bg-emerald-300/[0.07] text-emerald-100" : "border-white/[0.06] text-amber-50/28"}`}>
-                    <Icon size={14} />
+                {active ? (
+                  <span className="absolute inset-y-3 left-0 w-1 rounded-r-full bg-emerald-300/[0.70]" />
+                ) : null}
+                <div className="flex items-center gap-3">
+                  <span
+                    className={`flex h-10 w-10 items-center justify-center rounded-[11px] border ${
+                      active
+                        ? "border-emerald-100/[0.20] bg-emerald-300/[0.08] text-emerald-100"
+                        : "border-white/[0.07] text-amber-50/[0.34]"
+                    }`}
+                  >
+                    <Icon size={16} />
                   </span>
-                  <strong className={active ? "text-[10px] text-amber-50" : "text-[10px] text-amber-50/46"}>{item.label}</strong>
+                  <strong
+                    className={
+                      active
+                        ? "text-[13px] text-amber-50"
+                        : "text-[13px] text-amber-50/[0.58]"
+                    }
+                  >
+                    {item.label}
+                  </strong>
                 </div>
-                <p className="mt-2 pl-[42px] text-[8px] leading-4 text-amber-50/30">{item.question}</p>
+                <p className="mt-2 pl-[52px] text-[11px] leading-5 text-amber-50/[0.44]">
+                  {item.question}
+                </p>
               </button>
             );
           })}
         </div>
 
-        <div className="my-4 flex items-center gap-3 px-1">
-          <div className="h-px flex-1 bg-amber-100/[0.08]" />
-          <MapPinned size={11} className="text-amber-100/28" />
-          <div className="h-px flex-1 bg-amber-100/[0.08]" />
+        <div className="my-5 flex items-center gap-3 px-1">
+          <div className="h-px flex-1 bg-amber-100/[0.09]" />
+          <MapPinned size={13} className="text-amber-100/[0.34]" />
+          <div className="h-px flex-1 bg-amber-100/[0.09]" />
         </div>
 
-        <div className="space-y-1.5">
+        <div className="space-y-2">
           {collections.map((collection, index) => {
             const Icon = ICONS[collection.icon] ?? Dna;
             const active = collection.id === activeId;
@@ -130,26 +149,38 @@ export default function ZoologyCollectionRail({
                 key={collection.id}
                 type="button"
                 onClick={() => onCollection(collection)}
-                className={`group relative flex w-full items-center gap-3 rounded-[13px] border px-3 py-2.5 text-left transition ${
+                className={`group relative flex min-h-[64px] w-full items-center gap-3 rounded-[14px] border px-3 py-3 text-left transition ${
                   active
-                    ? "border-amber-100/[0.16] bg-[#2c3324]"
-                    : "border-transparent hover:border-amber-100/[0.08] hover:bg-black/[0.12]"
+                    ? "border-amber-100/[0.18] bg-[#2c3324]/[0.76]"
+                    : "border-transparent hover:border-amber-100/[0.10] hover:bg-black/[0.12]"
                 }`}
               >
-                <span className="w-5 text-center font-mono text-[7px] text-amber-50/22">{String(index + 1).padStart(2, "0")}</span>
+                <span className="w-6 text-center font-mono text-[11px] text-amber-50/[0.30]">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
                 <span
-                  className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[11px] border"
+                  className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[11px] border"
                   style={{
                     color: `rgb(${collection.accentRgb})`,
-                    borderColor: `rgba(${collection.accentRgb},${active ? 0.32 : 0.14})`,
-                    background: `rgba(${collection.accentRgb},${active ? 0.10 : 0.035})`,
+                    borderColor: `rgba(${collection.accentRgb},${active ? 0.34 : 0.16})`,
+                    background: `rgba(${collection.accentRgb},${active ? 0.11 : 0.045})`,
                   }}
                 >
-                  <Icon size={15} />
+                  <Icon size={16} />
                 </span>
                 <span className="min-w-0 flex-1">
-                  <strong className={`block truncate text-[9px] ${active ? "text-amber-50" : "text-amber-50/42 group-hover:text-amber-50/70"}`}>{collection.label}</strong>
-                  <span className="mt-0.5 block font-mono text-[7px] uppercase tracking-[0.08em] text-amber-50/22">{collection.speciesIds.length} specimens</span>
+                  <strong
+                    className={`block text-[12px] leading-5 ${
+                      active
+                        ? "text-amber-50"
+                        : "text-amber-50/[0.54] group-hover:text-amber-50/[0.78]"
+                    }`}
+                  >
+                    {collection.label}
+                  </strong>
+                  <span className="mt-0.5 block text-[11px] text-amber-50/[0.34]">
+                    {collection.speciesIds.length} curated species
+                  </span>
                 </span>
               </button>
             );

@@ -67,8 +67,8 @@ export default function ZoologyModal({
         className="absolute inset-0 cursor-default bg-black/[0.82] backdrop-blur-md"
       />
 
-      <article className="relative z-10 grid max-h-[94vh] w-full max-w-[1180px] overflow-hidden rounded-[30px] border border-emerald-100/[0.12] bg-[#07100c]/[0.96] shadow-[0_40px_160px_rgba(0,0,0,0.62)] lg:grid-cols-[0.92fr_1.08fr]">
-        <div className="relative min-h-[330px] overflow-hidden bg-[#020503] lg:min-h-[720px]">
+      <article className="relative z-10 grid max-h-[94vh] w-full max-w-[1280px] overflow-hidden rounded-[32px] border border-emerald-100/[0.14] bg-[#07100c]/[0.94] shadow-[0_40px_160px_rgba(0,0,0,0.62)] lg:grid-cols-[0.92fr_1.08fr]">
+        <div className="relative min-h-[340px] overflow-hidden bg-[#020503] lg:min-h-[760px]">
           {animal.imageUrl ? (
             <img
               src={animal.imageUrl}
@@ -78,11 +78,15 @@ export default function ZoologyModal({
             />
           ) : (
             <div className="absolute inset-0 flex items-center justify-center bg-[radial-gradient(circle_at_center,rgba(52,211,153,0.12),transparent_62%)]">
-              <Dna size={74} className="text-emerald-300/[0.24]" strokeWidth={1.2} />
+              <Dna
+                size={82}
+                className="text-emerald-300/[0.24]"
+                strokeWidth={1.2}
+              />
             </div>
           )}
           <div className="absolute inset-0 bg-gradient-to-t from-[#06100b] via-[#06100b]/[0.16] to-black/[0.20]" />
-          <div className="absolute inset-x-0 bottom-0 p-6 sm:p-8">
+          <div className="absolute inset-x-0 bottom-0 p-6 sm:p-8 lg:p-10">
             <div className="flex flex-wrap gap-2">
               {animal.taxonomy.className ? (
                 <Badge>{animal.taxonomy.className}</Badge>
@@ -91,44 +95,47 @@ export default function ZoologyModal({
                 <ConservationBadge value={animal.conservationStatus} />
               ) : null}
             </div>
-            <h2 className="mt-4 text-[clamp(2.2rem,5vw,4.6rem)] font-semibold leading-[0.9] tracking-[-0.055em] text-white">
+            <h2 className="mt-5 text-[clamp(2.6rem,5vw,5rem)] font-semibold leading-[0.9] tracking-[-0.055em] text-white">
               {animal.commonName}
             </h2>
-            <p className="mt-3 font-serif text-lg italic text-emerald-100/[0.66]">
+            <p className="mt-3 font-serif text-[20px] italic text-emerald-100/[0.72]">
               {animal.scientificName}
             </p>
           </div>
         </div>
 
-        <div className="min-h-0 overflow-y-auto p-5 sm:p-8 lg:p-9">
-          <div className="flex items-start justify-between gap-5 border-b border-white/[0.08] pb-6">
+        <div className="min-h-0 overflow-y-auto p-5 sm:p-8 lg:p-10">
+          <div className="flex items-start justify-between gap-5 border-b border-white/[0.09] pb-7">
             <div>
-              <div className="font-mono text-[9px] font-semibold uppercase tracking-[0.18em] text-emerald-300/[0.70]">
+              <div className="font-mono text-[11px] font-semibold uppercase tracking-[0.16em] text-emerald-300/[0.74]">
                 Animal profile
               </div>
-              <p className="mt-2 max-w-2xl text-[13px] leading-6 text-slate-300/[0.82]">
+              <p className="mt-3 max-w-2xl text-[15px] leading-7 text-slate-200/[0.82]">
                 {animal.summary}
               </p>
             </div>
             <button
               type="button"
               onClick={onClose}
-              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/[0.08] bg-white/[0.025] text-slate-500 transition hover:bg-white/[0.07] hover:text-white"
+              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/[0.10] bg-white/[0.035] text-slate-400 transition hover:bg-white/[0.08] hover:text-white"
               aria-label="Close animal profile"
             >
-              <X size={17} />
+              <X size={18} />
             </button>
           </div>
 
-          <section className="mt-6">
+          <section className="mt-7">
             <SectionLabel icon={Dna}>Taxonomic path</SectionLabel>
-            <div className="mt-3 grid gap-2 sm:grid-cols-2 xl:grid-cols-5">
+            <div className="mt-4 grid gap-2 sm:grid-cols-2 xl:grid-cols-5">
               {taxonomy.map(([rank, value]) => (
-                <div key={rank} className="rounded-[13px] border border-white/[0.07] bg-white/[0.022] p-3">
-                  <div className="font-mono text-[7px] uppercase tracking-[0.13em] text-slate-600">
+                <div
+                  key={rank}
+                  className="rounded-[14px] border border-white/[0.08] bg-white/[0.025] p-3.5"
+                >
+                  <div className="font-mono text-[11px] font-semibold uppercase tracking-[0.11em] text-slate-500">
                     {rank}
                   </div>
-                  <div className="mt-1 text-[10px] font-medium text-slate-200">
+                  <div className="mt-2 break-words text-[13px] font-medium leading-5 text-slate-100">
                     {value}
                   </div>
                 </div>
@@ -169,7 +176,7 @@ export default function ZoologyModal({
               )}
             </ProfileBlock>
             <ProfileBlock icon={Database} label="Live record">
-              <div className="space-y-2 text-[10px] text-slate-400">
+              <div className="space-y-2 text-[12px] leading-5 text-slate-300/[0.72]">
                 <DataLine
                   label="Observations"
                   value={
@@ -188,21 +195,22 @@ export default function ZoologyModal({
           </section>
 
           {memberships.length ? (
-            <section className="mt-7">
+            <section className="mt-8">
               <SectionLabel icon={Sparkles}>Collection memberships</SectionLabel>
-              <p className="mt-2 text-[10px] leading-5 text-slate-500">
-                One species can belong to several overlapping sets at the same time.
+              <p className="mt-3 text-[13px] leading-6 text-slate-400">
+                One species can belong to several overlapping biological sets at the
+                same time.
               </p>
-              <div className="mt-3 flex flex-wrap gap-2">
+              <div className="mt-4 flex flex-wrap gap-2">
                 {memberships.map((collection) =>
                   collection ? (
                     <span
                       key={collection.id}
-                      className="rounded-full border px-3 py-1.5 text-[8px] font-semibold uppercase tracking-[0.1em]"
+                      className="rounded-full border px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.08em]"
                       style={{
                         color: `rgb(${collection.accentRgb})`,
-                        borderColor: `rgba(${collection.accentRgb},0.22)`,
-                        background: `rgba(${collection.accentRgb},0.055)`,
+                        borderColor: `rgba(${collection.accentRgb},0.24)`,
+                        background: `rgba(${collection.accentRgb},0.065)`,
                       }}
                     >
                       {collection.label}
@@ -214,17 +222,17 @@ export default function ZoologyModal({
           ) : null}
 
           {related.length ? (
-            <section className="mt-8 border-t border-white/[0.08] pt-7">
+            <section className="mt-8 border-t border-white/[0.09] pt-7">
               <SectionLabel icon={Activity}>Related in this set</SectionLabel>
-              <div className="mt-3 grid gap-2 sm:grid-cols-2">
+              <div className="mt-4 grid gap-2 sm:grid-cols-2">
                 {related.slice(0, 4).map((item) => (
                   <button
                     type="button"
                     key={String(item.id)}
                     onClick={() => onSelectRelated(item)}
-                    className="group flex items-center gap-3 rounded-[14px] border border-white/[0.07] bg-white/[0.02] p-2 text-left transition hover:border-emerald-300/[0.20] hover:bg-emerald-400/[0.035]"
+                    className="group flex min-h-[74px] items-center gap-3 rounded-[15px] border border-white/[0.08] bg-white/[0.025] p-3 text-left transition hover:border-emerald-300/[0.22] hover:bg-emerald-400/[0.045]"
                   >
-                    <div className="h-12 w-12 shrink-0 overflow-hidden rounded-[10px] bg-white/[0.04]">
+                    <div className="h-14 w-14 shrink-0 overflow-hidden rounded-[11px] bg-white/[0.05]">
                       {item.imageUrl ? (
                         <img
                           src={item.imageUrl}
@@ -235,22 +243,25 @@ export default function ZoologyModal({
                       ) : null}
                     </div>
                     <div className="min-w-0 flex-1">
-                      <strong className="block truncate text-[10px] text-slate-200">
+                      <strong className="block truncate text-[13px] text-slate-100">
                         {item.commonName}
                       </strong>
-                      <span className="mt-1 block truncate font-serif text-[9px] italic text-slate-600">
+                      <span className="mt-1 block truncate font-serif text-[11px] italic text-slate-500">
                         {item.scientificName}
                       </span>
                     </div>
-                    <ArrowRight size={12} className="text-slate-700 transition group-hover:translate-x-0.5 group-hover:text-emerald-300" />
+                    <ArrowRight
+                      size={14}
+                      className="text-slate-600 transition group-hover:translate-x-0.5 group-hover:text-emerald-300"
+                    />
                   </button>
                 ))}
               </div>
             </section>
           ) : null}
 
-          <footer className="mt-8 flex flex-col gap-3 border-t border-white/[0.08] pt-6 sm:flex-row sm:items-center sm:justify-between">
-            <div className="max-w-md text-[8px] leading-4 text-slate-600">
+          <footer className="mt-8 flex flex-col gap-4 border-t border-white/[0.09] pt-6 sm:flex-row sm:items-center sm:justify-between">
+            <div className="max-w-md text-[11px] leading-5 text-slate-500">
               {animal.imageAttribution ? (
                 <>
                   Image: {animal.imageAttribution}
@@ -283,8 +294,8 @@ function SectionLabel({
   children: ReactNode;
 }) {
   return (
-    <div className="flex items-center gap-2 font-mono text-[9px] font-semibold uppercase tracking-[0.14em] text-emerald-200/[0.72]">
-      <Icon size={13} /> {children}
+    <div className="flex items-center gap-2 font-mono text-[11px] font-semibold uppercase tracking-[0.13em] text-emerald-200/[0.76]">
+      <Icon size={14} /> {children}
     </div>
   );
 }
@@ -299,22 +310,22 @@ function ProfileBlock({
   children: ReactNode;
 }) {
   return (
-    <div className="rounded-[16px] border border-white/[0.07] bg-black/[0.20] p-4">
-      <div className="flex items-center gap-2 text-[9px] font-semibold uppercase tracking-[0.11em] text-slate-400">
-        <Icon size={13} className="text-emerald-300/[0.65]" /> {label}
+    <div className="rounded-[17px] border border-white/[0.08] bg-black/[0.18] p-5">
+      <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.09em] text-slate-300/[0.72]">
+        <Icon size={14} className="text-emerald-300/[0.70]" /> {label}
       </div>
-      <div className="mt-3">{children}</div>
+      <div className="mt-4">{children}</div>
     </div>
   );
 }
 
 function TagList({ items }: { items: string[] }) {
   return (
-    <div className="flex flex-wrap gap-1.5">
+    <div className="flex flex-wrap gap-2">
       {Array.from(new Set(items)).map((item) => (
         <span
           key={item}
-          className="rounded-full border border-white/[0.07] bg-white/[0.025] px-2.5 py-1 text-[8px] capitalize text-slate-400"
+          className="rounded-full border border-white/[0.08] bg-white/[0.03] px-3 py-1.5 text-[11px] capitalize text-slate-300/[0.76]"
         >
           {item}
         </span>
@@ -325,16 +336,18 @@ function TagList({ items }: { items: string[] }) {
 
 function DataLine({ label, value }: { label: string; value: string }) {
   return (
-    <div className="flex items-center justify-between gap-4 border-b border-white/[0.05] pb-2 last:border-0 last:pb-0">
-      <span className="text-slate-600">{label}</span>
-      <span className="text-right font-mono text-slate-300">{value}</span>
+    <div className="flex items-start justify-between gap-4 border-b border-white/[0.06] pb-2.5 last:border-0 last:pb-0">
+      <span className="text-slate-500">{label}</span>
+      <span className="max-w-[60%] text-right font-mono text-slate-200">
+        {value}
+      </span>
     </div>
   );
 }
 
 function Badge({ children }: { children: ReactNode }) {
   return (
-    <span className="rounded-full border border-white/[0.13] bg-black/[0.35] px-3 py-1.5 font-mono text-[8px] uppercase tracking-[0.12em] text-white/[0.72] backdrop-blur-md">
+    <span className="rounded-full border border-white/[0.15] bg-black/[0.38] px-3 py-2 font-mono text-[11px] font-semibold uppercase tracking-[0.09em] text-white/[0.78] backdrop-blur-md">
       {children}
     </span>
   );
@@ -344,14 +357,14 @@ function ConservationBadge({ value }: { value: string }) {
   const tone = conservationTone(value);
   return (
     <span
-      className="inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 font-mono text-[8px] uppercase tracking-[0.12em] backdrop-blur-md"
+      className="inline-flex items-center gap-1.5 rounded-full border px-3 py-2 font-mono text-[11px] font-semibold uppercase tracking-[0.09em] backdrop-blur-md"
       style={{
         color: `rgb(${tone})`,
-        borderColor: `rgba(${tone},0.28)`,
-        background: `rgba(${tone},0.08)`,
+        borderColor: `rgba(${tone},0.30)`,
+        background: `rgba(${tone},0.09)`,
       }}
     >
-      <ShieldAlert size={10} /> {value}
+      <ShieldAlert size={12} /> {value}
     </span>
   );
 }
@@ -362,15 +375,15 @@ function SourceLink({ href, children }: { href: string; children: ReactNode }) {
       href={href}
       target="_blank"
       rel="noreferrer"
-      className="inline-flex items-center gap-2 rounded-[10px] border border-white/[0.08] bg-white/[0.025] px-3 py-2 text-[9px] text-slate-400 transition hover:border-emerald-300/[0.20] hover:text-emerald-200"
+      className="inline-flex min-h-10 items-center gap-2 rounded-[11px] border border-white/[0.09] bg-white/[0.03] px-3.5 text-[11px] font-semibold text-slate-300 transition hover:border-emerald-300/[0.22] hover:text-emerald-200"
     >
-      {children} <ExternalLink size={11} />
+      {children} <ExternalLink size={12} />
     </a>
   );
 }
 
 function Muted({ children }: { children: ReactNode }) {
-  return <p className="text-[9px] leading-5 text-slate-600">{children}</p>;
+  return <p className="text-[12px] leading-5 text-slate-500">{children}</p>;
 }
 
 function conservationTone(status: string) {
@@ -383,5 +396,8 @@ function conservationTone(status: string) {
 }
 
 function compactNumber(value: number) {
-  return new Intl.NumberFormat("en", { notation: "compact", maximumFractionDigits: 1 }).format(value);
+  return new Intl.NumberFormat("en", {
+    notation: "compact",
+    maximumFractionDigits: 1,
+  }).format(value);
 }
