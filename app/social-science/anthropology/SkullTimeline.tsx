@@ -1,116 +1,122 @@
 "use client";
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Skull, Footprints, Flame, Brain, Clock } from "lucide-react";
 
-const HOMINIDS = [
-  { 
-    id: "lucy", 
-    name: "Australopithecus", 
-    time: "4 - 2 MYA", 
-    brain: "450cc", 
-    feat: "Bipedalism", 
-    desc: "The walking ape. Small brain, but walked upright on two legs." 
+import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { Brain, Footprints, Globe2, Skull, Wrench } from "lucide-react";
+
+const HOMININS = [
+  {
+    id: "afarensis",
+    name: "Australopithecus afarensis",
+    time: "~3.9–2.9 million years ago",
+    brain: "~400–500 cc",
+    feat: "habitual bipedalism",
+    icon: Footprints,
+    desc: "A well-known australopith with a small brain and clear adaptations for upright walking. It is one branch among several early hominins, not a guaranteed direct ancestor of later Homo.",
   },
-  { 
-    id: "habilis", 
-    name: "Homo Habilis", 
-    time: "2.4 - 1.4 MYA", 
-    brain: "600cc", 
-    feat: "Stone Tools", 
-    desc: "'Handy Man.' The first to make and use stone tools (Oldowan)." 
+  {
+    id: "habilis",
+    name: "Early Homo / H. habilis",
+    time: "~2.4–1.4 million years ago",
+    brain: "~500–700 cc",
+    feat: "tool association",
+    icon: Wrench,
+    desc: "Fossils grouped as Homo habilis show a mosaic of traits. Oldowan stone tools overlap this period, but stone-tool making began before the earliest fossils usually assigned to H. habilis.",
   },
-  { 
-    id: "erectus", 
-    name: "Homo Erectus", 
-    time: "1.9 MYA - 110k", 
-    brain: "900cc", 
-    feat: "Fire & Travel", 
-    desc: "The traveler. First to control fire and leave Africa." 
+  {
+    id: "erectus",
+    name: "Homo erectus",
+    time: "~1.9 million–110,000 years ago",
+    brain: "~600–1,100 cc",
+    feat: "wide dispersal",
+    icon: Globe2,
+    desc: "A long-lived and geographically widespread lineage with human-like body proportions, major dispersals beyond Africa, and diverse stone-tool traditions across its range.",
   },
-  { 
-    id: "neanderthal", 
-    name: "Neanderthalensis", 
-    time: "400k - 40k YA", 
-    brain: "1450cc", 
-    feat: "Burial & Art", 
-    desc: "Stocky and strong. Practiced ritual burial and made complex tools." 
+  {
+    id: "neanderthal",
+    name: "Homo neanderthalensis",
+    time: "~400,000–40,000 years ago",
+    brain: "often ~1,200–1,750 cc",
+    feat: "Eurasian adaptation",
+    icon: Skull,
+    desc: "Neanderthals were a closely related Eurasian lineage with sophisticated technologies, care for injured group members, symbolic behavior in some contexts, and genetic exchange with Homo sapiens.",
   },
-  { 
-    id: "sapiens", 
-    name: "Homo Sapiens", 
-    time: "300k - Present", 
-    brain: "1350cc", 
-    feat: "Symbolism", 
-    desc: "Us. Characterized by complex language, art, and abstract thought." 
+  {
+    id: "sapiens",
+    name: "Homo sapiens",
+    time: "~300,000 years ago–present",
+    brain: "commonly ~1,200–1,500 cc",
+    feat: "global expansion",
+    icon: Brain,
+    desc: "Our species emerged within Africa and later expanded globally while interacting with other hominin populations. Cultural complexity accumulated unevenly across many communities and environments.",
   },
-];
+] as const;
 
 export default function SkullTimeline() {
   const [index, setIndex] = useState(0);
-  const current = HOMINIDS[index];
+  const current = HOMININS[index];
+  const FeatureIcon = current.icon;
 
   return (
-    <div className="glass overflow-hidden rounded-xl border border-white/10 bg-neutral-900/80 backdrop-blur-xl">
-      <div className="border-b border-white/5 px-5 py-4 flex justify-between items-center">
-        <h3 className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-neutral-300">
-          <Skull size={14} className="text-amber-500" /> Hominid Evolution
+    <div className="overflow-hidden rounded-[24px] border border-amber-100/[0.12] bg-[#17100c]/46 shadow-[0_24px_80px_rgba(0,0,0,0.24)] backdrop-blur-[16px] backdrop-saturate-[1.08]">
+      <div className="flex items-center justify-between border-b border-amber-100/[0.08] px-5 py-4">
+        <h3 className="flex items-center gap-2 text-[12px] font-bold uppercase tracking-[0.12em] text-stone-300">
+          <Skull size={15} className="text-amber-400" /> Hominin deep time
         </h3>
+        <span className="font-mono text-[11px] text-stone-500">branching record</span>
       </div>
 
-      <div className="p-6 flex flex-col items-center">
-        
-        {/* Timeline Slider */}
-        <div className="w-full mb-6">
-            <input 
-                type="range" 
-                min="0" max="4" step="1" 
-                value={index}
-                onChange={(e) => setIndex(Number(e.target.value))}
-                className="w-full h-2 bg-neutral-800 rounded-lg appearance-none cursor-pointer accent-amber-500"
-            />
-            <div className="flex justify-between text-[9px] text-neutral-600 font-mono mt-2 uppercase">
-                <span>Past</span>
-                <span>Present</span>
-            </div>
+      <div className="p-5 sm:p-6">
+        <div className="w-full">
+          <input
+            type="range"
+            min="0"
+            max={HOMININS.length - 1}
+            step="1"
+            value={index}
+            onChange={(event) => setIndex(Number(event.target.value))}
+            className="w-full accent-amber-500"
+            aria-label="Choose a hominin specimen in deep time"
+          />
+          <div className="mt-2 flex justify-between font-mono text-[11px] uppercase tracking-[0.08em] text-stone-600">
+            <span>older</span>
+            <span>recent</span>
+          </div>
         </div>
 
-        {/* Card */}
         <AnimatePresence mode="wait">
-            <motion.div
-                key={current.id}
-                initial={{ opacity: 0, x: 10 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -10 }}
-                transition={{ duration: 0.2 }}
-                className="w-full text-center"
-            >
-                <h4 className="text-lg font-bold text-white mb-1">{current.name}</h4>
-                <span className="inline-block px-2 py-0.5 rounded bg-amber-900/30 border border-amber-500/30 text-[10px] text-amber-400 font-mono mb-4">
-                    {current.time}
-                </span>
+          <motion.div
+            key={current.id}
+            initial={{ opacity: 0, x: 8 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -8 }}
+            transition={{ duration: 0.18 }}
+            className="mt-5"
+          >
+            <h4 className="text-[20px] font-semibold tracking-[-0.03em] text-white">{current.name}</h4>
+            <span className="mt-2 inline-block rounded-full border border-amber-400/25 bg-amber-400/[0.06] px-3 py-1 font-mono text-[11px] text-amber-200/80">
+              {current.time}
+            </span>
 
-                <div className="grid grid-cols-2 gap-3 mb-4">
-                    <div className="bg-neutral-950/50 p-2 rounded border border-white/5 flex flex-col items-center gap-1">
-                        <Brain size={14} className="text-neutral-500" />
-                        <span className="text-xs font-bold text-neutral-300">{current.brain}</span>
-                    </div>
-                    <div className="bg-neutral-950/50 p-2 rounded border border-white/5 flex flex-col items-center gap-1">
-                         {current.id === 'lucy' ? <Footprints size={14} className="text-amber-500" /> :
-                          current.id === 'erectus' ? <Flame size={14} className="text-amber-500" /> :
-                          current.id === 'sapiens' ? <Clock size={14} className="text-amber-500" /> :
-                          <Skull size={14} className="text-amber-500" />
-                         }
-                        <span className="text-[10px] font-bold text-neutral-300 leading-tight">{current.feat}</span>
-                    </div>
-                </div>
+            <div className="mt-4 grid grid-cols-2 gap-3">
+              <div className="rounded-[14px] border border-white/[0.07] bg-black/[0.12] p-3 backdrop-blur-[10px]">
+                <Brain size={15} className="text-stone-500" />
+                <div className="mt-2 font-mono text-[11px] uppercase tracking-[0.08em] text-stone-600">Approx. cranial capacity</div>
+                <strong className="mt-1 block text-[14px] text-stone-200">{current.brain}</strong>
+              </div>
+              <div className="rounded-[14px] border border-amber-100/[0.08] bg-amber-300/[0.025] p-3 backdrop-blur-[10px]">
+                <FeatureIcon size={15} className="text-amber-400" />
+                <div className="mt-2 font-mono text-[11px] uppercase tracking-[0.08em] text-stone-600">Useful clue</div>
+                <strong className="mt-1 block text-[14px] text-amber-100/88">{current.feat}</strong>
+              </div>
+            </div>
 
-                <p className="text-xs text-neutral-400 leading-relaxed italic">
-                    "{current.desc}"
-                </p>
-            </motion.div>
+            <p className="mt-4 text-[13px] leading-6 text-stone-300/72">{current.desc}</p>
+            <p className="mt-3 border-l border-amber-300/30 pl-3 text-[12px] leading-5 text-stone-500">
+              This viewer samples a few well-known lineages. Human evolution contains overlapping branches, uncertain relationships, regional variation, and many additional hominin groups.
+            </p>
+          </motion.div>
         </AnimatePresence>
-
       </div>
     </div>
   );
