@@ -4,12 +4,12 @@ export type SurfaceVariant = "solid" | "glass" | "ghost" | "open";
 
 const VARIANT_CLASSES: Record<SurfaceVariant, string> = {
   solid:
-    "border-white/[0.13] bg-[#050813]/[0.90] shadow-[0_30px_100px_rgba(0,0,0,0.34)] backdrop-blur-2xl",
+    "border-white/[0.13] bg-[#050813]/[0.88] shadow-[0_30px_100px_rgba(0,0,0,0.34)] backdrop-blur-[24px] backdrop-saturate-[1.12]",
   glass:
-    "border-white/[0.11] bg-[#050813]/[0.54] shadow-[0_26px_90px_rgba(0,0,0,0.26)] backdrop-blur-xl",
+    "border-white/[0.11] bg-[#050813]/[0.46] shadow-[0_26px_90px_rgba(0,0,0,0.24)] backdrop-blur-[18px] backdrop-saturate-[1.14]",
   ghost:
-    "border-white/[0.09] bg-black/[0.18] shadow-[0_18px_60px_rgba(0,0,0,0.18)] backdrop-blur-md",
-  open: "border-transparent bg-transparent shadow-none",
+    "border-white/[0.09] bg-black/[0.14] shadow-[0_18px_60px_rgba(0,0,0,0.16)] backdrop-blur-[10px] backdrop-saturate-[1.08]",
+  open: "border-transparent bg-transparent shadow-none backdrop-blur-0",
 };
 
 export default function Surface({
