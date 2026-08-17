@@ -11,11 +11,11 @@ type Channel = {
   speed: number;
 };
 
-const CHANNELS: Channel[] = [
+const CHANNELS: readonly Channel[] = [
   { y: 0.31, amplitude: 30, frequency: 0.010, phase: 0.2, rgb: "34,211,238", speed: 0.020 },
   { y: 0.46, amplitude: 22, frequency: 0.013, phase: 1.8, rgb: "167,139,250", speed: 0.015 },
   { y: 0.61, amplitude: 27, frequency: 0.008, phase: 3.1, rgb: "244,114,182", speed: 0.012 },
-] as const;
+];
 
 export default function SignalWave() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
