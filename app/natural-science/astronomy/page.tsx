@@ -10,24 +10,20 @@ import LightTravelTime, {
 import MethodLens from "@/app/_page-system/widgets/MethodLens";
 import { requireCurriculumPageContext } from "@/lib/curriculum/page-context";
 import {
-  Aperture,
   ArrowRight,
-  Eye,
   Gauge,
-  Orbit,
   Radio,
   Sigma,
   Sparkles,
   Telescope,
   Waves,
-  type LucideIcon,
 } from "lucide-react";
 
 const NODE_ID = "natural.astronomy";
 
 type AstronomyMeta = {
   scaleLabel?: string;
-  icon: LucideIcon;
+  icon: ExpeditionStop["icon"];
   rgb: string;
   kind: "destination" | "method";
 };
@@ -35,36 +31,36 @@ type AstronomyMeta = {
 const META: Record<string, AstronomyMeta> = {
   "natural.astronomy.planetary": {
     scaleLabel: "10⁶–10⁹ m",
-    icon: Orbit,
+    icon: "orbit",
     rgb: "34, 211, 238",
     kind: "destination",
   },
   "natural.astronomy.stellar": {
     scaleLabel: "10⁸–10¹³ m",
-    icon: Sparkles,
+    icon: "sparkles",
     rgb: "250, 204, 21",
     kind: "destination",
   },
   "natural.astronomy.galactic": {
     scaleLabel: "~10²¹ m",
-    icon: Aperture,
+    icon: "aperture",
     rgb: "52, 211, 153",
     kind: "destination",
   },
   "natural.astronomy.extragalactic": {
     scaleLabel: "10²²–10²⁵ m",
-    icon: Aperture,
+    icon: "aperture",
     rgb: "192, 132, 252",
     kind: "destination",
   },
   "natural.astronomy.cosmology": {
     scaleLabel: "~10²⁶ m",
-    icon: Sigma,
+    icon: "sigma",
     rgb: "244, 114, 182",
     kind: "destination",
   },
   "natural.astronomy.methods": {
-    icon: Eye,
+    icon: "eye",
     rgb: "96, 165, 250",
     kind: "method",
   },

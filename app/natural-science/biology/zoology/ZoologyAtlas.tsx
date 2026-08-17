@@ -11,7 +11,7 @@ import {
   Bone,
   Dna,
   GitBranch,
-  Map,
+  Map as MapIcon,
   Microscope,
   PawPrint,
   Search,
@@ -265,7 +265,7 @@ export default function ZoologyAtlas({ palette, branches }: Props) {
         <section className="mt-6 grid gap-4 xl:grid-cols-[minmax(0,1fr)_390px] xl:items-end">
           <div>
             <div className="flex items-center gap-2 font-mono text-[9px] font-semibold uppercase tracking-[0.16em] text-amber-100/60">
-              <Map size={12} /> Exhibit districts
+              <MapIcon size={12} /> Exhibit districts
             </div>
             <h2 className="mt-2 max-w-4xl text-[clamp(1.8rem,3.4vw,3.2rem)] font-semibold leading-[0.96] tracking-[-0.045em] text-white">
               The same animal belongs in several parts of the park.

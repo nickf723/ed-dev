@@ -2,14 +2,29 @@
 
 import Link from "next/link";
 import {
+  Aperture,
   ArrowRight,
   CircleDashed,
   Compass,
+  Eye,
   Flag,
   Navigation,
+  Orbit,
   Rocket,
+  Sigma,
+  Sparkles,
   type LucideIcon,
 } from "lucide-react";
+
+const STOP_ICONS = {
+  aperture: Aperture,
+  eye: Eye,
+  orbit: Orbit,
+  sigma: Sigma,
+  sparkles: Sparkles,
+} satisfies Record<string, LucideIcon>;
+
+export type ExpeditionStopIcon = keyof typeof STOP_ICONS;
 
 export type ExpeditionStop = {
   id: string;
@@ -17,7 +32,7 @@ export type ExpeditionStop = {
   summary: string;
   scaleLabel: string;
   accentRgb: string;
-  icon: LucideIcon;
+  icon: ExpeditionStopIcon;
   href?: string;
   status?: "active" | "planned";
 };
@@ -98,7 +113,7 @@ export default function ExpeditionRouteTopology({
 }
 
 function StopBeacon({ stop, number }: { stop: ExpeditionStop; number: number }) {
-  const Icon = stop.icon;
+  const Icon = STOP_ICONS[stop.icon];
   const active = stop.status !== "planned" && Boolean(stop.href);
   const body = (
     <article
