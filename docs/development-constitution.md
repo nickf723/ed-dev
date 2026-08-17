@@ -139,7 +139,34 @@ For this project, the default branch for active page development is `studio` unl
 
 ---
 
-## 9. Production sequence
+## 9. Constitutional requirements are simultaneous
+
+The constitution is a conjunction, not a menu. A page does not pass by improving one rule while violating another.
+
+- Do not make the background visible by leaving large empty voids. Open space must expose a meaningful world behavior, relationship, diagram, or navigation structure.
+- Do not solve sparseness by covering the world with a larger opaque slab. Add compact structure, denser relationships, staggered composition, local scrims, partial-width instruments, or continuous rails.
+- Do not make navigation prominent by allowing it to consume the whole useful viewport or erase the page environment.
+- Do not protect readability by blacking out the subject identity. Use local contrast exactly where text or controls need it.
+- Do not preserve spectacle by making the active task harder to follow.
+- Do not separate widgets merely to scatter them through excessive whitespace. Independent widgets should remain visually related through sequencing, chapter markers, or a shared conceptual rail.
+- Do not increase density with filler, duplicated introductions, oversized status panels, or more generic cards.
+
+### No-compromise gate
+
+Before publishing, ask whether the change satisfies all of these at once:
+
+1. ontology and navigation remain clear;
+2. meaningful density is present;
+3. the background remains visibly alive;
+4. the active task retains directed attention;
+5. component roles remain distinguishable;
+6. the viewport budget remains usable.
+
+If one answer is no, the fix is incomplete even when another answer improved.
+
+---
+
+## 10. Production sequence
 
 For each substantial page round:
 
@@ -151,14 +178,15 @@ For each substantial page round:
 6. **WORLD**: choose ambient, showcase, and quiet behavior with an explicit motion budget.
 7. **SCALE**: verify axes, transformations, units, and comparisons.
 8. **FRAME**: test viewport budget, readability, responsive fallback, and stable geometry.
-9. **VALIDATE**: run the repository checks.
-10. **PUBLISH**: commit, push to `studio`, verify the remote ref, and inspect CI.
+9. **INTEGRATE**: run the no-compromise gate so no rule is satisfied by breaking another.
+10. **VALIDATE**: run the repository checks.
+11. **PUBLISH**: commit, push to `studio`, verify the remote ref, and inspect CI.
 
-No page round advances to the next target before step 10.
+No page round advances to the next target before step 11.
 
 ---
 
-## 10. Definition of done
+## 11. Definition of done
 
 A substantial development pass is done only when:
 
@@ -168,10 +196,13 @@ A substantial development pass is done only when:
 - independent learner questions use independent widgets;
 - controls and consequences remain together;
 - the background is visible, subject-specific, and attention-aware;
+- open space contains meaningful environmental or structural information rather than accidental emptiness;
+- meaningful density is achieved without opaque coverage or filler;
 - reactive motion does not compete with the active task;
 - chart scales and transformations are honest and labeled;
 - the route, curriculum, sidebar, and breadcrumbs agree;
 - readability and responsive geometry meet the shared rules;
+- every constitutional gate passes simultaneously;
 - available validation succeeds or any failure is reported precisely;
 - the commit is pushed and the remote branch is verified.
 
