@@ -1,16 +1,19 @@
 "use client";
 
-import { useState, type ComponentType } from "react";
+import Link from "next/link";
+import { useState } from "react";
 import DomainPageHeader from "@/app/_components/DomainPageHeader";
 import MolecularReactionBackground from "@/app/_page-system/backgrounds/MolecularReactionBackground";
-import PartsStructureProcessTopology from "@/app/_page-system/topologies/PartsStructureProcessTopology";
+import { SceneFrame, Surface, WorldSceneFocus, WorldWindow } from "@/app/_page-system/scene";
+import PartsStructureProcessTopology, {
+  type StructureStage,
+} from "@/app/_page-system/topologies/PartsStructureProcessTopology";
 import PeriodicTable from "./_components/PeriodicTable";
 import ElementInspector from "./_components/ElementInspector";
 import MoleculeViewer from "./_components/MoleculeViewer";
 import ReactionBalancer from "./_components/ReactionBalancer";
 import type { APIElement } from "./_components/chemistry-api";
 import {
-  Activity,
   ArrowRight,
   Atom,
   Boxes,
@@ -22,7 +25,6 @@ import {
   Network,
   Orbit,
   RefreshCw,
-  Scale,
   Search,
   type LucideIcon,
 } from "lucide-react";
@@ -37,160 +39,220 @@ type Branch = {
 
 type Props = { branches: Branch[] };
 
-type BranchMeta = { icon: LucideIcon; rgb: string; question: string };
+type BranchMeta = {
+  icon: LucideIcon;
+  rgb: string;
+  question: string;
+  scene: "elements" | "structures" | "reactions";
+};
 
 const BRANCH_META: Record<string, BranchMeta> = {
-  "natural.chemistry.general": { icon: FlaskConical, rgb: "52, 211, 153", question: "How do the foundational models of chemistry fit together?" },
-  "natural.chemistry.organic": { icon: Hexagon, rgb: "34, 197, 94", question: "How does carbon support enormous structural and reaction diversity?" },
-  "natural.chemistry.inorganic": { icon: Boxes, rgb: "96, 165, 250", question: "How do metals, minerals, complexes, and non-organic compounds behave?" },
-  "natural.chemistry.physical": { icon: Gauge, rgb: "244, 114, 182", question: "What physical laws determine chemical states and change?" },
-  "natural.chemistry.analytical": { icon: Search, rgb: "34, 211, 238", question: "How can composition and concentration be inferred from measurements?" },
-  "natural.chemistry.biochemistry": { icon: Dna, rgb: "132, 204, 22", question: "How does chemistry become the machinery of life?" },
-  "natural.chemistry.quantum": { icon: Orbit, rgb: "167, 139, 250", question: "How do quantum states determine electronic structure and bonding?" },
+  "natural.chemistry.general": {
+    icon: FlaskConical,
+    rgb: "52, 211, 153",
+    question: "How do atomic structure, bonding, energy, rate, and equilibrium work as one system?",
+    scene: "reactions",
+  },
+  "natural.chemistry.organic": {
+    icon: Hexagon,
+    rgb: "34, 197, 94",
+    question: "How does carbon support enormous structural and reaction diversity?",
+    scene: "structures",
+  },
+  "natural.chemistry.inorganic": {
+    icon: Boxes,
+    rgb: "96, 165, 250",
+    question: "How do metals, minerals, complexes, and extended solids behave?",
+    scene: "structures",
+  },
+  "natural.chemistry.physical": {
+    icon: Gauge,
+    rgb: "244, 114, 182",
+    question: "Which physical laws determine chemical states and change?",
+    scene: "reactions",
+  },
+  "natural.chemistry.analytical": {
+    icon: Search,
+    rgb: "34, 211, 238",
+    question: "How can composition and concentration be inferred from measurements?",
+    scene: "elements",
+  },
+  "natural.chemistry.biochemistry": {
+    icon: Dna,
+    rgb: "132, 204, 22",
+    question: "How does chemistry become the machinery of living systems?",
+    scene: "structures",
+  },
+  "natural.chemistry.quantum": {
+    icon: Orbit,
+    rgb: "167, 139, 250",
+    question: "How do quantum states determine electronic structure and bonding?",
+    scene: "elements",
+  },
 };
+
+const WORLD_SCENES = [
+  {
+    id: "elements",
+    label: "Element inventory",
+    description: "Sort matter by atomic identity and recurring electronic patterns.",
+    accentRgb: "52, 211, 153",
+  },
+  {
+    id: "structures",
+    label: "Molecular structure",
+    description: "Watch arrangement and geometry create properties that isolated atoms do not have.",
+    accentRgb: "34, 211, 238",
+  },
+  {
+    id: "reactions",
+    label: "Reaction dynamics",
+    description: "Follow collisions, activation barriers, bond changes, conservation, and energy flow.",
+    accentRgb: "250, 204, 21",
+  },
+] as const;
+
+const STRUCTURE_STAGES: StructureStage[] = [
+  {
+    id: "elements",
+    label: "Elements",
+    question: "What building blocks are available?",
+    summary:
+      "Atomic number fixes identity. Electron structure and periodic position reveal recurring tendencies in bonding and reactivity.",
+    rgb: "52, 211, 153",
+    icon: Atom,
+  },
+  {
+    id: "structures",
+    label: "Molecules & materials",
+    question: "How are atoms arranged?",
+    summary:
+      "Connectivity, geometry, charge distribution, and larger-scale organization create new chemical and physical properties.",
+    rgb: "34, 211, 238",
+    icon: Network,
+  },
+  {
+    id: "reactions",
+    label: "Reactions",
+    question: "How does one arrangement become another?",
+    summary:
+      "Reactions reorganize atoms and electrons while conserving nuclei, transferring energy, and responding to conditions.",
+    rgb: "250, 204, 21",
+    icon: RefreshCw,
+  },
+];
 
 export default function ChemistryHub({ branches }: Props) {
   const [selectedElement, setSelectedElement] = useState<APIElement | null>(null);
 
   return (
-    <main className="relative min-h-screen overflow-x-hidden bg-[#030b08] text-slate-100 selection:bg-emerald-400/25">
-      <MolecularReactionBackground />
+    <SceneFrame
+      background={<MolecularReactionBackground />}
+      initialScene="elements"
+      className="bg-[#020705] text-slate-100 selection:bg-emerald-400/25"
+      maxWidthClassName="max-w-[1640px]"
+      headerBackground="rgba(2,8,6,0.58)"
+      header={
+        <DomainPageHeader
+          breadcrumbs={[
+            { label: "Natural Science", href: "/natural-science" },
+            { label: "Chemistry" },
+          ]}
+          eyebrow="Composition · structure · property · energy · reaction"
+          eyebrowStyle="dot"
+          icon={FlaskConical}
+          title={<span>Chemistry</span>}
+          subtitle="Chemistry asks how a limited inventory of elements becomes an immense world of substances. Identity comes from nuclei, properties emerge from arrangement, and reactions reorganize matter under physical constraints."
+          accentRgb="52, 211, 153"
+          titleClassName="font-sans text-[clamp(3rem,5.8vw,6.6rem)] font-semibold leading-[0.82] tracking-[-0.068em] text-[#f3fff8]"
+          headerClassName="border-white/[0.08]"
+        />
+      }
+    >
+      <section className="mt-6">
+        <WorldWindow
+          eyebrow="Chemical world stage"
+          title="Matter becomes interesting when arrangement starts to matter."
+          description="Move from elemental identity to molecular structure to chemical change. The reaction field reorganizes with the selected scale instead of sitting behind the page as ornamental wallpaper."
+          scenes={[...WORLD_SCENES]}
+        >
+          <PartsStructureProcessTopology stages={STRUCTURE_STAGES} presentation="world" />
+        </WorldWindow>
+      </section>
 
-      <div className="relative z-10 mx-auto w-full max-w-[1580px] px-4 pb-14 sm:px-6 xl:px-8">
-        <div className="sticky top-0 z-30 -mx-4 border-b border-white/[0.06] bg-[#030b08]/78 px-4 pb-3 pt-5 shadow-[0_18px_60px_rgba(0,0,0,0.24)] backdrop-blur-2xl sm:-mx-6 sm:px-6 xl:-mx-8 xl:px-8">
-          <DomainPageHeader
-            breadcrumbs={[
-              { label: "Natural Science", href: "/natural-science" },
-              { label: "Chemistry" },
-            ]}
-            eyebrow="Composition · structure · property · energy · reaction"
-            eyebrowStyle="dot"
-            icon={FlaskConical}
-            title={<span>Chemistry</span>}
-            subtitle="Chemistry explains how elemental building blocks acquire new properties through arrangement and how those structures transform through reactions. The periodic table is a property map; molecules are arrangements; equations track rearrangement."
-            accentRgb="52, 211, 153"
-            titleClassName="font-sans text-[clamp(2.9rem,5.5vw,6.2rem)] font-semibold leading-[0.83] tracking-[-0.067em] text-[#f3fff8]"
-            headerClassName="border-white/[0.08]"
-          />
+      <section className="mt-10">
+        <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_430px] lg:items-end">
+          <div>
+            <div className="flex items-center gap-2 font-mono text-[11px] font-semibold uppercase tracking-[0.13em] text-violet-200/70">
+              <Microscope size={14} /> Choose a chemical lens
+            </div>
+            <h2 className="mt-3 max-w-5xl text-[clamp(2.2rem,4.4vw,4.6rem)] font-semibold leading-[0.92] tracking-[-0.055em] text-white">
+              The branches change the dominant systems and questions, not the chemical grammar.
+            </h2>
+          </div>
+          <p className="text-[15px] leading-7 text-slate-300/70">
+            Every branch still connects composition, electronic structure, geometry, energy, measurement, and transformation. Enter through the system you want to explain.
+          </p>
         </div>
 
-        <section className="mt-5">
-          <PartsStructureProcessTopology
-            stages={[
-              {
-                id: "elements",
-                label: "Elements",
-                question: "What building blocks are available?",
-                summary: "An element is defined by proton number. Electron structure and periodic position help predict recurring chemical properties.",
-                rgb: "52, 211, 153",
-                icon: Atom,
-              },
-              {
-                id: "structures",
-                label: "Molecules & materials",
-                question: "How are atoms arranged and bonded?",
-                summary: "Bonding and three-dimensional arrangement create properties that individual atoms do not possess alone.",
-                rgb: "34, 211, 238",
-                icon: Network,
-              },
-              {
-                id: "processes",
-                label: "Reactions",
-                question: "How does one arrangement become another?",
-                summary: "Chemical reactions rearrange atoms and electrons while conserving elemental nuclei and tracking energy through the transformation.",
-                rgb: "250, 204, 21",
-                icon: RefreshCw,
-              },
-            ]}
-          />
-        </section>
+        <div className="mt-6 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+          {branches.map((branch, index) => (
+            <BranchCell key={branch.id} branch={branch} index={index} />
+          ))}
+        </div>
+      </section>
 
-        <section className="mt-5 overflow-hidden rounded-[30px] border border-white/[0.08] bg-black/[0.13] shadow-[0_30px_105px_rgba(0,0,0,0.23)] backdrop-blur-xl">
-          <SectionHeader
-            icon={Atom}
-            eyebrow="01 · elemental inventory"
-            title="The periodic table is a compressed model of recurring properties."
-            text="Atomic number fixes identity. Position in the table exposes patterns in valence structure, metallic character, reactivity, and other properties because electron configurations repeat in systematic ways."
-            rgb="52, 211, 153"
-          />
-          <div className="grid gap-4 p-4 xl:grid-cols-[minmax(0,1fr)_360px] sm:p-5">
-            <div className="overflow-x-auto rounded-[22px] border border-white/[0.06] bg-black/[0.18] p-4">
+      <section className="mt-12">
+        <Surface variant="glass" className="overflow-hidden rounded-[34px]">
+          <div className="grid gap-5 border-b border-white/[0.08] p-6 lg:grid-cols-[minmax(0,1fr)_430px] lg:items-end sm:p-8">
+            <div>
+              <div className="flex items-center gap-2 font-mono text-[11px] font-semibold uppercase tracking-[0.13em] text-emerald-200/72">
+                <Atom size={14} /> Elemental inventory
+              </div>
+              <h2 className="mt-3 text-[clamp(2rem,4vw,4rem)] font-semibold leading-[0.94] tracking-[-0.052em] text-white">
+                The periodic table is a property map, not a list to memorize.
+              </h2>
+            </div>
+            <p className="text-[15px] leading-7 text-slate-300/70">
+              Atomic number fixes identity. Position exposes repeating electron patterns, so neighboring cells often share valence behavior while trends change across rows and columns.
+            </p>
+          </div>
+
+          <div className="grid gap-5 p-4 sm:p-6 xl:grid-cols-[minmax(0,1fr)_390px] xl:p-7">
+            <div className="overflow-x-auto rounded-[24px] border border-white/[0.08] bg-black/[0.22] p-4 sm:p-5">
               <PeriodicTable onSelect={setSelectedElement} activeZ={selectedElement?.number ?? 0} />
             </div>
-            <div className="xl:sticky xl:top-[190px] xl:self-start">
+            <div className="xl:sticky xl:top-[196px] xl:self-start">
               <ElementInspector element={selectedElement} />
             </div>
           </div>
-        </section>
+        </Surface>
+      </section>
 
-        <section className="mt-5 grid gap-4 xl:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
-          <div className="rounded-[28px] border border-cyan-200/[0.10] bg-black/[0.12] p-5 backdrop-blur-xl sm:p-6">
-            <div className="flex items-center gap-2 font-mono text-[9px] font-semibold uppercase tracking-[0.14em] text-cyan-200/65"><Network size={12} /> 02 · molecular structure</div>
-            <h2 className="mt-2 text-[24px] font-semibold tracking-[-0.04em] text-white">Composition alone does not determine behavior.</h2>
-            <p className="mt-3 text-[11px] leading-6 text-slate-400">Connectivity, bond polarity, geometry, intermolecular forces, and larger-scale arrangement can make substances with similar ingredients behave completely differently.</p>
-            <div className="mt-5 grid grid-cols-2 gap-2">
-              <MiniConcept label="Bond" text="A stabilizing electronic relationship between atoms." />
-              <MiniConcept label="Geometry" text="The spatial arrangement of bonded atoms." />
-              <MiniConcept label="Polarity" text="Uneven charge distribution across a bond or molecule." />
-              <MiniConcept label="Material" text="Many particles arranged into a larger physical structure." />
-            </div>
+      <section className="mt-12">
+        <div className="max-w-5xl">
+          <div className="font-mono text-[11px] font-semibold uppercase tracking-[0.13em] text-cyan-200/72">
+            Structure → change
           </div>
-          <div className="rounded-[28px] border border-white/[0.08] bg-black/[0.12] p-4 shadow-[0_28px_90px_rgba(0,0,0,0.20)] backdrop-blur-xl sm:p-5">
+          <h2 className="mt-3 text-[clamp(2.2rem,4.5vw,4.8rem)] font-semibold leading-[0.92] tracking-[-0.058em] text-white">
+            Build a structure, then account for every atom when it changes.
+          </h2>
+          <p className="mt-4 max-w-4xl text-[15px] leading-7 text-slate-300/70">
+            Geometry explains why a substance behaves as it does. A balanced equation then records how whole molecular arrangements are exchanged without allowing matter to vanish between the two sides.
+          </p>
+        </div>
+
+        <div className="mt-6 grid gap-5 xl:grid-cols-2">
+          <WorldSceneFocus scene="structures">
             <MoleculeViewer />
-          </div>
-        </section>
-
-        <section className="mt-5 grid gap-4 xl:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)]">
-          <div className="rounded-[28px] border border-amber-200/[0.10] bg-black/[0.12] p-5 backdrop-blur-xl sm:p-6">
-            <div className="flex items-center gap-2 font-mono text-[9px] font-semibold uppercase tracking-[0.14em] text-amber-200/65"><Activity size={12} /> 03 · reaction bookkeeping</div>
-            <h2 className="mt-2 text-[24px] font-semibold tracking-[-0.04em] text-white">A chemical equation records rearrangement, not disappearance.</h2>
-            <p className="mt-3 text-[11px] leading-6 text-slate-400">Balanced coefficients make conservation visible. The atoms present before a reaction must still be accounted for afterward, even though their molecular partners and energy state may have changed.</p>
-            <div className="mt-5 space-y-2">
-              <ReactionRule icon={Scale} label="Conserve nuclei" text="Balance each element across reactants and products." />
-              <ReactionRule icon={RefreshCw} label="Rearrange bonds" text="Chemical identity changes because connectivity and electron distribution change." />
-              <ReactionRule icon={Gauge} label="Track energy" text="Breaking and forming interactions changes the energy of the chemical system and surroundings." />
-            </div>
-          </div>
-          <div className="rounded-[28px] border border-white/[0.08] bg-black/[0.12] p-4 shadow-[0_28px_90px_rgba(0,0,0,0.20)] backdrop-blur-xl sm:p-5">
+          </WorldSceneFocus>
+          <WorldSceneFocus scene="reactions">
             <ReactionBalancer />
-          </div>
-        </section>
-
-        <section className="mt-5 overflow-hidden rounded-[30px] border border-white/[0.08] bg-black/[0.12] backdrop-blur-xl">
-          <SectionHeader
-            icon={Microscope}
-            eyebrow="discipline map"
-            title="Chemistry branches by the kinds of systems and questions being studied."
-            text="Foundational ideas recur everywhere. Specialized fields change the dominant molecules, materials, measurements, or theoretical tools—not the basic fact that composition, structure, energy, and reaction remain connected."
-            rgb="167, 139, 250"
-          />
-          <div className="grid sm:grid-cols-2 xl:grid-cols-4">
-            {branches.map((branch, index) => <BranchCell key={branch.id} branch={branch} index={index} />)}
-          </div>
-        </section>
-      </div>
-    </main>
+          </WorldSceneFocus>
+        </div>
+      </section>
+    </SceneFrame>
   );
-}
-
-function SectionHeader({ icon: Icon, eyebrow, title, text, rgb }: { icon: LucideIcon; eyebrow: string; title: string; text: string; rgb: string }) {
-  return (
-    <div className="grid gap-4 border-b border-white/[0.07] p-5 lg:grid-cols-[minmax(0,1fr)_420px] lg:items-end sm:p-6">
-      <div>
-        <div className="flex items-center gap-2 font-mono text-[9px] font-semibold uppercase tracking-[0.14em]" style={{ color: `rgba(${rgb},0.65)` }}><Icon size={12} /> {eyebrow}</div>
-        <h2 className="mt-2 text-[clamp(1.7rem,3vw,2.7rem)] font-semibold tracking-[-0.045em] text-white">{title}</h2>
-      </div>
-      <p className="text-[10px] leading-5 text-slate-500">{text}</p>
-    </div>
-  );
-}
-
-function MiniConcept({ label, text }: { label: string; text: string }) {
-  return <div className="rounded-[15px] border border-white/[0.06] bg-white/[0.012] p-3"><div className="font-mono text-[8px] uppercase tracking-[0.1em] text-cyan-200/55">{label}</div><p className="mt-1.5 text-[8px] leading-4 text-slate-700">{text}</p></div>;
-}
-
-function ReactionRule({ icon: Icon, label, text }: { icon: LucideIcon; label: string; text: string }) {
-  return <div className="flex gap-3 rounded-[15px] border border-white/[0.06] bg-white/[0.012] p-3"><Icon size={13} className="mt-0.5 shrink-0 text-amber-200/55" /><div><strong className="block text-[9px] text-slate-300">{label}</strong><p className="mt-1 text-[8px] leading-4 text-slate-700">{text}</p></div></div>;
 }
 
 function BranchCell({ branch, index }: { branch: Branch; index: number }) {
@@ -198,12 +260,50 @@ function BranchCell({ branch, index }: { branch: Branch; index: number }) {
   const Icon = meta.icon;
   const active = branch.status !== "placeholder";
   const content = (
-    <article className={`group flex min-h-[230px] flex-col border-b border-r border-white/[0.06] p-5 ${active ? "transition hover:bg-white/[0.02]" : "opacity-55"}`}>
-      <div className="flex items-start justify-between gap-3"><span className="flex h-10 w-10 items-center justify-center rounded-[13px] border" style={{ color: `rgb(${meta.rgb})`, borderColor: `rgba(${meta.rgb},0.20)` }}><Icon size={16} /></span><span className="font-mono text-[7px] text-slate-800">{String(index + 1).padStart(2, "0")}</span></div>
-      <h3 className="mt-5 text-[15px] font-semibold text-white">{branch.label}</h3>
-      <p className="mt-2 text-[9px] leading-4 text-slate-600">{meta.question}</p>
-      <span className="mt-auto flex items-center gap-2 pt-5 font-mono text-[7px] uppercase tracking-[0.09em]" style={{ color: `rgba(${meta.rgb},0.58)` }}>{active ? <>open <ArrowRight size={9} /></> : "planned"}</span>
-    </article>
+    <Surface
+      variant="ghost"
+      className={`group flex min-h-[265px] flex-col rounded-[24px] p-5 transition ${
+        active ? "hover:-translate-y-1 hover:bg-black/[0.28]" : "opacity-[0.58]"
+      }`}
+      style={{ borderColor: `rgba(${meta.rgb},${active ? 0.17 : 0.09})` }}
+    >
+      <div className="flex items-start justify-between gap-3">
+        <span
+          className="flex h-12 w-12 items-center justify-center rounded-[15px] border"
+          style={{
+            color: `rgb(${meta.rgb})`,
+            borderColor: `rgba(${meta.rgb},0.26)`,
+            background: `rgba(${meta.rgb},0.055)`,
+          }}
+        >
+          <Icon size={19} />
+        </span>
+        <span className="font-mono text-[11px] text-white/28">
+          {String(index + 1).padStart(2, "0")}
+        </span>
+      </div>
+      <h3 className="mt-6 text-[21px] font-semibold tracking-[-0.035em] text-white">
+        {branch.label}
+      </h3>
+      <p className="mt-3 text-[14px] leading-6 text-slate-300/66">{meta.question}</p>
+      <span
+        className="mt-auto flex items-center gap-2 pt-6 font-mono text-[11px] font-semibold uppercase tracking-[0.09em]"
+        style={{ color: `rgba(${meta.rgb},0.74)` }}
+      >
+        {active ? (
+          <>
+            enter branch <ArrowRight size={13} />
+          </>
+        ) : (
+          "planned branch"
+        )}
+      </span>
+    </Surface>
   );
-  return active ? <a href={branch.href}>{content}</a> : <div>{content}</div>;
+
+  return (
+    <WorldSceneFocus scene={meta.scene}>
+      {active ? <Link href={branch.href}>{content}</Link> : <div aria-disabled="true">{content}</div>}
+    </WorldSceneFocus>
+  );
 }
