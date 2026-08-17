@@ -40,8 +40,9 @@ export default function SortingLab() {
   }
 
   return (
-    <section className="overflow-hidden rounded-[26px] border border-emerald-100/[0.14] bg-[#07110b]/82 shadow-[0_28px_100px_rgba(0,0,0,0.25)] backdrop-blur-lg">
-      <div className="flex flex-col gap-4 border-b border-emerald-100/[0.10] px-5 py-5 sm:flex-row sm:items-end sm:justify-between sm:px-6">
+    <section className="relative overflow-hidden rounded-[14px_14px_34px_34px] border border-emerald-100/[0.14] bg-black/[0.24] shadow-[0_22px_86px_rgba(0,0,0,0.21)] backdrop-blur-md">
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(52,211,153,0.035),transparent_42%),radial-gradient(circle_at_72%_24%,rgba(250,204,21,0.04),transparent_22%)]" />
+      <div className="relative flex flex-col gap-4 border-b border-emerald-100/[0.10] px-5 py-5 sm:flex-row sm:items-end sm:justify-between sm:px-6">
         <div>
           <div className="flex items-center gap-2 font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-emerald-200/72">
             <Boxes size={14} /> Widget 02 · sorting conveyor
@@ -49,11 +50,11 @@ export default function SortingLab() {
           <h2 className="mt-2 text-[clamp(1.8rem,3vw,3rem)] font-semibold tracking-[-0.045em] text-white">
             Repeated local comparisons can build a global order.
           </h2>
-          <p className="mt-3 max-w-3xl text-[14px] leading-6 text-slate-300/68">
+          <p className="mt-3 max-w-3xl text-[14px] leading-6 text-slate-300/72">
             Bubble sort is deliberately simple rather than efficient. Each pass compares neighboring values and pushes the largest remaining value into the sorted suffix.
           </p>
         </div>
-        <div className="rounded-[14px] border border-emerald-100/[0.12] bg-black/[0.18] px-4 py-3 text-right">
+        <div className="border-l border-emerald-200/[0.20] pl-4 text-right">
           <div className="font-mono text-[11px] uppercase tracking-[0.08em] text-slate-500">
             Machine state
           </div>
@@ -63,9 +64,9 @@ export default function SortingLab() {
         </div>
       </div>
 
-      <div className="relative overflow-hidden border-b border-emerald-100/[0.09] bg-[#030905]/78 px-4 pb-5 pt-7 sm:px-6">
-        <div className="pointer-events-none absolute inset-x-0 bottom-4 h-px bg-emerald-200/[0.14]" />
-        <div className="pointer-events-none absolute inset-x-0 bottom-1 h-3 bg-[repeating-linear-gradient(90deg,rgba(52,211,153,0.16)_0_18px,transparent_18px_34px)] opacity-50" />
+      <div className="relative overflow-hidden border-b border-emerald-100/[0.09] bg-[#030905]/54 px-4 pb-5 pt-7 sm:px-6">
+        <div className="pointer-events-none absolute inset-x-0 bottom-4 h-px bg-emerald-200/[0.18]" />
+        <div className="pointer-events-none absolute inset-x-0 bottom-1 h-3 bg-[repeating-linear-gradient(90deg,rgba(52,211,153,0.18)_0_18px,transparent_18px_34px)] opacity-62" />
         <div className="flex min-h-[270px] items-end justify-center gap-2 sm:gap-3">
           {state.values.map((value, index) => {
             const active = state.active?.includes(index) ?? false;
@@ -82,20 +83,20 @@ export default function SortingLab() {
                     borderColor: active
                       ? "rgba(250,204,21,0.56)"
                       : sorted
-                        ? "rgba(52,211,153,0.38)"
-                        : "rgba(34,211,238,0.20)",
+                        ? "rgba(52,211,153,0.42)"
+                        : "rgba(34,211,238,0.24)",
                     background: active
-                      ? "linear-gradient(180deg,rgba(250,204,21,0.34),rgba(49,31,3,0.84))"
+                      ? "linear-gradient(180deg,rgba(250,204,21,0.34),rgba(49,31,3,0.68))"
                       : sorted
-                        ? "linear-gradient(180deg,rgba(52,211,153,0.24),rgba(4,30,19,0.86))"
-                        : "linear-gradient(180deg,rgba(34,211,238,0.17),rgba(3,18,25,0.84))",
+                        ? "linear-gradient(180deg,rgba(52,211,153,0.26),rgba(4,30,19,0.68))"
+                        : "linear-gradient(180deg,rgba(34,211,238,0.19),rgba(3,18,25,0.66))",
                     boxShadow: active
                       ? "0 0 32px rgba(250,204,21,0.16)"
                       : undefined,
                     transform: active ? "translateY(-8px)" : undefined,
                   }}
                 >
-                  <span className="absolute inset-x-0 top-2 text-center font-mono text-[13px] font-semibold text-white/84">
+                  <span className="absolute inset-x-0 top-2 text-center font-mono text-[13px] font-semibold text-white/86">
                     {value}
                   </span>
                 </div>
@@ -108,24 +109,24 @@ export default function SortingLab() {
         </div>
       </div>
 
-      <div className="grid gap-4 p-4 sm:p-5 xl:grid-cols-[minmax(0,1fr)_390px]">
+      <div className="relative grid gap-4 p-4 sm:p-5 xl:grid-cols-[minmax(0,1fr)_390px]">
         <div>
           <div className="grid gap-2 sm:grid-cols-3">
             <Readout label="Comparisons" value={String(state.comparisons)} rgb="250,204,21" />
             <Readout label="Swaps" value={String(state.swaps)} rgb="244,114,182" />
             <Readout label="Worst case" value="O(n²)" rgb="167,139,250" />
           </div>
-          <div className="mt-3 rounded-[15px] border border-emerald-100/[0.10] bg-emerald-300/[0.03] p-3">
+          <div className="mt-3 border-l border-emerald-200/[0.22] pl-3">
             <div className="flex items-center gap-2 font-mono text-[11px] font-semibold uppercase tracking-[0.08em] text-emerald-200/68">
               <CheckCircle2 size={13} /> Loop invariant
             </div>
-            <p className="mt-2 text-[13px] leading-5 text-slate-200/72">
+            <p className="mt-2 text-[13px] leading-5 text-slate-200/74">
               After pass k, the k largest values occupy their final positions at the right edge. The unsorted prefix shrinks as the invariant grows.
             </p>
           </div>
         </div>
 
-        <div className="rounded-[18px] border border-white/[0.08] bg-black/[0.18] p-4">
+        <div className="rounded-[18px] border border-white/[0.08] bg-black/[0.22] p-4">
           <div className="font-mono text-[11px] font-semibold uppercase tracking-[0.10em] text-amber-200/68">
             Conveyor controls
           </div>
@@ -162,7 +163,7 @@ export default function SortingLab() {
           >
             <Shuffle size={14} /> Randomize input
           </button>
-          <p className="mt-3 text-[12px] leading-5 text-slate-400/68">
+          <p className="mt-3 text-[12px] leading-5 text-slate-400/70">
             The highlighted pair is the only local comparison happening now. The green suffix has already reached its final order.
           </p>
         </div>
@@ -173,7 +174,7 @@ export default function SortingLab() {
 
 function Readout({ label, value, rgb }: { label: string; value: string; rgb: string }) {
   return (
-    <div className="rounded-[13px] border border-white/[0.08] bg-black/[0.16] p-3">
+    <div className="border-l border-white/[0.10] bg-black/[0.12] px-3 py-2.5">
       <div className="font-mono text-[11px] font-semibold uppercase tracking-[0.07em] text-slate-500">
         {label}
       </div>
