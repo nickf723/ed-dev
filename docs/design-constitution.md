@@ -419,3 +419,31 @@ When guidance overlaps:
 7. Site Architecture defines source-of-truth and implementation boundaries.
 
 The purpose of this document is not to add bureaucracy. It is to make **rapid page production predictable**.
+
+---
+
+## 18. Every design gate must pass at the same time
+
+The constitution is not a collection of tradeable preferences. A page fails when one rule is improved by breaking another.
+
+- Background visibility and meaningful density must be solved together. Empty darkness is not world exposure, and an opaque wall of content is not density.
+- Navigation may be prominent without occupying every useful pixel. Use topology, hierarchy, direction, and local contrast rather than sheer panel area.
+- Readability must use local scrims, typography, spacing, and composition before resorting to full-page darkness.
+- Open scenery corridors must contain a legible environmental behavior, diagram, relationship, or continuation of the navigation structure. They may not be blank leftovers.
+- Dense pages should use compact rails, staggered instruments, continuous bands, nested relationships, and partial-width surfaces before adding more generic cards.
+- A calm background must remain memorable; a memorable background must remain calm enough for the active task.
+- Separate widgets must retain sequence and conceptual connection without being merged into one shell or scattered through excessive whitespace.
+
+### Conjunction test
+
+Before calling the page complete, verify all of the following in the same screenshot and interaction state:
+
+1. the hierarchy and next destinations are obvious;
+2. the useful viewport feels meaningfully occupied;
+3. the academic world is visibly present;
+4. the center of gravity is unmistakable;
+5. component roles look different;
+6. controls and consequences remain together;
+7. text remains comfortably readable.
+
+A failure in any one item is not excused by strength in another. Recompose the page until the requirements cooperate.
