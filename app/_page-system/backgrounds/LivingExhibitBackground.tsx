@@ -16,7 +16,15 @@ export type ExhibitEnvironment =
   | "network";
 
 type Role = "grazer" | "pollinator" | "predator";
-type Agent = { x: number; y: number; vx: number; vy: number; role: Role; size: number; phase: number };
+type Agent = {
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+  role: Role;
+  size: number;
+  phase: number;
+};
 type Resource = { x: number; y: number; strength: number; phase: number };
 type Point = { x: number; y: number };
 type Rgb = { r: number; g: number; b: number };
@@ -33,11 +41,16 @@ export default function LivingExhibitBackground({
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
-    const canvas = canvasRef.current;
-    const context = canvas?.getContext("2d");
-    if (!canvas || !context) return;
+    const canvasElement = canvasRef.current;
+    if (!canvasElement) return;
+    const drawingContext = canvasElement.getContext("2d");
+    if (!drawingContext) return;
 
-    const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const canvas: HTMLCanvasElement = canvasElement;
+    const context: CanvasRenderingContext2D = drawingContext;
+    const reducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
     const accent = parseRgb(accentRgb);
     const pointer = { x: 0.5, y: 0.5, active: false };
     let width = 1;
@@ -50,17 +63,21 @@ export default function LivingExhibitBackground({
     let seeds: Point[] = [];
 
     function rebuild() {
-      const random = mulberry32(hash(`${environment}:${accentRgb}:${width < 900 ? 1 : 2}`));
+      const random = mulberry32(
+        hash(`${environment}:${accentRgb}:${width < 900 ? 1 : 2}`),
+      );
       const count = width < 900 ? 30 : 62;
       const predators = width < 900 ? 1 : 2;
       agents = Array.from({ length: count }, (_, index) => {
-        const role: Role = index < predators
-          ? "predator"
-          : index % 5 === 0
-            ? "pollinator"
-            : "grazer";
+        const role: Role =
+          index < predators
+            ? "predator"
+            : index % 5 === 0
+              ? "pollinator"
+              : "grazer";
         const angle = random() * TAU;
-        const speed = role === "predator" ? 0.032 : role === "pollinator" ? 0.042 : 0.027;
+        const speed =
+          role === "predator" ? 0.032 : role === "pollinator" ? 0.042 : 0.027;
         return {
           x: random(),
           y: 0.08 + random() * 0.84,
@@ -71,19 +88,28 @@ export default function LivingExhibitBackground({
           phase: random() * TAU,
         };
       });
-      resources = Array.from({ length: width < 900 ? 5 : 8 }, (_, index) => ({
-        x: 0.08 + random() * 0.84,
-        y: resourceY(environment, random),
-        strength: 0.65 + random() * 0.75,
-        phase: index / 8 + random() * 0.16,
+      resources = Array.from(
+        { length: width < 900 ? 5 : 8 },
+        (_, index) => ({
+          x: 0.08 + random() * 0.84,
+          y: resourceY(environment, random),
+          strength: 0.65 + random() * 0.75,
+          phase: index / 8 + random() * 0.16,
+        }),
+      );
+      seeds = Array.from({ length: width < 900 ? 16 : 30 }, () => ({
+        x: random(),
+        y: random(),
       }));
-      seeds = Array.from({ length: width < 900 ? 16 : 30 }, () => ({ x: random(), y: random() }));
     }
 
     function resize() {
-      width = innerWidth;
-      height = innerHeight;
-      ratio = Math.min(devicePixelRatio || 1, width < 900 ? 1.2 : 1.55);
+      width = window.innerWidth;
+      height = window.innerHeight;
+      ratio = Math.min(
+        window.devicePixelRatio || 1,
+        width < 900 ? 1.2 : 1.55,
+      );
       canvas.width = Math.max(1, Math.floor(width * ratio));
       canvas.height = Math.max(1, Math.floor(height * ratio));
       canvas.style.width = `${width}px`;
@@ -99,6 +125,10 @@ export default function LivingExhibitBackground({
       pointer.active = true;
     }
 
+    function onPointerLeave() {
+      pointer.active = false;
+    }
+
     function loop(now: number) {
       const delta = Math.min(0.042, (now - previous) / 1000);
       previous = now;
@@ -111,8 +141,27 @@ export default function LivingExhibitBackground({
       context.clearRect(0, 0, width, height);
       drawBase(context, width, height, environment, accent, time);
       drawField(context, width, height, environment, accent, seeds, time);
-      drawResources(context, width, height, environment, accent, resources, time);
-      if (!reducedMotion && delta > 0) updateAgents(agents, resources, environment, pointer, width, height, time, delta);
+      drawResources(
+        context,
+        width,
+        height,
+        environment,
+        accent,
+        resources,
+        time,
+      );
+      if (!reducedMotion && delta > 0) {
+        updateAgents(
+          agents,
+          resources,
+          environment,
+          pointer,
+          width,
+          height,
+          time,
+          delta,
+        );
+      }
       drawRelationships(context, width, height, accent, agents, resources, time);
       drawAgents(context, width, height, environment, accent, agents, time);
       drawHorizon(context, width, height, environment, accent, time);
@@ -120,20 +169,24 @@ export default function LivingExhibitBackground({
     }
 
     resize();
-    addEventListener("resize", resize);
-    addEventListener("pointermove", onPointer, { passive: true });
-    addEventListener("pointerleave", () => { pointer.active = false; });
+    window.addEventListener("resize", resize);
+    window.addEventListener("pointermove", onPointer, { passive: true });
+    window.addEventListener("pointerleave", onPointerLeave);
     if (!reducedMotion) frame = requestAnimationFrame(loop);
 
     return () => {
       cancelAnimationFrame(frame);
-      removeEventListener("resize", resize);
-      removeEventListener("pointermove", onPointer);
+      window.removeEventListener("resize", resize);
+      window.removeEventListener("pointermove", onPointer);
+      window.removeEventListener("pointerleave", onPointerLeave);
     };
   }, [accentRgb, environment]);
 
   return (
-    <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden" aria-hidden="true">
+    <div
+      className="pointer-events-none fixed inset-0 z-0 overflow-hidden"
+      aria-hidden="true"
+    >
       <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_48%_30%,transparent_18%,rgba(2,6,4,0.18)_58%,rgba(1,3,2,0.70)_100%)]" />
       <div className="absolute inset-x-0 top-0 h-[22%] bg-gradient-to-b from-[#020604]/75 to-transparent" />
@@ -177,7 +230,11 @@ function updateAgents(
       const dy = other.y - agent.y;
       const distance = Math.hypot(dx, dy);
 
-      if (agent.role !== "predator" && other.role === agent.role && distance < 0.15) {
+      if (
+        agent.role !== "predator" &&
+        other.role === agent.role &&
+        distance < 0.15
+      ) {
         alignX += other.vx;
         alignY += other.vy;
         centerX += other.x;
@@ -189,22 +246,37 @@ function updateAgents(
         }
       }
 
-      if (agent.role !== "predator" && other.role === "predator" && distance < 0.24 && distance > 0.001) {
+      if (
+        agent.role !== "predator" &&
+        other.role === "predator" &&
+        distance < 0.24 &&
+        distance > 0.001
+      ) {
         const fear = (0.24 - distance) / 0.24;
-        force.x -= dx / distance * fear * 0.17;
-        force.y -= dy / distance * fear * 0.17;
+        force.x -= (dx / distance) * fear * 0.17;
+        force.y -= (dy / distance) * fear * 0.17;
       }
     }
 
     if (neighbors) {
       alignX /= neighbors;
       alignY /= neighbors;
-      force.x += (alignX - agent.vx) * 0.30 + (centerX / neighbors - agent.x) * 0.032 + separateX * 0.0005;
-      force.y += (alignY - agent.vy) * 0.30 + (centerY / neighbors - agent.y) * 0.032 + separateY * 0.0005;
+      force.x +=
+        (alignX - agent.vx) * 0.3 +
+        (centerX / neighbors - agent.x) * 0.032 +
+        separateX * 0.0005;
+      force.y +=
+        (alignY - agent.vy) * 0.3 +
+        (centerY / neighbors - agent.y) * 0.032 +
+        separateY * 0.0005;
     }
 
     if (agent.role === "predator") {
-      const target = nearest(agent, agents.filter((candidate) => candidate.role !== "predator"), aspect);
+      const target = nearest(
+        agent,
+        agents.filter((candidate) => candidate.role !== "predator"),
+        aspect,
+      );
       if (target) {
         force.x += (target.x - agent.x) * 0.058;
         force.y += (target.y - agent.y) * 0.058;
@@ -223,8 +295,8 @@ function updateAgents(
       const distance = Math.hypot(dx, dy);
       if (distance < 0.18 && distance > 0.001) {
         const disturbance = (0.18 - distance) / 0.18;
-        force.x += dx / distance * disturbance * 0.15;
-        force.y += dy / distance * disturbance * 0.15;
+        force.x += (dx / distance) * disturbance * 0.15;
+        force.y += (dy / distance) * disturbance * 0.15;
       }
     }
   }
@@ -234,11 +306,16 @@ function updateAgents(
     const force = forces[index];
     agent.vx += force.x * delta;
     agent.vy += force.y * delta;
-    const maximum = agent.role === "predator" ? 0.075 : agent.role === "pollinator" ? 0.062 : 0.047;
+    const maximum =
+      agent.role === "predator"
+        ? 0.075
+        : agent.role === "pollinator"
+          ? 0.062
+          : 0.047;
     const speed = Math.hypot(agent.vx, agent.vy) || 1;
     if (speed > maximum) {
-      agent.vx = agent.vx / speed * maximum;
-      agent.vy = agent.vy / speed * maximum;
+      agent.vx = (agent.vx / speed) * maximum;
+      agent.vy = (agent.vy / speed) * maximum;
     }
     agent.x = wrap(agent.x + agent.vx * delta);
     agent.y += agent.vy * delta;
@@ -265,7 +342,14 @@ function drawBase(
   context.fillStyle = gradient;
   context.fillRect(0, 0, width, height);
 
-  const glow = context.createRadialGradient(width * 0.18, height * 0.18, 0, width * 0.18, height * 0.18, Math.max(width, height) * 0.56);
+  const glow = context.createRadialGradient(
+    width * 0.18,
+    height * 0.18,
+    0,
+    width * 0.18,
+    height * 0.18,
+    Math.max(width, height) * 0.56,
+  );
   glow.addColorStop(0, rgba(accent, 0.15 + Math.sin(time * 0.08) * 0.015));
   glow.addColorStop(1, rgba(accent, 0));
   context.fillStyle = glow;
@@ -283,11 +367,14 @@ function drawField(
 ) {
   context.save();
   context.lineWidth = 1;
-  context.globalAlpha = environment === "taxonomy" || environment === "network" ? 0.40 : 0.24;
+  context.globalAlpha =
+    environment === "taxonomy" || environment === "network" ? 0.4 : 0.24;
 
   for (let index = 0; index < seeds.length; index += 1) {
-    let x = wrap(seeds[index].x + time * 0.0025 * (1 + index % 3));
-    let y = wrap(seeds[index].y + Math.sin(time * 0.03 + index) * 0.001);
+    let x = wrap(seeds[index].x + time * 0.0025 * (1 + (index % 3)));
+    let y = wrap(
+      seeds[index].y + Math.sin(time * 0.03 + index) * 0.001,
+    );
     context.beginPath();
     context.moveTo(x * width, y * height);
     for (let step = 0; step < 22; step += 1) {
@@ -317,7 +404,14 @@ function drawResources(
     const y = resource.y * height;
     const pulse = 0.82 + Math.sin(time * 0.7 + resource.phase * TAU) * 0.18;
     const radius = (13 + resource.strength * 12) * pulse;
-    const glow = context.createRadialGradient(x, y, 0, x, y, radius * 2.4);
+    const glow = context.createRadialGradient(
+      x,
+      y,
+      0,
+      x,
+      y,
+      radius * 2.4,
+    );
     glow.addColorStop(0, rgba(accent, 0.22));
     glow.addColorStop(1, rgba(accent, 0));
     context.fillStyle = glow;
@@ -331,15 +425,25 @@ function drawResources(
       for (let branch = 0; branch < 4; branch += 1) {
         context.beginPath();
         context.moveTo(x, y + radius * 0.4);
-        context.quadraticCurveTo(x + (branch - 1.5) * radius * 0.35, y, x + (branch - 1.5) * radius * 0.55, y - radius);
+        context.quadraticCurveTo(
+          x + (branch - 1.5) * radius * 0.35,
+          y,
+          x + (branch - 1.5) * radius * 0.55,
+          y - radius,
+        );
         context.stroke();
       }
     } else {
       for (let leaf = 0; leaf < 5; leaf += 1) {
-        const angle = leaf / 5 * TAU + resource.phase;
+        const angle = (leaf / 5) * TAU + resource.phase;
         context.beginPath();
         context.moveTo(x, y);
-        context.quadraticCurveTo(x + Math.cos(angle + 0.45) * radius * 0.55, y + Math.sin(angle + 0.45) * radius * 0.55, x + Math.cos(angle) * radius, y + Math.sin(angle) * radius);
+        context.quadraticCurveTo(
+          x + Math.cos(angle + 0.45) * radius * 0.55,
+          y + Math.sin(angle + 0.45) * radius * 0.55,
+          x + Math.cos(angle) * radius,
+          y + Math.sin(angle) * radius,
+        );
         context.stroke();
       }
     }
@@ -362,11 +466,21 @@ function drawRelationships(
   for (let index = 0; index < agents.length; index += 1) {
     const agent = agents[index];
     if (index % 4 !== 0 || agent.role === "predator") continue;
-    const resource = nearest(agent, resources, width / Math.max(1, height));
+    const resource = nearest(
+      agent,
+      resources,
+      width / Math.max(1, height),
+    );
     if (!resource) continue;
-    const distance = Math.hypot((resource.x - agent.x) * width, (resource.y - agent.y) * height);
+    const distance = Math.hypot(
+      (resource.x - agent.x) * width,
+      (resource.y - agent.y) * height,
+    );
     if (distance > Math.min(width, height) * 0.33) continue;
-    context.strokeStyle = rgba(accent, 0.035 + Math.sin(time + agent.phase) * 0.012);
+    context.strokeStyle = rgba(
+      accent,
+      0.035 + Math.sin(time + agent.phase) * 0.012,
+    );
     context.setLineDash([3, 8]);
     context.lineDashOffset = -time * 8;
     context.beginPath();
@@ -392,14 +506,23 @@ function drawAgents(
     const x = agent.x * width;
     const y = agent.y * height;
     const angle = Math.atan2(agent.vy, agent.vx);
-    const size = (agent.role === "predator" ? 8 : agent.role === "pollinator" ? 5.5 : 6.5) * agent.size;
+    const size =
+      (agent.role === "predator"
+        ? 8
+        : agent.role === "pollinator"
+          ? 5.5
+          : 6.5) * agent.size;
     context.save();
     context.translate(x, y);
     context.rotate(angle);
-    const phase = time * (agent.role === "pollinator" ? 7 : 3) + agent.phase;
+    const phase =
+      time * (agent.role === "pollinator" ? 7 : 3) + agent.phase;
 
     if (agent.role === "predator") {
-      context.fillStyle = environment === "marine" || environment === "reef" ? "rgba(251,113,133,0.48)" : "rgba(251,146,60,0.46)";
+      context.fillStyle =
+        environment === "marine" || environment === "reef"
+          ? "rgba(251,113,133,0.48)"
+          : "rgba(251,146,60,0.46)";
       context.beginPath();
       context.moveTo(size * 1.25, 0);
       context.lineTo(-size * 0.68, -size * 0.52);
@@ -408,11 +531,27 @@ function drawAgents(
       context.closePath();
       context.fill();
     } else if (agent.role === "pollinator") {
-      const flap = 0.55 + Math.sin(phase) * 0.20;
+      const flap = 0.55 + Math.sin(phase) * 0.2;
       context.fillStyle = "rgba(254,240,138,0.34)";
       context.beginPath();
-      context.ellipse(-size * 0.1, -size * 0.26, size * 0.48, size * 0.20 * flap, -0.45, 0, TAU);
-      context.ellipse(-size * 0.1, size * 0.26, size * 0.48, size * 0.20 * flap, 0.45, 0, TAU);
+      context.ellipse(
+        -size * 0.1,
+        -size * 0.26,
+        size * 0.48,
+        size * 0.2 * flap,
+        -0.45,
+        0,
+        TAU,
+      );
+      context.ellipse(
+        -size * 0.1,
+        size * 0.26,
+        size * 0.48,
+        size * 0.2 * flap,
+        0.45,
+        0,
+        TAU,
+      );
       context.fill();
       context.fillStyle = rgba(accent, 0.52);
       context.beginPath();
@@ -425,8 +564,14 @@ function drawAgents(
       context.fill();
       context.beginPath();
       context.moveTo(-size * 0.72, 0);
-      context.lineTo(-size * 1.35, -size * 0.46 + Math.sin(phase) * size * 0.12);
-      context.lineTo(-size * 1.35, size * 0.46 + Math.sin(phase) * size * 0.12);
+      context.lineTo(
+        -size * 1.35,
+        -size * 0.46 + Math.sin(phase) * size * 0.12,
+      );
+      context.lineTo(
+        -size * 1.35,
+        size * 0.46 + Math.sin(phase) * size * 0.12,
+      );
       context.closePath();
       context.fill();
     } else {
@@ -456,12 +601,14 @@ function drawHorizon(
   context.save();
   if (environment === "marine" || environment === "reef") {
     context.fillStyle = "rgba(2,20,24,0.58)";
-    context.fillRect(0, height * 0.80, width, height * 0.20);
+    context.fillRect(0, height * 0.8, width, height * 0.2);
     context.strokeStyle = rgba(accent, 0.14);
     for (let line = 0; line < 4; line += 1) {
       context.beginPath();
       for (let x = -20; x <= width + 20; x += 20) {
-        const y = height * (0.68 + line * 0.055) + Math.sin(x * 0.012 + time * 0.32 + line) * (7 + line * 2);
+        const y =
+          height * (0.68 + line * 0.055) +
+          Math.sin(x * 0.012 + time * 0.32 + line) * (7 + line * 2);
         if (x === -20) context.moveTo(x, y);
         else context.lineTo(x, y);
       }
@@ -469,7 +616,7 @@ function drawHorizon(
     }
   } else if (environment === "alpine" || environment === "polar") {
     context.fillStyle = rgba(accent, 0.07);
-    context.strokeStyle = rgba(accent, 0.20);
+    context.strokeStyle = rgba(accent, 0.2);
     context.beginPath();
     context.moveTo(-40, height);
     context.lineTo(width * 0.14, height * 0.61);
@@ -486,42 +633,79 @@ function drawHorizon(
     context.fillRect(0, height * 0.86, width, height * 0.14);
     context.strokeStyle = rgba(accent, 0.16);
     context.lineWidth = 1;
-    for (let blade = 0; blade < Math.min(90, Math.floor(width / 15)); blade += 1) {
-      const x = blade / Math.max(1, Math.floor(width / 15) - 1) * width;
+    const bladeCount = Math.min(90, Math.floor(width / 15));
+    for (let blade = 0; blade < bladeCount; blade += 1) {
+      const x = (blade / Math.max(1, bladeCount - 1)) * width;
       const sway = Math.sin(time * 0.8 + blade * 0.43) * 7;
       context.beginPath();
       context.moveTo(x, height);
-      context.quadraticCurveTo(x + sway * 0.4, height * 0.89, x + sway, height * (0.78 + (blade % 7) * 0.012));
+      context.quadraticCurveTo(
+        x + sway * 0.4,
+        height * 0.89,
+        x + sway,
+        height * (0.78 + (blade % 7) * 0.012),
+      );
       context.stroke();
     }
   }
   context.restore();
 }
 
-function field(x: number, y: number, time: number, environment: ExhibitEnvironment): Point {
+function field(
+  x: number,
+  y: number,
+  time: number,
+  environment: ExhibitEnvironment,
+): Point {
   if (environment === "marine" || environment === "reef") {
-    return normalize({ x: 0.78 + Math.sin(y * 11 + time * 0.35) * 0.54, y: Math.cos(x * 8 - time * 0.22) * 0.42 });
+    return normalize({
+      x: 0.78 + Math.sin(y * 11 + time * 0.35) * 0.54,
+      y: Math.cos(x * 8 - time * 0.22) * 0.42,
+    });
   }
-  if (environment === "open" || environment === "arid" || environment === "wetland") {
-    return normalize({ x: 0.84 + Math.sin(y * 9 + time * 0.2) * 0.32, y: Math.cos(x * 11 - time * 0.15) * 0.24 });
+  if (
+    environment === "open" ||
+    environment === "arid" ||
+    environment === "wetland"
+  ) {
+    return normalize({
+      x: 0.84 + Math.sin(y * 9 + time * 0.2) * 0.32,
+      y: Math.cos(x * 11 - time * 0.15) * 0.24,
+    });
   }
   if (environment === "alpine" || environment === "polar") {
-    return normalize({ x: 0.78 + Math.sin((x + y) * 9 + time * 0.28) * 0.30, y: -0.22 + Math.cos(x * 7 - time * 0.17) * 0.34 });
+    return normalize({
+      x: 0.78 + Math.sin((x + y) * 9 + time * 0.28) * 0.3,
+      y: -0.22 + Math.cos(x * 7 - time * 0.17) * 0.34,
+    });
   }
   const dx = 0.5 - x;
   const dy = 0.44 - y;
   const network = environment === "taxonomy" || environment === "network";
   return normalize({
-    x: dx * (network ? 0.52 : 0.38) - dy * 0.62 + Math.sin(y * 12 + time * 0.18) * 0.14,
-    y: dy * (network ? 0.52 : 0.38) + dx * 0.62 + Math.cos(x * 11 - time * 0.15) * 0.14,
+    x:
+      dx * (network ? 0.52 : 0.38) -
+      dy * 0.62 +
+      Math.sin(y * 12 + time * 0.18) * 0.14,
+    y:
+      dy * (network ? 0.52 : 0.38) +
+      dx * 0.62 +
+      Math.cos(x * 11 - time * 0.15) * 0.14,
   });
 }
 
-function nearest<T extends Point>(origin: Point, candidates: T[], aspect: number) {
+function nearest<T extends Point>(
+  origin: Point,
+  candidates: T[],
+  aspect: number,
+) {
   let closest: T | undefined;
   let distance = Infinity;
   for (const candidate of candidates) {
-    const next = Math.hypot((candidate.x - origin.x) * aspect, candidate.y - origin.y);
+    const next = Math.hypot(
+      (candidate.x - origin.x) * aspect,
+      candidate.y - origin.y,
+    );
     if (next < distance) {
       distance = next;
       closest = candidate;
@@ -530,27 +714,51 @@ function nearest<T extends Point>(origin: Point, candidates: T[], aspect: number
   return closest;
 }
 
-function resourceY(environment: ExhibitEnvironment, random: () => number) {
-  if (environment === "marine" || environment === "reef") return 0.42 + random() * 0.46;
-  if (environment === "open" || environment === "arid" || environment === "wetland") return 0.64 + random() * 0.25;
-  return 0.16 + random() * 0.70;
+function resourceY(
+  environment: ExhibitEnvironment,
+  random: () => number,
+) {
+  if (environment === "marine" || environment === "reef") {
+    return 0.42 + random() * 0.46;
+  }
+  if (
+    environment === "open" ||
+    environment === "arid" ||
+    environment === "wetland"
+  ) {
+    return 0.64 + random() * 0.25;
+  }
+  return 0.16 + random() * 0.7;
 }
 
 function environmentPalette(environment: ExhibitEnvironment) {
   switch (environment) {
-    case "marine": return { top: "#03151c", middle: "#062a32", bottom: "#01080d" };
-    case "reef": return { top: "#051722", middle: "#073338", bottom: "#02090d" };
-    case "arid": return { top: "#25170c", middle: "#172014", bottom: "#050703" };
-    case "wetland": return { top: "#09251f", middle: "#08231b", bottom: "#020907" };
-    case "alpine": case "polar": return { top: "#0a1b25", middle: "#08191d", bottom: "#020508" };
-    case "taxonomy": case "network": return { top: "#101b15", middle: "#0a1710", bottom: "#020604" };
-    default: return { top: "#122819", middle: "#0a1d12", bottom: "#020604" };
+    case "marine":
+      return { top: "#03151c", middle: "#062a32", bottom: "#01080d" };
+    case "reef":
+      return { top: "#051722", middle: "#073338", bottom: "#02090d" };
+    case "arid":
+      return { top: "#25170c", middle: "#172014", bottom: "#050703" };
+    case "wetland":
+      return { top: "#09251f", middle: "#08231b", bottom: "#020907" };
+    case "alpine":
+    case "polar":
+      return { top: "#0a1b25", middle: "#08191d", bottom: "#020508" };
+    case "taxonomy":
+    case "network":
+      return { top: "#101b15", middle: "#0a1710", bottom: "#020604" };
+    default:
+      return { top: "#122819", middle: "#0a1d12", bottom: "#020604" };
   }
 }
 
 function parseRgb(value: string): Rgb {
   const [r = 52, g = 211, b = 153] = value.split(",").map(Number);
-  return { r: clamp(r, 0, 255), g: clamp(g, 0, 255), b: clamp(b, 0, 255) };
+  return {
+    r: clamp(r, 0, 255),
+    g: clamp(g, 0, 255),
+    b: clamp(b, 0, 255),
+  };
 }
 
 function rgba(rgb: Rgb, alpha: number) {
@@ -564,7 +772,9 @@ function normalize(point: Point): Point {
 
 function hash(value: string) {
   let result = 2166136261;
-  for (let index = 0; index < value.length; index += 1) result = Math.imul(result ^ value.charCodeAt(index), 16777619);
+  for (let index = 0; index < value.length; index += 1) {
+    result = Math.imul(result ^ value.charCodeAt(index), 16777619);
+  }
   return result >>> 0;
 }
 
@@ -585,8 +795,19 @@ function wrap(value: number) {
   return ((value % 1) + 1) % 1;
 }
 
-function drawVignette(context: CanvasRenderingContext2D, width: number, height: number) {
-  const vignette = context.createRadialGradient(width * 0.48, height * 0.34, Math.min(width, height) * 0.18, width * 0.48, height * 0.34, Math.max(width, height) * 0.78);
+function drawVignette(
+  context: CanvasRenderingContext2D,
+  width: number,
+  height: number,
+) {
+  const vignette = context.createRadialGradient(
+    width * 0.48,
+    height * 0.34,
+    Math.min(width, height) * 0.18,
+    width * 0.48,
+    height * 0.34,
+    Math.max(width, height) * 0.78,
+  );
   vignette.addColorStop(0, "rgba(0,0,0,0)");
   vignette.addColorStop(0.66, "rgba(0,0,0,0.08)");
   vignette.addColorStop(1, "rgba(0,0,0,0.62)");
