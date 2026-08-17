@@ -1,10 +1,8 @@
 import Link from "next/link";
 import DomainPageHeader from "@/app/_components/DomainPageHeader";
-import {
-  SceneFrame,
-  Surface,
-  WorldWindow,
-} from "@/app/_page-system/scene";
+import { SceneFrame } from "@/app/_page-system/scene";
+import { requireCurriculumPageContext } from "@/lib/curriculum/page-context";
+import type { CurriculumNode } from "@/lib/curriculum/types";
 import {
   ArrowRight,
   Binary,
@@ -19,218 +17,296 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import AlgorithmWorldBackground from "./_components/AlgorithmWorldBackground";
-import AlgorithmWorkbench from "./_components/AlgorithmWorkbench";
+import ComplexityLab from "./_components/ComplexityLab";
+import SortingLab from "./_components/SortingLab";
+import TraversalLab from "./_components/TraversalLab";
 
-const SCENES = [
-  {
-    id: "traversal",
-    label: "Traverse a graph",
-    description: "Change the frontier discipline and watch the same network produce breadth-first or depth-first order.",
-    accentRgb: "34, 211, 238",
-  },
-  {
-    id: "sorting",
-    label: "Reorder a sequence",
-    description: "Step through adjacent comparisons and watch a loop invariant grow a sorted suffix.",
-    accentRgb: "52, 211, 153",
-  },
-  {
-    id: "growth",
-    label: "Compare growth",
-    description: "Increase input size and compare families of resource growth rather than one machine's stopwatch time.",
-    accentRgb: "167, 139, 250",
-  },
-];
+const NODE_ID = "formal.computer-science.algorithms";
 
-const BRANCHES: Array<{
+type BranchMeta = {
   icon: LucideIcon;
-  label: string;
   question: string;
-  summary: string;
   rgb: string;
-  href?: string;
-  status: "active" | "planned";
-}> = [
-  {
+  index: string;
+};
+
+const BRANCH_META: Record<string, BranchMeta> = {
+  "formal.computer-science.algorithms.sorting": {
     icon: SortAsc,
-    label: "Sorting",
     question: "How can a sequence be reorganized predictably?",
-    summary: "Comparison sorts, non-comparison sorts, stability, in-place tradeoffs, and lower bounds.",
-    rgb: "52, 211, 153",
-    href: "/formal-science/computer-science/algorithms/sorting",
-    status: "active",
+    rgb: "52,211,153",
+    index: "01",
   },
-  {
+  "formal.computer-science.algorithms.search": {
     icon: Search,
-    label: "Search",
     question: "How can structure reduce the work needed to find something?",
-    summary: "Linear search, binary search, indexes, state-space search, and the assumptions each method requires.",
-    rgb: "34, 211, 238",
-    status: "planned",
+    rgb: "34,211,238",
+    index: "02",
   },
-  {
+  "formal.computer-science.algorithms.graphs": {
     icon: Network,
-    label: "Graphs & traversal",
-    question: "How can an algorithm explore relationships without getting trapped in cycles?",
-    summary: "BFS, DFS, shortest paths, spanning structures, connectivity, and graph representations.",
-    rgb: "167, 139, 250",
-    status: "planned",
+    question: "How can relationships be explored without getting trapped in cycles?",
+    rgb: "167,139,250",
+    index: "03",
   },
-  {
+  "formal.computer-science.algorithms.complexity": {
     icon: Gauge,
-    label: "Complexity",
     question: "How does resource use change as the input grows?",
-    summary: "Time, space, asymptotic bounds, amortized cost, and practical performance tradeoffs.",
-    rgb: "250, 204, 21",
-    status: "planned",
+    rgb: "250,204,21",
+    index: "04",
   },
-  {
+  "formal.computer-science.algorithms.dynamic-programming": {
     icon: Binary,
-    label: "Dynamic programming",
     question: "When can repeated subproblems be solved once and reused?",
-    summary: "State definitions, recurrences, memoization, tabulation, and reconstructing optimal solutions.",
-    rgb: "244, 114, 182",
-    status: "planned",
+    rgb: "244,114,182",
+    index: "05",
   },
-  {
+  "formal.computer-science.algorithms.design-paradigms": {
     icon: GitBranch,
-    label: "Greedy & divide-and-conquer",
-    question: "When can local structure safely simplify a global problem?",
-    summary: "Greedy-choice proofs, recursive decomposition, merge patterns, and counterexamples.",
-    rgb: "96, 165, 250",
-    status: "planned",
+    question: "Which decomposition strategy fits the structure of the problem?",
+    rgb: "96,165,250",
+    index: "06",
   },
-];
+};
 
 export default function AlgorithmsPage() {
+  const context = requireCurriculumPageContext(NODE_ID);
+
   return (
     <SceneFrame
       background={<AlgorithmWorldBackground />}
-      initialScene="traversal"
       className="bg-[#020709] text-slate-100 selection:bg-cyan-400/25"
       maxWidthClassName="max-w-[1600px]"
-      headerBackground="rgba(2,8,10,0.58)"
+      headerBackground="rgba(2,8,10,0.60)"
       header={
         <DomainPageHeader
-          breadcrumbs={[
-            { label: "Formal Science", href: "/formal-science" },
-            { label: "Computer Science", href: "/formal-science/computer-science" },
-            { label: "Algorithms" },
-          ]}
+          breadcrumbs={context.breadcrumbs}
           eyebrow="State · invariant · frontier · correctness · cost"
           eyebrowStyle="rule"
           icon={Cpu}
           title={<span>Algorithms</span>}
-          subtitle="An algorithm is a precise process for transforming state. Study what information it keeps, which invariant remains true, why it terminates, and how its resource cost grows."
+          subtitle="An algorithm is a precise process for transforming state. First choose the problem family; then study the representation, legal transitions, proof of correctness, termination, and resource growth."
           accentRgb="34, 211, 238"
           titleClassName="font-sans text-[clamp(2.8rem,5.3vw,6rem)] font-semibold leading-[0.84] tracking-[-0.066em] text-[#f2feff]"
           headerClassName="border-white/[0.08]"
         />
       }
     >
-      <section className="mt-4">
-        <WorldWindow
-          density="compact"
-          eyebrow="Execution theater"
-          title="Change the rule that manages state, then watch the process unfold."
-          description="The workbench keeps controls, frontier or sequence state, visual response, and complexity readouts together. Its ambient world follows the same active algorithm."
-          scenes={SCENES}
-        >
-          <AlgorithmWorkbench />
-        </WorldWindow>
+      <section className="mt-5">
+        <BranchIndex branches={context.children} />
       </section>
 
       <section className="mt-10">
-        <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_390px] lg:items-end">
-          <div>
-            <div className="flex items-center gap-2 font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-cyan-200/70">
-              <Braces size={14} /> Problem families
-            </div>
-            <h2 className="mt-3 max-w-5xl text-[clamp(2rem,4vw,4.2rem)] font-semibold leading-[0.93] tracking-[-0.055em] text-white">
-              Different problems demand different representations, proof ideas, and cost models.
-            </h2>
-          </div>
-          <Surface variant="ghost" className="rounded-[22px] p-5">
-            <div className="font-mono text-[11px] font-semibold uppercase tracking-[0.09em] text-slate-400">Design loop</div>
-            <div className="mt-3 grid gap-2">
-              <LoopStep number="01" label="Represent the state" />
-              <LoopStep number="02" label="Choose the next legal move" />
-              <LoopStep number="03" label="Prove progress and correctness" />
-              <LoopStep number="04" label="Measure time and memory" />
-            </div>
-          </Surface>
-        </div>
-
-        <div className="mt-5 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
-          {BRANCHES.map((branch) => <BranchCard key={branch.label} {...branch} />)}
+        <SectionIntro
+          eyebrow="Demonstration 01 · frontier discipline"
+          title="Traverse one graph with two different worklists."
+          text="This widget isolates graph exploration. Sorting and growth analysis are intentionally separate instruments below because they answer different questions and need different visual grammars."
+          rgb="34,211,238"
+        />
+        <div className="mt-4">
+          <TraversalLab />
         </div>
       </section>
 
-      <section className="mt-10 grid gap-3 md:grid-cols-3">
-        <Principle
-          icon={CheckCircle2}
-          label="Correctness"
-          title="A useful algorithm must do what it claims."
-          text="Examples build intuition, but invariants, induction, exchange arguments, and contradiction explain why every valid input is handled correctly."
-          rgb="52, 211, 153"
+      <section className="mt-12">
+        <SectionIntro
+          eyebrow="Demonstration 02 · local exchange"
+          title="Watch a sorted suffix grow one pass at a time."
+          text="The conveyor treats sorting as a sequence transformation rather than a graph problem. Its controls, invariant, comparisons, and swaps remain inside one self-contained widget."
+          rgb="52,211,153"
         />
-        <Principle
-          icon={Gauge}
-          label="Efficiency"
-          title="Cost belongs to an input model."
-          text="Time and space depend on input size, representation, machine assumptions, and which operations are counted. Big O summarizes growth, not exact seconds."
-          rgb="250, 204, 21"
+        <div className="mt-4">
+          <SortingLab />
+        </div>
+      </section>
+
+      <section className="mt-12">
+        <SectionIntro
+          eyebrow="Demonstration 03 · resource growth"
+          title="Compare operation counts without hiding their absolute separation."
+          text="The complexity observatory uses a linear vertical axis. Exact counts stay visible in a ledger so small families remain readable without making O(n log n) and O(n²) look deceptively close."
+          rgb="167,139,250"
         />
-        <Principle
-          icon={Network}
-          label="Representation"
-          title="The data structure changes the algorithmic landscape."
-          text="The same abstract problem can become easy or expensive depending on whether information is stored as an array, tree, graph, heap, hash table, or stream."
-          rgb="167, 139, 250"
-        />
+        <div className="mt-4">
+          <ComplexityLab />
+        </div>
+      </section>
+
+      <section className="mt-12 overflow-hidden rounded-[24px] border-y border-white/[0.10] bg-black/[0.12] backdrop-blur-md">
+        <div className="flex flex-col gap-3 border-b border-white/[0.08] px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <div className="font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-400">
+              Evaluation criteria · reference, not navigation
+            </div>
+            <h2 className="mt-1 text-[21px] font-semibold tracking-[-0.03em] text-white">
+              Three questions follow every algorithm into deeper pages.
+            </h2>
+          </div>
+          <span className="font-mono text-[11px] uppercase tracking-[0.08em] text-slate-600">
+            no destinations in this band
+          </span>
+        </div>
+        <div className="grid md:grid-cols-3">
+          <Criterion
+            icon={CheckCircle2}
+            label="Correctness"
+            title="Does it do what it claims?"
+            text="Examples build intuition, but invariants, induction, exchange arguments, and contradiction explain why every valid input is handled correctly."
+            rgb="52,211,153"
+          />
+          <Criterion
+            icon={Gauge}
+            label="Efficiency"
+            title="How does cost scale?"
+            text="Time and space depend on input size, representation, assumptions, and which operations are counted. Big O summarizes growth, not exact seconds."
+            rgb="250,204,21"
+          />
+          <Criterion
+            icon={Braces}
+            label="Representation"
+            title="What state makes the next move cheap?"
+            text="The same abstract problem can become easy or expensive depending on whether information is stored as an array, tree, graph, heap, hash table, or stream."
+            rgb="167,139,250"
+          />
+        </div>
       </section>
     </SceneFrame>
   );
 }
 
-function BranchCard({
-  icon: Icon,
-  label,
-  question,
-  summary,
-  rgb,
-  href,
-  status,
-}: (typeof BRANCHES)[number]) {
-  const body = (
-    <Surface
-      variant="ghost"
-      className={`group flex min-h-[230px] flex-col rounded-[22px] p-5 transition ${status === "active" ? "hover:-translate-y-1 hover:bg-black/[0.28]" : "opacity-70"}`}
-      style={{ borderColor: `rgba(${rgb},0.16)` }}
+function BranchIndex({ branches }: { branches: readonly CurriculumNode[] }) {
+  return (
+    <nav
+      aria-label="Algorithm branches"
+      className="overflow-hidden rounded-[30px] border border-cyan-100/[0.13] bg-[#020a0d]/72 shadow-[0_30px_110px_rgba(0,0,0,0.27)] backdrop-blur-lg"
     >
-      <div className="flex items-start justify-between gap-3">
-        <span className="flex h-11 w-11 items-center justify-center rounded-[14px] border" style={{ color: `rgb(${rgb})`, borderColor: `rgba(${rgb},0.28)`, background: `rgba(${rgb},0.055)` }}><Icon size={18} /></span>
-        {status === "active" ? <ArrowRight size={15} className="mt-2 text-white/28 transition group-hover:translate-x-1 group-hover:text-white/75" /> : null}
+      <div className="grid border-b border-cyan-100/[0.09] lg:grid-cols-[minmax(0,1fr)_390px]">
+        <div className="p-5 sm:p-6">
+          <div className="font-mono text-[11px] font-semibold uppercase tracking-[0.13em] text-cyan-200/72">
+            Primary navigation · direct children
+          </div>
+          <h2 className="mt-2 text-[clamp(1.9rem,3.5vw,3.6rem)] font-semibold leading-[0.95] tracking-[-0.05em] text-white">
+            Choose the algorithmic problem before choosing a technique.
+          </h2>
+          <p className="mt-3 max-w-3xl text-[14px] leading-6 text-slate-300/68">
+            These routes define the branch structure. The demonstrations below are examples inside this parent page, not competing destinations.
+          </p>
+        </div>
+        <div className="border-t border-cyan-100/[0.08] bg-cyan-300/[0.025] p-5 lg:border-l lg:border-t-0">
+          <Link
+            href="/formal-science/computer-science"
+            className="group flex items-center justify-between gap-4 rounded-[15px] border border-white/[0.08] bg-black/[0.18] px-4 py-3 transition hover:bg-white/[0.04]"
+          >
+            <span>
+              <span className="font-mono text-[11px] font-semibold uppercase tracking-[0.09em] text-slate-500">
+                Parent hub
+              </span>
+              <strong className="mt-1 block text-[14px] text-white">
+                Computer Science
+              </strong>
+            </span>
+            <ArrowRight size={15} className="text-cyan-200/55 transition group-hover:translate-x-1" />
+          </Link>
+        </div>
       </div>
-      <h3 className="mt-5 text-[20px] font-semibold tracking-[-0.035em] text-white">{label}</h3>
-      <strong className="mt-3 block text-[13px] leading-5 text-slate-200/82">{question}</strong>
-      <p className="mt-2 text-[14px] leading-6 text-slate-400/70">{summary}</p>
-      <span className="mt-auto pt-5 font-mono text-[11px] font-semibold uppercase tracking-[0.09em]" style={{ color: `rgba(${rgb},0.72)` }}>{status === "active" ? "open branch" : "planned branch"}</span>
-    </Surface>
+
+      <div className="divide-y divide-white/[0.07]">
+        {branches.map((branch) => (
+          <BranchRow key={branch.id} branch={branch} />
+        ))}
+      </div>
+    </nav>
   );
-  return status === "active" && href ? <Link href={href}>{body}</Link> : body;
 }
 
-function LoopStep({ number, label }: { number: string; label: string }) {
+function BranchRow({ branch }: { branch: CurriculumNode }) {
+  const meta = BRANCH_META[branch.id] ?? {
+    icon: Braces,
+    question: branch.description ?? "Explore this algorithmic branch.",
+    rgb: "34,211,238",
+    index: "--",
+  };
+  const Icon = meta.icon;
+  const planned = branch.status === "placeholder";
+  const content = (
+    <div
+      className={`group grid min-h-[92px] gap-4 px-5 py-4 sm:grid-cols-[48px_52px_minmax(0,1fr)_150px_28px] sm:items-center sm:px-6 ${
+        planned ? "opacity-58" : "transition hover:bg-white/[0.025]"
+      }`}
+    >
+      <span className="font-mono text-[12px] text-slate-600">{meta.index}</span>
+      <span
+        className="flex h-11 w-11 items-center justify-center rounded-[13px] border"
+        style={{
+          color: `rgb(${meta.rgb})`,
+          borderColor: `rgba(${meta.rgb},0.25)`,
+          background: `rgba(${meta.rgb},0.045)`,
+        }}
+      >
+        <Icon size={17} />
+      </span>
+      <span className="min-w-0">
+        <strong className="block text-[17px] font-semibold text-white">
+          {branch.label}
+        </strong>
+        <span className="mt-1 block text-[13px] leading-5 text-slate-400/72">
+          {meta.question}
+        </span>
+      </span>
+      <span
+        className="font-mono text-[11px] font-semibold uppercase tracking-[0.09em]"
+        style={{ color: `rgba(${meta.rgb},0.72)` }}
+      >
+        {planned ? "planned branch" : "open branch"}
+      </span>
+      {planned ? (
+        <span className="h-2 w-2 rounded-full border border-white/[0.12]" />
+      ) : (
+        <ArrowRight
+          size={15}
+          className="text-white/30 transition group-hover:translate-x-1 group-hover:text-white/78"
+        />
+      )}
+    </div>
+  );
+
+  return planned ? (
+    <div aria-disabled="true">{content}</div>
+  ) : (
+    <Link href={branch.href}>{content}</Link>
+  );
+}
+
+function SectionIntro({
+  eyebrow,
+  title,
+  text,
+  rgb,
+}: {
+  eyebrow: string;
+  title: string;
+  text: string;
+  rgb: string;
+}) {
   return (
-    <div className="grid grid-cols-[32px_minmax(0,1fr)] items-center gap-3 rounded-[12px] border border-white/[0.07] bg-black/[0.14] px-3 py-2.5">
-      <span className="font-mono text-[11px] text-cyan-200/54">{number}</span>
-      <span className="text-[13px] text-slate-200/76">{label}</span>
+    <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_430px] lg:items-end">
+      <div>
+        <div
+          className="font-mono text-[11px] font-semibold uppercase tracking-[0.12em]"
+          style={{ color: `rgba(${rgb},0.72)` }}
+        >
+          {eyebrow}
+        </div>
+        <h2 className="mt-2 text-[clamp(1.8rem,3.2vw,3.2rem)] font-semibold leading-[0.96] tracking-[-0.046em] text-white">
+          {title}
+        </h2>
+      </div>
+      <p className="text-[14px] leading-6 text-slate-400/72">{text}</p>
     </div>
   );
 }
 
-function Principle({
+function Criterion({
   icon: Icon,
   label,
   title,
@@ -244,11 +320,18 @@ function Principle({
   rgb: string;
 }) {
   return (
-    <Surface variant="ghost" className="rounded-[22px] p-5" style={{ borderColor: `rgba(${rgb},0.13)` }}>
-      <Icon size={18} style={{ color: `rgb(${rgb})` }} />
-      <div className="mt-4 font-mono text-[11px] font-semibold uppercase tracking-[0.10em]" style={{ color: `rgba(${rgb},0.70)` }}>{label}</div>
-      <h3 className="mt-2 text-[18px] font-semibold tracking-[-0.025em] text-white">{title}</h3>
+    <article className="min-h-[190px] border-b border-white/[0.07] px-5 py-5 last:border-b-0 md:border-b-0 md:border-r md:last:border-r-0">
+      <Icon size={17} style={{ color: `rgb(${rgb})` }} />
+      <div
+        className="mt-4 font-mono text-[11px] font-semibold uppercase tracking-[0.10em]"
+        style={{ color: `rgba(${rgb},0.70)` }}
+      >
+        {label}
+      </div>
+      <h3 className="mt-2 text-[18px] font-semibold tracking-[-0.025em] text-white">
+        {title}
+      </h3>
       <p className="mt-2 text-[14px] leading-6 text-slate-400/70">{text}</p>
-    </Surface>
+    </article>
   );
 }
