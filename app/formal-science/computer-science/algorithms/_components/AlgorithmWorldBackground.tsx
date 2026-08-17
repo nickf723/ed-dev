@@ -101,9 +101,9 @@ export default function AlgorithmWorldBackground() {
       aria-hidden="true"
     >
       <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
-      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(2,8,10,0.20),transparent_30%,transparent_76%,rgba(2,5,9,0.42))]" />
-      <div className="absolute inset-x-0 top-0 h-[20%] bg-gradient-to-b from-[#020608]/80 to-transparent" />
-      <div className="absolute inset-x-0 bottom-0 h-[22%] bg-gradient-to-t from-[#010305]/75 to-transparent" />
+      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(2,8,10,0.10),transparent_28%,transparent_80%,rgba(2,5,9,0.24))]" />
+      <div className="absolute inset-x-0 top-0 h-[20%] bg-gradient-to-b from-[#020608]/62 to-transparent" />
+      <div className="absolute inset-x-0 bottom-0 h-[22%] bg-gradient-to-t from-[#010305]/54 to-transparent" />
     </div>
   );
 }
@@ -124,14 +124,14 @@ function drawBase(
   context.lineWidth = 1;
   const spacing = width < 900 ? 64 : 82;
   for (let x = 0; x < width; x += spacing) {
-    context.strokeStyle = "rgba(34,211,238,0.035)";
+    context.strokeStyle = "rgba(34,211,238,0.050)";
     context.beginPath();
     context.moveTo(x, 0);
     context.lineTo(x, height);
     context.stroke();
   }
   for (let y = 0; y < height; y += spacing) {
-    context.strokeStyle = "rgba(167,139,250,0.03)";
+    context.strokeStyle = "rgba(167,139,250,0.044)";
     context.beginPath();
     context.moveTo(0, y);
     context.lineTo(width, y);
@@ -153,8 +153,8 @@ function drawTraversalAmbient(
   GRAPH_EDGES.forEach(([from, to], index) => {
     const a = points[from];
     const b = points[to];
-    context.strokeStyle = "rgba(34,211,238,0.12)";
-    context.lineWidth = 1.2;
+    context.strokeStyle = "rgba(34,211,238,0.18)";
+    context.lineWidth = 1.3;
     context.beginPath();
     context.moveTo(a.x, a.y);
     context.lineTo(b.x, b.y);
@@ -163,16 +163,16 @@ function drawTraversalAmbient(
     const progress = (time * 0.035 + index * 0.17) % 1;
     const packetX = a.x + (b.x - a.x) * progress;
     const packetY = a.y + (b.y - a.y) * progress;
-    context.fillStyle = "rgba(34,211,238,0.55)";
+    context.fillStyle = "rgba(34,211,238,0.66)";
     context.beginPath();
-    context.arc(packetX, packetY, 2.2, 0, Math.PI * 2);
+    context.arc(packetX, packetY, 2.4, 0, Math.PI * 2);
     context.fill();
   });
 
   points.forEach((point, index) => {
     const pulse = 1 + Math.sin(time * 0.45 + index * 0.8) * 0.08;
-    context.fillStyle = "rgba(34,211,238,0.055)";
-    context.strokeStyle = "rgba(34,211,238,0.20)";
+    context.fillStyle = "rgba(34,211,238,0.078)";
+    context.strokeStyle = "rgba(34,211,238,0.28)";
     context.beginPath();
     context.arc(point.x, point.y, (7 + (index % 3) * 2) * pulse, 0, Math.PI * 2);
     context.fill();
@@ -194,7 +194,7 @@ function drawSortingAmbient(
   const activeIndex = Math.floor((time * 0.18) % SORT_VALUES.length);
 
   context.save();
-  context.strokeStyle = "rgba(52,211,153,0.10)";
+  context.strokeStyle = "rgba(52,211,153,0.16)";
   context.beginPath();
   context.moveTo(startX, baseline + 12);
   context.lineTo(startX + stageWidth, baseline + 12);
@@ -208,13 +208,13 @@ function drawSortingAmbient(
     const gradient = context.createLinearGradient(0, baseline - barHeight, 0, baseline);
     gradient.addColorStop(
       0,
-      active ? "rgba(250,204,21,0.24)" : "rgba(52,211,153,0.17)",
+      active ? "rgba(250,204,21,0.30)" : "rgba(52,211,153,0.24)",
     );
-    gradient.addColorStop(1, "rgba(3,25,18,0.22)");
+    gradient.addColorStop(1, "rgba(3,25,18,0.24)");
     context.fillStyle = gradient;
     context.strokeStyle = active
-      ? "rgba(250,204,21,0.34)"
-      : "rgba(52,211,153,0.14)";
+      ? "rgba(250,204,21,0.42)"
+      : "rgba(52,211,153,0.22)";
     context.beginPath();
     context.roundRect(x, baseline - barHeight, barWidth, barHeight, 9);
     context.fill();
@@ -234,11 +234,11 @@ function drawGrowthAmbient(
   const bottom = height * 0.78;
   const top = height * 0.16;
   const families = [
-    { exponent: 0.12, rgb: "52,211,153", opacity: 0.18 },
-    { exponent: 0.34, rgb: "34,211,238", opacity: 0.20 },
-    { exponent: 0.58, rgb: "96,165,250", opacity: 0.22 },
-    { exponent: 1.0, rgb: "167,139,250", opacity: 0.27 },
-    { exponent: 2.0, rgb: "244,114,182", opacity: 0.34 },
+    { exponent: 0.12, rgb: "52,211,153", opacity: 0.24 },
+    { exponent: 0.34, rgb: "34,211,238", opacity: 0.26 },
+    { exponent: 0.58, rgb: "96,165,250", opacity: 0.28 },
+    { exponent: 1.0, rgb: "167,139,250", opacity: 0.34 },
+    { exponent: 2.0, rgb: "244,114,182", opacity: 0.42 },
   ];
 
   context.save();
@@ -254,13 +254,13 @@ function drawGrowthAmbient(
       else context.lineTo(x, y);
     }
     context.strokeStyle = `rgba(${family.rgb},${family.opacity})`;
-    context.lineWidth = familyIndex === families.length - 1 ? 2.3 : 1.3;
+    context.lineWidth = familyIndex === families.length - 1 ? 2.5 : 1.4;
     context.stroke();
   });
 
   const scan = (time * 0.025) % 1;
   const scanX = left + (right - left) * scan;
-  context.strokeStyle = "rgba(250,204,21,0.20)";
+  context.strokeStyle = "rgba(250,204,21,0.28)";
   context.setLineDash([5, 8]);
   context.beginPath();
   context.moveTo(scanX, top);
@@ -283,8 +283,8 @@ function drawVignette(
     Math.max(width, height) * 0.78,
   );
   vignette.addColorStop(0, "rgba(0,0,0,0)");
-  vignette.addColorStop(0.72, "rgba(0,0,0,0.10)");
-  vignette.addColorStop(1, "rgba(0,0,0,0.68)");
+  vignette.addColorStop(0.72, "rgba(0,0,0,0.05)");
+  vignette.addColorStop(1, "rgba(0,0,0,0.48)");
   context.fillStyle = vignette;
   context.fillRect(0, 0, width, height);
 }
