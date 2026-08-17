@@ -79,3 +79,5 @@ export const POLITICAL_SCIENCE_CURRICULUM: CurriculumNode = {
     ),
   ],
 };
+
+// This branch-only comment exists solely to trigger an isolated preview build.
