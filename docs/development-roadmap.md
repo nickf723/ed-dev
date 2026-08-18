@@ -37,7 +37,7 @@ Goal: every major subject parent should be Developed before broad child expansio
 - Computer Science: Developed
 - Systems Science: Foundation
 - Data Science: Developed
-- Information Science: Foundation
+- Information Science: Developed
 
 ### Natural sciences
 
@@ -94,12 +94,12 @@ Goal: every major subject parent should be Developed before broad child expansio
 
 Unless new feedback changes priorities, work through fresh parents in this order:
 
-1. Information Science
-2. Systems Science
-3. Languages
-4. Technology
-5. Industrial Design
-6. Medicine
+1. Systems Science
+2. Languages
+3. Technology
+4. Industrial Design
+5. Medicine
+6. Health Sciences
 
 The order deliberately hops across domains so visual languages do not collapse into one subject family's habits.
 
@@ -196,6 +196,16 @@ Priority examples:
 - Removed the false universal rules that soy automatically adds a fixed amount of soil N and fallow automatically restores a fixed amount; the new widget explicitly says it is not a fertilizer recommendation and does not treat retained residue as immediately mineralized N.
 - Validation caught an invalid Lucide icon export; it was repaired on `studio` before graduation.
 - Full 378-page Next.js preview build reached READY on the corrected tree.
+
+### Information Science · Developed
+
+- Preserved the Binary Ocean identity, entropy instrument, vector-search laboratory, and existing active Taxonomy & Ontology child while separating their distinct learner questions.
+- Rebuilt the background as an information harbor: encoded symbol streams flow through a Representation / Schema / Metadata gate into indexed record shelves, while one slow query beam traces a retrieval path.
+- Added nine direct branches spanning information theory/coding, encoding/representation, retrieval/search, taxonomy/ontology, metadata/semantics, knowledge graphs, archives/preservation, information behavior, and bibliometrics/science of science.
+- Rebuilt the entropy instrument around empirical symbol frequencies, Shannon entropy, observed alphabet size, and actual UTF-8 storage bits, with explicit warnings that H × symbol count is an idealized frequency-model quantity rather than actual compressed file size.
+- Rebuilt vector search as an explicitly synthetic 2D representation space with preset queries, exact Euclidean neighbor ranking, and strong caveats that embedding distance does not equal truth, fairness, usefulness, or human relevance.
+- Reorganized the parent as catalog records around a Signal → Representation → Description → Organization → Retrieval & use lifecycle, with entropy and retrieval remaining separate instruments.
+- Full 378-page Next.js preview build reached READY.
 
 ## Phase C: curriculum depth
 
