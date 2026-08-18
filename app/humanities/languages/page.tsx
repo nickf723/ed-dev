@@ -1,144 +1,199 @@
-import React from 'react';
-import Link from 'next/link';
-import { ArrowLeft, BookA, Globe2, Network, MessageCircle, SplitSquareHorizontal } from 'lucide-react';
-import LanguagesBackground from './_components/LanguagesBackground';
-import OmniTranslator from './_components/OmniTranslator';
+import Link from "next/link";
+import DomainPageHeader from "@/app/_components/DomainPageHeader";
+import { SceneFrame, Surface } from "@/app/_page-system/scene";
+import { requireCurriculumPageContext } from "@/lib/curriculum/page-context";
+import type { CurriculumNode } from "@/lib/curriculum/types";
+import type { LucideIcon } from "lucide-react";
+import {
+  ArrowDown,
+  ArrowRight,
+  ArrowRightLeft,
+  BookOpenText,
+  Clapperboard,
+  GraduationCap,
+  Hand,
+  Languages,
+  MessageCircle,
+  PenLine,
+  ScrollText,
+  Sparkles,
+  Speech,
+} from "lucide-react";
+import LanguagesBackground from "./_components/LanguagesBackground";
+import OmniTranslator from "./_components/OmniTranslator";
+import RosettaWidget from "./RosettaWidget";
 
-const LINGUISTIC_MODULES = [
-    {
-        id: 'morphology',
-        title: 'Morphology',
-        description: 'How words are built. Explore Isolating languages (Chinese) vs. Agglutinative languages (Turkish).',
-        icon: SplitSquareHorizontal,
-        color: 'sky',
-        href: '#' 
-    },
-    {
-        id: 'phonology',
-        title: 'Phonetics & Phonology',
-        description: 'The International Phonetic Alphabet (IPA) and the physical production of human speech sounds.',
-        icon: MessageCircle,
-        color: 'rose',
-        href: '/social-science/linguistics/phonology' // Linking to our previous build!
-    },
-    {
-        id: 'etymology',
-        title: 'Etymology & Language Trees',
-        description: 'Tracing the roots of modern languages back to Proto-Indo-European and beyond.',
-        icon: Network,
-        color: 'amber',
-        href: '#'
-    }
-];
+const NODE_ID = "humanities.languages";
+
+type BranchMeta = {
+  icon: LucideIcon;
+  code: string;
+  question: string;
+  rgb: string;
+  family: "catalog" | "practice";
+};
+
+const BRANCH_META: Record<string, BranchMeta> = {
+  "humanities.languages.modern": {
+    icon: Speech,
+    code: "MOD",
+    question: "Which living languages do you want to use for conversation, reading, travel, heritage, work, scholarship, literature, or media?",
+    rgb: "125,211,252",
+    family: "catalog",
+  },
+  "humanities.languages.signed": {
+    icon: Hand,
+    code: "SGN",
+    question: "How do natural signed languages use visual-spatial form within distinct Deaf communities, histories, literatures, and regional traditions?",
+    rgb: "94,234,212",
+    family: "catalog",
+  },
+  "humanities.languages.classical-historical": {
+    icon: ScrollText,
+    code: "CLS",
+    question: "How can texts, inscriptions, manuscripts, philology, pronunciation evidence, and historical grammar reopen languages from earlier periods?",
+    rgb: "251,191,36",
+    family: "catalog",
+  },
+  "humanities.languages.constructed": {
+    icon: Sparkles,
+    code: "CON",
+    question: "What changes when a language is deliberately designed for artistic, auxiliary, experimental, or engineered purposes and then used by communities?",
+    rgb: "192,132,252",
+    family: "catalog",
+  },
+  "humanities.languages.writing-literacy": {
+    icon: PenLine,
+    code: "SCR",
+    question: "How do scripts, spelling systems, reading direction, handwriting, keyboards, punctuation, and literacy practices turn language into durable visual form?",
+    rgb: "244,114,182",
+    family: "practice",
+  },
+  "humanities.languages.translation-interpreting": {
+    icon: ArrowRightLeft,
+    code: "TRN",
+    question: "How do translators and interpreters preserve communicative purpose while negotiating register, ambiguity, terminology, genre, culture, and medium?",
+    rgb: "251,146,60",
+    family: "practice",
+  },
+  "humanities.languages.learning-proficiency": {
+    icon: GraduationCap,
+    code: "LRN",
+    question: "Which mix of input, vocabulary practice, grammar, pronunciation, interaction, feedback, reading, writing, and assessment helps proficiency grow over time?",
+    rgb: "163,230,53",
+    family: "practice",
+  },
+  "humanities.languages.literature-culture": {
+    icon: Clapperboard,
+    code: "CUL",
+    question: "How can language study open literature, film, music, humor, conversation, historical documents, everyday genres, and community contexts?",
+    rgb: "216,180,254",
+    family: "practice",
+  },
+};
+
+const PRACTICE_SPINE = [
+  { label: "Notice", detail: "sound/sign · script · form · context", rgb: "125,211,252", icon: BookOpenText },
+  { label: "Understand", detail: "meaning · pattern · reference · intent", rgb: "192,132,252", icon: MessageCircle },
+  { label: "Retrieve", detail: "words · chunks · structures · conventions", rgb: "251,191,36", icon: GraduationCap },
+  { label: "Use", detail: "speak/sign · listen/watch · read · write", rgb: "94,234,212", icon: Languages },
+  { label: "Adapt", detail: "register · audience · genre · feedback", rgb: "244,114,182", icon: ArrowRightLeft },
+] as const;
+
+const STUDY_PRINCIPLES = [
+  ["Meaning before substitution", "A word or phrase belongs to a larger utterance, relationship, genre, and situation. Translation and comprehension both fail when forms are treated as isolated dictionary tokens."],
+  ["Input needs attention", "Exposure helps when learners can notice form, infer meaning, connect new material to prior knowledge, and encounter it repeatedly across useful contexts."],
+  ["Output reveals gaps", "Speaking, signing, and writing create pressure to retrieve forms and organize meaning. Feedback can expose what passive recognition alone does not."],
+  ["Literacy is language-specific", "Learning a new script, spelling system, reading direction, keyboard, or orthographic convention can require its own practice rather than being a cosmetic layer over speech."],
+  ["Culture is not trivia", "Language use is embedded in communities, institutions, media, history, humor, politeness, identity, power, and everyday expectations. A phrasebook cannot contain a culture."],
+  ["Linguistics is adjacent", "Phonetics, phonology, morphology, syntax, semantics, pragmatics, historical linguistics, and language science live in the separate Linguistics domain and can support language learning without being duplicated here."],
+] as const;
 
 export default function LanguagesPage() {
-    return (
-        <main className="relative min-h-screen bg-[#0a0c10] text-zinc-300 font-sans selection:bg-violet-500/30 overflow-x-hidden">
-            
-            <LanguagesBackground />
+  const context = requireCurriculumPageContext(NODE_ID);
+  const catalog = context.children.filter((branch) => BRANCH_META[branch.id]?.family === "catalog");
+  const practice = context.children.filter((branch) => BRANCH_META[branch.id]?.family === "practice");
 
-            <div className="relative z-10 max-w-[85rem] mx-auto px-6 py-12 md:py-24">
-                
-                {/* HEADER */}
-                <header className="mb-16 border-b border-white/10 pb-8 backdrop-blur-sm">
-                    <Link href="/humanities" className="inline-flex items-center gap-2 text-zinc-500 hover:text-zinc-300 text-xs font-bold uppercase tracking-widest mb-6 transition-colors">
-                        <ArrowLeft size={14} /> Humanities Hub
-                    </Link>
-                    
-                    <div className="flex items-center gap-3 mb-4">
-                        <span className="p-2 bg-black/50 border border-violet-500/30 rounded-lg text-violet-400 shadow-[0_0_15px_rgba(139,92,246,0.2)]">
-                            <BookA size={24} />
-                        </span>
-                        <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-violet-300/50">
-                            Humanities // Global Communication
-                        </span>
-                    </div>
-                    
-                    <h1 className="text-5xl md:text-7xl font-black text-white tracking-tighter mb-6">
-                        LANGUAGES & <br />
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-amber-400">LINGUISTICS</span>
-                    </h1>
-                    <p className="text-lg md:text-xl text-zinc-400 font-light max-w-3xl leading-relaxed">
-                        To learn a new language is to learn a new way of thinking. Linguistics is the scientific study of language—how we map abstract thoughts onto physical sounds, and how different cultures structure their view of reality through grammar.
-                    </p>
-                </header>
+  return (
+    <SceneFrame
+      background={<LanguagesBackground />}
+      className="bg-[#0a0c10] text-stone-100 selection:bg-violet-300/25"
+      maxWidthClassName="max-w-[1600px]"
+      headerBackground="rgba(10,12,16,0.50)"
+      header={
+        <DomainPageHeader
+          breadcrumbs={context.breadcrumbs}
+          eyebrow="Listen · watch · speak · sign · read · write · translate"
+          eyebrowStyle="rule"
+          icon={Languages}
+          title={<span>Languages</span>}
+          subtitle="Learn languages as living systems of communication and culture: spoken, signed, written, historical, constructed, translated, read, heard, watched, practiced, inherited, and used with real people. Linguistic theory remains a neighboring science rather than a duplicate branch here."
+          accentRgb="192, 132, 252"
+          titleClassName="font-sans text-[clamp(2.9rem,5.4vw,6.1rem)] font-semibold leading-[0.84] tracking-[-0.066em] text-[#faf5ff]"
+          headerClassName="border-violet-100/[0.10]"
+        />
+      }
+    >
+      <section className="relative isolate mt-5 overflow-hidden border-y border-violet-100/[0.11] py-5 sm:py-6">
+        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(10,12,16,0.46),transparent_28%,transparent_72%,rgba(17,12,18,0.38))] backdrop-blur-[2px]" />
+        <div className="relative grid gap-4 lg:grid-cols-[minmax(0,1fr)_300px] lg:items-end">
+          <div>
+            <div className="flex items-center gap-2 font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-violet-200/66"><Languages size={14} /> Primary navigation · language practice</div>
+            <h2 className="mt-2 max-w-5xl text-[clamp(1.9rem,3.7vw,3.7rem)] font-semibold leading-[0.94] tracking-[-0.052em] text-white">
+              Choose the kinds of languages you want to enter, or the practices that let you use them.
+            </h2>
+            <p className="mt-3 max-w-4xl text-[14px] leading-6 text-stone-300/70">
+              The translation desk behind the page holds facing source and target manuscripts, alignment threads, a translator's margin, script-direction rulers, and one slow reading light. It stays quiet while the foreground asks you to compare actual language forms.
+            </p>
+          </div>
+          <Link href="/social-science/linguistics" className="group flex items-center justify-between gap-4 border-l border-cyan-200/[0.18] bg-black/[0.08] px-4 py-3 backdrop-blur-[10px] transition hover:bg-black/[0.15]">
+            <span><span className="font-mono text-[11px] font-semibold uppercase tracking-[0.08em] text-stone-500">Neighboring field</span><strong className="mt-1 block text-[14px] text-white">Linguistics</strong><span className="mt-1 block text-[11px] text-stone-600">language science & structure</span></span>
+            <ArrowRight size={15} className="text-cyan-200/55 transition group-hover:translate-x-1" />
+          </Link>
+        </div>
 
-                <div className="grid grid-cols-1 gap-12 lg:gap-20 mb-24">
-                    
-                    {/* TOP: THEORETICAL TEXT */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-                        <section>
-                            <h2 className="text-2xl font-bold text-white mb-4 flex items-center gap-3">
-                                <Globe2 className="text-violet-400" /> Beyond Vocabulary
-                            </h2>
-                            <p className="text-zinc-400 leading-relaxed font-light mb-4">
-                                Most language apps focus heavily on memorizing vocabulary tables. But vocabulary is just the paint; grammar is the canvas. If you don't understand how a language structures its sentences, knowing the words won't help you communicate.
-                            </p>
-                            <p className="text-zinc-400 leading-relaxed font-light">
-                                For example, in English, the order of words determines who is doing what: <em>"The dog bites the man"</em> means something very different than <em>"The man bites the dog."</em> But in languages with heavy case systems (like Latin or Russian), the word endings determine the meaning, so you can mix the words in any order!
-                            </p>
-                        </section>
+        <div className="relative mt-5 grid gap-4 xl:grid-cols-[minmax(0,1fr)_290px_minmax(0,1fr)] xl:items-stretch">
+          <LanguageBank label="Language catalog" branches={catalog} />
+          <PracticeCore />
+          <LanguageBank label="Learning & use" branches={practice} align="right" />
+        </div>
+      </section>
 
-                        <section>
-                            <h2 className="text-2xl font-bold text-white mb-4 flex items-center gap-3">
-                                <Network className="text-amber-400" /> Syntactic Alignment
-                            </h2>
-                            <p className="text-zinc-400 leading-relaxed font-light mb-4">
-                                When building a sentence, humans generally need three things: a Subject (actor), a Verb (action), and an Object (receiver). How a culture orders these three elements tells you a lot about their language family.
-                            </p>
-                            <div className="p-5 bg-black/40 border-l-4 border-violet-500 text-sm text-zinc-300 font-serif italic rounded-r-xl shadow-inner">
-                                Roughly 45% of the world's languages are <strong>SOV</strong> (Subject-Object-Verb, like Japanese or Korean). Another 42% are <strong>SVO</strong> (like English or Mandarin). Only a tiny fraction use <strong>VSO</strong> (like Irish or Arabic), placing the action at the very beginning of the thought.
-                            </div>
-                        </section>
-                    </div>
+      <section className="mt-8 grid gap-6 2xl:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] 2xl:items-start">
+        <div>
+          <div className="mb-3"><div className="font-mono text-[11px] font-semibold uppercase tracking-[0.11em] text-violet-200/58">Instrument 01 · multilingual phrase window</div><h2 className="mt-1 text-[22px] font-semibold tracking-[-0.035em] text-white">Compare conventional forms without pretending translation is one-to-one.</h2></div>
+          <RosettaWidget />
+        </div>
+        <div>
+          <div className="mb-3"><div className="font-mono text-[11px] font-semibold uppercase tracking-[0.11em] text-amber-200/58">Instrument 02 · translation choices</div><h2 className="mt-1 text-[22px] font-semibold tracking-[-0.035em] text-white">See why a natural target sentence can reorganize the source grammar completely.</h2></div>
+          <OmniTranslator />
+        </div>
+      </section>
 
-                    {/* BOTTOM: THE MASSIVE INTERACTIVE LAB */}
-                    <div className="w-full">
-                        <OmniTranslator />
-                    </div>
+      <section className="mt-8 border-t border-violet-100/[0.10] pt-5">
+        <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_420px] lg:items-end">
+          <div><div className="flex items-center gap-2 font-mono text-[11px] font-semibold uppercase tracking-[0.11em] text-pink-200/58"><BookOpenText size={14} /> Learning principles · reference, not navigation</div><h2 className="mt-2 max-w-4xl text-[clamp(1.8rem,3.2vw,3rem)] font-semibold leading-[0.96] tracking-[-0.048em] text-white">Knowing about a language and being able to use it are related achievements, not the same achievement.</h2></div>
+          <p className="text-[14px] leading-6 text-stone-400/72">Language learning combines knowledge, perception, memory, timing, interaction, literacy, social judgment, and repeated retrieval. Different goals need different practice, and proficiency grows unevenly across skills.</p>
+        </div>
+        <div className="mt-5 grid border-y border-white/[0.08] md:grid-cols-2 xl:grid-cols-3">
+          {STUDY_PRINCIPLES.map(([term, text], index) => <div key={term} className="grid grid-cols-[42px_minmax(0,1fr)] gap-3 border-b border-white/[0.07] px-4 py-4 xl:border-r xl:[&:nth-child(3n)]:border-r-0 xl:[&:nth-last-child(-n+3)]:border-b-0"><span className="font-mono text-[11px] text-violet-200/42">0{index + 1}</span><span><strong className="block text-[13px] text-stone-200/86">{term}</strong><span className="mt-1 block text-[12px] leading-5 text-stone-500">{text}</span></span></div>)}
+        </div>
+      </section>
+    </SceneFrame>
+  );
+}
 
-                </div>
+function LanguageBank({ label, branches, align = "left" }: { label: string; branches: CurriculumNode[]; align?: "left" | "right" }) {
+  return <div><div className={`mb-2 font-mono text-[11px] font-semibold uppercase tracking-[0.09em] text-stone-500 ${align === "right" ? "xl:text-right" : ""}`}>{label}</div><div className="border-y border-white/[0.06]">{branches.map((branch) => <LanguageRoute key={branch.id} branch={branch} align={align} />)}</div></div>;
+}
 
-                {/* ROUTING: LINGUISTIC BRANCHES */}
-                <div className="pt-16 border-t border-white/10">
-                    <h2 className="text-2xl font-bold text-white mb-2 flex items-center gap-3">
-                        <BookA className="text-violet-400" /> Linguistic Branches
-                    </h2>
-                    <p className="text-zinc-500 font-light mb-8">Dive deeper into the mechanics of human speech and writing systems.</p>
-                    
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        {LINGUISTIC_MODULES.map((topic) => {
-                            const Icon = topic.icon;
-                            const borderHover = 
-                                topic.color === 'sky' ? 'hover:border-sky-500/50' :
-                                topic.color === 'rose' ? 'hover:border-rose-500/50' :
-                                'hover:border-amber-500/50';
-                                
-                            const iconColor = 
-                                topic.color === 'sky' ? 'text-sky-400' :
-                                topic.color === 'rose' ? 'text-rose-400' :
-                                'text-amber-400';
+function LanguageRoute({ branch, align }: { branch: CurriculumNode; align: "left" | "right" }) {
+  const meta = BRANCH_META[branch.id] ?? { icon: Languages, code: "LNG", question: branch.description ?? "Explore this language branch.", rgb: "192,132,252", family: "practice" as const };
+  const Icon = meta.icon;
+  const planned = branch.status === "placeholder";
+  return <div aria-disabled={planned ? "true" : undefined} className="group grid min-h-[94px] grid-cols-[52px_minmax(0,1fr)_52px] gap-3 border-b border-white/[0.06] bg-black/[0.045] px-3 py-3 backdrop-blur-[8px] last:border-b-0 transition hover:bg-black/[0.09]"><span className={`flex h-9 w-9 items-center justify-center border ${align === "right" ? "xl:order-3" : ""}`} style={{ color: `rgb(${meta.rgb})`, borderColor: `rgba(${meta.rgb},0.26)`, background: `rgba(${meta.rgb},0.04)` }}><Icon size={14} /></span><span className={align === "right" ? "xl:text-right" : ""}><span className="font-mono text-[11px] font-semibold uppercase tracking-[0.08em]" style={{ color: `rgba(${meta.rgb},0.70)` }}>{meta.code}</span><strong className="mt-0.5 block text-[14px] text-white/88">{branch.label}</strong><span className="mt-1 block text-[11px] leading-4 text-stone-500">{meta.question}</span></span><span className={`pt-1 font-mono text-[11px] uppercase text-stone-600 ${align === "right" ? "text-right xl:order-first xl:text-left" : "text-right"}`}>{planned ? "planned" : "open"}</span></div>;
+}
 
-                            return (
-                                <Link key={topic.id} href={topic.href} className={`bg-black/40 border border-white/5 p-6 rounded-2xl transition-all duration-300 group hover:-translate-y-1 ${borderHover}`}>
-                                    <div className="flex items-start justify-between mb-4">
-                                        <div className={`p-3 bg-white/5 rounded-xl ${iconColor}`}>
-                                            <Icon size={24} />
-                                        </div>
-                                    </div>
-                                    <h3 className="font-bold text-white mb-2 group-hover:text-white transition-colors">
-                                        {topic.title}
-                                    </h3>
-                                    <p className="text-xs text-zinc-400 leading-relaxed">
-                                        {topic.description}
-                                    </p>
-                                </Link>
-                            );
-                        })}
-                    </div>
-                </div>
-
-            </div>
-        </main>
-    );
+function PracticeCore() {
+  return <Surface variant="open" className="relative min-h-[480px] overflow-hidden rounded-[30px] border-violet-100/[0.08]" style={{ background: "rgba(15,11,22,0.025)" }}><div className="p-4"><div className="flex items-center gap-2 font-mono text-[11px] font-semibold uppercase tracking-[0.09em] text-violet-200/54"><GraduationCap size={13} /> Practice loop</div><p className="mt-2 text-[12px] leading-5 text-stone-400/64">Language ability grows through repeated cycles of noticing, understanding, retrieval, use, and adaptation.</p></div><div className="mx-4 mt-1 space-y-1">{PRACTICE_SPINE.map((step, index) => { const Icon = step.icon; return <div key={step.label} className="border-b border-white/[0.06] py-3 last:border-b-0"><div className="flex items-start gap-3"><span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border" style={{ color: `rgb(${step.rgb})`, borderColor: `rgba(${step.rgb},0.24)`, background: `rgba(${step.rgb},0.04)` }}><Icon size={13} /></span><span><strong className="block text-[13px]" style={{ color: `rgba(${step.rgb},0.84)` }}>{step.label}</strong><span className="mt-1 block text-[11px] leading-4 text-stone-500">{step.detail}</span></span></div>{index < PRACTICE_SPINE.length - 1 ? <ArrowDown size={13} className="ml-[10px] mt-2 text-stone-600" /> : null}</div>; })}</div><div className="absolute bottom-4 inset-x-4 border-t border-violet-100/[0.07] pt-3 text-center font-mono text-[11px] uppercase tracking-[0.07em] text-violet-200/34">feedback changes what you notice next</div></Surface>;
 }
