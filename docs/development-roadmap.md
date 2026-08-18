@@ -80,7 +80,7 @@ Goal: every major subject parent should be Developed before broad child expansio
 - Applied Sciences root: Developed, readability cleanup still desirable
 - Engineering: Developed
 - Technology: Foundation
-- Materials Science: Foundation
+- Materials Science: Developed
 - Industrial Design: Foundation
 - Architecture: Foundation
 - Medicine: Foundation
@@ -94,13 +94,12 @@ Goal: every major subject parent should be Developed before broad child expansio
 
 Unless new feedback changes priorities, work through fresh parents in this order:
 
-1. Materials Science
-2. Law
-3. Data Science
-4. Architecture
-5. Religion
-6. Agriculture
-7. Information Science
+1. Law
+2. Data Science
+3. Architecture
+4. Religion
+5. Agriculture
+6. Information Science
 
 The order deliberately hops across domains so visual languages do not collapse into one subject family's habits.
 
@@ -142,6 +141,14 @@ Priority examples:
 - Added an eight-branch table-of-contents navigation around a central close-reading spine.
 - Reframed the hero-journey widget as one optional narrative pattern rather than a universal story law.
 - Removed the modern quotation block and kept the archive focused on a small set of older teaching texts.
+- Full 378-page Next.js preview build reached READY.
+
+### Materials Science · Developed
+
+- Built the previously empty parent around one microscope-scale environmental idea rather than generic decoration.
+- The background contains four explicitly separate schematic windows: grains and phases, lattice defects, polymer chains and crosslinks, and composite fibers in a matrix, crossed by one slow microscope scan.
+- Added an eight-branch materials atlas around the Processing → Structure → Properties → Performance relationship.
+- Added a separate normalized stress-strain instrument comparing brittle-like, ductile-like, and elastomer-like teaching curves with explicit data boundaries.
 - Full 378-page Next.js preview build reached READY.
 
 ## Phase C: curriculum depth
