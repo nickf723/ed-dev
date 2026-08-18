@@ -2,6 +2,7 @@ import { REFINED_ALGEBRA_CURRICULUM } from "@/lib/curriculum/integrated-algebra-
 import { COMPUTER_SCIENCE_CURRICULUM } from "@/lib/curriculum/computer-science";
 import { GROUP_THEORY_CURRICULUM } from "@/lib/curriculum/group-theory";
 import { ENGINEERING_CURRICULUM } from "@/lib/curriculum/applied/engineering";
+import { MATERIALS_SCIENCE_CURRICULUM } from "@/lib/curriculum/applied/materials-science";
 import { HISTORY_CURRICULUM } from "@/lib/curriculum/humanities/history";
 import { LITERATURE_CURRICULUM } from "@/lib/curriculum/humanities/literature";
 import { MUSIC_CURRICULUM } from "@/lib/curriculum/humanities/music";
@@ -39,6 +40,7 @@ export const CURRICULUM_MODULES: readonly CurriculumNode[] = [
   LOGIC_CURRICULUM,
   COMPUTER_SCIENCE_CURRICULUM,
   ENGINEERING_CURRICULUM,
+  MATERIALS_SCIENCE_CURRICULUM,
   BIOLOGY_CURRICULUM,
   ASTRONOMY_CURRICULUM,
   CHEMISTRY_CURRICULUM,
