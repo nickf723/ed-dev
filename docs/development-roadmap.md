@@ -85,7 +85,7 @@ Goal: every major subject parent should be Developed before broad child expansio
 - Architecture: Developed
 - Medicine: Foundation
 - Health Sciences: Foundation
-- Agriculture: Foundation
+- Agriculture: Developed
 - Business: Foundation
 - Education: Foundation
 - Library Science: Foundation
@@ -94,12 +94,12 @@ Goal: every major subject parent should be Developed before broad child expansio
 
 Unless new feedback changes priorities, work through fresh parents in this order:
 
-1. Agriculture
-2. Information Science
-3. Systems Science
-4. Languages
-5. Technology
-6. Industrial Design
+1. Information Science
+2. Systems Science
+3. Languages
+4. Technology
+5. Industrial Design
+6. Medicine
 
 The order deliberately hops across domains so visual languages do not collapse into one subject family's habits.
 
@@ -186,6 +186,16 @@ Priority examples:
 - Replaced the old monotheism/polytheism/pantheism/Dharmic diagram with a comparative research instrument that holds one fictional fieldnote packet fixed while the learner switches analytical lenses and sees new questions, evidence, and method cautions.
 - Added an explicit Source → Context → Interpretation → Corroboration → Claim spine and reference boundaries distinguishing religious studies, theology, tradition, and comparison.
 - Full 378-page Next.js preview build reached READY.
+
+### Agriculture · Developed
+
+- Preserved the isometric farm identity and nitrogen-management concept while replacing the rapidly cycling tile screensaver with a whole-farm transect.
+- The background now contains distinct grain and cover-crop fields, orchard, pasture, residue field, greenhouse, farm building, pond, lane, hedgerows, irrigation channel, and a visible soil edge with roots; only one slow irrigation pulse moves appreciably.
+- Added nine direct branches spanning agronomy, soil/nutrients, horticulture, animal science, aquaculture, forestry/agroforestry, agroecology, agricultural engineering/technology, and agricultural economics/food systems.
+- Rebuilt the nitrogen tool as a normalized pathway ledger separating soil mineral N, external input, aggregate loss pressure, soil uptake, biological fixation, harvest export, retained residue, and residual mineral N.
+- Removed the false universal rules that soy automatically adds a fixed amount of soil N and fallow automatically restores a fixed amount; the new widget explicitly says it is not a fertilizer recommendation and does not treat retained residue as immediately mineralized N.
+- Validation caught an invalid Lucide icon export; it was repaired on `studio` before graduation.
+- Full 378-page Next.js preview build reached READY on the corrected tree.
 
 ## Phase C: curriculum depth
 
