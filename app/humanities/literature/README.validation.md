@@ -1,0 +1,1 @@
+Literature preview validation marker.
