@@ -1,119 +1,248 @@
-"use client";
 import Link from "next/link";
+import DomainPageHeader from "@/app/_components/DomainPageHeader";
+import { SceneFrame, Surface } from "@/app/_page-system/scene";
+import { requireCurriculumPageContext } from "@/lib/curriculum/page-context";
+import type { CurriculumNode } from "@/lib/curriculum/types";
+import {
+  ArrowRight,
+  Atom,
+  Braces,
+  Building2,
+  Cable,
+  CheckCircle2,
+  CircuitBoard,
+  Cog,
+  DraftingCompass,
+  Gauge,
+  GitCompareArrows,
+  Plane,
+  RefreshCcw,
+  ShieldCheck,
+  type LucideIcon,
+} from "lucide-react";
 import BlueprintBackground from "./BlueprintBackground";
 import StressTestLab from "./StressTestLab";
-import { 
-  Settings, PenTool, Cpu, Plane, 
-  Terminal, Car, FlaskConical, Hammer,
-  ArrowRight, HardHat, Cog
-} from "lucide-react";
+
+const NODE_ID = "applied.engineering";
+
+type BranchMeta = {
+  icon: LucideIcon;
+  eyebrow: string;
+  question: string;
+  rgb: string;
+  code: string;
+};
+
+const BRANCH_META: Record<string, BranchMeta> = {
+  "applied.engineering.mechanical": {
+    icon: Cog,
+    eyebrow: "motion · force · heat · machines",
+    question: "How should physical components move, carry load, exchange energy, and survive repeated use?",
+    rgb: "203,213,225",
+    code: "ME",
+  },
+  "applied.engineering.civil": {
+    icon: Building2,
+    eyebrow: "structures · water · transport · ground",
+    question: "How can shared infrastructure remain safe and useful across long lifetimes and uncertain conditions?",
+    rgb: "251,146,60",
+    code: "CE",
+  },
+  "applied.engineering.electrical": {
+    icon: CircuitBoard,
+    eyebrow: "power · signals · control · electronics",
+    question: "How should energy and information move through circuits, devices, sensors, and control systems?",
+    rgb: "250,204,21",
+    code: "EE",
+  },
+  "applied.engineering.software": {
+    icon: Braces,
+    eyebrow: "requirements · architecture · test · operations",
+    question: "How can a large software system remain understandable, reliable, changeable, and operable over time?",
+    rgb: "74,222,128",
+    code: "SE",
+  },
+  "applied.engineering.aerospace": {
+    icon: Plane,
+    eyebrow: "flight · propulsion · structures · control",
+    question: "How can a vehicle remain stable, efficient, controllable, and structurally sound in flight or space?",
+    rgb: "56,189,248",
+    code: "AE",
+  },
+  "applied.engineering.chemical": {
+    icon: Atom,
+    eyebrow: "transport · reactions · separations · scale-up",
+    question: "How can matter be transformed safely and efficiently from laboratory behavior into a controlled process?",
+    rgb: "192,132,252",
+    code: "ChE",
+  },
+};
+
+const LOOP = [
+  { label: "Need", text: "What must change?", icon: DraftingCompass },
+  { label: "Constraints", text: "What cannot be violated?", icon: ShieldCheck },
+  { label: "Model", text: "What predicts behavior?", icon: Gauge },
+  { label: "Prototype", text: "What can be tested cheaply?", icon: Cable },
+  { label: "Verify", text: "What evidence supports release?", icon: CheckCircle2 },
+  { label: "Iterate", text: "What did the test expose?", icon: RefreshCcw },
+] as const;
+
+const TRADEOFFS = [
+  { label: "Performance", text: "Does the design actually meet the required function?" },
+  { label: "Reliability", text: "How does it behave under uncertainty, wear, faults, and variation?" },
+  { label: "Safety", text: "What failure modes can harm people, property, or environment?" },
+  { label: "Cost & manufacture", text: "Can it be built, operated, repaired, and scaled with available resources?" },
+  { label: "Human use", text: "Can people understand, access, control, and maintain the system?" },
+  { label: "Lifecycle", text: "What happens during maintenance, reuse, decommissioning, and disposal?" },
+] as const;
 
 export default function EngineeringPage() {
-  const disciplines = [
-    { title: "Mechanical", icon: Cog, color: "text-slate-300", desc: "Motion, forces, and machinery." },
-    { title: "Civil", icon: HardHat, color: "text-orange-400", desc: "Infrastructure, bridges, and dams." },
-    { title: "Electrical", icon: Cpu, color: "text-yellow-400", desc: "Circuits, power, and electromagnetism." },
-    { title: "Software", icon: Terminal, color: "text-green-400", desc: "Systems, code, and algorithms." },
-    { title: "Aerospace", icon: Plane, color: "text-sky-400", desc: "Flight and atmospheric dynamics." },
-    { title: "Automotive", icon: Car, color: "text-red-400", desc: "Vehicle mobility and engines." },
-    { title: "Chemical", icon: FlaskConical, color: "text-purple-400", desc: "Process conversion of matter." },
-    { title: "Carpentry", icon: Hammer, color: "text-amber-600", desc: "Structural fabrication and joinery." },
-  ];
+  const context = requireCurriculumPageContext(NODE_ID);
+  const left = context.children.slice(0, 3);
+  const right = context.children.slice(3);
 
   return (
-    <main className="relative min-h-screen bg-[#020617] text-slate-200 overflow-hidden font-sans selection:bg-violet-500/30">
-      <BlueprintBackground />
-      <div className="absolute inset-0 bg-radial-vignette opacity-60 pointer-events-none" />
-
-      <div className="relative z-10 container mx-auto px-6 py-12">
-        {/* HERO HEADER */}
-        <header className="mb-16 border-b border-violet-500/20 pb-8">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="p-2 bg-violet-500/10 border border-violet-500/30 rounded">
-              <Settings className="text-violet-400 animate-spin-slow" size={20} />
+    <SceneFrame
+      background={<BlueprintBackground />}
+      className="bg-[#040914] text-slate-100 selection:bg-sky-300/25"
+      maxWidthClassName="max-w-[1600px]"
+      headerBackground="rgba(4,9,20,0.48)"
+      header={
+        <DomainPageHeader
+          breadcrumbs={context.breadcrumbs}
+          eyebrow="Requirements · constraints · models · prototypes · verification"
+          eyebrowStyle="rule"
+          icon={DraftingCompass}
+          title={<span>Engineering</span>}
+          subtitle="Engineering turns requirements into systems that must work under real constraints. Define the need, expose the tradeoffs, model what matters, build something testable, measure failure modes, and iterate before the consequences become expensive."
+          accentRgb="56, 189, 248"
+          titleClassName="font-sans text-[clamp(2.9rem,5.5vw,6.2rem)] font-semibold leading-[0.84] tracking-[-0.065em] text-[#f4fbff]"
+          headerClassName="border-sky-100/[0.09]"
+        />
+      }
+    >
+      <section className="relative isolate mt-5 overflow-hidden border-y border-sky-100/[0.12] py-5 sm:py-6">
+        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(3,10,24,0.35),transparent_34%,transparent_66%,rgba(3,10,24,0.32))] backdrop-blur-[2px]" />
+        <div className="relative">
+          <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_330px] lg:items-end">
+            <div>
+              <div className="font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-sky-200/68">Primary navigation · engineering disciplines</div>
+              <h2 className="mt-2 max-w-5xl text-[clamp(1.9rem,3.8vw,3.8rem)] font-semibold leading-[0.94] tracking-[-0.052em] text-white">
+                Different media, same obligation: make a claim about performance and prove it before release.
+              </h2>
+              <p className="mt-3 max-w-4xl text-[14px] leading-6 text-slate-300/70">
+                Choose the material system you want to engineer. The disciplines differ in what they model and build, but all negotiate requirements, constraints, uncertainty, verification, and consequences of failure.
+              </p>
             </div>
-            <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-violet-400">
-              Applied Science // Systems
-            </span>
-          </div>
-          <h1 className="text-6xl md:text-8xl font-black text-white tracking-tighter uppercase leading-none">
-            ENGINE<span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-cyan-400">ERING</span>
-          </h1>
-          <p className="mt-6 text-slate-400 max-w-2xl text-lg font-light leading-relaxed border-l-2 border-violet-500/50 pl-6">
-            The application of scientific principles to design and build machines, structures, and systems. It is the bridge between the abstract laws of physics and the concrete needs of humanity.
-          </p>
-        </header>
-
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-          
-          {/* LEFT: DISCIPLINE MATRIX */}
-          <div className="lg:col-span-8">
-            <section className="mb-8">
-              <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-6">Fields of Practice</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {disciplines.map((d) => (
-                  <Link 
-                    key={d.title} 
-                    href={`/applied-science/engineering/${d.title.toLowerCase().replace(" ", "-")}`} 
-                    className="group relative p-5 bg-slate-900/60 border border-white/5 hover:border-violet-500/50 rounded-xl transition-all hover:-translate-y-1 backdrop-blur-sm"
-                  >
-                    <div className="flex items-start gap-4">
-                      <div className={`p-3 rounded-lg bg-black/40 border border-white/5 ${d.color} group-hover:scale-110 transition-transform`}>
-                        <d.icon size={24} />
-                      </div>
-                      <div className="flex-1">
-                        <div className="flex justify-between items-center">
-                            <h4 className="text-lg font-bold text-white mb-1">{d.title}</h4>
-                            <ArrowRight size={16} className="opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all text-violet-400" />
-                        </div>
-                        <p className="text-xs text-slate-400 leading-tight">{d.desc}</p>
-                      </div>
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            </section>
+            <Link href="/applied-science" className="group flex items-center justify-between gap-4 border-l border-sky-200/[0.18] bg-black/[0.10] px-4 py-3 backdrop-blur-[8px] transition hover:bg-black/[0.18]">
+              <span><span className="font-mono text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-500">Parent field</span><strong className="mt-1 block text-[14px] text-white">Applied Sciences</strong></span>
+              <ArrowRight size={15} className="text-sky-200/55 transition group-hover:translate-x-1" />
+            </Link>
           </div>
 
-          {/* RIGHT: INTERACTIVE LAB & THEORY */}
-          <div className="lg:col-span-4 space-y-6">
-            
-            {/* The Lab Widget */}
-            <StressTestLab />
-
-            {/* Theory Card: Safety Factor */}
-            <div className="p-6 rounded-2xl bg-violet-950/20 border border-violet-500/20">
-              <h4 className="text-sm font-bold text-white uppercase mb-2 flex items-center gap-2">
-                <PenTool size={16} className="text-violet-400" /> The Engineering Method
-              </h4>
-              <ul className="space-y-3 mt-4">
-                {['Define the Problem', 'Research & Specify', 'Brainstorm Solutions', 'Prototype & Test', 'Iterate'].map((step, i) => (
-                  <li key={step} className="flex items-center gap-3 text-xs text-slate-400">
-                    <span className="flex items-center justify-center w-5 h-5 rounded-full bg-black border border-white/10 text-[9px] font-bold text-violet-400">
-                      {i + 1}
-                    </span>
-                    {step}
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Stat Block */}
-            <div className="grid grid-cols-2 gap-4">
-              <div className="p-4 bg-black/40 border border-white/10 rounded-xl text-center">
-                <span className="text-[10px] text-slate-500 uppercase font-bold">Accuracy</span>
-                <p className="text-xl font-mono text-cyan-400 mt-1">99.9%</p>
-              </div>
-              <div className="p-4 bg-black/40 border border-white/10 rounded-xl text-center">
-                <span className="text-[10px] text-slate-500 uppercase font-bold">Tolerance</span>
-                <p className="text-xl font-mono text-cyan-400 mt-1">±0.05mm</p>
-              </div>
-            </div>
-
-          </div>
-
+          <nav aria-label="Engineering disciplines" className="mt-5 grid gap-4 xl:grid-cols-[minmax(0,1fr)_270px_minmax(0,1fr)] xl:items-stretch">
+            <BranchRail branches={left} side="left" />
+            <DesignLoop />
+            <BranchRail branches={right} side="right" />
+          </nav>
         </div>
+      </section>
+
+      <section className="mt-8">
+        <div className="mb-3 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <div className="font-mono text-[11px] font-semibold uppercase tracking-[0.11em] text-amber-200/65">Verification instrument</div>
+            <h2 className="mt-1 text-[23px] font-semibold tracking-[-0.035em] text-white">One requirement, one test, one visible margin.</h2>
+          </div>
+          <span className="font-mono text-[11px] uppercase tracking-[0.08em] text-slate-600">conceptual structural test bench</span>
+        </div>
+        <StressTestLab />
+      </section>
+
+      <section className="mt-8 border-t border-sky-100/[0.10] pt-5">
+        <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_430px] lg:items-end">
+          <div>
+            <div className="flex items-center gap-2 font-mono text-[11px] font-semibold uppercase tracking-[0.11em] text-violet-200/62"><GitCompareArrows size={14} /> Design tradeoffs · reference, not navigation</div>
+            <h2 className="mt-2 max-w-4xl text-[clamp(1.8rem,3.2vw,3rem)] font-semibold leading-[0.96] tracking-[-0.048em] text-white">An optimum in one dimension can be a bad design overall.</h2>
+          </div>
+          <p className="text-[14px] leading-6 text-slate-400/72">Engineering decisions are usually multi-objective. Higher performance may raise cost, lower mass may reduce robustness, extra redundancy may increase complexity, and a safe component can still belong to an unsafe system.</p>
+        </div>
+
+        <div className="mt-5 grid border-y border-white/[0.08] md:grid-cols-2 xl:grid-cols-3">
+          {TRADEOFFS.map((item, index) => (
+            <div key={item.label} className="grid grid-cols-[42px_minmax(0,1fr)] gap-3 border-b border-white/[0.07] px-4 py-4 md:[&:nth-last-child(-n+2)]:border-b-0 xl:border-b xl:[&:nth-last-child(-n+3)]:border-b-0 xl:border-r xl:[&:nth-child(3n)]:border-r-0">
+              <span className="font-mono text-[11px] text-sky-200/42">0{index + 1}</span>
+              <span><strong className="block text-[13px] text-slate-200/86">{item.label}</strong><span className="mt-1 block text-[12px] leading-5 text-slate-500">{item.text}</span></span>
+            </div>
+          ))}
+        </div>
+      </section>
+    </SceneFrame>
+  );
+}
+
+function BranchRail({ branches, side }: { branches: readonly CurriculumNode[]; side: "left" | "right" }) {
+  return (
+    <div className="space-y-2.5">
+      {branches.map((branch) => <BranchRoute key={branch.id} branch={branch} side={side} />)}
+    </div>
+  );
+}
+
+function BranchRoute({ branch, side }: { branch: CurriculumNode; side: "left" | "right" }) {
+  const meta = BRANCH_META[branch.id] ?? {
+    icon: DraftingCompass,
+    eyebrow: "engineering discipline",
+    question: branch.description ?? "Explore this engineering discipline.",
+    rgb: "56,189,248",
+    code: "ENG",
+  };
+  const Icon = meta.icon;
+  const planned = branch.status === "placeholder";
+  const content = (
+    <div
+      className={`group relative min-h-[122px] overflow-hidden border bg-[#061020]/[0.26] px-4 py-4 backdrop-blur-[12px] transition ${planned ? "opacity-55" : side === "left" ? "hover:-translate-x-1" : "hover:translate-x-1"}`}
+      style={{ borderColor: `rgba(${meta.rgb},0.18)`, boxShadow: `inset ${side === "left" ? "3px" : "-3px"} 0 0 rgba(${meta.rgb},0.42)` }}
+    >
+      <div className="flex items-start gap-4">
+        <span className="flex h-10 w-10 shrink-0 items-center justify-center border" style={{ color: `rgb(${meta.rgb})`, borderColor: `rgba(${meta.rgb},0.28)`, background: `rgba(${meta.rgb},0.055)` }}><Icon size={17} /></span>
+        <span className="min-w-0 flex-1">
+          <span className="flex items-center justify-between gap-3">
+            <span className="font-mono text-[11px] font-semibold uppercase tracking-[0.08em]" style={{ color: `rgba(${meta.rgb},0.72)` }}>{meta.code} · {meta.eyebrow}</span>
+            {planned ? <span className="font-mono text-[11px] uppercase text-slate-600">planned</span> : <ArrowRight size={14} className="text-white/30 transition group-hover:text-white/70" />}
+          </span>
+          <strong className="mt-1 block text-[18px] font-semibold text-white">{branch.label}</strong>
+          <span className="mt-2 block text-[12px] leading-5 text-slate-400/72">{meta.question}</span>
+        </span>
       </div>
-    </main>
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-px" style={{ background: `linear-gradient(90deg,transparent,rgba(${meta.rgb},0.32),transparent)` }} />
+    </div>
+  );
+
+  return planned ? <div aria-disabled="true">{content}</div> : <Link href={branch.href}>{content}</Link>;
+}
+
+function DesignLoop() {
+  return (
+    <Surface variant="ghost" className="relative min-h-[408px] overflow-hidden rounded-[24px] border-sky-100/[0.10]" style={{ background: "rgba(3,10,24,0.08)" }}>
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_44%,rgba(56,189,248,0.09),transparent_25%)]" />
+      <div className="relative p-4">
+        <div className="font-mono text-[11px] font-semibold uppercase tracking-[0.10em] text-sky-200/56">Engineering loop</div>
+        <p className="mt-2 text-[12px] leading-5 text-slate-400/68">Not a waterfall. Test results can send the design backward at any stage.</p>
+      </div>
+      <div className="relative mx-4 mt-1 space-y-1">
+        {LOOP.map((step, index) => {
+          const Icon = step.icon;
+          return (
+            <div key={step.label} className="grid grid-cols-[34px_36px_minmax(0,1fr)] items-center gap-3 border-b border-white/[0.06] py-3 last:border-b-0">
+              <span className="font-mono text-[11px] text-sky-200/38">0{index + 1}</span>
+              <span className="flex h-8 w-8 items-center justify-center rounded-full border border-sky-100/[0.12] bg-sky-200/[0.035] text-sky-100/64"><Icon size={14} /></span>
+              <span><strong className="block text-[13px] text-white/82">{step.label}</strong><span className="mt-0.5 block text-[11px] leading-4 text-slate-500">{step.text}</span></span>
+            </div>
+          );
+        })}
+      </div>
+      <div className="absolute bottom-3 right-4 flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.07em] text-violet-200/42"><RefreshCcw size={12} /> evidence loops back</div>
+    </Surface>
   );
 }
