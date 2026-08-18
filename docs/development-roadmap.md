@@ -36,7 +36,7 @@ Goal: every major subject parent should be Developed before broad child expansio
 - Logic: Developed
 - Computer Science: Developed
 - Systems Science: Foundation
-- Data Science: Foundation
+- Data Science: Developed
 - Information Science: Foundation
 
 ### Natural sciences
@@ -94,11 +94,10 @@ Goal: every major subject parent should be Developed before broad child expansio
 
 Unless new feedback changes priorities, work through fresh parents in this order:
 
-1. Data Science
-2. Architecture
-3. Religion
-4. Agriculture
-5. Information Science
+1. Architecture
+2. Religion
+3. Agriculture
+4. Information Science
 
 The order deliberately hops across domains so visual languages do not collapse into one subject family's habits.
 
@@ -158,6 +157,15 @@ Priority examples:
 - Rebuilt the precedent sandbox around the simplified U.S. federal hierarchy and explicitly distinguished binding from persuasive authority and appeal from precedent.
 - Validation caught a strict-TypeScript defect in the courthouse column interpolation; it was repaired on `studio` before graduation.
 - Full 378-page Next.js preview build reached READY on the corrected tree.
+
+### Data Science · Developed
+
+- Preserved the K-means laboratory and left the unused distribution widget intact for future reuse.
+- Replaced generic neural-node wallpaper with a provenance workbench that visibly moves from a raw table with missingness and flags, through a transformed feature space, into a model/evaluation view; one slow audit scan crosses the full scene.
+- Added eight planned direct branches spanning collection/wrangling, exploration, statistical inference, machine learning, data engineering, visualization, causal inference, and responsible evaluation.
+- Rebuilt K-means around a deterministic sample, selectable k, explicit assign/recenter steps, the within-cluster squared-distance objective, and strong warnings against treating cluster output as ground truth.
+- The parent now distinguishes description, prediction, and causation instead of treating data science as a synonym for machine learning.
+- Full 378-page Next.js preview build reached READY.
 
 ## Phase C: curriculum depth
 
