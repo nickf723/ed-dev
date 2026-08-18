@@ -8,6 +8,7 @@ import { AGRICULTURE_CURRICULUM } from "@/lib/curriculum/applied/agriculture";
 import { ARCHITECTURE_CURRICULUM } from "@/lib/curriculum/applied/architecture";
 import { ENGINEERING_CURRICULUM } from "@/lib/curriculum/applied/engineering";
 import { MATERIALS_SCIENCE_CURRICULUM } from "@/lib/curriculum/applied/materials-science";
+import { TECHNOLOGY_CURRICULUM } from "@/lib/curriculum/applied/technology";
 import { HISTORY_CURRICULUM } from "@/lib/curriculum/humanities/history";
 import { LANGUAGES_CURRICULUM } from "@/lib/curriculum/humanities/languages";
 import { LITERATURE_CURRICULUM } from "@/lib/curriculum/humanities/literature";
@@ -54,6 +55,7 @@ export const CURRICULUM_MODULES: readonly CurriculumNode[] = [
   ARCHITECTURE_CURRICULUM,
   ENGINEERING_CURRICULUM,
   MATERIALS_SCIENCE_CURRICULUM,
+  TECHNOLOGY_CURRICULUM,
   BIOLOGY_CURRICULUM,
   ASTRONOMY_CURRICULUM,
   CHEMISTRY_CURRICULUM,
