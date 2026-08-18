@@ -1,4 +1,11 @@
+import Link from "next/link";
+import DomainPageHeader from "@/app/_components/DomainPageHeader";
+import { SceneFrame, Surface } from "@/app/_page-system/scene";
+import { requireCurriculumPageContext } from "@/lib/curriculum/page-context";
+import type { CurriculumNode } from "@/lib/curriculum/types";
+import type { LucideIcon } from "lucide-react";
 import {
+  ArrowRight,
   BookOpenCheck,
   Brain,
   ClipboardCheck,
@@ -6,125 +13,103 @@ import {
   Layers3,
   Users,
 } from "lucide-react";
-import DomainPageHeader from "@/app/_components/DomainPageHeader";
+import LearningStudioBackground from "./LearningStudioBackground";
+import LearningAlignmentLab from "./LearningAlignmentLab";
 
-const AREAS = [
-  {
-    title: "Learning Sciences",
-    detail: "How attention, memory, motivation, development, and practice shape learning.",
-    icon: Brain,
-    rgb: "96, 165, 250",
-  },
-  {
-    title: "Curriculum & Instruction",
-    detail: "How knowledge is sequenced, represented, taught, practiced, and revisited.",
-    icon: BookOpenCheck,
-    rgb: "167, 139, 250",
-  },
-  {
-    title: "Assessment",
-    detail: "How evidence of understanding is gathered, interpreted, and used to guide next steps.",
-    icon: ClipboardCheck,
-    rgb: "52, 211, 153",
-  },
-  {
-    title: "Learning Systems",
-    detail: "How classrooms, schools, communities, technology, and policy shape access to learning.",
-    icon: Users,
-    rgb: "251, 191, 36",
-  },
+const NODE_ID = "applied.education";
+
+const BRANCH_META: Record<string, { icon: LucideIcon; code: string; rgb: string }> = {
+  "applied.education.learning-sciences": { icon: Brain, code: "LS", rgb: "96,165,250" },
+  "applied.education.curriculum-instruction": { icon: BookOpenCheck, code: "CI", rgb: "167,139,250" },
+  "applied.education.assessment": { icon: ClipboardCheck, code: "ASM", rgb: "52,211,153" },
+  "applied.education.instructional-design": { icon: Layers3, code: "ID", rgb: "251,191,36" },
+  "applied.education.accessibility-special-education": { icon: Users, code: "ACC", rgb: "244,114,182" },
+  "applied.education.educational-technology": { icon: Layers3, code: "EDT", rgb: "125,211,252" },
+  "applied.education.teaching-learning-environments": { icon: Users, code: "ENV", rgb: "134,239,172" },
+  "applied.education.policy-systems": { icon: GraduationCap, code: "SYS", rgb: "253,186,116" },
+  "applied.education.teacher-learning": { icon: GraduationCap, code: "TPL", rgb: "216,180,254" },
+};
+
+const LOOP = [
+  { label: "Experience", note: "encounter an example, problem, explanation, model, demonstration, text, discussion, or situation", rgb: "96,165,250" },
+  { label: "Practice", note: "attempt the target performance with an appropriate level of support and variation", rgb: "167,139,250" },
+  { label: "Feedback", note: "compare evidence with the goal, surface errors or gaps, and decide what to revise or reinforce", rgb: "52,211,153" },
+  { label: "Transfer", note: "revisit the learning in changed tasks, contexts, time intervals, representations, or combinations", rgb: "251,191,36" },
 ] as const;
 
-const CYCLE = ["Experience", "Practice", "Feedback", "Transfer"] as const;
-
 export default function EducationPage() {
-  return (
-    <main className="relative min-h-screen overflow-hidden bg-[#070911] text-slate-100 selection:bg-blue-400/25">
-      <div className="pointer-events-none fixed inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(96,165,250,0.16),transparent_28%),radial-gradient(circle_at_82%_76%,rgba(167,139,250,0.11),transparent_30%),linear-gradient(135deg,#070911,#08070e_55%,#090a12)]" />
-      <div className="pointer-events-none fixed inset-0 opacity-45 [background-image:linear-gradient(rgba(96,165,250,0.035)_1px,transparent_1px),linear-gradient(90deg,rgba(96,165,250,0.035)_1px,transparent_1px)] [background-size:48px_48px]" />
-      <div className="pointer-events-none fixed inset-0 overflow-hidden">
-        <div className="absolute left-[8%] top-[26%] h-48 w-48 rounded-full border border-blue-300/[0.07]" />
-        <div className="absolute left-[12%] top-[31%] h-32 w-32 rounded-full border border-violet-300/[0.06]" />
-        <div className="absolute bottom-[8%] right-[7%] text-[190px] font-semibold leading-none text-blue-100/[0.018]">A+</div>
-      </div>
+  const { node } = requireCurriculumPageContext(NODE_ID);
+  const children = node.children ?? [];
 
-      <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-[1500px] flex-col px-4 py-4 sm:px-6 lg:px-8 lg:py-5">
+  return (
+    <SceneFrame
+      background={<LearningStudioBackground />}
+      className="bg-[#070911] text-slate-100 selection:bg-blue-300/25"
+      maxWidthClassName="max-w-[1680px]"
+      headerBackground="rgba(7,9,17,0.55)"
+      header={
         <DomainPageHeader
-          breadcrumbs={[
-            { label: "Home", href: "/" },
-            { label: "Applied Sciences", href: "/applied-science" },
-            { label: "Education" },
-          ]}
-          eyebrow="Learning · Instruction · Assessment"
+          breadcrumbs={[{ label: "Home", href: "/" }, { label: "Applied Sciences", href: "/applied-science" }, { label: "Education" }]}
+          eyebrow="Goals · learning · instruction · evidence · feedback · systems"
+          eyebrowStyle="rule"
           icon={GraduationCap}
           title={<span>Education</span>}
-          subtitle="Design environments and experiences that help people build knowledge, skill, judgment, and independence."
+          subtitle="Design learning environments that connect worthwhile goals with prior knowledge, instruction, practice, feedback, assessment, accessibility, motivation, social context, technology, curriculum, and opportunities to use learning beyond the original lesson."
           accentRgb="96, 165, 250"
-          titleClassName="text-[clamp(3.2rem,5.8vw,5.7rem)] font-semibold leading-[0.84] tracking-[-0.06em] text-white"
-          iconClassName="rounded-[18px]"
+          titleClassName="font-sans text-[clamp(3rem,5.5vw,6rem)] font-semibold leading-[0.84] tracking-[-0.066em] text-[#eff6ff]"
+          headerClassName="border-blue-100/[0.10]"
         />
-
-        <section className="relative mt-4 grid min-h-0 flex-1 gap-4 lg:grid-cols-[minmax(0,1.6fr)_minmax(300px,0.8fr)]">
-          <div className="grid min-h-0 gap-3 sm:grid-cols-2">
-            {AREAS.map((area) => {
-              const Icon = area.icon;
-              return (
-                <article
-                  key={area.title}
-                  className="relative overflow-hidden rounded-[22px] border p-5 backdrop-blur-xl"
-                  style={{
-                    borderColor: `rgba(${area.rgb},0.22)`,
-                    background: `linear-gradient(145deg, rgba(${area.rgb},0.10), rgba(7,9,17,0.76) 55%, rgba(7,9,17,0.64))`,
-                  }}
-                >
-                  <span
-                    className="flex h-11 w-11 items-center justify-center rounded-xl border"
-                    style={{
-                      color: `rgb(${area.rgb})`,
-                      borderColor: `rgba(${area.rgb},0.32)`,
-                      background: `rgba(${area.rgb},0.07)`,
-                    }}
-                  >
-                    <Icon size={20} strokeWidth={1.55} />
-                  </span>
-                  <h2 className="mt-5 text-xl font-semibold tracking-[-0.03em] text-white">{area.title}</h2>
-                  <p className="mt-3 max-w-md text-sm leading-6 text-slate-400">{area.detail}</p>
-                </article>
-              );
-            })}
+      }
+    >
+      <section className="mt-5">
+        <div className="mb-3 grid gap-3 border-b border-blue-100/[0.08] pb-3 lg:grid-cols-[minmax(0,1fr)_420px] lg:items-end">
+          <div><div className="font-mono text-[11px] font-semibold uppercase tracking-[0.11em] text-blue-100/55">Learning design · primary navigation + alignment studio</div><h2 className="mt-1 text-[clamp(1.8rem,3.2vw,3rem)] font-semibold tracking-[-0.046em] text-white">A learner can only demonstrate what the task actually gives them a chance to do.</h2></div>
+          <div className="grid grid-cols-2 gap-2">
+            <Neighbor href="/social-science/psychology" label="Psychology" note="cognition · development · behavior" />
+            <Neighbor href="/applied-science/computer-technology" label="Technology" note="tools · platforms · systems" />
           </div>
+        </div>
 
-          <aside className="relative overflow-hidden rounded-[24px] border border-blue-300/18 bg-black/25 p-5 backdrop-blur-xl">
-            <div className="pointer-events-none absolute -right-16 -top-16 h-52 w-52 rounded-full bg-blue-400/[0.08] blur-3xl" />
-            <div className="relative flex h-full flex-col">
-              <div className="flex items-center gap-3">
-                <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-blue-300/20 bg-blue-400/[0.06] text-blue-300">
-                  <Layers3 size={18} />
-                </span>
-                <h2 className="text-lg font-semibold text-white">Learning cycle</h2>
-              </div>
+        <div className="grid gap-4 xl:grid-cols-[250px_minmax(0,1fr)] xl:items-start">
+          <FieldIndex children={children} />
+          <LearningAlignmentLab />
+        </div>
+      </section>
 
-              <div className="relative mt-7 space-y-3">
-                <div className="pointer-events-none absolute bottom-5 left-[17px] top-5 w-px bg-gradient-to-b from-blue-400/30 via-violet-400/30 to-emerald-400/25" />
-                {CYCLE.map((stage, index) => (
-                  <div key={stage} className="relative flex items-center gap-3 rounded-xl border border-white/[0.06] bg-white/[0.02] p-3">
-                    <span className="relative z-10 flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-blue-300/20 bg-[#090b13] font-mono text-[9px] text-blue-300">
-                      {String(index + 1).padStart(2, "0")}
-                    </span>
-                    <span className="text-sm font-semibold text-slate-200">{stage}</span>
-                  </div>
-                ))}
-              </div>
-
-              <div className="mt-auto border-t border-white/[0.07] pt-5">
-                <p className="text-sm leading-6 text-slate-500">
-                  Education connects cognitive science, social systems, communication, design, technology, and subject knowledge around one practical question: what helps learning endure?
-                </p>
-              </div>
-            </div>
-          </aside>
-        </section>
-      </div>
-    </main>
+      <section className="mt-8 border-t border-blue-100/[0.09] pt-5">
+        <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_430px] lg:items-end">
+          <div><div className="font-mono text-[11px] font-semibold uppercase tracking-[0.10em] text-violet-100/52">One useful learning loop</div><h2 className="mt-2 max-w-4xl text-[clamp(1.8rem,3.2vw,3rem)] font-semibold leading-[0.96] tracking-[-0.048em] text-white">Experience, practice, feedback, and transfer recur, overlap, and feed one another.</h2></div>
+          <p className="text-[13px] leading-6 text-slate-400/72">This is a planning lens, not a universal stage theory. Learning can begin with retrieval, inquiry, explanation, observation, direct instruction, collaboration, prior experience, or other routes depending on the learner, content, goal, and setting.</p>
+        </div>
+        <div className="mt-5 grid border-y border-white/[0.07] md:grid-cols-2 xl:grid-cols-4">
+          {LOOP.map((stage, index) => <LoopStage key={stage.label} stage={stage} number={`0${index + 1}`} />)}
+        </div>
+      </section>
+    </SceneFrame>
   );
+}
+
+function FieldIndex({ children }: { children: readonly CurriculumNode[] }) {
+  return (
+    <Surface variant="open" className="overflow-hidden rounded-[26px] border-blue-100/[0.08]" style={{ background: "rgba(7,9,17,0.025)" }}>
+      <div className="border-b border-white/[0.06] px-3.5 py-3"><div className="font-mono text-[10px] font-semibold uppercase tracking-[0.09em] text-blue-100/48">Fields of education</div><p className="mt-1 text-[10px] leading-4 text-slate-600">The parent is active. Direct branches are planned and visible before their lessons exist.</p></div>
+      <div>
+        {children.map((child, index) => {
+          const meta = BRANCH_META[child.id] ?? { icon: GraduationCap, code: `E${index + 1}`, rgb: "148,163,184" };
+          const Icon = meta.icon;
+          const active = child.status === "active";
+          const content = <><span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border" style={{ color: `rgb(${meta.rgb})`, borderColor: `rgba(${meta.rgb},0.24)` }}><Icon size={12} /></span><span className="min-w-0 flex-1"><span className="block font-mono text-[9px] uppercase tracking-[0.05em]" style={{ color: `rgba(${meta.rgb},0.52)` }}>{meta.code}</span><strong className="mt-0.5 block text-[11px] leading-4 text-white/76">{child.label}</strong></span>{active ? <ArrowRight size={11} className="text-slate-600" /> : <span className="font-mono text-[8px] uppercase text-slate-700">planned</span>}</>;
+          return active ? <Link key={child.id} href={child.href ?? "#"} className="group flex items-center gap-2 border-b border-white/[0.055] px-3 py-2.5 transition last:border-b-0 hover:bg-blue-200/[0.035]">{content}</Link> : <div key={child.id} aria-disabled="true" className="flex items-center gap-2 border-b border-white/[0.055] px-3 py-2.5 last:border-b-0">{content}</div>;
+        })}
+      </div>
+    </Surface>
+  );
+}
+
+function Neighbor({ href, label, note }: { href: string; label: string; note: string }) {
+  return <Link href={href} className="group flex min-h-[68px] flex-col justify-between border border-white/[0.07] bg-black/[0.055] px-3 py-2.5 backdrop-blur-[8px] transition hover:bg-black/[0.11]"><span className="text-[11px] font-semibold text-white/78">{label}</span><span className="flex items-end justify-between gap-2"><span className="text-[9px] leading-3 text-slate-600">{note}</span><ArrowRight size={11} className="text-slate-600 transition group-hover:translate-x-1" /></span></Link>;
+}
+
+function LoopStage({ stage, number }: { stage: (typeof LOOP)[number]; number: string }) {
+  return <div className="grid min-h-[142px] grid-cols-[38px_minmax(0,1fr)] gap-2 border-b border-white/[0.06] px-4 py-4 xl:border-r xl:border-b-0 xl:last:border-r-0"><span className="font-mono text-[10px]" style={{ color: `rgba(${stage.rgb},0.42)` }}>{number}</span><span><strong className="text-[12px]" style={{ color: `rgba(${stage.rgb},0.78)` }}>{stage.label}</strong><span className="mt-2 block text-[11px] leading-5 text-slate-500">{stage.note}</span></span></div>;
 }
