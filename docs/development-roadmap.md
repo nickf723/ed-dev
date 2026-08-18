@@ -57,7 +57,7 @@ Goal: every major subject parent should be Developed before broad child expansio
 - Linguistics: Developed
 - Communication Studies: Developed
 - Geography: Developed
-- Law: Foundation
+- Law: Developed
 
 ### Humanities
 
@@ -94,12 +94,11 @@ Goal: every major subject parent should be Developed before broad child expansio
 
 Unless new feedback changes priorities, work through fresh parents in this order:
 
-1. Law
-2. Data Science
-3. Architecture
-4. Religion
-5. Agriculture
-6. Information Science
+1. Data Science
+2. Architecture
+3. Religion
+4. Agriculture
+5. Information Science
 
 The order deliberately hops across domains so visual languages do not collapse into one subject family's habits.
 
@@ -150,6 +149,15 @@ Priority examples:
 - Added an eight-branch materials atlas around the Processing → Structure → Properties → Performance relationship.
 - Added a separate normalized stress-strain instrument comparing brittle-like, ductile-like, and elastomer-like teaching curves with explicit data boundaries.
 - Full 378-page Next.js preview build reached READY.
+
+### Law · Developed
+
+- Preserved the scales-of-justice and precedent-sandbox identity, then moved them into a stronger courthouse-of-authority composition.
+- The background now separates case flow upward through appeal from legal authority moving downward through a schematic three-tier federal court structure, with one very slow moving case file and precedent pulse.
+- Added eight planned direct branches covering jurisprudence, constitutional/public law, criminal law, civil procedure/remedies, private law, administrative/regulatory law, international/comparative law, and courts/evidence/legal method.
+- Rebuilt the precedent sandbox around the simplified U.S. federal hierarchy and explicitly distinguished binding from persuasive authority and appeal from precedent.
+- Validation caught a strict-TypeScript defect in the courthouse column interpolation; it was repaired on `studio` before graduation.
+- Full 378-page Next.js preview build reached READY on the corrected tree.
 
 ## Phase C: curriculum depth
 
