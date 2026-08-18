@@ -32,6 +32,7 @@ import { VISUAL_ARTS_CURRICULUM } from "@/lib/curriculum/humanities/visual-arts"
 import { LOGIC_CURRICULUM } from "@/lib/curriculum/logic";
 import { ASTRONOMY_CURRICULUM } from "@/lib/curriculum/natural/astronomy";
 import { BIOLOGY_CURRICULUM } from "@/lib/curriculum/natural/biology";
+import { CYTOLOGY_CURRICULUM } from "@/lib/curriculum/natural/biology/cytology";
 import { CHEMISTRY_CURRICULUM } from "@/lib/curriculum/natural/chemistry";
 import { ELECTROMAGNETISM_CURRICULUM } from "@/lib/curriculum/natural/electromagnetism";
 import { PHYSICS_CURRICULUM } from "@/lib/curriculum/natural/physics";
@@ -77,6 +78,7 @@ export const CURRICULUM_MODULES: readonly CurriculumNode[] = [
   MEDICINE_CURRICULUM,
   TECHNOLOGY_CURRICULUM,
   BIOLOGY_CURRICULUM,
+  CYTOLOGY_CURRICULUM,
   ASTRONOMY_CURRICULUM,
   CHEMISTRY_CURRICULUM,
   PHYSICS_CURRICULUM,
