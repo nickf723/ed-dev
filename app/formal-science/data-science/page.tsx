@@ -1,179 +1,242 @@
-import React from 'react';
-import Link from 'next/link';
-import { ArrowLeft, Network, Database, LineChart, BrainCircuit, Activity } from 'lucide-react';
-import DataScienceBackground from './_components/DataScienceBackground';
-import KMeansLab from './_components/KMeansLab';
+import Link from "next/link";
+import DomainPageHeader from "@/app/_components/DomainPageHeader";
+import { SceneFrame, Surface } from "@/app/_page-system/scene";
+import { requireCurriculumPageContext } from "@/lib/curriculum/page-context";
+import type { CurriculumNode } from "@/lib/curriculum/types";
+import {
+  ArrowDown,
+  ArrowRight,
+  BarChart3,
+  Blocks,
+  Database,
+  Eye,
+  GitCompareArrows,
+  LineChart,
+  Network,
+  Scale,
+  SearchCheck,
+  ShieldCheck,
+  Sparkles,
+  Target,
+  TestTube2,
+  Workflow,
+  type LucideIcon,
+} from "lucide-react";
+import DataScienceBackground from "./_components/DataScienceBackground";
+import KMeansLab from "./_components/KMeansLab";
 
-// Re-using your robust math component!
-import { M } from '@/app/_components/Math';
+const NODE_ID = "formal.data-science";
 
-// Routing Grid Array
-const DS_TOPICS = [
-    {
-        id: 'statistics',
-        title: 'Statistical Inference',
-        description: 'Probability distributions, p-values, and hypothesis testing.',
-        icon: LineChart,
-        color: 'sky',
-        href: '#'
-    },
-    {
-        id: 'supervised',
-        title: 'Supervised Learning',
-        description: 'Linear regression, decision trees, and training models with labeled data.',
-        icon: Target, // Make sure to import Target from lucide-react if you use this
-        color: 'emerald',
-        href: '#'
-    },
-    {
-        id: 'neural',
-        title: 'Deep Learning',
-        description: 'Backpropagation, gradient descent, and artificial neural networks.',
-        icon: BrainCircuit,
-        color: 'violet',
-        href: '#'
-    },
-    {
-        id: 'bigdata',
-        title: 'Big Data Architecture',
-        description: 'Data pipelines, SQL/NoSQL, and distributed computing.',
-        icon: Database,
-        color: 'amber',
-        href: '#'
-    }
-];
+type BranchMeta = {
+  icon: LucideIcon;
+  code: string;
+  question: string;
+  rgb: string;
+};
 
-// Fallback import fix
-import { Target } from 'lucide-react';
+const BRANCH_META: Record<string, BranchMeta> = {
+  "formal.data-science.collection-wrangling": {
+    icon: Database,
+    code: "DATA",
+    question: "How was the dataset measured, sampled, joined, cleaned, transformed, and documented before analysis began?",
+    rgb: "34,211,238",
+  },
+  "formal.data-science.exploration": {
+    icon: Eye,
+    code: "EDA",
+    question: "Which distributions, relationships, groups, anomalies, missing patterns, and scale choices deserve closer attention?",
+    rgb: "94,234,212",
+  },
+  "formal.data-science.statistics": {
+    icon: Scale,
+    code: "STAT",
+    question: "Which probability model represents uncertainty, and what can the sample support about a larger process or population?",
+    rgb: "251,191,36",
+  },
+  "formal.data-science.machine-learning": {
+    icon: Target,
+    code: "ML",
+    question: "Which representation, objective, model family, training procedure, and validation design support useful generalization?",
+    rgb: "167,139,250",
+  },
+  "formal.data-science.data-engineering": {
+    icon: Blocks,
+    code: "PIPE",
+    question: "How should data be stored, moved, validated, recomputed, monitored, and served reliably at the required scale?",
+    rgb: "96,165,250",
+  },
+  "formal.data-science.visualization-communication": {
+    icon: BarChart3,
+    code: "VIS",
+    question: "Which visual encodings reveal the important pattern without hiding uncertainty, scale, missingness, or comparison context?",
+    rgb: "244,114,182",
+  },
+  "formal.data-science.causal-experiments": {
+    icon: TestTube2,
+    code: "CAUSE",
+    question: "What intervention or design would distinguish a causal effect from association, confounding, selection, or common causes?",
+    rgb: "251,146,60",
+  },
+  "formal.data-science.responsible-evaluation": {
+    icon: ShieldCheck,
+    code: "EVAL",
+    question: "Does the measurement remain valid, the evaluation remain independent, and the system remain useful across groups, shifts, and real deployment?",
+    rgb: "248,113,113",
+  },
+};
+
+const QUESTIONS = [
+  { label: "Measure", note: "What does each row, field, label, and missing value actually represent?", rgb: "34,211,238" },
+  { label: "Describe", note: "What patterns exist in this dataset before a predictive model is involved?", rgb: "94,234,212" },
+  { label: "Infer", note: "Which claims extend beyond the observed sample, and how uncertain are they?", rgb: "251,191,36" },
+  { label: "Predict", note: "How well will a model perform on relevant data it did not train on?", rgb: "167,139,250" },
+  { label: "Explain cause", note: "What would happen under an intervention, not merely what tends to co-occur?", rgb: "251,146,60" },
+  { label: "Communicate", note: "What does the audience need to see to inspect the evidence and its limits?", rgb: "244,114,182" },
+] as const;
+
+const CHECKS = [
+  { label: "Provenance", text: "Record where data came from, how it was measured, when it was collected, and which transformations produced the analytical table." },
+  { label: "Leakage", text: "Keep information from the evaluation target or future outside the features available when the prediction would actually be made." },
+  { label: "Baseline", text: "Compare a complicated model against simple rules, naive predictions, or established procedures before calling complexity an improvement." },
+  { label: "Held-out evidence", text: "Use genuinely separate data or designs to estimate performance rather than repeatedly tuning against the same evidence." },
+  { label: "Shift", text: "Ask whether the people, environment, measurement process, incentives, or data distribution can change after development." },
+  { label: "Decision cost", text: "A statistically strong metric can still support a poor system when false positives, false negatives, delay, fairness, privacy, or action costs matter differently." },
+] as const;
 
 export default function DataSciencePage() {
-    return (
-        <main className="relative min-h-screen bg-[#050a0f] text-zinc-300 font-sans selection:bg-cyan-500/30 overflow-x-hidden">
-            
-            <DataScienceBackground />
+  const context = requireCurriculumPageContext(NODE_ID);
+  const left = context.children.slice(0, 4);
+  const right = context.children.slice(4);
 
-            <div className="relative z-10 max-w-[85rem] mx-auto px-6 py-12 md:py-24">
-                
-                {/* HEADER */}
-                <header className="mb-16 border-b border-white/10 pb-8 backdrop-blur-sm">
-                    <Link href="/formal-science" className="inline-flex items-center gap-2 text-zinc-500 hover:text-zinc-300 text-xs font-bold uppercase tracking-widest mb-6 transition-colors">
-                        <ArrowLeft size={14} /> Formal Science Directory
-                    </Link>
-                    
-                    <div className="flex items-center gap-3 mb-4">
-                        <span className="p-2 bg-black/50 border border-cyan-500/30 rounded-lg text-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.2)]">
-                            <Network size={24} />
-                        </span>
-                        <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-cyan-300/50">
-                            Formal Science // Computation
-                        </span>
-                    </div>
-                    
-                    <h1 className="text-5xl md:text-7xl font-black text-white tracking-tighter mb-6">
-                        DATA SCIENCE & <br />
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-indigo-400">MACHINE LEARNING</span>
-                    </h1>
-                    <p className="text-lg md:text-xl text-zinc-400 font-light max-w-3xl leading-relaxed">
-                        Extracting knowledge from noise. Data science utilizes mathematics, statistics, and computer algorithms to uncover hidden patterns in massive datasets, turning raw information into predictive power.
-                    </p>
-                </header>
+  return (
+    <SceneFrame
+      background={<DataScienceBackground />}
+      className="bg-[#03070c] text-slate-100 selection:bg-cyan-300/25"
+      maxWidthClassName="max-w-[1600px]"
+      headerBackground="rgba(3,7,12,0.48)"
+      header={
+        <DomainPageHeader
+          breadcrumbs={context.breadcrumbs}
+          eyebrow="Measurement · wrangling · inference · modeling · evaluation · communication"
+          eyebrowStyle="rule"
+          icon={Network}
+          title={<span>Data Science</span>}
+          subtitle="Data science turns recorded observations into defensible descriptions, inferences, predictions, decisions, and communication. The work begins before modeling, with measurement and provenance, and continues after modeling, with evaluation, interpretation, monitoring, and the consequences of use."
+          accentRgb="34, 211, 238"
+          titleClassName="font-sans text-[clamp(2.9rem,5.5vw,6.2rem)] font-semibold leading-[0.84] tracking-[-0.065em] text-[#f0fdff]"
+          headerClassName="border-cyan-100/[0.09]"
+        />
+      }
+    >
+      <section className="relative isolate mt-5 overflow-hidden border-y border-cyan-100/[0.11] py-5 sm:py-6">
+        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(2,8,14,0.42),transparent_31%,transparent_69%,rgba(4,4,16,0.38))] backdrop-blur-[2px]" />
+        <div className="relative grid gap-4 lg:grid-cols-[minmax(0,1fr)_300px] lg:items-end">
+          <div>
+            <div className="flex items-center gap-2 font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-cyan-200/66"><Workflow size={14} /> Primary navigation · data practice map</div>
+            <h2 className="mt-2 max-w-5xl text-[clamp(1.9rem,3.7vw,3.7rem)] font-semibold leading-[0.94] tracking-[-0.052em] text-white">
+              The model is one station in a longer chain from measurement to evidence to action.
+            </h2>
+            <p className="mt-3 max-w-4xl text-[14px] leading-6 text-slate-300/70">
+              These planned branches separate major kinds of work so navigation is clear. Real projects move between them repeatedly: exploration can expose a collection problem, evaluation can force a feature redesign, and communication can reveal that the original metric was answering the wrong question.
+            </p>
+          </div>
+          <Link href="/formal-science" className="group flex items-center justify-between gap-4 border-l border-cyan-200/[0.18] bg-black/[0.09] px-4 py-3 backdrop-blur-[8px] transition hover:bg-black/[0.16]">
+            <span><span className="font-mono text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-500">Parent field</span><strong className="mt-1 block text-[14px] text-white">Formal Science</strong></span>
+            <ArrowRight size={15} className="text-cyan-200/55 transition group-hover:translate-x-1" />
+          </Link>
+        </div>
 
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 mb-24">
-                    
-                    {/* LEFT: THEORETICAL TEXT */}
-                    <div className="lg:col-span-5 space-y-12">
-                        
-                        <section>
-                            <h2 className="text-2xl font-bold text-white mb-4 flex items-center gap-3">
-                                <Activity className="text-cyan-400" /> The Data Pipeline
-                            </h2>
-                            <p className="text-zinc-400 leading-relaxed font-light mb-4">
-                                Before a model can predict the future, data must be cleaned and transformed. Real-world data is messy, incomplete, and highly unstructured.
-                            </p>
-                            
-                            
+        <div className="relative mt-5 grid gap-4 xl:grid-cols-[minmax(0,1fr)_280px_minmax(0,1fr)] xl:items-stretch">
+          <div className="space-y-2.5">{left.map((branch) => <DataRoute key={branch.id} branch={branch} side="left" />)}</div>
+          <QuestionCore />
+          <div className="space-y-2.5">{right.map((branch) => <DataRoute key={branch.id} branch={branch} side="right" />)}</div>
+        </div>
+      </section>
 
-[Image of the Data Science Lifecycle]
+      <section className="mt-8">
+        <div className="mb-3 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <div className="font-mono text-[11px] font-semibold uppercase tracking-[0.11em] text-violet-200/60">Unsupervised-learning instrument</div>
+            <h2 className="mt-1 text-[23px] font-semibold tracking-[-0.035em] text-white">Watch a fitting objective create a partition without turning that partition into ground truth.</h2>
+          </div>
+          <span className="font-mono text-[11px] uppercase tracking-[0.08em] text-slate-600">deterministic teaching sample</span>
+        </div>
+        <KMeansLab />
+      </section>
 
-
-                            <div className="p-5 bg-black/40 border-l-4 border-cyan-500 text-sm text-zinc-300 font-serif italic rounded-r-xl mt-6">
-                                "Data is the new oil. It’s valuable, but if unrefined it cannot really be used." — Clive Humby
-                            </div>
-                        </section>
-
-                        <section className="pt-8 border-t border-white/5">
-                            <h2 className="text-2xl font-bold text-white mb-4 flex items-center gap-3">
-                                <BrainCircuit className="text-indigo-400" /> Unsupervised Learning
-                            </h2>
-                            <p className="text-zinc-400 leading-relaxed font-light mb-4">
-                                In <strong>Supervised Learning</strong>, we train models using labeled data (e.g., thousands of pictures explicitly tagged as "cats"). In <strong>Unsupervised Learning</strong>, we throw raw, unlabeled data at an algorithm and ask it to find the structure itself.
-                            </p>
-                            <p className="text-zinc-400 leading-relaxed font-light mb-4">
-                                The <strong>K-Means Clustering</strong> algorithm does this by scattering $k$ "centroids" into the data space. It then mathematically groups points based on Euclidean distance:
-                            </p>
-                            
-                            <div className="p-4 bg-zinc-900/50 border border-white/10 rounded-xl flex justify-center overflow-x-auto text-white shadow-inner mb-6">
-                                <M display>{String.raw`d(p, q) = \sqrt{(p_x - q_x)^2 + (p_y - q_y)^2}`}</M>
-                            </div>
-
-                            
-                        </section>
-
-                    </div>
-
-                    {/* RIGHT: INTERACTIVE LAB */}
-                    <div className="lg:col-span-7">
-                        <div className="sticky top-24">
-                            <KMeansLab />
-                        </div>
-                    </div>
-
-                </div>
-
-                {/* BOTTOM: DOMAIN ROUTING */}
-                <div className="pt-16 border-t border-white/10">
-                    <h2 className="text-2xl font-bold text-white mb-2 flex items-center gap-3">
-                        <Network className="text-cyan-400" /> Advanced Disciplines
-                    </h2>
-                    <p className="text-zinc-500 font-light mb-8">Navigate to specialized analytical modules.</p>
-                    
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                        {DS_TOPICS.map((topic) => {
-                            const Icon = topic.icon;
-                            const borderHover = 
-                                topic.color === 'cyan' ? 'hover:border-cyan-500/50' :
-                                topic.color === 'violet' ? 'hover:border-violet-500/50' :
-                                topic.color === 'emerald' ? 'hover:border-emerald-500/50' :
-                                topic.color === 'sky' ? 'hover:border-sky-500/50' :
-                                'hover:border-amber-500/50';
-                                
-                            const iconColor = 
-                                topic.color === 'cyan' ? 'text-cyan-400' :
-                                topic.color === 'violet' ? 'text-violet-400' :
-                                topic.color === 'emerald' ? 'text-emerald-400' :
-                                topic.color === 'sky' ? 'text-sky-400' :
-                                'text-amber-400';
-
-                            return (
-                                <Link key={topic.id} href={topic.href} className={`bg-black/40 border border-white/5 p-6 rounded-2xl transition-all duration-300 group hover:-translate-y-1 ${borderHover}`}>
-                                    <div className="flex items-start justify-between mb-4">
-                                        <div className={`p-3 bg-white/5 rounded-xl ${iconColor}`}>
-                                            <Icon size={24} />
-                                        </div>
-                                    </div>
-                                    <h3 className="font-bold text-white mb-2 group-hover:text-white transition-colors">
-                                        {topic.title}
-                                    </h3>
-                                    <p className="text-xs text-zinc-400 leading-relaxed">
-                                        {topic.description}
-                                    </p>
-                                </Link>
-                            );
-                        })}
-                    </div>
-                </div>
-
+      <section className="mt-8 border-t border-cyan-100/[0.10] pt-5">
+        <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_430px] lg:items-end">
+          <div>
+            <div className="flex items-center gap-2 font-mono text-[11px] font-semibold uppercase tracking-[0.11em] text-amber-200/58"><SearchCheck size={14} /> Evaluation discipline · reference, not navigation</div>
+            <h2 className="mt-2 max-w-4xl text-[clamp(1.8rem,3.2vw,3rem)] font-semibold leading-[0.96] tracking-[-0.048em] text-white">A clean metric cannot rescue a contaminated question.</h2>
+          </div>
+          <p className="text-[14px] leading-6 text-slate-400/72">The most consequential failures often happen outside the optimization loop: a target that does not measure the intended concept, leakage from the future, an evaluation set tuned into a training set, a deployment population that differs from development, or a metric that ignores the cost of mistakes.</p>
+        </div>
+        <div className="mt-5 grid border-y border-white/[0.08] md:grid-cols-2 xl:grid-cols-3">
+          {CHECKS.map((item, index) => (
+            <div key={item.label} className="grid grid-cols-[42px_minmax(0,1fr)] gap-3 border-b border-white/[0.07] px-4 py-4 md:[&:nth-last-child(-n+2)]:border-b-0 xl:border-b xl:[&:nth-last-child(-n+3)]:border-b-0 xl:border-r xl:[&:nth-child(3n)]:border-r-0">
+              <span className="font-mono text-[11px] text-cyan-200/42">0{index + 1}</span>
+              <span><strong className="block text-[13px] text-slate-200/86">{item.label}</strong><span className="mt-1 block text-[12px] leading-5 text-slate-500">{item.text}</span></span>
             </div>
-        </main>
-    );
+          ))}
+        </div>
+      </section>
+
+      <section className="mt-8 border-t border-cyan-100/[0.10] pt-5">
+        <div className="flex items-center gap-2 font-mono text-[11px] font-semibold uppercase tracking-[0.11em] text-slate-500"><GitCompareArrows size={13} /> Three claims that should never be silently merged</div>
+        <div className="mt-4 grid border-y border-white/[0.08] lg:grid-cols-3">
+          <Claim label="Description" text="What patterns are present in the observed data?" rgb="94,234,212" />
+          <Claim label="Prediction" text="How accurately can an outcome be estimated for relevant unseen cases?" rgb="167,139,250" />
+          <Claim label="Causation" text="How would the outcome change under an intervention?" rgb="251,146,60" />
+        </div>
+      </section>
+    </SceneFrame>
+  );
+}
+
+function DataRoute({ branch, side }: { branch: CurriculumNode; side: "left" | "right" }) {
+  const meta = BRANCH_META[branch.id] ?? { icon: Database, code: "DATA", question: branch.description ?? "Explore this branch of data science.", rgb: "34,211,238" };
+  const Icon = meta.icon;
+  const planned = branch.status === "placeholder";
+  const content = (
+    <div className="group relative min-h-[112px] border-y border-white/[0.07] bg-black/[0.075] px-3 py-3 backdrop-blur-[10px] transition hover:bg-black/[0.13]" style={{ boxShadow: `inset ${side === "left" ? "3px" : "-3px"} 0 0 rgba(${meta.rgb},0.38)` }}>
+      <div className="grid grid-cols-[40px_minmax(0,1fr)_54px] gap-3">
+        <span className="flex h-9 w-9 items-center justify-center border" style={{ color: `rgb(${meta.rgb})`, borderColor: `rgba(${meta.rgb},0.25)`, background: `rgba(${meta.rgb},0.045)` }}><Icon size={15} /></span>
+        <span><span className="font-mono text-[11px] font-semibold uppercase tracking-[0.08em]" style={{ color: `rgba(${meta.rgb},0.70)` }}>{meta.code}</span><strong className="mt-0.5 block text-[15px] text-white/88">{branch.label}</strong><span className="mt-1 block text-[11px] leading-4 text-slate-500">{meta.question}</span></span>
+        <span className="pt-1 text-right font-mono text-[11px] uppercase text-slate-600">{planned ? "planned" : "open"}</span>
+      </div>
+    </div>
+  );
+  return planned ? <div aria-disabled="true">{content}</div> : <Link href={branch.href}>{content}</Link>;
+}
+
+function QuestionCore() {
+  return (
+    <Surface variant="ghost" className="relative min-h-[486px] overflow-hidden rounded-[28px] border-cyan-100/[0.09]" style={{ background: "rgba(2,8,14,0.06)" }}>
+      <div className="relative p-4">
+        <div className="flex items-center gap-2 font-mono text-[11px] font-semibold uppercase tracking-[0.09em] text-cyan-200/52"><Sparkles size={13} /> Question stack</div>
+        <p className="mt-2 text-[12px] leading-5 text-slate-400/64">Different analytical goals can use the same dataset while requiring different evidence.</p>
+      </div>
+      <div className="relative mx-4 mt-1 space-y-1">
+        {QUESTIONS.map((question, index) => (
+          <div key={question.label} className="relative border-b border-white/[0.06] py-3 last:border-b-0">
+            <div className="flex items-start gap-3">
+              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border font-mono text-[11px]" style={{ color: `rgb(${question.rgb})`, borderColor: `rgba(${question.rgb},0.24)`, background: `rgba(${question.rgb},0.04)` }}>0{index + 1}</span>
+              <span><strong className="block text-[13px]" style={{ color: `rgba(${question.rgb},0.84)` }}>{question.label}</strong><span className="mt-1 block text-[11px] leading-4 text-slate-500">{question.note}</span></span>
+            </div>
+            {index < QUESTIONS.length - 1 ? <ArrowDown size={12} className="ml-[10px] mt-2 text-slate-700" /> : null}
+          </div>
+        ))}
+      </div>
+    </Surface>
+  );
+}
+
+function Claim({ label, text, rgb }: { label: string; text: string; rgb: string }) {
+  return (
+    <div className="px-4 py-4 lg:border-r lg:border-white/[0.08] lg:last:border-r-0">
+      <div className="font-mono text-[11px] font-semibold uppercase tracking-[0.08em]" style={{ color: `rgba(${rgb},0.70)` }}>{label}</div>
+      <p className="mt-2 text-[13px] leading-6 text-slate-300/68">{text}</p>
+    </div>
+  );
 }
