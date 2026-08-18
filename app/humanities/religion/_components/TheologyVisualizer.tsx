@@ -1,130 +1,158 @@
 "use client";
-import React, { useState } from 'react';
-import { Eye, Network, Sun, Infinity, Flame } from 'lucide-react';
 
-type Paradigm = 'monotheism' | 'polytheism' | 'pantheism' | 'cyclic';
+import { useMemo, useState } from "react";
+import { BookOpenText, Footprints, History, Landmark, MessageCircleQuestion, UsersRound } from "lucide-react";
+import { Surface } from "@/app/_page-system/scene";
+
+type LensKey = "text" | "practice" | "material" | "community" | "history" | "experience";
+
+type Lens = {
+  key: LensKey;
+  label: string;
+  icon: typeof BookOpenText;
+  rgb: string;
+  question: string;
+  evidence: readonly string[];
+  caution: string;
+};
+
+const LENSES: readonly Lens[] = [
+  {
+    key: "text",
+    label: "Text & Story",
+    icon: BookOpenText,
+    rgb: "251,191,36",
+    question: "Which stories, teachings, genres, memories, or authoritative words are invoked, and who interprets them?",
+    evidence: ["recited narrative", "written program", "commentary", "translation choices"],
+    caution: "Texts do not interpret themselves. Reception, authority, language, genre, and community context matter.",
+  },
+  {
+    key: "practice",
+    label: "Ritual & Body",
+    icon: Footprints,
+    rgb: "244,114,182",
+    question: "What do participants actually do with bodies, time, food, sound, movement, objects, and repeated sequences?",
+    evidence: ["gesture and posture", "timing", "music or silence", "food and abstention"],
+    caution: "Observed action does not automatically reveal inner belief. Ask participants, compare occasions, and avoid reading symbolism into every detail.",
+  },
+  {
+    key: "material",
+    label: "Material & Place",
+    icon: Landmark,
+    rgb: "94,234,212",
+    question: "How do buildings, landscapes, images, clothing, objects, technologies, and sensory environments organize religious life?",
+    evidence: ["spatial layout", "objects handled", "dress", "soundscape and lighting"],
+    caution: "Objects can have multiple uses and meanings. Material evidence should be contextualized rather than treated as a transparent code.",
+  },
+  {
+    key: "community",
+    label: "Community & Power",
+    icon: UsersRound,
+    rgb: "125,211,252",
+    question: "Who participates, who leads, who is excluded, how are roles negotiated, and what institutions or relationships sustain the gathering?",
+    evidence: ["roles and offices", "donations", "age or status patterns", "formal and informal authority"],
+    caution: "A community is rarely internally uniform. Disagreement, hierarchy, migration, gender, class, ethnicity, generation, and local history can all matter.",
+  },
+  {
+    key: "history",
+    label: "History & Change",
+    icon: History,
+    rgb: "192,132,252",
+    question: "Which parts are inherited, recently introduced, revived, contested, or transformed by migration, politics, technology, or contact with others?",
+    evidence: ["older photographs", "archival records", "oral histories", "changes in venue or sequence"],
+    caution: "Tradition is not the opposite of change. Practices can be old, new, revived, or continuously reinterpreted while still being experienced as traditional.",
+  },
+  {
+    key: "experience",
+    label: "Experience & Meaning",
+    icon: MessageCircleQuestion,
+    rgb: "251,146,60",
+    question: "How do different participants describe what the event means, feels like, accomplishes, or connects them to?",
+    evidence: ["interviews", "testimony", "emotion words", "personal memories"],
+    caution: "First-person accounts are essential evidence, but no one participant speaks for an entire tradition or community.",
+  },
+] as const;
+
+const FIELDNOTE = {
+  title: "Fictional fieldnote packet",
+  text: "A community holds an annual evening gathering. Families arrive with food, elders recount inherited stories, a procession moves through the neighborhood, musicians repeat a familiar refrain, donations support a local institution, and participants describe the night in different ways.",
+} as const;
 
 export default function TheologyVisualizer() {
-    const [paradigm, setParadigm] = useState<Paradigm>('monotheism');
+  const [lensKey, setLensKey] = useState<LensKey>("practice");
+  const active = useMemo(() => LENSES.find((lens) => lens.key === lensKey) ?? LENSES[0], [lensKey]);
+  const ActiveIcon = active.icon;
 
-    return (
-        <div className="w-full bg-[#1c120c]/80 backdrop-blur-xl border border-amber-500/20 rounded-2xl overflow-hidden shadow-2xl font-sans select-none">
-            <div className="bg-amber-950/30 border-b border-amber-500/20 p-5 flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                    <div className="p-2 bg-amber-500/20 border border-amber-500/30 rounded-lg">
-                        <Eye size={18} className="text-amber-400" />
-                    </div>
-                    <div>
-                        <h3 className="text-white font-bold tracking-wide">Theological Architecture</h3>
-                        <p className="text-[10px] text-amber-300/60 font-mono uppercase tracking-widest">Structural Paradigms</p>
-                    </div>
-                </div>
-            </div>
-
-            <div className="flex flex-col md:flex-row min-h-[400px]">
-                
-                {/* LEFT: Controls & Theory */}
-                <div className="w-full md:w-1/3 bg-black/40 border-b md:border-b-0 md:border-r border-amber-500/10 p-6 flex flex-col gap-3 justify-center">
-                    <button 
-                        onClick={() => setParadigm('monotheism')}
-                        className={`p-4 rounded-xl text-left transition-all border ${paradigm === 'monotheism' ? 'bg-amber-500/10 border-amber-500/50 shadow-[0_0_15px_rgba(251,191,36,0.1)]' : 'bg-black/50 border-white/5 hover:border-amber-500/30'}`}
-                    >
-                        <div className="text-amber-400 font-bold text-sm mb-1 flex items-center gap-2"><Sun size={14}/> Monotheism</div>
-                        <div className="text-[10px] text-zinc-400">A single, absolute, transcendent creator distinct from creation.</div>
-                    </button>
-
-                    <button 
-                        onClick={() => setParadigm('polytheism')}
-                        className={`p-4 rounded-xl text-left transition-all border ${paradigm === 'polytheism' ? 'bg-purple-500/10 border-purple-500/50 shadow-[0_0_15px_rgba(168,85,247,0.1)]' : 'bg-black/50 border-white/5 hover:border-purple-500/30'}`}
-                    >
-                        <div className="text-purple-400 font-bold text-sm mb-1 flex items-center gap-2"><Network size={14}/> Polytheism</div>
-                        <div className="text-[10px] text-zinc-400">A pantheon of specialized deities governing different aspects of nature.</div>
-                    </button>
-
-                    <button 
-                        onClick={() => setParadigm('pantheism')}
-                        className={`p-4 rounded-xl text-left transition-all border ${paradigm === 'pantheism' ? 'bg-emerald-500/10 border-emerald-500/50 shadow-[0_0_15px_rgba(16,185,129,0.1)]' : 'bg-black/50 border-white/5 hover:border-emerald-500/30'}`}
-                    >
-                        <div className="text-emerald-400 font-bold text-sm mb-1 flex items-center gap-2"><Flame size={14}/> Pantheism</div>
-                        <div className="text-[10px] text-zinc-400">The universe and the divine are identical. God is the cosmos itself.</div>
-                    </button>
-
-                    <button 
-                        onClick={() => setParadigm('cyclic')}
-                        className={`p-4 rounded-xl text-left transition-all border ${paradigm === 'cyclic' ? 'bg-rose-500/10 border-rose-500/50 shadow-[0_0_15px_rgba(244,63,94,0.1)]' : 'bg-black/50 border-white/5 hover:border-rose-500/30'}`}
-                    >
-                        <div className="text-rose-400 font-bold text-sm mb-1 flex items-center gap-2"><Infinity size={14}/> Dharmic / Cyclic</div>
-                        <div className="text-[10px] text-zinc-400">Non-theistic focus on cosmic law, karma, and cyclical rebirth.</div>
-                    </button>
-                </div>
-
-                {/* RIGHT: Visual Render */}
-                <div className="w-full md:w-2/3 bg-[#0a0503] relative overflow-hidden flex items-center justify-center p-8">
-                    <div className="relative w-full max-w-[300px] aspect-square">
-                        
-                        {/* MONOTHEISM: One big orb at top, lines down to humanity */}
-                        <div className={`absolute inset-0 transition-opacity duration-700 ${paradigm === 'monotheism' ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
-                            <div className="absolute top-4 left-1/2 -translate-x-1/2 w-16 h-16 bg-amber-400 rounded-full shadow-[0_0_40px_rgba(251,191,36,0.6)] animate-pulse" />
-                            <svg className="w-full h-full absolute inset-0 text-amber-500/30" stroke="currentColor" strokeWidth="2">
-                                {[10, 30, 50, 70, 90].map((x, i) => (
-                                    <line key={i} x1="50%" y1="20%" x2={`${x}%`} y2="90%" />
-                                ))}
-                            </svg>
-                            {[10, 30, 50, 70, 90].map((x, i) => (
-                                <div key={i} className="absolute bottom-4 w-3 h-3 bg-zinc-400 rounded-full" style={{ left: `calc(${x}% - 6px)` }} />
-                            ))}
-                        </div>
-
-                        {/* POLYTHEISM: Constellation of orbs, humanity connects to various ones */}
-                        <div className={`absolute inset-0 transition-opacity duration-700 ${paradigm === 'polytheism' ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
-                            {[
-                                { x: 20, y: 15 }, { x: 80, y: 20 }, { x: 50, y: 35 }, { x: 15, y: 45 }, { x: 85, y: 50 }
-                            ].map((pos, i) => (
-                                <div key={i} className="absolute w-8 h-8 bg-purple-400 rounded-full shadow-[0_0_20px_rgba(168,85,247,0.5)]" style={{ left: `${pos.x}%`, top: `${pos.y}%`, transform: 'translate(-50%, -50%)' }} />
-                            ))}
-                            <svg className="w-full h-full absolute inset-0 text-purple-500/30" stroke="currentColor" strokeWidth="1.5">
-                                {/* Messy, interwoven connection network */}
-                                <line x1="20%" y1="15%" x2="50%" y2="35%" />
-                                <line x1="80%" y1="20%" x2="50%" y2="35%" />
-                                <line x1="50%" y1="35%" x2="30%" y2="90%" />
-                                <line x1="15%" y1="45%" x2="10%" y2="90%" />
-                                <line x1="85%" y1="50%" x2="70%" y2="90%" />
-                                <line x1="85%" y1="50%" x2="90%" y2="90%" />
-                                <line x1="20%" y1="15%" x2="10%" y2="90%" />
-                            </svg>
-                            {[10, 30, 50, 70, 90].map((x, i) => (
-                                <div key={i} className="absolute bottom-4 w-3 h-3 bg-zinc-400 rounded-full" style={{ left: `calc(${x}% - 6px)` }} />
-                            ))}
-                        </div>
-
-                        {/* PANTHEISM: The container itself is the divine */}
-                        <div className={`absolute inset-0 transition-opacity duration-700 ${paradigm === 'pantheism' ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
-                            <div className="absolute inset-4 rounded-full border-[10px] border-emerald-500/30 shadow-[inset_0_0_50px_rgba(16,185,129,0.3),_0_0_50px_rgba(16,185,129,0.3)] animate-[spin_20s_linear_infinite]">
-                                <div className="absolute inset-0 bg-[url('https://upload.wikimedia.org/wikipedia/commons/1/10/Grid_graph_paper.svg')] opacity-[0.2] mix-blend-overlay rounded-full" />
-                            </div>
-                            {/* Dots are inside and part of the structure */}
-                            {[20, 35, 50, 65, 80].map((y, i) => (
-                                <div key={i} className="absolute w-3 h-3 bg-emerald-300 rounded-full shadow-[0_0_10px_rgba(110,231,183,0.8)]" style={{ left: `50%`, top: `${y}%`, transform: 'translateX(-50%)' }} />
-                            ))}
-                        </div>
-
-                        {/* CYCLIC: Dharma wheel / Samsara loop */}
-                        <div className={`absolute inset-0 transition-opacity duration-700 ${paradigm === 'cyclic' ? 'opacity-100' : 'opacity-0 pointer-events-none'} flex items-center justify-center`}>
-                            <svg viewBox="0 0 100 100" className="w-[80%] h-[80%] text-rose-500/40 animate-[spin_10s_linear_infinite]" stroke="currentColor" strokeWidth="2" fill="none">
-                                <circle cx="50" cy="50" r="45" />
-                                <circle cx="50" cy="50" r="10" />
-                                {Array.from({ length: 8 }).map((_, i) => (
-                                    <line key={i} x1="50" y1="50" x2="50" y2="5" transform={`rotate(${i * 45} 50 50)`} />
-                                ))}
-                            </svg>
-                            {/* Single human node traversing the wheel */}
-                            <div className="absolute w-4 h-4 bg-rose-300 rounded-full shadow-[0_0_15px_rgba(251,113,133,0.8)] animate-[spin_10s_linear_infinite]" style={{ transformOrigin: '120px center', left: 'calc(50% - 120px)' }} />
-                        </div>
-
-                    </div>
-                </div>
-
-            </div>
+  return (
+    <Surface
+      variant="glass"
+      className="overflow-hidden rounded-[32px] border-amber-100/[0.12]"
+      style={{ background: "rgba(22,12,9,0.24)" }}
+    >
+      <div className="grid border-b border-amber-100/[0.08] lg:grid-cols-[minmax(0,1fr)_330px]">
+        <div className="p-5 sm:p-6">
+          <div className="font-mono text-[11px] font-semibold uppercase tracking-[0.11em] text-amber-200/62">Comparative study instrument · one case, many questions</div>
+          <h3 className="mt-2 text-[clamp(1.8rem,3vw,2.9rem)] font-semibold tracking-[-0.047em] text-white">Change the lens, not the people.</h3>
+          <p className="mt-3 max-w-3xl text-[14px] leading-6 text-amber-50/62">
+            The same event can produce textual, ritual, material, social, historical, and experiential evidence. These lenses are complementary research angles, not boxes for classifying entire religions.
+          </p>
         </div>
-    );
+        <div className="border-t border-amber-100/[0.08] bg-black/[0.07] p-5 backdrop-blur-[14px] lg:border-l lg:border-t-0">
+          <span className="font-mono text-[11px] font-semibold uppercase tracking-[0.09em] text-rose-200/58">Constructed example</span>
+          <p className="mt-3 text-[12px] leading-5 text-amber-50/50">The fieldnote below is fictional. It deliberately combines generic features so the widget can teach method without pretending to summarize a real tradition.</p>
+        </div>
+      </div>
+
+      <div className="grid gap-4 p-4 lg:grid-cols-[240px_minmax(0,1fr)] sm:p-5">
+        <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-1">
+          {LENSES.map((lens) => {
+            const Icon = lens.icon;
+            const selected = lens.key === lensKey;
+            return (
+              <button
+                key={lens.key}
+                type="button"
+                onClick={() => setLensKey(lens.key)}
+                className="flex items-center gap-3 border px-3 py-3 text-left transition"
+                style={{
+                  borderColor: selected ? `rgba(${lens.rgb},0.34)` : "rgba(255,255,255,0.07)",
+                  background: selected ? `rgba(${lens.rgb},0.07)` : "rgba(0,0,0,0.06)",
+                }}
+              >
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center border" style={{ color: `rgb(${lens.rgb})`, borderColor: `rgba(${lens.rgb},0.25)`, background: `rgba(${lens.rgb},0.04)` }}><Icon size={15} /></span>
+                <span><strong className="block text-[13px] text-white/88">{lens.label}</strong><span className="mt-1 block font-mono text-[11px] uppercase tracking-[0.07em] text-stone-500">research lens</span></span>
+              </button>
+            );
+          })}
+        </div>
+
+        <div className="grid gap-4 xl:grid-cols-[minmax(0,1.12fr)_minmax(280px,0.88fr)]">
+          <div className="border border-white/[0.07] bg-black/[0.075] p-4 backdrop-blur-[10px] sm:p-5">
+            <span className="font-mono text-[11px] font-semibold uppercase tracking-[0.09em] text-amber-200/46">{FIELDNOTE.title}</span>
+            <p className="mt-3 text-[14px] leading-7 text-stone-300/72">{FIELDNOTE.text}</p>
+            <div className="mt-5 border-t border-white/[0.07] pt-4">
+              <div className="flex items-center gap-2 font-mono text-[11px] font-semibold uppercase tracking-[0.09em]" style={{ color: `rgba(${active.rgb},0.72)` }}><ActiveIcon size={14} /> {active.label}</div>
+              <p className="mt-2 text-[15px] font-semibold leading-6 text-white/88">{active.question}</p>
+            </div>
+          </div>
+
+          <div className="border border-white/[0.07] bg-black/[0.055] p-4 backdrop-blur-[10px] sm:p-5">
+            <div className="font-mono text-[11px] font-semibold uppercase tracking-[0.09em] text-stone-500">Evidence to seek</div>
+            <div className="mt-3 space-y-2">
+              {active.evidence.map((item, index) => (
+                <div key={item} className="grid grid-cols-[26px_minmax(0,1fr)] gap-2 border-b border-white/[0.055] pb-2 last:border-b-0">
+                  <span className="font-mono text-[11px]" style={{ color: `rgba(${active.rgb},0.52)` }}>0{index + 1}</span>
+                  <span className="text-[12px] leading-5 text-stone-400/72">{item}</span>
+                </div>
+              ))}
+            </div>
+            <div className="mt-5 border-l-2 pl-3" style={{ borderColor: `rgba(${active.rgb},0.32)` }}>
+              <span className="font-mono text-[11px] font-semibold uppercase tracking-[0.08em] text-stone-500">Method caution</span>
+              <p className="mt-2 text-[12px] leading-5 text-stone-400/72">{active.caution}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </Surface>
+  );
 }
