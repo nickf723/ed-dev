@@ -81,27 +81,29 @@ Goal: every major subject parent should be Developed before broad child expansio
 - Engineering: Developed
 - Technology: Developed
 - Materials Science: Developed
-- Industrial Design: Foundation
+- Industrial Design: Developed
 - Architecture: Developed
-- Medicine: Foundation
-- Health Sciences: Foundation
+- Medicine: Developed
+- Health Sciences: Developed
 - Agriculture: Developed
-- Business: Foundation
-- Education: Foundation
-- Library Science: Foundation
+- Business: Developed
+- Education: Developed
+- Library Science: Developed
+
+Applied Sciences now has complete Phase A parent coverage. Future work there can move into representative children instead of creating more sibling foundations.
 
 ## Current autonomous queue
 
-Unless new feedback changes priorities, work through fresh parents in this order:
+Unless new feedback changes priorities, work through the remaining fresh Humanities parents in this order:
 
-1. Industrial Design
-2. Medicine
-3. Health Sciences
-4. Business
-5. Education
-6. Library Science
+1. Performing Arts
+2. Sports
+3. Culture
+4. Gaming
+5. Culinary Arts
+6. Futurology
 
-The order deliberately hops across domains so visual languages do not collapse into one subject family's habits.
+After those parents graduate, Phase A parent coverage will be complete across all major site domains and the queue should shift into representative Phase B branches.
 
 ## Phase B: signature branches
 
@@ -117,6 +119,58 @@ Priority examples:
 - Engineering: mechanical, civil, electrical, and software as contrasting specializations
 
 ## Cumulative parent notes
+
+### Library Science · Developed
+
+- Preserved Organize / Preserve / Retrieve / Access as a compact stewardship lens while expanding the parent beyond a static four-card definition.
+- Built a tangible library cutaway with circulating stacks, reference desk, archive boxes, preservation bench, digital repository, and one slow request slip moving through the institution.
+- Added a ten-branch focused curriculum spanning cataloging/metadata, classification, collections, reference, archives, preservation, digital libraries, information literacy, management/community service, and ethics/access.
+- Added a stewardship laboratory that keeps the lifecycle stable while switching among a circulating book, rare manuscript, oral-history recording, and born-digital collection so description, preservation, rights, handling, and access priorities visibly change.
+- Explicitly distinguishes Library Science from Information Science by emphasizing institutions, communities, collection development, preservation, instruction, spaces/services, rights, and long-term stewardship.
+- Full 378-page Next.js preview build received a successful Vercel status.
+
+### Education · Developed
+
+- Preserved the Experience → Practice → Feedback → Transfer idea as one useful recurring planning loop while explicitly rejecting it as a universal stage theory.
+- Added a learning-evidence wall showing repeated attempts, feedback, revision, concept-map changes, and transfer to a new context with one slow review strip.
+- Added a nine-branch focused curriculum covering learning sciences, curriculum/instruction, assessment, instructional design, accessibility/special education, educational technology, learning environments, policy/systems, and teacher learning.
+- Added an alignment studio that compares generic learning goals, practice opportunities, and evidence tasks using direct / partial / weak alignment without ranking teaching methods or predicting learning.
+- Full 378-page Next.js preview build reached READY.
+
+### Business · Developed
+
+- Preserved the organization/strategy simulation idea while removing uncited global KPI counters and a three-slider model that allowed every budget category to be 100% simultaneously.
+- Rebuilt the ambient world as an enterprise operating model linking customer need, demand/orders, suppliers, inventory/capacity, operations, delivery, customer experience, cash/working capital, and information feedback.
+- Added a ten-branch focused curriculum while preserving the active Accounting and Marketing children.
+- Rebuilt the simulator around one finite 100-unit resource pool split among market learning/demand, product capability, operations/fulfillment, and automatic reserve/optionality; outputs are transparent normalized teaching scores rather than fake revenue forecasts.
+- Reframed stakeholder and Triple Bottom Line thinking as useful frameworks among many rather than universal modern business philosophy.
+- Full 378-page Next.js preview build reached READY.
+
+### Health Sciences · Developed
+
+- Repaired the old overlap with Medicine by rebuilding Health Sciences around health professions, prevention, rehabilitation, population measurement, diagnostics workflows, nutrition, community/environmental conditions, informatics, and coordinated care.
+- Replaced the generic organic node network with a care-continuum world spanning home/community, prevention/access, measurement/diagnostics, coordinated care, rehabilitation, and daily-life follow-up, with profession lanes and one slow handoff marker.
+- Added a ten-branch focused curriculum and preserved the active Health Professions Atlas child.
+- Added a care-network laboratory built around fictional coordination scenarios, settings, professional contributions, and handoff packets, explicitly avoiding treatment recommendations or universal scope-of-practice claims.
+- Surfaced Medicine as a neighboring clinical field instead of duplicating its diagnosis/treatment curriculum.
+- Full 378-page Next.js preview build reached READY.
+
+### Medicine · Developed
+
+- Repaired empty parent navigation and replaced a neon EKG aesthetic with a longitudinal clinical workroom containing a synthetic chart timeline, trend lanes, schematic imaging/exam windows, intervention/follow-up lane, and Observe → Interpret → Test → Act → Monitor reasoning loop.
+- Added a ten-branch focused curriculum while preserving the active Anatomy & Physiology child.
+- Rebuilt the anatomy widget as a conceptual system lens across skeletal, cardiovascular, respiratory, nervous, and immune systems, explicitly not anatomical imaging or a diagnostic tool.
+- Added a fictional clinical-reasoning desk where transparent evidence packets move anonymous working hypotheses, with explicit warnings that the toy scores are not probabilities, diagnostic thresholds, decision rules, or advice.
+- Validation caught an unsupported Lucide `Lungs` export; it was replaced with the supported `Wind` icon before graduation.
+- Full 378-page Next.js preview build reached READY on the corrected tree.
+
+### Industrial Design · Developed
+
+- Preserved the drafting/isometric identity and existing IsometricLab while separating representation skill from evidence about usability.
+- Built a product-studio world with orthographic views, an internal section, foam model, CMF swatches, dimensions, split lines, human-contact/reach study, and one slow inspection light.
+- Registered the existing focused Industrial Design curriculum, which had previously been present but absent from the manifest.
+- Added a use-journey critique that holds one fictional handheld product fixed while the learner changes the question across find/orient, grip/carry, operate/confirm, clean/store, and open/service moments.
+- Full 378-page Next.js preview build reached READY on the complete registered tree.
 
 ### Technology · Developed
 
