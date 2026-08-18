@@ -1,265 +1,130 @@
-"use client";
-import React, { useState } from "react";
 import Link from "next/link";
-import PerformingArtsBackground from "./PerformingArtsBackground"; 
-import { 
-  Play, Database, Mic2, Clapperboard, 
-  Drama, Move, Tent, Palette, Speaker,
-  Maximize2, SkipForward, Volume2
+import DomainPageHeader from "@/app/_components/DomainPageHeader";
+import { SceneFrame, Surface } from "@/app/_page-system/scene";
+import { requireCurriculumPageContext } from "@/lib/curriculum/page-context";
+import type { CurriculumNode } from "@/lib/curriculum/types";
+import type { LucideIcon } from "lucide-react";
+import {
+  ArrowRight,
+  Clapperboard,
+  Drama,
+  Eye,
+  Lightbulb,
+  MessageSquareText,
+  Move,
+  Palette,
+  Radio,
+  Tent,
+  Users,
 } from "lucide-react";
+import PerformingArtsBackground from "./PerformingArtsBackground";
+import StagePictureLab from "./StagePictureLab";
 
-// --- DATA SCHEMA (Unchanged) ---
-const PERFORMING_ARTS_DATA = [
-  {
-    id: "tv-film",
-    title: "TV & Film",
-    fullTitle: "TV & Film",
-    desc: "The captured performance. From the silver screen to the streaming stream.",
-    icon: Clapperboard,
-    color: "text-cyan-400",
-    accent: "bg-cyan-500",
-    repositoryId: "tv-film-db",
-    subdomains: [
-      { title: "Cinema & TV", desc: "Episodic & feature storytelling." },
-      { title: "Voice Acting", desc: "Animation & narrative audio." },
-      { title: "Stunt Work", desc: "Physical choreography." },
-      { title: "Mo-Cap", desc: "Digital puppetry." }
-    ]
-  },
-  {
-    id: "theatre",
-    title: "Theatre",
-    fullTitle: "Theatre Arts",
-    desc: "The immediate, ephemeral connection between actor and audience.",
-    icon: Drama,
-    color: "text-rose-500",
-    accent: "bg-rose-500",
-    repositoryId: "play-db",
-    subdomains: [
-      { title: "Method Acting", desc: "The craft of being." },
-      { title: "Directing", desc: "Vision & blocking." },
-      { title: "Musical Theatre", desc: "Song, dance, narrative." },
-      { title: "Improv", desc: "Spontaneous composition." }
-    ]
-  },
-  {
-    id: "music",
-    title: "Music",
-    fullTitle: "Vocals & Instrumentals",
-    desc: "The physical mastery of sound production.",
-    icon: Mic2,
-    color: "text-amber-400",
-    accent: "bg-amber-500",
-    repositoryId: "music-db",
-    subdomains: [
-      { title: "Vocal Tech", desc: "Opera, Jazz, Pop." },
-      { title: "Virtuosity", desc: "Strings, Brass, Percussion." },
-      { title: "Conducting", desc: "Leading the ensemble." },
-      { title: "Ensemble", desc: "Chamber & Orchestral." }
-    ]
-  },
-  {
-    id: "dance",
-    title: "Dance",
-    fullTitle: "Dance & Movement",
-    desc: "Expression through the movement of the body in space and time.",
-    icon: Move,
-    color: "text-indigo-400",
-    accent: "bg-indigo-500",
-    repositoryId: "choreo-db",
-    subdomains: [
-      { title: "Choreography", desc: "Design of movement." },
-      { title: "Ballet", desc: "Rigorous technique." },
-      { title: "Contemporary", desc: "Breaking form." },
-      { title: "Somatic", desc: "Body awareness." }
-    ]
-  },
-  {
-    id: "variety",
-    title: "Variety",
-    fullTitle: "Variety Arts",
-    desc: "The specialized skills of entertainment, spectacle, and wonder.",
-    icon: Tent,
-    color: "text-fuchsia-500",
-    accent: "bg-fuchsia-500",
-    subdomains: [
-      { title: "Comedy", desc: "Stand-up & sketch." },
-      { title: "Magic", desc: "Attention & deception." },
-      { title: "Puppetry", desc: "Marionette & Shadow." },
-      { title: "Circus", desc: "Acrobatics & aerials." }
-    ]
-  },
-  {
-    id: "sceno",
-    title: "Design",
-    fullTitle: "Scenography",
-    desc: "The creation of the performance environment.",
-    icon: Palette,
-    color: "text-emerald-400",
-    accent: "bg-emerald-500",
-    subdomains: [
-      { title: "Set Design", desc: "Architectural storytelling." },
-      { title: "Lighting", desc: "Painting with photons." },
-      { title: "Costume", desc: "Character via texture." },
-      { title: "Sound", desc: "The sonic landscape." }
-    ]
-  },
-  {
-    id: "word",
-    title: "Oratory",
-    fullTitle: "Spoken Word",
-    desc: "The art of public speaking and comedy.",
-    icon: Speaker,
-    color: "text-orange-400",
-    accent: "bg-orange-500",
-    subdomains: [
-      { title: "Stand-Up", desc: "Rhythm & timing." },
-      { title: "Rhetoric", desc: "Art of persuasion." },
-      { title: "Slam Poetry", desc: "Competitive verse." }
-    ]
-  }
-];
+const NODE_ID = "humanities.performing-arts";
+
+const BRANCH_META: Record<string, { icon: LucideIcon; code: string; rgb: string }> = {
+  "humanities.performing-arts.theatre": { icon: Drama, code: "THR", rgb: "244,63,94" },
+  "humanities.performing-arts.dance": { icon: Move, code: "DAN", rgb: "129,140,248" },
+  "humanities.performing-arts.screen-performance": { icon: Clapperboard, code: "SCR", rgb: "34,211,238" },
+  "humanities.performing-arts.directing-dramaturgy": { icon: Eye, code: "DIR", rgb: "251,191,36" },
+  "humanities.performing-arts.stagecraft-design": { icon: Palette, code: "STG", rgb: "52,211,153" },
+  "humanities.performing-arts.voice-spoken": { icon: MessageSquareText, code: "VOC", rgb: "253,186,116" },
+  "humanities.performing-arts.circus-variety": { icon: Tent, code: "VAR", rgb: "217,70,239" },
+  "humanities.performing-arts.performance-studies": { icon: Users, code: "PST", rgb: "192,132,252" },
+};
+
+const DIMENSIONS = [
+  { title: "Body & voice", detail: "Gesture, posture, movement, breath, speech, sound, stillness, virtuosity, effort, and embodied presence become material for performance.", icon: Move, rgb: "244,63,94" },
+  { title: "Space & composition", detail: "Blocking, pathways, levels, proximity, architecture, framing, scenery, and sightlines shape relationships and what an audience can read.", icon: Eye, rgb: "34,211,238" },
+  { title: "Time & rhythm", detail: "Tempo, pause, repetition, duration, cue timing, musicality, entrances, transitions, and pacing organize expectation and attention.", icon: Radio, rgb: "251,191,36" },
+  { title: "Ensemble & relation", detail: "Performance emerges through listening, response, partnering, leadership, trust, conflict, coordination, and the distribution of focus among people.", icon: Users, rgb: "52,211,153" },
+  { title: "Design & cue systems", detail: "Lighting, sound, costume, scenery, props, media, stage management, technical systems, and backstage labor structure the event around performers.", icon: Lightbulb, rgb: "167,139,250" },
+  { title: "Audience & mediation", detail: "A live audience shares time and space with performers; cameras, microphones, editing, screens, and recordings transform presence, scale, repetition, and viewpoint.", icon: Clapperboard, rgb: "125,211,252" },
+] as const;
 
 export default function PerformingArtsPage() {
-  const [activeId, setActiveId] = useState<string>("theatre");
-  const activeArt = PERFORMING_ARTS_DATA.find(art => art.id === activeId) || PERFORMING_ARTS_DATA[0];
+  const { node } = requireCurriculumPageContext(NODE_ID);
+  const children = node.children ?? [];
 
   return (
-    <main className="relative min-h-screen bg-[#050505] text-stone-200 font-sans overflow-hidden flex flex-col">
-      
-      {/* 1. VISUAL ENGINE (The Visualization) */}
-      <PerformingArtsBackground />
-      
-      {/* Dynamic Glow (The Ambient Light) */}
-      <div className={`absolute top-0 right-0 w-[80vw] h-[80vw] rounded-full blur-[200px] opacity-10 transition-colors duration-1000 pointer-events-none ${activeArt.accent.replace('bg-', 'bg-')}`} />
-
-      {/* 2. HEADER: The "Window Title" */}
-      <header className="absolute top-0 left-0 md:left-80 right-0 z-20 p-8 flex justify-between items-start pointer-events-none">
-          <div className="flex items-center gap-4 pointer-events-auto">
-               <div className="px-3 py-1 rounded-full border border-white/10 bg-black/40 backdrop-blur-md text-stone-400 text-[10px] font-bold uppercase tracking-[0.2em] flex items-center gap-2">
-                   <div className={`w-1.5 h-1.5 rounded-full animate-pulse ${activeArt.accent.replace('bg-', 'bg-')}`} />
-                   Live Feed
-               </div>
-               <span className="text-stone-600 text-xs font-mono uppercase">/ Humanities / Performing_Arts</span>
+    <SceneFrame
+      background={<PerformingArtsBackground />}
+      className="bg-[#070505] text-stone-100 selection:bg-amber-300/25"
+      maxWidthClassName="max-w-[1680px]"
+      headerBackground="rgba(7,5,5,0.54)"
+      header={
+        <DomainPageHeader
+          breadcrumbs={[{ label: "Home", href: "/" }, { label: "Humanities", href: "/humanities" }, { label: "Performing Arts" }]}
+          eyebrow="Body · voice · space · time · cues · ensemble · audience"
+          eyebrowStyle="rule"
+          icon={Drama}
+          title={<span>Performing Arts</span>}
+          subtitle="Study performance as an event made through bodies, voices, movement, interpretation, rehearsal, space, rhythm, design, technical cues, ensemble relationships, and audiences, whether the performance is live, captured, or mediated through screens and sound systems."
+          accentRgb="251, 191, 36"
+          titleClassName="font-sans text-[clamp(2.8rem,5.4vw,5.9rem)] font-semibold leading-[0.84] tracking-[-0.064em] text-[#fff7ed]"
+          headerClassName="border-amber-100/[0.10]"
+        />
+      }
+    >
+      <section className="mt-5">
+        <div className="mb-3 grid gap-3 border-b border-amber-100/[0.08] pb-3 lg:grid-cols-[minmax(0,1fr)_420px] lg:items-end">
+          <div>
+            <div className="font-mono text-[11px] font-semibold uppercase tracking-[0.11em] text-amber-100/55">Live event · primary navigation + rehearsal lab</div>
+            <h2 className="mt-1 text-[clamp(1.8rem,3.2vw,3rem)] font-semibold tracking-[-0.046em] text-white">A performance is composed in front of somebody, somewhere, over time.</h2>
           </div>
-          
-          {/* Decorative Window Controls */}
-          <div className="flex gap-4 text-stone-600">
-              <Volume2 size={16} />
-              <Maximize2 size={16} />
+          <div className="grid grid-cols-2 gap-2">
+            <Neighbor href="/humanities/music" label="Music" note="composition · theory · musical traditions" />
+            <Neighbor href="/humanities/literature" label="Literature" note="texts · narrative · interpretation" />
           </div>
-      </header>
+        </div>
 
-      {/* 3. MAIN INTERFACE */}
-      <div className="flex-1 flex flex-col md:flex-row w-full h-full pl-0 md:pl-80 relative z-10 pt-24 pb-8 pr-8 gap-8">
-          
-          {/* --- LEFT: LIBRARY (Navigation) --- */}
-          <div className="w-full md:w-56 flex-shrink-0 flex flex-col gap-1 overflow-y-auto pr-2">
-              <div className="text-[9px] font-bold uppercase tracking-widest text-stone-600 mb-4 pl-3">
-                  Library
-              </div>
-              
-              {PERFORMING_ARTS_DATA.map((art) => {
-                  const isActive = activeId === art.id;
-                  const Icon = art.icon;
-                  return (
-                      <button
-                          key={art.id}
-                          onClick={() => setActiveId(art.id)}
-                          className={`
-                              group relative flex items-center gap-3 p-3 rounded-lg text-left transition-all duration-200
-                              ${isActive ? "bg-white/10 text-white" : "hover:bg-white/5 text-stone-500 hover:text-stone-300"}
-                          `}
-                      >
-                          <Icon size={16} className={`transition-colors ${isActive ? art.color : "opacity-50"}`} />
-                          <span className="text-xs font-bold uppercase tracking-wide">{art.title}</span>
-                          {isActive && <div className="ml-auto w-1 h-1 rounded-full bg-white shadow-[0_0_5px_white]" />}
-                      </button>
-                  )
-              })}
+        <div className="grid gap-4 xl:grid-cols-[250px_minmax(0,1fr)] xl:items-start">
+          <FieldIndex children={children} />
+          <StagePictureLab />
+        </div>
+      </section>
+
+      <section className="mt-8 border-t border-amber-100/[0.09] pt-5">
+        <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_430px] lg:items-end">
+          <div>
+            <div className="font-mono text-[11px] font-semibold uppercase tracking-[0.10em] text-rose-100/52">Performance dimensions</div>
+            <h2 className="mt-2 max-w-4xl text-[clamp(1.8rem,3.2vw,3rem)] font-semibold leading-[0.96] tracking-[-0.048em] text-white">Technique, interpretation, design, and audience experience meet in the same event.</h2>
           </div>
-
-          {/* --- RIGHT: THE PLAYER (Content Console) --- */}
-          <div className="flex-1 relative rounded-3xl border border-white/10 bg-black/40 backdrop-blur-xl overflow-hidden flex flex-col shadow-2xl">
-              
-              {/* Top Bar (Progress Line) */}
-              <div className={`absolute top-0 left-0 w-full h-0.5 ${activeArt.accent} opacity-50 shadow-[0_0_15px_currentColor]`} />
-
-              {/* BACKGROUND WATERMARK */}
-              <activeArt.icon 
-                  className={`absolute -top-12 -right-12 text-white opacity-[0.02] transition-transform duration-1000 transform scale-150 rotate-12`} 
-                  size={400} strokeWidth={0.5}
-              />
-
-              {/* A. UPPER DECK: "Now Playing" Info */}
-              <div className="flex-1 p-8 md:p-12 flex flex-col justify-center relative z-10 animate-in fade-in duration-700 key={activeId}">
-                  
-                  <div className="flex items-start justify-between mb-8">
-                      <div className={`p-4 rounded-2xl bg-white/5 border border-white/5 ${activeArt.color} shadow-lg backdrop-blur-md`}>
-                          <activeArt.icon size={40} />
-                      </div>
-                      {/* Visualization Bar (Fake) */}
-                      <div className="flex gap-1 items-end h-8 opacity-50">
-                          {[...Array(8)].map((_, i) => (
-                              <div key={i} 
-                                  className={`w-1 rounded-t-sm bg-white animate-pulse`} 
-                                  style={{ 
-                                      height: `${Math.random() * 100}%`, 
-                                      animationDelay: `${i * 0.1}s` 
-                                  }} 
-                              />
-                          ))}
-                      </div>
-                  </div>
-
-                  <h2 className="text-5xl md:text-7xl font-black text-white mb-4 tracking-tighter leading-none">
-                      {activeArt.fullTitle}
-                  </h2>
-                  <p className="text-xl text-stone-300 max-w-2xl leading-relaxed">
-                      {activeArt.desc}
-                  </p>
-
-                  <div className="mt-8 flex gap-4">
-                       <Link 
-                          href={`/humanities/performing-arts/${activeArt.id}`} 
-                          className="flex items-center gap-3 px-8 py-3 rounded-full bg-white text-black font-bold text-xs uppercase tracking-widest hover:scale-105 transition-transform"
-                       >
-                           <Play size={14} fill="currentColor" /> Enter Stage
-                       </Link>
-                       {activeArt.repositoryId && (
-                           <button className="px-6 py-3 rounded-full border border-white/20 text-stone-400 font-bold text-xs uppercase tracking-widest hover:text-white hover:border-white transition-colors flex items-center gap-2">
-                               <Database size={12} /> Data
-                           </button>
-                       )}
-                  </div>
-              </div>
-
-              {/* B. LOWER DECK: "Tracklist" (Subdomains) */}
-              <div className="bg-black/40 border-t border-white/5 p-6 md:p-8 backdrop-blur-md">
-                  <div className="text-[9px] font-bold uppercase tracking-widest text-stone-600 mb-4 flex items-center gap-2">
-                      <SkipForward size={10} /> Key Disciplines
-                  </div>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                      {activeArt.subdomains.map((sub, i) => (
-                          <div key={i} className="group/item cursor-default hover:bg-white/5 p-2 rounded transition-colors -ml-2">
-                              <div className="flex items-baseline gap-2 mb-1">
-                                  <span className={`text-[10px] font-mono font-bold ${activeArt.color} opacity-60`}>0{i+1}</span>
-                                  <span className="text-sm font-bold text-stone-300 group-hover/item:text-white transition-colors">
-                                      {sub.title}
-                                  </span>
-                              </div>
-                              <div className="text-xs text-stone-500 group-hover/item:text-stone-400 leading-tight">
-                                  {sub.desc}
-                              </div>
-                          </div>
-                      ))}
-                  </div>
-              </div>
-
-          </div>
-
-      </div>
-    </main>
+          <p className="text-[13px] leading-6 text-stone-400/72">The dimensions below are a rehearsal and analysis lens, not a universal recipe. Traditions differ radically in performer-audience relationships, training, authorship, improvisation, technology, ritual context, aesthetics, and what counts as a finished performance.</p>
+        </div>
+        <div className="mt-5 grid border-y border-white/[0.07] md:grid-cols-2 xl:grid-cols-3">
+          {DIMENSIONS.map((item, index) => <Dimension key={item.title} item={item} number={`0${index + 1}`} />)}
+        </div>
+      </section>
+    </SceneFrame>
   );
+}
+
+function FieldIndex({ children }: { children: readonly CurriculumNode[] }) {
+  return (
+    <Surface variant="open" className="overflow-hidden rounded-[26px] border-amber-100/[0.08]" style={{ background: "rgba(8,5,5,0.025)" }}>
+      <div className="border-b border-white/[0.06] px-3.5 py-3">
+        <div className="font-mono text-[10px] font-semibold uppercase tracking-[0.09em] text-amber-100/48">Performance fields</div>
+        <p className="mt-1 text-[10px] leading-4 text-stone-600">Screen Performance opens now. Other direct branches remain visibly planned.</p>
+      </div>
+      <div>
+        {children.map((child, index) => {
+          const meta = BRANCH_META[child.id] ?? { icon: Drama, code: `P${index + 1}`, rgb: "168,162,158" };
+          const Icon = meta.icon;
+          const active = child.status === "active";
+          const content = <><span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border" style={{ color: `rgb(${meta.rgb})`, borderColor: `rgba(${meta.rgb},0.24)` }}><Icon size={12} /></span><span className="min-w-0 flex-1"><span className="block font-mono text-[9px] uppercase tracking-[0.05em]" style={{ color: `rgba(${meta.rgb},0.52)` }}>{meta.code}</span><strong className="mt-0.5 block text-[11px] leading-4 text-white/76">{child.label}</strong></span>{active ? <ArrowRight size={11} className="text-stone-600" /> : <span className="font-mono text-[8px] uppercase text-stone-700">planned</span>}</>;
+          return active ? <Link key={child.id} href={child.href ?? "#"} className="group flex items-center gap-2 border-b border-white/[0.055] px-3 py-2.5 transition last:border-b-0 hover:bg-amber-200/[0.035]">{content}</Link> : <div key={child.id} aria-disabled="true" className="flex items-center gap-2 border-b border-white/[0.055] px-3 py-2.5 last:border-b-0">{content}</div>;
+        })}
+      </div>
+    </Surface>
+  );
+}
+
+function Neighbor({ href, label, note }: { href: string; label: string; note: string }) {
+  return <Link href={href} className="group flex min-h-[68px] flex-col justify-between border border-white/[0.07] bg-black/[0.055] px-3 py-2.5 backdrop-blur-[8px] transition hover:bg-black/[0.11]"><span className="text-[11px] font-semibold text-white/78">{label}</span><span className="flex items-end justify-between gap-2"><span className="text-[9px] leading-3 text-stone-600">{note}</span><ArrowRight size={11} className="text-stone-600 transition group-hover:translate-x-1" /></span></Link>;
+}
+
+function Dimension({ item, number }: { item: (typeof DIMENSIONS)[number]; number: string }) {
+  const Icon = item.icon;
+  return <div className="grid min-h-[150px] grid-cols-[42px_minmax(0,1fr)] gap-2 border-b border-white/[0.06] px-4 py-4 xl:border-r xl:[&:nth-child(3n)]:border-r-0 xl:[&:nth-last-child(-n+3)]:border-b-0"><span className="font-mono text-[10px]" style={{ color: `rgba(${item.rgb},0.42)` }}>{number}</span><span><span className="flex h-8 w-8 items-center justify-center rounded-full border" style={{ color: `rgb(${item.rgb})`, borderColor: `rgba(${item.rgb},0.24)` }}><Icon size={13} /></span><strong className="mt-2 block text-[12px]" style={{ color: `rgba(${item.rgb},0.78)` }}>{item.title}</strong><span className="mt-2 block text-[10px] leading-5 text-stone-500">{item.detail}</span></span></div>;
 }
