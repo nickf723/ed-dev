@@ -1,0 +1,1 @@
+Technology parent validation marker.
