@@ -11,6 +11,7 @@ import { EDUCATION_CURRICULUM } from "@/lib/curriculum/applied/education";
 import { ENGINEERING_CURRICULUM } from "@/lib/curriculum/applied/engineering";
 import { HEALTH_SCIENCES_CURRICULUM } from "@/lib/curriculum/applied/health";
 import { INDUSTRIAL_DESIGN_CURRICULUM } from "@/lib/curriculum/applied/industrial-design";
+import { LIBRARY_SCIENCE_CURRICULUM } from "@/lib/curriculum/applied/library-science";
 import { MATERIALS_SCIENCE_CURRICULUM } from "@/lib/curriculum/applied/materials-science";
 import { MEDICINE_CURRICULUM } from "@/lib/curriculum/applied/medicine";
 import { TECHNOLOGY_CURRICULUM } from "@/lib/curriculum/applied/technology";
@@ -63,6 +64,7 @@ export const CURRICULUM_MODULES: readonly CurriculumNode[] = [
   ENGINEERING_CURRICULUM,
   HEALTH_SCIENCES_CURRICULUM,
   INDUSTRIAL_DESIGN_CURRICULUM,
+  LIBRARY_SCIENCE_CURRICULUM,
   MATERIALS_SCIENCE_CURRICULUM,
   MEDICINE_CURRICULUM,
   TECHNOLOGY_CURRICULUM,
