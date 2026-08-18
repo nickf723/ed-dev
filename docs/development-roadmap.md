@@ -82,7 +82,7 @@ Goal: every major subject parent should be Developed before broad child expansio
 - Technology: Foundation
 - Materials Science: Developed
 - Industrial Design: Foundation
-- Architecture: Foundation
+- Architecture: Developed
 - Medicine: Foundation
 - Health Sciences: Foundation
 - Agriculture: Foundation
@@ -94,10 +94,12 @@ Goal: every major subject parent should be Developed before broad child expansio
 
 Unless new feedback changes priorities, work through fresh parents in this order:
 
-1. Architecture
-2. Religion
-3. Agriculture
-4. Information Science
+1. Religion
+2. Agriculture
+3. Information Science
+4. Systems Science
+5. Languages
+6. Technology
 
 The order deliberately hops across domains so visual languages do not collapse into one subject family's habits.
 
@@ -166,6 +168,15 @@ Priority examples:
 - Rebuilt K-means around a deterministic sample, selectable k, explicit assign/recenter steps, the within-cluster squared-distance objective, and strong warnings against treating cluster output as ground truth.
 - The parent now distinguishes description, prediction, and causation instead of treating data science as a synonym for machine learning.
 - Full 378-page Next.js preview build reached READY.
+
+### Architecture · Developed
+
+- Preserved the blueprint atmosphere and the interactive Vitruvian triad instead of converting Architecture into another Engineering page.
+- The background is now a full building section with floors, rooms, stairs, a courtyard void, site contours, dimensions, plan inset, envelope, tree, and one very slow daylight study.
+- Added eight direct branches covering design studio, building technology, structures, environmental systems, urban/site design, history/theory, representation/fabrication, and professional practice/codes/accessibility.
+- Rebuilt the Vitruvian interaction as three physical-looking flip slabs that treat firmitas, utilitas, and venustas as a historical question set, while explicitly noting modern obligations beyond the triad.
+- Added a Body → Room → Building → Site → City scale spine and an integration desk for space, structure, environment, construction, and people.
+- Full 378-page Next.js preview build reached READY on the complete finished tree.
 
 ## Phase C: curriculum depth
 
