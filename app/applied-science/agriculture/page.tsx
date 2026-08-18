@@ -11,12 +11,12 @@ import {
   Droplets,
   Fish,
   Flower2,
-  Forest,
   Gauge,
   Leaf,
   Scale,
   Sprout,
   Tractor,
+  Trees,
   Wheat,
 } from "lucide-react";
 import AgriBackground from "./AgriBackground";
@@ -69,7 +69,7 @@ const BRANCH_META: Record<string, BranchMeta> = {
     group: "production",
   },
   "applied.agriculture.forestry-agroforestry": {
-    icon: Forest,
+    icon: Trees,
     code: "FOR",
     question: "How can tree systems provide products while interacting with soil, water, habitat, fire, carbon, crops, and livestock over long time scales?",
     rgb: "74,222,128",
