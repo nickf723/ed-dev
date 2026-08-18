@@ -1,142 +1,213 @@
-"use client";
 import Link from "next/link";
-import BlueprintBackground from "@/app/applied-science/architecture/BlueprintBackground";
-import VitruvianTotem from "@/app/applied-science/architecture/VitruvianTotem";
-import { 
-  ArrowLeft, Building, Ruler, PenTool, Layers, Map, 
-  Compass, HardHat, Boxes
+import DomainPageHeader from "@/app/_components/DomainPageHeader";
+import { SceneFrame, Surface } from "@/app/_page-system/scene";
+import { requireCurriculumPageContext } from "@/lib/curriculum/page-context";
+import type { CurriculumNode } from "@/lib/curriculum/types";
+import type { LucideIcon } from "lucide-react";
+import {
+  Accessibility,
+  ArrowDown,
+  ArrowRight,
+  Building2,
+  Cable,
+  Compass,
+  Construction,
+  DraftingCompass,
+  Frame,
+  History,
+  Layers3,
+  Map,
+  Ruler,
+  SunMedium,
+  Trees,
 } from "lucide-react";
+import BlueprintBackground from "./BlueprintBackground";
+import VitruvianTotem from "./VitruvianTotem";
+
+const NODE_ID = "applied.architecture";
+
+type BranchMeta = {
+  icon: LucideIcon;
+  code: string;
+  question: string;
+  rgb: string;
+};
+
+const BRANCH_META: Record<string, BranchMeta> = {
+  "applied.architecture.design-studio": {
+    icon: DraftingCompass,
+    code: "DES",
+    question: "How do program, circulation, form, precedent, iteration, critique, and representation become a coherent spatial proposal?",
+    rgb: "125,211,252",
+  },
+  "applied.architecture.building-technology": {
+    icon: Construction,
+    code: "BLD",
+    question: "How do materials, envelopes, joints, moisture control, sequencing, and fabrication make an idea physically buildable?",
+    rgb: "251,191,36",
+  },
+  "applied.architecture.structures": {
+    icon: Frame,
+    code: "STR",
+    question: "How do loads move through frames, shells, walls, spans, foundations, and lateral systems without fighting the architecture?",
+    rgb: "192,132,252",
+  },
+  "applied.architecture.environmental-systems": {
+    icon: SunMedium,
+    code: "ENV",
+    question: "How do daylight, climate, comfort, ventilation, acoustics, energy, water, and services shape the building from the inside out?",
+    rgb: "94,234,212",
+  },
+  "applied.architecture.urban-site": {
+    icon: Map,
+    code: "URB",
+    question: "How does a building meet terrain, streets, public space, mobility, ecology, density, and the life around it?",
+    rgb: "74,222,128",
+  },
+  "applied.architecture.history-theory": {
+    icon: History,
+    code: "HIS",
+    question: "How have culture, technology, institutions, typologies, criticism, and changing values produced different built worlds?",
+    rgb: "251,146,60",
+  },
+  "applied.architecture.representation-fabrication": {
+    icon: Layers3,
+    code: "REP",
+    question: "How can drawings, models, BIM, diagrams, simulations, prototypes, and fabrication communicate or test spatial ideas?",
+    rgb: "96,165,250",
+  },
+  "applied.architecture.practice-codes": {
+    icon: Accessibility,
+    code: "PRC",
+    question: "How do accessibility, life safety, codes, ethics, contracts, coordination, permitting, and liability constrain professional work?",
+    rgb: "244,114,182",
+  },
+};
+
+const SCALES = [
+  { label: "Body", detail: "reach · movement · perception · comfort", rgb: "244,114,182" },
+  { label: "Room", detail: "use · adjacency · light · threshold", rgb: "125,211,252" },
+  { label: "Building", detail: "structure · envelope · systems · circulation", rgb: "192,132,252" },
+  { label: "Site", detail: "ground · climate · access · ecology", rgb: "74,222,128" },
+  { label: "City", detail: "street · block · infrastructure · public realm", rgb: "251,191,36" },
+] as const;
+
+const INTEGRATION = [
+  { label: "Space", note: "sequence, proportion, adjacency, threshold, view" },
+  { label: "Structure", note: "span, load path, stability, material, grid" },
+  { label: "Environment", note: "sun, air, sound, water, energy, comfort" },
+  { label: "Construction", note: "assembly, tolerance, durability, sequence" },
+  { label: "People", note: "access, safety, culture, use, adaptation" },
+] as const;
 
 export default function ArchitecturePage() {
+  const context = requireCurriculumPageContext(NODE_ID);
+  const left = context.children.slice(0, 4);
+  const right = context.children.slice(4);
+
   return (
-    <main className="relative min-h-screen bg-slate-950 text-white overflow-hidden selection:bg-sky-500/30 font-sans">
-      
-      {/* 1. VISUAL ENGINE */}
-      <BlueprintBackground />
-      
-      {/* VIGNETTE & OVERLAY */}
-      <div className="absolute inset-0 bg-radial-vignette opacity-80 pointer-events-none z-0" />
-      {/* Subtle paper texture */}
-      <div className="absolute inset-0 bg-[url('/noise.png')] opacity-[0.03] pointer-events-none z-0 mix-blend-overlay" />
-
-      {/* 2. DASHBOARD */}
-      <div className="relative z-10 container mx-auto px-6 py-12 min-h-screen flex flex-col pointer-events-none">
-        
-        {/* HEADER */}
-        <header className="flex flex-col md:flex-row justify-between items-start mb-16 pointer-events-auto">
-             <div>
-                 <Link href="/applied-science" className="flex items-center gap-2 text-xs font-mono text-sky-500 hover:text-sky-400 transition-colors mb-4 uppercase tracking-widest">
-                    <ArrowLeft size={12} /> Applied_Science // Domain_01
-                 </Link>
-                 <div className="flex items-center gap-4">
-                     <div className="p-3 bg-sky-900/30 border border-sky-500/50 rounded-sm shadow-[0_0_15px_rgba(56,189,248,0.2)] relative overflow-hidden">
-                        <Ruler size={32} className="text-sky-400 relative z-10" />
-                        {/* Blueprint scanline effect */}
-                        <div className="absolute inset-0 bg-sky-400/20 animate-[scanline_2s_linear_infinite] -translate-y-full" />
-                     </div>
-                     <h1 className="text-5xl md:text-7xl font-black text-white tracking-tighter drop-shadow-lg font-serif">
-                        ARCHITECTURE
-                     </h1>
-                 </div>
-             </div>
-             
-             <div className="hidden md:block text-right font-mono text-sky-500/60 text-xs bg-slate-900/80 p-4 rounded-sm border border-sky-500/20 backdrop-blur-md">
-                 <div className="flex items-center justify-end gap-2 mb-1">
-                    <span className="w-2 h-2 bg-sky-500 rounded-full animate-pulse"/> STATUS: DRAFTING
-                 </div>
-                 <div>PROJECT: NTERFACE_HUB.dwg</div>
-                 <div>SCALE: 1:100</div>
-             </div>
-        </header>
-
-
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 flex-1 pointer-events-auto">
-            
-            {/* LEFT: THE DESIGN PROCESS (Workflow visualization) */}
-            <div className="lg:col-span-7 space-y-8">
-                
-                <div className="bg-slate-900/60 backdrop-blur-md border border-sky-500/20 rounded-2xl p-8 relative overflow-hidden">
-                    <h2 className="text-2xl font-bold text-white font-serif mb-6 flex items-center gap-3">
-                        <PenTool className="text-sky-400" /> The Design Process
-                    </h2>
-                    <p className="text-slate-400 text-sm leading-relaxed mb-8">
-                        Architecture is the bridge between the abstract and the concrete. It is a recursive process of imagining, refining, and realizing spaces for human habitation.
-                    </p>
-
-                    {/* Process Flowchart visual */}
-                    <div className="relative">
-                        {/* Connector Line */}
-                        <div className="absolute top-6 left-0 right-0 h-0.5 bg-sky-500/20 border-t border-dashed border-sky-500/40 z-0" />
-                        
-                        <div className="grid grid-cols-4 gap-4 relative z-10">
-                            {/* Node 1 */}
-                            <div className="flex flex-col items-center text-center group">
-                                <div className="w-12 h-12 bg-slate-800 border border-sky-500/50 rounded-full flex items-center justify-center mb-3 shadow-lg group-hover:scale-110 transition-transform bg-[url('/grid.svg')] bg-center">
-                                    <Compass size={20} className="text-sky-300" />
-                                </div>
-                                <div className="text-xs font-bold text-white mb-1">CONCEPT</div>
-                                <div className="text-[9px] font-mono text-slate-500 uppercase">Ideation & Sketch</div>
-                            </div>
-                            {/* Node 2 */}
-                            <div className="flex flex-col items-center text-center group">
-                                <div className="w-12 h-12 bg-slate-800 border border-sky-500/50 rounded-full flex items-center justify-center mb-3 shadow-lg group-hover:scale-110 transition-transform">
-                                    <Layers size={20} className="text-sky-300" />
-                                </div>
-                                <div className="text-xs font-bold text-white mb-1">SCHEMATIC</div>
-                                <div className="text-[9px] font-mono text-slate-500 uppercase">Spatial Org.</div>
-                            </div>
-                            {/* Node 3 */}
-                            <div className="flex flex-col items-center text-center group">
-                                <div className="w-12 h-12 bg-slate-800 border border-sky-500/50 rounded-full flex items-center justify-center mb-3 shadow-lg group-hover:scale-110 transition-transform">
-                                    <Boxes size={20} className="text-sky-300" />
-                                </div>
-                                <div className="text-xs font-bold text-white mb-1">DEVELOPMENT</div>
-                                <div className="text-[9px] font-mono text-slate-500 uppercase">Systems Integration</div>
-                            </div>
-                            {/* Node 4 */}
-                            <div className="flex flex-col items-center text-center group">
-                                <div className="w-12 h-12 bg-sky-900/50 border border-sky-400 rounded-full flex items-center justify-center mb-3 shadow-[0_0_15px_rgba(56,189,248,0.3)] group-hover:scale-110 transition-transform">
-                                    <HardHat size={20} className="text-white" />
-                                </div>
-                                <div className="text-xs font-bold text-white mb-1">CONSTRUCTION</div>
-                                <div className="text-[9px] font-mono text-sky-400 uppercase">Realization</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                {/* SCALES OF IMPACT */}
-                <div className="grid grid-cols-2 gap-6">
-                    <div className="bg-slate-900/60 backdrop-blur-md border border-white/10 rounded-2xl p-6 hover:border-sky-500/30 transition-colors group">
-                        <div className="flex items-center gap-3 mb-4">
-                            <Building className="text-sky-500 group-hover:scale-110 transition-transform" size={24} />
-                            <h3 className="text-lg font-bold text-white">The Edifice</h3>
-                        </div>
-                        <p className="text-sm text-slate-400">
-                            Designing individual buildings. Focusing on form, material, facade, and the human experience within a single structure.
-                        </p>
-                    </div>
-                    <div className="bg-slate-900/60 backdrop-blur-md border border-white/10 rounded-2xl p-6 hover:border-amber-500/30 transition-colors group">
-                        <div className="flex items-center gap-3 mb-4">
-                            <Map className="text-amber-500 group-hover:scale-110 transition-transform" size={24} />
-                            <h3 className="text-lg font-bold text-white">Urban Planning</h3>
-                        </div>
-                        <p className="text-sm text-slate-400">
-                            Designing cities and communities. Focusing on infrastructure, zoning, public spaces, and how buildings interact at scale.
-                        </p>
-                    </div>
-                </div>
-
-            </div>
-
-
-            {/* RIGHT: FOUNDATIONAL PRINCIPLES (Widget) */}
-            <div className="lg:col-span-5 h-full min-h-[500px]">
-                <VitruvianTotem />
-            </div>
-
+    <SceneFrame
+      background={<BlueprintBackground />}
+      className="bg-[#04111d] text-slate-100 selection:bg-sky-300/25"
+      maxWidthClassName="max-w-[1600px]"
+      headerBackground="rgba(4,17,29,0.47)"
+      header={
+        <DomainPageHeader
+          breadcrumbs={context.breadcrumbs}
+          eyebrow="Space · structure · climate · construction · culture · use"
+          eyebrowStyle="rule"
+          icon={Building2}
+          title={<span>Architecture</span>}
+          subtitle="Architecture coordinates spatial experience with structure, climate, construction, systems, history, regulation, and the needs of people. A drawing is not the building, and a beautiful object is not enough: the discipline lives in the negotiation among many constraints at once."
+          accentRgb="125, 211, 252"
+          titleClassName="font-sans text-[clamp(2.9rem,5.5vw,6.2rem)] font-semibold leading-[0.84] tracking-[-0.066em] text-[#f4fbff]"
+          headerClassName="border-sky-100/[0.10]"
+        />
+      }
+    >
+      <section className="relative isolate mt-5 overflow-hidden border-y border-sky-100/[0.11] py-5 sm:py-6">
+        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(4,17,29,0.40),transparent_29%,transparent_71%,rgba(4,17,29,0.34))] backdrop-blur-[2px]" />
+        <div className="relative grid gap-4 lg:grid-cols-[minmax(0,1fr)_300px] lg:items-end">
+          <div>
+            <div className="flex items-center gap-2 font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-sky-200/66"><Compass size={14} /> Primary navigation · direct fields</div>
+            <h2 className="mt-2 max-w-5xl text-[clamp(1.9rem,3.7vw,3.7rem)] font-semibold leading-[0.94] tracking-[-0.052em] text-white">
+              Enter architecture through design, building systems, history, site, representation, or professional constraints.
+            </h2>
+            <p className="mt-3 max-w-4xl text-[14px] leading-6 text-slate-300/70">
+              The blueprint behind this page is a schematic building section, not a decorative grid. Floors, stairs, a courtyard void, site contours, dimensions, an envelope, and one slow daylight study make the subject visible without mirroring every foreground interaction.
+            </p>
+          </div>
+          <Link href="/applied-science" className="group flex items-center justify-between gap-4 border-l border-sky-200/[0.18] bg-black/[0.08] px-4 py-3 backdrop-blur-[10px] transition hover:bg-black/[0.15]">
+            <span><span className="font-mono text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-500">Parent field</span><strong className="mt-1 block text-[14px] text-white">Applied Sciences</strong></span>
+            <ArrowRight size={15} className="text-sky-200/55 transition group-hover:translate-x-1" />
+          </Link>
         </div>
+
+        <div className="relative mt-5 grid gap-4 xl:grid-cols-[minmax(0,1fr)_280px_minmax(0,1fr)] xl:items-stretch">
+          <div className="space-y-2.5">{left.map((branch) => <ArchitectureRoute key={branch.id} branch={branch} side="left" />)}</div>
+          <ScaleCore />
+          <div className="space-y-2.5">{right.map((branch) => <ArchitectureRoute key={branch.id} branch={branch} side="right" />)}</div>
+        </div>
+      </section>
+
+      <section className="mt-8 grid gap-5 xl:grid-cols-[minmax(0,1.15fr)_minmax(360px,0.85fr)] xl:items-start">
+        <VitruvianTotem />
+        <Surface variant="ghost" className="overflow-hidden rounded-[30px] border-emerald-100/[0.10]" style={{ background: "rgba(4,17,29,0.09)" }}>
+          <div className="p-5 sm:p-6">
+            <div className="flex items-center gap-2 font-mono text-[11px] font-semibold uppercase tracking-[0.10em] text-emerald-200/58"><Cable size={14} /> Integration desk · reference, not navigation</div>
+            <h3 className="mt-2 text-[clamp(1.7rem,2.7vw,2.6rem)] font-semibold leading-[0.98] tracking-[-0.045em] text-white">A change in one system usually redraws several others.</h3>
+            <p className="mt-3 text-[13px] leading-6 text-slate-400/70">Moving a stair changes circulation and structure. Opening a facade changes daylight, heat gain, views, waterproofing, cost, and appearance. Architecture is integration work.</p>
+          </div>
+          <div className="border-t border-white/[0.07]">
+            {INTEGRATION.map((item, index) => (
+              <div key={item.label} className="grid grid-cols-[42px_120px_minmax(0,1fr)] items-center gap-3 border-b border-white/[0.06] px-4 py-3 last:border-b-0">
+                <span className="font-mono text-[11px] text-sky-200/38">0{index + 1}</span>
+                <strong className="text-[13px] text-slate-200/86">{item.label}</strong>
+                <span className="text-[12px] leading-5 text-slate-500">{item.note}</span>
+              </div>
+            ))}
+          </div>
+        </Surface>
+      </section>
+    </SceneFrame>
+  );
+}
+
+function ArchitectureRoute({ branch, side }: { branch: CurriculumNode; side: "left" | "right" }) {
+  const meta = BRANCH_META[branch.id] ?? { icon: Ruler, code: "ARC", question: branch.description ?? "Explore this architecture branch.", rgb: "125,211,252" };
+  const Icon = meta.icon;
+  const planned = branch.status === "placeholder";
+  const card = (
+    <div className="group relative min-h-[108px] border-y border-white/[0.07] bg-black/[0.07] px-3 py-3 backdrop-blur-[10px] transition hover:bg-black/[0.13]" style={{ boxShadow: `inset ${side === "left" ? "3px" : "-3px"} 0 0 rgba(${meta.rgb},0.38)` }}>
+      <div className="grid grid-cols-[40px_minmax(0,1fr)_54px] gap-3">
+        <span className="flex h-9 w-9 items-center justify-center border" style={{ color: `rgb(${meta.rgb})`, borderColor: `rgba(${meta.rgb},0.26)`, background: `rgba(${meta.rgb},0.045)` }}><Icon size={15} /></span>
+        <span><span className="font-mono text-[11px] font-semibold uppercase tracking-[0.08em]" style={{ color: `rgba(${meta.rgb},0.70)` }}>{meta.code}</span><strong className="mt-0.5 block text-[15px] text-white/88">{branch.label}</strong><span className="mt-1 block text-[11px] leading-4 text-slate-500">{meta.question}</span></span>
+        <span className="pt-1 text-right font-mono text-[11px] uppercase text-slate-600">{planned ? "planned" : "open"}</span>
       </div>
-    </main>
+    </div>
+  );
+  return planned ? <div aria-disabled="true">{card}</div> : <Link href={branch.href}>{card}</Link>;
+}
+
+function ScaleCore() {
+  return (
+    <Surface variant="open" className="relative min-h-[452px] overflow-hidden rounded-[28px] border-sky-100/[0.08]" style={{ background: "rgba(4,17,29,0.025)" }}>
+      <div className="relative p-4">
+        <div className="flex items-center gap-2 font-mono text-[11px] font-semibold uppercase tracking-[0.09em] text-sky-200/54"><Trees size={13} /> Scale stack</div>
+        <p className="mt-2 text-[12px] leading-5 text-slate-400/64">Architectural decisions move continuously between human-scale details and larger systems.</p>
+      </div>
+      <div className="relative mx-4 mt-1 space-y-1">
+        {SCALES.map((step, index) => (
+          <div key={step.label} className="relative border-b border-white/[0.06] py-3 last:border-b-0">
+            <div className="flex items-start gap-3">
+              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border font-mono text-[11px]" style={{ color: `rgb(${step.rgb})`, borderColor: `rgba(${step.rgb},0.24)`, background: `rgba(${step.rgb},0.04)` }}>0{index + 1}</span>
+              <span><strong className="block text-[13px]" style={{ color: `rgba(${step.rgb},0.84)` }}>{step.label}</strong><span className="mt-1 block text-[11px] leading-4 text-slate-500">{step.detail}</span></span>
+            </div>
+            {index < SCALES.length - 1 ? <ArrowDown size={13} className="ml-[10px] mt-2 text-slate-600" /> : null}
+          </div>
+        ))}
+      </div>
+      <div className="absolute bottom-4 inset-x-4 border-t border-sky-100/[0.07] pt-3 text-center font-mono text-[11px] uppercase tracking-[0.07em] text-sky-200/34">details can reshape the whole building</div>
+    </Surface>
   );
 }
