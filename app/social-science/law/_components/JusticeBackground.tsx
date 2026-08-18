@@ -119,7 +119,6 @@ function drawCourt(context: CanvasRenderingContext2D, width: number, height: num
   context.strokeStyle = "rgba(212,212,216,0.16)";
   context.lineWidth = 1.2;
 
-  // Pediment
   context.beginPath();
   context.moveTo(left + courtWidth * 0.14, roofY + 58);
   context.lineTo(cx, roofY);
@@ -131,10 +130,9 @@ function drawCourt(context: CanvasRenderingContext2D, width: number, height: num
   context.lineTo(right - courtWidth * 0.09, roofY + 70);
   context.stroke();
 
-  // Columns
   const columns = width < 720 ? 5 : 9;
   for (let index = 0; index < columns; index += 1) {
-    const t = columns === 1 ? 0.5 : index / (columns - 1);
+    const t = index / (columns - 1);
     const x = left + courtWidth * (0.15 + t * 0.70);
     const top = roofY + 78;
     context.strokeStyle = index % 2 === 0 ? "rgba(212,212,216,0.13)" : "rgba(161,161,170,0.10)";
@@ -150,7 +148,6 @@ function drawCourt(context: CanvasRenderingContext2D, width: number, height: num
     context.stroke();
   }
 
-  // Three legal-authority tiers inside the courthouse
   TIERS.forEach((tier, index) => {
     const y = height * tier.y;
     const tierWidth = courtWidth * tier.width;
@@ -166,7 +163,6 @@ function drawCourt(context: CanvasRenderingContext2D, width: number, height: num
     context.fillText(tier.label, cx, y + 4);
   });
 
-  // Ground / steps
   context.strokeStyle = "rgba(212,212,216,0.13)";
   [0, 1, 2, 3].forEach((step) => {
     const inset = step * courtWidth * 0.035;
