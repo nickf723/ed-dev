@@ -1,132 +1,115 @@
-"use client";
 import Link from "next/link";
+import DomainPageHeader from "@/app/_components/DomainPageHeader";
+import { SceneFrame, Surface } from "@/app/_page-system/scene";
+import { requireCurriculumPageContext } from "@/lib/curriculum/page-context";
+import type { CurriculumNode } from "@/lib/curriculum/types";
+import type { LucideIcon } from "lucide-react";
+import {
+  ArrowRight,
+  Briefcase,
+  Building2,
+  Globe,
+  PieChart,
+  Target,
+  TrendingUp,
+  Users,
+} from "lucide-react";
 import GlobalTradeBackground from "./GlobalTradeBackground";
 import GrowthSimulator from "./GrowthSimulator";
-import { 
-  Briefcase, TrendingUp, Users, PieChart, 
-  Globe, Building2, Target, ArrowRight 
-} from "lucide-react";
+
+const NODE_ID = "applied.business";
+
+type BranchMeta = { icon: LucideIcon; code: string; rgb: string };
+
+const BRANCH_META: Record<string, BranchMeta> = {
+  "applied.business.accounting": { icon: PieChart, code: "ACC", rgb: "192,132,252" },
+  "applied.business.marketing": { icon: Target, code: "MKT", rgb: "244,114,182" },
+  "applied.business.finance": { icon: TrendingUp, code: "FIN", rgb: "94,234,212" },
+  "applied.business.operations": { icon: Building2, code: "OPS", rgb: "251,191,36" },
+  "applied.business.management": { icon: Users, code: "MGT", rgb: "125,211,252" },
+  "applied.business.strategy": { icon: Briefcase, code: "STR", rgb: "134,239,172" },
+  "applied.business.entrepreneurship": { icon: Briefcase, code: "ENT", rgb: "253,186,116" },
+  "applied.business.analytics": { icon: TrendingUp, code: "ANA", rgb: "103,232,249" },
+  "applied.business.governance-risk": { icon: Users, code: "GRC", rgb: "248,113,113" },
+  "applied.business.international": { icon: Globe, code: "INT", rgb: "147,197,253" },
+};
 
 export default function BusinessPage() {
-  const sectors = [
-    { 
-      title: "Finance", 
-      icon: TrendingUp, 
-      color: "text-emerald-400", 
-      desc: "The language of business. Managing assets, risk, and capital markets.",
-      href: "/applied-science/business/finance"
-    },
-    { 
-      title: "Marketing", 
-      icon: Target, 
-      color: "text-rose-400", 
-      desc: "Understanding consumer needs and communicating value propositions.",
-      href: "/applied-science/business/marketing"
-    },
-    { 
-      title: "Management", 
-      icon: Users, 
-      color: "text-blue-400", 
-      desc: "Leading organizations, strategy, and human resources.",
-      href: "/applied-science/business/management" 
-    },
-    { 
-      title: "Operations", 
-      icon: Building2, 
-      color: "text-amber-400", 
-      desc: "The engine of the firm. Supply chain, logistics, and efficiency.",
-      href: "/applied-science/business/operations" 
-    },
-    {
-        title: "Accounting", 
-        icon: PieChart, 
-        color: "text-violet-400", 
-        desc: "Tracking financial performance and ensuring regulatory compliance.",
-        href: "/applied-science/business/accounting"
-    }
-  ];
+  const { node } = requireCurriculumPageContext(NODE_ID);
+  const children = node.children ?? [];
 
   return (
-    <main className="relative min-h-screen bg-[#020617] text-slate-200 overflow-hidden font-sans selection:bg-emerald-500/30">
-      <GlobalTradeBackground />
-      
-      {/* Overlay for readability */}
-      <div className="absolute inset-0 bg-radial-vignette opacity-60 pointer-events-none" />
-
-      <div className="relative z-10 container mx-auto px-6 py-12">
-        
-        {/* HEADER */}
-        <header className="mb-16 border-b border-emerald-500/20 pb-8">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="p-2 bg-emerald-500/10 border border-emerald-500/30 rounded">
-              <Briefcase className="text-emerald-400" size={20} />
-            </div>
-            <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-emerald-400">
-              Applied Science // Commerce
-            </span>
+    <SceneFrame
+      background={<GlobalTradeBackground />}
+      className="bg-[#07100c] text-slate-100 selection:bg-emerald-300/25"
+      maxWidthClassName="max-w-[1680px]"
+      headerBackground="rgba(7,16,12,0.54)"
+      header={
+        <DomainPageHeader
+          breadcrumbs={[{ label: "Home", href: "/" }, { label: "Applied Sciences", href: "/applied-science" }, { label: "Business" }]}
+          eyebrow="Customers · people · operations · information · capital · risk"
+          eyebrowStyle="rule"
+          icon={Briefcase}
+          title={<span>Business</span>}
+          subtitle="Study how organizations create and deliver value by coordinating customers, people, capabilities, operations, information, capital, accounting, marketing, strategy, governance, and adaptation under real resource constraints."
+          accentRgb="52, 211, 153"
+          titleClassName="font-sans text-[clamp(3rem,5.5vw,6rem)] font-semibold leading-[0.84] tracking-[-0.066em] text-[#ecfdf5]"
+          headerClassName="border-emerald-100/[0.10]"
+        />
+      }
+    >
+      <section className="mt-5">
+        <div className="mb-3 grid gap-3 border-b border-emerald-100/[0.08] pb-3 lg:grid-cols-[minmax(0,1fr)_420px] lg:items-end">
+          <div><div className="font-mono text-[11px] font-semibold uppercase tracking-[0.11em] text-emerald-100/55">Operating model · primary navigation + strategy lab</div><h2 className="mt-1 text-[clamp(1.8rem,3.2vw,3rem)] font-semibold tracking-[-0.046em] text-white">An organization is a bundle of interdependent choices, not a revenue graph.</h2></div>
+          <div className="grid grid-cols-2 gap-2">
+            <Neighbor href="/social-science/economics" label="Economics" note="markets · incentives · allocation" />
+            <Neighbor href="/social-science/law" label="Law" note="institutions · rights · obligations" />
           </div>
-          <h1 className="text-6xl md:text-8xl font-black text-white tracking-tighter uppercase leading-none">
-            BUSINESS <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">ADMIN</span>
-          </h1>
-          <p className="mt-6 text-slate-400 max-w-2xl text-lg font-light border-l-2 border-emerald-500/30 pl-6">
-            The study of organizational management, markets, and value creation. Turning resources into goods and services to serve societal needs.
-          </p>
-        </header>
-
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-          
-          {/* LEFT: SECTORS */}
-          <div className="lg:col-span-7 space-y-8">
-            <div className="grid grid-cols-1 gap-4">
-              {sectors.map((s) => (
-                <Link key={s.title} href={`/applied-science/business/${s.title.toLowerCase()}`} className="group relative p-6 bg-slate-900/60 border border-white/5 hover:border-emerald-500/50 rounded-xl transition-all hover:translate-x-1">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-4">
-                      <div className={`p-3 rounded-lg bg-black/40 border border-white/5 ${s.color} group-hover:scale-110 transition-transform`}>
-                        <s.icon size={24} />
-                      </div>
-                      <div>
-                        <h3 className="font-bold text-white text-xl">{s.title}</h3>
-                        <p className="text-xs text-slate-400 mt-1">{s.desc}</p>
-                      </div>
-                    </div>
-                    <ArrowRight size={18} className="text-slate-600 group-hover:text-emerald-400 -translate-x-2 opacity-0 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
-                  </div>
-                </Link>
-              ))}
-            </div>
-
-            {/* Core Concept: The Triple Bottom Line */}
-            <div className="p-6 bg-emerald-900/10 border border-emerald-500/20 rounded-2xl">
-              <h4 className="text-sm font-bold text-white uppercase mb-3 flex items-center gap-2">
-                <Globe size={16} className="text-emerald-400" /> Modern Philosophy
-              </h4>
-              <p className="text-xs text-slate-400 leading-relaxed mb-4">
-                Contemporary business moves beyond profit maximization to the <strong>Triple Bottom Line</strong>: focusing on <span className="text-emerald-300">Profit</span>, <span className="text-emerald-300">People</span>, and <span className="text-emerald-300">Planet</span>.
-              </p>
-            </div>
-          </div>
-
-          {/* RIGHT: STRATEGY LAB */}
-          <div className="lg:col-span-5 space-y-6">
-            {/* The Simulation Widget */}
-            <GrowthSimulator />
-
-            {/* KPI Dashboard (Static Visual) */}
-            <div className="grid grid-cols-2 gap-4">
-              <div className="p-4 bg-black/40 border border-white/10 rounded-xl">
-                <span className="text-[10px] text-slate-500 uppercase font-bold">Global GDP</span>
-                <div className="text-lg font-mono text-white mt-1">$105 Trillion</div>
-              </div>
-              <div className="p-4 bg-black/40 border border-white/10 rounded-xl">
-                <span className="text-[10px] text-slate-500 uppercase font-bold">Startups/Year</span>
-                <div className="text-lg font-mono text-emerald-400 mt-1">305 Million</div>
-              </div>
-            </div>
-          </div>
-
         </div>
-      </div>
-    </main>
+
+        <div className="grid gap-4 xl:grid-cols-[250px_minmax(0,1fr)] xl:items-start">
+          <FieldIndex children={children} />
+          <GrowthSimulator />
+        </div>
+      </section>
+
+      <section className="mt-8 border-t border-emerald-100/[0.09] pt-5">
+        <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_430px] lg:items-end">
+          <div><div className="font-mono text-[11px] font-semibold uppercase tracking-[0.10em] text-amber-100/52">Operating principles</div><h2 className="mt-2 max-w-4xl text-[clamp(1.8rem,3.2vw,3rem)] font-semibold leading-[0.96] tracking-[-0.048em] text-white">Performance depends on flows, constraints, incentives, tradeoffs, and what the organization chooses to measure.</h2></div>
+          <p className="text-[13px] leading-6 text-slate-400/72">Frameworks such as stakeholder analysis, the Triple Bottom Line, balanced scorecards, lean systems, or portfolio models can illuminate different questions. None is a universal law of how every organization should be run.</p>
+        </div>
+        <div className="mt-5 grid border-y border-white/[0.07] md:grid-cols-2 xl:grid-cols-4">
+          <Principle number="01" title="Revenue is not profit" text="Sales, costs, assets, liabilities, cash timing, working capital, taxes, financing, and investment describe different parts of financial performance." />
+          <Principle number="02" title="Strategy means saying no" text="A strategy concentrates scarce resources and creates tradeoffs. Trying to maximize every capability at once is not a strategy." />
+          <Principle number="03" title="Local optimization can hurt flow" text="A department can improve its own metric while increasing queues, inventory, delays, rework, handoff failures, or cost elsewhere in the system." />
+          <Principle number="04" title="Value has stakeholders" text="Customers, workers, owners, suppliers, communities, regulators, and environmental systems can experience different benefits, costs, and risks." />
+        </div>
+      </section>
+    </SceneFrame>
   );
+}
+
+function FieldIndex({ children }: { children: readonly CurriculumNode[] }) {
+  return (
+    <Surface variant="open" className="overflow-hidden rounded-[26px] border-emerald-100/[0.08]" style={{ background: "rgba(5,17,12,0.025)" }}>
+      <div className="border-b border-white/[0.06] px-3.5 py-3"><div className="font-mono text-[10px] font-semibold uppercase tracking-[0.09em] text-emerald-100/48">Business disciplines</div><p className="mt-1 text-[10px] leading-4 text-slate-600">Accounting and Marketing are active. Planned routes stay visibly planned.</p></div>
+      <div>
+        {children.map((child, index) => {
+          const meta = BRANCH_META[child.id] ?? { icon: Briefcase, code: `B${index + 1}`, rgb: "148,163,184" };
+          const Icon = meta.icon;
+          const active = child.status === "active";
+          const content = <><span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border" style={{ color: `rgb(${meta.rgb})`, borderColor: `rgba(${meta.rgb},0.24)` }}><Icon size={12} /></span><span className="min-w-0 flex-1"><span className="block font-mono text-[9px] uppercase tracking-[0.05em]" style={{ color: `rgba(${meta.rgb},0.52)` }}>{meta.code}</span><strong className="mt-0.5 block text-[11px] leading-4 text-white/76">{child.label}</strong></span>{active ? <ArrowRight size={11} className="text-slate-600" /> : <span className="font-mono text-[8px] uppercase text-slate-700">planned</span>}</>;
+          return active ? <Link key={child.id} href={child.href ?? "#"} className="group flex items-center gap-2 border-b border-white/[0.055] px-3 py-2.5 transition last:border-b-0 hover:bg-emerald-200/[0.035]">{content}</Link> : <div key={child.id} aria-disabled="true" className="flex items-center gap-2 border-b border-white/[0.055] px-3 py-2.5 last:border-b-0">{content}</div>;
+        })}
+      </div>
+    </Surface>
+  );
+}
+
+function Neighbor({ href, label, note }: { href: string; label: string; note: string }) {
+  return <Link href={href} className="group flex min-h-[68px] flex-col justify-between border border-white/[0.07] bg-black/[0.055] px-3 py-2.5 backdrop-blur-[8px] transition hover:bg-black/[0.11]"><span className="text-[11px] font-semibold text-white/78">{label}</span><span className="flex items-end justify-between gap-2"><span className="text-[9px] leading-3 text-slate-600">{note}</span><ArrowRight size={11} className="text-slate-600 transition group-hover:translate-x-1" /></span></Link>;
+}
+
+function Principle({ number, title, text }: { number: string; title: string; text: string }) {
+  return <div className="grid min-h-[130px] grid-cols-[38px_minmax(0,1fr)] gap-2 border-b border-white/[0.06] px-4 py-4 xl:border-r xl:border-b-0 xl:last:border-r-0"><span className="font-mono text-[10px] text-emerald-100/35">{number}</span><span><strong className="text-[12px] text-white/80">{title}</strong><span className="mt-2 block text-[11px] leading-5 text-slate-500">{text}</span></span></div>;
 }
