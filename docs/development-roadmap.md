@@ -56,7 +56,7 @@ Goal: every major subject parent should be Developed before broad child expansio
 - Anthropology: Developed
 - Linguistics: Developed
 - Communication Studies: Developed
-- Geography: Foundation, existing globe and demographic assets must be preserved
+- Geography: Developed
 - Law: Foundation
 
 ### Humanities
@@ -94,15 +94,14 @@ Goal: every major subject parent should be Developed before broad child expansio
 
 Unless new feedback changes priorities, work through fresh parents in this order:
 
-1. Geography
-2. Literature
-3. Materials Science
-4. Law
-5. Data Science
-6. Architecture
-7. Religion
-8. Agriculture
-9. Information Science
+1. Literature
+2. Materials Science
+3. Law
+4. Data Science
+5. Architecture
+6. Religion
+7. Agriculture
+8. Information Science
 
 The order deliberately hops across domains so visual languages do not collapse into one subject family's habits.
 
@@ -127,6 +126,14 @@ Priority examples:
 - Replaced the generic vibrating mesh with a composed live design-review drawing: moving load, truss stress, dimensions, mechanism detail, and sensor telemetry.
 - Reconciled direct navigation to Mechanical, Civil, Electrical, Software, Aerospace, and Chemical Engineering.
 - Reframed the stress widget around demand, resistance, and safety factor with explicit model boundaries.
+- Full 378-page Next.js preview build reached READY.
+
+### Geography · Developed
+
+- Preserved the globe and population-pyramid identity anchors.
+- Replaced random sphere points with a recognizable inhabited-world composition: stylized continents, graticules, city lights, slow mobility arcs, and a very slow day/night terminator.
+- Added a planned eight-branch human-geography atlas around a central Site → Local → Regional → Global scale stack.
+- Reframed the demographic widget as normalized teaching profiles rather than assigning stylized shapes directly to demographic-transition stages.
 - Full 378-page Next.js preview build reached READY.
 
 ## Phase C: curriculum depth
