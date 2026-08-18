@@ -78,7 +78,7 @@ Goal: every major subject parent should be Developed before broad child expansio
 ### Applied sciences
 
 - Applied Sciences root: Developed, readability cleanup still desirable
-- Engineering: Foundation, next priority
+- Engineering: Developed
 - Technology: Foundation
 - Materials Science: Foundation
 - Industrial Design: Foundation
@@ -94,16 +94,15 @@ Goal: every major subject parent should be Developed before broad child expansio
 
 Unless new feedback changes priorities, work through fresh parents in this order:
 
-1. Engineering
-2. Geography
-3. Literature
-4. Materials Science
-5. Law
-6. Data Science
-7. Architecture
-8. Religion
-9. Agriculture
-10. Information Science
+1. Geography
+2. Literature
+3. Materials Science
+4. Law
+5. Data Science
+6. Architecture
+7. Religion
+8. Agriculture
+9. Information Science
 
 The order deliberately hops across domains so visual languages do not collapse into one subject family's habits.
 
@@ -119,6 +118,16 @@ Priority examples:
 - Social Science: one strong child per major scale or methodology family
 - Humanities: one analytical and one creative / interpretive child per major field where appropriate
 - Engineering: mechanical, civil, electrical, and software as contrasting specializations
+
+## Cumulative parent notes
+
+### Engineering · Developed
+
+- Preserved the blueprint identity and structural stress-test centerpiece.
+- Replaced the generic vibrating mesh with a composed live design-review drawing: moving load, truss stress, dimensions, mechanism detail, and sensor telemetry.
+- Reconciled direct navigation to Mechanical, Civil, Electrical, Software, Aerospace, and Chemical Engineering.
+- Reframed the stress widget around demand, resistance, and safety factor with explicit model boundaries.
+- Full 378-page Next.js preview build reached READY.
 
 ## Phase C: curriculum depth
 
