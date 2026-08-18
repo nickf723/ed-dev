@@ -1,190 +1,119 @@
-"use client";
-import React from 'react';
-import Link from 'next/link';
-import { 
-  Activity, Microscope, TestTube, 
-  Stethoscope, Syringe, Scissors, 
-  Apple, Dumbbell, Brain, Globe, 
-  ArrowRight, Lock, 
-  HeartPulse
-} from 'lucide-react';
-import HealthBackground from './_components/HealthBackground';
+import Link from "next/link";
+import DomainPageHeader from "@/app/_components/DomainPageHeader";
+import { SceneFrame, Surface } from "@/app/_page-system/scene";
+import { requireCurriculumPageContext } from "@/lib/curriculum/page-context";
+import type { CurriculumNode } from "@/lib/curriculum/types";
+import type { LucideIcon } from "lucide-react";
+import {
+  Activity,
+  Apple,
+  ArrowRight,
+  Brain,
+  Dumbbell,
+  Globe,
+  HeartPulse,
+  Microscope,
+  Network,
+  Stethoscope,
+  TestTube,
+  Users,
+} from "lucide-react";
+import HealthBackground from "./_components/HealthBackground";
+import CareNetworkLab from "./CareNetworkLab";
 
-type Lesson = {
-  id: string;
-  title: string;
-  subtitle: string;
-  description: string;
-  icon: React.ReactNode;
-  href: string;
-  color: string;
-  status?: 'locked' | 'open';
+const NODE_ID = "applied.health";
+
+type BranchMeta = { icon: LucideIcon; code: string; rgb: string };
+
+const BRANCH_META: Record<string, BranchMeta> = {
+  "applied.health.nursing": { icon: HeartPulse, code: "NUR", rgb: "244,114,182" },
+  "applied.health.public-health": { icon: Globe, code: "PH", rgb: "94,234,212" },
+  "applied.health.epidemiology-biostatistics": { icon: Activity, code: "EPI", rgb: "125,211,252" },
+  "applied.health.rehabilitation": { icon: Dumbbell, code: "REH", rgb: "251,191,36" },
+  "applied.health.nutrition-dietetics": { icon: Apple, code: "NUT", rgb: "134,239,172" },
+  "applied.health.diagnostic-sciences": { icon: Microscope, code: "DIA", rgb: "147,197,253" },
+  "applied.health.respiratory-care": { icon: Stethoscope, code: "RESP", rgb: "103,232,249" },
+  "applied.health.community-environmental": { icon: Users, code: "COM", rgb: "110,231,183" },
+  "applied.health.informatics-systems": { icon: Network, code: "HIS", rgb: "192,132,252" },
+  "applied.health.specializations": { icon: TestTube, code: "ATLAS", rgb: "253,164,175" },
 };
 
-const LESSONS: Lesson[] = [
-  {
-    id: 'anatomy',
-    title: 'Anatomy & Physiology',
-    subtitle: 'The Biological Machine',
-    description: 'The structural mapping and functional systems of the human body.',
-    icon: <Activity size={20} className="text-cyan-500" />,
-    href: 'applied-science/health/anatomy',
-    color: 'cyan'
-  },
-  {
-    id: 'pathology',
-    title: 'Pathology & Immunology',
-    subtitle: 'System Failures',
-    description: 'The study of disease, pathogens, and the body\'s cellular defense mechanisms.',
-    icon: <Microscope size={20} className="text-rose-500" />,
-    href: 'applied-science/health/pathology',
-    color: 'rose'
-  },
-  {
-    id: 'pharmacology',
-    title: 'Pharmacology',
-    subtitle: 'Chemical Intervention',
-    description: 'How drugs interact with biological systems to alter function or treat disease.',
-    icon: <TestTube size={20} className="text-purple-500" />,
-    href: 'applied-science/health/pharmacology',
-    color: 'purple'
-  },
-  {
-    id: 'clinical',
-    title: 'Clinical Practice',
-    subtitle: 'Medicine & Nursing',
-    description: 'The applied science of patient diagnosis, care, and treatment protocols.',
-    icon: <Stethoscope size={20} className="text-blue-500" />,
-    href: 'applied-science/health/clinical',
-    color: 'blue'
-  },
-  {
-    id: 'surgery',
-    title: 'Surgery',
-    subtitle: 'Mechanical Intervention',
-    description: 'Operative manual and instrumental techniques to investigate or treat conditions.',
-    icon: <Scissors size={20} className="text-zinc-400" />,
-    href: 'applied-science/health/surgery',
-    color: 'zinc'
-  },
-  {
-    id: 'mental-health',
-    title: 'Psychiatry & Psychology',
-    subtitle: 'The Cognitive System',
-    description: 'The intersection of neurology and behavior, focusing on mental health.',
-    icon: <Brain size={20} className="text-indigo-500" />,
-    href: 'applied-science/health/mental-health',
-    color: 'indigo'
-  },
-  {
-    id: 'nutrition',
-    title: 'Nutrition & Dietetics',
-    subtitle: 'System Fuel',
-    description: 'The biochemical processing of macronutrients and their impact on longevity.',
-    icon: <Apple size={20} className="text-green-500" />,
-    href: 'applied-science/health/nutrition',
-    color: 'green'
-  },
-  {
-    id: 'kinesiology',
-    title: 'Kinesiology & Fitness',
-    subtitle: 'Movement Optimization',
-    description: 'Biomechanics, physical conditioning, and rehabilitative sciences.',
-    icon: <Dumbbell size={20} className="text-amber-500" />,
-    href: 'applied-science/health/kinesiology',
-    color: 'amber'
-  },
-  {
-    id: 'public-health',
-    title: 'Public Health',
-    subtitle: 'Macro Epidemiology',
-    description: 'Health outcomes, disease tracking, and preventative measures at the population scale.',
-    icon: <Globe size={20} className="text-teal-500" />,
-    href: 'applied-science/health/public-health',
-    color: 'teal'
-  },
-  {
-    id: 'specializations',
-    title: 'Specializations',
-    subtitle: 'Specialized Fields',
-    description: 'Explore the various specialized fields within health sciences.',
-    icon: <HeartPulse size={20} className="text-pink-500" />,
-    href: 'applied-science/health/specializations',
-    color: 'pink'
-  }
-];
-
 export default function HealthHubPage() {
+  const { node } = requireCurriculumPageContext(NODE_ID);
+  const children = node.children ?? [];
+
   return (
-    <main className="relative min-h-screen bg-black overflow-hidden selection:bg-rose-900/30 font-sans">
-      <HealthBackground />
-      
-      <div className="relative z-10 max-w-7xl mx-auto px-6 py-24">
-         
-         {/* HEADER */}
-         <div className="mb-20">
-             <div className="flex items-center gap-3 text-rose-500 mb-4 font-mono text-sm tracking-widest uppercase">
-                 <span className="w-8 h-px bg-rose-500"></span>
-                 Life Sciences
-             </div>
-             <h1 className="text-6xl md:text-8xl font-black text-white mb-6 tracking-tighter">
-                 HEALTH SCIENCES
-             </h1>
-             <p className="text-xl text-neutral-400 max-w-2xl leading-relaxed">
-                 The study of the most complex machine known to science: The Human Body. 
-                 Explore how it is <span className="text-white font-bold">structured</span>, how it <span className="text-rose-400 font-bold">breaks</span>, and how we <span className="text-cyan-400 font-bold">fix</span> it.
-             </p>
-         </div>
+    <SceneFrame
+      background={<HealthBackground />}
+      className="bg-[#07100f] text-slate-100 selection:bg-teal-300/25"
+      maxWidthClassName="max-w-[1680px]"
+      headerBackground="rgba(7,16,15,0.54)"
+      header={
+        <DomainPageHeader
+          breadcrumbs={[{ label: "Home", href: "/" }, { label: "Applied Sciences", href: "/applied-science" }, { label: "Health Sciences" }]}
+          eyebrow="Professions · prevention · rehabilitation · population · systems"
+          eyebrowStyle="rule"
+          icon={HeartPulse}
+          title={<span>Health Sciences</span>}
+          subtitle="Study health as a coordinated human and systems problem. Health sciences connect patient care, prevention, rehabilitation, nutrition, diagnostics, population measurement, community conditions, informatics, and professional collaboration across settings and time."
+          accentRgb="94, 234, 212"
+          titleClassName="font-sans text-[clamp(2.8rem,5.4vw,5.9rem)] font-semibold leading-[0.84] tracking-[-0.064em] text-[#ecfeff]"
+          headerClassName="border-teal-100/[0.10]"
+        />
+      }
+    >
+      <section className="mt-5">
+        <div className="mb-3 grid gap-3 border-b border-teal-100/[0.08] pb-3 lg:grid-cols-[minmax(0,1fr)_420px] lg:items-end">
+          <div><div className="font-mono text-[11px] font-semibold uppercase tracking-[0.11em] text-teal-100/56">Care continuum · primary navigation + signature lab</div><h2 className="mt-1 text-[clamp(1.8rem,3.2vw,3rem)] font-semibold tracking-[-0.046em] text-white">Health is produced across encounters, professions, environments, and systems.</h2></div>
+          <div className="grid grid-cols-2 gap-2">
+            <Neighbor href="/applied-science/medicine" label="Medicine" note="diagnosis · treatment · clinical reasoning" />
+            <Neighbor href="/social-science/psychology" label="Psychology" note="mind · behavior · cognition" />
+          </div>
+        </div>
 
-         {/* ONTOLOGY GRID */}
-         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-             {LESSONS.map((lesson, idx) => {
-                 const isLocked = lesson.status === 'locked';
+        <div className="grid gap-4 xl:grid-cols-[250px_minmax(0,1fr)] xl:items-start">
+          <FieldIndex children={children} />
+          <CareNetworkLab />
+        </div>
+      </section>
 
-                 return (
-                 <Link 
-                    key={lesson.id}
-                    href={isLocked ? '#' : lesson.href}
-                    className={`
-                        group relative p-8 rounded-2xl border transition-all duration-300 flex flex-col
-                        ${
-                            isLocked
-                            ? 'bg-neutral-900/20 border-neutral-800 cursor-not-allowed opacity-60 grayscale' 
-                            : 'bg-neutral-900/40 border-neutral-800 hover:bg-neutral-900 hover:border-rose-500/30 hover:-translate-y-1 hover:shadow-2xl'}
-                    `}
-                 >
-                    <div className="flex justify-between items-start mb-6">
-                        <div className={`p-3 rounded-xl bg-black border border-neutral-800 group-hover:border-${lesson.color}-500/50 transition-colors`}>
-                            {lesson.icon}
-                        </div>
-                        <div className="text-xs font-black text-neutral-700 font-mono">
-                            HS.{String(idx + 1).padStart(2, '0')}
-                        </div>
-                    </div>
-
-                    <h3 className="text-xl font-bold text-white mb-1 group-hover:text-rose-400 transition-colors">
-                        {lesson.title}
-                    </h3>
-                    <div className="text-[10px] font-bold text-neutral-500 uppercase tracking-wide mb-4">
-                        {lesson.subtitle}
-                    </div>
-                    <p className="text-sm text-neutral-400 leading-relaxed mb-8 flex-1">
-                        {lesson.description}
-                    </p>
-
-                    <div className="pt-6 border-t border-neutral-800 flex items-center justify-between text-xs font-bold uppercase tracking-widest">
-                        {isLocked ? (
-                            <span className="text-neutral-600 flex items-center gap-2"><Lock size={12}/> Locked</span>
-                        ) : (
-                            <span className="text-rose-500 flex items-center gap-2 group-hover:gap-3 transition-all">Enter <ArrowRight size={12}/></span>
-                        )}
-                    </div>
-                 </Link>
-                 );
-             })}
-         </div>
-
-      </div>
-    </main>
+      <section className="mt-8 border-t border-teal-100/[0.09] pt-5">
+        <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_430px] lg:items-end">
+          <div><div className="font-mono text-[11px] font-semibold uppercase tracking-[0.10em] text-emerald-100/52">Health-science guardrails</div><h2 className="mt-2 max-w-4xl text-[clamp(1.8rem,3.2vw,3rem)] font-semibold leading-[0.96] tracking-[-0.048em] text-white">No single profession, measurement, or setting owns the whole picture.</h2></div>
+          <p className="text-[13px] leading-6 text-slate-400/72">Scopes of practice, workflows, resources, access, and professional roles vary across jurisdictions and institutions. This parent maps disciplines and coordination questions, not clinical orders or individualized health advice.</p>
+        </div>
+        <div className="mt-5 grid border-y border-white/[0.07] md:grid-cols-2 xl:grid-cols-4">
+          <Guardrail number="01" title="Person before pathway" text="Care systems should preserve goals, context, language, access needs, daily life, and preferences rather than reducing a person to a service queue." />
+          <Guardrail number="02" title="Roles overlap, scopes differ" text="Collaboration does not erase professional boundaries. Training, licensure, local practice, setting, and task determine who can do what." />
+          <Guardrail number="03" title="Close the loop" text="A referral, result, education plan, or discharge message is not complete merely because it was sent. Responsibility and follow-up need to survive the handoff." />
+          <Guardrail number="04" title="Population and individual differ" text="A population pattern can guide programs and questions without determining what is true or appropriate for a particular person." />
+        </div>
+      </section>
+    </SceneFrame>
   );
+}
+
+function FieldIndex({ children }: { children: readonly CurriculumNode[] }) {
+  return (
+    <Surface variant="open" className="overflow-hidden rounded-[26px] border-teal-100/[0.08]" style={{ background: "rgba(5,17,16,0.025)" }}>
+      <div className="border-b border-white/[0.06] px-3.5 py-3"><div className="font-mono text-[10px] font-semibold uppercase tracking-[0.09em] text-teal-100/48">Fields & professions</div><p className="mt-1 text-[10px] leading-4 text-slate-600">Active routes open now. Planned routes remain visibly planned.</p></div>
+      <div>
+        {children.map((child, index) => {
+          const meta = BRANCH_META[child.id] ?? { icon: Activity, code: `HS${index + 1}`, rgb: "148,163,184" };
+          const Icon = meta.icon;
+          const active = child.status === "active";
+          const content = <><span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border" style={{ color: `rgb(${meta.rgb})`, borderColor: `rgba(${meta.rgb},0.24)` }}><Icon size={12} /></span><span className="min-w-0 flex-1"><span className="block font-mono text-[9px] uppercase tracking-[0.05em]" style={{ color: `rgba(${meta.rgb},0.52)` }}>{meta.code}</span><strong className="mt-0.5 block text-[11px] leading-4 text-white/76">{child.label}</strong></span>{active ? <ArrowRight size={11} className="text-slate-600" /> : <span className="font-mono text-[8px] uppercase text-slate-700">planned</span>}</>;
+          return active ? <Link key={child.id} href={child.href ?? "#"} className="group flex items-center gap-2 border-b border-white/[0.055] px-3 py-2.5 transition last:border-b-0 hover:bg-teal-200/[0.035]">{content}</Link> : <div key={child.id} aria-disabled="true" className="flex items-center gap-2 border-b border-white/[0.055] px-3 py-2.5 last:border-b-0">{content}</div>;
+        })}
+      </div>
+    </Surface>
+  );
+}
+
+function Neighbor({ href, label, note }: { href: string; label: string; note: string }) {
+  return <Link href={href} className="group flex min-h-[68px] flex-col justify-between border border-white/[0.07] bg-black/[0.055] px-3 py-2.5 backdrop-blur-[8px] transition hover:bg-black/[0.11]"><span className="text-[11px] font-semibold text-white/78">{label}</span><span className="flex items-end justify-between gap-2"><span className="text-[9px] leading-3 text-slate-600">{note}</span><ArrowRight size={11} className="text-slate-600 transition group-hover:translate-x-1" /></span></Link>;
+}
+
+function Guardrail({ number, title, text }: { number: string; title: string; text: string }) {
+  return <div className="grid min-h-[130px] grid-cols-[38px_minmax(0,1fr)] gap-2 border-b border-white/[0.06] px-4 py-4 xl:border-r xl:border-b-0 xl:last:border-r-0"><span className="font-mono text-[10px] text-teal-100/35">{number}</span><span><strong className="text-[12px] text-white/80">{title}</strong><span className="mt-2 block text-[11px] leading-5 text-slate-500">{text}</span></span></div>;
 }
