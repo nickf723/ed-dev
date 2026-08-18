@@ -65,7 +65,7 @@ Goal: every major subject parent should be Developed before broad child expansio
 - History: Developed / Parked pending new direction
 - Visual Arts: Developed / Parked pending new direction
 - Music: Developed
-- Literature: Foundation
+- Literature: Developed
 - Religion: Foundation
 - Languages: Foundation
 - Performing Arts: Foundation
@@ -94,14 +94,13 @@ Goal: every major subject parent should be Developed before broad child expansio
 
 Unless new feedback changes priorities, work through fresh parents in this order:
 
-1. Literature
-2. Materials Science
-3. Law
-4. Data Science
-5. Architecture
-6. Religion
-7. Agriculture
-8. Information Science
+1. Materials Science
+2. Law
+3. Data Science
+4. Architecture
+5. Religion
+6. Agriculture
+7. Information Science
 
 The order deliberately hops across domains so visual languages do not collapse into one subject family's habits.
 
@@ -134,6 +133,15 @@ Priority examples:
 - Replaced random sphere points with a recognizable inhabited-world composition: stylized continents, graticules, city lights, slow mobility arcs, and a very slow day/night terminator.
 - Added a planned eight-branch human-geography atlas around a central Site → Local → Regional → Global scale stack.
 - Reframed the demographic widget as normalized teaching profiles rather than assigning stylized shapes directly to demographic-transition stages.
+- Full 378-page Next.js preview build reached READY.
+
+### Literature · Developed
+
+- Preserved the textual atmosphere, circular narrative-pattern explorer, teaching archive, and lexicon.
+- Replaced drifting quotation fragments with a giant open manuscript: prose blocks, verse, dialogue, margin annotation, a slow reading-light drift, and an occasional page-turn shadow.
+- Added an eight-branch table-of-contents navigation around a central close-reading spine.
+- Reframed the hero-journey widget as one optional narrative pattern rather than a universal story law.
+- Removed the modern quotation block and kept the archive focused on a small set of older teaching texts.
 - Full 378-page Next.js preview build reached READY.
 
 ## Phase C: curriculum depth
