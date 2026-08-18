@@ -15,6 +15,7 @@ import { LIBRARY_SCIENCE_CURRICULUM } from "@/lib/curriculum/applied/library-sci
 import { MATERIALS_SCIENCE_CURRICULUM } from "@/lib/curriculum/applied/materials-science";
 import { MEDICINE_CURRICULUM } from "@/lib/curriculum/applied/medicine";
 import { TECHNOLOGY_CURRICULUM } from "@/lib/curriculum/applied/technology";
+import { CULINARY_ARTS_CURRICULUM } from "@/lib/curriculum/humanities/culinary-arts";
 import { CULTURE_CURRICULUM } from "@/lib/curriculum/humanities/culture";
 import { FUTUROLOGY_CURRICULUM } from "@/lib/curriculum/humanities/futurology";
 import { GAMING_CURRICULUM } from "@/lib/curriculum/humanities/gaming";
@@ -88,6 +89,7 @@ export const CURRICULUM_MODULES: readonly CurriculumNode[] = [
   LINGUISTICS_CURRICULUM,
   POLITICAL_SCIENCE_CURRICULUM,
   SOCIOLOGY_CURRICULUM,
+  CULINARY_ARTS_CURRICULUM,
   CULTURE_CURRICULUM,
   FUTUROLOGY_CURRICULUM,
   GAMING_CURRICULUM,
