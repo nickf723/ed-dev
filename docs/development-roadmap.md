@@ -67,7 +67,7 @@ Goal: every major subject parent should be Developed before broad child expansio
 - Music: Developed
 - Literature: Developed
 - Religion: Developed
-- Languages: Foundation
+- Languages: Developed
 - Performing Arts: Foundation
 - Gaming: Foundation
 - Culinary Arts: Foundation
@@ -79,7 +79,7 @@ Goal: every major subject parent should be Developed before broad child expansio
 
 - Applied Sciences root: Developed, readability cleanup still desirable
 - Engineering: Developed
-- Technology: Foundation
+- Technology: Developed
 - Materials Science: Developed
 - Industrial Design: Foundation
 - Architecture: Developed
@@ -94,12 +94,12 @@ Goal: every major subject parent should be Developed before broad child expansio
 
 Unless new feedback changes priorities, work through fresh parents in this order:
 
-1. Languages
-2. Technology
-3. Industrial Design
-4. Medicine
-5. Health Sciences
-6. Business
+1. Industrial Design
+2. Medicine
+3. Health Sciences
+4. Business
+5. Education
+6. Library Science
 
 The order deliberately hops across domains so visual languages do not collapse into one subject family's habits.
 
@@ -118,73 +118,42 @@ Priority examples:
 
 ## Cumulative parent notes
 
-### Engineering · Developed
+### Technology · Developed
 
-- Preserved the blueprint identity and structural stress-test centerpiece.
-- Replaced the generic vibrating mesh with a composed live design-review drawing: moving load, truss stress, dimensions, mechanism detail, and sensor telemetry.
-- Reconciled direct navigation to Mechanical, Civil, Electrical, Software, Aerospace, and Chemical Engineering.
-- Reframed the stress widget around demand, resistance, and safety factor with explicit model boundaries.
+- Repaired a major ontology error: the legacy parent was effectively a duplicate Computer Science page built around Turing machines, sorting algorithms, discrete structures, databases, networks, and machine learning.
+- Preserved the old sorting visualizer as a reusable component but removed it from the Technology parent, where it was academically misplaced.
+- Rebuilt the parent around practical technological systems: power, sensing, computation/control, storage, communication, actuation, interfaces, infrastructure, maintenance, safety, and lifecycle.
+- Replaced random circuit-trace wallpaper with an exploded working-device world showing enclosure, battery and power rail, sensor, processor, memory, radio, actuator, display, ports, thermal path, fasteners, and one slow diagnostic pulse.
+- Added a capability/dependency lab that lets subsystems degrade or fail and shows which practical functions remain available, keeping failure propagation distinct from algorithmic computation.
+- Organized navigation as a service-manual index rather than a Computer Science stack or generic card wall.
 - Full 378-page Next.js preview build reached READY.
 
-### Geography · Developed
+### Systems Science · Developed
 
-- Preserved the globe and population-pyramid identity anchors.
-- Replaced random sphere points with a recognizable inhabited-world composition: stylized continents, graticules, city lights, slow mobility arcs, and a very slow day/night terminator.
-- Added a planned eight-branch human-geography atlas around a central Site → Local → Regional → Global scale stack.
-- Reframed the demographic widget as normalized teaching profiles rather than assigning stylized shapes directly to demographic-transition stages.
+- Preserved both active nonlinear-dynamics route families, Conway's Game of Life, and the existing feedback-loop concept while separating feedback from local-rule emergence.
+- Replaced the generic red node background with a feedback control room containing explicit system boundary, two stocks, inflow/transfer/outflow, valve, delay, sensor, comparator, setpoint, disturbance, reinforcing path, and balancing path; one slow pulse traces the balancing loop.
+- Added eight direct branches covering general systems theory, feedback/cybernetics, system dynamics, network science, agent/cellular models, complexity/emergence, chaos/nonlinear dynamics, and resilience/adaptation.
+- Rebuilt the feedback widget as a discrete teaching model comparing reinforcing and balancing recurrences with adjustable strength, target, and response delay, including a live trajectory and warnings about overshoot and sign terminology.
+- Rebuilt Game of Life as a responsive finite-grid emergence lab with deterministic glider, oscillator, and dense seeds, Step/Run/Reset controls, editable cells, population and generation counts, and an explicit finite-boundary caveat.
 - Full 378-page Next.js preview build reached READY.
 
-### Literature · Developed
+### Languages · Developed
 
-- Preserved the textual atmosphere, circular narrative-pattern explorer, teaching archive, and lexicon.
-- Replaced drifting quotation fragments with a giant open manuscript: prose blocks, verse, dialogue, margin annotation, a slow reading-light drift, and an occasional page-turn shadow.
-- Added an eight-branch table-of-contents navigation around a central close-reading spine.
-- Reframed the hero-journey widget as one optional narrative pattern rather than a universal story law.
-- Removed the modern quotation block and kept the archive focused on a small set of older teaching texts.
+- Repaired the old domain collision with Social Science Linguistics: the Humanities parent now focuses on learning, using, reading, writing, translating, inheriting, revitalizing, and creating languages instead of duplicating linguistic structure as its own curriculum.
+- Replaced floating multilingual glyph wallpaper with a translation desk containing facing source/target pages, alignment threads, glossary margin, writing-direction rulers, and one slow reading light.
+- Preserved the Rosetta-style comparison idea but reframed it around conventional expressions, script, reading direction, transliteration where useful, and explicit context/register limits rather than treating phrases as universal one-to-one equivalents.
+- Replaced the external live translation API with an inspectable teaching lab about translation choices, ambiguity, register, word order, and context so the lesson does not depend on opaque third-party output.
+- Added direct branches for language learning/practice, translation/interpreting, writing systems/literacy, language families/history, multilingual communication, language documentation/revitalization, constructed languages, and classical/historical languages.
 - Full 378-page Next.js preview build reached READY.
 
-### Materials Science · Developed
+### Information Science · Developed
 
-- Built the previously empty parent around one microscope-scale environmental idea rather than generic decoration.
-- The background contains four explicitly separate schematic windows: grains and phases, lattice defects, polymer chains and crosslinks, and composite fibers in a matrix, crossed by one slow microscope scan.
-- Added an eight-branch materials atlas around the Processing → Structure → Properties → Performance relationship.
-- Added a separate normalized stress-strain instrument comparing brittle-like, ductile-like, and elastomer-like teaching curves with explicit data boundaries.
-- Full 378-page Next.js preview build reached READY.
-
-### Law · Developed
-
-- Preserved the scales-of-justice and precedent-sandbox identity, then moved them into a stronger courthouse-of-authority composition.
-- The background now separates case flow upward through appeal from legal authority moving downward through a schematic three-tier federal court structure, with one very slow moving case file and precedent pulse.
-- Added eight planned direct branches covering jurisprudence, constitutional/public law, criminal law, civil procedure/remedies, private law, administrative/regulatory law, international/comparative law, and courts/evidence/legal method.
-- Rebuilt the precedent sandbox around the simplified U.S. federal hierarchy and explicitly distinguished binding from persuasive authority and appeal from precedent.
-- Validation caught a strict-TypeScript defect in the courthouse column interpolation; it was repaired on `studio` before graduation.
-- Full 378-page Next.js preview build reached READY on the corrected tree.
-
-### Data Science · Developed
-
-- Preserved the K-means laboratory and left the unused distribution widget intact for future reuse.
-- Replaced generic neural-node wallpaper with a provenance workbench that visibly moves from a raw table with missingness and flags, through a transformed feature space, into a model/evaluation view; one slow audit scan crosses the full scene.
-- Added eight planned direct branches spanning collection/wrangling, exploration, statistical inference, machine learning, data engineering, visualization, causal inference, and responsible evaluation.
-- Rebuilt K-means around a deterministic sample, selectable k, explicit assign/recenter steps, the within-cluster squared-distance objective, and strong warnings against treating cluster output as ground truth.
-- The parent now distinguishes description, prediction, and causation instead of treating data science as a synonym for machine learning.
-- Full 378-page Next.js preview build reached READY.
-
-### Architecture · Developed
-
-- Preserved the blueprint atmosphere and the interactive Vitruvian triad instead of converting Architecture into another Engineering page.
-- The background is now a full building section with floors, rooms, stairs, a courtyard void, site contours, dimensions, plan inset, envelope, tree, and one very slow daylight study.
-- Added eight direct branches covering design studio, building technology, structures, environmental systems, urban/site design, history/theory, representation/fabrication, and professional practice/codes/accessibility.
-- Rebuilt the Vitruvian interaction as three physical-looking flip slabs that treat firmitas, utilitas, and venustas as a historical question set, while explicitly noting modern obligations beyond the triad.
-- Added a Body → Room → Building → Site → City scale spine and an integration desk for space, structure, environment, construction, and people.
-- Full 378-page Next.js preview build reached READY on the complete finished tree.
-
-### Religion · Developed
-
-- Preserved Mythology and the existing Greek Mythology descendant while replacing reductive parent-level grouping by a few supposed world-religion paradigms.
-- Replaced the rotating generic sacred-geometry background with an interpretive astrolabe whose rings represent Text, Practice, Community, Place, History, Experience, and Ideas; source cards feed the instrument and one slow reading beam crosses the scene.
-- Added eight direct study branches spanning methods, traditions/communities, texts, ritual/practice, material religion/place, society/politics, theology/philosophy, and mythology/sacred narrative.
-- Replaced the old monotheism/polytheism/pantheism/Dharmic diagram with a comparative research instrument that holds one fictional fieldnote packet fixed while the learner switches analytical lenses and sees new questions, evidence, and method cautions.
-- Added an explicit Source → Context → Interpretation → Corroboration → Claim spine and reference boundaries distinguishing religious studies, theology, tradition, and comparison.
+- Preserved the Binary Ocean identity, entropy instrument, vector-search laboratory, and existing active Taxonomy & Ontology child while separating their distinct learner questions.
+- Rebuilt the background as an information harbor: encoded symbol streams flow through a Representation / Schema / Metadata gate into indexed record shelves, while one slow query beam traces a retrieval path.
+- Added nine direct branches spanning information theory/coding, encoding/representation, retrieval/search, taxonomy/ontology, metadata/semantics, knowledge graphs, archives/preservation, information behavior, and bibliometrics/science of science.
+- Rebuilt the entropy instrument around empirical symbol frequencies, Shannon entropy, observed alphabet size, and actual UTF-8 storage bits, with explicit warnings that H × symbol count is an idealized frequency-model quantity rather than actual compressed file size.
+- Rebuilt vector search as an explicitly synthetic 2D representation space with preset queries, exact Euclidean neighbor ranking, and strong caveats that embedding distance does not equal truth, fairness, usefulness, or human relevance.
+- Reorganized the parent as catalog records around a Signal → Representation → Description → Organization → Retrieval & use lifecycle, with entropy and retrieval remaining separate instruments.
 - Full 378-page Next.js preview build reached READY.
 
 ### Agriculture · Developed
@@ -197,23 +166,73 @@ Priority examples:
 - Validation caught an invalid Lucide icon export; it was repaired on `studio` before graduation.
 - Full 378-page Next.js preview build reached READY on the corrected tree.
 
-### Information Science · Developed
+### Religion · Developed
 
-- Preserved the Binary Ocean identity, entropy instrument, vector-search laboratory, and existing active Taxonomy & Ontology child while separating their distinct learner questions.
-- Rebuilt the background as an information harbor: encoded symbol streams flow through a Representation / Schema / Metadata gate into indexed record shelves, while one slow query beam traces a retrieval path.
-- Added nine direct branches spanning information theory/coding, encoding/representation, retrieval/search, taxonomy/ontology, metadata/semantics, knowledge graphs, archives/preservation, information behavior, and bibliometrics/science of science.
-- Rebuilt the entropy instrument around empirical symbol frequencies, Shannon entropy, observed alphabet size, and actual UTF-8 storage bits, with explicit warnings that H × symbol count is an idealized frequency-model quantity rather than actual compressed file size.
-- Rebuilt vector search as an explicitly synthetic 2D representation space with preset queries, exact Euclidean neighbor ranking, and strong caveats that embedding distance does not equal truth, fairness, usefulness, or human relevance.
-- Reorganized the parent as catalog records around a Signal → Representation → Description → Organization → Retrieval & use lifecycle, with entropy and retrieval remaining separate instruments.
+- Preserved Mythology and the existing Greek Mythology descendant while replacing reductive parent-level grouping by a few supposed world-religion paradigms.
+- Replaced the rotating generic sacred-geometry background with an interpretive astrolabe whose rings represent Text, Practice, Community, Place, History, Experience, and Ideas; source cards feed the instrument and one slow reading beam crosses the scene.
+- Added eight direct study branches spanning methods, traditions/communities, texts, ritual/practice, material religion/place, society/politics, theology/philosophy, and mythology/sacred narrative.
+- Replaced the old monotheism/polytheism/pantheism/Dharmic diagram with a comparative research instrument that holds one fictional fieldnote packet fixed while the learner switches analytical lenses and sees new questions, evidence, and method cautions.
+- Added an explicit Source → Context → Interpretation → Corroboration → Claim spine and reference boundaries distinguishing religious studies, theology, tradition, and comparison.
 - Full 378-page Next.js preview build reached READY.
 
-### Systems Science · Developed
+### Architecture · Developed
 
-- Preserved both active nonlinear-dynamics route families, Conway's Game of Life, and the existing feedback-loop concept while separating feedback from local-rule emergence.
-- Replaced the generic red node background with a feedback control room containing explicit system boundary, two stocks, inflow/transfer/outflow, valve, delay, sensor, comparator, setpoint, disturbance, reinforcing path, and balancing path; one slow pulse traces the balancing loop.
-- Added eight direct branches covering general systems theory, feedback/cybernetics, system dynamics, network science, agent/cellular models, complexity/emergence, chaos/nonlinear dynamics, and resilience/adaptation.
-- Rebuilt the feedback widget as a discrete teaching model comparing reinforcing and balancing recurrences with adjustable strength, target, and response delay, including a live trajectory and warnings about overshoot and sign terminology.
-- Rebuilt Game of Life as a responsive finite-grid emergence lab with deterministic glider, oscillator, and dense seeds, Step/Run/Reset controls, editable cells, population and generation counts, and an explicit finite-boundary caveat.
+- Preserved the blueprint atmosphere and the interactive Vitruvian triad instead of converting Architecture into another Engineering page.
+- The background is now a full building section with floors, rooms, stairs, a courtyard void, site contours, dimensions, plan inset, envelope, tree, and one very slow daylight study.
+- Added eight direct branches covering design studio, building technology, structures, environmental systems, urban/site design, history/theory, representation/fabrication, and professional practice/codes/accessibility.
+- Rebuilt the Vitruvian interaction as three physical-looking flip slabs that treat firmitas, utilitas, and venustas as a historical question set, while explicitly noting modern obligations beyond the triad.
+- Added a Body → Room → Building → Site → City scale spine and an integration desk for space, structure, environment, construction, and people.
+- Full 378-page Next.js preview build reached READY on the complete finished tree.
+
+### Data Science · Developed
+
+- Preserved the K-means laboratory and left the unused distribution widget intact for future reuse.
+- Replaced generic neural-node wallpaper with a provenance workbench that visibly moves from a raw table with missingness and flags, through a transformed feature space, into a model/evaluation view; one slow audit scan crosses the full scene.
+- Added eight planned direct branches spanning collection/wrangling, exploration, statistical inference, machine learning, data engineering, visualization, causal inference, and responsible evaluation.
+- Rebuilt K-means around a deterministic sample, selectable k, explicit assign/recenter steps, the within-cluster squared-distance objective, and strong warnings against treating cluster output as ground truth.
+- The parent now distinguishes description, prediction, and causation instead of treating data science as a synonym for machine learning.
+- Full 378-page Next.js preview build reached READY.
+
+### Law · Developed
+
+- Preserved the scales-of-justice and precedent-sandbox identity, then moved them into a stronger courthouse-of-authority composition.
+- The background now separates case flow upward through appeal from legal authority moving downward through a schematic three-tier federal court structure, with one very slow moving case file and precedent pulse.
+- Added eight planned direct branches covering jurisprudence, constitutional/public law, criminal law, civil procedure/remedies, private law, administrative/regulatory law, international/comparative law, and courts/evidence/legal method.
+- Rebuilt the precedent sandbox around the simplified U.S. federal hierarchy and explicitly distinguished binding from persuasive authority and appeal from precedent.
+- Validation caught a strict-TypeScript defect in the courthouse column interpolation; it was repaired on `studio` before graduation.
+- Full 378-page Next.js preview build reached READY on the corrected tree.
+
+### Materials Science · Developed
+
+- Built the previously empty parent around one microscope-scale environmental idea rather than generic decoration.
+- The background contains four explicitly separate schematic windows: grains and phases, lattice defects, polymer chains and crosslinks, and composite fibers in a matrix, crossed by one slow microscope scan.
+- Added an eight-branch materials atlas around the Processing → Structure → Properties → Performance relationship.
+- Added a separate normalized stress-strain instrument comparing brittle-like, ductile-like, and elastomer-like teaching curves with explicit data boundaries.
+- Full 378-page Next.js preview build reached READY.
+
+### Literature · Developed
+
+- Preserved the textual atmosphere, circular narrative-pattern explorer, teaching archive, and lexicon.
+- Replaced drifting quotation fragments with a giant open manuscript: prose blocks, verse, dialogue, margin annotation, a slow reading-light drift, and an occasional page-turn shadow.
+- Added an eight-branch table-of-contents navigation around a central close-reading spine.
+- Reframed the hero-journey widget as one optional narrative pattern rather than a universal story law.
+- Removed the modern quotation block and kept the archive focused on a small set of older teaching texts.
+- Full 378-page Next.js preview build reached READY.
+
+### Geography · Developed
+
+- Preserved the globe and population-pyramid identity anchors.
+- Replaced random sphere points with a recognizable inhabited-world composition: stylized continents, graticules, city lights, slow mobility arcs, and a very slow day/night terminator.
+- Added a planned eight-branch human-geography atlas around a central Site → Local → Regional → Global scale stack.
+- Reframed the demographic widget as normalized teaching profiles rather than assigning stylized shapes directly to demographic-transition stages.
+- Full 378-page Next.js preview build reached READY.
+
+### Engineering · Developed
+
+- Preserved the blueprint identity and structural stress-test centerpiece.
+- Replaced the generic vibrating mesh with a composed live design-review drawing: moving load, truss stress, dimensions, mechanism detail, and sensor telemetry.
+- Reconciled direct navigation to Mechanical, Civil, Electrical, Software, Aerospace, and Chemical Engineering.
+- Reframed the stress widget around demand, resistance, and safety factor with explicit model boundaries.
 - Full 378-page Next.js preview build reached READY.
 
 ## Phase C: curriculum depth
