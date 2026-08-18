@@ -94,7 +94,7 @@ const READING_MOVES = [
   { label: "Argue", text: "State a claim that can be examined, supported, complicated, or challenged rather than merely announced." },
 ] as const;
 
-const ARCHIVE: BookData[] = [
+const ARCHIVE: readonly BookData[] = [
   {
     id: "great-gatsby",
     title: "The Great Gatsby",
