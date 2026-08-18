@@ -66,7 +66,7 @@ Goal: every major subject parent should be Developed before broad child expansio
 - Visual Arts: Developed / Parked pending new direction
 - Music: Developed
 - Literature: Developed
-- Religion: Foundation
+- Religion: Developed
 - Languages: Foundation
 - Performing Arts: Foundation
 - Gaming: Foundation
@@ -94,12 +94,12 @@ Goal: every major subject parent should be Developed before broad child expansio
 
 Unless new feedback changes priorities, work through fresh parents in this order:
 
-1. Religion
-2. Agriculture
-3. Information Science
-4. Systems Science
-5. Languages
-6. Technology
+1. Agriculture
+2. Information Science
+3. Systems Science
+4. Languages
+5. Technology
+6. Industrial Design
 
 The order deliberately hops across domains so visual languages do not collapse into one subject family's habits.
 
@@ -177,6 +177,15 @@ Priority examples:
 - Rebuilt the Vitruvian interaction as three physical-looking flip slabs that treat firmitas, utilitas, and venustas as a historical question set, while explicitly noting modern obligations beyond the triad.
 - Added a Body → Room → Building → Site → City scale spine and an integration desk for space, structure, environment, construction, and people.
 - Full 378-page Next.js preview build reached READY on the complete finished tree.
+
+### Religion · Developed
+
+- Preserved Mythology and the existing Greek Mythology descendant while replacing reductive parent-level grouping by a few supposed world-religion paradigms.
+- Replaced the rotating generic sacred-geometry background with an interpretive astrolabe whose rings represent Text, Practice, Community, Place, History, Experience, and Ideas; source cards feed the instrument and one slow reading beam crosses the scene.
+- Added eight direct study branches spanning methods, traditions/communities, texts, ritual/practice, material religion/place, society/politics, theology/philosophy, and mythology/sacred narrative.
+- Replaced the old monotheism/polytheism/pantheism/Dharmic diagram with a comparative research instrument that holds one fictional fieldnote packet fixed while the learner switches analytical lenses and sees new questions, evidence, and method cautions.
+- Added an explicit Source → Context → Interpretation → Corroboration → Claim spine and reference boundaries distinguishing religious studies, theology, tradition, and comparison.
+- Full 378-page Next.js preview build reached READY.
 
 ## Phase C: curriculum depth
 
