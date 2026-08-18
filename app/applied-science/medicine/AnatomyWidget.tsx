@@ -1,12 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { Activity, Bone, Brain, Heart, Lungs, Shield } from "lucide-react";
+import { Activity, Bone, Brain, Heart, Shield, Wind } from "lucide-react";
 
 const LAYERS = [
   { id: "skeletal", label: "Skeletal", icon: Bone, rgb: "226,232,240", role: "support · leverage · protection", question: "What structures bear load, transmit force, protect organs, and provide attachment points?" },
   { id: "circulatory", label: "Cardiovascular", icon: Heart, rgb: "248,113,113", role: "pressure · flow · exchange", question: "How are oxygen, nutrients, heat, hormones, and waste moved between tissues?" },
-  { id: "respiratory", label: "Respiratory", icon: Lungs, rgb: "125,211,252", role: "ventilation · diffusion · regulation", question: "How do airflow, gas exchange, mechanics, and control work together across lungs and circulation?" },
+  { id: "respiratory", label: "Respiratory", icon: Wind, rgb: "125,211,252", role: "ventilation · diffusion · regulation", question: "How do airflow, gas exchange, mechanics, and control work together across lungs and circulation?" },
   { id: "nervous", label: "Nervous", icon: Brain, rgb: "103,232,249", role: "sensing · integration · control", question: "How are signals detected, transmitted, integrated, and converted into coordinated responses?" },
   { id: "immune", label: "Immune", icon: Shield, rgb: "192,132,252", role: "recognition · response · memory", question: "How does the body distinguish threats, coordinate defense, limit damage, and adapt after exposure?" },
 ] as const;
