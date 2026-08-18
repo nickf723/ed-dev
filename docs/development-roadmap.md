@@ -35,7 +35,7 @@ Goal: every major subject parent should be Developed before broad child expansio
 - Mathematics: Developed / continue preserving existing hierarchy
 - Logic: Developed
 - Computer Science: Developed
-- Systems Science: Foundation
+- Systems Science: Developed
 - Data Science: Developed
 - Information Science: Developed
 
@@ -94,12 +94,12 @@ Goal: every major subject parent should be Developed before broad child expansio
 
 Unless new feedback changes priorities, work through fresh parents in this order:
 
-1. Systems Science
-2. Languages
-3. Technology
-4. Industrial Design
-5. Medicine
-6. Health Sciences
+1. Languages
+2. Technology
+3. Industrial Design
+4. Medicine
+5. Health Sciences
+6. Business
 
 The order deliberately hops across domains so visual languages do not collapse into one subject family's habits.
 
@@ -205,6 +205,15 @@ Priority examples:
 - Rebuilt the entropy instrument around empirical symbol frequencies, Shannon entropy, observed alphabet size, and actual UTF-8 storage bits, with explicit warnings that H × symbol count is an idealized frequency-model quantity rather than actual compressed file size.
 - Rebuilt vector search as an explicitly synthetic 2D representation space with preset queries, exact Euclidean neighbor ranking, and strong caveats that embedding distance does not equal truth, fairness, usefulness, or human relevance.
 - Reorganized the parent as catalog records around a Signal → Representation → Description → Organization → Retrieval & use lifecycle, with entropy and retrieval remaining separate instruments.
+- Full 378-page Next.js preview build reached READY.
+
+### Systems Science · Developed
+
+- Preserved both active nonlinear-dynamics route families, Conway's Game of Life, and the existing feedback-loop concept while separating feedback from local-rule emergence.
+- Replaced the generic red node background with a feedback control room containing explicit system boundary, two stocks, inflow/transfer/outflow, valve, delay, sensor, comparator, setpoint, disturbance, reinforcing path, and balancing path; one slow pulse traces the balancing loop.
+- Added eight direct branches covering general systems theory, feedback/cybernetics, system dynamics, network science, agent/cellular models, complexity/emergence, chaos/nonlinear dynamics, and resilience/adaptation.
+- Rebuilt the feedback widget as a discrete teaching model comparing reinforcing and balancing recurrences with adjustable strength, target, and response delay, including a live trajectory and warnings about overshoot and sign terminology.
+- Rebuilt Game of Life as a responsive finite-grid emergence lab with deterministic glider, oscillator, and dense seeds, Step/Run/Reset controls, editable cells, population and generation counts, and an explicit finite-boundary caveat.
 - Full 378-page Next.js preview build reached READY.
 
 ## Phase C: curriculum depth
