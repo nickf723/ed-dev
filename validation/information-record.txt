@@ -1,0 +1,1 @@
+Validation trigger for Information Science record inspector.
