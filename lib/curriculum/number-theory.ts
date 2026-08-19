@@ -33,7 +33,6 @@ export const NUMBER_THEORY_CURRICULUM: CurriculumNode = {
       "Primes & Divisibility",
       "/formal-science/mathematics/number-theory/primes",
       "Prime numbers, divisibility, greatest common divisors, unique factorization, prime distribution, and algorithms for arithmetic structure.",
-      "placeholder",
     ),
     branch(
       "formal.mathematics.number-theory.modular",
