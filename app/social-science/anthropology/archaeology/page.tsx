@@ -133,7 +133,7 @@ export default function ArchaeologyPage() {
               <div key={label} className="relative overflow-hidden rounded-[15px] border border-white/[0.05] bg-white/[0.014] p-3">
                 <div className="font-mono text-[9px] font-semibold text-amber-300/45">{String(index + 1).padStart(2, "0")}</div>
                 <div className="mt-2 text-[13px] font-semibold text-stone-200">{label}</div>
-                <div className="mt-1 text-[10px] leading-4 text-stone-550">{note}</div>
+                <div className="mt-1 text-[10px] leading-4 text-stone-500">{note}</div>
               </div>
             ))}
           </div>
