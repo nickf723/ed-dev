@@ -1,4 +1,5 @@
 "use client";
+
 import { useEffect, useRef } from "react";
 
 export default function DigBackground() {
@@ -10,159 +11,236 @@ export default function DigBackground() {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    let w = (canvas.width = window.innerWidth);
-    let h = (canvas.height = window.innerHeight);
-    let isDrawing = false;
+    let frame = 0;
+    let width = 0;
+    let height = 0;
+    let animationId = 0;
 
-    // 1. Define Artifacts (Hidden underneath)
-    type Artifact = { x: number; y: number; type: 'bone' | 'pot' | 'skull'; rotation: number; size: number };
-    const artifacts: Artifact[] = [];
-    
-    // Seed artifacts
-    for(let i=0; i<15; i++) {
-        artifacts.push({
-            x: Math.random() * w,
-            y: h/3 + Math.random() * (h * 0.6), // Mostly lower down
-            type: Math.random() > 0.6 ? 'bone' : Math.random() > 0.5 ? 'pot' : 'skull',
-            rotation: Math.random() * Math.PI * 2,
-            size: 20 + Math.random() * 40
-        });
-    }
+    const resize = () => {
+      const ratio = Math.min(window.devicePixelRatio || 1, 2);
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = Math.floor(width * ratio);
+      canvas.height = Math.floor(height * ratio);
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
+      ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+    };
 
-    // 2. Draw the "Hidden" Layer (Permanent)
-    // We actually need a separate off-screen canvas for the dirt to handle "erasing" properly 
-    // without erasing the background color of the page.
-    // For simplicity here, we'll draw the artifacts on the main canvas, 
-    // then draw dirt ON TOP. Erasing the dirt reveals the artifacts.
+    const line = (points: Array<[number, number]>, stroke: string, lineWidth = 1) => {
+      if (points.length < 2) return;
+      ctx.beginPath();
+      ctx.moveTo(points[0][0], points[0][1]);
+      for (let i = 1; i < points.length; i += 1) ctx.lineTo(points[i][0], points[i][1]);
+      ctx.strokeStyle = stroke;
+      ctx.lineWidth = lineWidth;
+      ctx.stroke();
+    };
 
-    // Dirt Layers Config
-    const layers = [
-        { y: 0, color: "#292524" },   // Topsoil (Stone-800)
-        { y: h*0.2, color: "#451a03" }, // Clay (Amber-950)
-        { y: h*0.5, color: "#27272a" }, // Bedrock (Zinc-800)
-    ];
-
-    // Initialize Dirt State
-    // We'll use `globalCompositeOperation` to erase.
-    // This requires the dirt to be drawn once, then we just update the "holes".
-    
-    // Create an offscreen canvas for the dirt mask
-    const dirtCanvas = document.createElement('canvas');
-    dirtCanvas.width = w;
-    dirtCanvas.height = h;
-    const dCtx = dirtCanvas.getContext('2d');
-    if (!dCtx) return;
-
-    // Fill Dirt Layers
-    layers.forEach((l, i) => {
-        dCtx.fillStyle = l.color;
-        const nextY = layers[i+1] ? layers[i+1].y : h;
-        dCtx.fillRect(0, l.y, w, nextY - l.y);
-        
-        // Add texture/noise to dirt
-        for(let j=0; j<500; j++) {
-            dCtx.fillStyle = "rgba(0,0,0,0.1)";
-            dCtx.beginPath();
-            dCtx.arc(Math.random()*w, l.y + Math.random()*(nextY-l.y), 2, 0, Math.PI*2);
-            dCtx.fill();
-        }
-    });
+    const artifact = (x: number, y: number, label: string, tone: string) => {
+      ctx.beginPath();
+      ctx.arc(x, y, 5, 0, Math.PI * 2);
+      ctx.fillStyle = tone;
+      ctx.fill();
+      ctx.strokeStyle = "rgba(255,248,235,0.55)";
+      ctx.lineWidth = 1;
+      ctx.stroke();
+      ctx.fillStyle = "rgba(244, 236, 220, 0.55)";
+      ctx.font = "10px ui-monospace, SFMono-Regular, Menlo, monospace";
+      ctx.fillText(label, x + 9, y + 3);
+    };
 
     const draw = () => {
-        // Clear Main Screen
-        ctx.clearRect(0, 0, w, h);
-        
-        // 1. Draw Background (The "Hole") - Dark void or underlying rock
-        ctx.fillStyle = "#0c0a09"; 
-        ctx.fillRect(0, 0, w, h);
+      frame += 1;
+      ctx.clearRect(0, 0, width, height);
 
-        // 2. Draw Artifacts (They sit inside the hole)
-        artifacts.forEach(a => {
-            ctx.save();
-            ctx.translate(a.x, a.y);
-            ctx.rotate(a.rotation);
-            ctx.fillStyle = "#d6d3d1"; // Stone-300 (Bone color)
-            
-            if (a.type === 'bone') {
-                ctx.beginPath();
-                ctx.roundRect(-a.size/2, -5, a.size, 10, 5);
-                ctx.fill();
-                ctx.beginPath();
-                ctx.arc(-a.size/2, -5, 8, 0, Math.PI*2);
-                ctx.arc(-a.size/2, 5, 8, 0, Math.PI*2);
-                ctx.arc(a.size/2, -5, 8, 0, Math.PI*2);
-                ctx.arc(a.size/2, 5, 8, 0, Math.PI*2);
-                ctx.fill();
-            } else if (a.type === 'pot') {
-                ctx.fillStyle = "#ea580c"; // Orange-600 (Terracotta)
-                ctx.beginPath();
-                ctx.arc(0, 0, a.size/2, 0, Math.PI, false); // Bowl
-                ctx.fill();
-            } else {
-                 // Skull (Simple)
-                 ctx.beginPath();
-                 ctx.arc(0, -5, a.size/2, 0, Math.PI*2);
-                 ctx.fill();
-                 ctx.fillRect(-a.size/3, 5, a.size/1.5, 10);
-            }
-            ctx.restore();
-        });
+      const horizon = Math.max(150, height * 0.2);
+      const trenchTop = Math.max(270, height * 0.39);
+      const trenchBottom = height + 30;
 
-        // 3. Draw Dirt Overlay
-        ctx.drawImage(dirtCanvas, 0, 0);
-        
-        // 4. Instructions overlay (fade out?)
-        // (Handled in React UI)
+      const sky = ctx.createLinearGradient(0, 0, 0, height);
+      sky.addColorStop(0, "#090806");
+      sky.addColorStop(0.46, "#15100b");
+      sky.addColorStop(1, "#080706");
+      ctx.fillStyle = sky;
+      ctx.fillRect(0, 0, width, height);
+
+      // Field grid and datum line, inherited from the parent excavation language.
+      ctx.strokeStyle = "rgba(245, 190, 95, 0.085)";
+      ctx.lineWidth = 1;
+      for (let x = 30; x < width; x += 92) {
+        ctx.beginPath();
+        ctx.moveTo(x, horizon);
+        ctx.lineTo(x, height);
+        ctx.stroke();
+      }
+      for (let y = horizon; y < height; y += 92) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(width, y);
+        ctx.stroke();
+      }
+
+      ctx.setLineDash([8, 7]);
+      line(
+        [
+          [0, trenchTop - 24],
+          [width, trenchTop - 24],
+        ],
+        "rgba(251, 191, 36, 0.28)",
+      );
+      ctx.setLineDash([]);
+      ctx.fillStyle = "rgba(251, 191, 36, 0.38)";
+      ctx.font = "10px ui-monospace, SFMono-Regular, Menlo, monospace";
+      ctx.fillText("SITE DATUM", 24, trenchTop - 33);
+
+      // Open trench profile. Interfaces intentionally undulate so they read as deposits, not stacked cards.
+      const profile = [
+        {
+          color: "#3a3025",
+          points: [
+            [0, trenchTop],
+            [width * 0.2, trenchTop + 8],
+            [width * 0.42, trenchTop - 4],
+            [width * 0.67, trenchTop + 14],
+            [width, trenchTop + 3],
+          ] as Array<[number, number]>,
+        },
+        {
+          color: "#5b3923",
+          points: [
+            [0, trenchTop + 112],
+            [width * 0.18, trenchTop + 124],
+            [width * 0.38, trenchTop + 103],
+            [width * 0.63, trenchTop + 135],
+            [width, trenchTop + 116],
+          ] as Array<[number, number]>,
+        },
+        {
+          color: "#3c332f",
+          points: [
+            [0, trenchTop + 232],
+            [width * 0.24, trenchTop + 214],
+            [width * 0.47, trenchTop + 248],
+            [width * 0.72, trenchTop + 224],
+            [width, trenchTop + 244],
+          ] as Array<[number, number]>,
+        },
+      ];
+
+      const boundaries = [
+        profile[0].points,
+        profile[1].points,
+        profile[2].points,
+        [
+          [0, trenchBottom],
+          [width, trenchBottom],
+        ] as Array<[number, number]>,
+      ];
+
+      for (let i = 0; i < 3; i += 1) {
+        const top = boundaries[i];
+        const bottom = boundaries[i + 1];
+        ctx.beginPath();
+        ctx.moveTo(top[0][0], top[0][1]);
+        for (let p = 1; p < top.length; p += 1) ctx.lineTo(top[p][0], top[p][1]);
+        for (let p = bottom.length - 1; p >= 0; p -= 1) ctx.lineTo(bottom[p][0], bottom[p][1]);
+        ctx.closePath();
+        ctx.fillStyle = profile[i].color;
+        ctx.fill();
+        line(top, "rgba(255,239,213,0.16)", 1.2);
+      }
+
+      // A cut feature interrupts earlier deposits. The shape teaches context without any fake date labels.
+      const featureX = width * 0.73;
+      ctx.beginPath();
+      ctx.moveTo(featureX - 78, trenchTop + 2);
+      ctx.bezierCurveTo(featureX - 70, trenchTop + 92, featureX - 52, trenchTop + 165, featureX - 22, trenchTop + 222);
+      ctx.bezierCurveTo(featureX + 28, trenchTop + 245, featureX + 72, trenchTop + 154, featureX + 82, trenchTop + 8);
+      ctx.closePath();
+      ctx.fillStyle = "rgba(34, 28, 24, 0.92)";
+      ctx.fill();
+      ctx.strokeStyle = "rgba(251, 191, 36, 0.34)";
+      ctx.lineWidth = 1.4;
+      ctx.stroke();
+      ctx.fillStyle = "rgba(251, 191, 36, 0.48)";
+      ctx.fillText("CUT / FILL", featureX - 31, trenchTop + 70);
+
+      // Posthole and compact feature markers.
+      ctx.beginPath();
+      ctx.ellipse(width * 0.26, trenchTop + 174, 18, 54, 0.08, 0, Math.PI * 2);
+      ctx.fillStyle = "rgba(27, 23, 20, 0.9)";
+      ctx.fill();
+      ctx.strokeStyle = "rgba(244, 236, 220, 0.25)";
+      ctx.stroke();
+
+      artifact(width * 0.34, trenchTop + 79, "A17", "#c9793f");
+      artifact(width * 0.52, trenchTop + 165, "A23", "#b8aa91");
+      artifact(width * 0.61, trenchTop + 274, "A31", "#9da28d");
+      artifact(width * 0.78, trenchTop + 148, "S04", "#d5bd75");
+
+      // Profile annotations and sample tags.
+      const labels = [
+        ["CONTEXT 101", trenchTop + 52],
+        ["CONTEXT 117", trenchTop + 155],
+        ["CONTEXT 126", trenchTop + 270],
+      ] as const;
+      labels.forEach(([label, y]) => {
+        ctx.fillStyle = "rgba(241, 227, 205, 0.42)";
+        ctx.fillText(label, 26, y);
+      });
+
+      // North arrow and scale bar stay quiet but readable in the open world.
+      ctx.save();
+      ctx.translate(width - 72, horizon + 54);
+      ctx.strokeStyle = "rgba(245, 190, 95, 0.5)";
+      ctx.fillStyle = "rgba(245, 190, 95, 0.58)";
+      ctx.lineWidth = 1.4;
+      ctx.beginPath();
+      ctx.moveTo(0, 20);
+      ctx.lineTo(0, -20);
+      ctx.lineTo(-5, -10);
+      ctx.moveTo(0, -20);
+      ctx.lineTo(5, -10);
+      ctx.stroke();
+      ctx.fillText("N", -3, -28);
+      ctx.restore();
+
+      const scaleY = height - 42;
+      ctx.fillStyle = "rgba(241, 227, 205, 0.42)";
+      ctx.fillText("1 m", width - 118, scaleY - 8);
+      for (let i = 0; i < 4; i += 1) {
+        ctx.fillStyle = i % 2 === 0 ? "rgba(241,227,205,0.5)" : "rgba(20,16,13,0.72)";
+        ctx.fillRect(width - 134 + i * 24, scaleY, 24, 7);
+      }
+
+      // One slow raking light. Motion is deliberately subtle so it never competes with the foreground lab.
+      const sweep = ((frame * 0.12) % (width + 360)) - 180;
+      const light = ctx.createLinearGradient(sweep - 150, 0, sweep + 150, 0);
+      light.addColorStop(0, "rgba(255, 220, 160, 0)");
+      light.addColorStop(0.5, "rgba(255, 220, 160, 0.035)");
+      light.addColorStop(1, "rgba(255, 220, 160, 0)");
+      ctx.fillStyle = light;
+      ctx.fillRect(0, horizon, width, height - horizon);
+
+      const vignette = ctx.createRadialGradient(width * 0.5, height * 0.48, height * 0.18, width * 0.5, height * 0.5, Math.max(width, height) * 0.78);
+      vignette.addColorStop(0, "rgba(0,0,0,0)");
+      vignette.addColorStop(1, "rgba(0,0,0,0.62)");
+      ctx.fillStyle = vignette;
+      ctx.fillRect(0, 0, width, height);
+
+      animationId = requestAnimationFrame(draw);
     };
 
+    resize();
     draw();
-
-    // INTERACTION: DIGGING
-    const dig = (x: number, y: number) => {
-        // Erase from Dirt Canvas
-        dCtx.globalCompositeOperation = 'destination-out';
-        dCtx.beginPath();
-        dCtx.arc(x, y, 40, 0, Math.PI*2);
-        
-        // Ragged edge for brush
-        for(let i=0; i<10; i++) {
-            dCtx.arc(x + (Math.random()-0.5)*20, y + (Math.random()-0.5)*20, 20, 0, Math.PI*2);
-        }
-        
-        dCtx.fill();
-        dCtx.globalCompositeOperation = 'source-over';
-        
-        draw(); // Re-render composition
-    };
-
-    const handleMouseMove = (e: MouseEvent) => {
-        if (isDrawing) dig(e.clientX, e.clientY);
-    };
-    const handleMouseDown = (e: MouseEvent) => {
-        isDrawing = true;
-        dig(e.clientX, e.clientY);
-    };
-    const handleMouseUp = () => isDrawing = false;
-
-    const handleResize = () => { 
-        w = canvas.width = window.innerWidth; 
-        h = canvas.height = window.innerHeight;
-        // Re-init dirt (resetting progress, sadly, but necessary for resize)
-        // ... (re-run init logic)
-    };
-
-    window.addEventListener("mousemove", handleMouseMove);
-    window.addEventListener("mousedown", handleMouseDown);
-    window.addEventListener("mouseup", handleMouseUp);
-    window.addEventListener("resize", handleResize);
+    window.addEventListener("resize", resize);
 
     return () => {
-        window.removeEventListener("mousemove", handleMouseMove);
-        window.removeEventListener("mousedown", handleMouseDown);
-        window.removeEventListener("mouseup", handleMouseUp);
-        window.removeEventListener("resize", handleResize);
+      window.removeEventListener("resize", resize);
+      cancelAnimationFrame(animationId);
     };
   }, []);
 
-  return <canvas ref={canvasRef} className="fixed inset-0 z-0 pointer-events-auto cursor-none" />;
+  return <canvas ref={canvasRef} className="pointer-events-none fixed inset-0 z-0" aria-hidden="true" />;
 }
