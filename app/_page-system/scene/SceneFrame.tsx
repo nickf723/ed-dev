@@ -28,7 +28,7 @@ export default function SceneFrame({
           className={`relative z-10 mx-auto w-full ${maxWidthClassName} px-4 pb-16 sm:px-6 xl:px-8`}
         >
           <div
-            className="sticky top-0 z-40 -mx-4 border-b border-white/[0.08] px-4 pb-3 pt-5 shadow-[0_18px_60px_rgba(0,0,0,0.22)] backdrop-blur-xl sm:-mx-6 sm:px-6 xl:-mx-8 xl:px-8"
+            className="sticky top-0 z-40 -mx-4 border-b border-white/[0.08] px-4 pb-3 pt-5 shadow-[0_18px_60px_rgba(0,0,0,0.22)] backdrop-blur-[26px] backdrop-saturate-[1.08] sm:-mx-6 sm:px-6 xl:-mx-8 xl:px-8"
             style={{ background: headerBackground }}
           >
             {header}
