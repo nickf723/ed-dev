@@ -1,5 +1,16 @@
 "use client";
-import React, { useEffect, useRef } from 'react';
+
+import { useEffect, useRef } from "react";
+
+type Ball = {
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+  lastPegRow: number;
+};
+
+type Peg = { x: number; y: number; row: number };
 
 export default function GaltonBoardBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -7,165 +18,143 @@ export default function GaltonBoardBackground() {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    let width = (canvas.width = window.innerWidth);
-    let height = (canvas.height = window.innerHeight);
+    let width = 0;
+    let height = 0;
+    let frameId = 0;
+    let frame = 0;
+    let pegs: Peg[] = [];
+    let balls: Ball[] = [];
+    const rows = 12;
+    const bins = new Array<number>(rows + 1).fill(0);
+    const pegSpacing = 34;
+    const rowSpacing = 30;
+    const pegRadius = 2.3;
+    const ballRadius = 3.1;
 
-    // Board Config
-    const rows = 14; 
-    const pegSpacing = 40;
-    const startX = width / 2;
-    const startY = 60;
-    
-    // Bin Config
-    const binCount = rows + 1;
-    const bins: number[] = new Array(binCount).fill(0); 
+    const layout = () => {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = Math.round(width * dpr);
+      canvas.height = Math.round(height * dpr);
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-    // Physics Config
-    const gravity = 0.2;
-    const friction = 0.99;
-    const pegRadius = 3;
-    const ballRadius = 4;
-    
-    interface Ball {
-      x: number; y: number;
-      vx: number; vy: number;
-      settled: boolean;
-      lastPegRow: number; // To prevent double hits on same peg
-    }
-
-    const balls: Ball[] = [];
-    
-    // Pegs Array (stored with row index)
-    const pegs: {x: number, y: number, row: number}[] = [];
-
-    // Initialize Pegs (Pyramid)
-    for(let r = 0; r < rows; r++) {
-      for(let c = 0; c <= r; c++) {
-        // Offset X so row is centered
-        const x = startX + (c * pegSpacing) - (r * pegSpacing / 2);
-        const y = startY + r * 35;
-        pegs.push({x, y, row: r});
+      const centerX = width * 0.68;
+      const top = Math.max(78, height * 0.13);
+      pegs = [];
+      for (let row = 0; row < rows; row += 1) {
+        for (let column = 0; column <= row; column += 1) {
+          pegs.push({
+            x: centerX + column * pegSpacing - (row * pegSpacing) / 2,
+            y: top + row * rowSpacing,
+            row,
+          });
+        }
       }
-    }
+      balls = [];
+      bins.fill(0);
+    };
 
-    const animate = () => {
-      ctx.fillStyle = '#020617';
+    const render = () => {
+      const centerX = width * 0.68;
+      const top = Math.max(78, height * 0.13);
+      const floorY = Math.min(height - 70, top + rows * rowSpacing + 42);
+      const leftBinCenter = centerX - (rows * pegSpacing) / 2;
+
+      ctx.fillStyle = "#020617";
       ctx.fillRect(0, 0, width, height);
 
-      // Draw Pegs
-      ctx.fillStyle = 'rgba(99, 102, 241, 0.2)'; // Indigo
-      pegs.forEach(peg => {
+      const halo = ctx.createRadialGradient(centerX, top + rows * rowSpacing * 0.52, 0, centerX, top + rows * rowSpacing * 0.52, 340);
+      halo.addColorStop(0, "rgba(99,102,241,0.10)");
+      halo.addColorStop(1, "rgba(2,6,23,0)");
+      ctx.fillStyle = halo;
+      ctx.fillRect(0, 0, width, height);
+
+      ctx.fillStyle = "rgba(129,140,248,0.22)";
+      for (const peg of pegs) {
         ctx.beginPath();
         ctx.arc(peg.x, peg.y, pegRadius, 0, Math.PI * 2);
         ctx.fill();
-      });
-
-      // Spawn Ball (Top Center)
-      if (Math.random() > 0.6) {
-         balls.push({ 
-           x: startX + (Math.random() - 0.5), // Tiny jitter
-           y: startY - 20, 
-           vx: 0, 
-           vy: 0, 
-           settled: false,
-           lastPegRow: -1
-         });
       }
 
-      // Update Balls
-      balls.forEach((b, i) => {
-        if (b.settled) return;
+      if (frame % 11 === 0 && balls.length < 90) {
+        balls.push({
+          x: centerX,
+          y: top - 18,
+          vx: (Math.random() - 0.5) * 0.16,
+          vy: 0,
+          lastPegRow: -1,
+        });
+      }
 
-        b.vy += gravity;
-        b.vx *= friction;
-        b.x += b.vx;
-        b.y += b.vy;
+      const survivors: Ball[] = [];
+      for (const ball of balls) {
+        ball.vy += 0.12;
+        ball.vx *= 0.992;
+        ball.x += ball.vx;
+        ball.y += ball.vy;
 
-        // Peg Collision (The Logic)
-        for (const p of pegs) {
-          // Optimization: Only check pegs close by y-level
-          if (Math.abs(b.y - p.y) > 10) continue;
-
-          const dx = b.x - p.x;
-          const dy = b.y - p.y;
-          const dist = Math.sqrt(dx*dx + dy*dy);
-          
-          // Collision!
-          if (dist < pegRadius + ballRadius) {
-            // Only interact if we haven't hit this row yet (prevents getting stuck)
-            if (b.lastPegRow !== p.row) {
-                b.lastPegRow = p.row;
-                
-                // FORCE THE 50/50 DECISION
-                // Instead of physical bounce, we apply a hard impulse left or right
-                const direction = Math.random() > 0.5 ? 1 : -1;
-                
-                // Add horizontal velocity
-                b.vx = direction * 1.5 + (Math.random() - 0.5) * 0.5; // + random noise
-                
-                // Reset vertical velocity (dampen the fall so it hits next row)
-                b.vy = -1.5; 
-                
-                // Snap position out of peg to prevent clipping
-                b.y = p.y - (pegRadius + ballRadius) - 1;
-            }
+        for (const peg of pegs) {
+          if (peg.row === ball.lastPegRow || Math.abs(ball.y - peg.y) > 8) continue;
+          const dx = ball.x - peg.x;
+          const dy = ball.y - peg.y;
+          const distanceSquared = dx * dx + dy * dy;
+          const collisionRadius = pegRadius + ballRadius;
+          if (distanceSquared < collisionRadius * collisionRadius) {
+            ball.lastPegRow = peg.row;
+            ball.vx = (Math.random() < 0.5 ? -1 : 1) * (0.72 + Math.random() * 0.22);
+            ball.vy = 0.24;
+            ball.y = peg.y + collisionRadius + 0.5;
+            break;
           }
         }
 
-        // Settling Logic (Bottom)
-        const floorY = startY + rows * 35 + 50;
-        if (b.y > floorY) {
-            b.settled = true;
-            // Calculate Bin
-            const relativeX = b.x - (startX - (rows * pegSpacing / 2));
-            const binIdx = Math.floor((relativeX + pegSpacing/2) / pegSpacing);
-            
-            if (binIdx >= 0 && binIdx < binCount) {
-                bins[binIdx]++;
-            }
-            balls.splice(i, 1);
+        if (ball.y >= floorY) {
+          const relative = ball.x - leftBinCenter;
+          const index = Math.round(relative / pegSpacing);
+          if (index >= 0 && index < bins.length) bins[index] += 1;
+        } else {
+          survivors.push(ball);
+          ctx.fillStyle = "rgba(165,180,252,0.72)";
+          ctx.beginPath();
+          ctx.arc(ball.x, ball.y, ballRadius, 0, Math.PI * 2);
+          ctx.fill();
         }
+      }
+      balls = survivors;
 
-        // Draw Ball
-        ctx.fillStyle = '#818cf8';
-        ctx.beginPath();
-        ctx.arc(b.x, b.y, ballRadius, 0, Math.PI * 2);
-        ctx.fill();
-      });
+      const maxBin = Math.max(1, ...bins);
+      const availableHeight = Math.min(170, Math.max(70, height - floorY - 28));
+      const binWidth = pegSpacing - 5;
+      for (let index = 0; index < bins.length; index += 1) {
+        const barHeight = (bins[index] / maxBin) * availableHeight;
+        const x = leftBinCenter + index * pegSpacing - binWidth / 2;
+        const y = floorY + 10;
+        const gradient = ctx.createLinearGradient(x, y, x, y + barHeight);
+        gradient.addColorStop(0, "rgba(129,140,248,0.50)");
+        gradient.addColorStop(1, "rgba(129,140,248,0.03)");
+        ctx.fillStyle = gradient;
+        ctx.fillRect(x, y, binWidth, barHeight);
+      }
 
-      // Draw Histogram Bins
-      const binWidth = pegSpacing - 4;
-      const startBinX = startX - (rows * pegSpacing / 2);
-      const floorY = startY + rows * 35 + 50;
-
-      bins.forEach((count, i) => {
-          const h = Math.min(count * 2, 200); 
-          const x = startBinX + i * pegSpacing;
-          const y = floorY;
-
-          const gradient = ctx.createLinearGradient(x, y, x, y + h);
-          gradient.addColorStop(0, 'rgba(99, 102, 241, 0.8)');
-          gradient.addColorStop(1, 'rgba(99, 102, 241, 0)');
-          
-          ctx.fillStyle = gradient;
-          ctx.fillRect(x - binWidth/2, y, binWidth, h);
-      });
-
-      requestAnimationFrame(animate);
+      frame += 1;
+      frameId = requestAnimationFrame(render);
     };
 
-    const handleResize = () => {
-        width = canvas.width = window.innerWidth;
-        height = canvas.height = window.innerHeight;
-    };
-    window.addEventListener('resize', handleResize);
-    animate();
+    layout();
+    window.addEventListener("resize", layout);
+    frameId = requestAnimationFrame(render);
 
-    return () => window.removeEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener("resize", layout);
+      cancelAnimationFrame(frameId);
+    };
   }, []);
 
-  return <canvas ref={canvasRef} className="fixed inset-0 z-0 pointer-events-none" />;
+  return <canvas ref={canvasRef} className="fixed inset-0 z-0 pointer-events-none opacity-90" />;
 }
