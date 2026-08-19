@@ -4,6 +4,7 @@ import { DATA_SCIENCE_CURRICULUM } from "@/lib/curriculum/data-science";
 import { GEOMETRY_CURRICULUM } from "@/lib/curriculum/geometry";
 import { GROUP_THEORY_CURRICULUM } from "@/lib/curriculum/group-theory";
 import { INFORMATION_SCIENCE_CURRICULUM } from "@/lib/curriculum/information-science";
+import { STATISTICS_CURRICULUM } from "@/lib/curriculum/statistics";
 import { SYSTEMS_SCIENCE_CURRICULUM } from "@/lib/curriculum/systems-science";
 import { AGRICULTURE_CURRICULUM } from "@/lib/curriculum/applied/agriculture";
 import { ARCHITECTURE_CURRICULUM } from "@/lib/curriculum/applied/architecture";
@@ -64,6 +65,7 @@ export const CURRICULUM_MODULES: readonly CurriculumNode[] = [
   REFINED_ALGEBRA_CURRICULUM,
   GROUP_THEORY_CURRICULUM,
   GEOMETRY_CURRICULUM,
+  STATISTICS_CURRICULUM,
   LOGIC_CURRICULUM,
   COMPUTER_SCIENCE_CURRICULUM,
   DATA_SCIENCE_CURRICULUM,
