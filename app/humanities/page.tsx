@@ -304,7 +304,7 @@ export default function HumanitiesPage() {
 
                 const row = (
                   <div
-                    className={`group grid min-h-[70px] items-center gap-3 border-b border-white/[0.06] px-4 py-3 transition last:border-b-0 lg:grid-cols-[minmax(210px,1.3fr)_repeat(4,minmax(100px,1fr))_36px] ${relevant ? "hover:bg-white/[0.022]" : "opacity-28"}`}
+                    className={`group grid min-h-[70px] items-center gap-3 border-b border-white/[0.06] px-4 py-3 transition last:border-b-0 lg:grid-cols-[minmax(210px,1.3fr)_repeat(4,minmax(100px,1fr))_36px] ${relevant ? "hover:bg-white/[0.022]" : "opacity-[0.28]"}`}
                     onMouseEnter={() => setActiveFieldId(field.id)}
                     onFocus={() => setActiveFieldId(field.id)}
                   >
