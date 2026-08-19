@@ -79,10 +79,23 @@ Before developing or substantially revising a page, compare it with the nearest 
 ### Glass treatment
 
 - Glass separates foreground from world through **moderate local blur and saturation before added opacity**.
-- Use enough blur to soften moving detail behind text, generally around 8 to 18 pixels depending on density.
+- Use enough blur to soften moving detail behind text, generally around 8 to 24 pixels depending on density; dense reading or control regions may use stronger local frost.
 - Do not turn glass into opaque plastic. Background silhouettes, color, and subject-specific motion must remain legible through the surface.
 - Use stronger blur behind dense controls and sustained reading; use lighter blur around navigation, labels, and open scene furniture.
 - Blur is not a substitute for hierarchy. A beautifully frosted wall is still a wall.
+
+### Text-background collision gate
+
+Foreground text may share a scene with a rich academic world, but it may not compete with that world for basic legibility.
+
+- Semantic text must not sit directly over detailed moving linework, diagram labels, high-contrast nodes, dense texture, or another readable text layer.
+- Reserve **protected text lanes** using local frost, soft scrims, spatial clearance, background attenuation, or a dedicated strip before reaching for heavier opacity.
+- A background connector, route, waveform, orbit, grid annotation, or decorative label must route around important headings and dense controls when practical. Do not let two information systems occupy the same visual channel.
+- Prefer blur before darkness. Increase opacity only enough to establish figure/ground separation, and keep the world recognizable around the protected region.
+- Text shadow, glow, or heavier font weight does not count as solving a collision when the underlying diagram is still visually competing.
+- If a background contains its own labels or telemetry, treat them as real text during readability review. They may not hide behind foreground copy and remain legible enough to create accidental double-reading.
+- On compact navigation cells, protect the complete label-and-description area rather than frosting only the icon or heading.
+- In a still screenshot, a reviewer should be able to identify the foreground reading order without first mentally subtracting the background.
 
 ---
 
@@ -248,10 +261,10 @@ For each substantial page round:
 6. **QUESTION**: define one center of gravity and one learner question per signature widget.
 7. **GRAMMAR**: choose distinct visual roles for navigation, instruments, reference, metrics, and explanation.
 8. **WORLD**: choose one memorable environmental idea, then assign ambient, showcase, and quiet behavior with an explicit motion budget.
-9. **GLASS**: set local blur and opacity together so text separates without erasing the world.
+9. **GLASS**: set local blur and opacity together, create protected text lanes, and route background detail away from semantic copy without erasing the world.
 10. **DENSITY**: add meaningful structure while preserving visible scenery corridors.
 11. **SCALE**: verify axes, transformations, units, and comparisons.
-12. **FRAME**: test viewport budget, readability, responsive fallback, stable geometry, background memorability, macro-layout distinctness, and before-versus-after preservation.
+12. **FRAME**: test viewport budget, readability, text/background collisions, responsive fallback, stable geometry, background memorability, macro-layout distinctness, and before-versus-after preservation.
 13. **VALIDATE**: run repository checks.
 14. **PUBLISH**: commit, push to `studio`, verify the remote ref, and inspect CI.
 
@@ -275,6 +288,7 @@ A substantial development pass is done only when:
 - the background is visible, subject-specific, attention-aware, and memorable in a static composition;
 - one dominant environmental idea carries the background instead of generic ambient noise;
 - glass blur separates content without turning the page opaque;
+- semantic text has protected visual lanes and does not collide with detailed background linework, labels, or other readable information;
 - reactive motion does not compete with the active task;
 - chart scales and transformations are honest and labeled;
 - route, curriculum, sidebar, and breadcrumbs agree;
