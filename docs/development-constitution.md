@@ -36,6 +36,17 @@ Before beginning a child page, verify:
 - Planned nodes remain visible as ontology without behaving like active links.
 - Prominent navigation does not mean a solid wall. A route atlas, stack, timeline, map, or field should preserve the academic world around it.
 
+### Umbrella-hub navigation gate
+
+Broad labels such as Engineering, Culture, Biology, History, Technology, or Business usually describe an **umbrella field** rather than one lesson-sized idea. On those pages, choosing where to descend is normally the learner's primary task.
+
+- The direct-child navigation should be the **largest and most memorable foreground object in the first useful viewport**, not a preamble before a widget.
+- Keep the introductory definition compact enough that it does not delay route choice.
+- A signature widget may still appear on a broad hub, but it should support the field after the learner understands its branches. It should not visually outrank the branch map unless the page has a specific pedagogical reason.
+- The navigation itself should teach the structure of the field. Grouping, position, connection, scale, ordering, or material should communicate relationships among branches rather than merely listing them.
+- A hub does not pass because navigation is technically near the top. It must *read* as the page's center of gravity.
+- When several branches are planned rather than live, keep them visible so the field map remains honest, but make active destinations unmistakably stronger.
+
 ---
 
 ## 3. Component form must reveal component role
@@ -50,6 +61,20 @@ Navigation, instruments, explanation, reference, metrics, and status should not 
 - **Status** uses badges, markers, or inline labels rather than destination-shaped containers.
 
 If neighboring regions have different jobs, they should differ in at least two of these: silhouette, spacing, border treatment, motion, icon placement, typography, hover behavior, or internal alignment.
+
+### Layout-diversity gate
+
+A unique background is not enough if the foreground keeps repeating the same page skeleton.
+
+Before developing or substantially revising a page, compare it with the nearest three to five recently developed pages. The new page should not default to the same macro-composition of `header → intro → card/grid navigation → widget → reference band` unless the academic structure genuinely demands it.
+
+- Derive macro-layout from the subject: drafting board, archive shelf, stage, field notebook, score, map, catalog, timeline, workbench, specimen tray, courtroom, studio wall, or another academically meaningful topology.
+- Navigation topology is part of subject identity. Do not repeatedly reuse the same centered atlas, symmetric left/right rails, three-column card bank, or radial hub with only different labels and colors.
+- Neighboring pages should differ in at least **two macro-layout dimensions**: dominant axis, grouping logic, focal placement, navigation silhouette, foreground/background interlock, section rhythm, or scroll behavior.
+- Vary large-scale composition before adding decorative variation. Changing border radius, icon color, or card tilt does not count as a distinct layout.
+- Asymmetry must have a reason. Do not randomize positions merely to manufacture uniqueness.
+- Mobile may collapse to a simpler reading order, but should preserve the navigation metaphor through labels, grouping, separators, or sequence.
+- A page fails this gate when a grayscale wireframe of it could be mistaken for several neighboring pages.
 
 ### Glass treatment
 
@@ -218,18 +243,19 @@ For each substantial page round:
 1. **PRESERVE**: inventory the existing page's distinctive systems and constrain the edit to the requested scope.
 2. **TREE**: inspect ancestry, parent, direct children, live routes, planned routes, and registry state.
 3. **PARENT**: repair or establish the parent before deeper child expansion.
-4. **NAVIGATION**: make direct descent prominent before secondary content.
-5. **QUESTION**: define one center of gravity and one learner question per signature widget.
-6. **GRAMMAR**: choose distinct visual roles for navigation, instruments, reference, metrics, and explanation.
-7. **WORLD**: choose one memorable environmental idea, then assign ambient, showcase, and quiet behavior with an explicit motion budget.
-8. **GLASS**: set local blur and opacity together so text separates without erasing the world.
-9. **DENSITY**: add meaningful structure while preserving visible scenery corridors.
-10. **SCALE**: verify axes, transformations, units, and comparisons.
-11. **FRAME**: test viewport budget, readability, responsive fallback, stable geometry, background memorability, and before-versus-after preservation.
-12. **VALIDATE**: run repository checks.
-13. **PUBLISH**: commit, push to `studio`, verify the remote ref, and inspect CI.
+4. **NAVIGATION**: make direct descent prominent before secondary content; on umbrella hubs, make navigation the first viewport's dominant object.
+5. **TOPOLOGY**: choose a subject-derived navigation and macro-layout grammar that is visibly different from recent neighboring pages.
+6. **QUESTION**: define one center of gravity and one learner question per signature widget.
+7. **GRAMMAR**: choose distinct visual roles for navigation, instruments, reference, metrics, and explanation.
+8. **WORLD**: choose one memorable environmental idea, then assign ambient, showcase, and quiet behavior with an explicit motion budget.
+9. **GLASS**: set local blur and opacity together so text separates without erasing the world.
+10. **DENSITY**: add meaningful structure while preserving visible scenery corridors.
+11. **SCALE**: verify axes, transformations, units, and comparisons.
+12. **FRAME**: test viewport budget, readability, responsive fallback, stable geometry, background memorability, macro-layout distinctness, and before-versus-after preservation.
+13. **VALIDATE**: run repository checks.
+14. **PUBLISH**: commit, push to `studio`, verify the remote ref, and inspect CI.
 
-No page round advances to the next target before step 13.
+No page round advances to the next target before step 14.
 
 ---
 
@@ -239,6 +265,9 @@ A substantial development pass is done only when:
 
 - the parent is coherent before the child is expanded;
 - direct-child navigation is prominent on non-lesson pages;
+- navigation is the dominant first-viewport object on broad umbrella hubs unless a specific pedagogical reason overrides it;
+- the navigation topology teaches the structure of the field rather than merely listing routes;
+- the page's macro-layout is distinguishable from recent neighboring pages in grayscale structure, not only palette and decoration;
 - navigation and non-navigation components are unmistakably different;
 - independent learner questions use independent widgets;
 - controls and consequences remain together;
