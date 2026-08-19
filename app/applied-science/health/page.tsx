@@ -109,10 +109,10 @@ function HealthOrientationMap({ children }: { children: readonly CurriculumNode[
         <div className="pointer-events-none absolute inset-[8%_6%_10%_7%]">
           <div className="absolute left-0 right-0 top-1/2 h-px bg-gradient-to-r from-pink-200/10 via-teal-100/17 to-cyan-200/10" />
           <div className="absolute bottom-0 top-0 left-1/2 w-px bg-gradient-to-b from-rose-200/10 via-teal-100/17 to-violet-200/10" />
-          <span className="absolute -left-1 top-[calc(50%-18px)] rounded-full bg-[#071613]/70 px-2 py-1 font-mono text-[9px] uppercase tracking-[0.08em] text-pink-100/46 backdrop-blur-md">person / encounter</span>
-          <span className="absolute -right-1 top-[calc(50%-18px)] rounded-full bg-[#071613]/70 px-2 py-1 font-mono text-[9px] uppercase tracking-[0.08em] text-teal-100/46 backdrop-blur-md">population / system</span>
-          <span className="absolute left-[calc(50%+10px)] top-0 rounded-full bg-[#071613]/70 px-2 py-1 font-mono text-[9px] uppercase tracking-[0.08em] text-rose-100/46 backdrop-blur-md">direct support / intervention</span>
-          <span className="absolute bottom-0 left-[calc(50%+10px)] rounded-full bg-[#071613]/70 px-2 py-1 font-mono text-[9px] uppercase tracking-[0.08em] text-violet-100/46 backdrop-blur-md">measurement / coordination / infrastructure</span>
+          <span className="absolute -left-1 top-[47%] rounded-full bg-[#071613]/70 px-2 py-1 font-mono text-[9px] uppercase tracking-[0.08em] text-pink-100/46 backdrop-blur-md">person / encounter</span>
+          <span className="absolute -right-1 top-[47%] rounded-full bg-[#071613]/70 px-2 py-1 font-mono text-[9px] uppercase tracking-[0.08em] text-teal-100/46 backdrop-blur-md">population / system</span>
+          <span className="absolute left-[51%] top-0 rounded-full bg-[#071613]/70 px-2 py-1 font-mono text-[9px] uppercase tracking-[0.08em] text-rose-100/46 backdrop-blur-md">direct support / intervention</span>
+          <span className="absolute bottom-0 left-[51%] rounded-full bg-[#071613]/70 px-2 py-1 font-mono text-[9px] uppercase tracking-[0.08em] text-violet-100/46 backdrop-blur-md">measurement / coordination / infrastructure</span>
         </div>
 
         <div className="absolute inset-[9%_7%_11%_8%]">
