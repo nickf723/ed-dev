@@ -1,33 +1,43 @@
 "use client";
-import React from 'react';
+
+const VALUES = Array.from({ length: 180 }, (_, index) => index + 2);
+
+function isPrime(value: number) {
+  if (value < 2) return false;
+  if (value % 2 === 0) return value === 2;
+  for (let divisor = 3; divisor * divisor <= value; divisor += 2) {
+    if (value % divisor === 0) return false;
+  }
+  return true;
+}
 
 export default function NumberTheoryBackground() {
-    return (
-        <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden bg-[#05050a]">
-            
-            {/* Ambient Cryptographic Glows */}
-            <div className="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] bg-violet-900/10 blur-[150px] rounded-full mix-blend-screen" />
-            <div className="absolute bottom-[-10%] right-[-10%] w-[50vw] h-[50vw] bg-emerald-900/10 blur-[150px] rounded-full mix-blend-screen" />
+  return (
+    <div className="fixed inset-0 z-0 overflow-hidden bg-[#05050a] pointer-events-none">
+      <div className="absolute -left-[12%] -top-[16%] h-[56vw] w-[56vw] rounded-full bg-violet-900/[0.10] blur-[150px]" />
+      <div className="absolute -bottom-[18%] -right-[12%] h-[54vw] w-[54vw] rounded-full bg-emerald-900/[0.09] blur-[150px]" />
 
-            {/* The Prime Grid (Abstract Representation) */}
-            <div className="absolute inset-0 opacity-10 font-mono text-xs flex flex-wrap gap-4 p-8 overflow-hidden text-violet-300/30">
-                {Array.from({ length: 200 }).map((_, i) => (
-                    <span key={i} className={i % 7 === 0 || i % 11 === 0 ? "text-emerald-400 font-bold" : ""}>
-                        {Math.floor(Math.random() * 999).toString().padStart(3, '0')}
-                    </span>
-                ))}
-            </div>
+      <div className="absolute inset-0 grid auto-rows-[34px] grid-cols-[repeat(auto-fill,minmax(42px,1fr))] gap-x-1 overflow-hidden px-7 py-8 font-mono text-[9px] leading-[34px] opacity-35 [mask-image:linear-gradient(to_bottom,black,transparent_92%)]">
+        {VALUES.map((value) => {
+          const prime = isPrime(value);
+          return (
+            <span
+              key={value}
+              className={prime ? "text-amber-200/[0.44]" : "text-slate-400/[0.10]"}
+            >
+              {String(value).padStart(3, "0")}
+            </span>
+          );
+        })}
+      </div>
 
-            {/* Mathematical Notation Overlays */}
-            <div className="absolute top-[20%] right-[10%] text-[20vw] font-serif italic text-violet-500/[0.02] select-none pointer-events-none">
-                {'$\mathbb{Z}$'}
-            </div>
-            <div className="absolute bottom-[10%] left-[5%] text-[15vw] font-serif italic text-emerald-500/[0.02] select-none pointer-events-none">
-                $\pmod n$
-            </div>
-
-            {/* Vignette to keep text readable */}
-            <div className="absolute inset-0 bg-radial-vignette opacity-80" />
-        </div>
-    );
+      <div className="absolute right-[6%] top-[16%] select-none font-serif text-[18vw] italic leading-none text-violet-200/[0.018]">
+        ℤ
+      </div>
+      <div className="absolute bottom-[7%] left-[6%] select-none font-mono text-[9vw] font-semibold leading-none text-emerald-200/[0.016]">
+        mod n
+      </div>
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(5,5,10,0.40)_56%,rgba(5,5,10,0.92)_100%)]" />
+    </div>
+  );
 }
