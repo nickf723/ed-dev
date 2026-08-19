@@ -1,0 +1,1 @@
+Validation trigger for Geography layer clearance.
