@@ -31,4 +31,8 @@ Prefer interactions where the learner can answer a question by manipulating the 
 - Pitfall: one focused misconception.
 - Application instructions: enough to act, not enough to reveal the answer.
 
+## Studio verification loop
+
+`studio` is the inspectable development surface. Coherent working changes should be pushed there promptly so they can be reviewed in the deployed site instead of accumulating unseen on long-lived validation branches. Build or visual failures are fixed forward on `studio`; validation branches remain useful for risky or isolated experiments, not as a holding pen for finished pages.
+
 The lesson should feel like discovering a mechanism and then receiving its name, not reading an encyclopedia entry with widgets attached.
