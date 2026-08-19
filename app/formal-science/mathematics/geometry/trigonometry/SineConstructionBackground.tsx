@@ -1,5 +1,6 @@
 "use client";
-import React, { useEffect, useRef } from 'react';
+
+import { useEffect, useRef } from "react";
 
 export default function SineConstructionBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -7,89 +8,103 @@ export default function SineConstructionBackground() {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    let width = (canvas.width = window.innerWidth);
-    let height = (canvas.height = window.innerHeight);
+    let width = 0;
+    let height = 0;
     let angle = 0;
+    let frameId = 0;
     const trail: number[] = [];
 
-    const animate = () => {
-      ctx.fillStyle = '#020617'; // Slate-950
+    const resize = () => {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = Math.round(width * dpr);
+      canvas.height = Math.round(height * dpr);
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      trail.length = 0;
+    };
+
+    const render = () => {
+      ctx.fillStyle = "#020617";
       ctx.fillRect(0, 0, width, height);
 
-      const cx = width * 0.2; // Circle Center X
-      const cy = height / 2;   // Circle Center Y
-      const radius = 80;
+      const cx = Math.max(120, width * 0.22);
+      const cy = height * 0.52;
+      const radius = Math.min(92, Math.max(58, width * 0.07));
+      const waveStartX = Math.max(cx + radius + 70, width * 0.46);
+      const maxTrail = Math.max(40, Math.floor((width - waveStartX - 40) / 2));
 
-      // Update Angle
-      angle += 0.02;
-
-      // Calculate Point on Circle
+      angle += 0.012;
       const px = cx + Math.cos(angle) * radius;
-      const py = cy + Math.sin(angle) * radius;
+      const py = cy - Math.sin(angle) * radius;
 
-      // Store y-value for the wave
       trail.unshift(py);
-      if (trail.length > width * 0.6) trail.pop();
+      if (trail.length > maxTrail) trail.pop();
 
-      // 1. Draw The Circle
+      ctx.strokeStyle = "rgba(148, 163, 184, 0.08)";
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(0, cy);
+      ctx.lineTo(width, cy);
+      ctx.stroke();
+
       ctx.beginPath();
       ctx.arc(cx, cy, radius, 0, Math.PI * 2);
-      ctx.strokeStyle = 'rgba(255,255,255,0.1)';
-      ctx.lineWidth = 2;
+      ctx.strokeStyle = "rgba(255,255,255,0.12)";
+      ctx.lineWidth = 1.5;
       ctx.stroke();
 
-      // 2. Draw The Triangle inside the Circle
       ctx.beginPath();
-      ctx.moveTo(cx, cy); // Center
-      ctx.lineTo(px, py); // Point on circle
-      ctx.lineTo(px, cy); // Drop perpendicular
-      ctx.lineTo(cx, cy); // Back to center
-      ctx.fillStyle = 'rgba(34, 211, 238, 0.1)'; // Cyan fill
+      ctx.moveTo(cx, cy);
+      ctx.lineTo(px, py);
+      ctx.lineTo(px, cy);
+      ctx.closePath();
+      ctx.fillStyle = "rgba(34, 211, 238, 0.055)";
       ctx.fill();
-      ctx.strokeStyle = '#22d3ee';
+      ctx.strokeStyle = "rgba(34, 211, 238, 0.34)";
       ctx.stroke();
 
-      // 3. Draw The Projection Line (The Connection)
-      const waveStartX = width * 0.45;
       ctx.beginPath();
       ctx.moveTo(px, py);
       ctx.lineTo(waveStartX, py);
-      ctx.strokeStyle = 'rgba(192, 132, 252, 0.3)'; // Purple line
-      ctx.setLineDash([5, 5]);
+      ctx.strokeStyle = "rgba(192, 132, 252, 0.18)";
+      ctx.setLineDash([5, 7]);
       ctx.stroke();
       ctx.setLineDash([]);
 
-      // 4. Draw The Sine Wave
-      ctx.beginPath();
-      ctx.moveTo(waveStartX, trail[0]);
-      for(let i=1; i<trail.length; i++) {
-          ctx.lineTo(waveStartX + i * 2, trail[i]);
+      if (trail.length > 1) {
+        ctx.beginPath();
+        ctx.moveTo(waveStartX, trail[0]);
+        for (let index = 1; index < trail.length; index += 1) {
+          ctx.lineTo(waveStartX + index * 2, trail[index]);
+        }
+        ctx.strokeStyle = "rgba(192, 132, 252, 0.46)";
+        ctx.lineWidth = 2;
+        ctx.stroke();
       }
-      ctx.strokeStyle = '#c084fc'; // Purple-400
-      ctx.lineWidth = 2;
-      ctx.stroke();
 
-      // 5. Draw The Point
-      ctx.fillStyle = '#fff';
+      ctx.fillStyle = "rgba(255,255,255,0.78)";
       ctx.beginPath();
-      ctx.arc(px, py, 4, 0, Math.PI * 2);
+      ctx.arc(px, py, 3.5, 0, Math.PI * 2);
       ctx.fill();
 
-      requestAnimationFrame(animate);
+      frameId = requestAnimationFrame(render);
     };
 
-    const handleResize = () => {
-        width = canvas.width = window.innerWidth;
-        height = canvas.height = window.innerHeight;
-    };
-    window.addEventListener('resize', handleResize);
-    animate();
+    resize();
+    window.addEventListener("resize", resize);
+    frameId = requestAnimationFrame(render);
 
-    return () => window.removeEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener("resize", resize);
+      cancelAnimationFrame(frameId);
+    };
   }, []);
 
-  return <canvas ref={canvasRef} className="fixed inset-0 z-0 pointer-events-none" />;
+  return <canvas ref={canvasRef} className="fixed inset-0 z-0 pointer-events-none opacity-90" />;
 }
