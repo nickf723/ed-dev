@@ -51,7 +51,6 @@ export const STATISTICS_CURRICULUM: CurriculumNode = {
       "Bayesian Statistics",
       "/formal-science/mathematics/statistics/bayesian",
       "Represent uncertainty with probability distributions and update beliefs about unknown quantities as evidence is observed.",
-      "placeholder",
     ),
   ],
 };
