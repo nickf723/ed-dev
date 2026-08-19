@@ -45,7 +45,6 @@ export const STATISTICS_CURRICULUM: CurriculumNode = {
       "Statistical Inference",
       "/formal-science/mathematics/statistics/inferential",
       "Use samples and probability models to estimate population quantities, quantify uncertainty, test claims, and compare explanations.",
-      "placeholder",
     ),
     branch(
       "formal.mathematics.statistics.bayesian",
