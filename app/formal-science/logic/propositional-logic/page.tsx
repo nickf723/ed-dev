@@ -5,7 +5,6 @@ import {
   Braces,
   CircleDot,
   GitBranch,
-  Table2,
 } from "lucide-react";
 import Assessment from "@/app/_components/Assessment";
 import DomainPageHeader from "@/app/_components/DomainPageHeader";
