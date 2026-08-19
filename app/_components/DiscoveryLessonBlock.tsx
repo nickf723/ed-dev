@@ -36,11 +36,7 @@ type Props = {
 
 /**
  * Shared visual grammar for discovery-first lessons.
- *
- * The content contract is deliberately narrow: phenomenon -> sandbox -> bridge
- * -> formal structure -> pitfall -> application. Individual lessons own their
- * interactions and progressive reveal state; this component only keeps the
- * sequence recognizable across subjects.
+ * The blocks organize a lesson, but never gate access to later content.
  */
 export default function DiscoveryLessonBlock({
   kind,
@@ -51,10 +47,10 @@ export default function DiscoveryLessonBlock({
 }: Props) {
   return (
     <section id={id} className={`scroll-mt-24 ${className}`}>
-      <div className="mb-2 flex items-center gap-3 font-mono text-[9px] font-semibold uppercase tracking-[0.14em]">
-        <span style={{ color: `rgba(${accentRgb},0.74)` }}>{NUMBERS[kind]}</span>
-        <span className="h-px w-8" style={{ background: `rgba(${accentRgb},0.34)` }} />
-        <span style={{ color: `rgba(${accentRgb},0.72)` }}>[{LABELS[kind]}]</span>
+      <div className="mb-3 flex items-center gap-3 font-mono text-[10px] font-semibold uppercase tracking-[0.13em] sm:text-[11px]">
+        <span style={{ color: `rgba(${accentRgb},0.88)` }}>{NUMBERS[kind]}</span>
+        <span className="h-px w-9" style={{ background: `rgba(${accentRgb},0.42)` }} />
+        <span style={{ color: `rgba(${accentRgb},0.86)` }}>[{LABELS[kind]}]</span>
       </div>
       {children}
     </section>
