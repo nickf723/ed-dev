@@ -51,7 +51,6 @@ export const NUMBER_THEORY_CURRICULUM: CurriculumNode = {
       "Arithmetic Cryptography",
       "/formal-science/mathematics/number-theory/cryptography",
       "Applications of modular arithmetic, finite groups, discrete logarithms, factorization, and related hard problems to cryptographic constructions.",
-      "placeholder",
     ),
   ],
 };
