@@ -27,8 +27,8 @@ type SystemsLessonShellProps = {
   base: string;
   icon: LucideIcon;
   practiceId: string;
-  questions: AssessmentQuestion[];
-  assessmentColor: "cyan" | "emerald" | "indigo" | "amber";
+  questions?: AssessmentQuestion[];
+  assessmentColor?: "cyan" | "emerald" | "indigo" | "amber";
   children: ReactNode;
 };
 
@@ -46,10 +46,11 @@ export default function SystemsLessonShell({
   icon,
   practiceId,
   questions,
-  assessmentColor,
+  assessmentColor = "cyan",
   children,
 }: SystemsLessonShellProps) {
   const Icon = icon;
+  const hasAssessment = Boolean(questions?.length);
 
   return (
     <main className="relative min-h-screen overflow-x-hidden text-slate-100" style={{ backgroundColor: base }}>
@@ -80,22 +81,24 @@ export default function SystemsLessonShell({
 
         {children}
 
-        <section id={practiceId} className="scroll-mt-24 mt-4">
-          <details className="group overflow-hidden rounded-[22px] border border-white/[0.09] bg-black/[0.18] backdrop-blur-2xl">
-            <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-4">
-              <span>
-                <span className="block text-[9px] font-semibold uppercase tracking-[0.13em]" style={{ color: `rgba(${accentRgb},0.72)` }}>
-                  Transfer check
+        {hasAssessment ? (
+          <section id={practiceId} className="scroll-mt-24 mt-4">
+            <details className="group overflow-hidden rounded-[22px] border border-white/[0.09] bg-black/[0.18] backdrop-blur-2xl">
+              <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-4">
+                <span>
+                  <span className="block text-[9px] font-semibold uppercase tracking-[0.13em]" style={{ color: `rgba(${accentRgb},0.72)` }}>
+                    Transfer check
+                  </span>
+                  <strong className="mt-1 block text-[15px] text-slate-200">Fresh cases, same shared-solution idea</strong>
                 </span>
-                <strong className="mt-1 block text-[15px] text-slate-200">Fresh cases, same shared-solution idea</strong>
-              </span>
-              <Sparkles size={16} style={{ color: `rgb(${accentRgb})` }} />
-            </summary>
-            <div className="systems-assessment border-t border-white/[0.06] p-3 sm:p-4">
-              <Assessment title={`${title} check`} questions={questions} accentColor={assessmentColor} />
-            </div>
-          </details>
-        </section>
+                <Sparkles size={16} style={{ color: `rgb(${accentRgb})` }} />
+              </summary>
+              <div className="systems-assessment border-t border-white/[0.06] p-3 sm:p-4">
+                <Assessment title={`${title} check`} questions={questions ?? []} accentColor={assessmentColor} />
+              </div>
+            </details>
+          </section>
+        ) : null}
 
         <nav className="mt-4 pb-8" aria-label="Systems of Equations lesson navigation">
           <div className="mb-2 flex justify-end">
