@@ -33,7 +33,6 @@ export const STATISTICS_CURRICULUM: CurriculumNode = {
       "Descriptive Statistics",
       "/formal-science/mathematics/statistics/descriptive",
       "Summarize the center, spread, shape, and structure of observed data without extending conclusions beyond the data at hand.",
-      "placeholder",
     ),
     branch(
       "formal.mathematics.statistics.probability",
