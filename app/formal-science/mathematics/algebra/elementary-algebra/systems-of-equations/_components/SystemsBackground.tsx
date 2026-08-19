@@ -1,4 +1,5 @@
 "use client";
+
 import { useEffect, useRef } from "react";
 
 export default function SystemsBackground() {
@@ -12,101 +13,102 @@ export default function SystemsBackground() {
 
     let w = (canvas.width = window.innerWidth);
     let h = (canvas.height = window.innerHeight);
+    let frameId = 0;
+    let running = true;
 
-    // --- STATE ---
-    // Line 1 (Cyan)
-    const l1 = { m: 0.5, b: 0, color: "#06b6d4", speed: 0.002, phase: 0 };
-    // Line 2 (Orange)
-    const l2 = { m: -0.5, b: 0, color: "#f59e0b", speed: 0.003, phase: Math.PI };
-    
-    // Intersection Point
-    const target = { x: 0, y: 0 };
+    const lineA = { m: 0.5, b: 0, color: "#06b6d4" };
+    const lineB = { m: -0.5, b: 0, color: "#f59e0b" };
+
+    const drawLine = (line: typeof lineA, cx: number, cy: number) => {
+      const mathXStart = -cx;
+      const mathXEnd = cx;
+      const mathYStart = line.m * mathXStart + line.b;
+      const mathYEnd = line.m * mathXEnd + line.b;
+
+      ctx.strokeStyle = line.color;
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(0, cy - mathYStart);
+      ctx.lineTo(w, cy - mathYEnd);
+      ctx.stroke();
+    };
 
     const render = () => {
-      // Clear
-      ctx.fillStyle = "#04060f"; 
+      if (!running) return;
+
+      ctx.fillStyle = "#04060f";
       ctx.fillRect(0, 0, w, h);
 
       const cx = w / 2;
       const cy = h / 2;
       const time = Date.now() * 0.001;
 
-      // 1. ANIMATE LINES
-      // Oscillate slopes and intercepts slightly
-      l1.m = Math.sin(time * 0.2) * 1.5; 
-      l1.b = Math.cos(time * 0.5) * 100;
-      
-      l2.m = Math.cos(time * 0.3 + 2) * 1.5;
-      l2.b = Math.sin(time * 0.4) * 100;
+      // Slow, bounded motion keeps the field alive without turning the
+      // background into a competing simulation.
+      lineA.m = Math.sin(time * 0.12) * 0.95;
+      lineA.b = Math.cos(time * 0.22) * 72;
+      lineB.m = Math.cos(time * 0.14 + 2) * 0.95;
+      lineB.b = Math.sin(time * 0.18) * 72;
 
-      // 2. CALCULATE INTERSECTION (Algebra Logic)
-      let intersectX = (l2.b - l1.b) / (l1.m - l2.m);
-      if (!isFinite(intersectX)) intersectX = 0; 
-      
-      const intersectY = l1.m * intersectX + l1.b;
+      ctx.globalAlpha = 0.22;
+      drawLine(lineA, cx, cy);
+      drawLine(lineB, cx, cy);
 
-      // Map to Screen Coords (Y is inverted)
-      target.x = cx + intersectX;
-      target.y = cy - intersectY;
+      const denominator = lineA.m - lineB.m;
+      const safelyNonParallel = Math.abs(denominator) > 0.12;
 
-      // 3. DRAW LINES (FIXED COORDINATE MAPPING)
-      const drawLine = (line: typeof l1) => {
-          ctx.strokeStyle = line.color;
-          ctx.lineWidth = 2;
+      if (safelyNonParallel) {
+        const intersectX = (lineB.b - lineA.b) / denominator;
+        const intersectY = lineA.m * intersectX + lineA.b;
+        const screenX = cx + intersectX;
+        const screenY = cy - intersectY;
+        const visible = screenX > 70 && screenX < w - 70 && screenY > 70 && screenY < h - 70;
+
+        if (visible) {
+          const size = 13;
+          ctx.globalAlpha = 0.26;
+          ctx.strokeStyle = "#ffffff";
+          ctx.lineWidth = 1;
           ctx.beginPath();
-          
-          // Screen left boundary corresponds to mathX = -cx
-          const mathXStart = -cx;
-          const mathYStart = line.m * mathXStart + line.b;
-          
-          // Screen right boundary corresponds to mathX = cx
-          const mathXEnd = cx; 
-          const mathYEnd = line.m * mathXEnd + line.b;
-          
-          ctx.moveTo(0, cy - mathYStart);
-          ctx.lineTo(w, cy - mathYEnd);
+          ctx.moveTo(screenX - size, screenY - size + 6);
+          ctx.lineTo(screenX - size, screenY - size);
+          ctx.lineTo(screenX - size + 6, screenY - size);
+          ctx.moveTo(screenX + size, screenY - size + 6);
+          ctx.lineTo(screenX + size, screenY - size);
+          ctx.lineTo(screenX + size - 6, screenY - size);
+          ctx.moveTo(screenX - size, screenY + size - 6);
+          ctx.lineTo(screenX - size, screenY + size);
+          ctx.lineTo(screenX - size + 6, screenY + size);
+          ctx.moveTo(screenX + size, screenY + size - 6);
+          ctx.lineTo(screenX + size, screenY + size);
+          ctx.lineTo(screenX + size - 6, screenY + size);
           ctx.stroke();
-      };
 
-      ctx.globalAlpha = 0.4;
-      drawLine(l1);
-      drawLine(l2);
+          ctx.globalAlpha = 0.18;
+          ctx.fillStyle = "#ffffff";
+          ctx.font = "9px monospace";
+          ctx.fillText("shared solution", screenX + 20, screenY - 18);
+        }
+      }
 
-      // 4. DRAW TARGET RETICLE (The Solution)
       ctx.globalAlpha = 1;
-      const size = 20;
-      
-      // Glow
-      ctx.shadowBlur = 20;
-      ctx.shadowColor = "#ffffff";
-      
-      ctx.strokeStyle = "#ffffff";
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      // Box corners
-      ctx.moveTo(target.x - size, target.y - size + 10); ctx.lineTo(target.x - size, target.y - size); ctx.lineTo(target.x - size + 10, target.y - size);
-      ctx.moveTo(target.x + size, target.y - size + 10); ctx.lineTo(target.x + size, target.y - size); ctx.lineTo(target.x + size - 10, target.y - size);
-      ctx.moveTo(target.x - size, target.y + size - 10); ctx.lineTo(target.x - size, target.y + size); ctx.lineTo(target.x - size + 10, target.y + size);
-      ctx.moveTo(target.x + size, target.y + size - 10); ctx.lineTo(target.x + size, target.y + size); ctx.lineTo(target.x + size - 10, target.y + size);
-      ctx.stroke();
-
-      // Coordinates Label
-      ctx.shadowBlur = 0;
-      ctx.fillStyle = "#ffffff";
-      ctx.font = "10px monospace";
-      ctx.fillText(`SOL: (${Math.round(intersectX)}, ${Math.round(intersectY)})`, target.x + 25, target.y - 25);
-
-      requestAnimationFrame(render);
+      frameId = requestAnimationFrame(render);
     };
 
-    const animId = requestAnimationFrame(render);
-    const handleResize = () => { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; };
+    frameId = requestAnimationFrame(render);
+
+    const handleResize = () => {
+      w = canvas.width = window.innerWidth;
+      h = canvas.height = window.innerHeight;
+    };
+
     window.addEventListener("resize", handleResize);
     return () => {
-        window.removeEventListener("resize", handleResize);
-        cancelAnimationFrame(animId);
+      running = false;
+      window.removeEventListener("resize", handleResize);
+      cancelAnimationFrame(frameId);
     };
   }, []);
 
-  return <canvas ref={canvasRef} className="fixed inset-0 z-0 opacity-60 pointer-events-none" />;
+  return <canvas ref={canvasRef} className="fixed inset-0 z-0 pointer-events-none" />;
 }
