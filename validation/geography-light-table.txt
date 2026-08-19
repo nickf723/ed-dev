@@ -1,0 +1,1 @@
+Validation trigger for Geography GIS light table.
