@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Link from "next/link";
 import { ArrowRight, Boxes, CornerDownRight } from "lucide-react";
 import { DOMAINS, type DomainDefinition, type DomainId } from "@/lib/domains";
@@ -12,8 +12,11 @@ export type HomepageDomainChild = {
 
 export type HomepageDomainChildren = Record<DomainId, HomepageDomainChild[]>;
 
-// Point-up hexagons share edges at these offsets for a 13rem × 15rem tile.
-const HEX_POSITIONS = [
+type HexPoint = { x: number; y: number };
+type Axial = { q: number; r: number };
+
+// Primary domain ring. These are the original point-up hex positions.
+const HEX_POSITIONS: readonly HexPoint[] = [
   { x: -6.5, y: -11.25 },
   { x: 6.5, y: -11.25 },
   { x: 13, y: 0 },
@@ -22,7 +25,9 @@ const HEX_POSITIONS = [
   { x: -13, y: 0 },
 ] as const;
 
-const CHILD_ANCHORS = [
+// The first child for each domain begins exactly where the old decorative
+// outer/ghost hex sat. Children then continue on their own aligned honeycomb.
+const CHILD_ANCHORS: readonly HexPoint[] = [
   { x: -19.5, y: -11.25 },
   { x: 19.5, y: -11.25 },
   { x: 26, y: 0 },
@@ -31,17 +36,100 @@ const CHILD_ANCHORS = [
   { x: -26, y: 0 },
 ] as const;
 
+// Restores the old outer-hex proportions: 10rem wide × 12rem tall.
+// Point-up neighbors therefore step 10rem horizontally and 9rem vertically.
+const CHILD_HEX_WIDTH = 10;
+const CHILD_HEX_VERTICAL = 9;
+
+function axialDistance({ q, r }: Axial) {
+  return Math.max(Math.abs(q), Math.abs(r), Math.abs(q + r));
+}
+
+function childPoint(anchor: HexPoint, axial: Axial): HexPoint {
+  return {
+    x: anchor.x + CHILD_HEX_WIDTH * (axial.q + axial.r / 2),
+    y: anchor.y + CHILD_HEX_VERTICAL * axial.r,
+  };
+}
+
+function generateChildPoints(domainIndex: number, count: number): HexPoint[] {
+  if (count <= 0) return [];
+
+  const anchor = CHILD_ANCHORS[domainIndex];
+  const anchorLength = Math.hypot(anchor.x, anchor.y) || 1;
+  const outward = { x: anchor.x / anchorLength, y: anchor.y / anchorLength };
+  const tangent = { x: -outward.y, y: outward.x };
+  const candidates: Array<{ point: HexPoint; distance: number; score: number }> = [];
+
+  for (let q = -5; q <= 5; q += 1) {
+    for (let r = -5; r <= 5; r += 1) {
+      const axial = { q, r };
+      const distance = axialDistance(axial);
+      if (distance > 5) continue;
+
+      const point = childPoint(anchor, axial);
+
+      // Keep the smaller child lattice from sitting on top of the large
+      // primary ring or the central station core.
+      const overlapsPrimary = HEX_POSITIONS.some(
+        (primary) => Math.hypot(point.x - primary.x, point.y - primary.y) < 10.7,
+      );
+      const overlapsCore = Math.hypot(point.x, point.y) < 9.8;
+      if (overlapsPrimary || overlapsCore) continue;
+
+      const fromAnchor = { x: point.x - anchor.x, y: point.y - anchor.y };
+      const outwardAmount = fromAnchor.x * outward.x + fromAnchor.y * outward.y;
+      const tangentAmount = Math.abs(fromAnchor.x * tangent.x + fromAnchor.y * tangent.y);
+
+      // Prefer nearby cells, but steer large branches away from the header and
+      // viewport edges before resorting to another ring.
+      const verticalOverflow = Math.max(0, Math.abs(point.y) - 20.5);
+      const horizontalOverflow = Math.max(0, Math.abs(point.x) - 34);
+      const score =
+        distance * 10 +
+        verticalOverflow * 5 +
+        horizontalOverflow * 4 -
+        outwardAmount * 0.08 +
+        tangentAmount * 0.015;
+
+      candidates.push({ point, distance, score });
+    }
+  }
+
+  candidates.sort((a, b) => {
+    if (a.score !== b.score) return a.score - b.score;
+    return a.distance - b.distance;
+  });
+
+  return candidates.slice(0, count).map((candidate) => candidate.point);
+}
+
 export default function HexGrid({ domainChildren }: { domainChildren: HomepageDomainChildren }) {
   const [active, setActive] = useState<DomainDefinition | null>(null);
+  const clearTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const activeIndex = active ? DOMAINS.findIndex((domain) => domain.id === active.id) : -1;
   const activeChildren = active ? domainChildren[active.id] : [];
+
+  const activate = (domain: DomainDefinition) => {
+    if (clearTimer.current) clearTimeout(clearTimer.current);
+    clearTimer.current = null;
+    setActive(domain);
+  };
+
+  const scheduleClear = () => {
+    if (clearTimer.current) clearTimeout(clearTimer.current);
+    clearTimer.current = setTimeout(() => setActive(null), 130);
+  };
 
   return (
     <div className="w-full">
       <div className="hidden w-full items-center justify-center lg:flex">
         <div
-          className="relative mx-auto h-[704px] w-full max-w-[1360px]"
-          onMouseLeave={() => setActive(null)}
+          className="relative mx-auto h-[920px] w-full max-w-[1360px]"
+          onPointerEnter={() => {
+            if (clearTimer.current) clearTimeout(clearTimer.current);
+          }}
+          onPointerLeave={scheduleClear}
         >
           <AmbientGeometry active={active} />
           <CenterCore active={active} childCount={activeChildren.length} />
@@ -58,7 +146,7 @@ export default function HexGrid({ domainChildren }: { domainChildren: HomepageDo
               <DomainHex
                 domain={domain}
                 active={active?.id === domain.id}
-                onActivate={() => setActive(domain)}
+                onActivate={() => activate(domain)}
               />
             </div>
           ))}
@@ -68,6 +156,7 @@ export default function HexGrid({ domainChildren }: { domainChildren: HomepageDo
               domain={active}
               domainIndex={activeIndex}
               children={activeChildren}
+              onTrack={() => activate(active)}
             />
           ) : null}
         </div>
@@ -76,7 +165,7 @@ export default function HexGrid({ domainChildren }: { domainChildren: HomepageDo
       <div className="grid gap-2.5 pb-8 sm:grid-cols-2 lg:hidden">
         {DOMAINS.map((domain) => {
           const Icon = domain.icon;
-          const children = domainChildren[domain.id].slice(0, 3);
+          const children = domainChildren[domain.id];
           return (
             <Link
               key={domain.id}
@@ -99,7 +188,7 @@ export default function HexGrid({ domainChildren }: { domainChildren: HomepageDo
                   <strong className="block text-[15px] font-semibold text-white">{domain.title}</strong>
                   <span className="mt-1 block text-[12px] leading-5 text-slate-400">{domain.description}</span>
                   {children.length ? (
-                    <span className="mt-3 flex flex-wrap gap-x-3 gap-y-1 font-mono text-[10px] uppercase tracking-[0.06em] text-slate-600">
+                    <span className="mt-3 flex flex-wrap gap-x-3 gap-y-1 font-mono text-[10px] uppercase tracking-[0.045em] text-slate-600">
                       {children.map((child) => <span key={child.href}>{child.label}</span>)}
                     </span>
                   ) : null}
@@ -124,14 +213,14 @@ function AmbientGeometry({ active }: { active: DomainDefinition | null }) {
   return (
     <div className="pointer-events-none absolute inset-0 z-0" aria-hidden="true">
       <div
-        className="absolute left-1/2 top-1/2 h-[560px] w-[560px] -translate-x-1/2 -translate-y-1/2 border border-white/[0.028] transition-colors duration-300"
+        className="absolute left-1/2 top-1/2 h-[560px] w-[560px] -translate-x-1/2 -translate-y-1/2 border border-white/[0.025] transition-colors duration-300"
         style={{
           clipPath: "polygon(25% 0,75% 0,100% 50%,75% 100%,25% 100%,0 50%)",
-          borderColor: `rgba(${rgb},0.065)`,
+          borderColor: `rgba(${rgb},0.06)`,
         }}
       />
-      <div className="absolute left-1/2 top-1/2 h-px w-[920px] -translate-x-1/2 bg-gradient-to-r from-transparent via-white/[0.045] to-transparent" />
-      <div className="absolute left-1/2 top-1/2 h-[650px] w-px -translate-y-1/2 bg-gradient-to-b from-transparent via-white/[0.035] to-transparent" />
+      <div className="absolute left-1/2 top-1/2 h-px w-[920px] -translate-x-1/2 bg-gradient-to-r from-transparent via-white/[0.04] to-transparent" />
+      <div className="absolute left-1/2 top-1/2 h-[720px] w-px -translate-y-1/2 bg-gradient-to-b from-transparent via-white/[0.03] to-transparent" />
 
       {DOMAINS.map((domain, index) => (
         <div
@@ -162,24 +251,24 @@ function CenterCore({ active, childCount }: { active: DomainDefinition | null; c
         }}
       />
       <div
-        className="absolute inset-[1px] bg-[#03070c]/95"
+        className="absolute inset-[1px] bg-[#03070c]/92"
         style={{ clipPath: "polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%)" }}
       />
       <div className="relative flex h-full flex-col items-center justify-center px-5 text-center">
         {active && ActiveIcon ? (
           <>
             <ActiveIcon size={25} style={{ color: `rgb(${active.theme.rgb})` }} />
-            <div className="mt-3 font-mono text-[9px] font-semibold uppercase tracking-[0.16em]" style={{ color: `rgba(${active.theme.rgb},0.72)` }}>
+            <div className="mt-3 font-mono text-[9px] font-semibold uppercase tracking-[0.10em]" style={{ color: `rgba(${active.theme.rgb},0.72)` }}>
               active domain
             </div>
-            <h2 className="mt-1.5 text-[19px] font-semibold tracking-[-0.035em] text-white">{active.title}</h2>
+            <h2 className="mt-1.5 text-[19px] font-semibold tracking-[-0.02em] text-white">{active.title}</h2>
             <p className="mt-2 max-w-[165px] text-[11px] leading-5 text-slate-400">{active.subtitle}</p>
-            <div className="mt-3 font-mono text-[9px] uppercase tracking-[0.10em] text-slate-600">
-              {childCount} direct {childCount === 1 ? "field" : "fields"}{childCount > 4 ? " · 4 shown" : ""}
+            <div className="mt-3 font-mono text-[9px] uppercase tracking-[0.065em] text-slate-600">
+              {childCount} direct {childCount === 1 ? "field" : "fields"}
             </div>
             <Link
               href={active.href}
-              className="mt-4 inline-flex items-center gap-2 border px-3 py-2 font-mono text-[10px] font-semibold uppercase tracking-[0.08em] transition hover:bg-white/[0.04]"
+              className="mt-4 inline-flex items-center gap-2 border px-3 py-2 font-mono text-[10px] font-semibold uppercase tracking-[0.055em] transition hover:bg-white/[0.04]"
               style={{ color: `rgb(${active.theme.rgb})`, borderColor: `rgba(${active.theme.rgb},0.32)` }}
             >
               enter domain <ArrowRight size={11} />
@@ -188,8 +277,8 @@ function CenterCore({ active, childCount }: { active: DomainDefinition | null; c
         ) : (
           <>
             <Boxes size={24} className="text-cyan-100/75" />
-            <div className="mt-3 font-mono text-[9px] font-semibold uppercase tracking-[0.18em] text-cyan-100/55">domain array</div>
-            <div className="mt-1 text-[20px] font-semibold tracking-[-0.035em] text-white">Education Station 64</div>
+            <div className="mt-3 font-mono text-[9px] font-semibold uppercase tracking-[0.11em] text-cyan-100/55">domain array</div>
+            <div className="mt-1 text-[20px] font-semibold tracking-[-0.02em] text-white">Education Station 64</div>
             <p className="mt-2 max-w-[165px] text-[11px] leading-5 text-slate-500">Hover a field to expose its first layer.</p>
           </>
         )}
@@ -212,7 +301,7 @@ function DomainHex({
   return (
     <Link
       href={domain.href}
-      onMouseEnter={onActivate}
+      onPointerEnter={onActivate}
       onFocus={onActivate}
       className="group relative block h-60 w-52 -translate-x-1/2 -translate-y-1/2 outline-none"
       aria-label={`Explore ${domain.title}`}
@@ -229,18 +318,18 @@ function DomainHex({
           style={{
             clipPath: "polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%)",
             background: active
-              ? `linear-gradient(155deg, rgba(${domain.theme.rgb},0.095), rgba(3,7,12,0.96) 54%)`
-              : "linear-gradient(155deg, rgba(255,255,255,0.018), rgba(3,7,12,0.94) 58%)",
+              ? `linear-gradient(155deg, rgba(${domain.theme.rgb},0.095), rgba(3,7,12,0.94) 54%)`
+              : "linear-gradient(155deg, rgba(255,255,255,0.018), rgba(3,7,12,0.91) 58%)",
           }}
         />
 
         <div className="absolute inset-x-8 top-[31%] h-px" style={{ background: `rgba(${domain.theme.rgb},${active ? 0.38 : 0.12})` }} />
         <div className="relative flex h-full flex-col items-center justify-center px-5 text-center">
           <Icon size={24} style={{ color: active ? `rgb(${domain.theme.rgb})` : `rgba(${domain.theme.rgb},0.58)` }} />
-          <strong className={`mt-4 text-[15px] font-semibold leading-5 ${active ? "text-white" : "text-slate-300/78"}`}>
+          <strong className={`mt-4 text-[15px] font-semibold leading-5 tracking-[-0.01em] ${active ? "text-white" : "text-slate-300/78"}`}>
             {domain.title}
           </strong>
-          <span className="mt-2 font-mono text-[9px] uppercase tracking-[0.10em]" style={{ color: `rgba(${domain.theme.rgb},${active ? 0.65 : 0.28})` }}>
+          <span className="mt-2 font-mono text-[9px] uppercase tracking-[0.06em]" style={{ color: `rgba(${domain.theme.rgb},${active ? 0.65 : 0.28})` }}>
             {domain.subtitle}
           </span>
         </div>
@@ -253,49 +342,67 @@ function ChildCluster({
   domain,
   domainIndex,
   children,
+  onTrack,
 }: {
   domain: DomainDefinition;
   domainIndex: number;
   children: HomepageDomainChild[];
+  onTrack: () => void;
 }) {
-  const visible = children.slice(0, 4);
+  const points = generateChildPoints(domainIndex, children.length);
   const anchor = CHILD_ANCHORS[domainIndex];
-  const radius = Math.sqrt(anchor.x * anchor.x + anchor.y * anchor.y) || 1;
-  const outwardX = anchor.x / radius;
-  const outwardY = anchor.y / radius;
-  const tangentX = -outwardY;
-  const tangentY = outwardX;
+  const parent = HEX_POSITIONS[domainIndex];
 
   return (
-    <div className="absolute inset-0 z-20">
-      {visible.map((child, index) => {
-        const centered = index - (visible.length - 1) / 2;
-        const x = anchor.x + tangentX * centered * 4.6 + outwardX * Math.abs(centered) * 0.45;
-        const y = anchor.y + tangentY * centered * 4.6 + outwardY * Math.abs(centered) * 0.45;
+    <div className="absolute inset-0 z-35" onPointerEnter={onTrack}>
+      <svg className="pointer-events-none absolute inset-0 h-full w-full" viewBox="0 0 1360 920" preserveAspectRatio="none" aria-hidden="true">
+        <line
+          x1={680 + parent.x * 16}
+          y1={460 + parent.y * 16}
+          x2={680 + anchor.x * 16}
+          y2={460 + anchor.y * 16}
+          stroke={`rgba(${domain.theme.rgb},0.18)`}
+          strokeWidth="1"
+          strokeDasharray="3 7"
+        />
+      </svg>
+
+      {children.map((child, index) => {
+        const point = points[index];
+        if (!point) return null;
+
         return (
           <div
             key={child.href}
             className="absolute left-1/2 top-1/2"
-            style={{ marginLeft: `${x}rem`, marginTop: `${y}rem` }}
+            style={{ marginLeft: `${point.x}rem`, marginTop: `${point.y}rem` }}
           >
             <Link
               href={child.href}
-              className="group relative block h-[8.4rem] w-[7.2rem] -translate-x-1/2 -translate-y-1/2"
+              onPointerEnter={onTrack}
+              onFocus={onTrack}
+              className="group relative block h-48 w-40 -translate-x-1/2 -translate-y-1/2 outline-none"
             >
               <div
-                className="absolute inset-0 transition-transform duration-200 group-hover:scale-[1.045]"
+                className="absolute inset-0 transition-all duration-180 group-hover:scale-[1.035] group-focus-visible:scale-[1.035]"
                 style={{
                   clipPath: "polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%)",
-                  background: `rgba(${domain.theme.rgb},0.35)`,
+                  background: `rgba(${domain.theme.rgb},0.34)`,
                 }}
               >
                 <div
-                  className="absolute inset-[1px] bg-[#03070c]/96"
-                  style={{ clipPath: "polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%)" }}
+                  className="absolute inset-[1px]"
+                  style={{
+                    clipPath: "polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%)",
+                    background: `linear-gradient(155deg, rgba(${domain.theme.rgb},0.055), rgba(3,7,12,0.94) 58%)`,
+                  }}
                 />
-                <div className="relative flex h-full flex-col items-center justify-center px-2 text-center">
-                  <CornerDownRight size={12} style={{ color: `rgba(${domain.theme.rgb},0.70)` }} />
-                  <span className="mt-2 text-[10px] font-semibold leading-4 text-slate-200">{child.label}</span>
+                <div className="relative flex h-full flex-col items-center justify-center px-3 text-center">
+                  <CornerDownRight size={13} style={{ color: `rgba(${domain.theme.rgb},0.72)` }} />
+                  <span className="mt-2 text-[11px] font-semibold leading-4 tracking-[-0.005em] text-slate-100">{child.label}</span>
+                  <span className="mt-2 font-mono text-[8px] uppercase tracking-[0.04em]" style={{ color: `rgba(${domain.theme.rgb},0.42)` }}>
+                    open
+                  </span>
                 </div>
               </div>
             </Link>
