@@ -1,197 +1,190 @@
-"use client";
-import React from 'react';
-import Link from 'next/link';
-import { ArrowLeft, Split, Combine, ArrowRight, Waypoints, CheckSquare, GitCommit } from 'lucide-react';
-import LogicBackground from '../_components/LogicBackground';
-import TruthTableLab from './_components/TruthTableLab';
-import PropositionalBackground from './_components/PropositionalBackground';
-import Assessment from "@/app/_components/Assessment"; 
+import Link from "next/link";
+import {
+  ArrowRight,
+  Binary,
+  Braces,
+  CircleDot,
+  GitBranch,
+  Table2,
+} from "lucide-react";
+import Assessment from "@/app/_components/Assessment";
+import DomainPageHeader from "@/app/_components/DomainPageHeader";
 import VocabApplet from "@/app/_components/VocabApplet";
-
-// Data Imports
-import { propLogicQuiz } from "./_components/assessment";
 import { propLogicVocab } from "@/app/_data/vocab/p/propositional-logic";
+import { propLogicQuiz } from "./_components/assessment";
+import EquivalenceLab from "./_components/EquivalenceLab";
+import PropositionalBackground from "./_components/PropositionalBackground";
+import TruthTableLab from "./_components/TruthTableLab";
+
+const CONNECTIVES = [
+  ["¬P", "negation", "reverses the truth value of P"],
+  ["P ∧ Q", "conjunction", "true only when both P and Q are true"],
+  ["P ∨ Q", "inclusive disjunction", "true when at least one of P or Q is true"],
+  ["P → Q", "material conditional", "false only when P is true and Q is false"],
+  ["P ↔ Q", "biconditional", "true when P and Q have matching truth values"],
+  ["P ⊕ Q", "exclusive disjunction", "true when exactly one of P and Q is true"],
+] as const;
 
 export default function PropositionalLogicPage() {
   return (
-    <main className="relative min-h-screen bg-[#05030a] overflow-hidden selection:bg-purple-900/30 font-sans pb-32">
+    <main className="relative min-h-screen overflow-x-hidden bg-[#040208] text-slate-100 selection:bg-violet-400/25">
       <PropositionalBackground />
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(168,85,247,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(168,85,247,0.02)_1px,transparent_1px)] bg-[size:32px_32px] pointer-events-none" />
-      
-      <div className="relative z-10 max-w-[1000px] mx-auto pt-24">
-         
-         {/* THE DEDUCTION THREAD (Vertical Spine) */}
-         <div className="absolute left-6 md:left-12 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-purple-500/30 to-transparent pointer-events-none" />
+      <div className="pointer-events-none fixed inset-0 z-[1] bg-[radial-gradient(circle_at_18%_16%,rgba(168,85,247,0.06),transparent_28%),linear-gradient(to_bottom,rgba(4,2,8,0.08),rgba(4,2,8,0.62))]" />
 
-         {/* =========================================
-             HEADER
-         ========================================= */}
-         <div className="relative pl-16 md:pl-28 pr-6 mb-24">
-             {/* Node */}
-             <div className="absolute left-[21px] md:left-[45px] top-4 w-3 h-3 rounded-full bg-purple-500 shadow-[0_0_15px_rgba(168,85,247,0.8)] ring-4 ring-black" />
-             
-             <Link href="/formal-science/logic" className="inline-flex items-center gap-2 text-[10px] font-black tracking-widest text-neutral-500 hover:text-purple-400 mb-8 transition-colors uppercase border border-neutral-800 hover:border-purple-500/30 bg-black/50 px-4 py-2 rounded-full backdrop-blur-sm">
-                 <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform"/> Back to Logic Hub
-             </Link>
+      <div className="relative z-10 mx-auto w-full max-w-[1480px] px-4 pb-16 sm:px-6 xl:px-8">
+        <div className="sticky top-0 z-30 -mx-4 border-b border-white/[0.055] bg-[#040208]/78 px-4 pb-3 pt-4 shadow-[0_18px_58px_rgba(0,0,0,0.24)] backdrop-blur-2xl sm:-mx-6 sm:px-6 xl:-mx-8 xl:px-8">
+          <DomainPageHeader
+            breadcrumbs={[
+              { label: "Formal Sciences", href: "/formal-science" },
+              { label: "Logic", href: "/formal-science/logic" },
+              { label: "Propositional Logic" },
+            ]}
+            eyebrow="Propositions · assignments · connectives · truth tables · equivalence"
+            eyebrowStyle="rule"
+            icon={GitBranch}
+            title={<span>Propositional Logic</span>}
+            subtitle="Study formulas built from propositions and truth-functional connectives. Truth tables define how formulas evaluate under assignments, while equivalence compares formulas across every possible assignment in the table."
+            accentRgb="168, 85, 247"
+            titleClassName="font-sans text-[clamp(2.65rem,5vw,5.5rem)] font-semibold leading-[0.86] tracking-[-0.063em] text-[#fcf8ff]"
+            headerClassName="border-white/[0.07]"
+          />
+        </div>
 
-             <div className="flex items-center gap-3 text-purple-500 mb-4 font-mono text-xs font-bold tracking-[0.2em] uppercase">
-                 <GitCommit size={14} />
-                 <span>[ MODULE 01 ]</span>
-                 <span className="w-12 h-px bg-purple-500/50"></span>
-             </div>
-             
-             <h1 className="text-5xl md:text-7xl font-black text-white mb-8 tracking-tighter leading-none drop-shadow-[0_0_20px_rgba(168,85,247,0.2)]">
-                 PROPOSITIONAL LOGIC
-             </h1>
-             <p className="text-xl text-neutral-400 max-w-2xl leading-relaxed font-light">
-                 Before we can build complex mathematics or computer programs, we have to define the absolute ground floor of reality. We must define what it means for a statement to be <strong className="text-purple-400">True</strong> or <strong className="text-purple-400">False</strong>.
-             </p>
-         </div>
-
-         {/* =========================================
-             THEORY & PROSE
-         ========================================= */}
-         <div className="relative pl-16 md:pl-28 pr-6 mb-24">
-            <div className="absolute left-[21px] md:left-[45px] top-2 w-3 h-3 rounded-full border-2 border-purple-500 bg-black ring-4 ring-black" />
-            
-            <article className="prose prose-invert prose-lg max-w-none">
-                <h3 className="text-2xl font-black text-white tracking-tight flex items-center gap-3 mt-0">
-                   <Waypoints size={20} className="text-purple-500" /> The Atomic Proposition
-                </h3>
-                <p className="text-neutral-400 font-light leading-relaxed">
-                    A <strong>proposition</strong> is simply a declarative statement that is exactly one of two things: True or False. It cannot be both, and it cannot be neither. 
-                </p>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 not-prose my-10">
-                    <div className="p-6 bg-black/40 border border-neutral-800 rounded-xl hover:border-emerald-500/30 transition-colors">
-                        <div className="text-[10px] uppercase font-bold text-emerald-500 tracking-widest mb-3">Valid Propositions</div>
-                        <ul className="text-sm font-mono text-neutral-300 space-y-3">
-                            <li className="flex items-start gap-2"><span className="text-emerald-500 mt-1">▶</span> "Paris is the capital of France." (T)</li>
-                            <li className="flex items-start gap-2"><span className="text-emerald-500 mt-1">▶</span> "The earth is flat." (F)</li>
-                            <li className="flex items-start gap-2"><span className="text-emerald-500 mt-1">▶</span> "2 + 2 = 5." (F)</li>
-                        </ul>
-                    </div>
-                    <div className="p-6 bg-black/40 border border-neutral-800 rounded-xl hover:border-red-500/30 transition-colors">
-                        <div className="text-[10px] uppercase font-bold text-red-500 tracking-widest mb-3">Not Propositions</div>
-                        <ul className="text-sm font-mono text-neutral-300 space-y-3">
-                            <li className="flex items-start gap-2"><span className="text-red-500 mt-1">▶</span> "What time is it?" (Question)</li>
-                            <li className="flex items-start gap-2"><span className="text-red-500 mt-1">▶</span> "Read this book." (Command)</li>
-                            <li className="flex items-start gap-2"><span className="text-red-500 mt-1">▶</span> "This sentence is false." (Paradox)</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <p className="text-neutral-400 font-light leading-relaxed">
-                    By assigning these statements variable names like <span className="font-serif italic text-white px-1">P</span> and <span className="font-serif italic text-white px-1">Q</span>, we can stop worrying about what the sentences actually mean, and start calculating their structural truth.
-                </p>
-            </article>
-         </div>
-
-         {/* =========================================
-             INTERACTIVE LAB
-         ========================================= */}
-         <div className="relative pl-16 md:pl-28 pr-6 mb-24">
-             <div className="absolute left-[21px] md:left-[45px] top-6 w-3 h-3 rounded-full border-2 border-purple-500 bg-black ring-4 ring-black" />
-             
-             <div className="flex items-center gap-3 mb-8 text-purple-400 font-mono text-xs font-bold tracking-widest uppercase">
-                 <GitCommit size={16} /> [ INTERACTIVE LAB ]
-             </div>
-
-             <div className="bg-black/40 backdrop-blur-md border border-purple-500/20 rounded-3xl p-2 shadow-2xl relative">
-               <div className="absolute -left-16 md:-left-28 top-1/2 w-16 md:w-28 h-px bg-purple-500/20" />
-               <TruthTableLab />
-             </div>
-         </div>
-
-         {/* =========================================
-             THEORY: DE MORGAN'S LAWS
-         ========================================= */}
-         <div className="relative pl-16 md:pl-28 pr-6 mb-32">
-             <div className="absolute left-[21px] md:left-[45px] top-6 w-3 h-3 rounded-full border-2 border-purple-500 bg-black ring-4 ring-black" />
-             
-             <article className="prose prose-invert prose-lg max-w-none pt-4">
-                <h3 className="text-2xl font-black text-white tracking-tight mt-0">Logical Equivalence</h3>
-                <p className="text-neutral-400 font-light leading-relaxed">
-                    Just like in algebra where <span className="font-mono text-white text-sm bg-white/5 px-1 rounded">x + y</span> is equivalent to <span className="font-mono text-white text-sm bg-white/5 px-1 rounded">y + x</span>, logical statements can be manipulated and simplified without changing their ultimate truth value. When two statements output the exact same Truth Table, they are <strong>logically equivalent</strong> (<span className="font-serif text-white">≡</span>).
-                </p>
-
-                <h3 className="text-2xl font-black text-white tracking-tight mt-12">De Morgan's Laws</h3>
-                <p className="text-neutral-400 font-light leading-relaxed">
-                    Augustus De Morgan formalized two rules that are arguably the most important transformation tools in all of computer science. They describe how to distribute a <strong className="text-white">NOT</strong> (<span className="font-serif text-white">¬</span>) operator inside a parenthesis.
-                </p>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 not-prose my-12">
-                    <div className="bg-neutral-900/50 border border-neutral-800 p-8 rounded-2xl relative overflow-hidden group hover:border-purple-500/50 transition-colors">
-                        <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:text-purple-400 transition-colors"><Split size={64}/></div>
-                        <h4 className="text-white font-bold mb-4 z-10 relative tracking-wide uppercase text-xs">Law 1: Negating an AND</h4>
-                        <div className="bg-black/60 p-4 rounded-lg text-center border border-neutral-800 mb-4 shadow-[inset_0_0_10px_rgba(0,0,0,0.5)]">
-                            <span className="font-serif text-lg text-white tracking-widest">¬(P ∧ Q) ≡ ¬P ∨ ¬Q</span>
-                        </div>
-                        <p className="text-sm text-neutral-400 z-10 relative font-light leading-relaxed">
-                            "If it is NOT true that (I have an Apple AND a Banana), then I must NOT have an Apple, OR I must NOT have a Banana."
-                        </p>
-                    </div>
-                    
-                    <div className="bg-neutral-900/50 border border-neutral-800 p-8 rounded-2xl relative overflow-hidden group hover:border-purple-500/50 transition-colors">
-                        <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:text-purple-400 transition-colors"><Combine size={64}/></div>
-                        <h4 className="text-white font-bold mb-4 z-10 relative tracking-wide uppercase text-xs">Law 2: Negating an OR</h4>
-                        <div className="bg-black/60 p-4 rounded-lg text-center border border-neutral-800 mb-4 shadow-[inset_0_0_10px_rgba(0,0,0,0.5)]">
-                            <span className="font-serif text-lg text-white tracking-widest">¬(P ∨ Q) ≡ ¬P ∧ ¬Q</span>
-                        </div>
-                        <p className="text-sm text-neutral-400 z-10 relative font-light leading-relaxed">
-                            "If it is NOT true that (I am walking OR I am running), then I am NOT walking, AND I am NOT running."
-                        </p>
-                    </div>
-                </div>
-
-                <p className="text-neutral-400 font-light leading-relaxed border-l-2 border-purple-500/50 pl-4">
-                    Notice the beautiful symmetry: When you distribute a negation, the <span className="font-serif text-white">∧</span> flips to an <span className="font-serif text-white">∨</span>, and vice versa.
-                </p>
-             </article>
-         </div>
-
-         {/* =========================================
-             VERIFICATION (Assessment)
-         ========================================= */}
-         <div className="relative pl-6 md:pl-24 pr-6">
-            <div className="absolute left-[21px] md:left-[45px] top-6 w-3 h-3 rounded-full border-2 border-purple-500 bg-black ring-4 ring-black" />
-            <div className="absolute left-[21px] md:left-[45px] top-8 bottom-0 w-3 bg-[#05030a]" /> {/* Cuts off the line */}
-
-            <div className="flex items-center gap-3 mb-8 text-purple-400 font-mono text-xs font-bold tracking-widest uppercase">
-                 <CheckSquare size={16} /> [ MODULE VERIFICATION ]
+        <nav className="mt-3 grid gap-2 sm:grid-cols-3" aria-label="Logic sequence">
+          <Link
+            href="/formal-science/logic"
+            className="group rounded-[16px] border border-white/[0.06] bg-black/24 p-3 backdrop-blur-lg transition-colors hover:border-violet-200/16"
+          >
+            <div className="font-mono text-[8px] uppercase tracking-[0.11em] text-slate-700">parent</div>
+            <div className="mt-1 flex items-center justify-between gap-2 text-[11px] font-semibold text-slate-400">
+              Logic hub <ArrowRight size={11} className="text-slate-700 transition-transform group-hover:translate-x-0.5" />
             </div>
-
-            <div className="grid grid-cols-1 gap-12">
-                <div className="w-full">
-                    <VocabApplet 
-                      currentDomain="Prop Logic" 
-                      localTerms={propLogicVocab} 
-                      accentColor="purple" 
-                    />
-                </div>
-                
-                <div className="w-full">
-                    <Assessment 
-                        title="Knowledge Check: Propositional Logic" 
-                        questions={propLogicQuiz} 
-                        accentColor="purple"
-                        onComplete={(score, total) => console.log(`Prop Logic Quiz Scored: ${score}/${total}`)} 
-                    />
-                </div>
+          </Link>
+          <div className="rounded-[16px] border border-violet-300/20 bg-violet-300/[0.045] p-3 backdrop-blur-lg">
+            <div className="font-mono text-[8px] uppercase tracking-[0.11em] text-violet-300/50">current</div>
+            <div className="mt-1 text-[11px] font-semibold text-violet-100">Propositional Logic</div>
+          </div>
+          <Link
+            href="/formal-science/logic/first-order-logic"
+            className="group rounded-[16px] border border-white/[0.06] bg-black/24 p-3 backdrop-blur-lg transition-colors hover:border-cyan-200/16"
+          >
+            <div className="font-mono text-[8px] uppercase tracking-[0.11em] text-slate-700">next active branch</div>
+            <div className="mt-1 flex items-center justify-between gap-2 text-[11px] font-semibold text-slate-400">
+              First-Order Logic <ArrowRight size={11} className="text-slate-700 transition-transform group-hover:translate-x-0.5" />
             </div>
+          </Link>
+        </nav>
 
-            {/* FOOTER NAVIGATION */}
-            <div className="mt-16 pt-10 border-t border-purple-500/20 flex flex-col sm:flex-row gap-6 justify-between items-center bg-black/20 p-6 rounded-2xl">
-                <Link href="/formal-science/logic" className="text-[10px] font-black tracking-widest text-neutral-500 hover:text-white uppercase transition-colors flex items-center gap-2">
-                    <ArrowLeft size={14}/> Return to Logic Hub
-                </Link>
-                <Link href="/formal-science/logic/first-order" className="group px-6 py-3 bg-purple-500/10 border border-purple-500/30 hover:bg-purple-500/20 rounded-xl text-xs font-black tracking-widest text-purple-400 hover:text-white uppercase transition-all flex items-center gap-3">
-                    Next: First-Order Logic <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-                </Link>
+        <section className="mt-3 grid gap-3 lg:grid-cols-[minmax(0,0.72fr)_minmax(0,1.28fr)] lg:items-stretch">
+          <div className="rounded-[24px] border border-violet-200/[0.12] bg-[#0a0610]/76 p-5 backdrop-blur-xl">
+            <div className="flex items-center gap-2 font-mono text-[9px] font-semibold uppercase tracking-[0.14em] text-violet-300/65">
+              <CircleDot size={12} /> Classical scope
             </div>
-         </div>
+            <h2 className="mt-2 text-2xl font-semibold tracking-[-0.04em] text-white">A proposition is treated as true or false.</h2>
+            <p className="mt-2 text-[11px] leading-5 text-slate-500">
+              In classical propositional logic, an atomic proposition is a statement represented by a symbol such as P or Q and assigned one of two truth values. The formal system then studies how compound formulas depend on those assigned values.
+            </p>
+            <div className="mt-4 space-y-2">
+              <Example label="Proposition" text="P: 7 is prime." tone="violet" />
+              <Example label="Proposition" text="Q: 10 is odd." tone="violet" />
+              <Example label="Not a proposition here" text="What time is it? (question)" tone="slate" />
+              <Example label="Not a proposition here" text="x > 2 (open formula until x is specified or quantified)" tone="slate" />
+            </div>
+            <div className="mt-4 rounded-xl border border-amber-200/[0.08] bg-amber-100/[0.018] p-3 text-[10px] leading-5 text-slate-600">
+              This lesson is about a particular formal system. It is not a claim that every meaningful sentence, vague statement, paradox, or real-world uncertainty must fit neatly into two values.
+            </div>
+          </div>
 
+          <div className="rounded-[24px] border border-white/[0.065] bg-black/22 p-4 backdrop-blur-xl">
+            <div className="flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.12em] text-slate-600">
+              <Braces size={12} /> syntax → assignment → evaluation
+            </div>
+            <div className="mt-3 grid gap-2 sm:grid-cols-3">
+              <Step number="01" title="Write a formula" text="Combine proposition symbols with connectives and parentheses." />
+              <Step number="02" title="Choose an assignment" text="Give each atomic proposition a truth value." />
+              <Step number="03" title="Evaluate" text="Apply connective definitions from the inside outward." />
+            </div>
+          </div>
+        </section>
+
+        <div className="mt-3">
+          <TruthTableLab />
+        </div>
+
+        <div className="mt-3">
+          <EquivalenceLab />
+        </div>
+
+        <section className="mt-3 rounded-[24px] border border-white/[0.065] bg-[#08050d]/74 p-5 backdrop-blur-xl">
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <div className="flex items-center gap-2 font-mono text-[9px] font-semibold uppercase tracking-[0.14em] text-violet-300/60">
+                <Binary size={12} /> Connective reference
+              </div>
+              <h2 className="mt-1.5 text-xl font-semibold text-white">Definitions first, intuition second.</h2>
+            </div>
+            <p className="max-w-xl text-[10px] leading-5 text-slate-600">
+              Everyday language often carries implication, exclusivity, emphasis, timing, and context beyond these truth-functional definitions.
+            </p>
+          </div>
+
+          <div className="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+            {CONNECTIVES.map(([formula, label, rule]) => (
+              <div key={formula} className="rounded-[15px] border border-white/[0.05] bg-white/[0.014] p-3">
+                <div className="flex items-baseline justify-between gap-3">
+                  <div className="font-serif text-lg text-violet-100/85">{formula}</div>
+                  <div className="font-mono text-[8px] uppercase tracking-[0.09em] text-slate-700">{label}</div>
+                </div>
+                <p className="mt-2 text-[10px] leading-4 text-slate-500">{rule}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="mt-3 grid gap-3 xl:grid-cols-2">
+          <div className="rounded-[24px] border border-white/[0.06] bg-black/20 p-4 backdrop-blur-xl">
+            <VocabApplet currentDomain="Prop Logic" localTerms={propLogicVocab} accentColor="purple" />
+          </div>
+          <div className="rounded-[24px] border border-white/[0.06] bg-black/20 p-4 backdrop-blur-xl">
+            <Assessment
+              title="Knowledge Check: Propositional Logic"
+              questions={propLogicQuiz}
+              accentColor="purple"
+            />
+          </div>
+        </section>
+
+        <div className="mt-4 flex flex-col gap-2 border-t border-white/[0.055] pt-4 sm:flex-row sm:items-center sm:justify-between">
+          <Link href="/formal-science/logic" className="text-[10px] font-semibold text-slate-600 transition-colors hover:text-slate-300">
+            Return to Logic
+          </Link>
+          <Link
+            href="/formal-science/logic/first-order-logic"
+            className="group inline-flex items-center gap-2 rounded-xl border border-violet-300/16 bg-violet-300/[0.04] px-4 py-2.5 text-[10px] font-semibold text-violet-200/80 transition-colors hover:border-violet-300/28 hover:text-violet-100"
+          >
+            Next: First-Order Logic <ArrowRight size={12} className="transition-transform group-hover:translate-x-0.5" />
+          </Link>
+        </div>
       </div>
     </main>
+  );
+}
+
+function Example({ label, text, tone }: { label: string; text: string; tone: "violet" | "slate" }) {
+  return (
+    <div className="rounded-xl border border-white/[0.055] bg-black/18 p-3">
+      <div className={`font-mono text-[8px] uppercase tracking-[0.1em] ${tone === "violet" ? "text-violet-300/58" : "text-slate-700"}`}>{label}</div>
+      <div className="mt-1.5 text-[11px] text-slate-400">{text}</div>
+    </div>
+  );
+}
+
+function Step({ number, title, text }: { number: string; title: string; text: string }) {
+  return (
+    <div className="rounded-[16px] border border-white/[0.055] bg-white/[0.014] p-4">
+      <div className="font-mono text-[9px] font-semibold text-violet-300/42">{number}</div>
+      <div className="mt-2 text-[13px] font-semibold text-slate-200">{title}</div>
+      <p className="mt-1.5 text-[10px] leading-5 text-slate-600">{text}</p>
+    </div>
   );
 }
