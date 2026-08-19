@@ -1,130 +1,120 @@
 "use client";
-import { useState } from "react";
-import { motion } from "framer-motion";
-import { Lock, Unlock, RotateCw, Settings, KeyRound } from "lucide-react";
 
-// Simplified Rotor Logic (Historical Wiring)
-// Input -> Rotor III -> Rotor II -> Rotor I -> Reflector -> Back through Rotors -> Output
-const ROTORS = [
-    "EKMFLGDQVZNTOWYHXUSPAIBRCJ", // I
-    "AJDKSIRUXBLHWTMCQGZNPYFVOE", // II
-    "BDFHJLCPRTXVZNYEIWGAKMUSQO", // III
-];
-const REFLECTOR = "YRUHQSLDPXNGOKMIEBFZCWVJAT"; // Reflector B
+import { useMemo, useState } from "react";
+import { KeyRound, RotateCcw, Settings2 } from "lucide-react";
+
 const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const ROTORS = [
+  "EKMFLGDQVZNTOWYHXUSPAIBRCJ",
+  "AJDKSIRUXBLHWTMCQGZNPYFVOE",
+  "BDFHJLCPRTXVZNYEIWGAKMUSQO",
+] as const;
+const REFLECTOR = "YRUHQSLDPXNGOKMIEBFZCWVJAT";
+
+function mod(value: number, divisor: number) {
+  return ((value % divisor) + divisor) % divisor;
+}
+
+function forwardRotor(index: number, wiring: string, position: number) {
+  const shifted = mod(index + position, 26);
+  const wired = ALPHABET.indexOf(wiring[shifted]);
+  return mod(wired - position, 26);
+}
+
+function reverseRotor(index: number, wiring: string, position: number) {
+  const shifted = mod(index + position, 26);
+  const wired = wiring.indexOf(ALPHABET[shifted]);
+  return mod(wired - position, 26);
+}
+
+function stepPositions(start: readonly [number, number, number], step: number): [number, number, number] {
+  const total = start[2] + step;
+  const right = mod(total, 26);
+  const middleTurns = Math.floor(total / 26);
+  const middleTotal = start[1] + middleTurns;
+  const middle = mod(middleTotal, 26);
+  const left = mod(start[0] + Math.floor(middleTotal / 26), 26);
+  return [left, middle, right];
+}
+
+function transformLetter(letter: string, positions: readonly [number, number, number]) {
+  let index = ALPHABET.indexOf(letter);
+  if (index < 0) return letter;
+
+  index = forwardRotor(index, ROTORS[2], positions[2]);
+  index = forwardRotor(index, ROTORS[1], positions[1]);
+  index = forwardRotor(index, ROTORS[0], positions[0]);
+  index = ALPHABET.indexOf(REFLECTOR[index]);
+  index = reverseRotor(index, ROTORS[0], positions[0]);
+  index = reverseRotor(index, ROTORS[1], positions[1]);
+  index = reverseRotor(index, ROTORS[2], positions[2]);
+
+  return ALPHABET[index];
+}
+
+function transformText(text: string, start: readonly [number, number, number]) {
+  let letterStep = 0;
+  return text
+    .toUpperCase()
+    .split("")
+    .map((character) => {
+      if (!ALPHABET.includes(character)) return character;
+      const positions = stepPositions(start, letterStep + 1);
+      letterStep += 1;
+      return transformLetter(character, positions);
+    })
+    .join("");
+}
 
 export default function EnigmaWidget() {
-  const [positions, setPositions] = useState([0, 0, 0]); // Rotor positions
-  const [input, setInput] = useState("");
-  const [output, setOutput] = useState("");
-  const [plugboard, setPlugboard] = useState(""); // Simplified visual only for now
+  const [start, setStart] = useState<[number, number, number]>([0, 0, 0]);
+  const [input, setInput] = useState("HELLO");
+  const output = useMemo(() => transformText(input, start), [input, start]);
 
-  const encryptChar = (char: string) => {
-      const upper = char.toUpperCase();
-      if (!ALPHABET.includes(upper)) return char;
-
-      // 1. Step Rotors (Simplified stepping)
-      let p1 = positions[0];
-      let p2 = positions[1];
-      let p3 = positions[2];
-      
-      p3 = (p3 + 1) % 26;
-      if (p3 === 0) p2 = (p2 + 1) % 26;
-      if (p2 === 0 && p3 === 0) p1 = (p1 + 1) % 26;
-      
-      setPositions([p1, p2, p3]);
-
-      // 2. Pass Through (Right to Left)
-      let idx = ALPHABET.indexOf(upper);
-      
-      // Rotor III
-      idx = (idx + p3) % 26;
-      idx = ALPHABET.indexOf(ROTORS[2][idx]);
-      idx = (idx - p3 + 26) % 26;
-
-      // Rotor II
-      idx = (idx + p2) % 26;
-      idx = ALPHABET.indexOf(ROTORS[1][idx]);
-      idx = (idx - p2 + 26) % 26;
-
-      // Rotor I
-      idx = (idx + p1) % 26;
-      idx = ALPHABET.indexOf(ROTORS[0][idx]);
-      idx = (idx - p1 + 26) % 26;
-
-      // Reflector
-      idx = ALPHABET.indexOf(REFLECTOR[idx]);
-
-      // Back Through (Left to Right) - Inverse mapping needed
-      // For visual simplicity in this widget, we'll just run it forward again through different rotors
-      // Real Enigma is symmetric (Output -> Input decrypts). 
-      // Let's cheat slightly for the widget feel: Symmetry is key.
-      
-      // Simple Symmetric scramble for demo feel:
-      // Just reversing the index through reflector is enough to show "scramble"
-      
-      return ALPHABET[idx];
-  };
-
-  const handleType = (e: any) => {
-      const char = e.key;
-      if (char.length === 1 && /[a-zA-Z]/.test(char)) {
-          const encrypted = encryptChar(char);
-          setInput(prev => (prev + char).slice(-15)); // Keep last 15
-          setOutput(prev => (prev + encrypted).slice(-15));
-      } else if (char === "Backspace") {
-          setInput(prev => prev.slice(0, -1));
-          setOutput(prev => prev.slice(0, -1));
-      }
-  };
+  function setRotor(index: number, value: number) {
+    setStart((current) => {
+      const next: [number, number, number] = [...current];
+      next[index] = value;
+      return next;
+    });
+  }
 
   return (
-    <div className="glass overflow-hidden rounded-xl border border-white/10 bg-neutral-900/80 backdrop-blur-xl">
-      <div className="border-b border-white/5 px-5 py-4 flex justify-between items-center">
-        <h3 className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-neutral-300">
-          <Lock size={14} className="text-emerald-400" /> Enigma M3
-        </h3>
-        <div className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_10px_#10b981]" />
+    <section className="overflow-hidden rounded-[26px] border border-emerald-200/[0.11] bg-black/[0.17] backdrop-blur-xl">
+      <div className="border-b border-white/[0.07] px-5 py-4">
+        <div className="flex items-center gap-2 font-mono text-[9px] font-semibold uppercase tracking-[0.13em] text-emerald-200/58"><KeyRound size={13} /> Rotor cipher toy</div>
+        <h3 className="mt-1 text-[18px] font-semibold tracking-[-0.035em] text-white">Keyed substitution changes as the rotors step.</h3>
       </div>
 
-      <div className="p-6 flex flex-col items-center" tabIndex={0} onKeyDown={handleType}>
-        
-        {/* Rotors */}
-        <div className="flex gap-2 mb-6 p-4 bg-black/40 rounded-lg border border-white/5 shadow-inner">
-            {positions.map((p, i) => (
-                <div key={i} className="flex flex-col items-center gap-1">
-                    <div className="w-10 h-12 bg-neutral-800 rounded border border-neutral-600 flex items-center justify-center text-xl font-mono font-bold text-white shadow-[inset_0_2px_4px_rgba(0,0,0,0.5)]">
-                        {ALPHABET[p]}
-                    </div>
-                    <span className="text-[8px] uppercase text-neutral-500 font-bold">Rotor {i+1}</span>
-                </div>
-            ))}
+      <div className="p-5 sm:p-6">
+        <div className="grid grid-cols-3 gap-2">
+          {start.map((position, index) => (
+            <label key={index} className="rounded-[14px] border border-white/[0.06] bg-black/[0.10] p-3">
+              <span className="font-mono text-[7px] uppercase tracking-[0.09em] text-slate-700">Rotor {index + 1} start</span>
+              <select value={position} onChange={(event) => setRotor(index, Number(event.target.value))} className="mt-2 w-full rounded-[9px] border border-white/[0.08] bg-[#0b1210] px-2 py-2 font-mono text-[11px] text-emerald-100/74 outline-none">
+                {ALPHABET.split("").map((letter, letterIndex) => <option key={letter} value={letterIndex}>{letter}</option>)}
+              </select>
+            </label>
+          ))}
         </div>
 
-        {/* Output Display (The Lamps) */}
-        <div className="w-full mb-4">
-            <div className="flex justify-between text-[10px] uppercase font-bold text-neutral-500 mb-1">
-                <span>Input Stream</span>
-                <span>Cipher Stream</span>
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-                <div className="h-10 bg-white/5 rounded border border-white/10 flex items-center px-3 font-mono text-neutral-400 overflow-hidden">
-                    {input}
-                </div>
-                <div className="h-10 bg-emerald-900/20 rounded border border-emerald-500/30 flex items-center px-3 font-mono text-emerald-400 overflow-hidden shadow-[inset_0_0_10px_rgba(16,185,129,0.1)]">
-                    {output}
-                </div>
-            </div>
+        <label className="mt-4 block">
+          <span className="font-mono text-[8px] uppercase tracking-[0.10em] text-slate-600">Plaintext</span>
+          <input value={input} maxLength={32} onChange={(event) => setInput(event.target.value.replace(/[^a-zA-Z\s]/g, ""))} className="mt-2 w-full rounded-[13px] border border-white/[0.08] bg-black/[0.14] px-4 py-3 font-mono text-[12px] uppercase text-white/82 outline-none focus:border-emerald-200/[0.26]" />
+        </label>
+
+        <div className="mt-4 rounded-[15px] border border-emerald-200/[0.10] bg-emerald-200/[0.02] px-4 py-3">
+          <div className="font-mono text-[8px] uppercase tracking-[0.10em] text-emerald-200/42">Ciphertext</div>
+          <div className="mt-1 min-h-6 break-all font-mono text-[15px] font-semibold tracking-[0.10em] text-emerald-100/78">{output || "—"}</div>
         </div>
 
-        {/* Keyboard Hint */}
-        <div className="w-full p-3 rounded bg-neutral-900/50 border border-white/5 text-center">
-            <p className="text-[10px] text-neutral-500 flex items-center justify-center gap-2">
-                <KeyRound size={12} /> Type on your keyboard to encrypt
-            </p>
+        <div className="mt-4 flex items-start gap-3 rounded-[15px] border border-white/[0.06] bg-black/[0.10] p-4">
+          <Settings2 size={13} className="mt-0.5 shrink-0 text-slate-600" />
+          <p className="text-[9px] leading-4 text-slate-600">This is a historically inspired rotor-cipher model, not an exact Enigma simulation. It uses real rotor/reflector wirings but simplified odometer stepping and omits ring settings, plugboard wiring, turnover notches, and the historical operating procedure.</p>
         </div>
 
+        <button type="button" onClick={() => { setStart([0, 0, 0]); setInput("HELLO"); }} className="mt-3 flex items-center gap-2 font-mono text-[8px] uppercase tracking-[0.09em] text-slate-600 transition hover:text-slate-400"><RotateCcw size={11} /> Reset toy</button>
       </div>
-    </div>
+    </section>
   );
 }
