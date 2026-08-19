@@ -11,9 +11,11 @@ Education Station 64 lessons should not default to textbook exposition. The defa
 
 ## Progressive disclosure rules
 
+- Progressive disclosure is about **sequence and emphasis, not locking the page**.
+- Do not hide later lesson sections until an earlier interaction is completed. A learner who reloads, revisits, or jumps down the page should still have access to the full lesson.
+- Progression is appropriate **inside an individual sandbox or application task** when the next state genuinely depends on the previous action.
 - Do not explain the sandbox before the learner has a chance to manipulate it.
-- Later blocks may reveal after meaningful interaction when the topic benefits from discovery.
-- Never gate navigation or essential accessibility behind interaction.
+- Never gate navigation, definitions, accessibility, or essential reference material behind interaction.
 - Hubs and reference atlases may remain navigation-first; this pattern is for lessons and concept pages.
 - Reuse `DiscoveryLessonBlock` for the recognizable six-block visual grammar, but keep the sandbox itself subject-native.
 
@@ -21,7 +23,18 @@ Education Station 64 lessons should not default to textbook exposition. The defa
 
 A useful interaction changes the learner's model of the concept. Avoid fake runtime meters, arbitrary scores, decorative sliders, inert buttons, fabricated status indicators, and interactions whose result is already stated beside the control.
 
+Match the interaction to the academic action. A slider is excellent when the concept is continuous variation, sensitivity, rate, or parameter change. It is usually a poor substitute for algebraic solving, proof, classification, construction, or symbolic transformation.
+
 Prefer interactions where the learner can answer a question by manipulating the system: What remains invariant? What value balances the constraint? What changes when this parameter moves? Which representation preserves the same object? What fails when an assumption is removed?
+
+## Layout and breathing room
+
+- Lesson pages should usually use a narrower reading frame than hubs, dashboards, and atlases.
+- Let explanatory blocks occupy only the width their content needs. Do not stretch a two-sentence idea across the entire viewport.
+- Reserve wide layouts for interactions that genuinely benefit from width, such as maps, timelines, graphs, simulations, and comparison canvases.
+- Prefer vertical rhythm between substantial lesson blocks. The page background is part of the visual identity and should have room to appear between ideas.
+- Compact pages with little content. Do not manufacture cards or empty whitespace simply to make a short page feel larger.
+- Dense lessons may scroll. Scrolling is preferable to compressing six different ideas into one overloaded dashboard view.
 
 ## Text budget
 
@@ -30,9 +43,5 @@ Prefer interactions where the learner can answer a question by manipulating the 
 - Formal structure: structured and scannable.
 - Pitfall: one focused misconception.
 - Application instructions: enough to act, not enough to reveal the answer.
-
-## Studio verification loop
-
-`studio` is the inspectable development surface. Coherent working changes should be pushed there promptly so they can be reviewed in the deployed site instead of accumulating unseen on long-lived validation branches. Build or visual failures are fixed forward on `studio`; validation branches remain useful for risky or isolated experiments, not as a holding pen for finished pages.
 
 The lesson should feel like discovering a mechanism and then receiving its name, not reading an encyclopedia entry with widgets attached.
