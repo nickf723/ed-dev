@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import {
   CheckCircle2,
   RefreshCw,
@@ -21,7 +21,6 @@ type Props = {
 
 const ACCENT = "249, 115, 22";
 const CYAN = "34, 211, 238";
-const GREEN = "52, 211, 153";
 
 export default function SubstitutionLessonExperience({ breadcrumbs, previous, next, unitHref }: Props) {
   const [sandboxStage, setSandboxStage] = useState(0);
@@ -282,7 +281,7 @@ export default function SubstitutionLessonExperience({ breadcrumbs, previous, ne
             </DiscoveryLessonBlock>
           </>
         ) : (
-          <div className="rounded-[18px] border border-dashed border-white/[0.07] px-4 py-3 text-center font-mono text-[9px] uppercase tracking-[0.10em] text-slate-700">
+          <div id="substitution-application" className="scroll-mt-24 rounded-[18px] border border-dashed border-white/[0.07] px-4 py-3 text-center font-mono text-[9px] uppercase tracking-[0.10em] text-slate-700">
             More structure appears as you complete the sandbox.
           </div>
         )}
@@ -291,7 +290,7 @@ export default function SubstitutionLessonExperience({ breadcrumbs, previous, ne
   );
 }
 
-function EquationPanel({ label, accent, children }: { label: string; accent: string; children: React.ReactNode }) {
+function EquationPanel({ label, accent, children }: { label: string; accent: string; children: ReactNode }) {
   return (
     <div className="rounded-[18px] border p-4" style={{ borderColor: `rgba(${accent},0.13)`, background: `rgba(${accent},0.025)` }}>
       <div className="font-mono text-[8px] font-semibold uppercase tracking-[0.11em]" style={{ color: `rgba(${accent},0.58)` }}>{label}</div>
