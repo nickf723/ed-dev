@@ -1,107 +1,34 @@
-"use client";
-import React from 'react';
-import Link from 'next/link';
-import TopoMapEngine from "./TopoMapEngine";
+import DomainPageHeader from "@/app/_components/DomainPageHeader";
+import { requireCurriculumPageContext } from "@/lib/curriculum/page-context";
+import { ArrowDownRight, Droplets, Mountain, Route, Snowflake, Wind } from "lucide-react";
 import GeomorphologyLab from "./GeomorphologyLab";
-import { LANDFORMS } from './landforms';
-import { 
-  Globe, Map as MapIcon, Compass, 
-  ArrowLeft, Mountain, Layers 
-} from "lucide-react";
+import TopoMapEngine from "./TopoMapEngine";
+import { LANDFORMS } from "./landforms";
 
-export default function GeographyPage() {
-  return (
-    <main className="relative min-h-screen bg-[#ecfccb] text-stone-800 overflow-hidden font-sans selection:bg-green-200">
-      
-      {/* 1. VISUAL ENGINE */}
-      <TopoMapEngine />
-      {/* Paper Texture Overlay */}
-      <div className="absolute inset-0 pointer-events-none opacity-30 bg-[url('https://www.transparenttextures.com/patterns/cream-paper.png')]" />
+const NODE_ID = "natural.earth-science.geography";
+const AGENTS = [
+  { icon: Droplets, label: "Running water", detail: "Channels erode, transport, sort, and deposit sediment while drainage networks integrate whole landscapes.", rgb: "56, 189, 248" },
+  { icon: Snowflake, label: "Ice", detail: "Glaciers quarry, abrade, carry, and deposit enormous sediment loads while reshaping valleys and basins.", rgb: "186, 230, 253" },
+  { icon: Wind, label: "Wind", detail: "Deflation and abrasion move fine sediment and build dunes, loess deposits, and desert landforms where vegetation is sparse.", rgb: "250, 204, 21" },
+  { icon: ArrowDownRight, label: "Gravity", detail: "Rockfall, landslides, creep, debris flows, and other mass movements move material downslope without requiring a transporting fluid.", rgb: "251, 146, 60" },
+] as const;
+const BALANCE = [
+  ["Uplift & construction", "Tectonics, volcanism, deposition, reef growth, and other processes create relief or add material to the landscape."],
+  ["Weathering", "Physical and chemical processes weaken or alter rock in place, preparing material for transport."],
+  ["Erosion & transport", "Water, ice, wind, waves, and gravity remove and move material through the landscape."],
+  ["Deposition", "Transport loses capacity and sediment accumulates, building floodplains, deltas, dunes, beaches, fans, moraines, and other landforms."],
+] as const;
 
-      <div className="relative z-10 container mx-auto px-6 py-12">
-        
-        {/* NAV */}
-        <div className="flex items-center justify-between mb-24">
-            <Link href="/natural-science/earth-science" className="group flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-stone-600 hover:text-green-800 transition-colors">
-                <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" />
-                Return to Earth Science
-            </Link>
-            <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest bg-white border border-stone-300 px-3 py-1 rounded text-green-800 shadow-sm">
-                <Compass size={12} /> Geomorphology
-            </div>
-        </div>
-
-        {/* HERO */}
-        <header className="mb-32">
-            <h1 className="text-7xl md:text-9xl font-black text-stone-900 tracking-tighter uppercase leading-none mb-8">
-                THE SCULPTED <br/><span className="text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-stone-500">EARTH</span>
-            </h1>
-            <p className="max-w-2xl text-xl text-stone-700 font-serif italic border-l-4 border-green-600 pl-6">
-                "Geography is the study of the stage on which the human drama is played."
-                <span className="block text-sm font-sans font-bold mt-2 not-italic text-stone-500">— Landscape & Force</span>
-            </p>
-        </header>
-
-
-        {/* SECTION 1: THE LAB */}
-        <section className="mb-32">
-            <div className="flex items-center gap-4 mb-8">
-                <Layers size={24} className="text-green-700" />
-                <h2 className="text-3xl font-black uppercase tracking-tight">Geomorphology Lab</h2>
-            </div>
-            
-            <GeomorphologyLab />
-            
-            <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-sm text-stone-600">
-                <p>
-                    Landforms are not static. They are the result of a constant battle between <strong>Uplift</strong> (Tectonics building mountains) and <strong>Erosion</strong> (Water/Ice wearing them down).
-                </p>
-                <div className="p-4 bg-white border border-stone-300 rounded shadow-sm">
-                    <strong>The V vs U Rule:</strong> Rivers carve sharp "V" shaped valleys. Glaciers carve wide "U" shaped troughs.
-
-                </div>
-            </div>
-        </section>
-
-        {/* SECTION 2: LANDFORM ATLAS */}
-        <section className="border-t border-stone-300 pt-12">
-            <div className="flex items-center gap-4 mb-12">
-                <Globe size={24} className="text-green-700" />
-                <h2 className="text-3xl font-black uppercase tracking-tight">Feature Atlas</h2>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {LANDFORMS.map((l) => (
-                    <div key={l.id} className="group bg-white border border-stone-200 rounded-xl overflow-hidden hover:shadow-xl transition-shadow duration-300">
-                        <div className="h-48 overflow-hidden relative">
-                             <div 
-                                className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
-                                style={{ backgroundImage: `url(${l.image})` }}
-                             />
-                             <div className="absolute top-4 left-4">
-                                 <span className="bg-green-100 text-green-800 text-[10px] font-bold px-2 py-1 rounded border border-green-200 uppercase tracking-wide">
-                                     {l.force} Process
-                                 </span>
-                             </div>
-                        </div>
-                        <div className="p-6">
-                            <h3 className="text-2xl font-black text-stone-800 mb-2">{l.name}</h3>
-                            <div className="flex items-center gap-2 mb-4 text-xs font-bold text-stone-400 uppercase">
-                                <Mountain size={12} /> {l.process}
-                            </div>
-                            <p className="text-sm text-stone-600 leading-relaxed">
-                                {l.desc}
-                            </p>
-                        </div>
-                        {/* Specific diagram trigger based on ID */}
-                        {l.id === 'oxbow' && <div className="px-6 pb-6 text-xs text-stone-400">
-</div>}
-                    </div>
-                ))}
-            </div>
-        </section>
-
-      </div>
-    </main>
-  );
+export default function PhysicalGeographyPage() {
+  const context = requireCurriculumPageContext(NODE_ID);
+  return <main className="relative min-h-screen overflow-x-hidden bg-[#071006] text-slate-100 selection:bg-lime-300/25">
+    <TopoMapEngine /><div className="pointer-events-none fixed inset-0 z-0 bg-[radial-gradient(circle_at_78%_16%,rgba(132,204,22,0.12),transparent_29%),radial-gradient(circle_at_18%_84%,rgba(56,189,248,0.055),transparent_28%),linear-gradient(to_bottom,rgba(7,16,6,0.06),rgba(7,16,6,0.76)_76%,rgba(4,10,4,0.97))]" aria-hidden="true" />
+    <div className="relative z-10 mx-auto w-full max-w-[1580px] px-4 pb-14 sm:px-6 xl:px-8">
+      <div className="sticky top-0 z-30 -mx-4 border-b border-white/[0.06] bg-[#071006]/80 px-4 pb-3 pt-5 backdrop-blur-2xl sm:-mx-6 sm:px-6 xl:-mx-8 xl:px-8"><DomainPageHeader breadcrumbs={context.breadcrumbs} eyebrow="Landforms · surface process · terrain · spatial pattern" eyebrowStyle="rule" icon={Mountain} title={<span>Physical Geography</span>} subtitle="Physical geography reads Earth's surface as a spatial record of interacting climate, water, ice, rock, soil, vegetation, tectonics, and time. Landforms are not scenery: they are evidence of processes building, weathering, transporting, and depositing material." accentRgb="132, 204, 22" titleClassName="font-sans text-[clamp(2.9rem,5.6vw,6.1rem)] font-semibold leading-[0.84] tracking-[-0.066em] text-[#f7ffe9]" headerClassName="border-lime-100/[0.10]" /></div>
+      <section className="mt-5 overflow-hidden rounded-[30px] border border-lime-200/[0.10] bg-black/[0.14] backdrop-blur-xl"><div className="grid gap-4 border-b border-white/[0.07] px-5 py-5 lg:grid-cols-[minmax(0,1fr)_430px] lg:items-end sm:px-6"><div><div className="flex items-center gap-2 font-mono text-[9px] uppercase text-lime-200/56"><Route size={12}/> Landscape balance</div><h2 className="mt-2 text-[clamp(1.9rem,3.6vw,3.3rem)] font-semibold leading-[0.94] tracking-[-0.05em] text-white">Relief emerges from construction competing with denudation.</h2></div><p className="text-[12px] leading-6 text-slate-400">Mountains, valleys, plains, coasts, dunes, deltas, and glacial terrain reflect both the forces that create relief and the agents that break it down and redistribute material.</p></div><div className="grid sm:grid-cols-2 xl:grid-cols-4">{BALANCE.map(([name,detail],index)=><article key={name} className="min-h-[180px] border-b border-white/[0.06] px-5 py-4 sm:border-r sm:[&:nth-child(2n)]:border-r-0 xl:border-b-0 xl:[&:nth-child(2n)]:border-r xl:last:border-r-0"><span className="font-mono text-[8px] text-lime-200/34">0{index+1}</span><h3 className="mt-3 text-[13px] font-semibold text-white/84">{name}</h3><p className="mt-2 text-[10px] leading-5 text-slate-600">{detail}</p></article>)}</div></section>
+      <section className="mt-6"><div className="mb-3 grid gap-3 lg:grid-cols-[minmax(0,1fr)_420px] lg:items-end"><div><div className="font-mono text-[9px] uppercase text-emerald-200/52">Interactive geomorphology</div><h2 className="mt-1 text-[24px] font-semibold tracking-[-0.04em] text-white">Change process intensity and watch the landscape respond.</h2></div><p className="text-[11px] leading-5 text-slate-500">The lab is a conceptual terrain model. It is meant to expose competing process controls, not reproduce a specific real watershed or geologic setting.</p></div><GeomorphologyLab /></section>
+      <section className="mt-6 overflow-hidden rounded-[28px] border border-white/[0.08] bg-black/[0.13] backdrop-blur-xl"><div className="grid gap-4 border-b border-white/[0.07] px-5 py-5 lg:grid-cols-[minmax(0,1fr)_430px] lg:items-end sm:px-6"><div><div className="font-mono text-[9px] uppercase text-sky-200/50">Surface agents</div><h2 className="mt-2 text-[clamp(1.7rem,3vw,2.8rem)] font-semibold tracking-[-0.045em] text-white">Different agents leave different geometric signatures.</h2></div><p className="text-[11px] leading-5 text-slate-500">The same region can be reworked by several agents over time, so landform interpretation depends on shape, sediment, material, climate, elevation, and surrounding features.</p></div><div className="grid md:grid-cols-2 xl:grid-cols-4">{AGENTS.map((item,index)=>{const Icon=item.icon;return <article key={item.label} className="min-h-[190px] border-b border-white/[0.06] px-5 py-5 md:border-r md:[&:nth-child(2n)]:border-r-0 xl:border-b-0 xl:[&:nth-child(2n)]:border-r xl:last:border-r-0"><div className="flex items-center justify-between"><span className="flex h-9 w-9 items-center justify-center rounded-[13px] border" style={{color:`rgb(${item.rgb})`,borderColor:`rgba(${item.rgb},0.22)`,background:`rgba(${item.rgb},0.035)`}}><Icon size={15}/></span><span className="font-mono text-[8px] text-slate-700">0{index+1}</span></div><h3 className="mt-5 text-[13px] font-semibold text-white/84">{item.label}</h3><p className="mt-2 text-[10px] leading-5 text-slate-600">{item.detail}</p></article>})}</div></section>
+      <section className="mt-6 overflow-hidden rounded-[28px] border border-white/[0.08] bg-black/[0.13] backdrop-blur-xl"><div className="border-b border-white/[0.07] px-5 py-5 sm:px-6"><div className="font-mono text-[9px] uppercase text-lime-200/50">Landform atlas · examples, not taxonomy</div><h2 className="mt-2 text-[clamp(1.6rem,2.8vw,2.5rem)] font-semibold tracking-[-0.043em] text-white">Read form together with the process that produced it.</h2></div><div className="grid sm:grid-cols-2 xl:grid-cols-3">{LANDFORMS.map((landform,index)=><article key={landform.id} className="min-h-[170px] border-b border-white/[0.06] px-5 py-4 sm:border-r sm:[&:nth-child(2n)]:border-r-0 xl:[&:nth-child(2n)]:border-r xl:[&:nth-child(3n)]:border-r-0"><div className="flex items-center justify-between"><span className="font-mono text-[8px] text-slate-700">{String(index+1).padStart(2,"0")}</span><span className="font-mono text-[8px] uppercase text-lime-200/42">{landform.force}</span></div><h3 className="mt-3 text-[13px] font-semibold text-white/84">{landform.name}</h3><div className="mt-1 font-mono text-[8px] text-sky-200/44">{landform.process}</div><p className="mt-2 text-[10px] leading-5 text-slate-600">{landform.desc}</p></article>)}</div></section>
+    </div>
+  </main>;
 }
