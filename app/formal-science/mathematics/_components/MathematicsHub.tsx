@@ -58,56 +58,56 @@ const PRESENTATION: Record<string, BranchPresentation> = {
   "formal.mathematics.foundations": {
     icon: Calculator,
     rgb: "52, 211, 153",
-    shortLabel: "Foundations",
+    shortLabel: "Quantity & basic structure",
     equation: "1 + 1 = 2",
     lenses: ["quantity", "structure"],
   },
   "formal.mathematics.algebra": {
     icon: Variable,
     rgb: "96, 165, 250",
-    shortLabel: "Relations",
+    shortLabel: "Relations & symbolic structure",
     equation: "f(x) = y",
     lenses: ["structure", "change"],
   },
   "formal.mathematics.geometry": {
     icon: Triangle,
     rgb: "251, 191, 36",
-    shortLabel: "Space & shape",
+    shortLabel: "Space, form & invariance",
     equation: "a² + b² = c²",
     lenses: ["space", "structure"],
   },
   "formal.mathematics.calculus": {
     icon: Sigma,
     rgb: "255, 65, 54",
-    shortLabel: "Continuous change",
+    shortLabel: "Continuous change & accumulation",
     equation: "∫ f(x) dx",
     lenses: ["change", "models"],
   },
   "formal.mathematics.statistics": {
     icon: BarChart3,
     rgb: "192, 132, 252",
-    shortLabel: "Evidence & chance",
+    shortLabel: "Evidence, variation & chance",
     equation: "P(A | B)",
     lenses: ["uncertainty", "models"],
   },
   "formal.mathematics.number-theory": {
     icon: Binary,
     rgb: "34, 211, 238",
-    shortLabel: "Integers",
+    shortLabel: "Integers & arithmetic structure",
     equation: "a ≡ b (mod n)",
     lenses: ["quantity", "structure"],
   },
   "formal.mathematics.discrete": {
     icon: Network,
     rgb: "163, 230, 53",
-    shortLabel: "Finite structure",
+    shortLabel: "Finite structures & combinatorics",
     equation: "G = (V, E)",
     lenses: ["structure", "models"],
   },
   "formal.mathematics.applied": {
     icon: Pi,
     rgb: "129, 140, 248",
-    shortLabel: "Modeling",
+    shortLabel: "Models, optimization & decisions",
     equation: "model → prediction",
     lenses: ["models", "change", "uncertainty"],
   },
@@ -118,13 +118,14 @@ const LENSES: readonly {
   symbol: string;
   label: string;
   detail: string;
+  rgb: string;
 }[] = [
-  { id: "quantity", symbol: "#", label: "Quantity", detail: "number, magnitude, comparison" },
-  { id: "structure", symbol: "{ }", label: "Structure", detail: "patterns, rules, relations" },
-  { id: "space", symbol: "△", label: "Space", detail: "shape, position, dimension" },
-  { id: "change", symbol: "Δ", label: "Change", detail: "variation, motion, accumulation" },
-  { id: "uncertainty", symbol: "%", label: "Uncertainty", detail: "chance, inference, evidence" },
-  { id: "models", symbol: "↦", label: "Models", detail: "abstraction, prediction, application" },
+  { id: "quantity", symbol: "#", label: "Quantity", detail: "number, magnitude, comparison", rgb: "52, 211, 153" },
+  { id: "structure", symbol: "{ }", label: "Structure", detail: "patterns, rules, relations", rgb: "96, 165, 250" },
+  { id: "space", symbol: "△", label: "Space", detail: "shape, position, dimension", rgb: "251, 191, 36" },
+  { id: "change", symbol: "Δ", label: "Change", detail: "variation, motion, accumulation", rgb: "255, 65, 54" },
+  { id: "uncertainty", symbol: "%", label: "Uncertainty", detail: "chance, inference, evidence", rgb: "192, 132, 252" },
+  { id: "models", symbol: "↦", label: "Models", detail: "abstraction, prediction, application", rgb: "129, 140, 248" },
 ];
 
 function buildBranches(nodes: readonly MathematicsHubNode[]): BuiltBranch[] {
@@ -132,273 +133,181 @@ function buildBranches(nodes: readonly MathematicsHubNode[]): BuiltBranch[] {
   return BRANCH_ORDER.map((id) => {
     const node = byId.get(id);
     const presentation = PRESENTATION[id];
-    if (!node || !presentation) {
-      throw new Error(`Mathematics branch ${id} is incomplete.`);
-    }
+    if (!node || !presentation) throw new Error(`Mathematics branch ${id} is incomplete.`);
     return { ...node, ...presentation };
   });
 }
 
-function sharedLenses(left: BuiltBranch, right: BuiltBranch): LensId[] {
-  const rightLenses = new Set(right.lenses);
-  return left.lenses.filter((lens) => rightLenses.has(lens));
-}
-
-function relatedBranches(branches: readonly BuiltBranch[], active: BuiltBranch): BuiltBranch[] {
-  return branches
-    .filter((branch) => branch.id !== active.id && branch.status !== "placeholder")
-    .map((branch, index) => ({
-      branch,
-      index,
-      score: sharedLenses(active, branch).length,
-    }))
-    .filter((item) => item.score > 0)
-    .sort((left, right) => right.score - left.score || left.index - right.index)
-    .slice(0, 3)
-    .map((item) => item.branch);
-}
-
-function lensLabel(id: LensId): string {
-  return LENSES.find((lens) => lens.id === id)?.label ?? id;
-}
-
-export default function MathematicsHub({
-  nodes,
-}: {
-  nodes: readonly MathematicsHubNode[];
-}) {
+export default function MathematicsHub({ nodes }: { nodes: readonly MathematicsHubNode[] }) {
   const branches = buildBranches(nodes);
-  const [activeId, setActiveId] = useState("formal.mathematics.algebra");
-  const active = branches.find((branch) => branch.id === activeId) ?? branches[0];
-  const activeLenses = new Set(active.lenses);
-  const related = relatedBranches(branches, active);
+  const [activeLens, setActiveLens] = useState<LensId | null>(null);
+  const selectedLens = activeLens ? LENSES.find((lens) => lens.id === activeLens) : undefined;
 
   return (
-    <main className="relative min-h-screen overflow-x-hidden bg-[#050506] text-slate-100 selection:bg-[#ff4136]/30 lg:h-screen lg:overflow-hidden">
+    <main className="relative min-h-screen overflow-x-hidden bg-[#050506] text-slate-100 selection:bg-[#ff4136]/30">
       <div className="pointer-events-none fixed inset-0 z-0">
         <MathBackground />
       </div>
-      <div className="pointer-events-none fixed inset-0 z-0 bg-black/[0.08]" />
-      <div className="pointer-events-none fixed inset-0 z-[1] bg-[radial-gradient(circle_at_76%_18%,rgba(255,65,54,0.08),transparent_28%),radial-gradient(circle_at_16%_82%,rgba(34,211,238,0.045),transparent_25%),linear-gradient(to_bottom,rgba(5,5,6,0.02),rgba(5,5,6,0.50))]" />
+      <div className="pointer-events-none fixed inset-0 z-0 bg-[radial-gradient(circle_at_76%_16%,rgba(255,65,54,0.08),transparent_28%),radial-gradient(circle_at_16%_82%,rgba(34,211,238,0.04),transparent_28%),linear-gradient(to_bottom,rgba(5,5,6,0.05),rgba(5,5,6,0.74))]" />
 
-      <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-[1500px] flex-col px-4 py-4 sm:px-6 lg:h-screen lg:min-h-0 lg:px-8 lg:py-5">
-        <DomainPageHeader
-          breadcrumbs={[
-            { label: "Home", href: "/" },
-            { label: "Formal Sciences", href: "/formal-science" },
-            { label: "Mathematics" },
-          ]}
-          eyebrow="Quantity · Structure · Change"
-          icon={Sigma}
-          title={<span>Mathematics</span>}
-          subtitle="Study quantity, structure, space, change, uncertainty, and the patterns connecting them."
-          accentRgb="255, 65, 54"
-          titleClassName="font-mono text-[clamp(3.4rem,6vw,6.2rem)] font-semibold uppercase leading-[0.82] tracking-[-0.07em] text-[#fff9f8]"
-          iconClassName="rounded-sm"
-          headerClassName="border-[#ff4136]/[0.16]"
-          aside={
-            <div className="flex items-center gap-3 rounded-full border border-[#ff4136]/[0.16] bg-black/25 px-4 py-2 font-mono text-sm text-[#ff756d] backdrop-blur-md">
-              <span>π</span><span className="text-slate-700">·</span>
-              <span>∑</span><span className="text-slate-700">·</span>
-              <span>∫</span><span className="text-slate-700">·</span>
-              <span>∞</span>
-            </div>
-          }
-        />
-
-        <div className="mt-4 grid min-h-0 flex-1 gap-4 xl:grid-cols-[minmax(0,1fr)_286px]">
-          <section className="relative flex min-h-0 flex-col overflow-hidden rounded-[24px] border border-[#ff4136]/[0.14] bg-black/[0.22] p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.025),0_22px_70px_rgba(0,0,0,0.25)] backdrop-blur-md sm:p-4">
-            <div className="pointer-events-none absolute inset-0 opacity-45 [background-image:linear-gradient(rgba(255,255,255,0.018)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.018)_1px,transparent_1px)] [background-size:24px_24px]" />
-
-            <div className="relative mb-3 px-1">
-              <div className="font-mono text-[10px] font-semibold uppercase tracking-[0.18em] text-[#ff756d]/70">Branches</div>
-              <p className="mt-1 text-xs text-slate-600">Eight ways to ask mathematical questions.</p>
-            </div>
-
-            <nav
-              aria-label="Mathematics branches"
-              className="relative grid min-h-0 flex-1 auto-rows-fr gap-3 sm:grid-cols-2 lg:grid-cols-4 lg:grid-rows-2"
-            >
-              {branches.map((branch, index) => (
-                <BranchCard
-                  key={branch.id}
-                  branch={branch}
-                  index={index}
-                  selected={active.id === branch.id}
-                  onActivate={() => setActiveId(branch.id)}
-                />
-              ))}
-            </nav>
-          </section>
-
-          <aside className="relative min-h-0 overflow-hidden rounded-[24px] border border-slate-300/[0.07] bg-black/30 p-4 backdrop-blur-xl">
-            <div
-              className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full blur-3xl"
-              style={{ background: `rgba(${active.rgb},0.12)` }}
-            />
-
-            <div className="relative flex h-full min-h-0 flex-col">
-              <div className="h-[116px] shrink-0 border-b border-slate-300/[0.055] pb-3">
-                <div className="font-mono text-[10px] font-semibold uppercase tracking-[0.18em] text-[#ff756d]/70">Mathematical lenses</div>
-                <h2 className="mt-2 truncate text-[22px] font-semibold tracking-[-0.03em] text-white">{active.label}</h2>
-                <div className="mt-1 font-mono text-[12px]" style={{ color: `rgb(${active.rgb})` }}>{active.equation}</div>
-                <p className="mt-2 line-clamp-2 text-[11px] leading-4 text-slate-500">{active.description}</p>
-              </div>
-
-              <div className="grid shrink-0 gap-1.5 py-3">
-                {LENSES.map((lens) => {
-                  const enabled = activeLenses.has(lens.id);
-                  return (
-                    <div
-                      key={lens.id}
-                      className={`flex h-[40px] items-center gap-2.5 rounded-xl border px-2.5 ${enabled ? "bg-white/[0.035]" : "border-slate-400/[0.04] bg-black/10 opacity-[0.48]"}`}
-                      style={enabled ? { borderColor: `rgba(${active.rgb},0.26)` } : undefined}
-                    >
-                      <span
-                        className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border font-mono text-[10px]"
-                        style={{
-                          color: enabled ? `rgb(${active.rgb})` : "rgb(100 116 139)",
-                          borderColor: enabled ? `rgba(${active.rgb},0.30)` : "rgba(148,163,184,0.07)",
-                          background: enabled ? `rgba(${active.rgb},0.065)` : "rgba(255,255,255,0.015)",
-                        }}
-                      >
-                        {lens.symbol}
-                      </span>
-                      <span className="min-w-0">
-                        <strong className="block text-[12px] font-semibold text-slate-200">{lens.label}</strong>
-                        <span className="mt-0.5 block truncate text-[9px] leading-3 text-slate-600">{lens.detail}</span>
-                      </span>
-                    </div>
-                  );
-                })}
-              </div>
-
-              <div className="min-h-0 flex-1 border-t border-slate-300/[0.055] pt-3">
-                <div className="font-mono text-[9px] font-semibold uppercase tracking-[0.16em] text-slate-600">Related branches</div>
-                <div className="mt-2 grid gap-2">
-                  {related.map((branch) => {
-                    const shared = sharedLenses(active, branch);
-                    return (
-                      <Link
-                        key={branch.id}
-                        href={branch.href}
-                        className="group grid min-h-[52px] grid-cols-[8px_minmax(0,1fr)_16px] items-center gap-2 rounded-xl border border-slate-300/[0.055] bg-white/[0.018] px-3 py-2 transition-colors hover:bg-white/[0.035]"
-                      >
-                        <span className="h-2 w-2 rounded-full" style={{ background: `rgb(${branch.rgb})` }} />
-                        <span className="min-w-0">
-                          <strong className="block truncate text-[11px] font-semibold text-slate-300">{branch.label}</strong>
-                          <span className="mt-0.5 block truncate text-[9px] text-slate-600">
-                            {shared.map(lensLabel).join(" · ")}
-                          </span>
-                        </span>
-                        <ArrowRight size={12} className="text-slate-700 transition-transform group-hover:translate-x-0.5" />
-                      </Link>
-                    );
-                  })}
-                </div>
-              </div>
-
-              <div className="mt-3 h-[58px] shrink-0 border-t border-slate-300/[0.055] pt-3">
-                <div className="font-mono text-[9px] font-semibold uppercase tracking-[0.16em] text-slate-600">Lens signature</div>
-                <div className="mt-2 flex h-7 flex-nowrap gap-1.5 overflow-hidden">
-                  {active.lenses.map((lensId) => {
-                    const lens = LENSES.find((item) => item.id === lensId);
-                    if (!lens) return null;
-                    return (
-                      <span
-                        key={lens.id}
-                        className="shrink-0 rounded-full border px-2 py-1 font-mono text-[9px] uppercase tracking-[0.08em]"
-                        style={{
-                          color: `rgba(${active.rgb},0.90)`,
-                          borderColor: `rgba(${active.rgb},0.20)`,
-                          background: `rgba(${active.rgb},0.045)`,
-                        }}
-                      >
-                        {lens.symbol} {lens.label}
-                      </span>
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
-          </aside>
+      <div className="relative z-10 mx-auto w-full max-w-[1280px] px-4 pb-16 sm:px-6 lg:px-8">
+        <div className="sticky top-0 z-30 -mx-4 border-b border-white/[0.07] bg-[#050506]/78 px-4 pb-4 pt-5 backdrop-blur-2xl sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
+          <DomainPageHeader
+            breadcrumbs={[
+              { label: "Home", href: "/" },
+              { label: "Formal Sciences", href: "/formal-science" },
+              { label: "Mathematics" },
+            ]}
+            eyebrow="Quantity · Structure · Space · Change · Uncertainty · Models"
+            eyebrowStyle="rule"
+            icon={Sigma}
+            title={<span>Mathematics</span>}
+            subtitle="Mathematics is easier to navigate by the kind of question being asked than by course labels alone. Choose a lens to see which branches emphasize it; every branch stays available because mathematical ideas routinely overlap."
+            accentRgb="255, 65, 54"
+            titleClassName="font-mono text-[clamp(3rem,5.6vw,5.9rem)] font-semibold uppercase leading-[0.84] tracking-[-0.055em] text-[#fff9f8]"
+            iconClassName="rounded-sm"
+            headerClassName="border-[#ff4136]/[0.14]"
+          />
         </div>
+
+        <section className="mx-auto mt-10 max-w-[1060px] rounded-[24px] border border-[#ff4136]/[0.13] bg-black/[0.22] p-5 backdrop-blur-xl sm:p-6">
+          <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_330px] lg:items-end">
+            <div>
+              <div className="font-mono text-[10px] font-semibold uppercase tracking-[0.08em] text-[#ff756d]/70">Mathematical lenses</div>
+              <h2 className="mt-2 text-[clamp(1.5rem,3vw,2.3rem)] font-semibold tracking-[-0.04em] text-white">What kind of structure are you trying to understand?</h2>
+              <p className="mt-3 max-w-3xl text-[15px] leading-7 text-slate-300">
+                Select a lens to emphasize branches that use it heavily. This is not a prerequisite chart: Algebra, Geometry, Statistics, Calculus, and the rest continually borrow ideas from one another.
+              </p>
+            </div>
+            <div className="rounded-[18px] border border-white/[0.07] bg-white/[0.02] p-4">
+              <div className="font-mono text-[10px] uppercase tracking-[0.06em] text-slate-500">Current lens</div>
+              <div className="mt-2 text-[18px] font-semibold text-white">{selectedLens?.label ?? "All mathematics"}</div>
+              <div className="mt-1 text-[13px] leading-5 text-slate-400">{selectedLens?.detail ?? "Nothing filtered. Compare the whole map."}</div>
+            </div>
+          </div>
+
+          <div className="mt-6 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+            {LENSES.map((lens) => {
+              const selected = lens.id === activeLens;
+              return (
+                <button
+                  key={lens.id}
+                  type="button"
+                  onClick={() => setActiveLens((current) => current === lens.id ? null : lens.id)}
+                  className="group flex min-h-[78px] items-center gap-3 rounded-[16px] border px-4 py-3 text-left transition hover:bg-white/[0.035]"
+                  style={{
+                    borderColor: selected ? `rgba(${lens.rgb},0.40)` : "rgba(255,255,255,0.07)",
+                    background: selected ? `rgba(${lens.rgb},0.07)` : "rgba(0,0,0,0.10)",
+                  }}
+                  aria-pressed={selected}
+                >
+                  <span
+                    className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[12px] border font-mono text-[15px] font-semibold"
+                    style={{ color: `rgb(${lens.rgb})`, borderColor: `rgba(${lens.rgb},0.24)`, background: `rgba(${lens.rgb},0.045)` }}
+                  >
+                    {lens.symbol}
+                  </span>
+                  <span>
+                    <strong className="block text-[15px] font-semibold text-white">{lens.label}</strong>
+                    <span className="mt-1 block text-[12px] leading-5 text-slate-500">{lens.detail}</span>
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        </section>
+
+        <section className="mx-auto mt-8 max-w-[1060px]">
+          <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <div className="font-mono text-[10px] font-semibold uppercase tracking-[0.08em] text-[#ff756d]/70">Direct branches</div>
+              <h2 className="mt-1 text-[27px] font-semibold tracking-[-0.04em] text-white">Eight entry points into the same mathematical landscape.</h2>
+            </div>
+            {activeLens ? (
+              <button type="button" onClick={() => setActiveLens(null)} className="font-mono text-[10px] uppercase tracking-[0.05em] text-slate-500 transition hover:text-white">
+                clear lens
+              </button>
+            ) : null}
+          </div>
+
+          <nav aria-label="Mathematics branches" className="grid gap-3 md:grid-cols-2">
+            {branches.map((branch) => {
+              const Icon = branch.icon;
+              const planned = branch.status === "placeholder";
+              const relevant = !activeLens || branch.lenses.includes(activeLens);
+              const body = (
+                <article
+                  className={`group relative min-h-[190px] overflow-hidden rounded-[22px] border p-5 backdrop-blur-xl transition-all duration-300 sm:p-6 ${planned ? "opacity-45" : relevant ? "hover:-translate-y-0.5 hover:bg-white/[0.03]" : "opacity-45"}`}
+                  style={{
+                    borderColor: relevant ? `rgba(${branch.rgb},0.22)` : "rgba(255,255,255,0.06)",
+                    background: relevant
+                      ? `linear-gradient(145deg, rgba(${branch.rgb},0.07), rgba(6,6,8,0.72) 54%, rgba(6,6,8,0.54))`
+                      : "rgba(0,0,0,0.16)",
+                  }}
+                >
+                  <div className="pointer-events-none absolute right-0 top-0 h-28 w-28 opacity-60 blur-3xl" style={{ background: relevant ? `rgba(${branch.rgb},0.09)` : "transparent" }} />
+                  <div className="relative flex h-full flex-col">
+                    <div className="flex items-start justify-between gap-4">
+                      <span
+                        className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[14px] border"
+                        style={{ color: `rgb(${branch.rgb})`, borderColor: `rgba(${branch.rgb},0.28)`, background: `rgba(${branch.rgb},0.05)` }}
+                      >
+                        <Icon size={19} strokeWidth={1.55} />
+                      </span>
+                      <span className="font-mono text-[16px]" style={{ color: `rgba(${branch.rgb},0.75)` }}>{branch.equation}</span>
+                    </div>
+                    <div className="mt-4 font-mono text-[10px] font-semibold uppercase tracking-[0.05em]" style={{ color: `rgba(${branch.rgb},0.70)` }}>
+                      {branch.shortLabel}
+                    </div>
+                    <h3 className="mt-1 text-[21px] font-semibold tracking-[-0.03em] text-white">{branch.label}</h3>
+                    <p className="mt-2 text-[14px] leading-6 text-slate-300/82">{branch.description}</p>
+                    <div className="mt-auto flex flex-wrap items-end justify-between gap-3 pt-5">
+                      <div className="flex flex-wrap gap-1.5">
+                        {branch.lenses.map((lensId) => {
+                          const lens = LENSES.find((item) => item.id === lensId);
+                          if (!lens) return null;
+                          return (
+                            <span
+                              key={lens.id}
+                              className="rounded-full border px-2.5 py-1 font-mono text-[9px] uppercase tracking-[0.04em]"
+                              style={{ color: `rgba(${lens.rgb},0.82)`, borderColor: `rgba(${lens.rgb},0.18)`, background: `rgba(${lens.rgb},0.035)` }}
+                            >
+                              {lens.label}
+                            </span>
+                          );
+                        })}
+                      </div>
+                      {planned ? <span className="font-mono text-[10px] uppercase text-slate-600">planned</span> : <ArrowRight size={15} style={{ color: `rgb(${branch.rgb})` }} className="transition group-hover:translate-x-1" />}
+                    </div>
+                  </div>
+                </article>
+              );
+
+              return planned ? (
+                <div key={branch.id} aria-label={`${branch.label}, planned`}>{body}</div>
+              ) : (
+                <Link key={branch.id} href={branch.href}>{body}</Link>
+              );
+            })}
+          </nav>
+        </section>
+
+        <section className="mx-auto mt-10 max-w-[1060px] border-t border-[#ff4136]/[0.10] pt-6">
+          <div className="grid gap-5 md:grid-cols-[minmax(0,1fr)_330px] md:items-start">
+            <div>
+              <div className="font-mono text-[10px] font-semibold uppercase tracking-[0.07em] text-[#ff756d]/65">The overlap matters</div>
+              <h2 className="mt-2 text-[24px] font-semibold tracking-[-0.035em] text-white">A branch is not a box. It is a concentration of recurring questions.</h2>
+              <p className="mt-3 text-[15px] leading-7 text-slate-300">
+                Geometry uses algebra. Statistics uses calculus and discrete mathematics. Applied mathematics can combine nearly every lens on the page. Use the branch names to orient yourself, then follow the structure of the problem wherever it leads.
+              </p>
+            </div>
+            <div className="rounded-[18px] border border-white/[0.07] bg-black/[0.20] p-4 backdrop-blur-xl">
+              <div className="font-mono text-[10px] uppercase tracking-[0.055em] text-slate-500">Try the map</div>
+              <p className="mt-2 text-[14px] leading-6 text-slate-300">Select <strong className="text-white">Change</strong> and Calculus rises immediately, but Algebra and Applied Mathematics remain relevant too. That overlap is the point.</p>
+            </div>
+          </div>
+        </section>
       </div>
     </main>
-  );
-}
-
-function BranchCard({
-  branch,
-  index,
-  selected,
-  onActivate,
-}: {
-  branch: BuiltBranch;
-  index: number;
-  selected: boolean;
-  onActivate: () => void;
-}) {
-  const Icon = branch.icon;
-  const planned = branch.status === "placeholder";
-
-  const content = (
-    <>
-      <div
-        className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-        style={{ background: `linear-gradient(145deg, rgba(${branch.rgb},0.14), transparent 55%)` }}
-      />
-      <div className="relative flex h-full flex-col">
-        <div className="flex items-start justify-between gap-3">
-          <span
-            className="flex h-11 w-11 items-center justify-center rounded-xl border"
-            style={{
-              color: `rgb(${branch.rgb})`,
-              borderColor: `rgba(${branch.rgb},0.30)`,
-              background: `rgba(${branch.rgb},0.065)`,
-            }}
-          >
-            <Icon size={20} strokeWidth={1.55} />
-          </span>
-          <span className="font-mono text-[9px] uppercase tracking-[0.14em] text-slate-700">{String(index + 1).padStart(2, "0")}</span>
-        </div>
-
-        <div className="mt-5">
-          <h3 className="text-[16px] font-semibold tracking-[-0.025em] text-white">{branch.label}</h3>
-          <div className="mt-1 font-mono text-[9px] font-semibold uppercase tracking-[0.12em]" style={{ color: `rgba(${branch.rgb},0.82)` }}>{branch.shortLabel}</div>
-          <p className="mt-2 line-clamp-3 text-[11px] leading-5 text-slate-500">{branch.description}</p>
-        </div>
-
-        <div className="mt-auto flex items-center justify-between border-t pt-3" style={{ borderColor: `rgba(${branch.rgb},0.13)` }}>
-          <span className="font-mono text-[10px] text-slate-500">{branch.equation}</span>
-          {!planned ? <ArrowRight size={13} style={{ color: `rgb(${branch.rgb})` }} className="transition-transform group-hover:translate-x-1" /> : null}
-        </div>
-      </div>
-    </>
-  );
-
-  const className = `group relative h-full min-h-0 overflow-hidden rounded-[18px] border p-4 backdrop-blur-md transition-all duration-300 ${planned ? "cursor-default opacity-50" : "hover:-translate-y-0.5"}`;
-  const style = {
-    borderColor: selected ? `rgba(${branch.rgb},0.48)` : `rgba(${branch.rgb},0.18)`,
-    background: selected
-      ? `linear-gradient(145deg, rgba(${branch.rgb},0.10), rgba(7,7,9,0.76) 52%, rgba(7,7,9,0.62))`
-      : `linear-gradient(145deg, rgba(${branch.rgb},0.03), rgba(7,7,9,0.62))`,
-    boxShadow: selected ? `0 0 34px rgba(${branch.rgb},0.065), inset 0 1px 0 rgba(255,255,255,0.035)` : "inset 0 1px 0 rgba(255,255,255,0.02)",
-  };
-
-  if (planned) {
-    return <div className={className} style={style} onMouseEnter={onActivate}>{content}</div>;
-  }
-
-  return (
-    <Link
-      href={branch.href}
-      className={className}
-      style={style}
-      onMouseEnter={onActivate}
-      onFocus={onActivate}
-    >
-      {content}
-    </Link>
   );
 }
