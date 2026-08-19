@@ -62,11 +62,11 @@ export default function SystemsLessonShell({
       <div
         className="pointer-events-none fixed inset-0 z-0"
         style={{
-          background: `radial-gradient(circle at 78% 12%, rgba(${accentRgb},0.085), transparent 30%), linear-gradient(to bottom, rgba(3,6,14,0.10), rgba(2,4,10,0.82))`,
+          background: `radial-gradient(circle at 78% 12%, rgba(${accentRgb},0.085), transparent 30%), linear-gradient(to bottom, rgba(3,6,14,0.08), rgba(2,4,10,0.78))`,
         }}
       />
 
-      <div className="relative z-10 mx-auto w-full max-w-[1120px] px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
+      <div className="relative z-10 mx-auto w-full max-w-[960px] px-4 py-7 sm:px-6 lg:px-8 lg:py-10">
         <DomainPageHeader
           breadcrumbs={breadcrumbs}
           eyebrow={`Lesson ${step} · ${eyebrow}`}
@@ -74,9 +74,9 @@ export default function SystemsLessonShell({
           title={<span>{title}</span>}
           subtitle={subtitle}
           accentRgb={accentRgb}
-          titleClassName="font-mono text-[clamp(2.2rem,4.35vw,4.55rem)] font-semibold uppercase leading-[0.88] tracking-[-0.055em] text-[#f4fdff]"
+          titleClassName="font-mono text-[clamp(2.25rem,4.8vw,4.35rem)] font-semibold uppercase leading-[0.9] tracking-[-0.05em] text-[#f4fdff]"
           iconClassName="rounded-[16px]"
-          headerClassName="border-white/[0.12]"
+          headerClassName="border-white/[0.13]"
         />
 
         <LessonUtilityBar practiceTargetId={practiceId} vocabulary accentRgb={accentRgb} />
@@ -84,39 +84,39 @@ export default function SystemsLessonShell({
         {children}
 
         {hasAssessment ? (
-          <section id={practiceId} className="scroll-mt-24 mt-8">
-            <details className="group overflow-hidden rounded-[22px] border border-white/[0.09] bg-black/[0.18] backdrop-blur-2xl">
+          <section id={practiceId} className="scroll-mt-24 mt-10">
+            <details className="group overflow-hidden rounded-[22px] border border-white/[0.11] bg-black/[0.24] backdrop-blur-2xl">
               <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-4">
                 <span>
-                  <span className="block text-[9px] font-semibold uppercase tracking-[0.13em]" style={{ color: `rgba(${accentRgb},0.72)` }}>
+                  <span className="block text-[10px] font-semibold uppercase tracking-[0.13em]" style={{ color: `rgba(${accentRgb},0.82)` }}>
                     Transfer check
                   </span>
-                  <strong className="mt-1 block text-[15px] text-slate-200">Fresh cases, same shared-solution idea</strong>
+                  <strong className="mt-1 block text-[16px] text-slate-100">Fresh cases, same shared-solution idea</strong>
                 </span>
-                <Sparkles size={16} style={{ color: `rgb(${accentRgb})` }} />
+                <Sparkles size={17} style={{ color: `rgb(${accentRgb})` }} />
               </summary>
-              <div className="systems-assessment border-t border-white/[0.06] p-3 sm:p-4">
+              <div className="systems-assessment border-t border-white/[0.07] p-4 sm:p-5">
                 <Assessment title={`${title} check`} questions={questions ?? []} accentColor={assessmentColor} />
               </div>
             </details>
           </section>
         ) : null}
 
-        <nav className="mt-10 pb-12" aria-label="Systems of Equations lesson navigation">
-          <div className="mb-2 flex justify-end">
-            <span className="font-mono text-[10px] text-slate-700">{step} / 04</span>
+        <nav className="mt-12 pb-14" aria-label="Systems of Equations lesson navigation">
+          <div className="mb-3 flex justify-end">
+            <span className="font-mono text-[11px] text-slate-500">{step} / 04</span>
           </div>
           <div className="grid gap-3 sm:grid-cols-2">
             {previous ? <NavCard item={previous} direction="previous" accent={accentRgb} /> : <div className="hidden sm:block" aria-hidden="true" />}
             {next ? (
               <NavCard item={next} direction="next" accent={accentRgb} />
             ) : (
-              <Link href={unitHref} className="group flex min-h-[76px] items-center rounded-[18px] border px-4" style={{ borderColor: `rgba(${accentRgb},0.16)`, background: `rgba(${accentRgb},0.035)` }}>
+              <Link href={unitHref} className="group flex min-h-[82px] items-center rounded-[18px] border px-4" style={{ borderColor: `rgba(${accentRgb},0.20)`, background: `rgba(${accentRgb},0.045)` }}>
                 <span className="min-w-0 flex-1 text-right">
-                  <span className="block text-[9px] font-semibold uppercase tracking-[0.10em] text-slate-600">Unit complete</span>
-                  <strong className="mt-1 block text-[14px] text-slate-200">Return to Systems of Equations</strong>
+                  <span className="block text-[10px] font-semibold uppercase tracking-[0.10em] text-slate-500">Unit complete</span>
+                  <strong className="mt-1 block text-[15px] text-slate-100">Return to Systems of Equations</strong>
                 </span>
-                <Check size={15} className="ml-3" style={{ color: `rgb(${accentRgb})` }} />
+                <Check size={16} className="ml-3" style={{ color: `rgb(${accentRgb})` }} />
               </Link>
             )}
           </div>
@@ -124,10 +124,10 @@ export default function SystemsLessonShell({
       </div>
 
       <style>{`
-        .systems-assessment > div { border-radius: 18px !important; padding: 16px !important; background: rgba(0,0,0,0.10) !important; box-shadow: none !important; }
+        .systems-assessment > div { border-radius: 18px !important; padding: 18px !important; background: rgba(0,0,0,0.12) !important; box-shadow: none !important; }
         .systems-assessment > div > div { min-height: 300px !important; }
-        .systems-assessment h3 { margin-bottom: 16px !important; font-size: 1.05rem !important; line-height: 1.45 !important; }
-        .systems-assessment button { padding-top: 10px !important; padding-bottom: 10px !important; }
+        .systems-assessment h3 { margin-bottom: 16px !important; font-size: 1.1rem !important; line-height: 1.5 !important; }
+        .systems-assessment button { padding-top: 11px !important; padding-bottom: 11px !important; font-size: 0.9rem !important; }
       `}</style>
     </main>
   );
@@ -136,13 +136,13 @@ export default function SystemsLessonShell({
 function NavCard({ item, direction, accent }: { item: SystemsLessonNavItem; direction: "previous" | "next"; accent: string }) {
   const previous = direction === "previous";
   return (
-    <Link href={item.href} className="group flex min-h-[76px] items-center gap-3 rounded-[18px] border px-4 py-3" style={{ borderColor: `rgba(${accent},0.14)`, background: `rgba(${accent},0.025)` }}>
-      {previous ? <ArrowLeft size={15} style={{ color: `rgb(${accent})` }} /> : null}
+    <Link href={item.href} className="group flex min-h-[82px] items-center gap-3 rounded-[18px] border px-4 py-3" style={{ borderColor: `rgba(${accent},0.18)`, background: `rgba(${accent},0.035)` }}>
+      {previous ? <ArrowLeft size={16} style={{ color: `rgb(${accent})` }} /> : null}
       <span className={`min-w-0 flex-1 ${previous ? "" : "text-right"}`}>
-        <span className="block text-[9px] font-semibold uppercase tracking-[0.10em] text-slate-600">{previous ? "Previous lesson" : "Next lesson"}</span>
-        <strong className="mt-1 block text-[14px] text-slate-200">{item.label}</strong>
+        <span className="block text-[10px] font-semibold uppercase tracking-[0.10em] text-slate-500">{previous ? "Previous lesson" : "Next lesson"}</span>
+        <strong className="mt-1 block text-[15px] text-slate-100">{item.label}</strong>
       </span>
-      {!previous ? <ArrowRight size={15} style={{ color: `rgb(${accent})` }} /> : null}
+      {!previous ? <ArrowRight size={16} style={{ color: `rgb(${accent})` }} /> : null}
     </Link>
   );
 }
