@@ -27,6 +27,7 @@ export default function EntropyPage() {
   const [dividerOpen, setDividerOpen] = useState(false);
   const [selectedLeft, setSelectedLeft] = useState<number>(12);
   const [microVariant, setMicroVariant] = useState(0);
+  const [auxOpen, setAuxOpen] = useState(true);
   const [transferLeft, setTransferLeft] = useState(8);
   const [transferResult, setTransferResult] = useState<"success" | "retry" | null>(null);
 
@@ -117,70 +118,103 @@ export default function EntropyPage() {
             </section>
           </DiscoveryLessonBlock>
 
-          <DiscoveryLessonBlock kind="sandbox" accentRgb={ACCENT}>
-            <section className="overflow-hidden rounded-[28px] border border-white/[0.10] bg-[#090711]/86 shadow-[0_28px_90px_rgba(0,0,0,0.26)] backdrop-blur-xl">
-              <div className="border-b border-white/[0.08] px-5 py-5 sm:px-7">
+          <DiscoveryLessonBlock kind="sandbox" accentRgb={ACCENT} className="lg:-mx-10 xl:-mx-32">
+            <section className="overflow-visible rounded-[28px] border border-white/[0.10] bg-[#090711]/86 shadow-[0_28px_90px_rgba(0,0,0,0.26)] backdrop-blur-xl">
+              <div className="border-b border-white/[0.08] px-5 py-5 sm:px-7 lg:px-8">
                 <div className="font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-fuchsia-200/80">Multiplicity explorer</div>
-                <h2 className="mt-2 text-[26px] font-semibold tracking-[-0.03em] text-white">The same visible count can happen in many microscopic ways.</h2>
+                <h2 className="mt-2 text-[26px] font-semibold tracking-[-0.03em] text-white">Keep the state in view while you change what surrounds it.</h2>
                 <p className="mt-3 max-w-3xl text-[16px] leading-7 text-slate-200">
-                  Pick a visible left/right count. Then inspect which numbered particles happen to be on each side. The visible count can stay fixed while the microscopic identity changes underneath it.
+                  The chamber is the primary instrument. Macrostate choices and statistical readouts are auxiliary controls, so on wide screens they dock beside it instead of pushing it out of view.
                 </p>
               </div>
 
-              <div className="p-5 sm:p-7">
-                <div className="grid gap-3 sm:grid-cols-4">
-                  {MACROSTATES.map((left) => {
-                    const omega = choose(TOTAL, left);
-                    const selected = selectedLeft === left;
-                    return (
-                      <button
-                        key={left}
-                        type="button"
-                        onClick={() => inspectMacrostate(left)}
-                        className="rounded-[18px] border p-4 text-left transition"
-                        style={{
-                          borderColor: selected ? "rgba(232,121,249,.36)" : "rgba(255,255,255,.09)",
-                          background: selected ? "rgba(232,121,249,.075)" : "rgba(0,0,0,.18)",
-                        }}
-                      >
-                        <div className="text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-300">visible count</div>
-                        <div className="mt-2 font-mono text-[21px] font-semibold text-white">{left} | {TOTAL - left}</div>
-                        <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-white/[0.06]">
-                          <div className="h-full rounded-full bg-fuchsia-300/70" style={{ width: `${Math.max(3, (omega / choose(TOTAL, 6)) * 100)}%` }} />
+              <div className="p-5 sm:p-7 lg:p-8">
+                <div className={`grid items-start gap-5 ${auxOpen ? "lg:grid-cols-[minmax(0,1fr)_286px]" : "lg:grid-cols-[minmax(0,1fr)_58px]"}`}>
+                  <div className="min-w-0 space-y-5">
+                    <ParticleChamber
+                      total={TOTAL}
+                      leftCount={selectedLeft}
+                      arrangement={selectedArrangement}
+                      divider={false}
+                      label={`${selectedLeft} left · ${TOTAL - selectedLeft} right`}
+                    />
+
+                    <div className="rounded-[22px] border border-white/[0.09] bg-black/[0.22] p-5">
+                      <div className="flex flex-wrap items-start justify-between gap-3">
+                        <div>
+                          <div className="text-[11px] font-semibold uppercase tracking-[0.10em] text-cyan-100">One microscopic assignment</div>
+                          <div className="mt-2 font-mono text-[20px] font-semibold text-white">Same {selectedLeft}|{TOTAL - selectedLeft} macrostate, different particle identities</div>
                         </div>
-                        <div className="mt-2 text-[12px] text-slate-400">{formatNumber(omega)} microscopic assignments</div>
-                      </button>
-                    );
-                  })}
-                </div>
-
-                <div className="mt-7 grid gap-5 lg:grid-cols-[minmax(0,1fr)_280px]">
-                  <div className="rounded-[22px] border border-white/[0.09] bg-black/[0.22] p-5">
-                    <div className="flex flex-wrap items-start justify-between gap-3">
-                      <div>
-                        <div className="text-[11px] font-semibold uppercase tracking-[0.10em] text-cyan-100">One microscopic assignment</div>
-                        <div className="mt-2 font-mono text-[20px] font-semibold text-white">{selectedLeft} left · {TOTAL - selectedLeft} right</div>
+                        <button
+                          type="button"
+                          onClick={() => setMicroVariant((value) => value + 1)}
+                          disabled={selectedLeft === 0 || selectedLeft === TOTAL}
+                          className="rounded-xl border border-cyan-300/[0.16] bg-cyan-300/[0.04] px-3 py-2 text-[12px] font-semibold text-cyan-100 transition disabled:cursor-not-allowed disabled:opacity-35"
+                        >
+                          Show another microstate
+                        </button>
                       </div>
+                      <MicrostateStrip arrangement={selectedArrangement} />
+                      <p className="mt-4 text-[15px] leading-7 text-slate-200">
+                        Blue and red record which side each numbered particle occupies. Cycle the identities and notice that the visible left/right count does not have to change.
+                      </p>
+                    </div>
+                  </div>
+
+                  <aside className="self-start lg:sticky lg:top-[184px]">
+                    {auxOpen ? (
+                      <div className="max-h-[calc(100vh-13rem)] overflow-y-auto rounded-[22px] border border-fuchsia-200/[0.13] bg-[#0b0812]/94 p-3 shadow-[0_18px_55px_rgba(0,0,0,0.30)] backdrop-blur-2xl [scrollbar-width:thin]">
+                        <div className="mb-3 flex items-center justify-between gap-2 px-1">
+                          <div>
+                            <div className="text-[10px] font-semibold uppercase tracking-[0.10em] text-fuchsia-200/80">Macrostate sidecar</div>
+                            <div className="mt-1 text-[11px] text-slate-500">Controls stay beside the chamber.</div>
+                          </div>
+                          <button type="button" onClick={() => setAuxOpen(false)} className="rounded-lg border border-white/[0.08] px-2 py-1.5 text-[10px] font-semibold text-slate-400 transition hover:text-white">Hide</button>
+                        </div>
+
+                        <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-1">
+                          {MACROSTATES.map((left) => {
+                            const omega = choose(TOTAL, left);
+                            const selected = selectedLeft === left;
+                            return (
+                              <button
+                                key={left}
+                                type="button"
+                                onClick={() => inspectMacrostate(left)}
+                                className="rounded-[16px] border p-3 text-left transition"
+                                style={{
+                                  borderColor: selected ? "rgba(232,121,249,.38)" : "rgba(255,255,255,.08)",
+                                  background: selected ? "rgba(232,121,249,.08)" : "rgba(0,0,0,.18)",
+                                }}
+                              >
+                                <div className="flex items-baseline justify-between gap-2">
+                                  <span className="font-mono text-[18px] font-semibold text-white">{left} | {TOTAL - left}</span>
+                                  <span className="font-mono text-[10px] text-slate-500">Ω {formatNumber(omega)}</span>
+                                </div>
+                                <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-white/[0.06]">
+                                  <div className="h-full rounded-full bg-fuchsia-300/70" style={{ width: `${Math.max(3, (omega / choose(TOTAL, 6)) * 100)}%` }} />
+                                </div>
+                              </button>
+                            );
+                          })}
+                        </div>
+
+                        <div className="mt-3 grid gap-2">
+                          <CompactReadout label="ways" value={formatNumber(selectedOmega)} rgb="232, 121, 249" />
+                          <CompactReadout label="share of all 2¹² states" value={`${(selectedProbability * 100).toFixed(selectedProbability < 0.01 ? 3 : 1)}%`} rgb="250, 204, 21" />
+                          <CompactReadout label="ln Ω" value={Math.log(selectedOmega).toFixed(2)} rgb="45, 212, 191" />
+                        </div>
+                      </div>
+                    ) : (
                       <button
                         type="button"
-                        onClick={() => setMicroVariant((value) => value + 1)}
-                        disabled={selectedLeft === 0 || selectedLeft === TOTAL}
-                        className="rounded-xl border border-cyan-300/[0.16] bg-cyan-300/[0.04] px-3 py-2 text-[12px] font-semibold text-cyan-100 transition disabled:cursor-not-allowed disabled:opacity-35"
+                        onClick={() => setAuxOpen(true)}
+                        className="flex min-h-[180px] w-full items-center justify-center rounded-[18px] border border-fuchsia-200/[0.13] bg-[#0b0812]/92 px-2 py-4 text-[10px] font-semibold uppercase tracking-[0.12em] text-fuchsia-100/80 shadow-[0_18px_50px_rgba(0,0,0,.24)] backdrop-blur-2xl lg:[writing-mode:vertical-rl]"
                       >
-                        Show another microstate
+                        Show macrostate controls
                       </button>
-                    </div>
-                    <MicrostateStrip arrangement={selectedArrangement} />
-                    <p className="mt-4 text-[15px] leading-7 text-slate-200">
-                      Blue and red only record which side each numbered particle occupies. Change the microscopic assignment and the visible count can remain exactly the same.
-                    </p>
-                  </div>
-
-                  <div className="grid gap-3">
-                    <Readout label="ways to realize this count" value={formatNumber(selectedOmega)} icon={Layers} rgb="232, 121, 249" />
-                    <Readout label="fraction of all 2¹² assignments" value={`${(selectedProbability * 100).toFixed(selectedProbability < 0.01 ? 3 : 1)}%`} icon={BarChart3} rgb="250, 204, 21" />
-                    <Readout label="ln(ways)" value={Math.log(selectedOmega).toFixed(2)} icon={Scale} rgb="45, 212, 191" />
-                  </div>
+                    )}
+                  </aside>
                 </div>
               </div>
             </section>
@@ -370,11 +404,11 @@ function MicrostateStrip({ arrangement }: { arrangement: boolean[] }) {
   );
 }
 
-function Readout({ label, value, icon: Icon, rgb }: { label: string; value: string; icon: typeof Atom; rgb: string }) {
+function CompactReadout({ label, value, rgb }: { label: string; value: string; rgb: string }) {
   return (
-    <div className="rounded-[18px] border border-white/[0.08] bg-black/[0.22] p-4">
-      <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.08em]" style={{ color: `rgba(${rgb},.86)` }}><Icon size={14} /> {label}</div>
-      <div className="mt-2 font-mono text-[21px] font-semibold text-white">{value}</div>
+    <div className="rounded-[14px] border border-white/[0.07] bg-black/[0.22] px-3 py-2.5">
+      <div className="text-[9px] font-semibold uppercase tracking-[0.08em] text-slate-500">{label}</div>
+      <div className="mt-1 font-mono text-[15px] font-semibold" style={{ color: `rgb(${rgb})` }}>{value}</div>
     </div>
   );
 }
