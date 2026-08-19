@@ -29,6 +29,7 @@ type SystemsLessonShellProps = {
   practiceId: string;
   questions?: AssessmentQuestion[];
   assessmentColor?: "cyan" | "emerald" | "indigo" | "amber";
+  background?: ReactNode;
   children: ReactNode;
 };
 
@@ -47,6 +48,7 @@ export default function SystemsLessonShell({
   practiceId,
   questions,
   assessmentColor = "cyan",
+  background,
   children,
 }: SystemsLessonShellProps) {
   const Icon = icon;
@@ -55,16 +57,16 @@ export default function SystemsLessonShell({
   return (
     <main className="relative min-h-screen overflow-x-hidden text-slate-100" style={{ backgroundColor: base }}>
       <div className="pointer-events-none fixed inset-0 z-0 opacity-52">
-        <SystemsBackground />
+        {background ?? <SystemsBackground />}
       </div>
       <div
         className="pointer-events-none fixed inset-0 z-0"
         style={{
-          background: `radial-gradient(circle at 78% 12%, rgba(${accentRgb},0.11), transparent 28%), linear-gradient(to bottom, rgba(3,6,14,0.16), rgba(2,4,10,0.90))`,
+          background: `radial-gradient(circle at 78% 12%, rgba(${accentRgb},0.085), transparent 30%), linear-gradient(to bottom, rgba(3,6,14,0.10), rgba(2,4,10,0.82))`,
         }}
       />
 
-      <div className="relative z-10 mx-auto w-full max-w-[1380px] px-4 py-4 sm:px-6 xl:px-8 xl:py-5">
+      <div className="relative z-10 mx-auto w-full max-w-[1120px] px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
         <DomainPageHeader
           breadcrumbs={breadcrumbs}
           eyebrow={`Lesson ${step} · ${eyebrow}`}
@@ -82,7 +84,7 @@ export default function SystemsLessonShell({
         {children}
 
         {hasAssessment ? (
-          <section id={practiceId} className="scroll-mt-24 mt-4">
+          <section id={practiceId} className="scroll-mt-24 mt-8">
             <details className="group overflow-hidden rounded-[22px] border border-white/[0.09] bg-black/[0.18] backdrop-blur-2xl">
               <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-4">
                 <span>
@@ -100,7 +102,7 @@ export default function SystemsLessonShell({
           </section>
         ) : null}
 
-        <nav className="mt-4 pb-8" aria-label="Systems of Equations lesson navigation">
+        <nav className="mt-10 pb-12" aria-label="Systems of Equations lesson navigation">
           <div className="mb-2 flex justify-end">
             <span className="font-mono text-[10px] text-slate-700">{step} / 04</span>
           </div>
