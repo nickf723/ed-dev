@@ -1,193 +1,34 @@
-"use client";
-import Link from "next/link";
-import WaterBackground from "@/app/natural-science/earth-science/hydrology/WaterBackground";
-import { 
-  ArrowLeft, Droplet, CloudRain, Sun, Wind, Activity, 
-  Waves, Thermometer, GlassWater
-} from "lucide-react";
-import { useState } from "react";
-import { M } from "@/app/_components/Math"
+import DomainPageHeader from "@/app/_components/DomainPageHeader";
+import { requireCurriculumPageContext } from "@/lib/curriculum/page-context";
+import { ArrowDownToLine, CloudRain, Droplets, Layers3, MountainSnow, Waves } from "lucide-react";
+import WaterBackground from "./WaterBackground";
+import WaterBudgetLab from "./WaterBudgetLab";
+
+const NODE_ID = "natural.earth-science.hydrology";
+const RESERVOIRS = [
+  { icon: Waves, label: "Surface water", examples: "rivers · lakes · wetlands · reservoirs", detail: "Fast-moving and highly visible stores that integrate runoff from across a watershed.", rgb: "34, 211, 238" },
+  { icon: Layers3, label: "Groundwater", examples: "aquifers · pore water · springs", detail: "Subsurface storage moving through connected pores and fractures, often on slower timescales than surface flow.", rgb: "96, 165, 250" },
+  { icon: MountainSnow, label: "Snow & ice", examples: "snowpack · glaciers · seasonal ice", detail: "Frozen storage delays the release of water and strongly shapes seasonal runoff in many regions.", rgb: "186, 230, 253" },
+  { icon: Droplets, label: "Soil & biosphere", examples: "soil moisture · plants · organisms", detail: "A thin but active reservoir where infiltration, root uptake, evaporation, and transpiration meet.", rgb: "45, 212, 191" },
+] as const;
+const PATHWAYS = [
+  ["Infiltration", "Water crosses the land surface and enters soil or porous material."],
+  ["Percolation", "Water moves deeper through soil and rock toward groundwater storage."],
+  ["Runoff", "Water moves across the land surface or through shallow subsurface pathways toward channels."],
+  ["Streamflow", "Channels integrate upstream water and transport it through the drainage network."],
+  ["Evapotranspiration", "Evaporation plus plant transpiration returns water to the atmosphere."],
+  ["Recharge & discharge", "Groundwater enters or leaves storage as water crosses the water table or emerges to springs, streams, wetlands, and coasts."],
+] as const;
 
 export default function HydrologyPage() {
-  const [cycleStage, setCycleStage] = useState("evaporation");
-
-  const stages = {
-      evaporation: {
-          icon: Sun,
-          title: "Evaporation",
-          desc: "Solar energy causes liquid water to turn into vapor.",
-          stat: "434,000 km³/yr",
-          color: "text-amber-400"
-      },
-      condensation: {
-          icon: Wind,
-          title: "Condensation",
-          desc: "Water vapor cools and forms clouds.",
-          stat: "Cloud Formation",
-          color: "text-white"
-      },
-      precipitation: {
-          icon: CloudRain,
-          title: "Precipitation",
-          desc: "Water falls back to Earth as rain, snow, or hail.",
-          stat: "Global Rainfall",
-          color: "text-blue-400"
-      },
-      collection: {
-          icon: Waves,
-          title: "Collection",
-          desc: "Water gathers in rivers, lakes, and oceans.",
-          stat: "Runoff",
-          color: "text-cyan-400"
-      }
-  };
-
-  const current = stages[cycleStage as keyof typeof stages];
-
-  return (
-    <main className="relative min-h-screen bg-[#020408] text-white overflow-hidden selection:bg-blue-500/30 font-sans">
-      
-      {/* 1. VISUAL ENGINE */}
-      <WaterBackground />
-      
-      {/* VIGNETTE */}
-      <div className="absolute inset-0 bg-radial-vignette opacity-60 pointer-events-none z-0" />
-
-      {/* 2. DASHBOARD */}
-      <div className="relative z-10 container mx-auto px-6 py-12 min-h-screen flex flex-col">
-        
-        {/* HEADER */}
-        <header className="flex justify-between items-start mb-16 border-b border-blue-900/30 pb-6">
-             <div>
-                 <Link href="/natural-science/earth-science" className="flex items-center gap-2 text-xs font-mono text-blue-400 hover:text-blue-300 transition-colors mb-4 uppercase tracking-widest">
-                    <ArrowLeft size={12} /> Earth_Science // Hydrosphere
-                 </Link>
-                 <div className="flex items-center gap-4">
-                     <div className="p-3 bg-blue-500/10 rounded-xl border border-blue-500/30">
-                        <Droplet size={32} className="text-blue-400" />
-                     </div>
-                     <h1 className="text-5xl md:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-br from-white to-blue-400 tracking-tighter drop-shadow-lg">
-                        HYDROLOGY
-                     </h1>
-                 </div>
-             </div>
-             <div className="hidden md:block text-right font-mono text-blue-400/60 text-xs">
-                 <div>H₂O POLARITY: HIGH</div>
-                 <div>pH LEVEL: ~8.1 (OCEAN)</div>
-             </div>
-        </header>
-
-
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 flex-1">
-            
-            {/* LEFT: THE WATER CYCLE ENGINE */}
-            <div className="lg:col-span-5 flex flex-col">
-                <div className="bg-blue-950/40 backdrop-blur-md border border-blue-800/50 rounded-2xl p-8 shadow-2xl relative overflow-hidden">
-                    <div className="flex justify-between items-center mb-8">
-                        <h2 className="text-xl font-bold text-blue-100 flex items-center gap-2">
-                            <Activity size={20} className="text-blue-400" /> THE WATER CYCLE
-                        </h2>
-                    </div>
-
-                    {/* CYCLE VISUALIZER */}
-                    <div className="grid grid-cols-2 gap-4 mb-8">
-                        {Object.entries(stages).map(([key, data]) => (
-                            <button
-                                key={key}
-                                onClick={() => setCycleStage(key)}
-                                className={`
-                                    p-4 rounded-xl border transition-all flex flex-col items-center gap-2 text-center
-                                    ${cycleStage === key 
-                                        ? "bg-blue-500/20 border-blue-400 text-white scale-105 shadow-lg" 
-                                        : "bg-black/20 border-white/5 text-blue-200/50 hover:bg-white/5"
-                                    }
-                                `}
-                            >
-                                <data.icon size={24} className={data.color} />
-                                <span className="text-xs font-bold uppercase">{data.title}</span>
-                            </button>
-                        ))}
-                    </div>
-
-                    {/* Active Stage Info */}
-                    <div className="border-t border-blue-800/50 pt-6 animate-fadeIn">
-                        <h3 className={`text-2xl font-black mb-2 ${current.color}`}>{current.title}</h3>
-                        <p className="text-blue-100/80 text-sm leading-relaxed mb-4">
-                            {current.desc}
-                        </p>
-                        <div className="flex items-center gap-2 text-xs font-mono text-blue-400">
-                            <span>METRIC:</span>
-                            <span className="text-white">{current.stat}</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-            {/* RIGHT: FLUID DYNAMICS & PROPERTIES */}
-            <div className="lg:col-span-7 space-y-6">
-                
-                {/* CARD 1: BERNOULLI */}
-                <div className="bg-neutral-900/60 backdrop-blur-md border border-white/10 rounded-xl p-6 hover:border-blue-500/30 transition-colors">
-                    <div className="flex items-center gap-3 mb-4">
-                        <Wind size={24} className="text-blue-400" />
-                        <h3 className="text-xl font-bold text-white">Fluid Dynamics</h3>
-                    </div>
-                    <p className="text-neutral-400 text-sm mb-6">
-                        The physics of fluids in motion. Bernoulli's principle relates pressure, velocity, and elevation.
-                    </p>
-                    <div className="bg-black/30 p-4 rounded border border-white/5 flex justify-center">
-                        <div className="text-xl font-serif text-blue-200">
-                            <M>{"P + \\frac{1}{2}\\rho v^2 + \\rho gh = \\text{constant}"}</M>
-                        </div>
-                    </div>
-                </div>
-
-                {/* CARD 2: OCEANOGRAPHY */}
-                <div className="bg-neutral-900/60 backdrop-blur-md border border-white/10 rounded-xl p-6 hover:border-blue-500/30 transition-colors flex gap-6">
-                    <div className="flex-1">
-                        <div className="flex items-center gap-3 mb-4">
-                            <Waves size={24} className="text-blue-400" />
-                            <h3 className="text-xl font-bold text-white">Thermohaline Circulation</h3>
-                        </div>
-                        <p className="text-neutral-400 text-sm mb-4">
-                            The "Global Conveyor Belt" driven by temperature (thermo) and salinity (haline) gradients. It regulates Earth's climate.
-                        </p>
-                        <div className="flex gap-4 text-xs font-mono">
-                             <div className="flex items-center gap-2 text-red-300">
-                                 <Thermometer size={12} /> WARM SURFACE
-                             </div>
-                             <div className="flex items-center gap-2 text-blue-300">
-                                 <Thermometer size={12} /> COLD DEEP
-                             </div>
-                        </div>
-                    </div>
-                </div>
-
-                {/* CARD 3: CHEMICAL PROPERTIES */}
-                <div className="bg-neutral-900/60 backdrop-blur-md border border-white/10 rounded-xl p-6 hover:border-blue-500/30 transition-colors">
-                     <div className="flex justify-between items-center mb-2">
-                        <h3 className="font-bold text-white flex items-center gap-2">
-                            <GlassWater size={16} className="text-blue-400" /> Molecular Properties
-                        </h3>
-                        <span className="text-[10px] font-mono text-blue-500">H₂O</span>
-                     </div>
-                     <div className="grid grid-cols-2 gap-4 mt-4">
-                         <div className="bg-black/30 p-3 rounded border border-white/5">
-                             <div className="text-[10px] text-neutral-500 mb-1">DIPOLE MOMENT</div>
-                             <div className="text-sm text-white">1.85 Debye</div>
-                         </div>
-                         <div className="bg-black/30 p-3 rounded border border-white/5">
-                             <div className="text-[10px] text-neutral-500 mb-1">HEAT CAPACITY</div>
-                             <div className="text-sm text-white">4.18 J/g°C</div>
-                         </div>
-                     </div>
-                </div>
-
-            </div>
-
-        </div>
-      </div>
-    </main>
-  );
+  const context = requireCurriculumPageContext(NODE_ID);
+  return <main className="relative min-h-screen overflow-x-hidden bg-[#02070c] text-slate-100 selection:bg-sky-400/25">
+    <WaterBackground /><div className="pointer-events-none fixed inset-0 z-0 bg-[radial-gradient(circle_at_78%_16%,rgba(14,165,233,0.12),transparent_28%),radial-gradient(circle_at_16%_82%,rgba(45,212,191,0.055),transparent_27%),linear-gradient(to_bottom,rgba(2,7,12,0.10),rgba(2,7,12,0.74)_76%,rgba(1,5,9,0.97))]" aria-hidden="true" />
+    <div className="relative z-10 mx-auto w-full max-w-[1580px] px-4 pb-14 sm:px-6 xl:px-8">
+      <div className="sticky top-0 z-30 -mx-4 border-b border-white/[0.06] bg-[#02070c]/80 px-4 pb-3 pt-5 backdrop-blur-2xl sm:-mx-6 sm:px-6 xl:-mx-8 xl:px-8"><DomainPageHeader breadcrumbs={context.breadcrumbs} eyebrow="Reservoirs · fluxes · watersheds · groundwater" eyebrowStyle="rule" icon={Droplets} title={<span>Hydrology</span>} subtitle="Hydrology follows water through connected reservoirs and pathways. Rain and snow become infiltration, runoff, soil moisture, groundwater, streamflow, evaporation, transpiration, ice, and stored water, all constrained by landscape, climate, geology, and time." accentRgb="14, 165, 233" titleClassName="font-sans text-[clamp(3rem,5.7vw,6.3rem)] font-semibold leading-[0.83] tracking-[-0.067em] text-[#f3fbff]" headerClassName="border-sky-100/[0.10]" /></div>
+      <section className="mt-5 overflow-hidden rounded-[30px] border border-sky-200/[0.10] bg-black/[0.14] backdrop-blur-xl"><div className="grid gap-4 border-b border-white/[0.07] px-5 py-5 lg:grid-cols-[minmax(0,1fr)_420px] lg:items-end sm:px-6"><div><div className="flex items-center gap-2 font-mono text-[9px] font-semibold uppercase tracking-[0.14em] text-sky-200/58"><CloudRain size={12}/> Hydrologic system</div><h2 className="mt-2 text-[clamp(1.9rem,3.6vw,3.3rem)] font-semibold leading-[0.94] tracking-[-0.05em] text-white">The water cycle is really a map of reservoirs connected by fluxes.</h2></div><p className="text-[12px] leading-6 text-slate-400">The familiar evaporation–condensation–precipitation loop is only the atmospheric slice. Hydrology asks where water is stored, how quickly it moves, what controls its path, and how one part of the watershed affects another.</p></div><div className="grid md:grid-cols-2 xl:grid-cols-4">{RESERVOIRS.map((item,index)=>{const Icon=item.icon;return <article key={item.label} className="min-h-[220px] border-b border-white/[0.06] px-5 py-5 md:border-r md:[&:nth-child(2n)]:border-r-0 xl:border-b-0 xl:[&:nth-child(2n)]:border-r xl:last:border-r-0"><div className="flex items-center justify-between"><span className="flex h-9 w-9 items-center justify-center rounded-[13px] border" style={{color:`rgb(${item.rgb})`,borderColor:`rgba(${item.rgb},0.22)`,background:`rgba(${item.rgb},0.035)`}}><Icon size={15}/></span><span className="font-mono text-[8px] text-slate-700">0{index+1}</span></div><h3 className="mt-5 text-[14px] font-semibold text-white/86">{item.label}</h3><div className="mt-1 font-mono text-[8px] uppercase" style={{color:`rgba(${item.rgb},0.58)`}}>{item.examples}</div><p className="mt-3 text-[10px] leading-5 text-slate-600">{item.detail}</p></article>})}</div></section>
+      <div className="mt-6"><WaterBudgetLab /></div>
+      <section className="mt-6 overflow-hidden rounded-[28px] border border-white/[0.08] bg-black/[0.13] backdrop-blur-xl"><div className="grid gap-4 border-b border-white/[0.07] px-5 py-5 lg:grid-cols-[minmax(0,1fr)_420px] lg:items-end sm:px-6"><div><div className="flex items-center gap-2 font-mono text-[9px] uppercase text-cyan-200/54"><ArrowDownToLine size={12}/> Flow pathways · reference</div><h2 className="mt-2 text-[clamp(1.7rem,3vw,2.8rem)] font-semibold tracking-[-0.045em] text-white">Water can take many routes from precipitation to discharge.</h2></div><p className="text-[11px] leading-5 text-slate-500">Which pathway dominates depends on soil, slope, vegetation, geology, rainfall intensity, antecedent moisture, snow and ice, land use, and the scale at which the watershed is observed.</p></div><div className="grid sm:grid-cols-2 xl:grid-cols-3">{PATHWAYS.map(([name,detail],index)=><article key={name} className="min-h-[145px] border-b border-white/[0.06] px-5 py-4 sm:border-r sm:[&:nth-child(2n)]:border-r-0 xl:[&:nth-child(2n)]:border-r xl:[&:nth-child(3n)]:border-r-0"><span className="font-mono text-[8px] text-sky-200/34">0{index+1}</span><h3 className="mt-3 text-[12px] font-semibold text-white/84">{name}</h3><p className="mt-2 text-[10px] leading-5 text-slate-600">{detail}</p></article>)}</div></section>
+    </div>
+  </main>;
 }
