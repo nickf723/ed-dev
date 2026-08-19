@@ -4,6 +4,7 @@ import { ARTIFICIAL_INTELLIGENCE_CURRICULUM } from "@/lib/curriculum/artificial-
 import { COMPUTER_SCIENCE_CURRICULUM } from "@/lib/curriculum/computer-science";
 import { COMPUTATION_THEORY_CURRICULUM } from "@/lib/curriculum/computation-theory";
 import { HARDWARE_ARCHITECTURE_CURRICULUM } from "@/lib/curriculum/hardware-architecture";
+import { SECURITY_CRYPTOGRAPHY_CURRICULUM } from "@/lib/curriculum/security-cryptography";
 import { DATA_SCIENCE_CURRICULUM } from "@/lib/curriculum/data-science";
 import { GEOMETRY_CURRICULUM } from "@/lib/curriculum/geometry";
 import { GROUP_THEORY_CURRICULUM } from "@/lib/curriculum/group-theory";
@@ -76,6 +77,7 @@ export const CURRICULUM_MODULES: readonly CurriculumNode[] = [
   HARDWARE_ARCHITECTURE_CURRICULUM,
   COMPUTATION_THEORY_CURRICULUM,
   ARTIFICIAL_INTELLIGENCE_CURRICULUM,
+  SECURITY_CRYPTOGRAPHY_CURRICULUM,
   DATA_SCIENCE_CURRICULUM,
   INFORMATION_SCIENCE_CURRICULUM,
   SYSTEMS_SCIENCE_CURRICULUM,
