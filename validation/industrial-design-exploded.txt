@@ -1,0 +1,1 @@
+Validation trigger for Industrial Design exploded-product navigation.
