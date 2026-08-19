@@ -39,7 +39,6 @@ export const NUMBER_THEORY_CURRICULUM: CurriculumNode = {
       "Modular Arithmetic",
       "/formal-science/mathematics/number-theory/modular",
       "Congruence classes, arithmetic modulo n, residues, inverses, periodic structure, and theorems such as Fermat's little theorem and Euler's theorem.",
-      "placeholder",
     ),
     branch(
       "formal.mathematics.number-theory.diophantine",
