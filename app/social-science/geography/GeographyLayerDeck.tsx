@@ -1,18 +1,6 @@
 import Link from "next/link";
 import type { CurriculumNode } from "@/lib/curriculum/types";
-import {
-  ArrowRight,
-  Building2,
-  Factory,
-  Landmark,
-  Map,
-  MoveRight,
-  Network,
-  Satellite,
-  UsersRound,
-  Waypoints,
-  type LucideIcon,
-} from "lucide-react";
+import { ArrowRight, Building2, Factory, Landmark, Map, MoveRight, Network, Satellite, UsersRound, Waypoints, type LucideIcon } from "lucide-react";
 
 type Pattern = "dots" | "routes" | "blocks" | "regions" | "borders" | "flows" | "gradient" | "grid";
 type BranchMeta = { icon: LucideIcon; code: string; prompt: string; rgb: string; pattern: Pattern };
@@ -44,8 +32,8 @@ export default function GeographyLayerDeck({ branches }: { branches: readonly Cu
         <div className="font-mono text-[8px] uppercase tracking-[0.08em] text-slate-600">planned destinations remain visible</div>
       </div>
 
-      <div className="relative hidden min-h-[670px] lg:block">
-        <div className="pointer-events-none absolute inset-[4%_6%_12%_7%] rounded-[34px] border border-sky-100/[0.06] bg-[radial-gradient(circle_at_66%_44%,rgba(56,189,248,0.08),transparent_34%),linear-gradient(145deg,rgba(2,8,23,0.16),rgba(3,16,31,0.05))]" />
+      <div className="relative hidden min-h-[740px] lg:block">
+        <div className="pointer-events-none absolute inset-[4%_6%_10%_7%] rounded-[34px] border border-sky-100/[0.06] bg-[radial-gradient(circle_at_66%_44%,rgba(56,189,248,0.08),transparent_34%),linear-gradient(145deg,rgba(2,8,23,0.16),rgba(3,16,31,0.05))]" />
         <div className="absolute inset-x-[8%] top-[3%]">
           {branches.map((branch, index) => <LayerSheet key={branch.id} branch={branch} index={index} />)}
         </div>
@@ -66,10 +54,7 @@ function LayerSheet({ branch, index }: { branch: CurriculumNode; index: number }
   const active = branch.status === "active";
   const offsets = [0, 24, 8, 40, 18, 52, 30, 64];
   const body = (
-    <div
-      className={`group relative grid min-h-[100px] grid-cols-[52px_205px_minmax(0,1fr)_34px] items-center gap-3 border bg-[#03111f]/[0.54] px-4 py-3 shadow-[0_14px_34px_rgba(0,0,0,0.12)] backdrop-blur-[14px] transition ${index === 0 ? "" : "-mt-[13px]"} ${active ? "hover:-translate-y-1 hover:bg-[#03111f]/[0.66]" : "opacity-58"}`}
-      style={{ marginLeft: offsets[index], marginRight: Math.max(0, 64 - offsets[index]), borderColor: `rgba(${meta.rgb},0.16)`, zIndex: 20 + index }}
-    >
+    <div className={`group relative grid min-h-[92px] grid-cols-[52px_205px_minmax(0,1fr)_34px] items-center gap-3 border bg-[#03111f]/[0.54] px-4 py-3 shadow-[0_14px_34px_rgba(0,0,0,0.12)] backdrop-blur-[14px] transition ${index === 0 ? "" : "-mt-[13px]"} ${active ? "hover:-translate-y-1 hover:bg-[#03111f]/[0.66]" : "opacity-58"}`} style={{ marginLeft: offsets[index], marginRight: Math.max(0, 64 - offsets[index]), borderColor: `rgba(${meta.rgb},0.16)`, zIndex: 20 + index }}>
       <LayerPattern pattern={meta.pattern} rgb={meta.rgb} />
       <span className="relative z-10 flex h-10 w-10 items-center justify-center rounded-full border bg-[#03111f]/80" style={{ color: `rgb(${meta.rgb})`, borderColor: `rgba(${meta.rgb},0.28)` }}><Icon size={15} /></span>
       <span className="relative z-10 rounded-[14px] bg-[#03111f]/[0.62] px-3 py-2 backdrop-blur-[16px]"><span className="font-mono text-[9px] font-semibold uppercase tracking-[0.08em]" style={{ color: `rgba(${meta.rgb},0.68)` }}>{String(index + 1).padStart(2, "0")} · {meta.code} layer</span><strong className="mt-0.5 block text-[14px] text-white/88">{branch.label}</strong></span>
