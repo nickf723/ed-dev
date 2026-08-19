@@ -417,7 +417,62 @@ If these are true, move on. Do not polish indefinitely.
 
 ---
 
-## 22. Relationship to other rule documents
+## 22. Navigation pages are cognitive maps before they are directories
+
+A navigation page is successful only when the learner understands the territory better after looking at it, even before opening a child route.
+
+Every substantial hub, branch hub, or unit navigation page should answer three questions:
+
+1. **What are the direct children?**
+2. **How are those children related?**
+3. **When or why would I choose each one?**
+
+Do not assume direct children are equivalent merely because they share a parent. They may play different cognitive roles:
+
+- foundation before application;
+- representation before method;
+- sequential prerequisites;
+- alternative strategies;
+- theory lenses feeding one shared practice;
+- cases or stress tests downstream from a general framework;
+- scales, regions, categories, or processes with different functions.
+
+The layout should encode those roles instead of giving every child the same card weight.
+
+### Navigation-map rules
+
+- Use a central specimen, question, object, map, or process when it helps anchor the children to one shared idea.
+- Show sequence as sequence, alternatives as forks, lenses as converging perspectives, and stress tests as downstream checks.
+- Planned nodes may remain visible when they clarify the ontology, but they must look unavailable and must not masquerade as live links.
+- A hub may teach a small amount of subject structure when that structure explains the navigation. It should not become a substitute for the child lessons.
+- When the learner reaches a child, the parent map should make the child’s role predictable rather than surprising.
+
+Examples of valid shapes include a method fork, an inquiry map, a theory-to-practice flow, a chronological route, a scale ladder, or an atlas. The invariant is not the geometry. The invariant is that **navigation teaches relationships and choice criteria, not merely destinations**.
+
+---
+
+## 23. Reading measure is not interface width
+
+The readable prose column defines the measure for sustained reading. It does not imprison every control, visualization, inspector, legend, or auxiliary tool inside that same width.
+
+When a page has a clear primary instrument, secondary controls may deliberately expand into available margins on wide screens.
+
+### Auxiliary-sidecar rules
+
+- Keep the primary object visible while the learner manipulates controls that affect it.
+- If scrolling to reach a control pushes the controlled visualization mostly off-screen, the ownership relationship is wrong.
+- Auxiliary controls may use collapsible or sticky sidecars, margin rails, inspectors, legends, or tool shelves when they reduce vertical competition.
+- Sidecars should contain secondary state selection, filters, readouts, legends, or inspection tools rather than essential long-form instruction.
+- A collapsible sidecar should preserve a small, obvious way to restore it.
+- Sticky auxiliary UI must respect the persistent header and may never cover the primary object or required text.
+- On narrower screens, sidecars return to normal document flow or another compact responsive disclosure pattern.
+- Wide-screen margin use should support the center of gravity, not create a second competing dashboard.
+
+The lesson reading frame can stay calm and narrow while an instrument temporarily uses more of the viewport. **Prose measure and interaction footprint are separate design decisions.**
+
+---
+
+## 24. Relationship to other rule documents
 
 When guidance overlaps:
 
