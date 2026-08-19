@@ -1,4 +1,5 @@
 "use client";
+
 import { useEffect, useRef } from "react";
 
 export default function TopologyBackground() {
@@ -10,102 +11,80 @@ export default function TopologyBackground() {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    let w = (canvas.width = window.innerWidth);
-    let h = (canvas.height = window.innerHeight);
-
-    // --- STATE ---
+    let width = 0;
+    let height = 0;
     let time = 0;
-
-    // Torus Knot Parameters (p/q)
-    // Try (3, 7) or (2, 3)
-    const p = 3; 
+    let frameId = 0;
+    const p = 3;
     const q = 7;
-    
-    // Points count
-    const segments = 600;
+    const segments = 420;
+
+    const resize = () => {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = Math.round(width * dpr);
+      canvas.height = Math.round(height * dpr);
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    };
 
     const render = () => {
-      time += 0.005;
-      
-      // Clear with "Void" Violet
-      ctx.fillStyle = "#000000ff"; 
-      ctx.fillRect(0, 0, w, h);
+      time += 0.0035;
+      ctx.fillStyle = "#05020c";
+      ctx.fillRect(0, 0, width, height);
 
-      const cx = w / 2;
-      const cy = h / 2;
-      const scale = 175; // Size of the knot
-
-      // Rotation
-      const rotX = time * 0.5;
-      const rotY = time * 0.3;
-
-      const cosX = Math.cos(rotX), sinX = Math.sin(rotX);
-      const cosY = Math.cos(rotY), sinY = Math.sin(rotY);
+      const cx = width * 0.56;
+      const cy = height * 0.52;
+      const scale = Math.min(170, Math.max(95, width * 0.12));
+      const rotX = time * 0.45;
+      const rotY = time * 0.28;
+      const cosX = Math.cos(rotX);
+      const sinX = Math.sin(rotX);
+      const cosY = Math.cos(rotY);
+      const sinY = Math.sin(rotY);
 
       ctx.beginPath();
-      ctx.strokeStyle = "rgba(167, 139, 250, 0.5)"; // Violet-400
-      ctx.lineWidth = 6;
-      // Gradient stroke would be cool but complex, stick to solid for performance
+      for (let index = 0; index <= segments; index += 1) {
+        const t = (index / segments) * Math.PI * 2;
+        const tube = Math.cos(q * t) + 3;
+        const rawX = tube * Math.cos(p * t);
+        const rawY = tube * Math.sin(p * t);
+        const rawZ = -Math.sin(q * t) * 2;
 
-      // Generate and Draw Path
-      for (let i = 0; i <= segments; i++) {
-          const t = (i / segments) * Math.PI * 2;
-          
-          // Parametric Equations for Torus Knot
-          // r = cos(q * t) + 2;
-          // x = r * cos(p * t);
-          // y = r * sin(p * t);
-          // z = -sin(q * t);
-          
-          const r_tube = Math.cos(q * t) + 3; // +3 pushes it out from center
-          const rawX = r_tube * Math.cos(p * t);
-          const rawY = r_tube * Math.sin(p * t);
-          const rawZ = -Math.sin(q * t) * 2; // Z depth
+        const x = rawX * cosY - rawZ * sinY;
+        const z = rawX * sinY + rawZ * cosY;
+        const y = rawY;
+        const y2 = y * cosX - z * sinX;
+        const z2 = y * sinX + z * cosX;
+        const perspective = 900 / (900 + z2 * 30);
+        const px = cx + x * scale * perspective * 0.38;
+        const py = cy + y2 * scale * perspective * 0.38;
 
-          // 3D Rotation
-          // Rotate Y
-          let x = rawX * cosY - rawZ * sinY;
-          let z = rawX * sinY + rawZ * cosY;
-          let y = rawY;
-
-          // Rotate X
-          let y2 = y * cosX - z * sinX;
-          let z2 = y * sinX + z * cosX;
-          
-          // Project (Perspective)
-          const fov = 1000;
-          const perspective = fov / (fov + z2 * 30); // scale Z for depth effect
-          
-          const px = cx + x * scale * perspective * 0.4;
-          const py = cy + y2 * scale * perspective * 0.4;
-
-          if (i === 0) ctx.moveTo(px, py);
-          else ctx.lineTo(px, py);
+        if (index === 0) ctx.moveTo(px, py);
+        else ctx.lineTo(px, py);
       }
-      
-      // Close the loop
       ctx.closePath();
-      
-      // Glow effect
-      ctx.shadowBlur = 15;
-      ctx.shadowColor = "#a78bfa";
+      ctx.strokeStyle = "rgba(167,139,250,0.26)";
+      ctx.lineWidth = 3;
+      ctx.shadowBlur = 18;
+      ctx.shadowColor = "rgba(167,139,250,0.30)";
       ctx.stroke();
       ctx.shadowBlur = 0;
 
-      // Draw faint "Ghost" (Previous frame echo) for motion blur feel
-      // Not implemented here to keep clean, but could add.
-
-      requestAnimationFrame(render);
+      frameId = requestAnimationFrame(render);
     };
 
-    const animId = requestAnimationFrame(render);
-    const handleResize = () => { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; };
-    window.addEventListener("resize", handleResize);
+    resize();
+    window.addEventListener("resize", resize);
+    frameId = requestAnimationFrame(render);
+
     return () => {
-        window.removeEventListener("resize", handleResize);
-        cancelAnimationFrame(animId);
+      window.removeEventListener("resize", resize);
+      cancelAnimationFrame(frameId);
     };
   }, []);
 
-  return <canvas ref={canvasRef} className="fixed inset-0 z-0 opacity-60 pointer-events-none" />;
+  return <canvas ref={canvasRef} className="fixed inset-0 z-0 pointer-events-none opacity-80" />;
 }
