@@ -54,7 +54,7 @@ export default function InformationRecordNavigator({ branches }: { branches: rea
         <div className="divide-y divide-white/[0.055]">
           {ORDER.map((id, index) => { const branch = byId.get(id); return branch ? <RecordLine key={id} branch={branch} index={index} /> : null; })}
         </div>
-        <div className="grid grid-cols-[54px_18px_minmax(0,1fr)] items-center px-4 py-3 font-mono text-[9px] text-slate-600"><span>010</span><span className="text-cyan-100/36">}</span><span>checksum: meaning depends on representation + context + use</span></div>
+        <div className="grid grid-cols-[54px_18px_minmax(0,1fr)] items-center px-4 py-3 font-mono text-[9px] text-slate-600"><span>010</span><span className="text-cyan-100/36">&#125;</span><span>checksum: meaning depends on representation + context + use</span></div>
       </div>
 
       <div className="relative grid gap-2 p-3 sm:grid-cols-2 lg:hidden">
