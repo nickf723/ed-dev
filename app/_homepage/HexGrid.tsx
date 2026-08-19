@@ -15,7 +15,6 @@ export type HomepageDomainChildren = Record<DomainId, HomepageDomainChild[]>;
 type HexPoint = { x: number; y: number };
 type Axial = { q: number; r: number };
 
-// Primary domain ring. These are the original point-up hex positions.
 const HEX_POSITIONS: readonly HexPoint[] = [
   { x: -6.5, y: -11.25 },
   { x: 6.5, y: -11.25 },
@@ -25,8 +24,6 @@ const HEX_POSITIONS: readonly HexPoint[] = [
   { x: -13, y: 0 },
 ] as const;
 
-// The first child for each domain begins exactly where the old decorative
-// outer/ghost hex sat. Children then continue on their own aligned honeycomb.
 const CHILD_ANCHORS: readonly HexPoint[] = [
   { x: -19.5, y: -11.25 },
   { x: 19.5, y: -11.25 },
@@ -36,8 +33,7 @@ const CHILD_ANCHORS: readonly HexPoint[] = [
   { x: -26, y: 0 },
 ] as const;
 
-// Restores the old outer-hex proportions: 10rem wide × 12rem tall.
-// Point-up neighbors therefore step 10rem horizontally and 9rem vertically.
+// These reproduce the old decorative outer-hex footprint: 10rem × 12rem.
 const CHILD_HEX_WIDTH = 10;
 const CHILD_HEX_VERTICAL = 9;
 
@@ -68,9 +64,6 @@ function generateChildPoints(domainIndex: number, count: number): HexPoint[] {
       if (distance > 5) continue;
 
       const point = childPoint(anchor, axial);
-
-      // Keep the smaller child lattice from sitting on top of the large
-      // primary ring or the central station core.
       const overlapsPrimary = HEX_POSITIONS.some(
         (primary) => Math.hypot(point.x - primary.x, point.y - primary.y) < 10.7,
       );
@@ -81,16 +74,20 @@ function generateChildPoints(domainIndex: number, count: number): HexPoint[] {
       const outwardAmount = fromAnchor.x * outward.x + fromAnchor.y * outward.y;
       const tangentAmount = Math.abs(fromAnchor.x * tangent.x + fromAnchor.y * tangent.y);
 
-      // Prefer nearby cells, but steer large branches away from the header and
-      // viewport edges before resorting to another ring.
-      const verticalOverflow = Math.max(0, Math.abs(point.y) - 20.5);
-      const horizontalOverflow = Math.max(0, Math.abs(point.x) - 34);
+      // Never let a dense branch wrap around the station and emerge from the
+      // opposite domain. It may spread sideways, but it remains in its sector.
+      if (outwardAmount < -4) continue;
+
+      // Prefer nearby cells while steering large branches along the viewport
+      // before spending another whole ring toward an edge.
+      const verticalOverflow = Math.max(0, Math.abs(point.y) - 28);
+      const horizontalOverflow = Math.max(0, Math.abs(point.x) - 36);
       const score =
-        distance * 10 +
-        verticalOverflow * 5 +
-        horizontalOverflow * 4 -
-        outwardAmount * 0.08 +
-        tangentAmount * 0.015;
+        distance * 15 +
+        verticalOverflow * 6 +
+        horizontalOverflow * 8 -
+        outwardAmount * 0.04 +
+        tangentAmount * 0.01;
 
       candidates.push({ point, distance, score });
     }
@@ -125,7 +122,7 @@ export default function HexGrid({ domainChildren }: { domainChildren: HomepageDo
     <div className="w-full">
       <div className="hidden w-full items-center justify-center lg:flex">
         <div
-          className="relative mx-auto h-[920px] w-full max-w-[1360px]"
+          className="relative mx-auto h-[1140px] w-full max-w-[1360px]"
           onPointerEnter={() => {
             if (clearTimer.current) clearTimeout(clearTimer.current);
           }}
@@ -220,7 +217,7 @@ function AmbientGeometry({ active }: { active: DomainDefinition | null }) {
         }}
       />
       <div className="absolute left-1/2 top-1/2 h-px w-[920px] -translate-x-1/2 bg-gradient-to-r from-transparent via-white/[0.04] to-transparent" />
-      <div className="absolute left-1/2 top-1/2 h-[720px] w-px -translate-y-1/2 bg-gradient-to-b from-transparent via-white/[0.03] to-transparent" />
+      <div className="absolute left-1/2 top-1/2 h-[760px] w-px -translate-y-1/2 bg-gradient-to-b from-transparent via-white/[0.03] to-transparent" />
 
       {DOMAINS.map((domain, index) => (
         <div
@@ -251,7 +248,7 @@ function CenterCore({ active, childCount }: { active: DomainDefinition | null; c
         }}
       />
       <div
-        className="absolute inset-[1px] bg-[#03070c]/92"
+        className="absolute inset-[1px] bg-[#03070c]/90 backdrop-blur-md"
         style={{ clipPath: "polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%)" }}
       />
       <div className="relative flex h-full flex-col items-center justify-center px-5 text-center">
@@ -314,12 +311,12 @@ function DomainHex({
         }}
       >
         <div
-          className="absolute inset-[1px]"
+          className="absolute inset-[1px] backdrop-blur-sm"
           style={{
             clipPath: "polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%)",
             background: active
-              ? `linear-gradient(155deg, rgba(${domain.theme.rgb},0.095), rgba(3,7,12,0.94) 54%)`
-              : "linear-gradient(155deg, rgba(255,255,255,0.018), rgba(3,7,12,0.91) 58%)",
+              ? `linear-gradient(155deg, rgba(${domain.theme.rgb},0.095), rgba(3,7,12,0.90) 54%)`
+              : "linear-gradient(155deg, rgba(255,255,255,0.018), rgba(3,7,12,0.88) 58%)",
           }}
         />
 
@@ -354,13 +351,13 @@ function ChildCluster({
   const parent = HEX_POSITIONS[domainIndex];
 
   return (
-    <div className="absolute inset-0 z-35" onPointerEnter={onTrack}>
-      <svg className="pointer-events-none absolute inset-0 h-full w-full" viewBox="0 0 1360 920" preserveAspectRatio="none" aria-hidden="true">
+    <div className="absolute inset-0 z-[35]" onPointerEnter={onTrack}>
+      <svg className="pointer-events-none absolute inset-0 h-full w-full" viewBox="0 0 1360 1140" preserveAspectRatio="none" aria-hidden="true">
         <line
           x1={680 + parent.x * 16}
-          y1={460 + parent.y * 16}
+          y1={570 + parent.y * 16}
           x2={680 + anchor.x * 16}
-          y2={460 + anchor.y * 16}
+          y2={570 + anchor.y * 16}
           stroke={`rgba(${domain.theme.rgb},0.18)`}
           strokeWidth="1"
           strokeDasharray="3 7"
@@ -384,17 +381,17 @@ function ChildCluster({
               className="group relative block h-48 w-40 -translate-x-1/2 -translate-y-1/2 outline-none"
             >
               <div
-                className="absolute inset-0 transition-all duration-180 group-hover:scale-[1.035] group-focus-visible:scale-[1.035]"
+                className="absolute inset-0 transition-all duration-200 group-hover:scale-[1.035] group-focus-visible:scale-[1.035]"
                 style={{
                   clipPath: "polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%)",
                   background: `rgba(${domain.theme.rgb},0.34)`,
                 }}
               >
                 <div
-                  className="absolute inset-[1px]"
+                  className="absolute inset-[1px] backdrop-blur-sm"
                   style={{
                     clipPath: "polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%)",
-                    background: `linear-gradient(155deg, rgba(${domain.theme.rgb},0.055), rgba(3,7,12,0.94) 58%)`,
+                    background: `linear-gradient(155deg, rgba(${domain.theme.rgb},0.055), rgba(3,7,12,0.90) 58%)`,
                   }}
                 />
                 <div className="relative flex h-full flex-col items-center justify-center px-3 text-center">
