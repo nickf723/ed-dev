@@ -1,5 +1,8 @@
 "use client";
-import React, { useEffect, useRef } from 'react';
+
+import { useEffect, useRef } from "react";
+
+type Dot = { x: number; y: number; inside: boolean; life: number };
 
 export default function MonteCarloBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -7,102 +10,90 @@ export default function MonteCarloBackground() {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    let width = (canvas.width = window.innerWidth);
-    let height = (canvas.height = window.innerHeight);
-
-    // Simulation State
+    let width = 0;
+    let height = 0;
+    let frameId = 0;
     let total = 0;
     let inside = 0;
-    const dotsPerFrame = 20;
-    
-    // Visual storage (only keep recent dots to prevent lag)
-    const dots: {x: number, y: number, in: boolean, life: number}[] = [];
+    const dots: Dot[] = [];
 
-    const animate = () => {
-      // Fade effect
-      ctx.fillStyle = 'rgba(2, 6, 23, 0.2)'; // Slate-950 with trail
+    const resize = () => {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = Math.round(width * dpr);
+      canvas.height = Math.round(height * dpr);
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      dots.length = 0;
+      total = 0;
+      inside = 0;
+    };
+
+    const render = () => {
+      ctx.fillStyle = "rgba(2,6,23,0.24)";
       ctx.fillRect(0, 0, width, height);
 
-      // Define Simulation Area (Centered Square)
-      const size = Math.min(width, height) * 0.8;
+      const size = Math.min(width, height) * 0.66;
       const radius = size / 2;
-      const centerX = width / 2;
-      const centerY = height / 2;
+      const centerX = width * 0.68;
+      const centerY = height * 0.48;
 
-      // Draw Boundary Circle (Target)
+      ctx.strokeStyle = "rgba(192,132,252,0.08)";
+      ctx.lineWidth = 1.5;
       ctx.beginPath();
       ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
-      ctx.strokeStyle = 'rgba(192, 132, 252, 0.1)'; // Purple-400
-      ctx.lineWidth = 2;
       ctx.stroke();
-
-      // Draw Boundary Square
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
+      ctx.strokeStyle = "rgba(255,255,255,0.045)";
       ctx.strokeRect(centerX - radius, centerY - radius, size, size);
 
-      // Generate Random Points
-      for(let i=0; i<dotsPerFrame; i++) {
-        // Random point inside the square
-        const x = (Math.random() * size) - radius;
-        const y = (Math.random() * size) - radius;
-        
-        // Check if inside circle (Pythagoras)
-        const isInside = (x*x + y*y) <= (radius*radius);
-        
-        total++;
-        if (isInside) inside++;
-
-        dots.push({
-            x: centerX + x,
-            y: centerY + y,
-            in: isInside,
-            life: 1.0
-        });
+      for (let index = 0; index < 8; index += 1) {
+        const dx = Math.random() * size - radius;
+        const dy = Math.random() * size - radius;
+        const isInside = dx * dx + dy * dy <= radius * radius;
+        total += 1;
+        if (isInside) inside += 1;
+        dots.push({ x: centerX + dx, y: centerY + dy, inside: isInside, life: 1 });
       }
 
-      // Draw Dots
-      for (let i = dots.length - 1; i >= 0; i--) {
-        const d = dots[i];
-        d.life -= 0.02; // Fade out
-
-        if (d.life <= 0) {
-            dots.splice(i, 1);
-            continue;
+      for (let index = dots.length - 1; index >= 0; index -= 1) {
+        const dot = dots[index];
+        dot.life -= 0.012;
+        if (dot.life <= 0) {
+          dots.splice(index, 1);
+          continue;
         }
-
-        ctx.fillStyle = d.in 
-            ? `rgba(232, 121, 249, ${d.life})` // Pink-400 (Hit)
-            : `rgba(148, 163, 184, ${d.life * 0.3})`; // Slate-400 (Miss)
-        
+        ctx.fillStyle = dot.inside ? `rgba(232,121,249,${dot.life * 0.70})` : `rgba(148,163,184,${dot.life * 0.20})`;
         ctx.beginPath();
-        ctx.arc(d.x, d.y, d.in ? 1.5 : 1, 0, Math.PI * 2);
+        ctx.arc(dot.x, dot.y, dot.inside ? 1.4 : 1, 0, Math.PI * 2);
         ctx.fill();
       }
 
-      // Draw PI Estimation
-      const piEstimate = (4 * (inside / total)).toFixed(5);
-      
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
-      ctx.font = '100px monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(piEstimate, centerX, centerY);
+      if (total > 0) {
+        const fraction = inside / total;
+        const estimate = 4 * fraction;
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.font = `600 ${Math.max(44, Math.min(84, width * 0.055))}px ui-monospace, monospace`;
+        ctx.fillStyle = "rgba(255,255,255,0.035)";
+        ctx.fillText(estimate.toFixed(4), centerX, centerY);
+      }
 
-      requestAnimationFrame(animate);
+      frameId = requestAnimationFrame(render);
     };
 
-    const handleResize = () => {
-        width = canvas.width = window.innerWidth;
-        height = canvas.height = window.innerHeight;
+    resize();
+    window.addEventListener("resize", resize);
+    frameId = requestAnimationFrame(render);
+    return () => {
+      window.removeEventListener("resize", resize);
+      cancelAnimationFrame(frameId);
     };
-    window.addEventListener('resize', handleResize);
-    animate();
-
-    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  return <canvas ref={canvasRef} className="fixed inset-0 z-0 pointer-events-none" />;
+  return <canvas ref={canvasRef} className="fixed inset-0 z-0 pointer-events-none opacity-90" />;
 }
