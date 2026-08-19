@@ -1,220 +1,37 @@
-"use client";
-import { useState } from "react";
-import Link from "next/link";
-import TectonicBackground from "@/app/natural-science/earth-science/geology/TectonicBackground";
-import { 
-  ArrowLeft, Mountain, Pickaxe, Flame, RefreshCw, 
-  Layers, Search, Clock, Hammer, Globe
-} from "lucide-react";
+import DomainPageHeader from "@/app/_components/DomainPageHeader";
+import { requireCurriculumPageContext } from "@/lib/curriculum/page-context";
+import { Clock3, Layers3, Mountain, Orbit, Pickaxe, Waves } from "lucide-react";
+import RockCycleLab from "./RockCycleLab";
+import TectonicBackground from "./TectonicBackground";
+
+const NODE_ID = "natural.earth-science.geology";
+const BOUNDARIES = [
+  { label: "Divergent", motion: "←   →", result: "Extension · rifting · seafloor spreading", detail: "Plates move apart. Mantle material rises, decompression melting can generate magma, and new lithosphere may form along spreading centers.", rgb: "34, 211, 238" },
+  { label: "Convergent", motion: "→   ←", result: "Subduction · collision · mountain building", detail: "Plates approach one another. Outcomes depend on lithosphere type and density, producing trenches, volcanic arcs, crustal shortening, or continental collision.", rgb: "248, 113, 113" },
+  { label: "Transform", motion: "⇄", result: "Strike-slip motion · earthquakes", detail: "Plates slide laterally past one another. Lithosphere is neither created nor destroyed at the boundary, but strain can accumulate and release suddenly.", rgb: "250, 204, 21" },
+] as const;
+const TIME_SCALES = [
+  ["Seconds → years", "Earthquakes, eruptions, landslides, floods, weathering events, and human-observed deformation."],
+  ["Thousands → millions of years", "River incision, sedimentary basin filling, mountain erosion, fault displacement, glaciation, and landscape evolution."],
+  ["Tens → hundreds of millions of years", "Ocean basins open and close, supercontinents assemble and break apart, mountain belts rise and erode, and crust is recycled."],
+  ["Billions of years", "Continental crust evolves, atmosphere and oceans change, and the geologic record preserves only fragments of Earth's earliest history."],
+] as const;
+const RECORDS = [
+  { icon: Layers3, label: "Strata", note: "Layer relationships, sedimentary structures, unconformities, and depositional environments." },
+  { icon: Pickaxe, label: "Rocks & minerals", note: "Texture, composition, mineral assemblages, isotopes, and alteration record formation conditions." },
+  { icon: Waves, label: "Landforms", note: "Topography and drainage reveal erosion, deposition, uplift, glaciation, volcanism, and tectonic structure." },
+  { icon: Orbit, label: "Geophysics", note: "Seismic waves, gravity, magnetism, heat flow, and deformation probe structures that cannot be observed directly." },
+] as const;
 
 export default function GeologyPage() {
-  // ROCK CYCLE STATE
-  const [rockStage, setRockStage] = useState<"magma" | "igneous" | "sedimentary" | "metamorphic">("magma");
-
-  const cycleData = {
-      magma: {
-          label: "MAGMA",
-          desc: "Molten rock beneath the Earth's surface.",
-          process: "Cooling & Crystallization",
-          next: "igneous",
-          color: "text-orange-500",
-          bg: "bg-orange-500",
-          icon: Flame
-      },
-      igneous: {
-          label: "IGNEOUS",
-          desc: "Formed from cooled magma/lava (e.g., Granite, Basalt).",
-          process: "Weathering & Erosion",
-          next: "sedimentary",
-          color: "text-neutral-200",
-          bg: "bg-neutral-500",
-          icon: Mountain
-      },
-      sedimentary: {
-          label: "SEDIMENTARY",
-          desc: "Formed by accumulation of particles (e.g., Sandstone).",
-          process: "Heat & Pressure",
-          next: "metamorphic",
-          color: "text-amber-200",
-          bg: "bg-amber-600",
-          icon: Layers
-      },
-      metamorphic: {
-          label: "METAMORPHIC",
-          desc: "Transformed by intense heat/pressure (e.g., Marble).",
-          process: "Melting",
-          next: "magma",
-          color: "text-slate-200",
-          bg: "bg-slate-600",
-          icon: RefreshCw
-      }
-  };
-
-  const current = cycleData[rockStage];
-
-  return (
-    <main className="relative min-h-screen bg-[#0c0a09] text-white overflow-hidden selection:bg-orange-500/30 font-sans">
-      
-      {/* 1. VISUAL ENGINE */}
-      <TectonicBackground />
-      
-      {/* VIGNETTE */}
-      <div className="absolute inset-0 bg-radial-vignette opacity-80 pointer-events-none z-0" />
-
-      {/* 2. DASHBOARD */}
-      <div className="relative z-10 container mx-auto px-6 py-12 min-h-screen flex flex-col pointer-events-none">
-        
-        {/* HEADER */}
-        <header className="flex justify-between items-start mb-16 pointer-events-auto">
-             <div>
-                 <Link href="/natural-science/earth-science" className="flex items-center gap-2 text-xs font-mono text-orange-500 hover:text-orange-400 transition-colors mb-4 uppercase tracking-widest">
-                    <ArrowLeft size={12} /> Earth_Science // Sector_01
-                 </Link>
-                 <div className="flex items-center gap-4">
-                     <div className="p-3 bg-neutral-800 border border-neutral-700 rounded-lg shadow-xl">
-                        <Pickaxe size={32} className="text-orange-500" />
-                     </div>
-                     <h1 className="text-5xl md:text-7xl font-black text-stone-200 tracking-tighter drop-shadow-lg">
-                        GEOLOGY
-                     </h1>
-                 </div>
-             </div>
-             
-             <div className="hidden md:block text-right">
-                 <div className="text-[10px] font-mono text-stone-500 mb-1 uppercase">Current Era</div>
-                 <div className="text-2xl font-bold font-serif text-white">CENOZOIC</div>
-                 <div className="text-sm text-stone-400">Quaternary Period</div>
-             </div>
-        </header>
-
-
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 flex-1 pointer-events-auto">
-            
-            {/* LEFT COLUMN: THE CYCLE ENGINE */}
-            <div className="lg:col-span-5 flex flex-col">
-                <div className="bg-stone-900/80 backdrop-blur-md border border-stone-700 rounded-2xl p-8 shadow-2xl relative overflow-hidden group">
-                    
-                    <div className="flex justify-between items-center mb-8">
-                        <h2 className="text-xl font-bold text-stone-200 flex items-center gap-2">
-                            <RefreshCw size={20} className="text-orange-500" /> THE ROCK CYCLE
-                        </h2>
-                        <span className="text-[10px] font-mono text-stone-500 uppercase border border-stone-700 px-2 py-1 rounded">Interactive</span>
-                    </div>
-
-                    {/* CYCLE VISUALIZER */}
-                    <div className="relative aspect-square flex items-center justify-center mb-8">
-                        {/* Connecting Ring */}
-                        <div className="absolute inset-0 border-4 border-stone-800 rounded-full border-dashed animate-[spin_60s_linear_infinite]" />
-                        
-                        {/* Central Active Node */}
-                        <button 
-                            onClick={() => setRockStage(current.next as any)}
-                            className={`
-                                relative z-10 w-48 h-48 rounded-full flex flex-col items-center justify-center text-center p-4
-                                transition-all duration-500 shadow-[0_0_50px_-10px_rgba(0,0,0,0.5)]
-                                ${current.bg} group-hover:scale-105
-                            `}
-                        >
-                            <current.icon size={48} className="mb-2 text-white/90" />
-                            <div className="text-2xl font-black text-white">{current.label}</div>
-                            <div className="text-[10px] font-mono text-white/60 mt-2 uppercase tracking-widest">Click to Evolve</div>
-                        </button>
-
-                        {/* Process Label (Orbiting) */}
-                        <div className="absolute bottom-4 w-full text-center">
-                            <div className="text-xs font-mono text-orange-400 animate-pulse">
-                                Next Process: {current.process}
-                            </div>
-                        </div>
-                    </div>
-
-                    <p className="text-stone-400 text-sm leading-relaxed text-center border-t border-stone-800 pt-6">
-                        {current.desc}
-                    </p>
-
-                </div>
-            </div>
-
-
-            {/* RIGHT COLUMN: TECTONICS & TIME */}
-            <div className="lg:col-span-7 space-y-6">
-                
-                {/* CARD 1: TECTONICS */}
-                <div className="bg-stone-900/60 backdrop-blur-md border border-stone-700 rounded-xl p-6 hover:border-orange-500/30 transition-colors">
-                    <div className="flex items-center gap-3 mb-4">
-                        <Globe size={24} className="text-orange-500" />
-                        <h3 className="text-xl font-bold text-white">Plate Tectonics</h3>
-                    </div>
-                    <p className="text-stone-400 text-sm mb-6">
-                        The lithosphere is broken into tectonic plates that float on the semi-fluid asthenosphere.
-                    </p>
-                    <div className="grid grid-cols-3 gap-4">
-                        <div className="bg-black/30 p-3 rounded border border-stone-800 text-center">
-                            <div className="text-[10px] text-stone-500 mb-1">DIVERGENT</div>
-                            <div className="text-lg text-white">← →</div>
-                            <div className="text-[10px] text-orange-400">Rifts</div>
-                        </div>
-                        <div className="bg-black/30 p-3 rounded border border-stone-800 text-center">
-                            <div className="text-[10px] text-stone-500 mb-1">CONVERGENT</div>
-                            <div className="text-lg text-white">→ ←</div>
-                            <div className="text-[10px] text-red-400">Mountains</div>
-                        </div>
-                        <div className="bg-black/30 p-3 rounded border border-stone-800 text-center">
-                            <div className="text-[10px] text-stone-500 mb-1">TRANSFORM</div>
-                            <div className="text-lg text-white">⇅</div>
-                            <div className="text-[10px] text-yellow-400">Quakes</div>
-                        </div>
-                    </div>
-                </div>
-
-                {/* CARD 2: DEEP TIME (Stratigraphy) */}
-                <div className="bg-stone-900/60 backdrop-blur-md border border-stone-700 rounded-xl p-6 hover:border-orange-500/30 transition-colors flex gap-6">
-                    {/* Visual Column */}
-                    <div className="w-16 flex-shrink-0 flex flex-col rounded overflow-hidden border border-stone-800 opacity-80">
-                        <div className="flex-1 bg-stone-500" title="Cenozoic"></div>
-                        <div className="flex-1 bg-stone-600" title="Mesozoic"></div>
-                        <div className="flex-1 bg-stone-700" title="Paleozoic"></div>
-                        <div className="h-16 bg-stone-800" title="Precambrian"></div>
-                    </div>
-                    
-                    <div className="flex-1">
-                        <div className="flex items-center gap-3 mb-4">
-                            <Clock size={24} className="text-stone-400" />
-                            <h3 className="text-xl font-bold text-white">Deep Time</h3>
-                        </div>
-                        <p className="text-stone-400 text-sm mb-4">
-                            Geologic time is measured in millions of years (Ma). The Earth is approximately 4.54 billion years old.
-                        </p>
-                        <div className="bg-black/30 p-4 rounded border border-stone-800 flex justify-between items-center">
-                             <span className="text-xs text-stone-500">AGE OF EARTH</span>
-                             <span className="font-mono text-xl text-orange-200">4.54 Ga</span>
-                        </div>
-                    </div>
-                </div>
-
-                {/* CARD 3: MINERALOGY */}
-                <div className="bg-stone-900/60 backdrop-blur-md border border-stone-700 rounded-xl p-6 hover:border-orange-500/30 transition-colors">
-                     <div className="flex justify-between items-center mb-2">
-                        <h3 className="font-bold text-white flex items-center gap-2">
-                            <Hammer size={16} className="text-stone-500" /> Mineralogy
-                        </h3>
-                        <span className="text-[10px] font-mono text-stone-600">MOHS SCALE</span>
-                     </div>
-                     <div className="w-full bg-stone-800 h-2 rounded-full mt-4 relative">
-                         <div className="absolute left-[10%] -top-1 w-2 h-4 bg-stone-600" title="Talc (1)" />
-                         <div className="absolute left-[70%] -top-1 w-2 h-4 bg-stone-400" title="Quartz (7)" />
-                         <div className="absolute right-0 -top-1 w-2 h-4 bg-white shadow-[0_0_10px_white]" title="Diamond (10)" />
-                     </div>
-                     <div className="flex justify-between text-[10px] text-stone-500 mt-2 font-mono">
-                         <span>SOFT (Talc)</span>
-                         <span>HARD (Diamond)</span>
-                     </div>
-                </div>
-
-            </div>
-
-        </div>
-      </div>
-    </main>
-  );
+  const context = requireCurriculumPageContext(NODE_ID);
+  return <main className="relative min-h-screen overflow-x-hidden bg-[#0c0907] text-slate-100 selection:bg-orange-400/25">
+    <TectonicBackground /><div className="pointer-events-none fixed inset-0 z-0 bg-[radial-gradient(circle_at_80%_16%,rgba(249,115,22,0.10),transparent_30%),radial-gradient(circle_at_16%_82%,rgba(250,204,21,0.045),transparent_28%),linear-gradient(to_bottom,rgba(12,9,7,0.10),rgba(12,9,7,0.76)_76%,rgba(8,6,5,0.97))]" aria-hidden="true" />
+    <div className="relative z-10 mx-auto w-full max-w-[1580px] px-4 pb-14 sm:px-6 xl:px-8">
+      <div className="sticky top-0 z-30 -mx-4 border-b border-white/[0.06] bg-[#0c0907]/80 px-4 pb-3 pt-5 backdrop-blur-2xl sm:-mx-6 sm:px-6 xl:-mx-8 xl:px-8"><DomainPageHeader breadcrumbs={context.breadcrumbs} eyebrow="Rock · tectonics · surface process · deep time" eyebrowStyle="rule" icon={Mountain} title={<span>Geology</span>} subtitle="Geology reconstructs a dynamic planet from incomplete evidence. Rocks transform, plates move, landscapes erode, magma rises, sediments accumulate, and the record is buried, deformed, recycled, and exposed again across timescales far longer than direct observation." accentRgb="249, 115, 22" titleClassName="font-sans text-[clamp(3rem,5.7vw,6.3rem)] font-semibold leading-[0.83] tracking-[-0.067em] text-[#fff8f1]" headerClassName="border-orange-100/[0.10]" /></div>
+      <section className="mt-5 overflow-hidden rounded-[30px] border border-orange-200/[0.10] bg-black/[0.14] backdrop-blur-xl"><div className="grid gap-4 border-b border-white/[0.07] px-5 py-5 lg:grid-cols-[minmax(0,1fr)_420px] lg:items-end sm:px-6"><div><div className="flex items-center gap-2 font-mono text-[9px] font-semibold uppercase tracking-[0.14em] text-orange-200/58"><Orbit size={12}/> Planetary process</div><h2 className="mt-2 text-[clamp(1.9rem,3.6vw,3.3rem)] font-semibold leading-[0.94] tracking-[-0.05em] text-white">Geology connects material cycles to a moving lithosphere.</h2></div><p className="text-[12px] leading-6 text-slate-400">Plate motion changes pressure, temperature, elevation, basin geometry, magma generation, erosion, burial, and exposure. The rock cycle and plate tectonics are two views of the same evolving Earth.</p></div><div className="grid lg:grid-cols-3">{BOUNDARIES.map((item,index)=><article key={item.label} className="min-h-[230px] border-b border-white/[0.06] px-5 py-5 lg:border-b-0 lg:border-r lg:last:border-r-0"><div className="flex items-center justify-between"><span className="font-mono text-[8px] text-slate-700">0{index+1}</span><span className="font-mono text-[18px]" style={{color:`rgb(${item.rgb})`}}>{item.motion}</span></div><h3 className="mt-5 text-[16px] font-semibold text-white">{item.label}</h3><div className="mt-1 font-mono text-[8px] uppercase" style={{color:`rgba(${item.rgb},0.62)`}}>{item.result}</div><p className="mt-3 text-[10px] leading-5 text-slate-600">{item.detail}</p></article>)}</div></section>
+      <div className="mt-6"><RockCycleLab /></div>
+      <section className="mt-6 grid gap-5 xl:grid-cols-[minmax(0,1.15fr)_minmax(340px,0.85fr)]"><div className="overflow-hidden rounded-[28px] border border-white/[0.08] bg-black/[0.13] backdrop-blur-xl"><div className="border-b border-white/[0.07] px-5 py-5 sm:px-6"><div className="flex items-center gap-2 font-mono text-[9px] uppercase text-amber-200/52"><Clock3 size={12}/> Deep-time ruler</div><h2 className="mt-2 text-[clamp(1.7rem,3vw,2.8rem)] font-semibold tracking-[-0.045em] text-white">Different geologic processes become visible at different clocks.</h2></div><div className="grid sm:grid-cols-2">{TIME_SCALES.map(([scale,detail],index)=><article key={scale} className="min-h-[165px] border-b border-white/[0.06] px-5 py-4 sm:border-r sm:[&:nth-child(2n)]:border-r-0"><span className="font-mono text-[8px] text-orange-200/34">0{index+1}</span><h3 className="mt-3 text-[12px] font-semibold text-white/84">{scale}</h3><p className="mt-2 text-[10px] leading-5 text-slate-600">{detail}</p></article>)}</div></div><aside className="rounded-[28px] border border-white/[0.08] bg-black/[0.13] p-5 backdrop-blur-xl sm:p-6"><div className="font-mono text-[9px] uppercase text-stone-400/58">Reading the record</div><h2 className="mt-2 text-[23px] font-semibold tracking-[-0.04em] text-white">Earth rarely preserves a complete story.</h2><p className="mt-3 text-[11px] leading-5 text-slate-500">Geologists combine independent records, infer processes from present-day physics and chemistry, and distinguish observed relationships from reconstructed history.</p><div className="mt-5 space-y-1">{RECORDS.map(item=>{const Icon=item.icon;return <div key={item.label} className="grid grid-cols-[34px_92px_minmax(0,1fr)] items-start gap-3 border-b border-white/[0.055] py-3 last:border-b-0"><span className="flex h-7 w-7 items-center justify-center rounded-full border border-orange-200/[0.12] text-orange-200/48"><Icon size={12}/></span><strong className="pt-1 text-[10px] text-white/78">{item.label}</strong><span className="pt-1 text-[9px] leading-4 text-slate-600">{item.note}</span></div>})}</div></aside></section>
+    </div>
+  </main>;
 }
