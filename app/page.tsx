@@ -1,17 +1,7 @@
-import HexGrid, { type HomepageDomainChildren } from "./_homepage/HexGrid";
+import HexGrid from "./_homepage/HexGrid";
 import LibraryBackground from "./_homepage/HomepageBackground";
 import NetworkBackground from "./_homepage/NetworkBackground";
 import WireframeBackground from "./_homepage/WireframeBackground";
-import { curriculumRegistry } from "@/lib/curriculum/registry";
-
-const DOMAIN_CHILDREN = Object.fromEntries(
-  curriculumRegistry.allDomains().map((domain) => [
-    domain.domainId,
-    domain.children
-      .filter((child) => child.status !== "placeholder")
-      .map((child) => ({ label: child.label, href: child.href })),
-  ]),
-) as HomepageDomainChildren;
 
 export default function Home() {
   return (
@@ -41,17 +31,17 @@ export default function Home() {
 
             <div className="max-w-[450px] lg:text-right">
               <p className="text-[13px] leading-6 text-slate-400 sm:text-[14px]">
-                Six primary domains. Hover a field to expose its direct children, then follow the curriculum outward.
+                Six primary domains. Hover to inspect a field, then enter it to explore its curriculum map.
               </p>
               <div className="mt-2 font-mono text-[9px] uppercase tracking-[0.11em] text-slate-700">
-                hover → inspect → descend
+                inspect → enter → explore
               </div>
             </div>
           </div>
         </header>
 
-        <div className="flex min-h-0 flex-1 items-start justify-center pt-2 lg:pt-0">
-          <HexGrid domainChildren={DOMAIN_CHILDREN} />
+        <div className="flex min-h-0 flex-1 items-center justify-center">
+          <HexGrid />
         </div>
       </div>
     </main>
