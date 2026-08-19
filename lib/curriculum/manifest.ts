@@ -1,6 +1,7 @@
 import { REFINED_ALGEBRA_CURRICULUM } from "@/lib/curriculum/integrated-algebra-refinement";
 import { APPLIED_MATHEMATICS_CURRICULUM } from "@/lib/curriculum/applied-mathematics";
 import { ARTIFICIAL_INTELLIGENCE_CURRICULUM } from "@/lib/curriculum/artificial-intelligence";
+import { CALCULUS_CURRICULUM } from "@/lib/curriculum/calculus";
 import { COMPUTER_SCIENCE_CURRICULUM } from "@/lib/curriculum/computer-science";
 import { COMPUTATION_THEORY_CURRICULUM } from "@/lib/curriculum/computation-theory";
 import { HARDWARE_ARCHITECTURE_CURRICULUM } from "@/lib/curriculum/hardware-architecture";
@@ -71,6 +72,7 @@ export const CURRICULUM_MODULES: readonly CurriculumNode[] = [
   REFINED_ALGEBRA_CURRICULUM,
   GROUP_THEORY_CURRICULUM,
   GEOMETRY_CURRICULUM,
+  CALCULUS_CURRICULUM,
   STATISTICS_CURRICULUM,
   APPLIED_MATHEMATICS_CURRICULUM,
   LOGIC_CURRICULUM,
