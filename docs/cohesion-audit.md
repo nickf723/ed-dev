@@ -186,6 +186,7 @@ The latest work on these pages occurred without a trusted rendered browser pass,
 - The remaining Pre-Algebra lessons preserve their distinct primary instruments while using canonical terminology and semantic continuation.
 - Quadratic Equations is an honest five-lesson unit covering patterns and parabolas, vertex form, roots and intercepts, completing the square, and the quadratic formula with discriminant.
 - Number Theory is a curriculum-derived hub organized around four integer lenses: multiplicative structure, cyclic structure, integer constraints, and global distribution. Diophantine Equations is the only active child; the other three remain non-clickable planned nodes.
+- Number Theory's first sieve-grid background did not meet the memorable-background gate. It has been replaced by a deterministic integer causeway whose prime positions become illuminated landmarks, its formerly continuous atlas slab has been separated into scenery-aware foreground regions, and two unreferenced random-canvas background experiments were removed.
 
 ### Remaining Mathematics parent target
 
@@ -198,6 +199,8 @@ Its current page predates the constitution, presents implementation-themed chrom
 ## 6. Site-wide audit waves
 
 After Algebra, proceed by coherent branches rather than random pages.
+
+The complete route inventory and site-wide remaster acceptance criteria now live in `docs/site-remaster-audit.md`. Every route is in scope, but work remains branch-by-branch so ontology, family resemblance, and preserved strengths are repaired together instead of applying a global cosmetic skin.
 
 ### Wave 2: Remaining Mathematics · active
 

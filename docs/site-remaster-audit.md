@@ -1,0 +1,180 @@
+# Education Station 64 Site Remaster Audit
+
+This ledger keeps the whole site inside one deliberate remaster program. It complements the Development Constitution, Design Constitution, Cohesion Audit, and Visual Verification Queue.
+
+The goal is not to apply a new skin to every route. It is to bring every page through the same semantic, educational, environmental, and verification gates while preserving the parts that already work.
+
+## Inventory snapshot
+
+Source audit recorded on 2026-08-20:
+
+Refresh this snapshot with `npm run audit:remaster` whenever routes are added, moved, or remastered in bulk.
+
+| Area | Route pages |
+| --- | ---: |
+| Formal Science | 144 |
+| Natural Science | 84 |
+| Social Science | 13 |
+| Humanities | 94 |
+| Applied Science | 41 |
+| Interdisciplines | 15 |
+| Other product routes | 4 |
+| **Total** | **395** |
+
+The audit covers every `app/**/page.tsx` route, including dynamic route families. A dynamic route counts as one route module even when it can render many records or lessons.
+
+### Migration signals
+
+These are prompts for review, not automatic defects:
+
+- 183 route modules still declare the whole page as a Client Component.
+- 171 route modules use the shared `DomainPageHeader` family.
+- 123 route modules resolve curriculum page context directly.
+- 62 route modules use the newer `SceneFrame` composition system.
+- 239 route modules explicitly import a background or world component.
+- 293 route modules contain at least one 6–10 px text token; every occurrence must be classified as decorative telemetry or raised to the readability floor.
+- 192 pages still manually declare breadcrumbs and should migrate when their branch is remastered.
+- 22 route modules contain legacy implementation-themed chrome; the current concentration is in older Mathematics families.
+- two route modules use randomness only inside explicit learner actions; static inspection found no page-level render-time randomness in the route modules.
+
+These numbers show why the remaster must be incremental. The site contains several development eras, and global replacement would erase good local work while leaving semantic debt untouched.
+
+## Remaster acceptance contract
+
+Every route eventually passes the following gates.
+
+### Preserve
+
+- Inventory the existing background, navigation topology, useful content, live routes, interactions, and memorable moments.
+- Keep successful systems unless the pass explicitly replaces them with something stronger in the same dimensions.
+
+### Tree
+
+- Filesystem route, curriculum node, sidebar ancestry, breadcrumbs, and live/planned states agree.
+- Hubs foreground direct children; grandchildren and cross-links remain visibly different.
+- Vocabulary is registered at the narrowest teaching node and inherited upward.
+
+### Frame
+
+- The page kind is honest: hub, unit, lesson, reference, or tool.
+- Each viewport has one center of gravity.
+- Lessons use a readable measure; hubs may use a wider field when navigation requires it.
+- Required content grows naturally without clipping or screenshot-specific height patches.
+- Major foreground groups are separated by deliberate scenery corridors.
+
+### Field
+
+- One dominant environmental idea is recognizable in a still screenshot.
+- Backgrounds are composed scenes, mechanisms, maps, fields, archives, instruments, or other subject-specific worlds—not generic particles, grids, or neon ambience.
+- Glass uses local frost and moderate opacity so the world remains visible.
+- Dense manipulation creates a quiet pocket without erasing the surrounding environment.
+- Reduced motion preserves identity and comprehension.
+
+### Flow
+
+- Navigation pages teach relationships and choice criteria.
+- Atomic lessons visibly Explain → Do → Check and include an insightful transfer check plus deterministic practice when appropriate.
+- Controls and consequences remain co-visible.
+- Reference, repository, and tool pages support a truthful retrieval or performance loop.
+
+### Verify and publish
+
+- Run TypeScript, lint, vocabulary, architecture, readability, applicable data tests, and a production build.
+- Inspect desktop, narrower desktop, mobile, interaction, long-copy, boundary, empty, error, and reduced-motion states when a trusted browser is available.
+- Queue visual verification honestly when it is not.
+- Commit and push one coherent pass to `studio`, verify the remote tree, and confirm Vercel created no development deployment.
+
+## Breathing-room standard
+
+The site should feel inhabited, not tiled.
+
+1. Reserve visible subject scenery at outer margins and between major content groups.
+2. Break uninterrupted dashboard walls into semantically related objects when continuity is not part of the subject model.
+3. Use section rhythm to reset attention after dense atlases, instruments, tables, collections, and assessments.
+4. Keep background landmarks or motion visible inside those openings so space feels intentional.
+5. Do not create blank voids or use filler cards to manufacture occupancy.
+6. On narrow screens, preserve the rhythm through vertical spacing, lighter local surfaces, and normal document flow.
+
+## Audit waves
+
+### Wave 0 · shared contract and known regressions
+
+- Establish this complete inventory and the scenery-corridor standard.
+- Replace the rejected Number Theory sieve wallpaper with a stronger integer environment.
+- Keep the shared sidebar, vocabulary drawer, Interdisciplines matrix, and collection repositories in the Priority 0 visual queue.
+
+### Wave 1 · Mathematics
+
+- Finish parent coverage with Discrete Mathematics.
+- Then audit Foundations, Linear Algebra, Abstract Algebra, Calculus, Geometry, Statistics, Applied Mathematics, and their live child sequences.
+- Preserve the strongest existing instruments; migrate ontology, context, vocabulary, lesson flow, readability, and environment together.
+
+### Wave 2 · Formal Science outside Mathematics
+
+- Logic
+- Computer Science
+- Information Science
+- Data Science
+- Systems Science
+
+### Wave 3 · Natural Science
+
+- Physics
+- Chemistry
+- Biology
+- Earth Science
+- Astronomy
+
+Use each science's own experimental, spatial, temporal, taxonomic, or field-based grammar rather than importing Mathematics layouts.
+
+### Wave 4 · Social Science
+
+- Psychology
+- Economics
+- Sociology
+- Political Science
+- Anthropology
+- Linguistics
+- Communication Studies
+- Geography
+- Law
+
+### Wave 5 · Humanities
+
+- Philosophy
+- History
+- Visual Arts
+- Music
+- Literature
+- Religion
+- Languages
+- Performing Arts
+- Gaming and its repositories
+- Culinary Arts
+- Sports
+- Culture
+- Futurology
+
+### Wave 6 · Applied Science
+
+- Engineering
+- Technology
+- Materials Science
+- Industrial Design
+- Architecture
+- Medicine
+- Health Sciences
+- Agriculture
+- Business
+- Education
+- Library Science
+
+### Wave 7 · Interdisciplines
+
+Rebuild relationships after canonical pages are strong enough to support precise concept-level links. Interdisciplines remains an atlas over the five branches, not a duplicate curriculum.
+
+## Current target
+
+Number Theory is the first page to receive the explicit scenery-corridor correction. Discrete Mathematics is next because its legacy implementation chrome, lab-first order, local data, relative navigation, and vocabulary structure make it the clearest remaining Mathematics parent debt.
+
+The program advances one coherent page or family at a time. A route leaves the ledger only when its semantic structure, educational job, distinctive world, geometry, verification record, and published `studio` commit all agree.

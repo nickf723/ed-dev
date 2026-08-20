@@ -480,7 +480,7 @@ Whenever a page changes without reliable visual verification:
 
 **Route:** `/formal-science/mathematics/number-theory`
 
-**Check:** Desktop, narrower desktop, and mobile composition; sticky header clearance; the 360 specimen and four-lens branch ledger; planned versus live branch treatment; Diophantine navigation; sieve-field visibility and text protection; factorization presets 60, 97, 2026, and 65,536; prime, composite, invalid, lower-bound, and upper-bound inputs; prime powers, repeated-factor count, and positive-divisor count; cross-link semantics; vocabulary drawer scope and inherited Mathematics grouping; keyboard and zoomed-text behavior.
+**Check:** Desktop, narrower desktop, and mobile composition; sticky header clearance; the 360 specimen and four-lens branch ledger; planned versus live branch treatment; Diophantine navigation; integer-causeway visibility, prime-landmark glow, reduced-motion state, and text protection; scenery corridors between the header, atlas, factorization workbench, and cross-links; factorization presets 60, 97, 2026, and 65,536; prime, composite, invalid, lower-bound, and upper-bound inputs; prime powers, repeated-factor count, and positive-divisor count; cross-link semantics; vocabulary drawer scope and inherited Mathematics grouping; keyboard and zoomed-text behavior.
 
 **Status:** Structural validation required in this pass; rendered verification pending.
 

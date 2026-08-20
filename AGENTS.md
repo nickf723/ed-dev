@@ -12,6 +12,7 @@ Before changing educational UI or curriculum content, read:
 - `docs/atomic-lesson-constitution.md` before creating or substantially remastering an atomic lesson. It is the binding Explain -> Do -> Check build contract for lesson structure and workflow.
 - `docs/page-planning-template.md` when creating or substantially remastering a hub, unit, or lesson page.
 - `docs/cohesion-audit.md` for site-wide consistency without homogenizing subject identity.
+- `docs/site-remaster-audit.md` for the complete route inventory, remaster acceptance gates, scenery-corridor standard, and active branch-by-branch audit waves.
 - `docs/visual-verification-queue.md` before making visual claims or continuing work while rendered previews are unavailable.
 - `docs/development-branch-workflow.md` for the active development branch, cost-control, push, promotion, and remote-verification workflow.
 

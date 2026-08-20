@@ -191,6 +191,19 @@ Atomic lessons should feel like a guided path, not a widescreen dashboard.
 - Do not stretch weak content across the screen merely because horizontal space exists.
 - If content is sparse, condense it. If content is rich, let the page scroll and breathe.
 
+### Breathing room is part of the academic world
+
+Breathing room is not an empty black margin or an abandoned band between cards. It is a deliberately composed **scenery corridor** where the page's subject world remains visible and helps separate one learner question from the next.
+
+- Preserve visible background along the outer margins and between major foreground groups.
+- Prefer several related foreground objects with meaningful gaps over one uninterrupted full-width glass slab when the subject does not require a continuous surface.
+- Let major section transitions open enough to reset attention before the next learner question, especially after a dense atlas, instrument, table, or assessment.
+- Keep the scenery continuous through those openings so the learner experiences one academic place rather than disconnected card stacks.
+- Do not manufacture breathing room by deleting useful structure, stretching weak content, or adding arbitrary spacer blocks. The opening should reveal a recognizable environmental feature, route, scale, landmark, or motion.
+- On narrow screens, preserve pacing with vertical section rhythm and lighter local surfaces even when side scenery collapses.
+
+A page can occupy most of the useful viewport and still breathe. The test is whether the learner can perceive clear foreground groups **and** appreciate the subject environment around them.
+
 ### Readability floor
 
 For school-facing lessons:

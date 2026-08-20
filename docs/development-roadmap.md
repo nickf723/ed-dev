@@ -98,10 +98,12 @@ Phase A now has complete parent coverage across the five canonical academic bran
 
 Phase B is active. Proceed by coherent branch audit waves rather than choosing random pages:
 
-1. continue the remaining Mathematics parent wave with Discrete Mathematics after the Number Theory remaster;
+1. visually verify the revised Number Theory integer-causeway world when a trusted browser is available, then continue the remaining Mathematics parent wave with Discrete Mathematics;
 2. continue through Formal Science outside Mathematics;
 3. descend through Natural Science, Social Science, Humanities, and Applied Science representative children;
 4. return to Interdisciplines after canonical child structures are strong enough to support precise relationships.
+
+The site-wide remaster ledger is `docs/site-remaster-audit.md`. It keeps all 395 route pages in scope while the active queue advances by coherent curriculum families. Remaster passes now explicitly include scenery corridors and section pacing so pages expose their academic worlds instead of becoming continuous glass dashboards.
 
 ## Phase B: signature branches
 

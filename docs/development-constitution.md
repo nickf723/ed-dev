@@ -194,6 +194,8 @@ The design gates are conjunctive, not tradeable.
 - Do not fix sparseness by covering the world with opaque slabs.
 - Add relationships, comparison, evidence, structure, and meaningful interaction before adding filler.
 - Use composition, staggered widths, scenery corridors, local scrims, and glass blur to keep the page occupied while the world remains visible.
+- Treat scenery corridors as intentional layout regions: preserve visible world in outer margins and between major navigation, instrument, explanation, and assessment groups instead of joining every surface into one continuous dashboard wall.
+- Breathing room must reveal a recognizable part of the academic world. Empty black space, arbitrary spacer blocks, and large gaps with no compositional purpose do not satisfy this requirement.
 - A first viewport should contain one clear center of gravity, prominent navigation when appropriate, meaningful supporting structure, and a recognizable environmental behavior.
 - A page fails if hierarchy, density, readability, world visibility, directed attention, component distinction, or viewport usability is sacrificed to improve another.
 
