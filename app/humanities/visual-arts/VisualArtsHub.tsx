@@ -122,11 +122,11 @@ export default function VisualArtsHub({ branches }: Props) {
           />
         </div>
 
-        <section className="mt-5 grid gap-4 lg:grid-cols-[minmax(0,1.16fr)_minmax(330px,0.84fr)]">
+        <section className="mt-5 grid gap-4 lg:grid-cols-[minmax(0,1.16fr)_minmax(360px,0.84fr)]">
           <div className="rounded-[28px] border border-orange-200/[0.11] bg-black/[0.11] p-5 shadow-[0_28px_95px_rgba(0,0,0,0.20)] backdrop-blur-xl sm:p-6">
-            <div className="font-mono text-[9px] font-semibold uppercase tracking-[0.15em] text-orange-200/70">The object before the label</div>
+            <div className="font-mono text-[10px] font-semibold uppercase tracking-[0.10em] text-orange-200/70">The object before the label</div>
             <h2 className="mt-2 max-w-4xl text-[clamp(1.8rem,3.2vw,2.9rem)] font-semibold tracking-[-0.05em] text-white">A work can be organized formally, materially, historically, and culturally at the same time.</h2>
-            <p className="mt-3 max-w-3xl text-[11px] leading-6 text-stone-400">A painting is not only an arrangement of colors, and a sculpture is not only an object with dimensions. Materials, production, viewing conditions, representation, patronage, institutions, identity, and interpretation can all become part of what the work does.</p>
+            <p className="mt-3 max-w-3xl text-[14px] leading-6 text-stone-300/82">A painting is not only an arrangement of colors, and a sculpture is not only an object with dimensions. Materials, production, viewing conditions, representation, patronage, institutions, identity, and interpretation can all become part of what the work does.</p>
           </div>
           <div className="grid grid-cols-3 gap-2 rounded-[28px] border border-white/[0.08] bg-black/[0.11] p-3 backdrop-blur-xl">
             <Lens icon={Layers3} label="Material" text="What is physically present and how was it made?" rgb="251, 146, 60" />
@@ -144,12 +144,12 @@ export default function VisualArtsHub({ branches }: Props) {
         </section>
 
         <section className="mt-5 overflow-hidden rounded-[30px] border border-white/[0.08] bg-black/[0.11] shadow-[0_30px_105px_rgba(0,0,0,0.22)] backdrop-blur-xl">
-          <div className="grid gap-4 border-b border-white/[0.07] p-5 lg:grid-cols-[minmax(0,1fr)_430px] lg:items-end sm:p-6">
+          <div className="grid gap-4 border-b border-white/[0.07] p-5 lg:grid-cols-[minmax(0,1fr)_450px] lg:items-end sm:p-6">
             <div>
-              <div className="flex items-center gap-2 font-mono text-[9px] font-semibold uppercase tracking-[0.14em] text-rose-200/65"><ImageIcon size={12} /> Formal tools</div>
-              <h2 className="mt-2 text-[clamp(1.7rem,3vw,2.7rem)] font-semibold tracking-[-0.045em] text-white">Use guides to compare choices—not to discover a secret recipe for beauty.</h2>
+              <div className="flex items-center gap-2 font-mono text-[10px] font-semibold uppercase tracking-[0.10em] text-rose-200/65"><ImageIcon size={13} /> Formal tools</div>
+              <h2 className="mt-2 text-[clamp(1.7rem,3vw,2.7rem)] font-semibold tracking-[-0.045em] text-white">Use guides to compare choices, not to discover a secret recipe for beauty.</h2>
             </div>
-            <p className="text-[10px] leading-5 text-stone-500">Composition grids and color-wheel relationships are analytical and generative tools. Their visual effect depends on subject, context, value, saturation, scale, material, and how the viewer encounters the work.</p>
+            <p className="text-[13px] leading-6 text-stone-400">Composition grids and color-wheel relationships are analytical and generative tools. Their visual effect depends on subject, context, value, saturation, scale, material, and how the viewer encounters the work.</p>
           </div>
           <div className="grid gap-4 p-4 xl:grid-cols-2 sm:p-5">
             <GoldenRatioComposer />
@@ -162,5 +162,10 @@ export default function VisualArtsHub({ branches }: Props) {
 }
 
 function Lens({ icon: Icon, label, text, rgb }: { icon: LucideIcon; label: string; text: string; rgb: string }) {
-  return <div className="flex min-h-[150px] flex-col justify-between rounded-[18px] border border-white/[0.06] bg-white/[0.012] p-3"><Icon size={15} style={{ color: `rgb(${rgb})` }} /><div><div className="font-mono text-[8px] uppercase tracking-[0.1em]" style={{ color: `rgba(${rgb},0.68)` }}>{label}</div><p className="mt-1.5 text-[8px] leading-4 text-stone-700">{text}</p></div></div>;
+  return (
+    <div className="flex min-h-[154px] flex-col justify-between rounded-[18px] border border-white/[0.06] bg-white/[0.012] p-3.5">
+      <Icon size={17} style={{ color: `rgb(${rgb})` }} />
+      <div><div className="font-mono text-[9px] uppercase tracking-[0.07em]" style={{ color: `rgba(${rgb},0.72)` }}>{label}</div><p className="mt-1.5 text-[11px] leading-5 text-stone-400">{text}</p></div>
+    </div>
+  );
 }
