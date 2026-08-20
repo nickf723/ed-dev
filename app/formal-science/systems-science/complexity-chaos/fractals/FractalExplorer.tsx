@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, type MouseEvent } from "react";
 import { MousePointer2, Snowflake } from "lucide-react";
 
 const SIZE = 220;
@@ -31,7 +31,7 @@ export default function FractalExplorer() {
   const dotLeft = ((c.real - X_MIN) / (X_MAX - X_MIN)) * 100;
   const dotTop = ((Y_MAX - c.imag) / (Y_MAX - Y_MIN)) * 100;
 
-  function chooseFromPlane(event: React.MouseEvent<HTMLButtonElement>) {
+  function chooseFromPlane(event: MouseEvent<HTMLButtonElement>) {
     const rect = event.currentTarget.getBoundingClientRect();
     const nx = (event.clientX - rect.left) / rect.width;
     const ny = (event.clientY - rect.top) / rect.height;
