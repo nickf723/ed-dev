@@ -57,6 +57,14 @@ A new or substantially rebuilt page is one coherent curriculum contribution. The
 
 Do not create placeholder pages. A planned curriculum node may remain visible and non-clickable when it clarifies the ontology, but a route becomes active only when its page is substantive and functional.
 
+### Curriculum depth-ceiling gate
+
+- Define the smallest durable set of direct children that makes the parent intelligible and useful.
+- A possible subdivision is not automatically a warranted page. Require a distinct learner outcome, enough content for the declared page kind, and a clear role beside its siblings.
+- Advanced foundations may appear as one visibly deferred horizon node without recursively enumerating every deeper theory.
+- Do not create speculative grandchildren, placeholder routes, or an arbitrary count of domains/pages to make the ontology look complete.
+- Extend the ceiling when finished content or a concrete learner need proves that another layer is useful.
+
 ---
 
 ## 2. Navigation comes before demonstrations on non-lesson pages
@@ -183,6 +191,23 @@ A background must be both **exciting enough to remember and calm enough to ignor
 - Neighboring pages must differ in dominant silhouette and behavior, not merely palette.
 
 Before publishing, ask: **What single background behavior or scene would someone remember ten minutes after leaving this page?** If the answer is only “moving particles” or “a glowing grid,” the world is not finished.
+
+### Representation-parity gate
+
+When the world, opening model, worked example, and instrument depict the same academic object, they must share one canonical example contract.
+
+- Reuse one data record or derive every view from the same values when practical.
+- Confirm labels, categories, membership, quantities, selection state, and spatial regions agree across every representation.
+- Backgrounds that resemble academic diagrams are reviewed as content. They must encode a valid example or remain unmistakably atmospheric.
+- A new example in a later section must be labeled as a new case, with the invariant relationship stated explicitly.
+- Begin classification with physically legible properties when useful, then translate the same objects into formal notation before changing examples.
+
+### Thematic data-mark gate
+
+- Tokens, specimens, points, and selected values keep the color, shape, or material that communicates their academic identity.
+- Selection enhances native identity rather than replacing every mark with a generic white cell.
+- Compact values and long labels may use different geometry, but they remain members of one local visual language.
+- Verify required label contrast in selected and unselected states without flattening the subject palette.
 
 ---
 

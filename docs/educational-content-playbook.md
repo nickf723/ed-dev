@@ -174,6 +174,16 @@ Rules:
 - Do not place unrelated widgets side by side and call them “multiple representations.”
 - Explicitly name what remains the same across forms.
 
+### Representation-parity check
+
+Coordination includes every instructional-looking layer, including the page background.
+
+- Use the same named example, data, membership decisions, and state across views that claim to depict one object.
+- If the opening uses physical specimens, keep those specimens while translating into a table, diagram, notation, or formal rule.
+- If a later instrument introduces a different case, identify it as a new case and explain which relationship is unchanged.
+- Do not use random numbers, labels, or decorative geometry in a background when learners could reasonably read them as part of the worked example.
+- Prefer immediately perceptible properties for the first classification model, then formalize the same decisions symbolically.
+
 ---
 
 ## 8. Guide before sandboxing

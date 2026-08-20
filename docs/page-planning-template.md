@@ -97,6 +97,9 @@ What plausible wrong model should the page actively guard against?
 - 
 - 
 
+**Depth ceiling**
+What is the smallest useful layer of direct children? Which advanced material should remain one deferred horizon instead of becoming a deep placeholder tree?
+
 If the page is starting to need multiple independent primary instruments, reconsider the scope before coding.
 
 ---
@@ -151,6 +154,9 @@ Why is it the clearest model?
 **What stays invariant across representations?**  
 
 If several views share a state, describe the shared object here.
+
+**Representation parity audit**
+Do the background, opening model, worked example, instrument, and notation depict the same example? If so, where does their shared data live? If a later view changes examples, how is that transition labeled and which relationship remains invariant?
 
 ---
 
@@ -308,6 +314,9 @@ What structure, motion, background, typography, or interaction belongs specifica
 
 **Background concept:**  
 
+**Learner-facing data marks:**
+How do tokens, specimens, points, and selected states preserve their subject/category identity instead of reverting to generic white pills or cells?
+
 **What should remain visually quiet?**  
 
 **Instructional center of gravity:**  
@@ -345,6 +354,7 @@ Instructional content should remain in normal document flow unless intrinsic dia
 - Are category boundaries accurate?
 - Are important exceptions introduced at the right time?
 - Does the visual model accidentally imply anything false?
+- Do all coordinated and instructional-looking background representations agree about the same example and state?
 - Have generated examples been checked mathematically/scientifically?
 
 Notes:

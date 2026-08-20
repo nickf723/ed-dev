@@ -3,60 +3,97 @@ import Link from "next/link";
 import CurriculumSiblingNav from "@/app/_components/CurriculumSiblingNav";
 import DomainPageHeader from "@/app/_components/DomainPageHeader";
 import { requireCurriculumPageContext } from "@/lib/curriculum/page-context";
+import type { CurriculumNode } from "@/lib/curriculum/types";
 import {
   ArrowRight,
   Binary,
   Braces,
   Database,
   Layers3,
+  Route,
   ScanSearch,
   ShieldAlert,
+  Shapes,
 } from "lucide-react";
 import SetOperator from "./SetOperator";
 import SetTheoryAssessment from "./SetTheoryAssessment";
 import SetTheoryWorld from "./SetTheoryWorld";
+import {
+  SET_THEORY_SPECIMENS,
+  specimensAtAddress,
+  type SetTheoryMembershipAddress,
+  type SetTheorySpecimen,
+} from "./setTheorySpecimens";
 
 const NODE_ID = "formal.mathematics.discrete.set-theory";
+
+const SHAPE_SET_A = SET_THEORY_SPECIMENS.filter(
+  (specimen) => specimen.address === "aOnly" || specimen.address === "both",
+);
+const SHAPE_SET_B = SET_THEORY_SPECIMENS.filter(
+  (specimen) => specimen.address === "both" || specimen.address === "bOnly",
+);
 
 export const metadata: Metadata = {
   title: "Set Theory",
   description:
-    "Learn how membership determines union, intersection, and difference, then practice operations on finite sets.",
+    "Build an intuitive foundation for set theory, explore finite-set operations, and follow a bounded path into containment, relations, partitions, and foundations.",
 };
 
 const MEMBERSHIP_REGIONS = [
   {
-    label: "A only",
-    rule: "in A and not in B",
-    members: "{2}",
-    tone: "cyan",
-  },
-  {
+    id: "both",
+    row: "cyan",
+    column: "triangle",
     label: "Both",
-    rule: "in A and in B",
-    members: "{4, 6}",
+    rule: "cyan and a triangle",
     tone: "amber",
   },
   {
+    id: "aOnly",
+    row: "cyan",
+    column: "not-triangle",
+    label: "A only",
+    rule: "cyan and not a triangle",
+    tone: "cyan",
+  },
+  {
+    id: "bOnly",
+    row: "not-cyan",
+    column: "triangle",
     label: "B only",
-    rule: "in B and not in A",
-    members: "{5}",
+    rule: "a triangle and not cyan",
     tone: "violet",
   },
   {
+    id: "neither",
+    row: "not-cyan",
+    column: "not-triangle",
     label: "Neither",
-    rule: "outside both sets",
-    members: "{1, 3}",
+    rule: "not cyan and not a triangle",
     tone: "slate",
   },
-] as const;
+] as const satisfies readonly {
+  id: SetTheoryMembershipAddress;
+  row: "cyan" | "not-cyan";
+  column: "triangle" | "not-triangle";
+  label: string;
+  rule: string;
+  tone: "cyan" | "amber" | "violet" | "slate";
+}[];
+
+function specimenRoster(specimens: readonly SetTheorySpecimen[]) {
+  return `{${specimens.map((specimen) => specimen.name).join(", ")}}`;
+}
 
 const OPERATION_RULES = [
   {
     name: "Union",
     symbol: "A ∪ B",
     logic: "A OR B",
-    result: "{2, 4, 5, 6}",
+    result: specimenRoster(
+      SET_THEORY_SPECIMENS.filter((specimen) => specimen.address !== "neither"),
+    ),
     note: "Keep every element that belongs to at least one set.",
     tone: "cyan",
   },
@@ -64,7 +101,7 @@ const OPERATION_RULES = [
     name: "Intersection",
     symbol: "A ∩ B",
     logic: "A AND B",
-    result: "{4, 6}",
+    result: specimenRoster(specimensAtAddress("both")),
     note: "Keep only elements that belong to both sets.",
     tone: "amber",
   },
@@ -72,7 +109,7 @@ const OPERATION_RULES = [
     name: "Difference",
     symbol: "A ∖ B",
     logic: "A AND NOT B",
-    result: "{2}",
+    result: specimenRoster(specimensAtAddress("aOnly")),
     note: "Start in A, then remove anything that also belongs to B.",
     tone: "violet",
   },
@@ -88,8 +125,8 @@ const TONE_CLASSES = {
 export default function SetTheoryPage() {
   const context = requireCurriculumPageContext(NODE_ID);
 
-  if (context.pageKind !== "lesson") {
-    throw new Error("Set Theory must be classified as an atomic lesson.");
+  if (context.pageKind !== "unit") {
+    throw new Error("Set Theory must be classified as a root unit.");
   }
 
   return (
@@ -104,19 +141,21 @@ export default function SetTheoryPage() {
         <div className="bg-[#02060b]/72 sticky top-0 z-30 -mx-4 border-b border-cyan-100/[0.08] px-4 pb-4 pt-6 shadow-[0_18px_58px_rgba(0,0,0,0.2)] backdrop-blur-2xl sm:-mx-6 sm:px-6 xl:-mx-10 xl:px-10">
           <DomainPageHeader
             breadcrumbs={context.breadcrumbs}
-            eyebrow="Discrete mathematics · membership lesson"
+            eyebrow="Discrete mathematics · root unit"
             eyebrowStyle="rule"
             icon={Braces}
             title={<span>Set Theory</span>}
-            subtitle="A set turns a collection into a precise membership rule. Once every object has an address—A only, both, B only, or neither—set operations become readable questions instead of symbols to memorize."
+            subtitle="Begin with the practical idea of membership, then follow one bounded path through containment, operations, relations, partitions, and—much later—the foundations beneath them."
             accentRgb="103, 232, 249"
             titleClassName="font-sans text-[clamp(2.8rem,5.2vw,5.35rem)] font-semibold leading-[0.9] tracking-[-0.06em] text-[#f4fdff]"
             headerClassName="border-cyan-100/[0.1]"
           />
         </div>
 
+        <SetTheoryLearningPath lessons={context.children} />
+
         <section
-          className="mt-14 grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-center"
+          className="mt-28 grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-center"
           aria-labelledby="membership-address-title"
         >
           <div className="max-w-xl">
@@ -127,25 +166,30 @@ export default function SetTheoryPage() {
               id="membership-address-title"
               className="mt-3 text-[clamp(2rem,4.3vw,4rem)] font-semibold leading-[0.96] tracking-[-0.055em] text-white"
             >
-              Every element has a membership address.
+              Every object answers two visible questions.
             </h2>
             <p className="mt-5 text-[16px] leading-7 text-slate-300">
-              Let the universe be <strong>U = {"{1, 2, 3, 4, 5, 6}"}</strong>.
-              Set A contains the even numbers, while set B contains numbers
-              greater than 3. Test each number against both rules.
+              Look at the same six tiles shown in the background. Set A contains
+              every <strong className="text-cyan-100">cyan object</strong>. Set
+              B contains every{" "}
+              <strong className="text-violet-100">triangle</strong>. Color and
+              shape are independent properties, so every tile lands in exactly
+              one of four membership addresses.
             </p>
-            <div className="mt-6 border-y border-white/[0.08] py-5 font-mono text-[15px] leading-8 text-slate-300">
+            <div className="mt-6 border-y border-white/[0.08] py-5 font-mono text-[14px] leading-7 text-slate-300">
               <div>
-                <span className="text-cyan-200">A</span> = {"{2, 4, 6}"}
+                <span className="text-cyan-200">A</span> ={" "}
+                {specimenRoster(SHAPE_SET_A)}
               </div>
               <div>
-                <span className="text-violet-200">B</span> = {"{4, 5, 6}"}
+                <span className="text-violet-200">B</span> ={" "}
+                {specimenRoster(SHAPE_SET_B)}
               </div>
             </div>
             <p className="mt-5 text-[14px] leading-6 text-slate-500">
-              The circles are a map of those decisions. Their geometric overlap
-              is useful because it represents shared membership—not because sets
-              are literally circles.
+              This property matrix and the scenery use one identical universe.
+              The scanner later translates the same four-address logic into a
+              conventional Venn diagram with a newly labeled numeric case.
             </p>
           </div>
 
@@ -192,7 +236,7 @@ export default function SetTheoryPage() {
                 <p className="mt-5 min-h-12 text-[13px] leading-6 text-slate-400">
                   {operation.note}
                 </p>
-                <div className="mt-5 border-t border-white/[0.08] pt-4 font-mono text-[14px] text-slate-200">
+                <div className="mt-5 border-t border-white/[0.08] pt-4 font-mono text-[13px] leading-6 text-slate-200 [overflow-wrap:anywhere]">
                   Result: {operation.result}
                 </div>
               </article>
@@ -376,7 +420,105 @@ export default function SetTheoryPage() {
   );
 }
 
+function SetTheoryLearningPath({
+  lessons,
+}: {
+  lessons: readonly CurriculumNode[];
+}) {
+  return (
+    <section
+      className="mt-14 grid gap-8 border-b border-cyan-100/[0.08] pb-16 lg:grid-cols-[0.72fr_1.28fr] lg:items-start"
+      aria-labelledby="set-theory-path-title"
+    >
+      <div className="max-w-lg lg:sticky lg:top-44">
+        <div className="text-cyan-100/64 flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.16em]">
+          <Route size={14} /> Navigate · one finite learning path
+        </div>
+        <h2
+          id="set-theory-path-title"
+          className="mt-3 text-[clamp(2rem,3.8vw,3.6rem)] font-semibold leading-[0.98] tracking-[-0.052em] text-white"
+        >
+          Learn the useful structure before the foundations.
+        </h2>
+        <p className="mt-5 text-[15px] leading-7 text-slate-400">
+          Set theory can descend indefinitely. This root deliberately does not.
+          Six direct lessons form a practical sequence; the final foundations
+          stop stays on the horizon until the earlier structure is familiar.
+        </p>
+
+        <div className="mt-7 border-l border-amber-200/30 bg-amber-300/[0.035] py-4 pl-5 pr-4">
+          <div className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.14em] text-amber-100/60">
+            <Shapes size={13} /> Current overview workshop
+          </div>
+          <strong className="mt-2 block text-[17px] text-white">
+            Membership & basic operations
+          </strong>
+          <p className="mt-2 text-[13px] leading-6 text-slate-500">
+            Build the four-address model, then practice union, intersection, and
+            difference before choosing a deeper lesson.
+          </p>
+        </div>
+      </div>
+
+      <nav aria-label="Set Theory learning path">
+        <ol className="relative ml-3 border-l border-cyan-200/20 pl-7 sm:ml-5 sm:pl-9">
+          {lessons.map((child, index) => {
+            const deferred = child.id.endsWith(".foundations");
+            return (
+              <li key={child.id} className="relative pb-4 last:pb-0">
+                <span
+                  className={`absolute -left-[2.55rem] top-5 flex h-7 w-7 items-center justify-center rounded-full border bg-[#061019] font-mono text-[10px] font-semibold sm:-left-[3.3rem] ${
+                    deferred
+                      ? "border-violet-200/30 text-violet-100/70"
+                      : "border-cyan-200/30 text-cyan-100/70"
+                  }`}
+                  aria-hidden="true"
+                >
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <article
+                  className={`border-y px-4 py-4 backdrop-blur-xl sm:px-5 ${
+                    deferred
+                      ? "border-violet-200/[0.12] bg-violet-300/[0.025]"
+                      : "bg-[#061019]/54 border-white/[0.08]"
+                  }`}
+                >
+                  <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+                    <div>
+                      <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-600">
+                        {deferred ? "Far horizon" : "Planned lesson"}
+                      </div>
+                      <h3 className="mt-1 text-[18px] font-semibold tracking-[-0.025em] text-slate-200">
+                        {child.label}
+                      </h3>
+                    </div>
+                    <span className="w-fit border border-white/[0.08] px-2 py-1 font-mono text-[9px] uppercase tracking-[0.13em] text-slate-600">
+                      {deferred ? "deferred" : "planned"}
+                    </span>
+                  </div>
+                  <p className="mt-2 max-w-2xl text-[13px] leading-6 text-slate-500">
+                    {child.description}
+                  </p>
+                </article>
+              </li>
+            );
+          })}
+        </ol>
+      </nav>
+    </section>
+  );
+}
+
 function MembershipAddressMap() {
+  const both = MEMBERSHIP_REGIONS.find((region) => region.id === "both");
+  const aOnly = MEMBERSHIP_REGIONS.find((region) => region.id === "aOnly");
+  const bOnly = MEMBERSHIP_REGIONS.find((region) => region.id === "bOnly");
+  const neither = MEMBERSHIP_REGIONS.find((region) => region.id === "neither");
+
+  if (!both || !aOnly || !bOnly || !neither) {
+    throw new Error("The four Set Theory membership addresses are required.");
+  }
+
   return (
     <div className="bg-[#061019]/66 relative overflow-hidden border border-cyan-100/[0.14] p-5 shadow-[0_34px_100px_rgba(0,0,0,0.24)] backdrop-blur-2xl sm:p-7">
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cyan-200/55 to-transparent" />
@@ -386,34 +528,185 @@ function MembershipAddressMap() {
             Worked membership map
           </div>
           <h3 className="mt-2 text-[25px] font-semibold tracking-[-0.04em] text-white">
-            Four addresses cover every case
+            Color × shape makes every address visible
           </h3>
         </div>
         <Braces className="text-cyan-200/68 shrink-0" size={24} />
       </div>
 
-      <div className="bg-[#02070c]/66 relative mt-7 min-h-[270px] overflow-hidden border border-white/[0.07] p-4 sm:p-6">
-        <div className="border-cyan-200/32 pointer-events-none absolute left-[13%] top-[12%] h-[76%] w-[45%] rounded-[50%] border bg-cyan-300/[0.045] shadow-[0_0_60px_rgba(34,211,238,0.07)]" />
-        <div className="border-violet-200/32 pointer-events-none absolute right-[13%] top-[12%] h-[76%] w-[45%] rounded-[50%] border bg-violet-300/[0.045] shadow-[0_0_60px_rgba(167,139,250,0.07)]" />
-        <div className="relative grid min-h-[220px] grid-cols-2 gap-2 sm:grid-cols-4 sm:items-center">
-          {MEMBERSHIP_REGIONS.map((region) => (
-            <div
-              key={region.label}
-              className={`relative z-10 border p-3 text-center backdrop-blur-md ${TONE_CLASSES[region.tone]}`}
-            >
-              <div className="text-[11px] font-semibold uppercase tracking-[0.12em]">
-                {region.label}
-              </div>
-              <div className="mt-2 font-mono text-[18px] text-white">
-                {region.members}
-              </div>
-              <div className="mt-2 text-[11px] leading-5 text-slate-500">
-                {region.rule}
-              </div>
-            </div>
-          ))}
+      <div className="mt-7 overflow-x-auto [scrollbar-color:rgba(103,232,249,0.18)_transparent] [scrollbar-width:thin]">
+        <div className="bg-[#02070c]/68 grid min-w-[570px] grid-cols-[82px_minmax(0,1fr)_minmax(0,1fr)] border border-white/[0.08]">
+          <div className="flex min-h-16 items-end border-b border-r border-white/[0.08] p-3 font-mono text-[9px] uppercase leading-4 tracking-[0.12em] text-slate-600">
+            Set A ↓<br />
+            Set B →
+          </div>
+          <MatrixAxisHeader tone="violet" title="Triangle" subtitle="in B" />
+          <MatrixAxisHeader
+            tone="slate"
+            title="Not triangle"
+            subtitle="not in B"
+          />
+
+          <MatrixRowHeader title="Cyan" subtitle="in A" active />
+          <MembershipMatrixCell region={both} />
+          <MembershipMatrixCell region={aOnly} />
+
+          <MatrixRowHeader title="Not cyan" subtitle="not in A" />
+          <MembershipMatrixCell region={bOnly} />
+          <MembershipMatrixCell region={neither} />
         </div>
+      </div>
+
+      <p className="mt-4 text-[12px] leading-5 text-slate-500">
+        Read down for color and across for shape. The cyan triangle satisfies
+        both rules; changing either property moves an object to a neighboring
+        address.
+      </p>
+    </div>
+  );
+}
+
+function MatrixAxisHeader({
+  tone,
+  title,
+  subtitle,
+}: {
+  tone: "violet" | "slate";
+  title: string;
+  subtitle: string;
+}) {
+  return (
+    <div
+      className={`min-h-16 border-b border-r border-white/[0.08] p-3 text-center last:border-r-0 ${
+        tone === "violet" ? "bg-violet-300/[0.04]" : "bg-white/[0.012]"
+      }`}
+    >
+      <strong
+        className={`block text-[12px] uppercase tracking-[0.12em] ${
+          tone === "violet" ? "text-violet-100" : "text-slate-400"
+        }`}
+      >
+        {title}
+      </strong>
+      <span className="mt-1 block font-mono text-[10px] text-slate-600">
+        {subtitle}
+      </span>
+    </div>
+  );
+}
+
+function MatrixRowHeader({
+  title,
+  subtitle,
+  active = false,
+}: {
+  title: string;
+  subtitle: string;
+  active?: boolean;
+}) {
+  return (
+    <div
+      className={`flex min-h-36 flex-col justify-center border-b border-r border-white/[0.08] p-3 text-center ${
+        active ? "bg-cyan-300/[0.04]" : "bg-white/[0.012]"
+      }`}
+    >
+      <strong
+        className={`text-[11px] uppercase tracking-[0.1em] ${
+          active ? "text-cyan-100" : "text-slate-400"
+        }`}
+      >
+        {title}
+      </strong>
+      <span className="mt-1 font-mono text-[9px] text-slate-600">
+        {subtitle}
+      </span>
+    </div>
+  );
+}
+
+function MembershipMatrixCell({
+  region,
+}: {
+  region: (typeof MEMBERSHIP_REGIONS)[number];
+}) {
+  const specimens = specimensAtAddress(region.id);
+
+  return (
+    <div
+      className={`min-h-36 border-b border-r border-white/[0.08] p-3 last:border-r-0 ${TONE_CLASSES[region.tone]}`}
+    >
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <strong className="block text-[10px] uppercase tracking-[0.12em]">
+            {region.label}
+          </strong>
+          <span className="mt-1 block text-[10px] leading-4 text-slate-600">
+            {region.rule}
+          </span>
+        </div>
+        <span className="font-mono text-[11px] text-slate-600">
+          {specimens.length}
+        </span>
+      </div>
+      <div className="mt-3 flex flex-wrap items-end gap-4">
+        {specimens.map((specimen) => (
+          <SpecimenToken key={specimen.id} specimen={specimen} />
+        ))}
       </div>
     </div>
   );
+}
+
+function SpecimenToken({ specimen }: { specimen: SetTheorySpecimen }) {
+  const palette = {
+    cyan: { fill: "#0891b2", stroke: "#a5f3fc" },
+    amber: { fill: "#b45309", stroke: "#fde68a" },
+    violet: { fill: "#7c3aed", stroke: "#ddd6fe" },
+  }[specimen.tone];
+
+  return (
+    <figure className="flex min-w-16 flex-col items-center gap-1.5">
+      <svg
+        viewBox="0 0 52 52"
+        className="h-11 w-11 drop-shadow-[0_8px_12px_rgba(0,0,0,0.34)]"
+        aria-hidden="true"
+      >
+        <SpecimenTokenShape
+          shape={specimen.shape}
+          fill={palette.fill}
+          stroke={palette.stroke}
+        />
+      </svg>
+      <figcaption className="max-w-20 text-center text-[9px] leading-3 text-slate-500">
+        {specimen.name}
+      </figcaption>
+    </figure>
+  );
+}
+
+function SpecimenTokenShape({
+  shape,
+  fill,
+  stroke,
+}: {
+  shape: SetTheorySpecimen["shape"];
+  fill: string;
+  stroke: string;
+}) {
+  const shared = {
+    fill,
+    fillOpacity: 0.82,
+    stroke,
+    strokeOpacity: 0.82,
+    strokeWidth: 1.8,
+  };
+
+  if (shape === "circle") return <circle cx="26" cy="26" r="18" {...shared} />;
+  if (shape === "square") {
+    return <rect x="9" y="9" width="34" height="34" rx="5" {...shared} />;
+  }
+  if (shape === "triangle") {
+    return <polygon points="26,6 46,43 6,43" {...shared} />;
+  }
+  return <polygon points="26,6 43,16 43,36 26,46 9,36 9,16" {...shared} />;
 }

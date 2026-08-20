@@ -56,6 +56,9 @@ For all substantial pages, the Design Constitution is not optional guidance. Res
 32. **Every page has a local academic identity.** Even the smallest page gets a subject-specific environmental idea and a deliberate variation of the shared shell. Children may rhyme with or borrow from relatives, but may not become palette-swapped copies.
 33. **Collections are learning surfaces.** Finite sets, curated open-ended repositories, and API-backed catalogs must support useful search/filter facets, provenance, item detail, and meaningful comparison or simulation. External data enhances the product but must fail honestly and may not be fabricated.
 34. **Publish completed work.** Follow `docs/development-branch-workflow.md` for the active branch. After a coherent implementation pass, validate, commit the confirmed scope, push that branch, verify the remote commit, and report CI/deployment status honestly. Do not leave finished work only in the local workspace, and do not promote to `main` without the user-requested release step.
+35. **Coordinated representations must agree.** When the background, worked model, diagram, instrument, or notation depicts the same academic object, derive them from one canonical example or verify exact parity of labels, values, membership, regions, and state. Instructional-looking backgrounds are content, not harmless decoration.
+36. **Data marks keep their identity.** Learner-facing tokens, specimens, points, and selected values retain the color, shape, or material that communicates their academic category. Selection strengthens that identity instead of replacing every mark with a generic white pill or cell.
+37. **Set a curriculum depth ceiling.** Define a bounded, useful layer of direct children. Keep advanced foundations as a visibly deferred horizon when helpful, and do not create deep placeholder taxonomies or routes merely because a subject can be subdivided further.
 
 ## Required workflow for substantial page work
 

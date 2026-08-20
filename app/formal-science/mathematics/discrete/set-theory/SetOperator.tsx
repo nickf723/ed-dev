@@ -105,6 +105,16 @@ const REGION_POINTS: Record<RegionId, readonly (readonly [number, number])[]> =
     ],
   };
 
+const REGION_TOKEN_STYLES: Record<
+  RegionId,
+  { fill: string; stroke: string; text: string }
+> = {
+  aOnly: { fill: "#083344", stroke: "#67e8f9", text: "#a5f3fc" },
+  both: { fill: "#3b2608", stroke: "#fcd34d", text: "#fef3c7" },
+  bOnly: { fill: "#2e1065", stroke: "#c4b5fd", text: "#ddd6fe" },
+  neither: { fill: "#0f172a", stroke: "#64748b", text: "#cbd5e1" },
+};
+
 function includes(values: readonly string[], value: string) {
   return values.includes(value);
 }
@@ -307,6 +317,23 @@ export default function SetOperator() {
                 >
                   <feGaussianBlur stdDeviation="10" />
                 </filter>
+                <filter
+                  id="operator-member-glow"
+                  x="-60%"
+                  y="-80%"
+                  width="220%"
+                  height="260%"
+                >
+                  <feGaussianBlur
+                    in="SourceGraphic"
+                    stdDeviation="3"
+                    result="memberBlur"
+                  />
+                  <feMerge>
+                    <feMergeNode in="memberBlur" />
+                    <feMergeNode in="SourceGraphic" />
+                  </feMerge>
+                </filter>
               </defs>
 
               <rect width="620" height="360" fill="#02070c" />
@@ -412,24 +439,45 @@ export default function SetOperator() {
 
               {positionedMembers.map((member) => {
                 const active = result.includes(member.value);
+                const compact = member.value.length <= 2;
+                const tokenWidth = Math.min(96, 26 + member.value.length * 7);
+                const tokenStyle = REGION_TOKEN_STYLES[member.region];
                 return (
-                  <g key={member.value}>
-                    <rect
-                      x={member.x - 31}
-                      y={member.y - 17}
-                      width="62"
-                      height="34"
-                      rx="10"
-                      fill={active ? "#f8fafc" : "#0f172a"}
-                      fillOpacity={active ? "0.94" : "0.76"}
-                      stroke={active ? "#fcd34d" : "#64748b"}
-                      strokeOpacity={active ? "0.78" : "0.32"}
-                    />
+                  <g
+                    key={member.value}
+                    opacity={active ? 1 : 0.72}
+                    filter={active ? "url(#operator-member-glow)" : undefined}
+                  >
+                    {compact ? (
+                      <circle
+                        cx={member.x}
+                        cy={member.y}
+                        r="18"
+                        fill={tokenStyle.fill}
+                        fillOpacity={active ? "0.92" : "0.7"}
+                        stroke={tokenStyle.stroke}
+                        strokeOpacity={active ? "0.94" : "0.48"}
+                        strokeWidth={active ? "2" : "1.4"}
+                      />
+                    ) : (
+                      <rect
+                        x={member.x - tokenWidth / 2}
+                        y={member.y - 17}
+                        width={tokenWidth}
+                        height="34"
+                        rx="17"
+                        fill={tokenStyle.fill}
+                        fillOpacity={active ? "0.92" : "0.7"}
+                        stroke={tokenStyle.stroke}
+                        strokeOpacity={active ? "0.94" : "0.48"}
+                        strokeWidth={active ? "2" : "1.4"}
+                      />
+                    )}
                     <text
                       x={member.x}
                       y={member.y + 4}
-                      fill={active ? "#0f172a" : "#94a3b8"}
-                      fillOpacity={active ? "1" : "0.74"}
+                      fill={tokenStyle.text}
+                      fillOpacity={active ? "1" : "0.78"}
                       fontFamily="monospace"
                       fontSize={member.value.length > 5 ? "10" : "12"}
                       fontWeight="700"

@@ -512,7 +512,50 @@ If the answer is no, the interaction composition is not finished.
 
 ---
 
-## 25. Relationship to other rule documents
+## 25. Representation parity is an accuracy requirement
+
+When a background, worked model, diagram, instrument, table, or notation block depicts the same academic object, every view must agree about the object and its state.
+
+- Reuse one canonical example record across coordinated representations when practical.
+- Membership, labels, quantities, positions, categories, and selected state must remain consistent everywhere the example appears.
+- A background diagram must either encode a completely valid example or remain clearly non-semantic atmosphere. Decorative near-math, near-science, fake telemetry, and random values are not neutral when they resemble instruction.
+- Do not run two competing unlabeled examples in the same viewport. If a later section introduces a new case, label the transition and state what remains invariant.
+- When the same object changes representation—physical specimen to matrix, matrix to Venn diagram, equation to graph—make the translation explicit instead of silently swapping examples.
+- Accuracy review includes the page world. A contradiction behind the glass is still a contradiction.
+
+### Perceptual-first classification
+
+When a concept is about membership or classification, begin with physically legible properties such as color, shape, location, habitat, material, or behavior when that makes the rule easier to see. Carry those same objects into the formal notation before introducing a different example.
+
+---
+
+## 26. Data marks retain their subject identity
+
+Learner-facing tokens, points, specimens, chips, and diagram marks are part of the representation, not generic UI inventory.
+
+- Let a mark's color, shape, texture, or material encode its real category or region.
+- Selection should strengthen the mark's native identity through glow, contrast, outline, scale, or focus; it should not replace every selected item with the same white pill or rectangle.
+- Use geometry suited to the content. Compact values may be circles or points; longer names may use restrained capsules or labels in the same material language.
+- Keep text contrast accessible without erasing the surrounding palette.
+- A generic table cell may contain a thematic mark, but the cell itself should not become the only way the learner can distinguish the data.
+
+---
+
+## 27. Curriculum depth has a deliberate ceiling
+
+A truthful ontology does not require exposing every possible subdivision at once.
+
+- Give each root or unit a bounded set of direct children that represents a useful learning sequence or durable decomposition.
+- Promote a deeper node only when it has a distinct learner outcome, enough substance for its page kind, and a meaningful relationship to siblings.
+- Keep advanced foundations visible as a deferred horizon when they help explain the field, but do not create placeholder routes or deep placeholder taxonomies merely because the subject can be subdivided.
+- Prefer one complete practical layer over an indefinitely nested outline.
+- Revisit and extend the ceiling only when completed content or a real learner need justifies another level.
+
+A planned ontology is a map of warranted learning, not an obligation to build endlessly.
+
+---
+
+## 28. Relationship to other rule documents
 
 When guidance overlaps:
 
