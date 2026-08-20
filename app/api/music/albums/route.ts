@@ -1,107 +1,112 @@
 import { NextRequest, NextResponse } from "next/server";
-import type { CollectionMediaRecord, CollectionSearchPayload } from "@/lib/collections/schema";
+import { createCollectionSearchPayload } from "@/lib/collections/result.mjs";
+import {
+  buildMusicBrainzSearchQuery,
+  COVER_ART_ARCHIVE_SOURCE,
+  MUSICBRAINZ_SOURCE,
+  normalizeMusicBrainzReleaseGroup,
+  type MusicBrainzReleaseGroup,
+} from "@/lib/collections/providers/musicbrainz.mjs";
+import type { ProviderCollectionSearchPayload } from "@/lib/collections/schema";
 
 export const runtime = "nodejs";
 
 const MUSICBRAINZ = "https://musicbrainz.org/ws/2/release-group/";
-
-type ArtistCredit = {
-  name?: string;
-  artist?: { id?: string; name?: string };
-};
-
-type ReleaseGroup = {
-  id: string;
-  title: string;
-  "first-release-date"?: string;
-  "primary-type"?: string;
-  "secondary-types"?: string[];
-  "artist-credit"?: ArtistCredit[];
-};
+const PAGE_SIZE = 18;
+const CACHE_SECONDS = 3_600;
+const STALE_SECONDS = 86_400;
 
 type MusicBrainzResponse = {
-  "release-groups"?: ReleaseGroup[];
+  count?: number;
+  offset?: number;
+  "release-groups"?: MusicBrainzReleaseGroup[];
 };
 
 export async function GET(request: NextRequest) {
   const query = request.nextUrl.searchParams.get("q")?.trim();
   if (!query) {
     return NextResponse.json(
-      { query: "", records: [], source: "MusicBrainz", error: "Provide a q parameter." } satisfies CollectionSearchPayload,
+      createCollectionSearchPayload({
+        query: "",
+        records: [],
+        source: "MusicBrainz",
+        state: "failed",
+        sources: [MUSICBRAINZ_SOURCE, COVER_ART_ARCHIVE_SOURCE],
+        total: 0,
+        error: "Provide a q parameter.",
+      }) satisfies ProviderCollectionSearchPayload,
       { status: 400 },
     );
   }
 
   try {
     const url = new URL(MUSICBRAINZ);
-    url.searchParams.set("query", query);
+    url.searchParams.set("query", buildMusicBrainzSearchQuery(query));
     url.searchParams.set("fmt", "json");
-    url.searchParams.set("limit", "18");
+    url.searchParams.set("limit", String(PAGE_SIZE));
 
     const response = await fetch(url, {
       headers: {
         Accept: "application/json",
         "User-Agent": "EducationStation64/0.1 (https://educationstation64.com)",
       },
-      next: { revalidate: 3600 },
+      next: { revalidate: CACHE_SECONDS },
+      signal: request.signal,
     } as RequestInit & { next: { revalidate: number } });
 
-    if (!response.ok) throw new Error(`MusicBrainz returned ${response.status}`);
+    if (!response.ok) throw new MusicBrainzProviderError(response.status);
     const payload = (await response.json()) as MusicBrainzResponse;
-    const records = (payload["release-groups"] ?? []).map(normalizeReleaseGroup);
+    const records = (payload["release-groups"] ?? []).map(normalizeMusicBrainzReleaseGroup);
+    const total = Math.max(payload.count ?? records.length, records.length);
+    const expected = Math.min(PAGE_SIZE, total);
+    const retrievedAt = new Date();
+    const isPartial = records.length < expected;
 
     return NextResponse.json(
-      { query, records, source: "MusicBrainz" } satisfies CollectionSearchPayload,
+      createCollectionSearchPayload({
+        query,
+        records,
+        source: "MusicBrainz",
+        state: isPartial ? "partial" : "cached",
+        sources: [MUSICBRAINZ_SOURCE, COVER_ART_ARCHIVE_SOURCE],
+        total,
+        pageSize: PAGE_SIZE,
+        retrievedAt: retrievedAt.toISOString(),
+        staleAfter: new Date(retrievedAt.getTime() + STALE_SECONDS * 1_000).toISOString(),
+        note: isPartial
+          ? `MusicBrainz reported ${total} matches; ${records.length} release groups were available in this sample.`
+          : `MusicBrainz reported ${total} matches. This route serves a cached sample of up to ${PAGE_SIZE} release groups.`,
+      }) satisfies ProviderCollectionSearchPayload,
       {
         headers: {
-          "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400",
+          "Cache-Control": `public, s-maxage=${CACHE_SECONDS}, stale-while-revalidate=${STALE_SECONDS}`,
         },
       },
     );
   } catch (error) {
+    const rateLimited = error instanceof MusicBrainzProviderError && error.status === 503;
+    const message = rateLimited
+      ? "MusicBrainz is rate-limiting requests. Try again shortly."
+      : error instanceof Error
+        ? error.message
+        : "Unable to search albums.";
     return NextResponse.json(
-      {
+      createCollectionSearchPayload({
         query,
         records: [],
         source: "MusicBrainz",
-        error: error instanceof Error ? error.message : "Unable to search albums.",
-      } satisfies CollectionSearchPayload,
-      { status: 502 },
+        state: rateLimited ? "rate-limited" : "failed",
+        sources: [MUSICBRAINZ_SOURCE, COVER_ART_ARCHIVE_SOURCE],
+        total: 0,
+        error: message,
+      }) satisfies ProviderCollectionSearchPayload,
+      { status: rateLimited ? 429 : 502 },
     );
   }
 }
 
-function normalizeReleaseGroup(group: ReleaseGroup): CollectionMediaRecord {
-  const artist = group["artist-credit"]?.map((credit) => credit.name ?? credit.artist?.name).filter(Boolean).join(", ") || "Unknown artist";
-  const primaryType = group["primary-type"] ?? "Release group";
-  const secondary = group["secondary-types"] ?? [];
-  const date = group["first-release-date"] ?? undefined;
-
-  return {
-    id: group.id,
-    title: group.title,
-    subtitle: primaryType,
-    description: `${group.title} is a ${primaryType.toLowerCase()} release group credited to ${artist}. MusicBrainz groups different editions and releases of the same underlying musical work into one record.`,
-    imageUrl: `https://coverartarchive.org/release-group/${group.id}/front-250`,
-    year: date?.slice(0, 4),
-    primaryCreator: artist,
-    tags: [primaryType, ...secondary].filter(Boolean),
-    facts: {
-      firstRelease: date,
-      primaryType,
-      secondaryTypes: secondary.length ? secondary.join(", ") : undefined,
-      artist,
-      musicBrainzId: group.id,
-    },
-    sources: [
-      {
-        label: "MusicBrainz",
-        url: `https://musicbrainz.org/release-group/${group.id}`,
-      },
-      {
-        label: "Cover Art Archive",
-        url: `https://coverartarchive.org/release-group/${group.id}`,
-      },
-    ],
-  };
+class MusicBrainzProviderError extends Error {
+  constructor(readonly status: number) {
+    super(`MusicBrainz search returned ${status}`);
+  }
 }

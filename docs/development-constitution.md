@@ -344,7 +344,7 @@ The required closeout sequence is:
 5. inspect the triggered build result;
 6. report the commit and honest validation status.
 
-Do not describe an unpublished change as made, completed, live, or implemented. For this project, work directly on `main` unless the user explicitly requests another branch or a temporary branch is required to assemble a safe coherent batch. Finished work must not remain unpushed.
+Do not describe an unpublished change as made, completed, live, or implemented. Follow `docs/development-branch-workflow.md` for the active branch and promotion policy. Finished work must not remain unpushed, and a development-branch push must not be described as a production release.
 
 ---
 
@@ -368,7 +368,7 @@ For each substantial page round:
 14. **ASSESS / RETRIEVE**: verify the lesson check or collection retrieval loop, including feedback and failure states.
 15. **FRAME**: test viewport budget, readability, text/background collisions, responsive fallback, stable geometry, background memorability, macro-layout distinctness, and before-versus-after preservation.
 16. **VALIDATE**: run repository checks.
-17. **PUBLISH**: commit and push the coherent batch to `main`, verify `origin/main` points to it, and inspect CI/deployment status when accessible.
+17. **PUBLISH**: commit and push the coherent batch to the active development branch, verify its remote ref points to it, and inspect CI/deployment status when accessible. Promote to `main` only through the explicit release step.
 
 No page round advances to the next target before step 17.
 

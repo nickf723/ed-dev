@@ -28,9 +28,9 @@ export default function RecordedMusicPage() {
 
         <section className="mt-5 grid gap-4 lg:grid-cols-[minmax(0,1.1fr)_minmax(320px,0.9fr)]">
           <div className="rounded-[28px] border border-rose-200/[0.11] bg-black/[0.11] p-5 shadow-[0_28px_95px_rgba(0,0,0,0.20)] backdrop-blur-xl sm:p-6">
-            <div className="font-mono text-[9px] font-semibold uppercase tracking-[0.14em] text-rose-200/65">A catalog is a historical structure</div>
+            <div className="font-mono text-[10px] font-semibold uppercase tracking-[0.12em] text-rose-200/65">A catalog is a historical structure</div>
             <h2 className="mt-2 text-[clamp(1.7rem,3vw,2.7rem)] font-semibold tracking-[-0.045em] text-white">One album can have many releases without becoming many different works.</h2>
-            <p className="mt-3 max-w-3xl text-[10px] leading-5 text-slate-500">MusicBrainz release groups let the page distinguish an underlying album from country-specific editions, reissues, remasters, and formats. That makes the database itself useful for thinking about musical identity.</p>
+            <p className="mt-3 max-w-3xl text-[13px] leading-6 text-slate-400/75">MusicBrainz release groups let the page distinguish an underlying album from country-specific editions, reissues, remasters, and formats. That makes the database itself useful for thinking about musical identity.</p>
           </div>
           <div className="grid grid-cols-3 gap-2 rounded-[28px] border border-white/[0.08] bg-black/[0.11] p-3 backdrop-blur-xl">
             <Concept label="Work" text="The underlying musical release." />
@@ -50,8 +50,8 @@ export default function RecordedMusicPage() {
 function Concept({ label, text }: { label: string; text: string }) {
   return (
     <div className="flex min-h-[132px] flex-col justify-end rounded-[18px] border border-white/[0.06] bg-white/[0.012] p-3">
-      <div className="font-mono text-[8px] uppercase tracking-[0.1em] text-rose-200/60">{label}</div>
-      <p className="mt-2 text-[8px] leading-4 text-slate-700">{text}</p>
+      <div className="font-mono text-[10px] uppercase tracking-[0.09em] text-rose-200/60">{label}</div>
+      <p className="mt-2 text-[11px] leading-5 text-slate-500">{text}</p>
     </div>
   );
 }

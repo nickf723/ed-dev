@@ -1,5 +1,7 @@
 "use client";
 
+/* eslint-disable @next/next/no-img-element -- provider-hosted collection images intentionally bypass Vercel image transformations and retain runtime error fallback. */
+
 import { useMemo, useState } from "react";
 import { Grid3X3, LibraryBig, Rows3 } from "lucide-react";
 import type { CollectionMediaRecord } from "@/lib/collections/schema";
@@ -31,12 +33,12 @@ export default function MediaShelfTopology({
     <div className="overflow-hidden rounded-[30px] border border-white/[0.08] bg-black/[0.14] shadow-[0_30px_100px_rgba(0,0,0,0.24)] backdrop-blur-xl">
       <div className="flex flex-col gap-4 border-b border-white/[0.07] p-4 sm:flex-row sm:items-center sm:justify-between sm:p-5">
         <div>
-          <div className="flex items-center gap-2 font-mono text-[8px] font-semibold uppercase tracking-[0.14em]" style={{ color: `rgba(${accentRgb},0.68)` }}><LibraryBig size={12} /> Collection surface</div>
+          <div className="flex items-center gap-2 font-mono text-[10px] font-semibold uppercase tracking-[0.11em]" style={{ color: `rgba(${accentRgb},0.68)` }}><LibraryBig size={13} /> Collection surface</div>
           <div className="mt-1 text-[13px] font-medium text-slate-300">{records.length} records · organized without flattening them into identical cards</div>
         </div>
         <div className="flex gap-1 rounded-full border border-white/[0.07] bg-black/20 p-1">
-          <button type="button" onClick={() => setLayout("shelf")} className={`flex items-center gap-1.5 rounded-full px-3 py-2 font-mono text-[7px] uppercase tracking-[0.08em] ${layout === "shelf" ? "bg-white/[0.07] text-white" : "text-slate-600"}`}><Rows3 size={11} /> shelves</button>
-          <button type="button" onClick={() => setLayout("mosaic")} className={`flex items-center gap-1.5 rounded-full px-3 py-2 font-mono text-[7px] uppercase tracking-[0.08em] ${layout === "mosaic" ? "bg-white/[0.07] text-white" : "text-slate-600"}`}><Grid3X3 size={11} /> mosaic</button>
+          <button type="button" onClick={() => setLayout("shelf")} className={`flex items-center gap-1.5 rounded-full px-3 py-2 font-mono text-[10px] uppercase tracking-[0.07em] ${layout === "shelf" ? "bg-white/[0.07] text-white" : "text-slate-500"}`}><Rows3 size={12} /> shelves</button>
+          <button type="button" onClick={() => setLayout("mosaic")} className={`flex items-center gap-1.5 rounded-full px-3 py-2 font-mono text-[10px] uppercase tracking-[0.07em] ${layout === "mosaic" ? "bg-white/[0.07] text-white" : "text-slate-500"}`}><Grid3X3 size={12} /> mosaic</button>
         </div>
       </div>
 
@@ -51,9 +53,9 @@ export default function MediaShelfTopology({
           {groups.map(([group, items]) => (
             <section key={group}>
               <div className="mb-2 flex items-center gap-3">
-                <span className="font-mono text-[8px] font-semibold uppercase tracking-[0.13em] text-slate-600">{group}</span>
+                <span className="font-mono text-[10px] font-semibold uppercase tracking-[0.10em] text-slate-500">{group}</span>
                 <div className="h-px flex-1 bg-gradient-to-r from-white/[0.08] to-transparent" />
-                <span className="font-mono text-[7px] text-slate-800">{items.length}</span>
+                <span className="font-mono text-[9px] text-slate-600">{items.length}</span>
               </div>
               <div className="relative overflow-x-auto pb-4">
                 <div className="flex min-w-max items-end gap-3 border-b border-white/[0.09] px-2 pb-3">
@@ -114,8 +116,8 @@ function ShelfRecord({
       ) : null}
       <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
       <div className="absolute inset-x-0 bottom-0 p-3">
-        <strong className="line-clamp-2 block text-[10px] leading-4 text-white">{record.title}</strong>
-        <span className="mt-1 block truncate font-mono text-[7px] text-white/45">{record.primaryCreator ?? record.subtitle ?? ""}</span>
+        <strong className="line-clamp-2 block text-[11px] leading-4 text-white">{record.title}</strong>
+        <span className="mt-1 block truncate font-mono text-[9px] text-white/55">{record.primaryCreator ?? record.subtitle ?? ""}</span>
       </div>
     </button>
   );
@@ -143,8 +145,8 @@ function MediaTile({
         {record.imageUrl ? <img src={record.imageUrl} alt="" className="h-full w-full object-cover opacity-80 transition duration-500 group-hover:scale-105 group-hover:opacity-100" referrerPolicy="no-referrer" onError={(event) => { event.currentTarget.style.display = "none"; }} /> : null}
       </div>
       <div className="p-3">
-        <strong className="line-clamp-1 block text-[11px] text-white">{record.title}</strong>
-        <span className="mt-1 block truncate text-[8px] text-slate-600">{record.primaryCreator ?? record.subtitle}</span>
+        <strong className="line-clamp-1 block text-[13px] text-white">{record.title}</strong>
+        <span className="mt-1 block truncate text-[10px] text-slate-500">{record.primaryCreator ?? record.subtitle}</span>
       </div>
     </button>
   );

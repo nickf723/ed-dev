@@ -13,7 +13,7 @@ Before changing educational UI or curriculum content, read:
 - `docs/page-planning-template.md` when creating or substantially remastering a hub, unit, or lesson page.
 - `docs/cohesion-audit.md` for site-wide consistency without homogenizing subject identity.
 - `docs/visual-verification-queue.md` before making visual claims or continuing work while rendered previews are unavailable.
-- `docs/main-development-workflow.md` for the required direct-to-main commit, push, and remote-verification workflow.
+- `docs/development-branch-workflow.md` for the active development branch, cost-control, push, promotion, and remote-verification workflow.
 
 For atomic lessons, the lesson constitution is not optional guidance. Do not begin visual composition until the seven-line lesson brief and a simple text storyboard are clear. If repeated small fixes fail to resolve a lesson, return to that brief instead of continuing cosmetic patchwork.
 
@@ -54,7 +54,7 @@ For all substantial pages, the Design Constitution is not optional guidance. Res
 31. **Every atomic lesson checks understanding.** Include both an insightful transfer/reasoning check and, when the subject permits deterministic generation, a small bank of coded, generated, and verifiable practice. Feedback explains the reasoning; it does not merely score.
 32. **Every page has a local academic identity.** Even the smallest page gets a subject-specific environmental idea and a deliberate variation of the shared shell. Children may rhyme with or borrow from relatives, but may not become palette-swapped copies.
 33. **Collections are learning surfaces.** Finite sets, curated open-ended repositories, and API-backed catalogs must support useful search/filter facets, provenance, item detail, and meaningful comparison or simulation. External data enhances the product but must fail honestly and may not be fabricated.
-34. **Publish completed work.** Work directly on `main` unless the user explicitly requests another branch. After a coherent implementation pass, validate, commit the confirmed scope, push `main`, verify the remote commit, and report deployment/preview status honestly. Do not leave finished work only in the local workspace.
+34. **Publish completed work.** Follow `docs/development-branch-workflow.md` for the active branch. After a coherent implementation pass, validate, commit the confirmed scope, push that branch, verify the remote commit, and report CI/deployment status honestly. Do not leave finished work only in the local workspace, and do not promote to `main` without the user-requested release step.
 
 ## Required workflow for substantial page work
 
@@ -136,7 +136,7 @@ Before calling the pass complete, run the Design Constitution's **TREE / FRAME /
 - The learner can explain what the page is about without first discovering how the UI works.
 
 Then run the available build/type checks when the environment supports them.
-Commit and push the coherent batch to `main`, verify `origin/main` points to the pushed commit, and check the resulting deployment or CI state when accessible.
+Commit and push the coherent batch to the active development branch, verify the matching remote ref points to the pushed commit, and check the resulting CI/deployment state when accessible.
 
 ## Preview-offline maintenance mode
 
@@ -183,7 +183,7 @@ A page is not visually finished because it compiles. Once preview capability ret
 
 ## Current development workflow
 
-The current project workflow favors direct, meaningful production improvements and preserving existing routes. Use `main` as the target unless the user explicitly requests a different workflow or a temporary branch is needed to assemble a coherent batch safely.
+The current project workflow favors direct, meaningful improvements and preserving existing routes. The active development branch is `studio`; `main` is the production promotion branch. A later explicit user instruction may change that workflow.
 
 When a recurring design, pedagogy, or site-architecture correction appears more than once, update the appropriate repository rule document so the same correction does not need to be rediscovered page by page.
 

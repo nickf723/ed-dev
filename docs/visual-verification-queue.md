@@ -159,6 +159,28 @@ Verify:
 
 ---
 
+### Recorded Music collection
+
+**Route:** `/humanities/music/recordings`
+
+Verify:
+
+- the curated listening shelf identifies itself before any provider search
+- artist and album searches both return relevant MusicBrainz release groups
+- a provider search reports sampled records separately from the provider-wide match count
+- MusicBrainz and Cover Art Archive provenance links remain legible without dominating the shelf
+- release-type and decade facets appear only when at least two values are available, combine correctly, and reset cleanly
+- a valid zero-result search remains distinct from a provider failure or 503 rate limit
+- a failed or rate-limited request switches to the explicitly labeled curated fallback shelf
+- rapidly starting or clearing searches cannot allow an older response to replace the latest state
+- shelf and mosaic layouts remain stable after the readability increase
+- missing cover art falls back to the existing record surface without hiding the title or creator
+- the shared detail drawer exposes readable facts, sources, dialog semantics, Escape dismissal, overlay dismissal, and its close button at desktop and narrow widths
+
+**Status:** Structural tests passed; rendered verification required
+
+---
+
 ## Priority 0: constitution-built Algebra lessons
 
 These lessons were built or substantially rebuilt without a trusted rendered preview. Their instructional structure is intentional; visual claims remain provisional until inspected.
