@@ -9,11 +9,11 @@ export default function FormalScienceLayout({
   return (
     <>
       {children}
-      <FormalScienceVocabulary scopes={formalScienceVocabularyScopes} />
-      <style>{`
-        @media (min-width: 768px) {
-          button[aria-controls="page-vocabulary-drawer"] {
-            top: auto !important;
+    <FormalScienceVocabulary scopes={formalScienceVocabularyScopes} />
+    <style>{`
+      @media (min-width: 768px) {
+        button[aria-controls="page-vocabulary-drawer"] {
+          top: auto !important;
             bottom: 1.25rem !important;
           }
         }
