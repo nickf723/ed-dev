@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type CSSProperties } from "react";
 import { Info, Layers3 } from "lucide-react";
 
 type ZoneId = "name" | "cost" | "art" | "type" | "text" | "pt";
@@ -10,7 +10,7 @@ const ZONES: readonly {
   label: string;
   short: string;
   detail: string;
-  style: React.CSSProperties;
+  style: CSSProperties;
   rgb: string;
 }[] = [
   { id: "name", label: "Name", short: "identity", detail: "The card name identifies the game object. Deck-building and copy-limit rules can refer to card names, while differently printed versions may represent the same card name.", style: { left: "5%", top: "4%", width: "63%", height: "7%" }, rgb: "250,204,21" },
