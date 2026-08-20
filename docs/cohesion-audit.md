@@ -209,9 +209,9 @@ After the coherent Graph Theory pass, production rotated from a Formal Science u
 
 ### Active bounded-rotation checkpoint
 
-- Formal Science → Mathematics → Discrete Mathematics → Combinatorics
+- Humanities → Literature → Narrative & Fiction
 
-Combinatorics is now a bounded six-lesson root unit rather than an isolated security-themed dashboard. It preserves the counting vault and cipher-ring strengths while deriving the background, worked decision register, and default chamber from one exact four-token example. The learner sees `4 × 3 = 12` ordered sequences collapse into six unordered selections, then transfers the sameness rule and practices reproducible generated counts. The remote hero, remote grid texture, random animation loop, fake unit code, and parallel glossary are removed. After publication, rotate to Humanities → Literature; Recursion Theory remains the Formal Science return target.
+The existing Literature reading room is preserved as a hub instead of being cosmetically replaced. Narrative & Fiction activates the hub's first honest child and bounds the unit at six planned lessons: narrator and perspective; story, plot, and time; character and desire; setting and world; scene, conflict, and structure; genre and convention. A deterministic four-event station story coordinates the background, worked registers, disclosure editor, reader-knowledge ledger, and transfer check. Its curriculum-owned vocabulary aggregates upward into Literature through the first Humanities vocabulary scope. After publication, return to Formal Science → Mathematics → Discrete Mathematics → Recursion Theory.
 
 ---
 

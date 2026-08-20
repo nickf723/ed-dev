@@ -15,6 +15,7 @@ import { propLogicVocab } from "./p/propositional-logic";
 import { systemsScienceVocab } from "./s/systems-science";
 import { ASTRONOMY_VOCABULARY_REGISTRATIONS } from "./astronomy-node-registry";
 import { EARTH_SCIENCE_VOCABULARY_REGISTRATIONS } from "./earth-science-node-registry";
+import { LITERATURE_VOCABULARY_REGISTRATIONS } from "./literature-node-registry";
 import { buildCurriculumVocabularyScopes } from "./aggregate.mjs";
 import { composeVocabulary } from "./compose";
 import { MATHEMATICS_VOCABULARY_REGISTRATIONS } from "./mathematics-node-registry";
@@ -134,6 +135,26 @@ if (!earthScienceScope) {
 const earthScienceVocabulary = composeVocabulary(
   ...earthScienceScope.groups.map((group) => group.terms)
 );
+
+const literatureNode = curriculumRegistry.getNode("humanities.literature");
+if (!literatureNode) {
+  throw new Error(
+    "Literature curriculum node is required for vocabulary scopes"
+  );
+}
+
+const literatureVocabularyScopes = buildCurriculumVocabularyScopes({
+  roots: [literatureNode],
+  registrations: LITERATURE_VOCABULARY_REGISTRATIONS,
+  accent: "amber",
+  accentByNodeId: {
+    "humanities.literature.narrative-fiction": "rose",
+  },
+});
+
+export const humanitiesVocabularyScopes: VocabularyScope[] = [
+  ...literatureVocabularyScopes,
+];
 
 export const naturalScienceVocabularyScopes: VocabularyScope[] = [
   ...astronomyVocabularyScopes,

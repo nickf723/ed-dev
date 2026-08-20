@@ -1,8 +1,7 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import DomainPageHeader from "@/app/_components/DomainPageHeader";
-import VocabApplet from "@/app/_components/VocabApplet";
 import { SceneFrame, Surface } from "@/app/_page-system/scene";
-import { literatureVocab } from "@/app/_data/vocab/l/literature";
 import { requireCurriculumPageContext } from "@/lib/curriculum/page-context";
 import type { CurriculumNode } from "@/lib/curriculum/types";
 import {
@@ -18,7 +17,6 @@ import {
   PenLine,
   ScanText,
   ScrollText,
-  Sparkles,
   type LucideIcon,
 } from "lucide-react";
 import HeroJourney from "./HeroJourney";
@@ -26,6 +24,12 @@ import TextBackground from "./TextBackground";
 import { BookCard, type BookData } from "./_components/media";
 
 const NODE_ID = "humanities.literature";
+
+export const metadata: Metadata = {
+  title: "Literature",
+  description:
+    "Navigate literary form, language, interpretation, comparison, and history from an annotated reading room.",
+};
 
 type BranchMeta = {
   icon: LucideIcon;
@@ -213,10 +217,6 @@ export default function LiteraturePage() {
         </div>
       </section>
 
-      <section className="mt-8 border-t border-amber-100/[0.10] pt-6">
-        <div className="mb-4 flex items-center gap-2 font-mono text-[11px] font-semibold uppercase tracking-[0.10em] text-stone-500"><Sparkles size={13} /> Literary lexicon · reference tool</div>
-        <VocabApplet currentDomain="Literature" localTerms={literatureVocab} />
-      </section>
     </SceneFrame>
   );
 }

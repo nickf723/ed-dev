@@ -25,6 +25,7 @@ import { medicineVocab } from "./m/medicine";
 import { musicVocab } from "./m/music";
 import { visualArtsVocab } from "./v/visual-arts";
 import { literatureVocab } from "./l/literature";
+import { narrativeFictionVocab } from "./n/narrative-fiction";
 import { religionVocab } from "./r/religion";
 import { algebraBasicsVocab } from "./a/algebra-basics";
 import { architectureVocab } from "./a/architecture";
@@ -90,6 +91,7 @@ export const ALL_VOCAB: VocabTerm[] = composeVocabulary(
   musicVocab,
   visualArtsVocab,
   literatureVocab,
+  narrativeFictionVocab,
   religionVocab,
   algebraBasicsVocab,
   architectureVocab,
