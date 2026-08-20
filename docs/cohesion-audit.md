@@ -180,6 +180,7 @@ These still return to the visual verification queue whenever later shared change
 - Set Theory root unit
 - Graph Theory root unit
 - Combinatorics root unit
+- Recursion & Recurrence root unit
 
 The latest work on these pages occurred without a trusted rendered browser pass, so their conceptual structure is intentional but their composition must be checked before they are treated as visually refined.
 
@@ -194,12 +195,13 @@ The latest work on these pages occurred without a trusted rendered browser pass,
 - Discrete Mathematics now behaves as a four-lens hub around one finite specimen: set membership, graph connection, combinatorial arrangement, and recursive construction. Its four live routes come from the curriculum registry, vocabulary is registered at the narrowest nodes, navigation precedes the preserved graph builder, and the former random network/remote-photo implementation world has become a deterministic discrete-structure drafting table.
 - Set Theory is now a bounded six-lesson root unit rather than a client-heavy topic panel or an endlessly subdivided taxonomy. Its overview workshop follows Explain → Do → Check: the Venn-operation strength is preserved as a membership scanner with number, library, and disjoint presets; the page teaches four membership regions before notation, distinguishes elements from subsets, adds a real-world transfer check and deterministic generated practice, and contributes difference, empty-set, and disjoint-set vocabulary through the registry. Its random canvas and remote hero were replaced by a deterministic classification conservatory.
 - Graph Theory is now a bounded six-lesson root unit rather than a client-heavy algorithm showcase. One canonical seven-vertex campus graph powers its network-drafting background, worked model, degree ledger, BFS/DFS traversal, and connectivity transfer; the former random maze, random constellation, remote hero, implementation chrome, and isolated glossary were removed. The parent graph builder remains available as a distinct construction tool, while the root adds deterministic degree/handshake practice and curriculum-owned vocabulary.
+- Recursion & Recurrence is now a bounded six-lesson root unit rather than a whole-page client demo. The stable route is preserved while the learner-facing terminology is corrected. One canonical three-disk Hanoi system coordinates the deterministic recursive-stair world, seven-move register, call/return trace, recurrence ledger, guided/manual workbench, and checks; the old remote hero, joke definition, arbitrary unit code, random canvas loop, implementation labels, and isolated glossary were removed. Deterministic practice and six stable vocabulary terms complete the curriculum bundle.
 
 ### Active Mathematics family target
 
-- Remaining Discrete Mathematics children, beginning with Recursion Theory
+- Continue to the remaining Mathematics families after rendered verification of the completed Discrete Mathematics root layer.
 
-The parent, Set Theory, Graph Theory, and Combinatorics are structurally refined. Recursion Theory still predates the constitution. Preserve its Hanoi and recursive-system strengths while repairing page role, context, assessment evidence, terminology, and isolated local glossary.
+The Discrete Mathematics parent and all four root units are structurally refined. Their planned direct lessons remain non-clickable until each lesson is substantive; no deeper placeholder taxonomy is required.
 
 ### Completed bounded-rotation checkpoint
 
@@ -207,11 +209,17 @@ The parent, Set Theory, Graph Theory, and Combinatorics are structurally refined
 
 After the coherent Graph Theory pass, production rotated from a Formal Science unit/network world to a Natural Science reference/specimen world. Mineralogy preserves its composition → structure → property → identification throughline while replacing the random shard cloud and isolated four-specimen demo with a deterministic crystal cabinet, a reviewed teaching collection, disciplinary facets, source-linked records, and a co-visible comparison ledger.
 
-### Active bounded-rotation checkpoint
+### Completed bounded-rotation checkpoint
 
 - Humanities → Literature → Narrative & Fiction
 
-The existing Literature reading room is preserved as a hub instead of being cosmetically replaced. Narrative & Fiction activates the hub's first honest child and bounds the unit at six planned lessons: narrator and perspective; story, plot, and time; character and desire; setting and world; scene, conflict, and structure; genre and convention. A deterministic four-event station story coordinates the background, worked registers, disclosure editor, reader-knowledge ledger, and transfer check. Its curriculum-owned vocabulary aggregates upward into Literature through the first Humanities vocabulary scope. After publication, return to Formal Science → Mathematics → Discrete Mathematics → Recursion Theory.
+The existing Literature reading room is preserved as a hub instead of being cosmetically replaced. Narrative & Fiction activates the hub's first honest child and bounds the unit at six planned lessons: narrator and perspective; story, plot, and time; character and desire; setting and world; scene, conflict, and structure; genre and convention. A deterministic four-event station story coordinates the background, worked registers, disclosure editor, reader-knowledge ledger, and transfer check. Its curriculum-owned vocabulary aggregates upward into Literature through the first Humanities vocabulary scope.
+
+### Active bounded-rotation checkpoint
+
+- Formal Science → Mathematics → Discrete Mathematics → Recursion & Recurrence
+
+The return pass preserves Hanoi and the self-similar recursive world while changing the macro-composition to a vertical call/return spine and the interaction to an exact deterministic trace plus legal manual play. After publication, rotate to **Applied Science → Medicine → Anatomy & Physiology**: repair its missing curriculum children and inherited data contracts while preserving its nested structure-function scale, body-system scanner, and existing Skeletal System child.
 
 ---
 
@@ -228,7 +236,7 @@ The complete route inventory and site-wide remaster acceptance criteria now live
 - Calculus: parent developed
 - Statistics: parent developed
 - Number Theory: structurally refined; rendered verification required
-- Discrete Mathematics: parent, Set Theory, Graph Theory, and Combinatorics structurally refined; Recursion Theory remains
+- Discrete Mathematics: parent and all four root units structurally refined; rendered verification required
 - Applied Mathematics: parent developed
 - Linear Algebra
 - Abstract Algebra

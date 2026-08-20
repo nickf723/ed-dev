@@ -15,11 +15,11 @@ Refresh this snapshot with `npm run audit:remaster` whenever routes are added, m
 | Formal Science       |         144 |
 | Natural Science      |          84 |
 | Social Science       |          13 |
-| Humanities           |          94 |
+| Humanities           |          95 |
 | Applied Science      |          41 |
 | Interdisciplines     |          15 |
 | Other product routes |           4 |
-| **Total**            |     **395** |
+| **Total**            |     **396** |
 
 The audit covers every `app/**/page.tsx` route, including dynamic route families. A dynamic route counts as one route module even when it can render many records or lessons.
 
@@ -27,14 +27,14 @@ The audit covers every `app/**/page.tsx` route, including dynamic route families
 
 These are prompts for review, not automatic defects:
 
-- 181 route modules still declare the whole page as a Client Component.
-- 173 route modules use the shared `DomainPageHeader` family.
-- 125 route modules resolve curriculum page context directly.
+- 178 route modules still declare the whole page as a Client Component.
+- 177 route modules use the shared `DomainPageHeader` family.
+- 129 route modules resolve curriculum page context directly.
 - 62 route modules use the newer `SceneFrame` composition system.
-- 241 route modules explicitly import a background or world component.
-- 291 route modules contain at least one 6–10 px text token; every occurrence must be classified as decorative telemetry or raised to the readability floor.
-- 194 pages still contain a page-local breadcrumb declaration or adapter call and should be reviewed when their branch is remastered.
-- 20 route modules contain legacy implementation-themed chrome; the current concentration is in older Mathematics families.
+- 245 route modules explicitly import a background or world component.
+- 293 route modules contain at least one 6–10 px text token; every occurrence must be classified as decorative telemetry or raised to the readability floor.
+- 198 pages still contain a page-local breadcrumb declaration or adapter call and should be reviewed when their branch is remastered.
+- 17 route modules contain legacy implementation-themed chrome; the current concentration is in older Mathematics families.
 - two route modules use randomness only inside explicit learner actions; static inspection found no page-level render-time randomness in the route modules.
 
 These numbers show why the remaster must be incremental. The site contains several development eras, and global replacement would erase good local work while leaving semantic debt untouched.
@@ -105,7 +105,7 @@ The site should feel inhabited, not tiled.
 
 ### Wave 1 · Mathematics
 
-- Discrete Mathematics parent, Set Theory, Graph Theory, and Combinatorics are structurally refined; continue through Recursion Theory.
+- Discrete Mathematics and all four root units—Set Theory, Graph Theory, Combinatorics, and Recursion & Recurrence—are structurally refined and remain queued for rendered verification.
 - Then audit Foundations, Linear Algebra, Abstract Algebra, Calculus, Geometry, Statistics, Applied Mathematics, and their live child sequences.
 - Preserve the strongest existing instruments; migrate ontology, context, vocabulary, lesson flow, readability, and environment together.
 
@@ -185,6 +185,8 @@ Combinatorics is the completed Formal Science return pass. Its six planned direc
 
 Literature completes the contrasting Humanities pass without discarding its already-strong reading room. Narrative & Fiction is now its first active direct child and a bounded six-lesson unit. One original four-event station story drives the event-thread background, chronological register, plot-order editor, reader-knowledge ledger, and transfer check. Literature vocabulary now aggregates its active child's terms through a Humanities drawer rather than remaining an isolated local glossary. The six deeper narrative lessons remain visibly planned and non-clickable.
 
-The next target returns to Formal Science → Mathematics → Discrete Mathematics → Recursion Theory. Preserve its recursive-system and Hanoi strengths while repairing page role, context, assessment evidence, terminology, vocabulary ownership, and deterministic representation parity.
+Recursion & Recurrence completes the current Discrete Mathematics root layer. The stable `recursion-theory` route remains intact, while the learner-facing name now matches the page's actual introductory scope and a source-linked boundary reserves “recursion theory” for computability theory. Six planned direct lessons bound the unit. One deterministic three-disk Hanoi case powers the recursive stair world, exact seven-move register, descent/return trace, recurrence, guided/manual workbench, transfer check, and generated practice. The remote hero, random canvas loop, joke definition, arbitrary unit code, implementation chrome, and isolated local glossary are gone; curriculum-owned vocabulary now aggregates upward.
+
+The next contrasting target is Applied Science → Medicine → Anatomy & Physiology. Preserve its nested structure-function scale, body-system scanner, and Skeletal System route while repairing the missing curriculum children, registry-derived context, vocabulary ownership, and unit evidence contract before descending further.
 
 The program advances one coherent page or family at a time. A route leaves the ledger only when its semantic structure, educational job, distinctive world, geometry, verification record, and published `studio` commit all agree.

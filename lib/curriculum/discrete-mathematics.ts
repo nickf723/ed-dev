@@ -1,23 +1,5 @@
 import type { CurriculumNode } from "@/lib/curriculum/types";
 
-function branch(
-  id: string,
-  label: string,
-  href: string,
-  description: string,
-  pageKind: CurriculumNode["pageKind"] = "hub"
-): CurriculumNode {
-  return {
-    id,
-    label,
-    href,
-    description,
-    domainId: "formal",
-    status: "active",
-    pageKind,
-  };
-}
-
 function plannedSetTheoryLesson(
   id: string,
   label: string,
@@ -53,6 +35,23 @@ function plannedGraphTheoryLesson(
 }
 
 function plannedCombinatoricsLesson(
+  id: string,
+  label: string,
+  href: string,
+  description: string
+): CurriculumNode {
+  return {
+    id,
+    label,
+    href,
+    description,
+    domainId: "formal",
+    status: "placeholder",
+    pageKind: "lesson",
+  };
+}
+
+function plannedRecursionLesson(
   id: string,
   label: string,
   href: string,
@@ -216,6 +215,55 @@ const COMBINATORICS_CURRICULUM: CurriculumNode = {
   ],
 };
 
+const RECURSION_CURRICULUM: CurriculumNode = {
+  id: "formal.mathematics.discrete.recursion-theory",
+  label: "Recursion & Recurrence",
+  href: "/formal-science/mathematics/discrete/recursion-theory",
+  description:
+    "Define structures and procedures through smaller cases, guarantee a reachable base case, trace pending returns, and measure the resulting work with recurrence relations.",
+  domainId: "formal",
+  status: "active",
+  pageKind: "unit",
+  children: [
+    plannedRecursionLesson(
+      "formal.mathematics.discrete.recursion-theory.definitions",
+      "Recursive Definitions",
+      "/formal-science/mathematics/discrete/recursion-theory/definitions",
+      "Define sequences, functions, and structures through directly known cases and smaller instances of the same kind."
+    ),
+    plannedRecursionLesson(
+      "formal.mathematics.discrete.recursion-theory.termination",
+      "Base Cases & Termination",
+      "/formal-science/mathematics/discrete/recursion-theory/termination",
+      "Choose reachable base cases and prove that every recursive descent makes progress toward stopping."
+    ),
+    plannedRecursionLesson(
+      "formal.mathematics.discrete.recursion-theory.calls-returns",
+      "Calls, Returns & the Stack",
+      "/formal-science/mathematics/discrete/recursion-theory/calls-returns",
+      "Trace active calls, pending work, stack frames, and the reverse-order return that assembles a result."
+    ),
+    plannedRecursionLesson(
+      "formal.mathematics.discrete.recursion-theory.recurrences",
+      "Recurrence Relations",
+      "/formal-science/mathematics/discrete/recursion-theory/recurrences",
+      "Translate recursive growth and work into equations that relate each term or cost to earlier cases."
+    ),
+    plannedRecursionLesson(
+      "formal.mathematics.discrete.recursion-theory.divide-conquer",
+      "Divide & Conquer",
+      "/formal-science/mathematics/discrete/recursion-theory/divide-conquer",
+      "Split a problem into smaller subproblems, solve them recursively, and combine their results without losing work."
+    ),
+    plannedRecursionLesson(
+      "formal.mathematics.discrete.recursion-theory.structures-induction",
+      "Recursive Structures & Induction",
+      "/formal-science/mathematics/discrete/recursion-theory/structures-induction",
+      "Build trees, lists, and expressions recursively, then align their structure with inductive reasoning."
+    ),
+  ],
+};
+
 export const DISCRETE_MATHEMATICS_CURRICULUM: CurriculumNode = {
   id: "formal.mathematics.discrete",
   label: "Discrete Mathematics",
@@ -229,11 +277,6 @@ export const DISCRETE_MATHEMATICS_CURRICULUM: CurriculumNode = {
     SET_THEORY_CURRICULUM,
     GRAPH_THEORY_CURRICULUM,
     COMBINATORICS_CURRICULUM,
-    branch(
-      "formal.mathematics.discrete.recursion-theory",
-      "Recursion Theory",
-      "/formal-science/mathematics/discrete/recursion-theory",
-      "Describe structures and procedures in terms of smaller instances, base cases, recursive cases, and recurrence relations."
-    ),
+    RECURSION_CURRICULUM,
   ],
 };
