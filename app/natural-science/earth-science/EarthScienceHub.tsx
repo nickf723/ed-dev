@@ -155,19 +155,19 @@ export default function EarthScienceHub({ nodes }: { nodes: readonly EarthScienc
         <section className="relative mt-5 overflow-hidden rounded-[34px] border border-cyan-100/[0.10] bg-[#041016]/58 shadow-[0_30px_110px_rgba(0,0,0,0.30)] backdrop-blur-xl">
           <div className="grid gap-5 border-b border-white/[0.07] px-5 py-6 sm:px-7 lg:grid-cols-[minmax(0,1fr)_410px] lg:items-end lg:px-8 lg:py-7">
             <div>
-              <div className="flex items-center gap-2 font-mono text-[9px] font-semibold uppercase tracking-[0.16em] text-cyan-200/65">
-                <Layers3 size={13} /> Coupled Earth systems
+              <div className="flex items-center gap-2 font-mono text-[10px] font-semibold uppercase tracking-[0.10em] text-cyan-200/68">
+                <Layers3 size={14} /> Coupled Earth systems
               </div>
               <h2 className="mt-2 max-w-5xl text-[clamp(2rem,4vw,4rem)] font-semibold leading-[0.92] tracking-[-0.052em] text-white">
                 Read the planet from atmosphere to crystal, then follow the exchanges between them.
               </h2>
             </div>
-            <p className="text-[13px] leading-6 text-slate-400">
+            <p className="text-[14px] leading-6 text-slate-300/76">
               Hover or focus a system to retune the globe behind the page. The stack is spatial, not hierarchical: each field can become the starting point for a process that crosses several layers.
             </p>
           </div>
 
-          <div className="grid xl:grid-cols-[minmax(0,1fr)_390px]">
+          <div className="grid xl:grid-cols-[minmax(0,1fr)_410px]">
             <nav aria-label="Earth Science fields" className="relative border-b border-white/[0.07] px-4 py-5 sm:px-6 xl:border-b-0 xl:border-r xl:px-7">
               <div className="pointer-events-none absolute bottom-8 left-[48px] top-8 w-px bg-gradient-to-b from-sky-300/35 via-blue-400/30 via-amber-300/30 via-emerald-400/30 to-fuchsia-300/30 sm:left-[58px]" aria-hidden="true" />
               <div className="space-y-2">
@@ -184,12 +184,12 @@ export default function EarthScienceHub({ nodes }: { nodes: readonly EarthScienc
               </div>
             </nav>
 
-            <div className="flex flex-col p-5 sm:p-6">
-              <div className="flex items-center gap-2 font-mono text-[9px] font-semibold uppercase tracking-[0.14em] text-rose-200/62">
-                <RefreshCw size={12} /> Cross-system time
+            <div className="flex flex-col p-5 sm:p-6 xl:sticky xl:top-[172px] xl:self-start">
+              <div className="flex items-center gap-2 font-mono text-[10px] font-semibold uppercase tracking-[0.09em] text-rose-200/64">
+                <RefreshCw size={13} /> Cross-system time
               </div>
               <h3 className="mt-2 text-[25px] font-semibold tracking-[-0.04em] text-white">Climate is not another physical layer.</h3>
-              <p className="mt-3 text-[12px] leading-6 text-slate-400">
+              <p className="mt-3 text-[13px] leading-6 text-slate-400">
                 It describes long-term behavior emerging from exchanges among atmosphere, ocean, ice, land, life, and incoming energy. That makes climatology a thread across the whole stack.
               </p>
 
@@ -202,16 +202,16 @@ export default function EarthScienceHub({ nodes }: { nodes: readonly EarthScienc
                 />
               ) : null}
 
-              <div className="mt-auto border-t border-white/[0.07] pt-5">
-                <div className="font-mono text-[8px] uppercase tracking-[0.13em] text-slate-600">Two kinds of geography</div>
+              <div className="mt-5 border-t border-white/[0.07] pt-5">
+                <div className="font-mono text-[9px] uppercase tracking-[0.08em] text-slate-500">Two kinds of geography</div>
                 <div className="mt-3 grid gap-2 sm:grid-cols-2 xl:grid-cols-1 2xl:grid-cols-2">
                   <div className="rounded-[14px] border border-amber-200/[0.12] bg-amber-200/[0.025] px-3 py-3">
-                    <strong className="text-[11px] text-amber-100/80">Physical Geography</strong>
-                    <p className="mt-1 text-[9px] leading-4 text-slate-600">Earth surface patterns, landforms, water, soils, climate, and environmental processes.</p>
+                    <strong className="text-[13px] text-amber-100/82">Physical Geography</strong>
+                    <p className="mt-1.5 text-[11px] leading-5 text-slate-500">Earth surface patterns, landforms, water, soils, climate, and environmental processes.</p>
                   </div>
                   <Link href="/social-science/geography" className="group rounded-[14px] border border-violet-200/[0.12] bg-violet-200/[0.025] px-3 py-3 transition hover:bg-violet-200/[0.05]">
-                    <div className="flex items-center justify-between gap-2"><strong className="text-[11px] text-violet-100/80">Human Geography</strong><ArrowRight size={11} className="text-violet-200/45 transition group-hover:translate-x-1" /></div>
-                    <p className="mt-1 text-[9px] leading-4 text-slate-600">People, places, movement, settlement, culture, economies, and spatial organization.</p>
+                    <div className="flex items-center justify-between gap-2"><strong className="text-[13px] text-violet-100/82">Human Geography</strong><ArrowRight size={12} className="text-violet-200/45 transition group-hover:translate-x-1" /></div>
+                    <p className="mt-1.5 text-[11px] leading-5 text-slate-500">People, places, movement, settlement, culture, economies, and spatial organization.</p>
                   </Link>
                 </div>
               </div>
@@ -220,12 +220,12 @@ export default function EarthScienceHub({ nodes }: { nodes: readonly EarthScienc
         </section>
 
         <section className="mt-5 overflow-hidden rounded-[28px] border border-white/[0.08] bg-black/[0.13] backdrop-blur-xl">
-          <div className="grid gap-4 border-b border-white/[0.07] px-5 py-5 lg:grid-cols-[minmax(0,1fr)_410px] lg:items-end sm:px-6">
+          <div className="grid gap-4 border-b border-white/[0.07] px-5 py-5 lg:grid-cols-[minmax(0,1fr)_430px] lg:items-end sm:px-6">
             <div>
-              <div className="flex items-center gap-2 font-mono text-[9px] font-semibold uppercase tracking-[0.14em] text-cyan-200/58"><Wind size={12} /> Process connections · reference, not navigation</div>
+              <div className="flex items-center gap-2 font-mono text-[10px] font-semibold uppercase tracking-[0.09em] text-cyan-200/60"><Wind size={13} /> Process connections · reference, not navigation</div>
               <h2 className="mt-2 text-[clamp(1.7rem,3vw,2.8rem)] font-semibold tracking-[-0.045em] text-white">Most Earth-science questions cross more than one field.</h2>
             </div>
-            <p className="text-[11px] leading-5 text-slate-500">A useful boundary tells you which measurements and mechanisms to emphasize. A useful Earth-system explanation then reconnects those pieces.</p>
+            <p className="text-[13px] leading-6 text-slate-400">A useful boundary tells you which measurements and mechanisms to emphasize. A useful Earth-system explanation then reconnects those pieces.</p>
           </div>
           <div className="grid md:grid-cols-2 xl:grid-cols-4">
             {COUPLINGS.map((coupling, index) => <Coupling key={coupling.title} coupling={coupling} index={index} />)}
@@ -253,7 +253,7 @@ function SystemRoute({
   const planned = node.status === "placeholder";
   const content = (
     <div
-      className={`group relative grid min-h-[92px] grid-cols-[54px_minmax(0,1fr)_auto] items-center gap-3 rounded-[20px] border px-3 py-3 transition ${planned ? "opacity-50" : "hover:-translate-y-0.5"}`}
+      className={`group relative grid min-h-[94px] grid-cols-[54px_minmax(0,1fr)_auto] items-center gap-3 rounded-[20px] border px-3 py-3 transition ${planned ? "opacity-50" : "hover:-translate-y-0.5"}`}
       style={{
         borderColor: active ? `rgba(${meta.rgb},0.32)` : "rgba(255,255,255,0.065)",
         background: active ? `linear-gradient(100deg,rgba(${meta.rgb},0.10),rgba(3,10,13,0.34))` : "rgba(0,0,0,0.055)",
@@ -261,11 +261,11 @@ function SystemRoute({
     >
       <span className="relative z-10 flex h-11 w-11 items-center justify-center rounded-full border bg-[#061014]" style={{ color: `rgb(${meta.rgb})`, borderColor: `rgba(${meta.rgb},0.30)` }}><Icon size={17} /></span>
       <span className="min-w-0">
-        <span className="flex flex-wrap items-center gap-x-2 gap-y-1"><span className="font-mono text-[8px] font-semibold uppercase tracking-[0.13em]" style={{ color: `rgba(${meta.rgb},0.62)` }}>{meta.layer}</span><span className="font-mono text-[7px] text-slate-700">0{index + 1}</span></span>
+        <span className="flex flex-wrap items-center gap-x-2 gap-y-1"><span className="font-mono text-[9px] font-semibold uppercase tracking-[0.08em]" style={{ color: `rgba(${meta.rgb},0.68)` }}>{meta.layer}</span><span className="font-mono text-[8px] text-slate-600">0{index + 1}</span></span>
         <strong className="mt-0.5 block text-[16px] font-semibold text-white">{node.label}</strong>
-        <span className="mt-1 block text-[10px] text-slate-600">{meta.cue}</span>
+        <span className="mt-1 block text-[11px] text-slate-500">{meta.cue}</span>
       </span>
-      {planned ? <span className="font-mono text-[7px] uppercase tracking-[0.1em] text-slate-700">planned</span> : <ArrowRight size={14} className="text-slate-600 transition group-hover:translate-x-1" />}
+      {planned ? <span className="font-mono text-[8px] uppercase tracking-[0.07em] text-slate-600">planned</span> : <ArrowRight size={14} className="text-slate-500 transition group-hover:translate-x-1" />}
     </div>
   );
 
@@ -283,9 +283,9 @@ function ClimateRoute({ node, meta, active, onActivate }: { node: EarthScienceHu
     <div className="group mt-5 rounded-[22px] border p-4 transition" style={{ borderColor: active ? `rgba(${meta.rgb},0.30)` : `rgba(${meta.rgb},0.15)`, background: `linear-gradient(135deg,rgba(${meta.rgb},${active ? 0.09 : 0.045}),rgba(0,0,0,0.10))` }}>
       <div className="flex items-start gap-3">
         <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[13px] border" style={{ color: `rgb(${meta.rgb})`, borderColor: `rgba(${meta.rgb},0.26)` }}><Icon size={16} /></span>
-        <span className="min-w-0 flex-1"><span className="font-mono text-[8px] uppercase tracking-[0.12em]" style={{ color: `rgba(${meta.rgb},0.62)` }}>{meta.cue}</span><strong className="mt-1 block text-[16px] text-white">{node.label}</strong><span className="mt-1.5 block text-[10px] leading-5 text-slate-500">{node.description}</span></span>
+        <span className="min-w-0 flex-1"><span className="font-mono text-[9px] uppercase tracking-[0.08em]" style={{ color: `rgba(${meta.rgb},0.68)` }}>{meta.cue}</span><strong className="mt-1 block text-[16px] text-white">{node.label}</strong><span className="mt-1.5 block text-[12px] leading-5 text-slate-400">{node.description}</span></span>
       </div>
-      <div className="mt-4 flex items-center justify-between border-t border-white/[0.06] pt-3 font-mono text-[8px] uppercase tracking-[0.1em] text-slate-600"><span>atmosphere ↔ ocean ↔ ice ↔ land ↔ life</span><span>{planned ? "planned branch" : "open branch"}</span></div>
+      <div className="mt-4 flex items-center justify-between border-t border-white/[0.06] pt-3 font-mono text-[9px] uppercase tracking-[0.06em] text-slate-500"><span>atmosphere ↔ ocean ↔ ice ↔ land ↔ life</span><span>{planned ? "planned branch" : "open branch"}</span></div>
     </div>
   );
   return planned ? <div onMouseEnter={onActivate} onFocus={onActivate} tabIndex={0}>{content}</div> : <Link href={node.href} onMouseEnter={onActivate} onFocus={onActivate}>{content}</Link>;
@@ -293,11 +293,11 @@ function ClimateRoute({ node, meta, active, onActivate }: { node: EarthScienceHu
 
 function Coupling({ coupling, index }: { coupling: (typeof COUPLINGS)[number]; index: number }) {
   return (
-    <article className="min-h-[220px] border-b border-white/[0.065] px-5 py-5 md:border-r md:[&:nth-child(2n)]:border-r-0 xl:border-b-0 xl:[&:nth-child(2n)]:border-r xl:last:border-r-0">
-      <div className="flex items-center justify-between gap-3"><span className="font-mono text-[8px] text-slate-700">0{index + 1}</span><span className="h-2 w-2 rounded-full" style={{ background: `rgba(${coupling.rgb},0.70)`, boxShadow: `0 0 18px rgba(${coupling.rgb},0.24)` }} /></div>
-      <h3 className="mt-5 text-[15px] font-semibold text-white">{coupling.title}</h3>
-      <div className="mt-3 font-mono text-[8px] leading-4" style={{ color: `rgba(${coupling.rgb},0.58)` }}>{coupling.input}<br /><span className="text-slate-700">↓</span><br />{coupling.output}</div>
-      <p className="mt-3 text-[10px] leading-5 text-slate-600">{coupling.detail}</p>
+    <article className="min-h-[230px] border-b border-white/[0.065] px-5 py-5 md:border-r md:[&:nth-child(2n)]:border-r-0 xl:border-b-0 xl:[&:nth-child(2n)]:border-r xl:last:border-r-0">
+      <div className="flex items-center justify-between gap-3"><span className="font-mono text-[9px] text-slate-600">0{index + 1}</span><span className="h-2 w-2 rounded-full" style={{ background: `rgba(${coupling.rgb},0.70)`, boxShadow: `0 0 18px rgba(${coupling.rgb},0.24)` }} /></div>
+      <h3 className="mt-5 text-[16px] font-semibold text-white">{coupling.title}</h3>
+      <div className="mt-3 font-mono text-[10px] leading-5" style={{ color: `rgba(${coupling.rgb},0.64)` }}>{coupling.input}<br /><span className="text-slate-600">↓</span><br />{coupling.output}</div>
+      <p className="mt-3 text-[12px] leading-5 text-slate-400">{coupling.detail}</p>
     </article>
   );
 }
