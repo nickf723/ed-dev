@@ -7,8 +7,14 @@ import { formalScienceVocab } from "./f/formal-science";
 import { formalScienceLocalVocab } from "./f/formal-science-local";
 import { informationScienceVocab } from "./i/information-science";
 import { logicVocab } from "./l/logic";
+import { naturalScienceVocab } from "./n/natural-science";
+import { biologyVocab } from "./natural-science/biology";
+import { chemistryVocab } from "./c/chemistry";
+import { earthScienceVocab } from "./e/earth-science";
+import { physicsVocab } from "./p/physics";
 import { propLogicVocab } from "./p/propositional-logic";
 import { systemsScienceVocab } from "./s/systems-science";
+import { ASTRONOMY_VOCABULARY_REGISTRATIONS } from "./astronomy-node-registry";
 import { buildCurriculumVocabularyScopes } from "./aggregate.mjs";
 import { composeVocabulary } from "./compose";
 import { MATHEMATICS_VOCABULARY_REGISTRATIONS } from "./mathematics-node-registry";
@@ -24,12 +30,14 @@ const logicVocabulary = composeVocabulary(
   logicVocab,
   propLogicVocab,
   firstOrderVocab,
-  legacyVocabularyByDomain("Formal Logic"),
+  legacyVocabularyByDomain("Formal Logic")
 );
 
 const mathematicsNode = curriculumRegistry.getNode("formal.mathematics");
 if (!mathematicsNode) {
-  throw new Error("Mathematics curriculum node is required for vocabulary scopes");
+  throw new Error(
+    "Mathematics curriculum node is required for vocabulary scopes"
+  );
 }
 
 const mathematicsVocabularyScopes = buildCurriculumVocabularyScopes({
@@ -42,14 +50,14 @@ const mathematicsVocabularyScopes = buildCurriculumVocabularyScopes({
 });
 
 const mathematicsScope = mathematicsVocabularyScopes.find(
-  (scope) => scope.path === mathematicsNode.href,
+  (scope) => scope.path === mathematicsNode.href
 );
 if (!mathematicsScope) {
   throw new Error("Mathematics vocabulary scope could not be derived");
 }
 
 const mathematicsVocabulary = composeVocabulary(
-  ...mathematicsScope.groups.map((group) => group.terms),
+  ...mathematicsScope.groups.map((group) => group.terms)
 );
 
 const computerScienceVocabulary = composeVocabulary(
@@ -57,24 +65,79 @@ const computerScienceVocabulary = composeVocabulary(
   legacyVocabularyByDomain(
     "Computer Science",
     "Theory of Computation",
-    "Cryptography",
-  ),
+    "Cryptography"
+  )
 );
 
 const informationScienceVocabulary = composeVocabulary(
   informationScienceVocab,
-  legacyVocabularyByDomain("Information Science"),
+  legacyVocabularyByDomain("Information Science")
 );
 
 const dataScienceVocabulary = composeVocabulary(
   dataScienceVocab,
-  legacyVocabularyByDomain("Statistics", "Data Science"),
+  legacyVocabularyByDomain("Statistics", "Data Science")
 );
 
 const systemsScienceVocabulary = composeVocabulary(
   systemsScienceVocab,
-  legacyVocabularyByDomain("Systems Science"),
+  legacyVocabularyByDomain("Systems Science")
 );
+
+const astronomyNode = curriculumRegistry.getNode("natural.astronomy");
+if (!astronomyNode) {
+  throw new Error(
+    "Astronomy curriculum node is required for vocabulary scopes"
+  );
+}
+
+const astronomyVocabularyScopes = buildCurriculumVocabularyScopes({
+  roots: [astronomyNode],
+  registrations: ASTRONOMY_VOCABULARY_REGISTRATIONS,
+  accent: "cyan",
+});
+
+const astronomyScope = astronomyVocabularyScopes.find(
+  (scope) => scope.path === astronomyNode.href
+);
+if (!astronomyScope) {
+  throw new Error("Astronomy vocabulary scope could not be derived");
+}
+
+const astronomyVocabulary = composeVocabulary(
+  ...astronomyScope.groups.map((group) => group.terms)
+);
+
+export const naturalScienceVocabularyScopes: VocabularyScope[] = [
+  ...astronomyVocabularyScopes,
+  {
+    path: "/natural-science",
+    title: "Natural Science",
+    accent: "emerald",
+    groups: [
+      {
+        id: "natural-science",
+        label: "Natural Science",
+        terms: naturalScienceVocab,
+      },
+      { id: "physics", label: "Physics", terms: physicsVocab },
+      { id: "chemistry", label: "Chemistry", terms: chemistryVocab },
+      { id: "biology", label: "Biology", terms: biologyVocab },
+      {
+        id: "earth-science",
+        label: "Earth Science",
+        terms: earthScienceVocab,
+      },
+      {
+        id: "astronomy",
+        label: "Astronomy",
+        terms: astronomyVocabulary,
+        sourceNodeId: astronomyNode.id,
+        sourcePath: astronomyNode.href,
+      },
+    ],
+  },
+];
 
 export const formalScienceVocabularyScopes: VocabularyScope[] = [
   {
@@ -171,7 +234,11 @@ export const formalScienceVocabularyScopes: VocabularyScope[] = [
         label: "Information Science",
         terms: informationScienceVocabulary,
       },
-      { id: "data-science", label: "Data Science", terms: dataScienceVocabulary },
+      {
+        id: "data-science",
+        label: "Data Science",
+        terms: dataScienceVocabulary,
+      },
       {
         id: "systems-science",
         label: "Systems Science",

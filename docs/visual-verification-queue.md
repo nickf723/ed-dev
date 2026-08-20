@@ -467,3 +467,11 @@ Whenever a page changes without reliable visual verification:
 **Check:** Desktop and narrow horizontal-table layouts; complete 118-element state; reviewed partial fallback state; provider error notice; name/symbol/atomic-number search; period, family, and standard-state filters alone and combined; contextual counts; empty/reset state; element selection and expanded inspector; keyboard traversal across visible table cells.
 
 **Status:** Structural validation required in this pass; rendered verification pending.
+
+### Planetary Astronomy observatory
+
+**Route:** /natural-science/astronomy/planetary-astronomy
+
+**Check:** Desktop and mobile lesson flow; sticky header and four-step orientation; simulator launch, long-lived orbit, impact, escape, slider-disabled, and reset states; canvas scaling and model-limit copy; archive default and search results; method, decade, and radius-band filters alone and combined; honest provider-wide versus loaded counts; selected-world detail and external source link; missing-parameter labels; loading, empty, partial, curated fallback, rate-limited, and failed states; both assessment answers, feedback, and generated-case reset; keyboard navigation; reduced-motion behavior.
+
+**Status:** Structural validation required in this pass; rendered verification pending.

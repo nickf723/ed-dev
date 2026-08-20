@@ -17,6 +17,7 @@ import { physicsVocab } from "./p/physics";
 import { chemistryVocab } from "./c/chemistry";
 import { biologyVocab } from "./natural-science/biology";
 import { astronomyVocab } from "./a/astronomy";
+import { planetaryAstronomyVocab } from "./natural-science/astronomy/planetary-astronomy";
 import { psychologyVocab } from "./p/psychology";
 import { sociologyVocab } from "./s/sociology";
 import { politicalScienceVocab } from "./p/political-science";
@@ -74,6 +75,7 @@ export const ALL_VOCAB: VocabTerm[] = composeVocabulary(
   chemistryVocab,
   biologyVocab,
   astronomyVocab,
+  planetaryAstronomyVocab,
   psychologyVocab,
   sociologyVocab,
   politicalScienceVocab,
@@ -112,5 +114,5 @@ export const ALL_VOCAB: VocabTerm[] = composeVocabulary(
   expressionsVocab,
   equationsVocab,
   algebraFundamentalsVocab,
-  quadraticsVocab,
+  quadraticsVocab
 );
