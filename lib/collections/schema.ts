@@ -1,6 +1,62 @@
 export type CollectionSource = {
   label: string;
   url?: string;
+  kind?: "primary" | "reference" | "provider" | "curated";
+  scope?: string;
+};
+
+export type CollectionResultState =
+  | "live"
+  | "cached"
+  | "curated"
+  | "fallback"
+  | "partial"
+  | "stale"
+  | "rate-limited"
+  | "failed";
+
+export type CollectionProvenance = {
+  state: CollectionResultState;
+  sources: readonly CollectionSource[];
+  retrievedAt?: string;
+  reviewedAt?: string;
+  staleAfter?: string;
+  version?: string;
+  note?: string;
+};
+
+export type CollectionFacetOption = {
+  id: string;
+  label: string;
+};
+
+export type CollectionFacetDefinition<T> = {
+  id: string;
+  label: string;
+  selection: "single" | "multiple";
+  operator?: "any" | "all";
+  options: readonly CollectionFacetOption[];
+  values(record: T): readonly string[];
+};
+
+export type CollectionQueryState = {
+  text: string;
+  facets: Readonly<Record<string, readonly string[]>>;
+};
+
+export type CollectionPagination = {
+  total: number;
+  returned: number;
+  pageSize?: number;
+  nextCursor?: string;
+};
+
+export type CollectionResult<T> = {
+  query: CollectionQueryState;
+  records: readonly T[];
+  provenance: CollectionProvenance;
+  pagination: CollectionPagination;
+  error?: string;
 };
 
 export type CollectionMediaRecord = {
@@ -21,6 +77,8 @@ export type CollectionSearchPayload<T extends CollectionMediaRecord = Collection
   records: T[];
   source: string;
   error?: string;
+  provenance?: CollectionProvenance;
+  pagination?: CollectionPagination;
 };
 
 /**

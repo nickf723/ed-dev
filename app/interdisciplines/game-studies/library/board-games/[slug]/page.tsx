@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { BookOpen, Box, Clock3, Gamepad2, PackageOpen, Users } from "lucide-react";
+import { BookOpen, Box, Clock3, ExternalLink, Gamepad2, PackageOpen, ShieldCheck, Users } from "lucide-react";
 import DomainPageHeader from "@/app/_components/DomainPageHeader";
 import CurriculumSiblingNav from "@/app/_components/CurriculumSiblingNav";
 import { SceneFrame, Surface } from "@/app/_page-system/scene";
@@ -89,6 +89,21 @@ export default async function BoardGameRecordPage({ params }: PageProps) {
           <RuleChunk index="03" title="End the game" items={game.rules.ending} accentRgb={game.accentRgb} />
         </div>
       </section>
+
+      <aside aria-label="Ruleset provenance" className="mt-5 grid gap-4 rounded-[18px] border border-emerald-100/[0.09] bg-emerald-300/[0.018] p-4 md:grid-cols-[minmax(0,1fr)_auto] md:items-center">
+        <div>
+          <div className="flex items-center gap-2 font-mono text-[10px] font-semibold uppercase tracking-[0.09em] text-emerald-200/58"><ShieldCheck size={12} /> {game.provenance.state} ruleset · version {game.provenance.version}</div>
+          <p className="mt-2 max-w-4xl text-[11px] leading-5 text-slate-500">{game.provenance.note}</p>
+        </div>
+        <div className="flex flex-col items-start gap-2 md:items-end">
+          {game.provenance.sources.map((source) => source.url ? (
+            <Link key={source.label} href={source.url} target="_blank" rel="noreferrer" className="group flex items-center gap-2 text-[11px] font-semibold text-emerald-100/60 transition hover:text-white">
+              {source.label} <ExternalLink size={11} className="transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+            </Link>
+          ) : <span key={source.label} className="text-[11px] font-semibold text-emerald-100/60">{source.label}</span>)}
+          {game.provenance.reviewedAt ? <span className="font-mono text-[10px] uppercase tracking-[0.07em] text-slate-700">Reviewed {game.provenance.reviewedAt}</span> : null}
+        </div>
+      </aside>
 
       <section id="components" className="scroll-mt-48 mt-9 border-t border-white/[0.08] pt-7">
         <div className="flex items-center gap-2 font-mono text-[11px] font-semibold uppercase tracking-[0.09em] text-emerald-200/58"><PackageOpen size={13} /> Component inventory</div>

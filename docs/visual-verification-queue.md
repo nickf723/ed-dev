@@ -95,7 +95,10 @@ Verify:
 
 - text search matches titles, aliases, mechanics, and descriptions
 - alignment, connection, and sowing filters produce the expected subsets
+- weight and mechanic selects combine with family and search filters
+- option counts remain contextual to search and other active filters
 - zero-result guidance is readable and reset works
+- curated status, review date, and named-reference count are legible without competing with results
 - each game card opens the correct record
 
 **Status:** Verification required
@@ -111,6 +114,7 @@ Verify:
 Verify:
 
 - rules, component inventory, and simulator anchors stay legible and distinct
+- each record identifies its curated ruleset boundary, review date, and named external reference
 - Tic-Tac-Toe detects rows, columns, diagonals, and a draw
 - Four in a Row respects gravity, full columns, wins in all four directions, and a draw
 - Kalah handles stores, opponent-store skipping, captures, extra turns, sweeping, and final scoring

@@ -1,3 +1,8 @@
+import type {
+  CollectionFacetDefinition,
+  CollectionProvenance,
+} from "@/lib/collections/schema";
+
 export type BoardGameFamily = "alignment" | "connection" | "sowing";
 export type BoardGameSimulatorId = "tic-tac-toe" | "four-in-a-row" | "kalah";
 
@@ -32,6 +37,7 @@ export type BoardGameRecord = {
   rules: BoardGameRules;
   simulator: BoardGameSimulatorId;
   rulesetNote: string;
+  provenance: CollectionProvenance;
 };
 
 export const BOARD_GAMES: readonly BoardGameRecord[] = [
@@ -74,6 +80,20 @@ export const BOARD_GAMES: readonly BoardGameRecord[] = [
     },
     simulator: "tic-tac-toe",
     rulesetNote: "This page models the common three-by-three ruleset with X moving first.",
+    provenance: {
+      state: "curated",
+      reviewedAt: "2026-08-20",
+      version: "1.0",
+      sources: [
+        {
+          label: "Wolfram MathWorld · Tic-Tac-Toe",
+          url: "https://mathworld.wolfram.com/Tic-Tac-Toe.html",
+          kind: "reference",
+          scope: "Board, turn order, and winning lines",
+        },
+      ],
+      note: "Education Station translated the referenced common rules into a local same-device teaching model.",
+    },
   },
   {
     slug: "four-in-a-row",
@@ -114,6 +134,20 @@ export const BOARD_GAMES: readonly BoardGameRecord[] = [
     },
     simulator: "four-in-a-row",
     rulesetNote: "This page models a generic seven-column by six-row four-in-a-row ruleset; commercial editions may package the grid differently.",
+    provenance: {
+      state: "curated",
+      reviewedAt: "2026-08-20",
+      version: "1.0",
+      sources: [
+        {
+          label: "Hasbro · Connect 4 Game Instructions",
+          url: "https://instructions.hasbro.com/en-us/instruction/Connect-4-Game",
+          kind: "primary",
+          scope: "Core rules and component inventory",
+        },
+      ],
+      note: "The simulator represents the generic gravity-and-connection ruleset and does not reproduce branded presentation.",
+    },
   },
   {
     slug: "kalah",
@@ -155,8 +189,67 @@ export const BOARD_GAMES: readonly BoardGameRecord[] = [
     },
     simulator: "kalah",
     rulesetNote: "Mancala names a large family of games. This page specifically models six-pit Kalah with four stones per pit.",
+    provenance: {
+      state: "curated",
+      reviewedAt: "2026-08-20",
+      version: "1.0",
+      sources: [
+        {
+          label: "Rogers State University Game Collection · Mancala",
+          url: "https://libguides.rsu.edu/games/mancala",
+          kind: "reference",
+          scope: "Six-pit Kalah setup and turn rules",
+        },
+      ],
+      note: "This model uses the explicitly named Kalah variant; it should not be read as a universal mancala ruleset.",
+    },
   },
 ] as const;
+
+export const BOARD_GAME_FACETS: readonly CollectionFacetDefinition<BoardGameRecord>[] = [
+  {
+    id: "family",
+    label: "Family",
+    selection: "single",
+    options: [
+      { id: "alignment", label: "Alignment" },
+      { id: "connection", label: "Connection" },
+      { id: "sowing", label: "Sowing" },
+    ],
+    values: (game) => [game.family],
+  },
+  {
+    id: "complexity",
+    label: "Weight",
+    selection: "single",
+    options: [
+      { id: "introductory", label: "Introductory" },
+      { id: "light", label: "Light" },
+    ],
+    values: (game) => [game.complexity],
+  },
+  {
+    id: "mechanic",
+    label: "Mechanic",
+    selection: "single",
+    options: [
+      { id: "alignment", label: "Alignment" },
+      { id: "gravity", label: "Gravity" },
+      { id: "perfect information", label: "Perfect information" },
+      { id: "capture", label: "Capture" },
+      { id: "extra turns", label: "Extra turns" },
+    ],
+    values: (game) => game.mechanics,
+  },
+] as const;
+
+export const BOARD_GAME_COLLECTION_PROVENANCE: CollectionProvenance = {
+  state: "curated",
+  reviewedAt: "2026-08-20",
+  version: "1.0",
+  sources: BOARD_GAMES.flatMap((game) => game.provenance.sources),
+  note: "A deliberately small shelf of rules-complete, locally playable teaching models.",
+};
 
 export function getBoardGame(slug: string): BoardGameRecord | undefined {
   return BOARD_GAMES.find((game) => game.slug === slug);

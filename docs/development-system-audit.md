@@ -11,7 +11,8 @@ This audit records where Education Station 64's development system is strong, wh
 - The visual-verification queue prevents compile success from being mistaken for visual completion.
 - The existing vocabulary registry can compose and deduplicate term collections.
 - API-backed experiments already exist for art, music, zoology, games, and other media.
-- A shared collection record/adapter contract exists in `lib/collections/schema.ts`.
+- Shared collection contracts now cover records, source adapters, typed facets, query state, provenance, freshness markers, pagination, and result states in `lib/collections/schema.ts`.
+- A provider-neutral collection query engine now supplies stable text search, AND-across-facet filtering, configurable within-facet matching, contextual counts, and contract validation.
 
 ## Problems corrected in this governance pass
 
@@ -49,17 +50,17 @@ Required future work:
 - validate generator bounds and representative edge cases;
 - keep assessment UI adaptable to each subject's local visual grammar.
 
-### 3. Collection infrastructure needs facets and provenance
+### 3. Collection infrastructure is now partially standardized
 
-`lib/collections/schema.ts` normalizes basic media records and source adapters, but it does not yet standardize typed facets, query state, pagination, freshness, partial results, or fallback status.
+The shared schema now distinguishes live, cached, curated, fallback, partial, stale, rate-limited, and failed results; represents provenance, review/retrieval freshness, pagination, and typed facets; and retains a compatibility seam for earlier API-backed collections. `lib/collections/query.mjs` applies text and faceted queries without provider assumptions and reports contextual facet counts. The Board Game Repository is the first adopting slice: its family, weight, and mechanic filters use the engine, every record carries named ruleset provenance, and the UI exposes review state, result counts, reset behavior, and a truthful empty state. Focused tests cover normalization, facet semantics, contextual counts, validation, and stable source ordering.
 
 Required future work:
 
-- add typed facet definitions and filter operators;
-- add provenance and retrieved/updated timestamps at record and field level where needed;
-- add pagination/cursor and result-count contracts;
-- distinguish live, cached, curated fallback, partial, stale, rate-limited, and failed results;
-- reuse the query engine across zoology, games, art, music, sports, media, geography, and future repositories.
+- migrate art and music next so API-backed results exercise live, cached, rate-limited, and failed presentations;
+- add field-level provenance where a record combines facts from multiple providers;
+- connect cursor pagination to one genuinely large provider rather than simulating it on the three-record board-game shelf;
+- define cache adapters and test stale/partial/fallback transitions at the provider boundary;
+- reuse the query engine across zoology, sports, media, geography, and future repositories.
 
 ### 4. Page-bundle completeness is not automatically validated
 
@@ -79,7 +80,7 @@ Game Studies now has a canonical Humanities home. Cognitive Science, Bioinformat
 ## Recommended implementation order
 
 1. Build curriculum-node vocabulary registration and automatic ancestor aggregation.
-2. Extend the collection schema with facets, provenance, freshness, and result-state contracts.
+2. Migrate one API-backed collection onto the new collection contract and exercise failure/freshness states.
 3. Define generated-practice and answer-checking primitives using one mathematics lesson as the first implementation.
 4. Add the page-development manifest and architecture validations.
 5. Apply the full bundle contract to one newly built page, then one legacy-page renovation.
