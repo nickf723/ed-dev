@@ -105,7 +105,7 @@ The site should feel inhabited, not tiled.
 
 ### Wave 1 · Mathematics
 
-- Discrete Mathematics parent and Set Theory coverage are structurally refined; continue through Graph Theory, Combinatorics, and Recursion Theory.
+- Discrete Mathematics parent, Set Theory, and Graph Theory are structurally refined; continue through Combinatorics and Recursion Theory.
 - Then audit Foundations, Linear Algebra, Abstract Algebra, Calculus, Geometry, Statistics, Applied Mathematics, and their live child sequences.
 - Preserve the strongest existing instruments; migrate ontology, context, vocabulary, lesson flow, readability, and environment together.
 
@@ -175,8 +175,10 @@ Rebuild relationships after canonical pages are strong enough to support precise
 
 ## Current target
 
-The Discrete Mathematics parent now derives four live children from a focused curriculum module, contributes node-owned vocabulary, presents direct-child navigation before its graph workshop, and uses a finite-structure drafting table instead of the random network wallpaper and remote server-room hero. Set Theory is now classified and built as an atomic lesson: membership precedes notation, the preserved Venn-operation idea has become a rule-driven scanner with curated and boundary cases, registry vocabulary replaces the parallel glossary, and transfer plus deterministic generated practice complete the lesson contract. Both routes remain queued for rendered verification.
+The Discrete Mathematics parent now derives four live children from a focused curriculum module, contributes node-owned vocabulary, presents direct-child navigation before its graph workshop, and uses a finite-structure drafting table instead of the random network wallpaper and remote server-room hero. Set Theory is now classified and built as a bounded root unit with six direct planned lessons: membership precedes notation in its overview workshop, the preserved Venn-operation idea has become a rule-driven scanner with curated and boundary cases, registry vocabulary replaces the parallel glossary, and transfer plus deterministic generated practice complete the instructional contract. The parent and both rebuilt root units remain queued for rendered verification.
 
-Graph Theory is the next family target. Preserve its pathfinding and graph-building strengths while repairing the client-heavy shell, ontology/context, formal explanation, assessment contract, and local implementation chrome.
+Graph Theory is now a bounded six-lesson root unit. Its graph-building strength remains at the Discrete Mathematics parent, while the root preserves and clarifies pathfinding through a deterministic BFS/DFS traversal on the same seven-vertex graph used by the scenery, worked model, and degree ledger. The client-heavy random constellation, random maze, remote hero, local glossary, and implementation chrome are gone; curriculum context, inherited vocabulary, transfer reasoning, and generated fluency practice now travel as one bundle.
+
+Combinatorics is the next family target. Preserve its counting vault and cipher-ring strengths while repairing page depth, context, explanation, assessment, terminology, and its relationship to the newly stabilized Discrete Mathematics parent.
 
 The program advances one coherent page or family at a time. A route leaves the ledger only when its semantic structure, educational job, distinctive world, geometry, verification record, and published `studio` commit all agree.

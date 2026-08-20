@@ -3,7 +3,7 @@
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState, useSyncExternalStore } from "react";
+import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   BookOpen,
@@ -31,10 +31,6 @@ type SidebarProps = {
 
 type SidebarDomain = DomainId | "meta" | "home";
 
-const subscribeToHydration = () => () => undefined;
-const getClientHydrationSnapshot = () => true;
-const getServerHydrationSnapshot = () => false;
-
 function domainRgb(domain: SidebarDomain): string {
   if (domain === "meta") return "148, 163, 184";
   if (domain === "home") return "34, 211, 238";
@@ -51,8 +47,12 @@ export default function Sidebar({
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [structureScanOpen, setStructureScanOpen] = useState(false);
   const activeDomain = getDomainForPath(pathname);
-  const isMeta = pathname.startsWith("/glossary") || pathname.startsWith("/stage") || pathname.startsWith("/skeleton");
-  const shellDomain: SidebarDomain = activeDomain?.id ?? (isMeta ? "meta" : "home");
+  const isMeta =
+    pathname.startsWith("/glossary") ||
+    pathname.startsWith("/stage") ||
+    pathname.startsWith("/skeleton");
+  const shellDomain: SidebarDomain =
+    activeDomain?.id ?? (isMeta ? "meta" : "home");
   const shellRgb = domainRgb(shellDomain);
 
   const showStructureScan = developerToolsEnabled && structureScanOpen;
@@ -117,20 +117,30 @@ export default function Sidebar({
             </span>
 
             <span className={`min-w-0 ${isCollapsed ? "md:hidden" : ""}`}>
-              <strong className="block font-mono text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-400">Education</strong>
-              <span className="mt-0.5 block text-sm font-semibold tracking-[0.08em] text-slate-100">STATION 64</span>
+              <strong className="block font-mono text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-400">
+                Education
+              </strong>
+              <span className="mt-0.5 block text-sm font-semibold tracking-[0.08em] text-slate-100">
+                STATION 64
+              </span>
             </span>
           </Link>
 
           <button
             onClick={() => onCollapsedChange(!isCollapsed)}
             className={`absolute hidden h-7 w-7 items-center justify-center rounded-lg border border-white/10 bg-black/60 text-slate-500 transition-all hover:border-white/20 hover:text-white md:flex ${
-              isCollapsed ? "bottom-1.5 right-1.5" : "right-3 top-1/2 -translate-y-1/2"
+              isCollapsed
+                ? "bottom-1.5 right-1.5"
+                : "right-3 top-1/2 -translate-y-1/2"
             }`}
             type="button"
             aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
           >
-            {isCollapsed ? <PanelLeftOpen size={13} /> : <PanelLeftClose size={13} />}
+            {isCollapsed ? (
+              <PanelLeftOpen size={13} />
+            ) : (
+              <PanelLeftClose size={13} />
+            )}
           </button>
         </header>
 
@@ -142,7 +152,9 @@ export default function Sidebar({
           <div className="space-y-7">
             {navigationData.map((section) => (
               <section key={section.title}>
-                <h2 className={`mb-2 px-3 font-mono text-[8px] uppercase tracking-[0.2em] text-slate-700 ${isCollapsed ? "md:hidden" : ""}`}>
+                <h2
+                  className={`mb-2 px-3 font-mono text-[8px] uppercase tracking-[0.2em] text-slate-700 ${isCollapsed ? "md:hidden" : ""}`}
+                >
                   {section.title}
                 </h2>
 
@@ -163,7 +175,9 @@ export default function Sidebar({
         </nav>
 
         {developerToolsEnabled ? (
-          <footer className={`shrink-0 border-t border-white/[0.06] bg-black/15 p-2.5 ${isCollapsed ? "md:p-2" : ""}`}>
+          <footer
+            className={`shrink-0 border-t border-white/[0.06] bg-black/15 p-2.5 ${isCollapsed ? "md:p-2" : ""}`}
+          >
             <button
               type="button"
               onClick={toggleStructureScan}
@@ -173,9 +187,15 @@ export default function Sidebar({
               <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-emerald-400/15 bg-emerald-400/[0.045] text-emerald-300/65">
                 <Scan size={15} />
               </span>
-              <span className={`min-w-0 flex-1 ${isCollapsed ? "md:hidden" : ""}`}>
-                <strong className="block text-[10px] font-semibold uppercase tracking-[0.12em]">Structure scan</strong>
-                <span className="mt-0.5 block text-[9px] text-slate-700">Developer view</span>
+              <span
+                className={`min-w-0 flex-1 ${isCollapsed ? "md:hidden" : ""}`}
+              >
+                <strong className="block text-[10px] font-semibold uppercase tracking-[0.12em]">
+                  Structure scan
+                </strong>
+                <span className="mt-0.5 block text-[9px] text-slate-700">
+                  Developer view
+                </span>
               </span>
               <ChevronDown
                 size={12}
@@ -223,33 +243,32 @@ function NavItem({
   const isDescendantActive = currentPath.startsWith(`${item.href}/`);
   const isActiveBranch = isExactMatch || isDescendantActive;
   const hasChildren = Boolean(item.children?.length);
-  const hydrated = useSyncExternalStore(
-    subscribeToHydration,
-    getClientHydrationSnapshot,
-    getServerHydrationSnapshot,
-  );
   const [manualExpansion, setManualExpansion] = useState<{
     path: string;
     value: boolean;
   } | null>(null);
-  // The server snapshot and hydration snapshot are both collapsed. Once React
-  // owns the client tree, active ancestry opens automatically. A manual choice
-  // is scoped to the current path so navigation can reveal the next ancestry.
-  const expanded = manualExpansion?.path === currentPath
-    ? manualExpansion.value
-    : hydrated && isActiveBranch;
+  // Pathname is available during Next's server render and hydration pass, so
+  // active ancestry can be derived without a client-only "hydrated" frame.
+  // Manual choices remain scoped to one route; navigation reveals the new
+  // route's ancestry automatically.
+  const expanded =
+    manualExpansion?.path === currentPath
+      ? manualExpansion.value
+      : isActiveBranch;
   const isTopLevel = depth === 0;
-  const Icon = item.icon === "book-open"
-    ? BookOpen
-    : isTopLevel && itemDomain !== "meta"
-      ? DOMAIN_BY_ID[itemDomain]?.icon
-      : undefined;
+  const Icon =
+    item.icon === "book-open"
+      ? BookOpen
+      : isTopLevel && itemDomain !== "meta"
+        ? DOMAIN_BY_ID[itemDomain]?.icon
+        : undefined;
 
   const activeBackground = isTopLevel
     ? `linear-gradient(90deg, rgba(${rgb},0.12), rgba(${rgb},0.035))`
     : "rgba(255,255,255,0.055)";
 
-  const childRailClass = depth === 0 ? "ml-5 pl-2" : depth === 1 ? "ml-3 pl-2" : "ml-2 pl-1.5";
+  const childRailClass =
+    depth === 0 ? "ml-5 pl-2" : depth === 1 ? "ml-3 pl-2" : "ml-2 pl-1.5";
 
   return (
     <div className="relative min-w-0">
@@ -262,7 +281,9 @@ function NavItem({
         style={
           isActiveBranch
             ? {
-                borderColor: isTopLevel ? `rgba(${rgb},0.22)` : "rgba(255,255,255,0.06)",
+                borderColor: isTopLevel
+                  ? `rgba(${rgb},0.22)`
+                  : "rgba(255,255,255,0.06)",
                 background: activeBackground,
               }
             : undefined
@@ -288,7 +309,9 @@ function NavItem({
               className="h-1.5 w-1.5 shrink-0 rounded-full transition-all"
               style={{
                 background: isExactMatch ? `rgb(${rgb})` : `rgba(${rgb},0.32)`,
-                boxShadow: isExactMatch ? `0 0 8px rgba(${rgb},0.55)` : undefined,
+                boxShadow: isExactMatch
+                  ? `0 0 8px rgba(${rgb},0.55)`
+                  : undefined,
               }}
             />
           )}
@@ -305,44 +328,42 @@ function NavItem({
         {hasChildren ? (
           <button
             type="button"
-            onClick={() => setManualExpansion({ path: currentPath, value: !expanded })}
+            onClick={() =>
+              setManualExpansion({ path: currentPath, value: !expanded })
+            }
             className={`mr-1 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-slate-600 transition-all hover:bg-white/[0.05] hover:text-slate-300 ${
               isCollapsed ? "md:hidden" : ""
             }`}
             aria-label={`${expanded ? "Collapse" : "Expand"} ${item.label}`}
             aria-expanded={expanded}
           >
-            <ChevronDown size={12} className={`transition-transform duration-200 ${expanded ? "rotate-180" : ""}`} />
+            <ChevronDown
+              size={12}
+              className={`transition-transform duration-200 ${expanded ? "rotate-180" : ""}`}
+            />
           </button>
         ) : null}
       </div>
 
-      <AnimatePresence initial={false}>
-        {expanded && hasChildren ? (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            className={`min-w-0 overflow-hidden ${isCollapsed ? "md:hidden" : ""}`}
+      {expanded && hasChildren ? (
+        <div className={`min-w-0 ${isCollapsed ? "md:hidden" : ""}`}>
+          <div
+            className={`${childRailClass} mt-1 min-w-0 space-y-0.5 border-l py-0.5`}
+            style={{ borderColor: `rgba(${rgb},0.15)` }}
           >
-            <div
-              className={`${childRailClass} mt-1 min-w-0 space-y-0.5 border-l py-0.5`}
-              style={{ borderColor: `rgba(${rgb},0.15)` }}
-            >
-              {item.children?.map((child) => (
-                <NavItem
-                  key={child.href}
-                  item={child}
-                  currentPath={currentPath}
-                  isCollapsed={isCollapsed}
-                  onNavigate={onNavigate}
-                  depth={depth + 1}
-                />
-              ))}
-            </div>
-          </motion.div>
-        ) : null}
-      </AnimatePresence>
+            {item.children?.map((child) => (
+              <NavItem
+                key={child.href}
+                item={child}
+                currentPath={currentPath}
+                isCollapsed={isCollapsed}
+                onNavigate={onNavigate}
+                depth={depth + 1}
+              />
+            ))}
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }

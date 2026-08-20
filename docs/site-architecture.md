@@ -90,6 +90,14 @@ The application shell owns persistent product behavior:
 - mobile navigation
 - global progress/mastery surfaces
 
+### Sidebar hydration contract
+
+- The active ancestry is derived from the route during the server render and must match the first client hydration frame.
+- Do not collapse the curriculum tree on the server merely to open it again behind a client-only `hydrated` flag; that trades a mismatch risk for a guaranteed navigation shift.
+- Manual expansion or collapse may override the active default for the current route, but the override must be route-scoped so navigation reveals the next route's ancestry.
+- Collapsed subtrees must remain absent from keyboard navigation; render them conditionally or use native hidden semantics. Avoid animation wrappers that mount a different tree solely because hydration completed.
+- Mobile route selection closes the drawer in the navigation event itself rather than relying on a pathname synchronization effect.
+
 A future curriculum page-frame layer should consume page context and standardize **behavior**, not page art:
 
 - semantic breadcrumbs

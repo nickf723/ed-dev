@@ -35,6 +35,23 @@ function plannedSetTheoryLesson(
   };
 }
 
+function plannedGraphTheoryLesson(
+  id: string,
+  label: string,
+  href: string,
+  description: string
+): CurriculumNode {
+  return {
+    id,
+    label,
+    href,
+    description,
+    domainId: "formal",
+    status: "placeholder",
+    pageKind: "lesson",
+  };
+}
+
 const SET_THEORY_CURRICULUM: CurriculumNode = {
   id: "formal.mathematics.discrete.set-theory",
   label: "Set Theory",
@@ -84,6 +101,55 @@ const SET_THEORY_CURRICULUM: CurriculumNode = {
   ],
 };
 
+const GRAPH_THEORY_CURRICULUM: CurriculumNode = {
+  id: "formal.mathematics.discrete.graph-theory",
+  label: "Graph Theory",
+  href: "/formal-science/mathematics/discrete/graph-theory",
+  description:
+    "Model pairwise relationships with vertices and edges, then study degree, routes, connectivity, trees, direction, weight, coloring, and network structure.",
+  domainId: "formal",
+  status: "active",
+  pageKind: "unit",
+  children: [
+    plannedGraphTheoryLesson(
+      "formal.mathematics.discrete.graph-theory.vertices-edges-degree",
+      "Vertices, Edges & Degree",
+      "/formal-science/mathematics/discrete/graph-theory/vertices-edges-degree",
+      "Translate a real relationship into vertices and edges, then measure local structure with adjacency and degree."
+    ),
+    plannedGraphTheoryLesson(
+      "formal.mathematics.discrete.graph-theory.walks-trails-paths",
+      "Walks, Trails & Paths",
+      "/formal-science/mathematics/discrete/graph-theory/walks-trails-paths",
+      "Distinguish repeated vertices from repeated edges and use those constraints to describe routes precisely."
+    ),
+    plannedGraphTheoryLesson(
+      "formal.mathematics.discrete.graph-theory.connectivity-components",
+      "Connectivity & Components",
+      "/formal-science/mathematics/discrete/graph-theory/connectivity-components",
+      "Decide which vertices can reach one another and identify the separate components of a graph."
+    ),
+    plannedGraphTheoryLesson(
+      "formal.mathematics.discrete.graph-theory.trees-spanning",
+      "Trees & Spanning Structure",
+      "/formal-science/mathematics/discrete/graph-theory/trees-spanning",
+      "Study connected graphs without cycles and choose spanning trees that retain every vertex with fewer edges."
+    ),
+    plannedGraphTheoryLesson(
+      "formal.mathematics.discrete.graph-theory.directed-weighted",
+      "Directed & Weighted Graphs",
+      "/formal-science/mathematics/discrete/graph-theory/directed-weighted",
+      "Add one-way relations and edge costs so graphs can model flow, distance, time, capacity, and preference."
+    ),
+    plannedGraphTheoryLesson(
+      "formal.mathematics.discrete.graph-theory.coloring-planarity-networks",
+      "Coloring, Planarity & Networks",
+      "/formal-science/mathematics/discrete/graph-theory/coloring-planarity-networks",
+      "Use color and layout constraints to reason about conflicts, crossings, maps, schedules, and large network models."
+    ),
+  ],
+};
+
 export const DISCRETE_MATHEMATICS_CURRICULUM: CurriculumNode = {
   id: "formal.mathematics.discrete",
   label: "Discrete Mathematics",
@@ -95,12 +161,7 @@ export const DISCRETE_MATHEMATICS_CURRICULUM: CurriculumNode = {
   pageKind: "hub",
   children: [
     SET_THEORY_CURRICULUM,
-    branch(
-      "formal.mathematics.discrete.graph-theory",
-      "Graph Theory",
-      "/formal-science/mathematics/discrete/graph-theory",
-      "Model pairwise relationships with vertices and edges, then study paths, connectivity, degree, and network structure."
-    ),
+    GRAPH_THEORY_CURRICULUM,
     branch(
       "formal.mathematics.discrete.combinatorics",
       "Combinatorics",

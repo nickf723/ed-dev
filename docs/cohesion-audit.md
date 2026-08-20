@@ -177,7 +177,8 @@ These still return to the visual verification queue whenever later shared change
 - Quadratic Equations unit and its five atomic lessons
 - Number Theory hub
 - Discrete Mathematics hub
-- Set Theory lesson
+- Set Theory root unit
+- Graph Theory root unit
 
 The latest work on these pages occurred without a trusted rendered browser pass, so their conceptual structure is intentional but their composition must be checked before they are treated as visually refined.
 
@@ -190,13 +191,14 @@ The latest work on these pages occurred without a trusted rendered browser pass,
 - Number Theory is a curriculum-derived hub organized around four integer lenses: multiplicative structure, cyclic structure, integer constraints, and global distribution. Diophantine Equations is the only active child; the other three remain non-clickable planned nodes.
 - Number Theory's first sieve-grid background did not meet the memorable-background gate. It has been replaced by a deterministic integer causeway whose prime positions become illuminated landmarks, its formerly continuous atlas slab has been separated into scenery-aware foreground regions, and two unreferenced random-canvas background experiments were removed.
 - Discrete Mathematics now behaves as a four-lens hub around one finite specimen: set membership, graph connection, combinatorial arrangement, and recursive construction. Its four live routes come from the curriculum registry, vocabulary is registered at the narrowest nodes, navigation precedes the preserved graph builder, and the former random network/remote-photo implementation world has become a deterministic discrete-structure drafting table.
-- Set Theory is now an atomic Explain → Do → Check lesson rather than a client-heavy topic panel. Its Venn-operation strength is preserved as a membership scanner with number, library, and disjoint presets; the page now teaches four membership regions before notation, distinguishes elements from subsets, adds a real-world transfer check and deterministic generated practice, and contributes difference, empty-set, and disjoint-set vocabulary through the registry. Its random canvas and remote hero were replaced by a deterministic classification conservatory.
+- Set Theory is now a bounded six-lesson root unit rather than a client-heavy topic panel or an endlessly subdivided taxonomy. Its overview workshop follows Explain → Do → Check: the Venn-operation strength is preserved as a membership scanner with number, library, and disjoint presets; the page teaches four membership regions before notation, distinguishes elements from subsets, adds a real-world transfer check and deterministic generated practice, and contributes difference, empty-set, and disjoint-set vocabulary through the registry. Its random canvas and remote hero were replaced by a deterministic classification conservatory.
+- Graph Theory is now a bounded six-lesson root unit rather than a client-heavy algorithm showcase. One canonical seven-vertex campus graph powers its network-drafting background, worked model, degree ledger, BFS/DFS traversal, and connectivity transfer; the former random maze, random constellation, remote hero, implementation chrome, and isolated glossary were removed. The parent graph builder remains available as a distinct construction tool, while the root adds deterministic degree/handshake practice and curriculum-owned vocabulary.
 
 ### Active Mathematics family target
 
-- Remaining Discrete Mathematics children, beginning with Graph Theory
+- Remaining Discrete Mathematics children, beginning with Combinatorics
 
-The parent and Set Theory are structurally refined. Graph Theory, Combinatorics, and Recursion Theory still predate the constitution. Preserve their pathfinding, counting, and Hanoi/recursive systems while repairing page roles, context, assessment or retrieval evidence, terminology, and isolated local glossaries.
+The parent, Set Theory, and Graph Theory are structurally refined. Combinatorics and Recursion Theory still predate the constitution. Preserve their counting and Hanoi/recursive systems while repairing page roles, context, assessment evidence, terminology, and isolated local glossaries.
 
 ---
 
