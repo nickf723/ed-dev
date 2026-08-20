@@ -48,4 +48,33 @@ export const setTheoryVocab: VocabTerm[] = [
     relatedTerms: ["set-union"],
     isAdult: false,
   },
+  {
+    id: "set-difference",
+    word: "Set Difference",
+    definition:
+      "The set of elements that belong to the first set but do not belong to the second set. Denoted by A ∖ B.",
+    domain: "Set Theory",
+    tags: ["Operations", "Membership"],
+    relatedTerms: ["set-union", "set-intersection"],
+    isAdult: false,
+  },
+  {
+    id: "set-empty-set",
+    word: "Empty Set",
+    definition: "The unique set containing no elements. Denoted by ∅ or {}.",
+    domain: "Set Theory",
+    tags: ["Collections", "Boundary Cases"],
+    relatedTerms: ["log-set", "set-disjoint-sets"],
+    isAdult: false,
+  },
+  {
+    id: "set-disjoint-sets",
+    word: "Disjoint Sets",
+    definition:
+      "Sets with no elements in common, so their intersection is the empty set.",
+    domain: "Set Theory",
+    tags: ["Relationships", "Intersection"],
+    relatedTerms: ["set-intersection", "set-empty-set"],
+    isAdult: false,
+  },
 ];

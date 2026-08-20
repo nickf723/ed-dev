@@ -499,3 +499,11 @@ Whenever a page changes without reliable visual verification:
 **Check:** Desktop, narrower desktop, and mobile composition; sticky header clearance; first-viewport dominance of the four direct-child lenses; registry-derived Set Theory, Graph Theory, Combinatorics, and Recursion Theory routes; shared six-object specimen; drafting-table background visibility and slow inspection-light behavior; reduced-motion state; scenery corridor before the graph workshop; triangle, path, and star presets; custom vertex placement by pointer and keyboard; edge linking by pointer and keyboard; duplicate-edge prevention; degree, maximum-degree, connectivity, and handshake readouts; empty/reset states; long curriculum descriptions without clipping; conceptual cross-link semantics; vocabulary drawer grouping at the parent and all four children; focus visibility and zoomed-text behavior.
 
 **Status:** TypeScript, full lint, vocabulary aggregation, architecture/readability audits, collection regressions, and production build passed; rendered verification pending.
+
+### Set Theory membership conservatory
+
+**Route:** `/formal-science/mathematics/discrete/set-theory`
+
+**Check:** Desktop, narrower desktop, and mobile Explain → Do → Check flow; sticky header clearance; first-viewport membership address map; four-region containment geometry; classification-conservatory background visibility, slow scanner motion, and reduced-motion state; scenery corridors before the rule table, scanner, boundary cases, and assessment; Numbers, Library, and Disjoint presets; Union, Intersection, and Difference highlight geometry; empty intersection, singleton result, long library labels, and result rosters without clipping; element-versus-subset notation; transfer-check correct and incorrect feedback; deterministic generated practice across union, intersection, and difference, including empty and full-looking distractors; registry-derived parent/next navigation; Set Theory vocabulary in the inherited drawer; keyboard focus, zoomed text, and narrow-width control/result co-visibility.
+
+**Status:** TypeScript, full lint, vocabulary aggregation, architecture/readability audits, 97-case generated-practice invariant check, collection regressions, and production build passed; rendered verification pending.

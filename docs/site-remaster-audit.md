@@ -27,14 +27,14 @@ The audit covers every `app/**/page.tsx` route, including dynamic route families
 
 These are prompts for review, not automatic defects:
 
-- 182 route modules still declare the whole page as a Client Component.
-- 172 route modules use the shared `DomainPageHeader` family.
-- 124 route modules resolve curriculum page context directly.
+- 181 route modules still declare the whole page as a Client Component.
+- 173 route modules use the shared `DomainPageHeader` family.
+- 125 route modules resolve curriculum page context directly.
 - 62 route modules use the newer `SceneFrame` composition system.
-- 240 route modules explicitly import a background or world component.
-- 292 route modules contain at least one 6–10 px text token; every occurrence must be classified as decorative telemetry or raised to the readability floor.
-- 193 pages still contain a page-local breadcrumb declaration or adapter call and should be reviewed when their branch is remastered.
-- 21 route modules contain legacy implementation-themed chrome; the current concentration is in older Mathematics families.
+- 241 route modules explicitly import a background or world component.
+- 291 route modules contain at least one 6–10 px text token; every occurrence must be classified as decorative telemetry or raised to the readability floor.
+- 194 pages still contain a page-local breadcrumb declaration or adapter call and should be reviewed when their branch is remastered.
+- 20 route modules contain legacy implementation-themed chrome; the current concentration is in older Mathematics families.
 - two route modules use randomness only inside explicit learner actions; static inspection found no page-level render-time randomness in the route modules.
 
 These numbers show why the remaster must be incremental. The site contains several development eras, and global replacement would erase good local work while leaving semantic debt untouched.
@@ -105,7 +105,7 @@ The site should feel inhabited, not tiled.
 
 ### Wave 1 · Mathematics
 
-- Discrete Mathematics parent coverage is structurally refined; continue through its Set Theory, Graph Theory, Combinatorics, and Recursion Theory children.
+- Discrete Mathematics parent and Set Theory coverage are structurally refined; continue through Graph Theory, Combinatorics, and Recursion Theory.
 - Then audit Foundations, Linear Algebra, Abstract Algebra, Calculus, Geometry, Statistics, Applied Mathematics, and their live child sequences.
 - Preserve the strongest existing instruments; migrate ontology, context, vocabulary, lesson flow, readability, and environment together.
 
@@ -175,8 +175,8 @@ Rebuild relationships after canonical pages are strong enough to support precise
 
 ## Current target
 
-The Discrete Mathematics parent now derives four live children from a focused curriculum module, contributes node-owned vocabulary, presents direct-child navigation before its graph workshop, and uses a finite-structure drafting table instead of the random network wallpaper and remote server-room hero. The graph builder remains functional with curated triangle, path, and star cases plus custom vertex/edge construction. Rendered verification remains queued.
+The Discrete Mathematics parent now derives four live children from a focused curriculum module, contributes node-owned vocabulary, presents direct-child navigation before its graph workshop, and uses a finite-structure drafting table instead of the random network wallpaper and remote server-room hero. Set Theory is now classified and built as an atomic lesson: membership precedes notation, the preserved Venn-operation idea has become a rule-driven scanner with curated and boundary cases, registry vocabulary replaces the parallel glossary, and transfer plus deterministic generated practice complete the lesson contract. Both routes remain queued for rendered verification.
 
-Set Theory is the next family target. Its existing Venn environment and set-operation instrument are preserved strengths; the remaster should repair the client-heavy page shell, implementation labels, isolated glossary presentation, and lesson/retrieval contract without flattening those systems.
+Graph Theory is the next family target. Preserve its pathfinding and graph-building strengths while repairing the client-heavy shell, ontology/context, formal explanation, assessment contract, and local implementation chrome.
 
 The program advances one coherent page or family at a time. A route leaves the ledger only when its semantic structure, educational job, distinctive world, geometry, verification record, and published `studio` commit all agree.

@@ -4,7 +4,8 @@ function branch(
   id: string,
   label: string,
   href: string,
-  description: string
+  description: string,
+  pageKind: CurriculumNode["pageKind"] = "hub"
 ): CurriculumNode {
   return {
     id,
@@ -13,7 +14,7 @@ function branch(
     description,
     domainId: "formal",
     status: "active",
-    pageKind: "hub",
+    pageKind,
   };
 }
 
@@ -31,7 +32,8 @@ export const DISCRETE_MATHEMATICS_CURRICULUM: CurriculumNode = {
       "formal.mathematics.discrete.set-theory",
       "Set Theory",
       "/formal-science/mathematics/discrete/set-theory",
-      "Study collections through membership, containment, union, intersection, difference, and other operations on sets."
+      "Study collections through membership, containment, union, intersection, difference, and other operations on sets.",
+      "lesson"
     ),
     branch(
       "formal.mathematics.discrete.graph-theory",
