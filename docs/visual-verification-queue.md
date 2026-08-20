@@ -475,3 +475,19 @@ Whenever a page changes without reliable visual verification:
 **Check:** Desktop and mobile lesson flow; sticky header and four-step orientation; simulator launch, long-lived orbit, impact, escape, slider-disabled, and reset states; canvas scaling and model-limit copy; archive default and search results; method, decade, and radius-band filters alone and combined; honest provider-wide versus loaded counts; selected-world detail and external source link; missing-parameter labels; loading, empty, partial, curated fallback, rate-limited, and failed states; both assessment answers, feedback, and generated-case reset; keyboard navigation; reduced-motion behavior.
 
 **Status:** Structural validation required in this pass; rendered verification pending.
+
+### Number Theory integer atlas
+
+**Route:** `/formal-science/mathematics/number-theory`
+
+**Check:** Desktop, narrower desktop, and mobile composition; sticky header clearance; the 360 specimen and four-lens branch ledger; planned versus live branch treatment; Diophantine navigation; sieve-field visibility and text protection; factorization presets 60, 97, 2026, and 65,536; prime, composite, invalid, lower-bound, and upper-bound inputs; prime powers, repeated-factor count, and positive-divisor count; cross-link semantics; vocabulary drawer scope and inherited Mathematics grouping; keyboard and zoomed-text behavior.
+
+**Status:** Structural validation required in this pass; rendered verification pending.
+
+### Diophantine deterministic background regression
+
+**Route:** `/formal-science/mathematics/number-theory/diophantine`
+
+**Check:** Confirm the deterministic integer lattice hydrates without a server/client mismatch, the local CSS grid replaces the remote background asset, and existing explanation and solver states remain visually unchanged apart from the repaired background notation.
+
+**Status:** Targeted regression verification pending.

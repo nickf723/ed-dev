@@ -12,6 +12,7 @@ import { integersVocab } from "./i/integers";
 import { mathVocab } from "./m/math";
 import { foundationsVocab } from "./m/math-foundations";
 import { mathCoreVocab } from "./m/mathematics";
+import { diophantineVocab, numberTheoryVocab } from "./n/number-theory";
 import { pemdasVocab } from "./p/pemdas";
 import { preAlgebraVocab } from "./p/pre-algebra";
 import { quadraticsVocab } from "./q/quadratics";
@@ -25,7 +26,6 @@ const legacyMathematicsVocab = formalScienceVocab.filter((term) =>
     "Calculus",
     "Linear Algebra",
     "Geometry",
-    "Number Theory",
     "Game Theory",
   ]).has(term.domain),
 );
@@ -95,6 +95,14 @@ export const MATHEMATICS_VOCABULARY_REGISTRATIONS = [
   {
     nodeId: "formal.mathematics.algebra.elementary-algebra.quadratics",
     terms: quadraticsVocab,
+  },
+  {
+    nodeId: "formal.mathematics.number-theory",
+    terms: numberTheoryVocab,
+  },
+  {
+    nodeId: "formal.mathematics.number-theory.diophantine",
+    terms: diophantineVocab,
   },
   {
     nodeId: "formal.mathematics.algebra.abstract-algebra",

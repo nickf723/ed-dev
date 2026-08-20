@@ -57,6 +57,7 @@ import { expressionsVocab } from "./a/algebra-expressions";
 import { equationsVocab } from "./e/equations";
 import { algebraFundamentalsVocab } from "./a/algebra-fundamentals";
 import { quadraticsVocab } from "./q/quadratics";
+import { diophantineVocab, numberTheoryVocab } from "./n/number-theory";
 
 export { mathVocab, abstractAlgebraVocab, ludologyVocab, gameDesignVocab };
 
@@ -114,5 +115,7 @@ export const ALL_VOCAB: VocabTerm[] = composeVocabulary(
   expressionsVocab,
   equationsVocab,
   algebraFundamentalsVocab,
-  quadraticsVocab
+  quadraticsVocab,
+  numberTheoryVocab,
+  diophantineVocab
 );

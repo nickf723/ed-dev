@@ -149,9 +149,9 @@ Do not call a page refined simply because it compiles.
 
 ---
 
-## 5. Current audit wave: Algebra
+## 5. Current audit wave: Mathematics
 
-Algebra is the first branch being brought through the full cohesion process because it spans branch hubs, units, atomic lessons, reference material, and interactive models.
+Algebra was the first branch brought through the full cohesion process because it spans branch hubs, units, atomic lessons, reference material, and interactive models. The wave has now advanced into the remaining Mathematics parents.
 
 ### Recently refined
 
@@ -172,72 +172,26 @@ These still return to the visual verification queue whenever later shared change
 
 - Algebraic Inequalities
 - Systems of Inequalities
+- Pre-Algebra hub and its eight-child learning path
+- Solving for X and the remaining Pre-Algebra child sweep
+- Quadratic Equations unit and its five atomic lessons
+- Number Theory hub
 
-The latest work on these pages occurred while Vercel preview builds were rate-limited, so their conceptual structure is intentional but their rendered composition must be checked before they are treated as visually finished.
+The latest work on these pages occurred without a trusted rendered browser pass, so their conceptual structure is intentional but their composition must be checked before they are treated as visually refined.
 
-### Legacy: Pre-Algebra hub
+### Completed scope corrections
 
-Known structural debt from source inspection:
+- Pre-Algebra now behaves as a learning path from arithmetic structure into symbolic algebra rather than a module dashboard.
+- Solving for X centers equality-preserving inverse operations and treats substitution as a check rather than a trick or mastery event.
+- The remaining Pre-Algebra lessons preserve their distinct primary instruments while using canonical terminology and semantic continuation.
+- Quadratic Equations is an honest five-lesson unit covering patterns and parabolas, vertex form, roots and intercepts, completing the square, and the quadratic formula with discriminant.
+- Number Theory is a curriculum-derived hub organized around four integer lenses: multiplicative structure, cyclic structure, integer constraints, and global distribution. Diophantine Equations is the only active child; the other three remain non-clickable planned nodes.
 
-- `Mod_01` framing
-- a module-count card whose count does not help the learner
-- `Course Directory` rather than a learner-facing sequence/ontology
-- `CH_XX` labels
-- `Enter Module` interaction copy
-- a large `Simulation Deck`
-- a balance-scale interaction that is narrowly about solving equations even though Solving for X is already a child lesson
-- `Verification Protocol` framing
+### Remaining Mathematics parent target
 
-The eight real child routes are registry-driven and should remain intact.
+- Discrete Mathematics
 
-Safe structural direction:
-
-- treat Pre-Algebra as a learning-path/unit page
-- preserve all eight children
-- make the sequence and conceptual bridge from arithmetic to symbolic algebra explicit
-- keep full equation-solving interaction on the Solving for X child page rather than duplicating it on the hub
-- retain reference/checking features only if they support the unit without competing with navigation
-
-Do not visually remaster this hub until it can be rendered and reviewed.
-
-### Legacy: Solving for X
-
-Known structural/content debt from source inspection:
-
-- `Module_08 // The Finale`
-- exaggerated finale/graduation language
-- the mnemonic `SADMEP`, which should not be presented as a general algebraic law
-- `The Ultimate Cheat Code` instead of direct substitution/checking language
-- `Verification Protocol`
-- `Pre-Algebra Complete!` mastery language without evidence
-
-Safe structural direction:
-
-- frame the lesson around preserving equality and inverse operations
-- explain undoing operations in reverse structural order without inventing a universal acronym
-- call substitution a check, not a cheat code
-- use assessment language that reports evidence rather than declaring mastery
-- distinguish the parent/unit link from the next cross-unit link to Integrated Algebra
-
-### Remaining Pre-Algebra children
-
-The remaining child lessons are legacy and should be audited for the same old-era patterns before visual remastering:
-
-- Integers & Negatives
-- Order of Operations
-- Number Properties
-- Ratios & Proportions
-- Advanced Fractions
-- Exponents
-- Expressions
-
-Audit their pedagogy individually. Do not mechanically apply the same layout to all seven.
-
-### Next Algebra target after Pre-Algebra
-
-- Quadratic Equations
-
-Source search indicates it still belongs to the old presentation generation. Do not remaster it blind. First plan its learning contract, likely child lessons, and primary model.
+Its current page predates the constitution, presents implementation-themed chrome, places a Graph Theory lab before navigation, uses relative route links, and maintains child/vocabulary data outside the curriculum registry. Preserve its graph interaction and real Set Theory, Graph Theory, Combinatorics, and Recursion Theory routes while repairing those structural layers.
 
 ---
 
@@ -245,15 +199,15 @@ Source search indicates it still belongs to the old presentation generation. Do 
 
 After Algebra, proceed by coherent branches rather than random pages.
 
-### Wave 2: Remaining Mathematics
+### Wave 2: Remaining Mathematics · active
 
 - Foundations
-- Geometry and descendants
-- Calculus
-- Statistics
-- Number Theory
+- Geometry and descendants: parent developed
+- Calculus: parent developed
+- Statistics: parent developed
+- Number Theory: structurally refined; rendered verification required
 - Discrete Mathematics
-- Applied Mathematics
+- Applied Mathematics: parent developed
 - Linear Algebra
 - Abstract Algebra
 

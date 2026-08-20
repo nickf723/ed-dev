@@ -163,15 +163,6 @@ export const formalScienceVocab: VocabTerm[] = [
         tags: ["Limits", "Graphs"],
         isAdult: false
     },
-    {
-        id: "fs-prime",
-        word: "Prime Number",
-        definition: "A whole number greater than 1 whose only divisors are 1 and itself.",
-        domain: "Number Theory",
-        tags: ["Integers", "Cryptography"],
-        isAdult: false
-    },
-
     // --- COMPUTER SCIENCE & COMPUTATION ---
     {
         id: "fs-algorithm",

@@ -68,12 +68,12 @@ Goal: every major subject parent should be Developed before broad child expansio
 - Literature: Developed
 - Religion: Developed
 - Languages: Developed
-- Performing Arts: Foundation
-- Gaming: Foundation
-- Culinary Arts: Foundation
-- Sports: Foundation
-- Culture: Foundation
-- Futurology: Foundation
+- Performing Arts: Developed
+- Gaming: Developed
+- Culinary Arts: Developed
+- Sports: Developed
+- Culture: Developed
+- Futurology: Developed
 
 ### Applied sciences
 
@@ -92,18 +92,16 @@ Goal: every major subject parent should be Developed before broad child expansio
 
 Applied Sciences now has complete Phase A parent coverage. Future work there can move into representative children instead of creating more sibling foundations.
 
+Phase A now has complete parent coverage across the five canonical academic branches. Further work should preserve those parents and descend into representative branches rather than inventing more first-order domains.
+
 ## Current autonomous queue
 
-Unless new feedback changes priorities, work through the remaining fresh Humanities parents in this order:
+Phase B is active. Proceed by coherent branch audit waves rather than choosing random pages:
 
-1. Performing Arts
-2. Sports
-3. Culture
-4. Gaming
-5. Culinary Arts
-6. Futurology
-
-After those parents graduate, Phase A parent coverage will be complete across all major site domains and the queue should shift into representative Phase B branches.
+1. continue the remaining Mathematics parent wave with Discrete Mathematics after the Number Theory remaster;
+2. continue through Formal Science outside Mathematics;
+3. descend through Natural Science, Social Science, Humanities, and Applied Science representative children;
+4. return to Interdisciplines after canonical child structures are strong enough to support precise relationships.
 
 ## Phase B: signature branches
 

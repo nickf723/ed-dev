@@ -1,42 +1,30 @@
-"use client";
-import React from 'react';
+const LATTICE_POINTS = Array.from({ length: 40 }, (_, index) => ({
+  top: ((index * 7) % 20) * 5,
+  left: ((index * 11 + 3) % 20) * 5,
+  opacity: 0.12 + ((index * 13) % 6) * 0.06,
+}));
 
 export default function DiophantineBackground() {
-    return (
-        <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden bg-[#05050a]">
-            
-            {/* Ambient Cartesian Glows */}
-            <div className="absolute top-0 left-[-10%] w-[60vw] h-[60vw] bg-rose-900/10 blur-[150px] rounded-full mix-blend-screen" />
-            <div className="absolute bottom-[-20%] right-[-10%] w-[50vw] h-[50vw] bg-amber-900/10 blur-[150px] rounded-full mix-blend-screen" />
+  return (
+    <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden bg-[#05050a]" aria-hidden="true">
+      <div className="absolute left-[-10%] top-0 h-[60vw] w-[60vw] rounded-full bg-rose-900/10 blur-[150px] mix-blend-screen" />
+      <div className="absolute bottom-[-20%] right-[-10%] h-[50vw] w-[50vw] rounded-full bg-amber-900/10 blur-[150px] mix-blend-screen" />
 
-            {/* The Discrete Grid */}
-            <div className="absolute inset-0 bg-[url('https://upload.wikimedia.org/wikipedia/commons/1/10/Grid_graph_paper.svg')] opacity-[0.04] mix-blend-overlay" />
+      <div className="absolute inset-0 opacity-[0.09] [background-image:linear-gradient(rgba(251,113,133,0.24)_1px,transparent_1px),linear-gradient(90deg,rgba(251,113,133,0.24)_1px,transparent_1px)] [background-size:5%_5%]" />
 
-            {/* Floating Lattice Coordinates (Abstract) */}
-            <div className="absolute inset-0 opacity-20">
-                {Array.from({ length: 40 }).map((_, i) => (
-                    <div 
-                        key={i}
-                        className="absolute w-1.5 h-1.5 bg-rose-500 rounded-full shadow-[0_0_10px_rgba(244,63,94,0.8)]"
-                        style={{
-                            top: `${Math.floor(Math.random() * 20) * 5}%`, // Snaps to a 5% grid
-                            left: `${Math.floor(Math.random() * 20) * 5}%`,
-                            opacity: Math.random() * 0.5 + 0.1
-                        }}
-                    />
-                ))}
-            </div>
+      <div className="absolute inset-0 opacity-30">
+        {LATTICE_POINTS.map((point, index) => (
+          <span
+            key={`${point.top}-${point.left}-${index}`}
+            className="absolute h-1.5 w-1.5 rounded-full bg-rose-400 shadow-[0_0_10px_rgba(244,63,94,0.72)]"
+            style={{ top: `${point.top}%`, left: `${point.left}%`, opacity: point.opacity }}
+          />
+        ))}
+      </div>
 
-            {/* Faint Mathematical Notation */}
-            <div className="absolute top-[30%] left-[20%] text-[8vw] font-serif italic text-rose-500/[0.02] select-none rotate-12">
-                $ax+by=c$
-            </div>
-            <div className="absolute bottom-[20%] right-[15%] text-[10vw] font-serif italic text-amber-500/[0.02] select-none -rotate-6">
-                {"$x,y\\in\\mathbb{Z}$"}
-            </div>
-
-            {/* Vignette */}
-            <div className="absolute inset-0 bg-radial-vignette opacity-80" />
-        </div>
-    );
+      <div className="absolute left-[20%] top-[30%] rotate-12 select-none font-serif text-[8vw] italic text-rose-500/[0.025]">ax + by = c</div>
+      <div className="absolute bottom-[20%] right-[15%] -rotate-6 select-none font-serif text-[10vw] italic text-amber-500/[0.025]">x, y ∈ ℤ</div>
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_24%,rgba(5,5,10,0.76))]" />
+    </div>
+  );
 }
