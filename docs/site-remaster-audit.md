@@ -105,7 +105,7 @@ The site should feel inhabited, not tiled.
 
 ### Wave 1 · Mathematics
 
-- Discrete Mathematics parent, Set Theory, and Graph Theory are structurally refined; continue through Combinatorics and Recursion Theory.
+- Discrete Mathematics parent, Set Theory, Graph Theory, and Combinatorics are structurally refined; continue through Recursion Theory.
 - Then audit Foundations, Linear Algebra, Abstract Algebra, Calculus, Geometry, Statistics, Applied Mathematics, and their live child sequences.
 - Preserve the strongest existing instruments; migrate ontology, context, vocabulary, lesson flow, readability, and environment together.
 
@@ -179,8 +179,10 @@ The Discrete Mathematics parent now derives four live children from a focused cu
 
 Graph Theory is now a bounded six-lesson root unit. Its graph-building strength remains at the Discrete Mathematics parent, while the root preserves and clarifies pathfinding through a deterministic BFS/DFS traversal on the same seven-vertex graph used by the scenery, worked model, and degree ledger. The client-heavy random constellation, random maze, remote hero, local glossary, and implementation chrome are gone; curriculum context, inherited vocabulary, transfer reasoning, and generated fluency practice now travel as one bundle.
 
-Mineralogy is the active bounded-rotation pass after Graph Theory. Its Earth Science parent already exposes it as the Earth-materials branch, so the child can specialize that family without a parent repair. The remaster classifies it as a reference collection, preserves its chemistry → crystal structure → property → identification model, replaces the random shard field with a deterministic specimen-cabinet environment, expands four familiar examples into a reviewed curated collection, and adds search, disciplinary facets, stable record IDs, source links, honest scope, and property comparison.
+Mineralogy completed the bounded rotation after Graph Theory. Its Earth Science parent exposes it as the Earth-materials branch, and the remaster classifies it as a reference collection, preserves its chemistry → crystal structure → property → identification model, replaces the random shard field with a deterministic specimen-cabinet environment, expands four familiar examples into a reviewed curated collection, and adds search, disciplinary facets, stable record IDs, source links, honest scope, and property comparison.
 
-Combinatorics remains the Formal Science return target. Preserve its counting vault and cipher-ring strengths when the rotation returns, while repairing page depth, context, explanation, assessment, terminology, and its relationship to the stabilized Discrete Mathematics parent. Prefer a Social Science, Humanities, or Applied Science page as the next contrasting hop before another network or specimen-cabinet composition is repeated.
+Combinatorics is the completed Formal Science return pass. Its six planned direct lessons divide the field into building counts and controlling constraints. The remaster preserves its counting vault and cipher-ring strengths while replacing random and remote decoration with a deterministic 12-sequence / six-selection counting world, coordinating one four-token specimen across representations, adding guided explanation, boundaries, transfer, generated fluency, inherited vocabulary, and semantic sibling navigation.
+
+The next contrasting target is Humanities → Literature, where an editorial or close-reading navigation world should differ from the recent network, specimen cabinet, and mechanical counting chamber in page job, material, dominant axis, and interaction grammar. Recursion Theory remains the Formal Science return target.
 
 The program advances one coherent page or family at a time. A route leaves the ledger only when its semantic structure, educational job, distinctive world, geometry, verification record, and published `studio` commit all agree.

@@ -52,6 +52,23 @@ function plannedGraphTheoryLesson(
   };
 }
 
+function plannedCombinatoricsLesson(
+  id: string,
+  label: string,
+  href: string,
+  description: string
+): CurriculumNode {
+  return {
+    id,
+    label,
+    href,
+    description,
+    domainId: "formal",
+    status: "placeholder",
+    pageKind: "lesson",
+  };
+}
+
 const SET_THEORY_CURRICULUM: CurriculumNode = {
   id: "formal.mathematics.discrete.set-theory",
   label: "Set Theory",
@@ -150,6 +167,55 @@ const GRAPH_THEORY_CURRICULUM: CurriculumNode = {
   ],
 };
 
+const COMBINATORICS_CURRICULUM: CurriculumNode = {
+  id: "formal.mathematics.discrete.combinatorics",
+  label: "Combinatorics",
+  href: "/formal-science/mathematics/discrete/combinatorics",
+  description:
+    "Count and compare finite arrangements, selections, distributions, and possibilities without listing every case.",
+  domainId: "formal",
+  status: "active",
+  pageKind: "unit",
+  children: [
+    plannedCombinatoricsLesson(
+      "formal.mathematics.discrete.combinatorics.sum-product",
+      "Sum & Product Rules",
+      "/formal-science/mathematics/discrete/combinatorics/sum-product",
+      "Add counts across disjoint alternatives and multiply counts across successive independent choices."
+    ),
+    plannedCombinatoricsLesson(
+      "formal.mathematics.discrete.combinatorics.permutations",
+      "Permutations & Symmetry",
+      "/formal-science/mathematics/discrete/combinatorics/permutations",
+      "Count ordered arrangements, then use symmetry to recognize when several orders represent one outcome."
+    ),
+    plannedCombinatoricsLesson(
+      "formal.mathematics.discrete.combinatorics.combinations",
+      "Combinations & Binomial Coefficients",
+      "/formal-science/mathematics/discrete/combinatorics/combinations",
+      "Count unordered selections and connect those counts to Pascal's triangle and binomial expansion."
+    ),
+    plannedCombinatoricsLesson(
+      "formal.mathematics.discrete.combinatorics.distribution",
+      "Distribution & Occupancy",
+      "/formal-science/mathematics/discrete/combinatorics/distribution",
+      "Count ways to place objects into containers while tracking repetition, capacity, and whether objects or containers are distinct."
+    ),
+    plannedCombinatoricsLesson(
+      "formal.mathematics.discrete.combinatorics.inclusion-exclusion",
+      "Inclusion–Exclusion",
+      "/formal-science/mathematics/discrete/combinatorics/inclusion-exclusion",
+      "Correct overcounting when cases overlap by subtracting intersections and restoring higher-order overlap when needed."
+    ),
+    plannedCombinatoricsLesson(
+      "formal.mathematics.discrete.combinatorics.pigeonhole",
+      "Pigeonhole Principle",
+      "/formal-science/mathematics/discrete/combinatorics/pigeonhole",
+      "Prove that a collision or concentration must exist when more objects are assigned to fewer containers."
+    ),
+  ],
+};
+
 export const DISCRETE_MATHEMATICS_CURRICULUM: CurriculumNode = {
   id: "formal.mathematics.discrete",
   label: "Discrete Mathematics",
@@ -162,12 +228,7 @@ export const DISCRETE_MATHEMATICS_CURRICULUM: CurriculumNode = {
   children: [
     SET_THEORY_CURRICULUM,
     GRAPH_THEORY_CURRICULUM,
-    branch(
-      "formal.mathematics.discrete.combinatorics",
-      "Combinatorics",
-      "/formal-science/mathematics/discrete/combinatorics",
-      "Count and compare finite arrangements, selections, distributions, and possibilities without listing every case."
-    ),
+    COMBINATORICS_CURRICULUM,
     branch(
       "formal.mathematics.discrete.recursion-theory",
       "Recursion Theory",

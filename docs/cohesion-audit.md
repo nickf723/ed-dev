@@ -179,6 +179,7 @@ These still return to the visual verification queue whenever later shared change
 - Discrete Mathematics hub
 - Set Theory root unit
 - Graph Theory root unit
+- Combinatorics root unit
 
 The latest work on these pages occurred without a trusted rendered browser pass, so their conceptual structure is intentional but their composition must be checked before they are treated as visually refined.
 
@@ -196,15 +197,21 @@ The latest work on these pages occurred without a trusted rendered browser pass,
 
 ### Active Mathematics family target
 
-- Remaining Discrete Mathematics children, beginning with Combinatorics
+- Remaining Discrete Mathematics children, beginning with Recursion Theory
 
-The parent, Set Theory, and Graph Theory are structurally refined. Combinatorics and Recursion Theory still predate the constitution. Preserve their counting and Hanoi/recursive systems while repairing page roles, context, assessment evidence, terminology, and isolated local glossaries.
+The parent, Set Theory, Graph Theory, and Combinatorics are structurally refined. Recursion Theory still predates the constitution. Preserve its Hanoi and recursive-system strengths while repairing page role, context, assessment evidence, terminology, and isolated local glossary.
 
-### Active bounded-rotation checkpoint
+### Completed bounded-rotation checkpoint
 
 - Natural Science → Earth Science → Mineralogy
 
-After the coherent Graph Theory pass, production rotates from a Formal Science unit/network world to a Natural Science reference/specimen world. Mineralogy preserves its composition → structure → property → identification throughline while replacing the random shard cloud and isolated four-specimen demo with a deterministic crystal cabinet, a reviewed teaching collection, disciplinary facets, source-linked records, and a co-visible comparison ledger. Combinatorics remains the explicit Formal Science return target; the rotation does not mark that family complete.
+After the coherent Graph Theory pass, production rotated from a Formal Science unit/network world to a Natural Science reference/specimen world. Mineralogy preserves its composition → structure → property → identification throughline while replacing the random shard cloud and isolated four-specimen demo with a deterministic crystal cabinet, a reviewed teaching collection, disciplinary facets, source-linked records, and a co-visible comparison ledger.
+
+### Active bounded-rotation checkpoint
+
+- Formal Science → Mathematics → Discrete Mathematics → Combinatorics
+
+Combinatorics is now a bounded six-lesson root unit rather than an isolated security-themed dashboard. It preserves the counting vault and cipher-ring strengths while deriving the background, worked decision register, and default chamber from one exact four-token example. The learner sees `4 × 3 = 12` ordered sequences collapse into six unordered selections, then transfers the sameness rule and practices reproducible generated counts. The remote hero, remote grid texture, random animation loop, fake unit code, and parallel glossary are removed. After publication, rotate to Humanities → Literature; Recursion Theory remains the Formal Science return target.
 
 ---
 
@@ -221,7 +228,7 @@ The complete route inventory and site-wide remaster acceptance criteria now live
 - Calculus: parent developed
 - Statistics: parent developed
 - Number Theory: structurally refined; rendered verification required
-- Discrete Mathematics: parent and Set Theory structurally refined; child sweep active
+- Discrete Mathematics: parent, Set Theory, Graph Theory, and Combinatorics structurally refined; Recursion Theory remains
 - Applied Mathematics: parent developed
 - Linear Algebra
 - Abstract Algebra
