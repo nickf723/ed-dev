@@ -6,6 +6,23 @@ The purpose is to turn repeated feedback into durable production defaults.
 
 > **A development pass is complete only when the correct parent structure exists, the learner can navigate it, the interaction is coherent, the visual system protects attention, every design gate passes simultaneously, existing strengths are preserved, validation succeeds, and the commit is pushed.**
 
+## Product north star
+
+Education Station 64 exists to **explain and model anything a person can learn, intuitively and inside an honest, navigable ontology**.
+
+That creates six simultaneous product responsibilities:
+
+1. organize knowledge so the learner can understand where an idea belongs;
+2. teach ideas through accurate mental models, explanation, action, and assessment;
+3. expose real things through references, collections, repositories, media, maps, and data;
+4. make every subject memorable through a distinct academic world and interaction grammar;
+5. derive shared product behavior—sidebar, ancestry, vocabulary, assessment contracts, and validation—from stable semantic data;
+6. preserve and improve older pages as the system evolves instead of only expanding outward.
+
+The number **64 is brand identity, not an ontology quota**. Fields are promoted because their questions, methods, evidence, practices, and child curriculum justify first-order status—not to satisfy a count.
+
+Formal Science, Natural Science, Social Science, Humanities, and Applied Science are the five canonical knowledge branches. Interdisciplines is a relational atlas that reveals meaningful connections and points to canonical homes; it does not own duplicate versions of fields.
+
 ---
 
 ## 1. Build from parent to child
@@ -24,6 +41,21 @@ Before beginning a child page, verify:
 2. the parent exposes the child as a direct destination or unmistakable planned node;
 3. the parent background and composition establish a family the child can specialize;
 4. sibling relationships are visible and accurate.
+
+### Complete curriculum-bundle gate
+
+A new or substantially rebuilt page is one coherent curriculum contribution. The development pass must account for:
+
+- route and redirect behavior;
+- curriculum node, stable ID, canonical parent, status, and page kind;
+- automatically derived sidebar ancestry and page context;
+- the vocabulary introduced by this page and inherited by its ancestors;
+- the assessment or retrieval contract appropriate to the page kind;
+- the page's unique academic world, foreground topology, and responsive behavior;
+- citations, provenance, API adapters, collection facets, or simulation boundaries when used;
+- tests, audits, visual-verification state, commit, push, and remote verification.
+
+Do not create placeholder pages. A planned curriculum node may remain visible and non-clickable when it clarifies the ontology, but a route becomes active only when its page is substantive and functional.
 
 ---
 
@@ -194,6 +226,8 @@ Ask:
 - Parent pages are usually calmer and more navigational; child lessons and tools may become more focused and mechanistic.
 - Grayscale structure should still distinguish the pages.
 
+Every page, including the smallest atomic lesson or record, gets a deliberate local identity. A child may reuse a parent's environmental system or borrow a proven component, but it must specialize at least one meaningful academic behavior, representation, material, silhouette, or interaction. A palette swap alone is not specialization.
+
 ---
 
 ## 9. Existing-page preservation is a hard gate
@@ -230,6 +264,71 @@ Before publishing an existing-page change, verify:
 4. Does the new version add value without erasing identity?
 5. Would a user familiar with the page recognize it as an evolution rather than an unrelated replacement?
 
+## Vocabulary inheritance contract
+
+Vocabulary is curriculum data, not page decoration.
+
+- Curate a page's terms at the narrowest curriculum node that actually teaches them.
+- Use stable term IDs, concise canonical definitions, useful tags, and explicit relationships when relevant.
+- A parent vocabulary scope is the deduplicated union of its own terms and descendant terms. Branch, domain, and global views therefore grow automatically as pages are added.
+- Preserve source groups so a learner can tell which child topic contributed a term.
+- When the same term appears in several descendants, prefer one canonical entry and contextual notes rather than silently competing definitions.
+- A lesson-local presentation may exist, but it must consume or contribute to the same semantic vocabulary system rather than creating an isolated glossary fork.
+- Adding a page without registering the vocabulary it introduces is an incomplete curriculum pass. A page that genuinely introduces no durable vocabulary should say so in its planning contract.
+
+The current route-scoped vocabulary implementation is an evolutionary base. As branches are touched, migrate manual parent composition toward curriculum-node registration plus automatic descendant aggregation. Do not build a second vocabulary database.
+
+## Assessment and practice contract
+
+Every atomic lesson contains an explicit check of understanding. A strong lesson assessment has two complementary layers when the subject permits them:
+
+1. **Insight / transfer:** prediction, construction, explanation, diagnosis, comparison, source reasoning, or a fresh case that reveals the learner's mental model.
+2. **Fluency / retrieval:** a small amount of rote or procedural practice generated from constrained parameters and checked by deterministic code.
+
+Rules:
+
+- Assessment follows explanation and guided practice; it cannot substitute for either.
+- Each item maps to the learner outcome and provides explanatory feedback.
+- Generated tasks must have a transparent generator, bounded valid inputs, a deterministic solution/checker, edge-case tests, and reproducible cases for debugging.
+- Prefer domain-authentic actions over universal multiple choice.
+- Do not declare mastery from completion or one score. Report evidence and invite another case.
+- Hubs, references, repositories, and tools do not need quiz-shaped endings, but they should support an appropriate evidence action: route choice, comparison, retrieval, classification, simulation, construction, or interpretation.
+
+## Collections, repositories, and API contract
+
+Collections connect abstract learning to real objects. Classify the collection before building it:
+
+- **finite/completable:** a stable set such as the periodic table;
+- **curated/open:** a deliberately selected window into a potentially limitless set such as zoological taxa or games;
+- **federated/API-backed:** records normalized from one or more external providers;
+- **modeled/playable:** records that include rules, components, procedures, comparison, or simulation.
+
+Every collection defines:
+
+- a stable internal record ID and canonical detail route;
+- source and provenance for each externally derived fact or asset;
+- a typed source adapter that separates provider data from presentation;
+- useful facets derived from the subject—such as genre, publisher, release date, habitat, phylum, class, order, period, region, medium, or mechanic;
+- text search, filter combination behavior, clear/reset behavior, and honest result counts;
+- loading, empty, partial, stale, rate-limited, and error states;
+- caching/revalidation and API cost boundaries;
+- an accessible text alternative for visual maps, media, and diagrams;
+- a detail view that teaches why the record matters rather than merely repeating provider metadata.
+
+External APIs should enable memorable, truthful experiences—maps, current data, images, media, specimens, catalogs, or live comparisons—but core instruction may not disappear when a provider is unavailable. Cache stable data when lawful, keep a small curated local spine when appropriate, identify stale/fallback data, and never fabricate a successful response.
+
+Reusable collection logic should standardize records, facets, queries, provenance, and failure states. It should not erase subject-specific filters, detail layouts, or academic interpretation.
+
+## Additional development philosophies
+
+- **Truth before completeness:** explain scope, uncertainty, model assumptions, and source limitations. A simulation declares what it does and does not model.
+- **Progressive depth:** begin with an intuitive default, then allow richer controls, reference detail, and open exploration without hiding required content.
+- **Evidence stays attached:** facts, claims, images, and measurements retain provenance close enough for a learner to inspect.
+- **Accessibility is another representation:** keyboard access, reduced motion, readable text, semantic structure, and text alternatives are part of teaching quality.
+- **Performance protects attention:** avoid shipping oversized client bundles, uncontrolled animation, or unnecessary API waterfalls that make the learning object feel sluggish.
+- **Reuse semantics, not sameness:** share adapters, validators, feedback grammar, and state models; reinvent subject-specific worlds, topology, and interaction where that improves understanding.
+- **Repair while expanding:** when work enters a branch, audit its parent and nearby legacy pages for structural debt, then make bounded improvements without derailing the current build.
+
 ---
 
 ## 10. Validation and publishing are implementation
@@ -245,7 +344,7 @@ The required closeout sequence is:
 5. inspect the triggered build result;
 6. report the commit and honest validation status.
 
-Do not describe an unpublished change as made, completed, live, or implemented. For this project, the default branch for active page development is `studio` unless the user says otherwise.
+Do not describe an unpublished change as made, completed, live, or implemented. For this project, work directly on `main` unless the user explicitly requests another branch or a temporary branch is required to assemble a safe coherent batch. Finished work must not remain unpushed.
 
 ---
 
@@ -256,19 +355,22 @@ For each substantial page round:
 1. **PRESERVE**: inventory the existing page's distinctive systems and constrain the edit to the requested scope.
 2. **TREE**: inspect ancestry, parent, direct children, live routes, planned routes, and registry state.
 3. **PARENT**: repair or establish the parent before deeper child expansion.
-4. **NAVIGATION**: make direct descent prominent before secondary content; on umbrella hubs, make navigation the first viewport's dominant object.
-5. **TOPOLOGY**: choose a subject-derived navigation and macro-layout grammar that is visibly different from recent neighboring pages.
-6. **QUESTION**: define one center of gravity and one learner question per signature widget.
-7. **GRAMMAR**: choose distinct visual roles for navigation, instruments, reference, metrics, and explanation.
-8. **WORLD**: choose one memorable environmental idea, then assign ambient, showcase, and quiet behavior with an explicit motion budget.
-9. **GLASS**: set local blur and opacity together, create protected text lanes, and route background detail away from semantic copy without erasing the world.
-10. **DENSITY**: add meaningful structure while preserving visible scenery corridors.
-11. **SCALE**: verify axes, transformations, units, and comparisons.
-12. **FRAME**: test viewport budget, readability, text/background collisions, responsive fallback, stable geometry, background memorability, macro-layout distinctness, and before-versus-after preservation.
-13. **VALIDATE**: run repository checks.
-14. **PUBLISH**: commit, push to `studio`, verify the remote ref, and inspect CI.
+4. **CONTRACT**: classify the page and define its learner, retrieval, or tool outcome.
+5. **DATA**: define vocabulary, assessment, collection, provenance, and API contracts that apply.
+6. **NAVIGATION**: make direct descent prominent before secondary content; on umbrella hubs, make navigation the first viewport's dominant object.
+7. **TOPOLOGY**: choose a subject-derived navigation and macro-layout grammar that is visibly different from recent neighboring pages.
+8. **QUESTION**: define one center of gravity and one learner question per signature widget.
+9. **GRAMMAR**: choose distinct visual roles for navigation, instruments, reference, metrics, and explanation.
+10. **WORLD**: choose one memorable environmental idea, then assign ambient, showcase, and quiet behavior with an explicit motion budget.
+11. **GLASS**: set local blur and opacity together, create protected text lanes, and route background detail away from semantic copy without erasing the world.
+12. **DENSITY**: add meaningful structure while preserving visible scenery corridors.
+13. **SCALE**: verify axes, transformations, units, and comparisons.
+14. **ASSESS / RETRIEVE**: verify the lesson check or collection retrieval loop, including feedback and failure states.
+15. **FRAME**: test viewport budget, readability, text/background collisions, responsive fallback, stable geometry, background memorability, macro-layout distinctness, and before-versus-after preservation.
+16. **VALIDATE**: run repository checks.
+17. **PUBLISH**: commit and push the coherent batch to `main`, verify `origin/main` points to it, and inspect CI/deployment status when accessible.
 
-No page round advances to the next target before step 14.
+No page round advances to the next target before step 17.
 
 ---
 
@@ -292,6 +394,9 @@ A substantial development pass is done only when:
 - reactive motion does not compete with the active task;
 - chart scales and transformations are honest and labeled;
 - route, curriculum, sidebar, and breadcrumbs agree;
+- page vocabulary is registered at the correct node and available to ancestor scopes;
+- atomic lessons contain an insightful transfer check and deterministic generated practice when appropriate;
+- collection/API pages expose truthful provenance, useful facets, stable detail routes, and honest failure states;
 - readability and responsive geometry meet the shared rules;
 - every successful pre-existing system outside the requested scope remains intact;
 - the page is an evolution of its established identity rather than a generic replacement;

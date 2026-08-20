@@ -384,6 +384,28 @@ Useful assessment forms include:
 
 Avoid assessing button familiarity instead of knowledge.
 
+### Use insight and fluency together
+
+Every atomic lesson needs an explicit transfer or reasoning check. When the knowledge also supports deterministic generation, pair that check with a small amount of generated, code-verifiable practice.
+
+- **Insight / transfer** asks the learner to predict, construct, explain, diagnose, compare, or apply the idea in a fresh case.
+- **Fluency / retrieval** varies bounded parameters so the learner can practice repeatedly with a deterministic answer and explanatory feedback.
+
+Do not use generated practice for claims that require interpretation, judgment, source evaluation, or multiple defensible answers unless the checker can represent that nuance honestly.
+
+## 18A. Collections and repositories can teach through retrieval
+
+A reference or repository page does not need to imitate a linear lesson, but it still needs a learning contract.
+
+- Finite collections should make completeness and ordering legible.
+- Open-ended collections should state their curation boundary.
+- API-backed collections should preserve provenance, freshness, and failure states.
+- Filters should expose real disciplinary distinctions: taxonomy, chronology, geography, medium, mechanics, publisher, genre, habitat, or other meaningful facets.
+- Detail pages should explain why the item matters, how it relates to neighboring items, and what can be compared, modeled, or simulated.
+- Maps, images, media, and live data should add a representation the learner could not obtain as clearly from prose alone.
+
+The shared collection engine may normalize search and filters, but the subject determines the useful facets and the shape of the detail view.
+
 ---
 
 ## 19. Navigation is part of pedagogy

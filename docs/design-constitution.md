@@ -340,7 +340,7 @@ Tune spacing, typography, glass, background participation, responsive behavior, 
 
 Test important states and run available build/type checks.
 
-**A coherent inspectable development change must be pushed to `studio` promptly.** Do not let finished work accumulate on hidden validation branches. If the deployment system needs a separate exact-head trigger, keep the runtime work on `studio` and use the trigger branch only to verify that exact tree.
+**A coherent inspectable development change must be pushed to `main` promptly.** Do not let finished work accumulate in the local workspace or on hidden validation branches. Use another branch only when the user requests it or safe reconciliation requires it, then return the coherent result to `main`.
 
 ---
 
@@ -410,7 +410,7 @@ A substantial page pass is complete when:
 - notation and technical representations are clean;
 - responsive states do not clip or overlap;
 - available build/type checks pass;
-- the current work is pushed to the inspectable `studio` branch;
+- the current work is pushed to `main` and the remote ref is verified;
 - preview verification is performed when available.
 
 If these are true, move on. Do not polish indefinitely.

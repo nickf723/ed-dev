@@ -98,7 +98,7 @@ For each route:
 5. identify the primary learner object or question;
 6. rebuild structure before decorative polish;
 7. verify responsive behavior and route integrity;
-8. push the coherent change to `studio` promptly;
+8. commit and push the coherent change to `main`, then verify the remote ref;
 9. move to a different academic mode unless a short local DFS burst is justified.
 
 ## 6. Homepage role
@@ -107,7 +107,7 @@ The homepage is not a dashboard or marketing hero. It is the first cognitive map
 
 Its job is to:
 
-- present the six primary domains as one coherent field;
+- present the five canonical knowledge branches plus the Interdisciplines relational surface as one coherent field;
 - expose the first curriculum layer on hover/focus without requiring a click;
 - make the hierarchy feel explorable before the sidebar is needed;
 - establish the site's sleek neo-technical visual baseline without forcing child pages to copy it;

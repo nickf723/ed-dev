@@ -21,7 +21,7 @@ Pages should not duplicate global sidebar or canvas layout logic.
 
 ## 2. Domain registry
 
-`lib/domains.ts` is the single source of truth for the six major academic fields:
+`lib/domains.ts` is the single source of truth for six top-level interface identities: five canonical knowledge branches plus the Interdisciplines relational surface:
 
 - names and labels
 - canonical routes
@@ -31,7 +31,7 @@ Pages should not duplicate global sidebar or canvas layout logic.
 
 The homepage and sidebar both consume this registry.
 
-Domain-specific visual systems remain local to their pages. The registry supplies identity, not page composition.
+Domain-specific visual systems remain local to their pages. The registry supplies identity, not page composition. The number 64 is not a required field count.
 
 ## 3. Curriculum registry
 
@@ -85,7 +85,7 @@ Truly global infrastructure remains global. Examples include:
 - shared type definitions
 - registry/composition code
 - storage adapters
-- six-domain configuration
+- top-level branch/surface configuration
 - generic applet contracts
 - reusable UI primitives
 
@@ -127,6 +127,20 @@ The existing `app/_data/vocab/` system already functions as a canonical vocabula
 As vocabulary branches are touched, migrate page-associated vocabulary out of legacy alphabetical buckets into the site-shaped hierarchy. Biology is the first example at `app/_data/vocab/natural-science/biology/`.
 
 Do not create a parallel vocabulary JSON store unless a future migration has a concrete advantage.
+
+The target authoring contract is curriculum-node vocabulary registration with automatic descendant aggregation. A term taught by a lesson appears in that lesson's scope and in the deduplicated scopes of its ancestors. Route-scoped manual composition remains migration scaffolding, not the permanent authoring model.
+
+## 7A. Assessment
+
+Assessment definitions should follow the site-shaped hierarchy. Shared UI owns interaction and feedback grammar; the narrowest relevant branch owns task generation, valid parameter ranges, deterministic solutions/checkers, and academic explanations.
+
+Atomic lessons require an insightful transfer check. Add generated, code-verifiable fluency practice when the subject permits it.
+
+## 7B. Collections and external data
+
+Reusable collection infrastructure belongs in `lib/collections/`: normalized records, facets, queries, provenance, freshness, pagination, and failure states. Provider adapters remain separate from subject-specific presentation and interpretation.
+
+Finite, curated-open, federated/API-backed, and modeled/playable collections have different completeness claims. Declare the type honestly, preserve citations and image/data provenance, and keep a useful instructional spine available when an API fails.
 
 ## 8. Mastery and progress
 

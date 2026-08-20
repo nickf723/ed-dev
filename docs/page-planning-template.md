@@ -203,6 +203,18 @@ Place reference material close to the decisions it supports.
 
 Do not add a separate quick-reference block by default when the lesson already states the needed rule at the point of use.
 
+### Vocabulary contribution
+
+**Terms introduced or made precise on this page:**
+
+-
+
+**Canonical term IDs / existing terms reused:**
+
+**How ancestor scopes inherit these terms:**
+
+**If no durable vocabulary is introduced, why not?**
+
 ---
 
 ## 9. Test cases and feedback
@@ -220,6 +232,48 @@ Do not add a separate quick-reference block by default when the lesson already s
 If the lesson defines membership, validity, or satisfaction, explicitly show rule → case → substitution/application → verdict → interpretation.
 
 Feedback should explain the conceptual difference, not merely mark the choice red or green.
+
+### Assessment contract
+
+**Insight / transfer check:**
+
+**Generated fluency practice, if appropriate:**
+
+**Parameter bounds:**
+
+**Deterministic solution/checker:**
+
+**Edge cases and reproducible fixtures:**
+
+**Why this assessment matches the learner outcome:**
+
+---
+
+## 9A. Collection / repository / API contract
+
+Complete this section for reference collections, repositories, catalogs, maps, or API-backed tools.
+
+**Collection type:** finite/completable / curated-open / federated/API-backed / modeled-playable
+
+**Canonical record ID and detail-route pattern:**
+
+**Provider(s), provenance, and freshness:**
+
+**Normalized record fields:**
+
+**Searchable text:**
+
+**Filter facets and why each matters academically:**
+
+**Filter-combination and clear/reset behavior:**
+
+**Loading / empty / partial / stale / rate-limit / error states:**
+
+**Caching, revalidation, and API-cost boundary:**
+
+**Fallback instructional spine when the provider fails:**
+
+**Accessible alternative for maps, images, media, or diagrams:**
 
 ---
 

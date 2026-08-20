@@ -8,6 +8,10 @@ It is not about the academic subject of architecture. It describes how the site 
 
 **One semantic system, many visual dialects.**
 
+Education Station 64 should be able to explain, model, organize, practice, or inspect anything a person can learn. The number 64 remains a brand identity rather than a quota for fields or pages.
+
+Formal, Natural, Social, Humanities, and Applied are the five canonical knowledge branches. Interdisciplines is a relational surface over those branches: it reveals shared methods and meaningful connections while linking back to canonical owners.
+
 The site should behave like one coherent learning product without making every subject page look the same.
 
 Consistency belongs primarily in:
@@ -179,7 +183,9 @@ A tool may be more open-ended than a lesson, but still needs clear scope, assump
 
 ### `lib/domains.ts`
 
-Owns the six domain identities:
+Owns the six top-level interface identities: five canonical knowledge branches plus the Interdisciplines relational surface.
+
+It supplies:
 
 - canonical domain route
 - domain label/title
@@ -212,6 +218,59 @@ A component should move here because several unrelated branches need the same se
 Own subject-specific models and presentation.
 
 If an abstraction only makes sense inside one branch, keep it with that branch until repetition proves it belongs globally.
+
+## Page-associated data contract
+
+An academic page is more than its TSX route. The page's semantic bundle may include:
+
+- curriculum node and page context;
+- vocabulary contribution;
+- assessment generator/checker or other evidence action;
+- collection records and facets;
+- API adapters, provenance, caching, and fallback data;
+- visual-world metadata and route-local presentation;
+- verification fixtures and important states.
+
+Keep page-associated data aligned with the curriculum hierarchy as branches are migrated. Shared registries and adapters may remain global; subject-specific content and interpretation remain local.
+
+## Vocabulary architecture
+
+Vocabulary is authored at the narrowest curriculum node that teaches it and aggregates upward through curriculum ancestry.
+
+The target model is:
+
+```text
+page terms -> parent union -> branch union -> domain union -> global glossary
+```
+
+Aggregation deduplicates stable term IDs while preserving source groups. A local vocabulary drawer is a presentation option, not permission to create a disconnected data store. The current `app/_data/vocab/` registry and route scopes should evolve toward node-ID registration and descendant composition rather than be replaced wholesale.
+
+## Assessment architecture
+
+Assessment data belongs beside the curriculum it measures. Atomic lessons define:
+
+- an insightful transfer/reasoning check;
+- deterministic generated practice when the subject supports it;
+- a solution/checking model;
+- explanatory feedback and tested boundaries.
+
+Shared assessment components own interaction grammar. Route-local or branch-local generators own the academic rules. Completion state is evidence, not automatic mastery.
+
+## Collection and API architecture
+
+`lib/collections/` owns reusable collection contracts: normalized records, facets, queries, source/provenance metadata, pagination, and failure states.
+
+Provider-specific adapters should:
+
+1. fetch or read source data;
+2. validate and normalize it into an internal record;
+3. preserve source attribution and freshness;
+4. expose typed errors and partial results;
+5. keep provider quirks out of presentation components.
+
+Collection pages may specialize their filters and detail views around the subject. A zoology catalog, periodic table, art archive, map, and game repository should not be forced into identical cards merely because they share query plumbing.
+
+Core instruction must remain understandable when an external provider is unavailable. Cached or curated fallback data must be labeled honestly; failures must never be disguised as successful live data.
 
 ## Registry composition strategy
 

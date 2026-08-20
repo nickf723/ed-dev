@@ -232,6 +232,15 @@ Offer a small number of fresh tasks in the notation or format learners are likel
 
 Multiple choice is a fallback. Prefer solving, constructing, predicting, ranking, tracing, sorting, transforming, annotating, classifying, or explaining when those actions better match the learning goal.
 
+### Assessment has two complementary jobs
+
+Every atomic lesson ends with an explicit check of understanding. When the subject permits deterministic generation, include both:
+
+1. **Insight / transfer:** a fresh prediction, construction, explanation, diagnosis, or comparison that reveals whether the mental model transferred.
+2. **Fluency / retrieval:** a small bank of constrained generated practice with code-verifiable answers and explanatory feedback.
+
+Generated practice must define valid parameter ranges, a deterministic solution/checker, edge cases, and reproducible cases for debugging. Do not call a page complete because it contains a generic multiple-choice quiz, and do not declare mastery from one score.
+
 ---
 
 ## 11. One viewport, one center of gravity
@@ -332,7 +341,7 @@ Tune spacing, readability, background participation, responsive behavior, and lo
 
 ### Pass 7: Push and verify
 
-Push coherent work to `studio` promptly. Test the default state, guided states, mistakes, longest content, narrow desktop, mobile fallback, and transfer task. Run available build/type checks and verify a preview when possible.
+Push coherent work to `main` promptly. Test the default state, guided states, mistakes, longest content, narrow desktop, mobile fallback, transfer task, and generated-practice boundaries. Run available build/type checks and verify a preview when possible.
 
 ---
 
@@ -376,11 +385,13 @@ And the page passes these gates:
 - the reusable rule is explicit;
 - the primary misconception or boundary is addressed;
 - transfer uses a fresh case;
+- an explicit assessment checks the learner outcome;
+- deterministic generated practice is included and tested when the subject supports it;
 - readability is appropriate for the target learner;
 - the environment reinforces the subject without competing with it;
 - content does not overlap or clip;
 - semantic navigation is correct;
-- the current change is pushed to `studio`;
+- the current change is pushed to `main` and the remote ref is verified;
 - available build/type checks and preview verification pass when available.
 
 These rules exist so every new lesson can inherit what we learned without inheriting the same exact layout.
