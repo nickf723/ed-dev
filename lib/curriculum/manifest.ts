@@ -39,6 +39,7 @@ import { PHILOSOPHY_CURRICULUM } from "@/lib/curriculum/humanities/philosophy";
 import { RELIGION_CURRICULUM } from "@/lib/curriculum/humanities/religion";
 import { SPORTS_CURRICULUM } from "@/lib/curriculum/humanities/sports";
 import { VISUAL_ARTS_CURRICULUM } from "@/lib/curriculum/humanities/visual-arts";
+import { GAME_STUDIES_CURRICULUM } from "@/lib/curriculum/interdisciplines/game-studies";
 import { LOGIC_CURRICULUM } from "@/lib/curriculum/logic";
 import { ASTRONOMY_CURRICULUM } from "@/lib/curriculum/natural/astronomy";
 import { BIOLOGY_CURRICULUM } from "@/lib/curriculum/natural/biology";
@@ -130,4 +131,5 @@ export const CURRICULUM_MODULES: readonly CurriculumNode[] = [
   RELIGION_CURRICULUM,
   SPORTS_CURRICULUM,
   VISUAL_ARTS_CURRICULUM,
+  GAME_STUDIES_CURRICULUM,
 ];

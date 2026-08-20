@@ -25,6 +25,81 @@ For each queued page:
 
 ---
 
+## Priority 0: shared tree and Game Studies repository
+
+This pass repaired the shared curriculum tree and established the first playable board-game shelf. Its source, type, and production-build checks are required before push; rendered states remain queued until a trusted browser runner is available.
+
+### Shared curriculum sidebar
+
+Verify:
+
+- the server-rendered tree and first client frame match without a hydration warning
+- the active branch opens after hydration without shifting or duplicating nodes
+- a manual collapse remains respected on the current route
+- selecting a route closes the mobile drawer
+- the new Game Studies → Game Library → Board Games branch is complete and ordered correctly
+
+**Status:** Verification required
+
+### Game Library
+
+**Route:** `/interdisciplines/game-studies/library`
+
+Verify:
+
+- Board Game Repository and Magic: The Gathering read as primary child destinations
+- specimen cards remain visually subordinate to those repository paths
+- the local archive styling stays readable at narrow widths
+
+**Status:** Verification required
+
+### Board Game Repository
+
+**Route:** `/interdisciplines/game-studies/library/board-games`
+
+Verify:
+
+- text search matches titles, aliases, mechanics, and descriptions
+- alignment, connection, and sowing filters produce the expected subsets
+- zero-result guidance is readable and reset works
+- each game card opens the correct record
+
+**Status:** Verification required
+
+### Playable board-game records
+
+**Routes:**
+
+- `/interdisciplines/game-studies/library/board-games/tic-tac-toe`
+- `/interdisciplines/game-studies/library/board-games/four-in-a-row`
+- `/interdisciplines/game-studies/library/board-games/kalah`
+
+Verify:
+
+- rules, component inventory, and simulator anchors stay legible and distinct
+- Tic-Tac-Toe detects rows, columns, diagonals, and a draw
+- Four in a Row respects gravity, full columns, wins in all four directions, and a draw
+- Kalah handles stores, opponent-store skipping, captures, extra turns, sweeping, and final scoring
+- every simulator resets cleanly and remains usable at narrow widths
+
+**Status:** Verification required
+
+### Magic: The Gathering repository landing
+
+**Route:** `/interdisciplines/game-studies/library/magic-the-gathering`
+
+Verify:
+
+- Fundamentals and Strategy are clearly different learning paths
+- card lookup handles success, no-match, and network-error states
+- battlefield cards can be added, tapped, untapped, and removed
+- the sandbox scope note is visible and does not imply comprehensive rules adjudication
+- the old humanities route permanently redirects here
+
+**Status:** Verification required
+
+---
+
 ## Priority 0: constitution-built Algebra lessons
 
 These lessons were built or substantially rebuilt without a trusted rendered preview. Their instructional structure is intentional; visual claims remain provisional until inspected.

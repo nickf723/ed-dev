@@ -3,7 +3,7 @@
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState, useSyncExternalStore } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   BookOpen,
@@ -31,6 +31,10 @@ type SidebarProps = {
 
 type SidebarDomain = DomainId | "meta" | "home";
 
+const subscribeToHydration = () => () => undefined;
+const getClientHydrationSnapshot = () => true;
+const getServerHydrationSnapshot = () => false;
+
 function domainRgb(domain: SidebarDomain): string {
   if (domain === "meta") return "148, 163, 184";
   if (domain === "home") return "34, 211, 238";
@@ -45,19 +49,13 @@ export default function Sidebar({
 }: SidebarProps) {
   const pathname = usePathname();
   const [isMobileOpen, setIsMobileOpen] = useState(false);
-  const [showStructureScan, setShowStructureScan] = useState(false);
+  const [structureScanOpen, setStructureScanOpen] = useState(false);
   const activeDomain = getDomainForPath(pathname);
   const isMeta = pathname.startsWith("/glossary") || pathname.startsWith("/stage") || pathname.startsWith("/skeleton");
   const shellDomain: SidebarDomain = activeDomain?.id ?? (isMeta ? "meta" : "home");
   const shellRgb = domainRgb(shellDomain);
 
-  useEffect(() => {
-    setIsMobileOpen(false);
-  }, [pathname]);
-
-  useEffect(() => {
-    if (!developerToolsEnabled) setShowStructureScan(false);
-  }, [developerToolsEnabled]);
+  const showStructureScan = developerToolsEnabled && structureScanOpen;
 
   const toggleMobile = () => {
     if (!isMobileOpen && isCollapsed) onCollapsedChange(false);
@@ -68,11 +66,13 @@ export default function Sidebar({
     if (!developerToolsEnabled) return;
     if (isCollapsed) {
       onCollapsedChange(false);
-      setShowStructureScan(true);
+      setStructureScanOpen(true);
       return;
     }
-    setShowStructureScan((current) => !current);
+    setStructureScanOpen((current) => !current);
   };
+
+  const handleNavigate = () => setIsMobileOpen(false);
 
   return (
     <>
@@ -153,6 +153,7 @@ export default function Sidebar({
                       item={item}
                       currentPath={pathname}
                       isCollapsed={isCollapsed}
+                      onNavigate={handleNavigate}
                     />
                   ))}
                 </div>
@@ -207,11 +208,13 @@ function NavItem({
   item,
   currentPath,
   isCollapsed,
+  onNavigate,
   depth = 0,
 }: {
   item: NavigationItem;
   currentPath: string;
   isCollapsed: boolean;
+  onNavigate: () => void;
   depth?: number;
 }) {
   const itemDomain = item.domain;
@@ -220,17 +223,27 @@ function NavItem({
   const isDescendantActive = currentPath.startsWith(`${item.href}/`);
   const isActiveBranch = isExactMatch || isDescendantActive;
   const hasChildren = Boolean(item.children?.length);
-  const [expanded, setExpanded] = useState(isActiveBranch);
+  const hydrated = useSyncExternalStore(
+    subscribeToHydration,
+    getClientHydrationSnapshot,
+    getServerHydrationSnapshot,
+  );
+  const [manualExpansion, setManualExpansion] = useState<{
+    path: string;
+    value: boolean;
+  } | null>(null);
+  // The server snapshot and hydration snapshot are both collapsed. Once React
+  // owns the client tree, active ancestry opens automatically. A manual choice
+  // is scoped to the current path so navigation can reveal the next ancestry.
+  const expanded = manualExpansion?.path === currentPath
+    ? manualExpansion.value
+    : hydrated && isActiveBranch;
   const isTopLevel = depth === 0;
   const Icon = item.icon === "book-open"
     ? BookOpen
     : isTopLevel && itemDomain !== "meta"
       ? DOMAIN_BY_ID[itemDomain]?.icon
       : undefined;
-
-  useEffect(() => {
-    if (isActiveBranch) setExpanded(true);
-  }, [isActiveBranch]);
 
   const activeBackground = isTopLevel
     ? `linear-gradient(90deg, rgba(${rgb},0.12), rgba(${rgb},0.035))`
@@ -257,6 +270,7 @@ function NavItem({
       >
         <Link
           href={item.href}
+          onClick={onNavigate}
           title={isCollapsed || depth >= 2 ? item.label : undefined}
           className={`flex min-w-0 flex-1 items-center gap-2.5 ${isTopLevel ? "px-3 py-2.5" : "px-2.5 py-1.5"} ${
             isCollapsed ? "md:justify-center md:px-0" : ""
@@ -291,7 +305,7 @@ function NavItem({
         {hasChildren ? (
           <button
             type="button"
-            onClick={() => setExpanded((current) => !current)}
+            onClick={() => setManualExpansion({ path: currentPath, value: !expanded })}
             className={`mr-1 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-slate-600 transition-all hover:bg-white/[0.05] hover:text-slate-300 ${
               isCollapsed ? "md:hidden" : ""
             }`}
@@ -321,6 +335,7 @@ function NavItem({
                   item={child}
                   currentPath={currentPath}
                   isCollapsed={isCollapsed}
+                  onNavigate={onNavigate}
                   depth={depth + 1}
                 />
               ))}

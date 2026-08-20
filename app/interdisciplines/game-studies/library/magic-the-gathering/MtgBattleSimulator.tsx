@@ -1,7 +1,8 @@
 "use client";
+import Image from "next/image";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, Shield, Heart, RotateCw, Plus, Trash2, Swords } from "lucide-react";
+import { Heart, RotateCw, Plus, Trash2, Swords } from "lucide-react";
 
 // Basic Card Type
 type PlayCard = {
@@ -16,28 +17,33 @@ export default function MtgBattleSimulator() {
   const [myBoard, setMyBoard] = useState<PlayCard[]>([]);
   const [myLife, setMyLife] = useState(20);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   // Add card to board
   const summonCard = async () => {
-    if (!searchQuery) return;
+    if (!searchQuery.trim()) return;
     setLoading(true);
+    setError("");
     try {
-        // Fetch from Scryfall
         const res = await fetch(`https://api.scryfall.com/cards/named?fuzzy=${encodeURIComponent(searchQuery)}`);
+        if (!res.ok) throw new Error("Card not found");
         const data = await res.json();
         
         if (data.image_uris) {
             const newCard: PlayCard = {
-                id: Math.random().toString(36).substr(2, 9),
+                id: crypto.randomUUID(),
                 name: data.name,
-                image_uri: data.image_uris.normal, // or .small for performance
+                image_uri: data.image_uris.normal,
                 tapped: false
             };
-            setMyBoard([...myBoard, newCard]);
+            setMyBoard((board) => [...board, newCard]);
             setSearchQuery("");
+        } else {
+            setError("That card does not have a standard front image.");
         }
     } catch (e) {
         console.error("Summon fizzled", e);
+        setError("No close card match was found. Try another name.");
     } finally {
         setLoading(false);
     }
@@ -64,12 +70,13 @@ export default function MtgBattleSimulator() {
                 {/* Life Counter */}
                 <div className="flex items-center gap-3 bg-black/40 px-3 py-1.5 rounded-lg border border-white/10">
                     <Heart size={16} className="text-red-500 fill-red-500" />
-                    <button onClick={() => setMyLife(l => l-1)} className="text-neutral-500 hover:text-white font-bold px-2">-</button>
-                    <span className="text-xl font-black text-white w-8 text-center">{myLife}</span>
-                    <button onClick={() => setMyLife(l => l+1)} className="text-neutral-500 hover:text-white font-bold px-2">+</button>
+                    <button type="button" aria-label="Lose one life" onClick={() => setMyLife(l => l-1)} className="text-neutral-500 hover:text-white font-bold px-2">−</button>
+                    <span className="text-xl font-black text-white w-8 text-center" aria-live="polite">{myLife}</span>
+                    <button type="button" aria-label="Gain one life" onClick={() => setMyLife(l => l+1)} className="text-neutral-500 hover:text-white font-bold px-2">+</button>
                 </div>
                 {/* Phase Action */}
                 <button 
+                    type="button"
                     onClick={untapAll}
                     className="flex items-center gap-2 text-xs font-bold uppercase text-cyan-400 hover:text-cyan-300 transition-colors"
                 >
@@ -78,14 +85,15 @@ export default function MtgBattleSimulator() {
             </div>
 
             {/* Summoner Search */}
-            <div className="flex items-center gap-2">
+            <form className="flex items-center gap-2" onSubmit={(event) => { event.preventDefault(); void summonCard(); }}>
                 <div className="relative">
+                    <label htmlFor="mtg-battlefield-card" className="sr-only">Card name</label>
                     <input 
+                        id="mtg-battlefield-card"
                         type="text" 
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        onKeyDown={(e) => e.key === 'Enter' && summonCard()}
-                        placeholder="Card Name (e.g. Black Lotus)..."
+                        placeholder="Card name (for example, Llanowar Elves)"
                         className="bg-black/40 border border-white/10 rounded-lg pl-3 pr-10 py-1.5 text-sm text-white focus:border-amber-500 focus:outline-none w-64"
                     />
                     <div className="absolute right-2 top-1/2 -translate-y-1/2">
@@ -93,16 +101,20 @@ export default function MtgBattleSimulator() {
                     </div>
                 </div>
                 <button 
-                    onClick={summonCard}
+                    type="submit"
+                    disabled={loading || !searchQuery.trim()}
+                    aria-label="Add card to battlefield"
                     className="bg-amber-600 hover:bg-amber-500 text-white p-1.5 rounded-lg transition-colors"
                 >
                     <Plus size={16} />
                 </button>
-            </div>
+            </form>
         </div>
 
+        {error ? <p role="alert" className="border-b border-red-300/10 bg-red-950/30 px-6 py-2 text-xs text-red-200">{error}</p> : null}
+
         {/* The Battlefield (Mat) */}
-        <div className="relative h-[500px] w-full bg-[url('https://media.magic.wizards.com/images/wallpaper/forest_zen_1920x1080_wallpaper.jpg')] bg-cover bg-center overflow-y-auto overflow-x-hidden p-8">
+        <div className="relative h-[500px] w-full overflow-y-auto overflow-x-hidden bg-[radial-gradient(circle_at_18%_20%,rgba(22,163,74,0.26),transparent_32%),radial-gradient(circle_at_82%_72%,rgba(180,83,9,0.22),transparent_34%),linear-gradient(145deg,#142019,#171311)] p-8">
             {/* Dark overlay for readability */}
             <div className="absolute inset-0 bg-black/60 backdrop-blur-[1px] z-0 pointer-events-none" />
             
@@ -120,21 +132,31 @@ export default function MtgBattleSimulator() {
                             }}
                             exit={{ scale: 0, opacity: 0 }}
                             transition={{ type: "spring", bounce: 0.3, duration: 0.5 }}
-                            className="relative group w-[140px] aspect-[2.5/3.5] rounded-lg shadow-xl cursor-pointer origin-center"
+                            className="relative group w-[140px] aspect-[2.5/3.5] rounded-lg shadow-xl origin-center"
                         >
-                            <img 
-                                src={card.image_uri} 
-                                alt={card.name} 
-                                className="w-full h-full rounded-lg object-cover border border-black"
+                            <button
+                                type="button"
                                 onClick={() => toggleTap(card.id)}
-                                draggable={false}
-                            />
+                                aria-label={`${card.tapped ? "Untap" : "Tap"} ${card.name}`}
+                                className="relative h-full w-full overflow-hidden rounded-lg border border-black"
+                            >
+                                <Image
+                                    src={card.image_uri}
+                                    alt={card.name}
+                                    fill
+                                    sizes="140px"
+                                    className="object-cover"
+                                    draggable={false}
+                                />
+                            </button>
                             
                             {/* Hover Actions */}
                             {!card.tapped && (
                                 <div className="absolute -top-2 -right-2 opacity-0 group-hover:opacity-100 transition-opacity scale-90">
                                     <button 
+                                        type="button"
                                         onClick={(e) => { e.stopPropagation(); removeCard(card.id); }}
+                                        aria-label={`Remove ${card.name}`}
                                         className="bg-red-500 text-white p-1.5 rounded-full shadow-lg hover:bg-red-600"
                                     >
                                         <Trash2 size={12} />

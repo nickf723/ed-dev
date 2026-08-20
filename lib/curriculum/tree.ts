@@ -216,6 +216,7 @@ export const CURRICULUM_DOMAINS = [
       node("inter.cognitive-science", "Cognitive Science", "/interdisciplines/cognitive-science", "inter"),
       node("inter.bioinformatics", "Bioinformatics", "/interdisciplines/bioinformatics", "inter"),
       node("inter.mechatronics", "Mechatronics", "/interdisciplines/mechatronics", "inter"),
+      node("inter.game-studies", "Game Studies", "/interdisciplines/game-studies", "inter"),
     ],
   },
 ] satisfies readonly CurriculumDomain[];

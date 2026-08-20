@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Search, RefreshCw, ExternalLink, ShieldAlert } from "lucide-react";
+import { Search, RefreshCw, ShieldAlert } from "lucide-react";
 import Image from "next/image";
 
 type CardData = {
@@ -18,23 +18,26 @@ type CardData = {
 export default function MtgCardFetcher() {
   const [card, setCard] = useState<CardData | null>(null);
   const [loading, setLoading] = useState(false);
-  const [query, setQuery] = useState("");
+  const [error, setError] = useState("");
 
   const fetchRandom = async () => {
     setLoading(true);
+    setError("");
     try {
       const res = await fetch("https://api.scryfall.com/cards/random");
+      if (!res.ok) throw new Error("Scryfall request failed");
       const data = await res.json();
       setCard(data);
     } catch (e) {
       console.error("Failed to fetch card", e);
+      setError("The card catalog is unavailable right now.");
     } finally {
       setLoading(false);
     }
   };
 
   // Initial load
-  useEffect(() => { fetchRandom(); }, []);
+  useEffect(() => { void fetchRandom(); }, []);
 
   return (
     <div className="glass overflow-hidden rounded-xl border border-white/10 bg-neutral-900/80 backdrop-blur-xl">
@@ -51,14 +54,20 @@ export default function MtgCardFetcher() {
             {loading ? (
                 <RefreshCw size={32} className="text-neutral-600 animate-spin" />
             ) : card?.image_uris?.normal ? (
-                <motion.img 
+                <motion.div
                     key={card.name}
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    src={card.image_uris.normal} 
-                    alt={card.name} 
-                    className="rounded-lg object-cover w-full h-full"
-                />
+                    className="relative h-full w-full overflow-hidden rounded-lg"
+                >
+                    <Image
+                        src={card.image_uris.normal}
+                        alt={card.name}
+                        fill
+                        sizes="250px"
+                        className="object-cover"
+                    />
+                </motion.div>
             ) : (
                 <div className="text-center p-4">
                     <ShieldAlert size={32} className="mx-auto mb-2 text-red-400" />
@@ -75,7 +84,7 @@ export default function MtgCardFetcher() {
                     <span className="font-mono text-xs text-amber-400">{card.mana_cost || "No Cost"}</span>
                 </div>
                 <div className="h-[1px] bg-white/5" />
-                <div className="grid grid-cols-2 gap-2 text-[10px]">
+                <div className="grid grid-cols-2 gap-2 text-[11px]">
                     <div className="text-neutral-500">Type</div>
                     <div className="text-neutral-300 text-right truncate">{card.type_line}</div>
                     <div className="text-neutral-500">CMC (Cost)</div>
@@ -86,9 +95,13 @@ export default function MtgCardFetcher() {
             </div>
         )}
 
+        {error ? <p role="alert" className="text-center text-xs text-red-300">{error}</p> : null}
+
         {/* Controls */}
         <button 
-            onClick={fetchRandom}
+            type="button"
+            onClick={() => void fetchRandom()}
+            disabled={loading}
             className="w-full py-3 rounded-lg bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold uppercase tracking-widest flex items-center justify-center gap-2 transition-all"
         >
             <RefreshCw size={14} /> Fetch Random Artifact
