@@ -472,7 +472,34 @@ The lesson reading frame can stay calm and narrow while an instrument temporaril
 
 ---
 
-## 24. Relationship to other rule documents
+## 24. Controls and consequences must remain co-visible
+
+If control A changes visualization, model, inspector, or result B, the learner should be able to operate A and immediately see or read B without scrolling at the breakpoint where that interaction is intended.
+
+This applies to buttons, sliders, presets, hover targets, filters, draggable objects, timeline windows, lens selectors, and any other interaction state.
+
+### Co-visibility rules
+
+- Do not make learners remember a control state while scrolling to discover its effect.
+- Keep control, primary object, and essential readout in one usable interaction zone whenever they form one conceptual action.
+- Compress nonessential chrome before separating cause from effect vertically.
+- Use sticky inspectors or sidecars for long matrices, maps, timelines, specimens, or tables whose interpretation must remain visible throughout the full interaction surface.
+- If hovering or selecting an item updates an inspector, that inspector must remain visible while the entire hover/select surface is usable.
+- A long interaction may scroll internally only when shrinking it would make the academic representation illegible; ordinary page scrolling should not sever the control/result relationship.
+- On narrow screens, preserve cause and effect with compact inline controls, reordered layout, or local disclosure rather than simply stacking them far apart.
+- Sequential phases may occupy different viewports only when the academic task itself is genuinely sequential and the later phase does not require live comparison with the earlier control state.
+
+### Design test
+
+Ask:
+
+> **Can the learner manipulate this control and immediately perceive what changed without scrolling?**
+
+If the answer is no, the interaction composition is not finished.
+
+---
+
+## 25. Relationship to other rule documents
 
 When guidance overlaps:
 
