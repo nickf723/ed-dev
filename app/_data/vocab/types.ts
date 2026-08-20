@@ -20,6 +20,8 @@ export type VocabularyGroup = {
   id: string;
   label: string;
   terms: VocabTerm[];
+  sourceNodeId?: string;
+  sourcePath?: string;
 };
 
 export type VocabularyScope = {

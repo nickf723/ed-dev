@@ -9,7 +9,8 @@
     "start": "next start",
     "lint": "eslint",
     "audit:architecture": "node scripts/audit-site-architecture.mjs",
-    "audit:readability": "node scripts/audit-page-readability.mjs"
+    "audit:readability": "node scripts/audit-page-readability.mjs",
+    "test:vocabulary": "node scripts/test-vocabulary-aggregation.mjs"
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",

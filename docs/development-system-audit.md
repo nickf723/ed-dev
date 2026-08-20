@@ -25,17 +25,17 @@ This audit records where Education Station 64's development system is strong, wh
 
 ## Remaining implementation gaps
 
-### 1. Vocabulary aggregation is still partly manual
+### 1. Vocabulary aggregation is now partially automated
 
-`app/_data/vocab/scopes.ts` manually composes several parent scopes. The target system should register vocabulary by curriculum node ID and derive every ancestor scope from the curriculum tree.
+The first implementation slice now registers Mathematics vocabulary by curriculum node ID and derives Mathematics, Algebra, Pre-Algebra, and contributing descendant scopes from the curriculum tree. Parent groups follow direct-child containment, retain curriculum-node provenance, and are covered by a focused aggregation test. Legacy Formal Science branches still use handwritten scopes while they await bounded migration.
 
-Required future work:
+Remaining work:
 
-- add node-ID ownership to vocabulary registration;
-- aggregate descendant terms automatically;
-- preserve child group provenance;
-- validate duplicate IDs and conflicting definitions;
-- migrate legacy alphabetical files branch by branch, not in one mass rewrite.
+- migrate Logic, Computer Science, Information Science, Data Science, and Systems Science into node-owned registrations;
+- migrate the other four domains branch by branch rather than through one mass rewrite;
+- move legacy broad-domain terms to the narrowest curriculum nodes that actually teach them;
+- derive domain and global glossary scopes from the same registry once each branch has trustworthy ownership;
+- replace remaining lesson-local glossary forks with adapters over node-owned terms when those pages are renovated.
 
 ### 2. Assessment infrastructure is uneven
 

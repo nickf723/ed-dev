@@ -42,14 +42,6 @@ export const algebraVocab: VocabTerm[] = [
         isAdult: false
     },
     {
-        id: "alg-group",
-        word: "Group",
-        definition: "A mathematical set equipped with a binary operation that combines any two elements to form a third element, satisfying specific axioms.",
-        domain: "Algebra",
-        tags: ["Abstract Algebra", "Structures"],
-        isAdult: false
-    },
-    {
         id: "alg-function",
         word: "Function",
         definition: "A relation or expression involving one or more variables where each input has exactly one distinct output.",

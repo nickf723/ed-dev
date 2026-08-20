@@ -2,39 +2,12 @@ import { VocabTerm } from '../_registry';
 
 export const mathVocab: VocabTerm[] = [
     {
-        id: 'math-01',
-        word: 'Axiom',
-        definition: 'A statement or proposition which is regarded as being established, accepted, or self-evidently true.',
-        domain: 'Mathematics',
-        tags: ['Logic', 'Foundation'],
-        relatedTerms: ['Theorem'],
-        isAdult: false
-    },
-    {
         id: 'math-02',
         word: 'Symmetry',
         definition: 'Invariants under transformation, forming the foundational concept behind advanced algebraic structures.',
         domain: 'Mathematics',
         tags: ['Group Theory', 'Geometry'],
         relatedTerms: ['Isomorphism'],
-        isAdult: false
-    },
-    {
-        id: "math-derivative",
-        word: "Derivative",
-        definition: "The instantaneous rate of change of a function with respect to one of its variables. Geometrically, the slope of the tangent line.",
-        domain: "Calculus",
-        tags: ["Calculus", "Rate of Change", "Functions"],
-        relatedTerms: ["math-integral", "math-limit"],
-        isAdult: false
-    },
-    {
-        id: "math-integral",
-        word: "Integral",
-        definition: "The mathematical operator that calculates the area under a curve. It is the fundamental object of accumulation.",
-        domain: "Calculus",
-        tags: ["Calculus", "Accumulation", "Area"],
-        relatedTerms: ["math-derivative", "math-limit"],
         isAdult: false
     },
     {

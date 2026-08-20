@@ -25,9 +25,9 @@ For each queued page:
 
 ---
 
-## Priority 0: shared tree, Interdisciplines, and Game Repository
+## Priority 0: shared systems, Interdisciplines, and Game Repository
 
-This pass repaired the shared curriculum tree and established the first playable board-game shelf. Its source, type, and production-build checks are required before push; rendered states remain queued until a trusted browser runner is available.
+These passes repaired the shared curriculum tree, added curriculum-derived Mathematics vocabulary, and established the first playable board-game shelf. Their source, type, and production-build checks are required before push; rendered states remain queued until a trusted browser runner is available.
 
 ### Shared curriculum sidebar
 
@@ -40,6 +40,24 @@ Verify:
 - the Humanities → Gaming → Game Repository → Board Games branch is complete and ordered correctly
 
 **Status:** Verification required
+
+### Curriculum-derived Mathematics vocabulary
+
+**Representative routes:**
+
+- `/formal-science/mathematics/calculus`
+- `/formal-science/mathematics/algebra`
+- `/formal-science/mathematics/algebra/pre-algebra`
+
+Verify:
+
+- the global drawer still opens on a Mathematics descendant that uses the shared trigger
+- Mathematics groups terms by its own scope, Foundations, and Algebra without duplicate filter chips
+- Algebra and Pre-Algebra scopes reflect direct-child curriculum groups in registry order
+- Axiom, Derivative, Integral, and Group each resolve to one canonical visible entry
+- search, safe-mode filtering, group filters, and long definitions remain stable at narrow widths
+
+**Status:** Structural tests and production build passed; rendered verification required
 
 ### Interdisciplines relational atlas
 
