@@ -47,10 +47,10 @@ export default function InterdisciplinaryMatrix({ axes }: { axes: readonly Matri
   const current = activeA && activeB ? displayFor(activeA, activeB) : undefined;
   const CurrentIcon = current?.icon;
 
-  const groups = CORE_DOMAIN_ORDER.map((domainId) => ({
+  const groups = useMemo(() => CORE_DOMAIN_ORDER.map((domainId) => ({
     domainId,
     axes: axes.filter((axis) => axis.domainId === domainId),
-  })).filter((group) => group.axes.length > 0);
+  })).filter((group) => group.axes.length > 0), [axes]);
 
   const matrixWidth = LABEL_WIDTH + axes.length * CELL_SIZE;
   const activeIds = new Set([activeA?.id, activeB?.id].filter(Boolean));
@@ -69,7 +69,7 @@ export default function InterdisciplinaryMatrix({ axes }: { axes: readonly Matri
                 return (
                   <div
                     key={group.domainId}
-                    className="flex h-7 items-center border-b px-1.5 font-mono text-[8px] font-semibold uppercase tracking-[0.10em]"
+                    className="flex h-7 items-center border-b px-1.5 font-mono text-[11px] font-semibold uppercase tracking-[0.10em]"
                     style={{
                       width: group.axes.length * CELL_SIZE,
                       color: `rgb(${meta.rgb})`,
@@ -99,7 +99,7 @@ export default function InterdisciplinaryMatrix({ axes }: { axes: readonly Matri
                     }}
                   >
                     <span
-                      className="max-h-10 truncate font-mono text-[7px] font-semibold uppercase tracking-[0.04em]"
+                      className="max-h-10 truncate font-mono text-[11px] font-semibold uppercase tracking-[0.04em]"
                       style={{
                         color: `rgba(${meta.rgb},0.78)`,
                         writingMode: "vertical-rl",
@@ -129,7 +129,7 @@ export default function InterdisciplinaryMatrix({ axes }: { axes: readonly Matri
                         background: activeIds.has(row.id) ? `rgba(${rowMeta.rgb},0.075)` : undefined,
                       }}
                     >
-                      <span className="truncate pl-2 text-[9px] font-medium text-slate-400">{row.label}</span>
+                      <span className="truncate pl-2 text-[11px] font-medium text-slate-400">{row.label}</span>
                       <span
                         className="ml-2 h-1.5 w-1.5 shrink-0 rounded-full"
                         style={{ background: `rgb(${rowMeta.rgb})`, opacity: activeIds.has(row.id) ? 1 : 0.58 }}
@@ -174,9 +174,14 @@ export default function InterdisciplinaryMatrix({ axes }: { axes: readonly Matri
                           style={{
                             width: CELL_SIZE,
                             height: CELL_SIZE,
-                            borderColor: selected ? "rgba(251,146,60,0.92)" : "rgba(255,255,255,0.05)",
-                            borderLeft: colGroupStart ? `1px solid rgba(${colMeta.rgb},0.26)` : undefined,
-                            borderTop: rowGroupStart ? `1px solid rgba(${rowMeta.rgb},0.26)` : undefined,
+                            borderRightColor: selected ? "rgba(251,146,60,0.92)" : "rgba(255,255,255,0.05)",
+                            borderBottomColor: selected ? "rgba(251,146,60,0.92)" : "rgba(255,255,255,0.05)",
+                            borderLeftWidth: colGroupStart ? 1 : 0,
+                            borderLeftStyle: colGroupStart ? "solid" : undefined,
+                            borderLeftColor: colGroupStart ? `rgba(${colMeta.rgb},0.26)` : undefined,
+                            borderTopWidth: rowGroupStart ? 1 : 0,
+                            borderTopStyle: rowGroupStart ? "solid" : undefined,
+                            borderTopColor: rowGroupStart ? `rgba(${rowMeta.rgb},0.26)` : undefined,
                             background: pure
                               ? `rgba(${rowMeta.rgb},${selected ? 0.62 : 0.34})`
                               : `linear-gradient(135deg, rgba(${rowMeta.rgb},${selected ? 0.48 : 0.19}), rgba(${colMeta.rgb},${selected ? 0.48 : 0.19}))`,
@@ -224,7 +229,7 @@ export default function InterdisciplinaryMatrix({ axes }: { axes: readonly Matri
                 </div>
                 <div className="min-w-0">
                   <h2 className="text-[22px] font-semibold tracking-[-0.035em] text-white">{current.title}</h2>
-                  <div className="mt-1 font-mono text-[10px] uppercase tracking-[0.10em] text-orange-300/58">{current.field}</div>
+                  <div className="mt-1 font-mono text-[11px] uppercase tracking-[0.10em] text-orange-300/58">{current.field}</div>
                 </div>
               </div>
 
@@ -232,7 +237,7 @@ export default function InterdisciplinaryMatrix({ axes }: { axes: readonly Matri
 
               <div className="mt-5 border-l-2 border-orange-300/28 pl-3">
                 <strong className="text-[11px] text-orange-100/78">What the overlap means</strong>
-                <p className="mt-1 text-[12px] leading-5 text-slate-500">The two axes are ingredients, not ownership claims. Interdisciplinary fields borrow questions, evidence, methods, and constraints from several established disciplines and often develop methods of their own.</p>
+                <p className="mt-1 text-[12px] leading-5 text-slate-500">The five core branches remain the canonical homes for subjects. This atlas records meaningful overlaps among them; it does not create a sixth duplicate copy of every connected field.</p>
               </div>
 
               {current.href ? (
@@ -266,7 +271,7 @@ function AxisChip({ axis }: { axis: MatrixAxisSeed }) {
       }}
     >
       <Icon size={12} />
-      <span className="max-w-[132px] truncate text-[10px] font-semibold uppercase tracking-[0.06em]">{axis.label}</span>
+      <span className="max-w-[132px] truncate text-[11px] font-semibold uppercase tracking-[0.06em]">{axis.label}</span>
     </span>
   );
 }

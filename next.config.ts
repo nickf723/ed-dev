@@ -4,6 +4,35 @@ const isDevelopment = process.env.NODE_ENV === 'development';
 const isPreview = process.env.VERCEL_ENV === 'preview';
 
 const nextConfig: NextConfig = {
+  async redirects() {
+    return [
+      {
+        source: '/interdisciplines/game-studies/science',
+        destination: '/humanities/gaming/ludology/lab',
+        permanent: true,
+      },
+      {
+        source: '/interdisciplines/game-studies/library/board-games',
+        destination: '/humanities/gaming/repository/board-games',
+        permanent: true,
+      },
+      {
+        source: '/interdisciplines/game-studies/library/board-games/:slug',
+        destination: '/humanities/gaming/repository/board-games/:slug',
+        permanent: true,
+      },
+      {
+        source: '/interdisciplines/game-studies/library/magic-the-gathering',
+        destination: '/humanities/gaming/repository/magic-the-gathering',
+        permanent: true,
+      },
+      {
+        source: '/interdisciplines/game-studies/library/magic-the-gathering/:path*',
+        destination: '/humanities/gaming/repository/magic-the-gathering/:path*',
+        permanent: true,
+      },
+    ];
+  },
   experimental: {
     turbopackFileSystemCacheForDev: true,
   },

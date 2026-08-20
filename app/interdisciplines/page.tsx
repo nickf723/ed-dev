@@ -40,10 +40,10 @@ export default function InterdisciplinesPage() {
             { label: "Home", href: "/" },
             { label: "Interdisciplines" },
           ]}
-          eyebrow="Connections · Hybrids · Convergence"
+          eyebrow="Five branches · shared methods · connected fields"
           icon={Network}
           title={<span>Interdisciplines</span>}
-          subtitle="Explore what happens when the site's core subjects overlap, borrow methods from one another, and form new fields between established disciplines."
+          subtitle="Use this relational atlas to move among the five core knowledge branches. New subjects keep a canonical home in Formal, Natural, Social, Humanities, or Applied; this page reveals the fields and methods that connect them."
           accentRgb="251, 146, 60"
           titleClassName="text-[clamp(3.2rem,5.8vw,5.9rem)] font-semibold leading-[0.84] tracking-[-0.065em] text-white"
           iconClassName="rounded-[18px]"

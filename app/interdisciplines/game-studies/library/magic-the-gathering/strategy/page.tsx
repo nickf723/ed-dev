@@ -41,9 +41,10 @@ export default function MTGStrategyPage() {
       header={
         <DomainPageHeader
           breadcrumbs={[
-            { label: "Game Studies", href: "/interdisciplines/game-studies" },
-            { label: "Game Library", href: "/interdisciplines/game-studies/library" },
-            { label: "Magic: The Gathering", href: "/interdisciplines/game-studies/library/magic-the-gathering" },
+            { label: "Humanities", href: "/humanities" },
+            { label: "Gaming", href: "/humanities/gaming" },
+            { label: "Game Repository", href: "/humanities/gaming/repository" },
+            { label: "Magic: The Gathering", href: "/humanities/gaming/repository/magic-the-gathering" },
             { label: "Strategy" },
           ]}
           eyebrow="Plan · resources · consistency · interaction · adaptation"
@@ -65,7 +66,7 @@ export default function MTGStrategyPage() {
             <h2 className="mt-2 max-w-5xl text-[clamp(1.9rem,3.7vw,3.6rem)] font-semibold leading-[0.95] tracking-[-0.05em] text-white">A strong card does not become a strong deck merely by joining other strong cards.</h2>
             <p className="mt-3 max-w-4xl text-[14px] leading-6 text-slate-300/74">Deck construction links probabilities, mana, role coverage, synergy, interaction, threat density, format constraints, and the expected environment. Strategy then assigns roles dynamically during actual games.</p>
           </div>
-          <Link href="/interdisciplines/game-studies/library/magic-the-gathering/fundamentals" className="group rounded-[18px] border border-amber-200/[0.10] bg-amber-300/[0.02] p-4 backdrop-blur-xl transition hover:bg-amber-300/[0.04]">
+          <Link href="/humanities/gaming/repository/magic-the-gathering/fundamentals" className="group rounded-[18px] border border-amber-200/[0.10] bg-amber-300/[0.02] p-4 backdrop-blur-xl transition hover:bg-amber-300/[0.04]">
             <div className="font-mono text-[10px] uppercase tracking-[0.07em] text-amber-200/58">Need the rules frame?</div>
             <strong className="mt-2 block text-[17px] text-white">Return to Fundamentals</strong>
             <p className="mt-2 text-[11px] leading-5 text-slate-400">Review zones, timing, card anatomy, and format structure before treating strategic shortcuts as universal rules.</p>
@@ -110,7 +111,7 @@ export default function MTGStrategyPage() {
       </section>
 
       <section className="mt-7 border-t border-white/[0.07] pt-5">
-        <Link href="/interdisciplines/game-studies/library/magic-the-gathering" className="group inline-flex items-center gap-2 text-[11px] font-semibold text-violet-100/70 hover:text-white"><ArrowLeft size={13} className="transition group-hover:-translate-x-1" /> Back to Magic specimen</Link>
+        <Link href="/humanities/gaming/repository/magic-the-gathering" className="group inline-flex items-center gap-2 text-[11px] font-semibold text-violet-100/70 hover:text-white"><ArrowLeft size={13} className="transition group-hover:-translate-x-1" /> Back to Magic specimen</Link>
       </section>
     </SceneFrame>
   );

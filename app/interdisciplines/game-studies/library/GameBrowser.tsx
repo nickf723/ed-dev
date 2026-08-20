@@ -36,7 +36,7 @@ const GAMES: readonly GameRecord[] = [
     rgb: "251,191,36",
     lenses: ["resource systems", "hidden information", "deck construction", "metagame"],
     description: "A customizable card game useful for studying resource conversion, combinatorial interactions, deck construction, probability, strategic adaptation, and changing metagames.",
-    href: "/interdisciplines/game-studies/library/magic-the-gathering",
+    href: "/humanities/gaming/repository/magic-the-gathering",
   },
   {
     id: "dnd",
@@ -95,13 +95,13 @@ export default function GameBrowser() {
   return (
     <div className="w-full">
       <div className="flex flex-wrap items-center gap-2 border-b border-white/[0.07] pb-4">
-        <span className="mr-1 flex items-center gap-2 font-mono text-[10px] font-semibold uppercase tracking-[0.08em] text-slate-500"><Filter size={13} /> specimen shelf</span>
+        <span className="mr-1 flex items-center gap-2 font-mono text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-500"><Filter size={13} /> specimen shelf</span>
         {FILTERS.map((item) => (
           <button
             key={item.id}
             type="button"
             onClick={() => setFilter(item.id)}
-            className="rounded-full border px-3 py-2 text-[10px] font-semibold transition"
+            className="rounded-full border px-3 py-2 text-[11px] font-semibold transition"
             style={{
               borderColor: filter === item.id ? "rgba(167,139,250,0.26)" : "rgba(255,255,255,0.07)",
               background: filter === item.id ? "rgba(167,139,250,0.07)" : "rgba(255,255,255,0.015)",
@@ -111,7 +111,7 @@ export default function GameBrowser() {
             {item.label}
           </button>
         ))}
-        <span className="ml-auto hidden font-mono text-[9px] uppercase tracking-[0.06em] text-slate-600 sm:block">live analyses open · planned specimens stay visible</span>
+        <span className="ml-auto hidden font-mono text-[11px] uppercase tracking-[0.06em] text-slate-600 sm:block">live analyses open · planned specimens stay visible</span>
       </div>
 
       <div className="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
@@ -134,17 +134,17 @@ function GameCard({ game }: { game: GameRecord }) {
     >
       <div className="flex items-start justify-between gap-3">
         <span className="flex h-11 w-11 items-center justify-center rounded-[14px] border" style={{ color: `rgb(${game.rgb})`, borderColor: `rgba(${game.rgb},0.26)`, background: `rgba(${game.rgb},0.045)` }}><Icon size={19} /></span>
-        <span className="rounded-full border border-white/[0.07] px-2.5 py-1 font-mono text-[9px] uppercase tracking-[0.06em] text-slate-500">{live ? "open analysis" : "planned"}</span>
+        <span className="rounded-full border border-white/[0.07] px-2.5 py-1 font-mono text-[11px] uppercase tracking-[0.06em] text-slate-500">{live ? "open analysis" : "planned"}</span>
       </div>
 
-      <div className="mt-4 font-mono text-[10px] uppercase tracking-[0.07em]" style={{ color: `rgba(${game.rgb},0.66)` }}>{game.genre}</div>
+      <div className="mt-4 font-mono text-[11px] uppercase tracking-[0.07em]" style={{ color: `rgba(${game.rgb},0.66)` }}>{game.genre}</div>
       <h3 className="mt-1 text-[20px] font-semibold tracking-[-0.025em] text-white">{game.title}</h3>
       <p className="mt-3 text-[13px] leading-6 text-slate-400">{game.description}</p>
 
       <div className="mt-5 border-t border-white/[0.06] pt-4">
-        <div className="flex items-center gap-2 font-mono text-[9px] font-semibold uppercase tracking-[0.06em] text-violet-200/55"><Sparkles size={11} /> study lenses</div>
+        <div className="flex items-center gap-2 font-mono text-[11px] font-semibold uppercase tracking-[0.06em] text-violet-200/55"><Sparkles size={11} /> study lenses</div>
         <div className="mt-2 flex flex-wrap gap-2">
-          {game.lenses.map((lens) => <span key={lens} className="rounded-full border border-white/[0.06] bg-black/[0.12] px-2.5 py-1.5 text-[10px] text-slate-400">{lens}</span>)}
+          {game.lenses.map((lens) => <span key={lens} className="rounded-full border border-white/[0.06] bg-black/[0.12] px-2.5 py-1.5 text-[11px] text-slate-400">{lens}</span>)}
         </div>
       </div>
 
@@ -152,7 +152,7 @@ function GameCard({ game }: { game: GameRecord }) {
         {live ? (
           <span className="flex items-center justify-between rounded-[13px] border border-violet-200/[0.12] bg-violet-300/[0.035] px-3 py-2.5 text-[11px] font-semibold text-violet-100/82">Open specimen <ArrowRight size={12} className="transition group-hover:translate-x-1" /></span>
         ) : (
-          <span className="flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.06em] text-slate-600"><Sparkles size={10} /> analysis route not built yet</span>
+          <span className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.06em] text-slate-600"><Sparkles size={10} /> analysis route not built yet</span>
         )}
       </div>
     </article>

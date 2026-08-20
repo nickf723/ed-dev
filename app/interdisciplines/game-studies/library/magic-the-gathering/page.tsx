@@ -19,7 +19,7 @@ import MtgCardFetcher from "./MtgCardFetcher";
 const PATHS = [
   {
     title: "Fundamentals & Rules",
-    href: "/interdisciplines/game-studies/library/magic-the-gathering/fundamentals",
+    href: "/humanities/gaming/repository/magic-the-gathering/fundamentals",
     cue: "card anatomy · zones · priority · stack · turns · formats",
     question: "How does a card become an instruction inside the larger rules engine?",
     description: "Start with the objects and procedures that make a legal game state: card parts, zones, timing, priority, the stack, turn structure, and format constraints.",
@@ -28,7 +28,7 @@ const PATHS = [
   },
   {
     title: "Strategy & Deckbuilding",
-    href: "/interdisciplines/game-studies/library/magic-the-gathering/strategy",
+    href: "/humanities/gaming/repository/magic-the-gathering/strategy",
     cue: "plans · distributions · resources · roles · adaptation",
     question: "How does a deck turn a collection of cards into a repeatable plan?",
     description: "Study strategic plans as constrained systems shaped by mana, consistency, interaction, timing windows, opposing plans, and changing game roles.",
@@ -38,7 +38,7 @@ const PATHS = [
 ] as const;
 
 export default function MTGHubPage() {
-  const context = requireCurriculumPageContext("inter.game-studies.library.magic-the-gathering");
+  const context = requireCurriculumPageContext("humanities.gaming.repository.magic-the-gathering");
 
   return (
     <SceneFrame

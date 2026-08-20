@@ -163,5 +163,5 @@ export function getBoardGame(slug: string): BoardGameRecord | undefined {
 }
 
 export function boardGameHref(slug: string): string {
-  return `/interdisciplines/game-studies/library/board-games/${slug}`;
+  return `/humanities/gaming/repository/board-games/${slug}`;
 }

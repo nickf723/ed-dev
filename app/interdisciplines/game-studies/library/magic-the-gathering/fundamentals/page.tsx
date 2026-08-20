@@ -51,9 +51,10 @@ export default function MTGFundamentalsPage() {
       header={
         <DomainPageHeader
           breadcrumbs={[
-            { label: "Game Studies", href: "/interdisciplines/game-studies" },
-            { label: "Game Library", href: "/interdisciplines/game-studies/library" },
-            { label: "Magic: The Gathering", href: "/interdisciplines/game-studies/library/magic-the-gathering" },
+            { label: "Humanities", href: "/humanities" },
+            { label: "Gaming", href: "/humanities/gaming" },
+            { label: "Game Repository", href: "/humanities/gaming/repository" },
+            { label: "Magic: The Gathering", href: "/humanities/gaming/repository/magic-the-gathering" },
             { label: "Fundamentals" },
           ]}
           eyebrow="Cards · zones · priority · stack · turns · formats"
@@ -113,7 +114,7 @@ export default function MTGFundamentalsPage() {
             <div className="flex items-center gap-2 font-mono text-[10px] font-semibold uppercase tracking-[0.09em] text-emerald-200/58"><Sparkles size={13} /> Next layer</div>
             <p className="mt-2 text-[13px] leading-6 text-slate-300/74">Rules tell you which actions are legal. Strategy asks which legal actions, cards, resource distributions, and plans make sense for the deck and environment you expect.</p>
           </div>
-          <Link href="/interdisciplines/game-studies/library/magic-the-gathering/strategy" className="group flex items-center justify-between rounded-[16px] border border-white/[0.07] bg-black/[0.10] p-4 text-[12px] font-semibold text-white/82 transition hover:bg-black/[0.18]">Continue to Strategy <ArrowRight size={13} className="text-emerald-200/55 transition group-hover:translate-x-1" /></Link>
+          <Link href="/humanities/gaming/repository/magic-the-gathering/strategy" className="group flex items-center justify-between rounded-[16px] border border-white/[0.07] bg-black/[0.10] p-4 text-[12px] font-semibold text-white/82 transition hover:bg-black/[0.18]">Continue to Strategy <ArrowRight size={13} className="text-emerald-200/55 transition group-hover:translate-x-1" /></Link>
         </div>
       </section>
     </SceneFrame>

@@ -237,7 +237,7 @@ const EXTRA_PAIRINGS: Record<string, Pairing> = {
     desc: "Games examined through computation, rules, design, culture, play, and interactive systems.",
     icon: Gamepad2,
     field: "Computation × Gaming",
-    href: "/interdisciplines/game-studies",
+    href: "/humanities/gaming/ludology",
   },
   [pairKey("natural.astronomy", "natural.biology")]: {
     title: "Astrobiology",

@@ -7,7 +7,7 @@ import BoardGameBrowser from "./BoardGameBrowser";
 import BoardShelfBackground from "./BoardShelfBackground";
 
 export default function BoardGameRepositoryPage() {
-  const context = requireCurriculumPageContext("inter.game-studies.library.board-games");
+  const context = requireCurriculumPageContext("humanities.gaming.repository.board-games");
 
   return (
     <SceneFrame
@@ -56,8 +56,8 @@ export default function BoardGameRepositoryPage() {
       </section>
 
       <section className="mt-8 border-t border-white/[0.07] pt-5">
-        <Link href="/interdisciplines/game-studies/library" className="group inline-flex items-center gap-2 text-[11px] font-semibold text-amber-100/68 hover:text-white">
-          Return to the full Game Library <ArrowRight size={12} className="transition group-hover:translate-x-1" />
+        <Link href="/humanities/gaming/repository" className="group inline-flex items-center gap-2 text-[11px] font-semibold text-amber-100/68 hover:text-white">
+          Return to the full Game Repository <ArrowRight size={12} className="transition group-hover:translate-x-1" />
         </Link>
       </section>
     </SceneFrame>

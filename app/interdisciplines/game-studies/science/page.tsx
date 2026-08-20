@@ -3,6 +3,7 @@ import DomainPageHeader from "@/app/_components/DomainPageHeader";
 import { SceneFrame, Surface } from "@/app/_page-system/scene";
 import LudologyBackground from "../LudologyBackground";
 import GameTheoryWidget from "./GameTheoryWidget";
+import { requireCurriculumPageContext } from "@/lib/curriculum/page-context";
 import {
   ArrowRight,
   BarChart3,
@@ -70,6 +71,8 @@ const BOUNDARIES = [
 ] as const;
 
 export default function GameSciencePage() {
+  const context = requireCurriculumPageContext("humanities.gaming.ludology.lab");
+
   return (
     <SceneFrame
       background={<LudologyBackground />}
@@ -78,11 +81,7 @@ export default function GameSciencePage() {
       headerBackground="rgba(7,5,13,0.55)"
       header={
         <DomainPageHeader
-          breadcrumbs={[
-            { label: "Interdisciplines", href: "/interdisciplines" },
-            { label: "Game Studies", href: "/interdisciplines/game-studies" },
-            { label: "The Lab" },
-          ]}
+          breadcrumbs={context.breadcrumbs}
           eyebrow="Rules · players · evidence · experiments · interpretation"
           eyebrowStyle="rule"
           icon={FlaskConical}
@@ -106,7 +105,7 @@ export default function GameSciencePage() {
             <Neighbor href="/formal-science/mathematics/applied/game-theory" label="Game Theory" note="formal strategic interaction" rgb="239,68,68" />
             <Neighbor href="/social-science/psychology" label="Psychology" note="behavior · learning · cognition" rgb="96,165,250" />
             <Neighbor href="/humanities/gaming" label="Gaming" note="media · genres · practices" rgb="250,204,21" />
-            <Neighbor href="/interdisciplines/game-studies/library" label="Game Library" note="specific games · rules · strategy" rgb="94,234,212" />
+            <Neighbor href="/humanities/gaming/repository" label="Game Repository" note="specific games · rules · strategy" rgb="94,234,212" />
           </div>
         </div>
 
@@ -147,7 +146,7 @@ export default function GameSciencePage() {
             <div className="font-mono text-[10px] font-semibold uppercase tracking-[0.09em] text-violet-200/58">No fake child routes</div>
             <p className="mt-2 text-[13px] leading-6 text-slate-300/74">This lab is currently a methods surface rather than a directory. Game Theory already has a canonical home in Applied Mathematics, while mechanics, narrative, player research, and interpretation can grow here only when real curriculum routes exist.</p>
           </div>
-          <Link href="/interdisciplines/game-studies" className="group flex items-center justify-between rounded-[16px] border border-white/[0.07] bg-black/[0.10] p-4 text-[12px] font-semibold text-white/80 transition hover:bg-black/[0.18]">Back to Game Studies <ArrowRight size={13} className="text-violet-200/55 transition group-hover:translate-x-1" /></Link>
+          <Link href="/humanities/gaming/ludology" className="group flex items-center justify-between rounded-[16px] border border-white/[0.07] bg-black/[0.10] p-4 text-[12px] font-semibold text-white/80 transition hover:bg-black/[0.18]">Back to Game Studies &amp; Ludology <ArrowRight size={13} className="text-violet-200/55 transition group-hover:translate-x-1" /></Link>
         </div>
       </section>
     </SceneFrame>

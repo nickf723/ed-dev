@@ -170,8 +170,15 @@ export const CURRICULUM_DOMAINS = [
       ]),
       node("humanities.performing-arts", "Performing Arts", "/humanities/performing-arts", "humanities"),
       node("humanities.gaming", "Gaming", "/humanities/gaming", "humanities", [
+        node("humanities.gaming.repository", "Game Repository", "/humanities/gaming/repository", "humanities", [
+          node("humanities.gaming.repository.board-games", "Board Games", "/humanities/gaming/repository/board-games", "humanities"),
+          node("humanities.gaming.repository.magic-the-gathering", "Magic: The Gathering", "/humanities/gaming/repository/magic-the-gathering", "humanities"),
+        ]),
         node("humanities.gaming.digital", "Digital Mechanics", "/humanities/gaming/digital", "humanities"),
         node("humanities.gaming.tabletop", "Tabletop & Rule Systems", "/humanities/gaming/tabletop", "humanities"),
+        node("humanities.gaming.ludology", "Game Studies & Ludology", "/humanities/gaming/ludology", "humanities", [
+          node("humanities.gaming.ludology.lab", "Game Studies Lab", "/humanities/gaming/ludology/lab", "humanities"),
+        ]),
       ]),
       node("humanities.culinary-arts", "Culinary Arts", "/humanities/culinary-arts", "humanities"),
       node("humanities.sports", "Sports", "/humanities/sports", "humanities"),
@@ -216,7 +223,6 @@ export const CURRICULUM_DOMAINS = [
       node("inter.cognitive-science", "Cognitive Science", "/interdisciplines/cognitive-science", "inter"),
       node("inter.bioinformatics", "Bioinformatics", "/interdisciplines/bioinformatics", "inter"),
       node("inter.mechatronics", "Mechatronics", "/interdisciplines/mechatronics", "inter"),
-      node("inter.game-studies", "Game Studies", "/interdisciplines/game-studies", "inter"),
     ],
   },
 ] satisfies readonly CurriculumDomain[];

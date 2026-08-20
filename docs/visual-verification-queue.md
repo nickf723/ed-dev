@@ -25,7 +25,7 @@ For each queued page:
 
 ---
 
-## Priority 0: shared tree and Game Studies repository
+## Priority 0: shared tree, Interdisciplines, and Game Repository
 
 This pass repaired the shared curriculum tree and established the first playable board-game shelf. Its source, type, and production-build checks are required before push; rendered states remain queued until a trusted browser runner is available.
 
@@ -37,25 +37,41 @@ Verify:
 - the active branch opens after hydration without shifting or duplicating nodes
 - a manual collapse remains respected on the current route
 - selecting a route closes the mobile drawer
-- the new Game Studies → Game Library → Board Games branch is complete and ordered correctly
+- the Humanities → Gaming → Game Repository → Board Games branch is complete and ordered correctly
 
 **Status:** Verification required
 
-### Game Library
+### Interdisciplines relational atlas
 
-**Route:** `/interdisciplines/game-studies/library`
+**Route:** `/interdisciplines`
+
+Verify:
+
+- the page presents five canonical branches and treats Interdisciplines as a relational view
+- matrix hover, focus, click, and crosshair states remain stable without console style warnings
+- domain boundaries remain legible at desktop, tablet, and horizontal-scroll widths
+- the inspector remains visible while the full matrix is usable
+- Game Studies links to its canonical Humanities/Gaming home
+
+**Status:** Verification required
+
+### Game Repository
+
+**Route:** `/humanities/gaming/repository`
 
 Verify:
 
 - Board Game Repository and Magic: The Gathering read as primary child destinations
 - specimen cards remain visually subordinate to those repository paths
 - the local archive styling stays readable at narrow widths
+- `/interdisciplines/game-studies` permanently redirects to `/humanities/gaming/ludology`
+- `/interdisciplines/game-studies/library` permanently redirects to this route
 
 **Status:** Verification required
 
 ### Board Game Repository
 
-**Route:** `/interdisciplines/game-studies/library/board-games`
+**Route:** `/humanities/gaming/repository/board-games`
 
 Verify:
 
@@ -70,9 +86,9 @@ Verify:
 
 **Routes:**
 
-- `/interdisciplines/game-studies/library/board-games/tic-tac-toe`
-- `/interdisciplines/game-studies/library/board-games/four-in-a-row`
-- `/interdisciplines/game-studies/library/board-games/kalah`
+- `/humanities/gaming/repository/board-games/tic-tac-toe`
+- `/humanities/gaming/repository/board-games/four-in-a-row`
+- `/humanities/gaming/repository/board-games/kalah`
 
 Verify:
 
@@ -86,7 +102,7 @@ Verify:
 
 ### Magic: The Gathering repository landing
 
-**Route:** `/interdisciplines/game-studies/library/magic-the-gathering`
+**Route:** `/humanities/gaming/repository/magic-the-gathering`
 
 Verify:
 
@@ -95,6 +111,7 @@ Verify:
 - battlefield cards can be added, tapped, untapped, and removed
 - the sandbox scope note is visible and does not imply comprehensive rules adjudication
 - the old humanities route permanently redirects here
+- the former Interdisciplines board-game, Magic, and Game Studies Lab routes permanently redirect to their canonical Humanities routes
 
 **Status:** Verification required
 
