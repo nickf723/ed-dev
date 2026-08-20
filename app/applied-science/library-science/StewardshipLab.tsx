@@ -96,40 +96,40 @@ export default function StewardshipLab() {
   const Icon = resource.icon;
 
   return (
-    <Surface variant="glass" className="overflow-hidden rounded-[30px] border-cyan-100/[0.10]" style={{ background: "rgba(5,9,13,0.29)" }}>
-      <div className="grid border-b border-white/[0.07] lg:grid-cols-[minmax(0,1fr)_320px]">
+    <Surface variant="glass" className="overflow-hidden rounded-[28px] border-cyan-100/[0.10]" style={{ background: "rgba(5,9,13,0.29)" }}>
+      <div className="grid border-b border-white/[0.07] lg:grid-cols-[minmax(0,1fr)_340px]">
         <div className="p-5 sm:p-6">
-          <div className="flex items-center gap-2 font-mono text-[11px] font-semibold uppercase tracking-[0.10em] text-cyan-100/56"><ShieldCheck size={13} /> Stewardship laboratory</div>
+          <div className="flex items-center gap-2 font-mono text-[11px] font-semibold uppercase tracking-[0.09em] text-cyan-100/60"><ShieldCheck size={13} /> Stewardship laboratory</div>
           <h3 className="mt-2 text-[clamp(1.7rem,2.9vw,2.8rem)] font-semibold tracking-[-0.045em] text-white">The lifecycle can stay familiar while the stewardship problem changes completely.</h3>
-          <p className="mt-3 max-w-3xl text-[13px] leading-6 text-slate-400/76">Choose a collection object and a lifecycle stage. The prompts are representative planning questions, not a substitute for institutional policies, professional standards, legal advice, conservation expertise, or community-specific stewardship agreements.</p>
+          <p className="mt-3 max-w-3xl text-[14px] leading-6 text-slate-300/78">Choose a collection object and a lifecycle stage. Compare how the same professional question changes when the object, risks, rights, and intended use change.</p>
         </div>
         <div className="border-t border-white/[0.07] bg-black/[0.055] p-5 lg:border-l lg:border-t-0">
-          <span className="font-mono text-[10px] uppercase tracking-[0.08em] text-slate-600">Current object</span>
-          <div className="mt-2 flex items-center gap-3"><span className="flex h-9 w-9 items-center justify-center rounded-full border" style={{ color: `rgb(${resource.rgb})`, borderColor: `rgba(${resource.rgb},0.28)` }}><Icon size={15} /></span><strong className="text-[16px]" style={{ color: `rgb(${resource.rgb})` }}>{resource.label}</strong></div>
-          <p className="mt-2 text-[10px] leading-4 text-slate-600">{resource.identity}</p>
+          <span className="font-mono text-[10px] uppercase tracking-[0.08em] text-slate-500">Current object</span>
+          <div className="mt-2 flex items-center gap-3"><span className="flex h-10 w-10 items-center justify-center rounded-full border" style={{ color: `rgb(${resource.rgb})`, borderColor: `rgba(${resource.rgb},0.28)` }}><Icon size={16} /></span><strong className="text-[17px]" style={{ color: `rgb(${resource.rgb})` }}>{resource.label}</strong></div>
+          <p className="mt-2 text-[12px] leading-5 text-slate-400">{resource.identity}</p>
         </div>
       </div>
 
-      <div className="grid gap-5 p-4 xl:grid-cols-[220px_minmax(0,1fr)_285px] sm:p-5">
+      <div className="grid gap-5 p-4 xl:grid-cols-[230px_minmax(0,1fr)_310px] sm:p-5">
         <div>
-          <div className="font-mono text-[10px] font-semibold uppercase tracking-[0.08em] text-slate-600">Collection object</div>
-          <div className="mt-3 space-y-2">{RESOURCES.map((item) => { const ItemIcon = item.icon; const active = item.key === resourceKey; return <button key={item.key} type="button" onClick={() => setResourceKey(item.key)} className="flex w-full items-center gap-2 border px-3 py-2.5 text-left transition" style={{ borderColor: active ? `rgba(${item.rgb},0.30)` : "rgba(255,255,255,0.06)", background: active ? `rgba(${item.rgb},0.05)` : "rgba(0,0,0,0.03)" }}><ItemIcon size={13} style={{ color: `rgb(${item.rgb})` }} /><strong className="text-[10px] text-white/74">{item.label}</strong></button>; })}</div>
-          <div className="mt-5 border-t border-white/[0.06] pt-3"><span className="font-mono text-[9px] uppercase tracking-[0.06em] text-slate-700">Key risks</span>{resource.risks.map((risk) => <div key={risk} className="mt-2 border-l border-white/[0.07] pl-2 text-[9px] leading-4 text-slate-600">{risk}</div>)}</div>
+          <div className="font-mono text-[10px] font-semibold uppercase tracking-[0.08em] text-slate-500">Collection object</div>
+          <div className="mt-3 space-y-2">{RESOURCES.map((item) => { const ItemIcon = item.icon; const active = item.key === resourceKey; return <button key={item.key} type="button" onClick={() => setResourceKey(item.key)} className="flex w-full items-center gap-2 border px-3 py-3 text-left transition" style={{ borderColor: active ? `rgba(${item.rgb},0.30)` : "rgba(255,255,255,0.06)", background: active ? `rgba(${item.rgb},0.05)` : "rgba(0,0,0,0.03)" }}><ItemIcon size={14} style={{ color: `rgb(${item.rgb})` }} /><strong className="text-[12px] text-white/80">{item.label}</strong></button>; })}</div>
+          <div className="mt-5 border-t border-white/[0.06] pt-3"><span className="font-mono text-[9px] uppercase tracking-[0.06em] text-slate-500">Key risks</span>{resource.risks.map((risk) => <div key={risk} className="mt-2 border-l border-white/[0.09] pl-2 text-[11px] leading-5 text-slate-400">{risk}</div>)}</div>
         </div>
 
         <div>
-          <div className="grid gap-2 sm:grid-cols-4">{STAGES.map((item, index) => { const active = item.key === stageKey; return <button key={item.key} type="button" onClick={() => setStageKey(item.key)} className="border px-2.5 py-3 text-left transition" style={{ borderColor: active ? `rgba(${resource.rgb},0.30)` : "rgba(255,255,255,0.06)", background: active ? `rgba(${resource.rgb},0.045)` : "rgba(0,0,0,0.025)" }}><span className="font-mono text-[9px]" style={{ color: `rgba(${resource.rgb},0.55)` }}>0{index + 1}</span><strong className="mt-1 block text-[10px] leading-4 text-white/72">{item.label}</strong></button>; })}</div>
+          <div className="grid gap-2 sm:grid-cols-4">{STAGES.map((item, index) => { const active = item.key === stageKey; return <button key={item.key} type="button" onClick={() => setStageKey(item.key)} className="border px-2.5 py-3 text-left transition" style={{ borderColor: active ? `rgba(${resource.rgb},0.30)` : "rgba(255,255,255,0.06)", background: active ? `rgba(${resource.rgb},0.045)` : "rgba(0,0,0,0.025)" }}><span className="font-mono text-[9px]" style={{ color: `rgba(${resource.rgb},0.62)` }}>0{index + 1}</span><strong className="mt-1 block text-[11px] leading-4 text-white/78">{item.label}</strong></button>; })}</div>
           <div className="mt-4 min-h-[330px] border border-white/[0.065] bg-black/[0.04] p-5">
-            <div className="flex items-center justify-between gap-3"><div><div className="font-mono text-[10px] font-semibold uppercase tracking-[0.07em]" style={{ color: `rgba(${resource.rgb},0.58)` }}>{stage.label}</div><h4 className="mt-1 text-[20px] font-semibold tracking-[-0.03em] text-white">Stewardship questions</h4></div><span className="font-mono text-[9px] uppercase text-slate-700">representative</span></div>
-            <div className="mt-5 space-y-3">{resource.stages[stageKey].map((item, index) => <div key={item} className="grid grid-cols-[28px_minmax(0,1fr)] gap-2 border-b border-white/[0.05] pb-3 last:border-b-0"><span className="font-mono text-[9px]" style={{ color: `rgba(${resource.rgb},0.50)` }}>0{index + 1}</span><p className="text-[11px] leading-5 text-slate-500">{item}</p></div>)}</div>
+            <div className="flex items-center justify-between gap-3"><div><div className="font-mono text-[10px] font-semibold uppercase tracking-[0.07em]" style={{ color: `rgba(${resource.rgb},0.64)` }}>{stage.label}</div><h4 className="mt-1 text-[21px] font-semibold tracking-[-0.03em] text-white">Stewardship questions</h4></div><span className="font-mono text-[9px] uppercase text-slate-500">representative</span></div>
+            <div className="mt-5 space-y-3">{resource.stages[stageKey].map((item, index) => <div key={item} className="grid grid-cols-[28px_minmax(0,1fr)] gap-2 border-b border-white/[0.05] pb-3 last:border-b-0"><span className="font-mono text-[9px]" style={{ color: `rgba(${resource.rgb},0.58)` }}>0{index + 1}</span><p className="text-[13px] leading-6 text-slate-300/78">{item}</p></div>)}</div>
           </div>
         </div>
 
-        <div className="border border-white/[0.065] bg-black/[0.04] p-4">
-          <div className="font-mono text-[10px] font-semibold uppercase tracking-[0.07em] text-slate-600">Access principle</div>
-          <p className="mt-3 text-[11px] leading-5 text-slate-500">{resource.access}</p>
-          <div className="mt-5 border-t border-white/[0.06] pt-3"><strong className="text-[10px] uppercase tracking-[0.05em] text-cyan-100/48">Why this differs from Information Science</strong><p className="mt-2 text-[10px] leading-4 text-slate-600">Information Science studies information structures and retrieval broadly. Library Science applies organization and retrieval inside institutions that also select collections, serve communities, preserve materials, teach users, manage spaces and systems, and negotiate rights, ethics, and stewardship over time.</p></div>
-        </div>
+        <aside className="border border-white/[0.065] bg-black/[0.04] p-4 xl:sticky xl:top-[172px] xl:self-start">
+          <div className="font-mono text-[10px] font-semibold uppercase tracking-[0.07em] text-slate-500">Access principle</div>
+          <p className="mt-3 text-[13px] leading-6 text-slate-300/76">{resource.access}</p>
+          <div className="mt-5 border-t border-white/[0.06] pt-3"><strong className="text-[10px] uppercase tracking-[0.05em] text-cyan-100/58">Why this differs from Information Science</strong><p className="mt-2 text-[12px] leading-5 text-slate-400">Information Science studies information structures and retrieval broadly. Library Science applies organization and retrieval inside institutions that also select collections, serve communities, preserve materials, teach users, manage spaces and systems, and negotiate rights, ethics, and stewardship over time.</p></div>
+        </aside>
       </div>
     </Surface>
   );
