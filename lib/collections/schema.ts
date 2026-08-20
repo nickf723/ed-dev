@@ -81,6 +81,12 @@ export type CollectionSearchPayload<T extends CollectionMediaRecord = Collection
   pagination?: CollectionPagination;
 };
 
+export type ProviderCollectionSearchPayload<T extends CollectionMediaRecord = CollectionMediaRecord> =
+  CollectionSearchPayload<T> & {
+    provenance: CollectionProvenance;
+    pagination: CollectionPagination;
+  };
+
 /**
  * Shared contract for API-backed collection pages. Server adapters can fetch
  * from completely different providers while the Studio/page system receives a

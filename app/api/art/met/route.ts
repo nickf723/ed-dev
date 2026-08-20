@@ -1,9 +1,20 @@
 import { NextRequest, NextResponse } from "next/server";
-import type { CollectionMediaRecord, CollectionSearchPayload } from "@/lib/collections/schema";
+import { createCollectionSearchPayload } from "@/lib/collections/result.mjs";
+import type { CollectionMediaRecord, ProviderCollectionSearchPayload } from "@/lib/collections/schema";
 
 export const runtime = "nodejs";
 
 const MET_BASE = "https://collectionapi.metmuseum.org/public/collection/v1";
+const PAGE_SIZE = 16;
+const CANDIDATE_COUNT = 24;
+const CACHE_SECONDS = 3_600;
+const STALE_SECONDS = 86_400;
+const MET_SOURCE = {
+  label: "The Metropolitan Museum of Art Collection API",
+  url: "https://metmuseum.github.io/",
+  kind: "provider" as const,
+  scope: "Search totals, object metadata, and Open Access images",
+};
 
 type MetSearch = {
   total?: number;
@@ -60,7 +71,15 @@ export async function GET(request: NextRequest) {
   const query = request.nextUrl.searchParams.get("q")?.trim();
   if (!query) {
     return NextResponse.json(
-      { query: "", records: [], source: "The Metropolitan Museum of Art", error: "Provide a q parameter." } satisfies CollectionSearchPayload,
+      createCollectionSearchPayload({
+        query: "",
+        records: [],
+        source: "The Metropolitan Museum of Art",
+        state: "failed",
+        sources: [MET_SOURCE],
+        total: 0,
+        error: "Provide a q parameter.",
+      }) satisfies ProviderCollectionSearchPayload,
       { status: 400 },
     );
   }
@@ -70,30 +89,62 @@ export async function GET(request: NextRequest) {
     searchUrl.searchParams.set("q", query);
     searchUrl.searchParams.set("hasImages", "true");
     const searchResponse = await fetch(searchUrl, { next: { revalidate: 3600 } });
-    if (!searchResponse.ok) throw new Error(`The Met search returned ${searchResponse.status}`);
+    if (!searchResponse.ok) throw new MetProviderError(searchResponse.status);
     const searchPayload = (await searchResponse.json()) as MetSearch;
-    const ids = (searchPayload.objectIDs ?? []).slice(0, 24);
+    const ids = (searchPayload.objectIDs ?? []).slice(0, CANDIDATE_COUNT);
 
     const objects = await Promise.all(ids.map(fetchObject));
     const records = objects
       .filter((object): object is MetObject => Boolean(object?.primaryImageSmall || object?.primaryImage))
       .map(normalizeObject)
-      .slice(0, 16);
+      .slice(0, PAGE_SIZE);
+    const total = Math.max(searchPayload.total ?? records.length, records.length);
+    const expected = Math.min(PAGE_SIZE, total);
+    const isPartial = records.length < expected;
+    const retrievedAt = new Date();
 
     return NextResponse.json(
-      { query, records, source: "The Metropolitan Museum of Art" } satisfies CollectionSearchPayload,
-      { headers: { "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400" } },
+      createCollectionSearchPayload({
+        query,
+        records,
+        source: "The Metropolitan Museum of Art",
+        state: isPartial ? "partial" : "cached",
+        sources: [MET_SOURCE],
+        total,
+        pageSize: PAGE_SIZE,
+        retrievedAt: retrievedAt.toISOString(),
+        staleAfter: new Date(retrievedAt.getTime() + STALE_SECONDS * 1_000).toISOString(),
+        note: isPartial
+          ? `The provider reported ${total} matches; ${records.length} image-bearing records were available for this sample.`
+          : `The provider reported ${total} matches. This route serves a cached sample of up to ${PAGE_SIZE} image-bearing records.`,
+      }) satisfies ProviderCollectionSearchPayload,
+      { headers: { "Cache-Control": `public, s-maxage=${CACHE_SECONDS}, stale-while-revalidate=${STALE_SECONDS}` } },
     );
   } catch (error) {
+    const rateLimited = error instanceof MetProviderError && error.status === 429;
+    const message = rateLimited
+      ? "The Met collection is rate-limiting requests. Try again shortly."
+      : error instanceof Error
+        ? error.message
+        : "Unable to search the museum collection.";
     return NextResponse.json(
-      {
+      createCollectionSearchPayload({
         query,
         records: [],
         source: "The Metropolitan Museum of Art",
-        error: error instanceof Error ? error.message : "Unable to search the museum collection.",
-      } satisfies CollectionSearchPayload,
-      { status: 502 },
+        state: rateLimited ? "rate-limited" : "failed",
+        sources: [MET_SOURCE],
+        total: 0,
+        error: message,
+      }) satisfies ProviderCollectionSearchPayload,
+      { status: rateLimited ? 429 : 502 },
     );
+  }
+}
+
+class MetProviderError extends Error {
+  constructor(readonly status: number) {
+    super(`The Met search returned ${status}`);
   }
 }
 
@@ -144,9 +195,15 @@ function normalizeObject(object: MetObject): CollectionMediaRecord {
       creditLine: clean(object.creditLine),
       gallery: clean(object.GalleryNumber),
       publicDomain: object.isPublicDomain ? "Yes" : "Not marked public domain",
+      metadataUpdated: clean(object.metadataDate),
     },
     sources: [
-      { label: "The Met", url: object.objectURL || `https://www.metmuseum.org/art/collection/search/${object.objectID}` },
+      {
+        label: "The Met object record",
+        url: object.objectURL || `https://www.metmuseum.org/art/collection/search/${object.objectID}`,
+        kind: "provider",
+        scope: "Object metadata and image attribution",
+      },
     ],
   };
 }

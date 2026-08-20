@@ -52,14 +52,16 @@ Required future work:
 
 ### 3. Collection infrastructure is now partially standardized
 
-The shared schema now distinguishes live, cached, curated, fallback, partial, stale, rate-limited, and failed results; represents provenance, review/retrieval freshness, pagination, and typed facets; and retains a compatibility seam for earlier API-backed collections. `lib/collections/query.mjs` applies text and faceted queries without provider assumptions and reports contextual facet counts. The Board Game Repository is the first adopting slice: its family, weight, and mechanic filters use the engine, every record carries named ruleset provenance, and the UI exposes review state, result counts, reset behavior, and a truthful empty state. Focused tests cover normalization, facet semantics, contextual counts, validation, and stable source ordering.
+The shared schema now distinguishes live, cached, curated, fallback, partial, stale, rate-limited, and failed results; represents provenance, review/retrieval freshness, pagination, and typed facets; and retains a compatibility seam for earlier API-backed collections. `lib/collections/query.mjs` applies text and faceted queries without provider assumptions and reports contextual facet counts. `lib/collections/result.mjs` creates validated, serializable provider envelopes so clients do not have to infer whether an empty array is a valid result or an upstream failure.
+
+The Board Game Repository is the first curated adopting slice: its family, weight, and mechanic filters use the engine, every record carries named ruleset provenance, and the UI exposes review state, result counts, reset behavior, and a truthful empty state. The Visual Arts museum collection is the first provider-backed adopter: The Met adapter now reports provider totals, cache/retrieval metadata, partial samples, rate limits, and failures; the page exposes named-source provenance, contextual medium/department/rights facets, valid empty results, and an explicit curated fallback. Focused tests cover normalization, facet semantics, contextual counts, envelope validation, serialization, and stable source ordering.
 
 Required future work:
 
-- migrate art and music next so API-backed results exercise live, cached, rate-limited, and failed presentations;
+- migrate MusicBrainz next and reuse the same provider envelope, provenance surface, and failure/fallback grammar;
 - add field-level provenance where a record combines facts from multiple providers;
 - connect cursor pagination to one genuinely large provider rather than simulating it on the three-record board-game shelf;
-- define cache adapters and test stale/partial/fallback transitions at the provider boundary;
+- define cache adapters and test stale transitions at the provider boundary;
 - reuse the query engine across zoology, sports, media, geography, and future repositories.
 
 ### 4. Page-bundle completeness is not automatically validated
@@ -80,7 +82,7 @@ Game Studies now has a canonical Humanities home. Cognitive Science, Bioinformat
 ## Recommended implementation order
 
 1. Build curriculum-node vocabulary registration and automatic ancestor aggregation.
-2. Migrate one API-backed collection onto the new collection contract and exercise failure/freshness states.
+2. Migrate MusicBrainz onto the proven provider contract, then continue repository by repository.
 3. Define generated-practice and answer-checking primitives using one mathematics lesson as the first implementation.
 4. Add the page-development manifest and architecture validations.
 5. Apply the full bundle contract to one newly built page, then one legacy-page renovation.

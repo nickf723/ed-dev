@@ -139,6 +139,26 @@ Verify:
 
 ---
 
+### Visual Arts museum collection
+
+**Route:** `/humanities/visual-arts`
+
+Verify:
+
+- the curated teaching wall identifies itself before any provider search
+- a Met search reports sampled records separately from the provider's total match count
+- cached and partial provider states remain legible without dominating the artworks
+- department, medium, and image-rights facets appear only when at least two values are available
+- facet counts remain contextual and clearing filters restores the provider sample
+- a valid zero-result search stays distinct from an upstream failure
+- a failed or rate-limited request switches to the explicitly labeled curated fallback wall
+- rapidly starting a second search cannot allow the first response to overwrite it
+- source links, retrieval time, record metadata, images, and detail drawers remain usable at narrow widths
+
+**Status:** Verification required
+
+---
+
 ## Priority 0: constitution-built Algebra lessons
 
 These lessons were built or substantially rebuilt without a trusted rendered preview. Their instructional structure is intentional; visual claims remain provisional until inspected.
