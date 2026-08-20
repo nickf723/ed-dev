@@ -58,14 +58,15 @@ const GOALS = {
 
 const FIT_META: Record<Fit, { label: string; rgb: string; description: string }> = {
   direct: { label: "direct", rgb: "52,211,153", description: "The task closely samples the stated performance." },
-  partial: { label: "partial", rgb: "251,191,36", description: "The task provides related opportunity or evidence, but does not fully sample the stated performance." },
-  weak: { label: "weak", rgb: "148,163,184", description: "The task may support learning or provide information, but it is a poor direct sample of this stated goal." },
+  partial: { label: "partial", rgb: "251,191,36", description: "The task is related, but it samples only part of the stated performance." },
+  weak: { label: "weak", rgb: "148,163,184", description: "The task may still support learning, but it is a poor direct sample of this goal." },
 };
 
 export default function LearningAlignmentLab() {
   const [goalKey, setGoalKey] = useState<GoalKey>("explanation");
   const [activityKey, setActivityKey] = useState<ActivityKey>("explain");
   const [evidenceKey, setEvidenceKey] = useState<EvidenceKey>("explanation");
+
   const goal = GOALS[goalKey];
   const activity = ACTIVITIES.find((item) => item.key === activityKey) ?? ACTIVITIES[0];
   const evidence = EVIDENCE_TASKS.find((item) => item.key === evidenceKey) ?? EVIDENCE_TASKS[0];
@@ -73,50 +74,67 @@ export default function LearningAlignmentLab() {
   const evidenceFit = FIT_META[goal.evidence[evidenceKey]];
 
   const nextMove = useMemo(() => {
-    if (goal.evidence[evidenceKey] === "weak") return "The evidence task does not directly ask learners to show the stated goal. Revise the evidence before interpreting a low or high score as mastery.";
+    if (goal.evidence[evidenceKey] === "weak") return "The evidence task does not directly ask learners to show the stated goal. Revise the evidence before interpreting a score as mastery.";
     if (goal.activity[activityKey] === "weak") return "The learning activity offers little direct practice of the stated goal. Add an opportunity to perform the target before the assessment.";
     if (goal.evidence[evidenceKey] === "partial" || goal.activity[activityKey] === "partial") return "The pieces are related but not fully aligned. Decide whether the goal is too broad, the activity is only preparatory, or the evidence samples only part of the intended performance.";
-    return "Goal, practice opportunity, and evidence are directly aligned in this toy example. That still does not guarantee learning: prior knowledge, task quality, accessibility, feedback, motivation, time, context, and interpretation still matter.";
+    return "Goal, practice opportunity, and evidence are directly aligned in this toy example. That still does not guarantee learning: prior knowledge, task quality, accessibility, feedback, motivation, time, and context still matter.";
   }, [activityKey, evidenceKey, goal]);
 
   return (
-    <Surface variant="glass" className="overflow-hidden rounded-[30px] border-blue-100/[0.10]" style={{ background: "rgba(7,9,17,0.29)" }}>
-      <div className="grid border-b border-white/[0.07] lg:grid-cols-[minmax(0,1fr)_320px]">
-        <div className="p-5 sm:p-6">
-          <div className="flex items-center gap-2 font-mono text-[11px] font-semibold uppercase tracking-[0.10em] text-blue-100/56"><Target size={13} /> Alignment studio</div>
-          <h3 className="mt-2 text-[clamp(1.7rem,2.9vw,2.8rem)] font-semibold tracking-[-0.045em] text-white">If the goal changes, the evidence should probably change too.</h3>
-          <p className="mt-3 max-w-3xl text-[13px] leading-6 text-slate-400/76">Choose a generic learning goal, an activity, and an evidence task. The lab checks only direct alignment between the stated performance and the task. It does not rank teaching methods or predict learning.</p>
+    <Surface variant="glass" className="overflow-hidden rounded-[26px] border-blue-100/[0.10]" style={{ background: "rgba(7,9,17,0.29)" }}>
+      <div className="grid border-b border-white/[0.07] lg:grid-cols-[minmax(0,1fr)_310px]">
+        <div className="p-4 sm:p-5">
+          <div className="flex items-center gap-2 font-mono text-[10px] font-semibold uppercase tracking-[0.08em] text-blue-100/60"><Target size={13} /> Alignment studio</div>
+          <h3 className="mt-1.5 text-[clamp(1.5rem,2.6vw,2.35rem)] font-semibold tracking-[-0.04em] text-white">If the goal changes, the evidence should probably change too.</h3>
+          <p className="mt-2 max-w-3xl text-[14px] leading-6 text-slate-300/78">Choose a learning goal, an activity, and an evidence task. The readout checks direct alignment between the stated performance and the task. It does not rank teaching methods or predict learning.</p>
         </div>
-        <div className="border-t border-white/[0.07] bg-black/[0.055] p-5 lg:border-l lg:border-t-0">
-          <span className="font-mono text-[10px] uppercase tracking-[0.08em] text-slate-600">Learning target</span>
-          <strong className="mt-2 block text-[17px]" style={{ color: `rgb(${goal.rgb})` }}>{goal.label}</strong>
-          <p className="mt-2 text-[11px] leading-5 text-slate-500">{goal.target}</p>
+        <div className="border-t border-white/[0.07] bg-black/[0.055] p-4 lg:border-l lg:border-t-0">
+          <span className="font-mono text-[9px] uppercase tracking-[0.07em] text-slate-500">Learning target</span>
+          <strong className="mt-1.5 block text-[18px]" style={{ color: `rgb(${goal.rgb})` }}>{goal.label}</strong>
+          <p className="mt-1.5 text-[13px] leading-5 text-slate-400">{goal.target}</p>
         </div>
       </div>
 
-      <div className="grid gap-5 p-4 xl:grid-cols-[190px_minmax(0,1fr)_300px] sm:p-5">
+      <div className="grid gap-3 p-3 sm:p-4 xl:grid-cols-[165px_minmax(0,1fr)_300px]">
         <div>
-          <div className="font-mono text-[10px] font-semibold uppercase tracking-[0.08em] text-slate-600">1 · Goal</div>
-          <div className="mt-3 space-y-2">
+          <div className="font-mono text-[9px] font-semibold uppercase tracking-[0.07em] text-slate-500">1 · Goal</div>
+          <div className="mt-2 space-y-1.5">
             {(Object.keys(GOALS) as GoalKey[]).map((key) => {
               const item = GOALS[key];
               const active = key === goalKey;
-              return <button key={key} type="button" onClick={() => setGoalKey(key)} className="w-full border px-3 py-2.5 text-left text-[11px] font-semibold transition" style={{ color: active ? `rgb(${item.rgb})` : "rgba(203,213,225,0.65)", borderColor: active ? `rgba(${item.rgb},0.30)` : "rgba(255,255,255,0.06)", background: active ? `rgba(${item.rgb},0.05)` : "rgba(0,0,0,0.03)" }}>{item.label}</button>;
+              return (
+                <button
+                  key={key}
+                  type="button"
+                  onClick={() => setGoalKey(key)}
+                  className="w-full border px-3 py-2.5 text-left text-[13px] font-semibold transition"
+                  style={{
+                    color: active ? `rgb(${item.rgb})` : "rgba(203,213,225,0.72)",
+                    borderColor: active ? `rgba(${item.rgb},0.30)` : "rgba(255,255,255,0.06)",
+                    background: active ? `rgba(${item.rgb},0.05)` : "rgba(0,0,0,0.03)",
+                  }}
+                >
+                  {item.label}
+                </button>
+              );
             })}
           </div>
         </div>
 
-        <div className="grid gap-4 md:grid-cols-2">
+        <div className="grid gap-3 md:grid-cols-2">
           <Selector icon={BookOpenCheck} eyebrow="2 · Learning activity" items={ACTIVITIES} selectedKey={activityKey} onSelect={(key) => setActivityKey(key as ActivityKey)} />
           <Selector icon={ClipboardCheck} eyebrow="3 · Evidence task" items={EVIDENCE_TASKS} selectedKey={evidenceKey} onSelect={(key) => setEvidenceKey(key as EvidenceKey)} />
         </div>
 
-        <div className="border border-white/[0.065] bg-black/[0.045] p-4">
-          <div className="flex items-center gap-2 font-mono text-[10px] font-semibold uppercase tracking-[0.08em] text-slate-600"><Layers3 size={12} /> Alignment readout</div>
+        <div className="border border-white/[0.065] bg-black/[0.045] p-4 xl:sticky xl:top-[172px] xl:self-start">
+          <div className="flex items-center gap-2 font-mono text-[9px] font-semibold uppercase tracking-[0.07em] text-slate-500"><Layers3 size={12} /> Alignment readout</div>
           <FitReadout label="Practice opportunity" fit={activityFit} item={activity.label} />
           <FitReadout label="Evidence directness" fit={evidenceFit} item={evidence.label} />
-          <div className="mt-5 border-t border-white/[0.06] pt-3"><strong className="text-[10px] uppercase tracking-[0.05em] text-blue-100/54">Next design question</strong><p className="mt-2 text-[11px] leading-5 text-slate-500">{nextMove}</p></div>
-          <p className="mt-4 text-[9px] leading-4 text-slate-700">“Direct” means directly aligned to the wording of this toy target. It does not mean universally superior, valid for every learner, or sufficient by itself.</p>
+          <div className="mt-4 border-t border-white/[0.06] pt-3">
+            <strong className="text-[10px] uppercase tracking-[0.05em] text-blue-100/60">Next design question</strong>
+            <p className="mt-2 text-[12px] leading-5 text-slate-400">{nextMove}</p>
+          </div>
+          <p className="mt-3 text-[10px] leading-4 text-slate-600">“Direct” means directly aligned to this toy target. It does not mean universally superior or sufficient by itself.</p>
         </div>
       </div>
     </Surface>
@@ -124,9 +142,35 @@ export default function LearningAlignmentLab() {
 }
 
 function Selector({ icon: Icon, eyebrow, items, selectedKey, onSelect }: { icon: typeof BookOpenCheck; eyebrow: string; items: readonly { key: string; label: string; note: string }[]; selectedKey: string; onSelect: (key: string) => void }) {
-  return <div className="border border-white/[0.06] bg-black/[0.035] p-3"><div className="flex items-center gap-2 font-mono text-[10px] font-semibold uppercase tracking-[0.07em] text-slate-600"><Icon size={11} /> {eyebrow}</div><div className="mt-3 space-y-1.5">{items.map((item) => <button key={item.key} type="button" onClick={() => onSelect(item.key)} className={`w-full border px-2.5 py-2.5 text-left transition ${selectedKey === item.key ? "border-blue-300/24 bg-blue-300/[0.045]" : "border-white/[0.055] bg-black/[0.02]"}`}><strong className="block text-[10px] text-white/74">{item.label}</strong><span className="mt-1 block text-[9px] leading-4 text-slate-600">{item.note}</span></button>)}</div></div>;
+  return (
+    <div className="border border-white/[0.06] bg-black/[0.035] p-3">
+      <div className="flex items-center gap-2 font-mono text-[9px] font-semibold uppercase tracking-[0.06em] text-slate-500"><Icon size={12} /> {eyebrow}</div>
+      <div className="mt-2 space-y-1.5">
+        {items.map((item) => (
+          <button
+            key={item.key}
+            type="button"
+            onClick={() => onSelect(item.key)}
+            className={`w-full border px-3 py-2 text-left transition ${selectedKey === item.key ? "border-blue-300/24 bg-blue-300/[0.045]" : "border-white/[0.055] bg-black/[0.02]"}`}
+          >
+            <strong className="block text-[12px] leading-4 text-white/82">{item.label}</strong>
+            <span className="mt-1 block text-[10px] leading-4 text-slate-500">{item.note}</span>
+          </button>
+        ))}
+      </div>
+    </div>
+  );
 }
 
 function FitReadout({ label, fit, item }: { label: string; fit: { label: string; rgb: string; description: string }; item: string }) {
-  return <div className="mt-4"><div className="flex items-center justify-between gap-3"><span className="text-[10px] text-slate-500">{label}</span><span className="border px-2 py-1 font-mono text-[9px] uppercase" style={{ color: `rgb(${fit.rgb})`, borderColor: `rgba(${fit.rgb},0.25)`, background: `rgba(${fit.rgb},0.04)` }}>{fit.label}</span></div><strong className="mt-1.5 block text-[11px] text-white/76">{item}</strong><p className="mt-1 text-[9px] leading-4 text-slate-600">{fit.description}</p></div>;
+  return (
+    <div className="mt-4">
+      <div className="flex items-center justify-between gap-3">
+        <span className="text-[11px] text-slate-400">{label}</span>
+        <span className="border px-2 py-1 font-mono text-[9px] uppercase" style={{ color: `rgb(${fit.rgb})`, borderColor: `rgba(${fit.rgb},0.25)`, background: `rgba(${fit.rgb},0.04)` }}>{fit.label}</span>
+      </div>
+      <strong className="mt-1.5 block text-[13px] leading-5 text-white/82">{item}</strong>
+      <p className="mt-1 text-[11px] leading-5 text-slate-500">{fit.description}</p>
+    </div>
+  );
 }
