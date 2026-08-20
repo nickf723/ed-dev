@@ -11,7 +11,7 @@
     "audit:architecture": "node scripts/audit-site-architecture.mjs",
     "audit:readability": "node scripts/audit-page-readability.mjs",
     "test:vocabulary": "node scripts/test-vocabulary-aggregation.mjs",
-    "test:collections": "node scripts/test-collection-query.mjs && node scripts/test-collection-result.mjs && node scripts/test-musicbrainz-adapter.mjs && node scripts/test-inaturalist-adapter.mjs"
+    "test:collections": "node scripts/test-collection-query.mjs && node scripts/test-collection-result.mjs && node scripts/test-musicbrainz-adapter.mjs && node scripts/test-inaturalist-adapter.mjs && node scripts/test-pubchem-elements-adapter.mjs"
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",

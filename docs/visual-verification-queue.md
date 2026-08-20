@@ -459,3 +459,11 @@ Whenever a page changes without reliable visual verification:
 **Check:** Desktop and mobile layouts; habitat/lineage/ecology lens changes; collection loading; partial live-enrichment notice; global search with provider-wide count; class filter and all sort modes; empty, curated fallback, rate-limited, failed, and image-missing states; animal detail modal and keyboard focus.
 
 **Status:** Structural validation required in this pass; rendered verification pending.
+
+### Chemistry periodic-table collection
+
+**Route:** `/natural-science/chemistry`
+
+**Check:** Desktop and narrow horizontal-table layouts; complete 118-element state; reviewed partial fallback state; provider error notice; name/symbol/atomic-number search; period, family, and standard-state filters alone and combined; contextual counts; empty/reset state; element selection and expanded inspector; keyboard traversal across visible table cells.
+
+**Status:** Structural validation required in this pass; rendered verification pending.
