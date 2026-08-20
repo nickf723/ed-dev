@@ -1,125 +1,157 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
-import { motion } from "framer-motion";
-import { Snowflake, MousePointer2 } from "lucide-react";
+
+import { useEffect, useMemo, useRef, useState, type MouseEvent } from "react";
+import { MousePointer2, Snowflake } from "lucide-react";
+
+const SIZE = 220;
+const MAX_ITER = 72;
+const X_MIN = -2.2;
+const X_MAX = 0.8;
+const Y_MIN = -1.5;
+const Y_MAX = 1.5;
 
 export default function FractalExplorer() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [coords, setCoords] = useState({ x: -0.8, y: 0.156 }); // A cool starting Julia set
+  const mandelbrotRef = useRef<HTMLCanvasElement>(null);
+  const juliaRef = useRef<HTMLCanvasElement>(null);
+  const [c, setC] = useState({ real: -0.745, imag: 0.113 });
 
   useEffect(() => {
-    const canvas = canvasRef.current;
+    const canvas = mandelbrotRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
+    renderMandelbrot(canvas);
+  }, []);
 
-    const w = 200;
-    const h = 200;
-    
-    // Optimization: Pre-calculate colors
-    const colors = new Uint32Array(256);
-    for(let i=0; i<256; i++) {
-        const r = i * 4;
-        const g = i * 2;
-        const b = 255 - i;
-        colors[i] = (255 << 24) | (b << 16) | (g << 8) | r;
-    }
+  useEffect(() => {
+    const canvas = juliaRef.current;
+    if (!canvas) return;
+    renderJulia(canvas, c.real, c.imag);
+  }, [c]);
 
-    const render = () => {
-      const imgData = ctx.createImageData(w, h);
-      const buf = new Uint32Array(imgData.data.buffer);
-      
-      // Render Julia Set for C = coords
-      // Z = Z^2 + C
-      
-      const cx = coords.x;
-      const cy = coords.y;
-      const maxIter = 64;
-      const scale = 3 / w;
+  const membership = useMemo(() => escapes(0, 0, c.real, c.imag, MAX_ITER) === MAX_ITER, [c]);
+  const dotLeft = ((c.real - X_MIN) / (X_MAX - X_MIN)) * 100;
+  const dotTop = ((Y_MAX - c.imag) / (Y_MAX - Y_MIN)) * 100;
 
-      for (let y = 0; y < h; y++) {
-        for (let x = 0; x < w; x++) {
-           let zx = (x - w / 2) * scale;
-           let zy = (y - h / 2) * scale;
-           
-           let iter = 0;
-           while (zx * zx + zy * zy < 4 && iter < maxIter) {
-             const xtemp = zx * zx - zy * zy + cx;
-             zy = 2 * zx * zy + cy;
-             zx = xtemp;
-             iter++;
-           }
-           
-           if (iter === maxIter) {
-               buf[y * w + x] = 0xFF000000;
-           } else {
-               buf[y * w + x] = colors[(iter * 8) % 256];
-           }
-        }
-      }
-      
-      ctx.putImageData(imgData, 0, 0);
-    };
-
-    requestAnimationFrame(render);
-
-  }, [coords]);
-
-  // Mouse handler for the control pad
-  const handleMouseMove = (e: React.MouseEvent) => {
-      const rect = e.currentTarget.getBoundingClientRect();
-      // Map 0..1 to -2..2 roughly
-      const x = ((e.clientX - rect.left) / rect.width) * 4 - 2;
-      const y = ((e.clientY - rect.top) / rect.height) * 4 - 2;
-      setCoords({ x, y });
-  };
+  function chooseFromPlane(event: MouseEvent<HTMLButtonElement>) {
+    const rect = event.currentTarget.getBoundingClientRect();
+    const nx = (event.clientX - rect.left) / rect.width;
+    const ny = (event.clientY - rect.top) / rect.height;
+    setC({
+      real: X_MIN + nx * (X_MAX - X_MIN),
+      imag: Y_MAX - ny * (Y_MAX - Y_MIN),
+    });
+  }
 
   return (
-    <div className="glass overflow-hidden rounded-xl border border-white/10 bg-neutral-900/80 backdrop-blur-xl">
-      <div className="border-b border-white/5 px-5 py-4 flex justify-between items-center">
-        <h3 className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-neutral-300">
-          <Snowflake size={14} className="text-blue-400" /> Julia Morph
-        </h3>
+    <section className="overflow-hidden rounded-[24px] border border-blue-100/[0.10] bg-[#060913]/72 backdrop-blur-xl">
+      <div className="grid gap-3 border-b border-white/[0.07] p-4 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-end">
+        <div>
+          <div className="flex items-center gap-2 font-mono text-[10px] font-semibold uppercase tracking-[0.09em] text-blue-200/68"><Snowflake size={13} /> Quadratic iteration explorer</div>
+          <h3 className="mt-2 text-[21px] font-semibold tracking-[-0.035em] text-white">Choose c in parameter space. Watch one Julia set change.</h3>
+        </div>
+        <span className="font-mono text-[9px] uppercase tracking-[0.06em] text-slate-500">zₙ₊₁ = zₙ² + c</span>
       </div>
 
-      <div className="p-6 flex flex-col items-center gap-6">
-        
-        {/* The Viewer */}
-        <div className="relative w-48 h-48 rounded-xl border border-white/10 overflow-hidden shadow-2xl">
-            <canvas ref={canvasRef} width={200} height={200} className="w-full h-full" />
-            <div className="absolute bottom-2 right-2 text-[9px] font-mono text-white bg-black/50 px-1 rounded">
-                {coords.x.toFixed(3)} + {coords.y.toFixed(3)}i
-            </div>
+      <div className="grid gap-5 p-4 xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_280px] sm:p-5">
+        <div>
+          <div className="mb-2 flex items-center justify-between gap-3"><strong className="text-[13px] text-white">Mandelbrot parameter plane</strong><span className="font-mono text-[9px] text-slate-500">vary c · start z₀ = 0</span></div>
+          <button type="button" onClick={chooseFromPlane} className="relative block w-full overflow-hidden rounded-[18px] border border-white/[0.07] bg-black/[0.20] text-left" aria-label="Choose a complex parameter c from the Mandelbrot plane">
+            <canvas ref={mandelbrotRef} width={SIZE} height={SIZE} className="aspect-square h-auto w-full [image-rendering:auto]" />
+            <span className="pointer-events-none absolute h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-white bg-fuchsia-400 shadow-[0_0_14px_rgba(217,70,239,0.75)]" style={{ left: `${Math.max(0, Math.min(100, dotLeft))}%`, top: `${Math.max(0, Math.min(100, dotTop))}%` }} />
+            <span className="pointer-events-none absolute bottom-2 left-2 flex items-center gap-1.5 rounded-full border border-white/[0.07] bg-black/55 px-2.5 py-1.5 font-mono text-[9px] uppercase tracking-[0.05em] text-white/60 backdrop-blur-sm"><MousePointer2 size={10} /> click parameter</span>
+          </button>
         </div>
 
-        {/* The Controller */}
-        <div 
-            className="relative w-full h-24 bg-neutral-950 rounded-lg border border-white/10 cursor-crosshair group"
-            onMouseMove={handleMouseMove}
-        >
-            {/* Grid lines */}
-            <div className="absolute inset-0 opacity-20 bg-[linear-gradient(to_right,#444_1px,transparent_1px),linear-gradient(to_bottom,#444_1px,transparent_1px)] bg-[size:20px_20px]" />
-            
-            {/* Mandelbrot Outline (Static Image or Overlay) */}
-            <div className="absolute inset-0 flex items-center justify-center opacity-10 pointer-events-none">
-                <div className="w-16 h-12 bg-white rounded-full blur-xl" />
-            </div>
-
-            {/* Cursor */}
-            <div 
-                className="absolute w-4 h-4 border-2 border-white rounded-full -ml-2 -mt-2 pointer-events-none shadow-[0_0_10px_white]"
-                style={{ 
-                    left: `${((coords.x + 2) / 4) * 100}%`, 
-                    top: `${((coords.y + 2) / 4) * 100}%` 
-                }}
-            />
-            
-            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-                <span className="text-[10px] text-white bg-black/50 px-2 py-1 rounded">Move to explore C-space</span>
-            </div>
+        <div>
+          <div className="mb-2 flex items-center justify-between gap-3"><strong className="text-[13px] text-white">Julia set for selected c</strong><span className="font-mono text-[9px] text-slate-500">fix c · vary z₀</span></div>
+          <div className="relative overflow-hidden rounded-[18px] border border-white/[0.07] bg-black/[0.20]">
+            <canvas ref={juliaRef} width={SIZE} height={SIZE} className="aspect-square h-auto w-full [image-rendering:auto]" />
+            <div className="absolute bottom-2 right-2 rounded-full border border-white/[0.07] bg-black/55 px-2.5 py-1.5 font-mono text-[9px] text-white/65 backdrop-blur-sm">c = {c.real.toFixed(3)} {c.imag >= 0 ? "+" : "−"} {Math.abs(c.imag).toFixed(3)}i</div>
+          </div>
         </div>
 
+        <aside className="xl:sticky xl:top-[172px] xl:self-start">
+          <div className="rounded-[17px] border border-white/[0.07] bg-black/[0.12] p-4">
+            <div className="font-mono text-[9px] uppercase tracking-[0.06em] text-slate-500">Selected parameter</div>
+            <strong className="mt-2 block font-mono text-[16px] text-blue-100/86">{c.real.toFixed(4)} {c.imag >= 0 ? "+" : "−"} {Math.abs(c.imag).toFixed(4)}i</strong>
+            <span className={`mt-2 inline-block rounded-full border px-2.5 py-1 font-mono text-[9px] uppercase tracking-[0.05em] ${membership ? "border-emerald-300/[0.16] text-emerald-300" : "border-amber-300/[0.16] text-amber-300"}`}>{membership ? "c appears inside M" : "critical orbit escapes"}</span>
+          </div>
+
+          <Control label="Re(c)" value={c.real} min={X_MIN} max={X_MAX} step={0.005} onChange={(real) => setC((current) => ({ ...current, real }))} />
+          <Control label="Im(c)" value={c.imag} min={Y_MIN} max={Y_MAX} step={0.005} onChange={(imag) => setC((current) => ({ ...current, imag }))} />
+
+          <div className="mt-4 border-l-2 border-blue-300/30 pl-3">
+            <strong className="text-[11px] text-blue-100/80">Same iteration, different question</strong>
+            <p className="mt-1 text-[11px] leading-5 text-slate-500">The Mandelbrot set marks c values for which the critical orbit starting at z₀ = 0 remains bounded under this quadratic iteration. A Julia set instead fixes c and asks which starting z₀ values remain bounded.</p>
+          </div>
+        </aside>
       </div>
-    </div>
+    </section>
   );
+}
+
+function Control({ label, value, min, max, step, onChange }: { label: string; value: number; min: number; max: number; step: number; onChange: (value: number) => void }) {
+  return <label className="mt-3 block rounded-[14px] border border-white/[0.06] bg-black/[0.10] p-3"><div className="flex items-center justify-between gap-3 font-mono text-[9px] uppercase tracking-[0.05em] text-slate-500"><span>{label}</span><span className="text-blue-100/72">{value.toFixed(3)}</span></div><input type="range" min={min} max={max} step={step} value={value} onChange={(event) => onChange(Number(event.target.value))} className="mt-3 h-2 w-full cursor-pointer appearance-none rounded-full bg-slate-800 accent-blue-400" aria-label={label} /></label>;
+}
+
+function renderMandelbrot(canvas: HTMLCanvasElement) {
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return;
+  const image = ctx.createImageData(SIZE, SIZE);
+  for (let py = 0; py < SIZE; py++) {
+    const imag = Y_MAX - (py / (SIZE - 1)) * (Y_MAX - Y_MIN);
+    for (let px = 0; px < SIZE; px++) {
+      const real = X_MIN + (px / (SIZE - 1)) * (X_MAX - X_MIN);
+      const iter = escapes(0, 0, real, imag, MAX_ITER);
+      paint(image.data, (py * SIZE + px) * 4, iter, MAX_ITER, "blue");
+    }
+  }
+  ctx.putImageData(image, 0, 0);
+}
+
+function renderJulia(canvas: HTMLCanvasElement, cReal: number, cImag: number) {
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return;
+  const image = ctx.createImageData(SIZE, SIZE);
+  for (let py = 0; py < SIZE; py++) {
+    const imag = 1.6 - (py / (SIZE - 1)) * 3.2;
+    for (let px = 0; px < SIZE; px++) {
+      const real = -1.6 + (px / (SIZE - 1)) * 3.2;
+      const iter = escapes(real, imag, cReal, cImag, MAX_ITER);
+      paint(image.data, (py * SIZE + px) * 4, iter, MAX_ITER, "violet");
+    }
+  }
+  ctx.putImageData(image, 0, 0);
+}
+
+function escapes(zReal: number, zImag: number, cReal: number, cImag: number, maxIter: number) {
+  let zr = zReal;
+  let zi = zImag;
+  for (let iter = 0; iter < maxIter; iter++) {
+    if (zr * zr + zi * zi > 4) return iter;
+    const nextReal = zr * zr - zi * zi + cReal;
+    zi = 2 * zr * zi + cImag;
+    zr = nextReal;
+  }
+  return maxIter;
+}
+
+function paint(data: Uint8ClampedArray, index: number, iter: number, maxIter: number, palette: "blue" | "violet") {
+  if (iter === maxIter) {
+    data[index] = 4;
+    data[index + 1] = 7;
+    data[index + 2] = 12;
+    data[index + 3] = 255;
+    return;
+  }
+  const t = iter / maxIter;
+  if (palette === "blue") {
+    data[index] = 24 + Math.round(55 * t);
+    data[index + 1] = 70 + Math.round(145 * t);
+    data[index + 2] = 105 + Math.round(150 * t);
+  } else {
+    data[index] = 65 + Math.round(165 * t);
+    data[index + 1] = 35 + Math.round(95 * t);
+    data[index + 2] = 95 + Math.round(155 * t);
+  }
+  data[index + 3] = 255;
 }

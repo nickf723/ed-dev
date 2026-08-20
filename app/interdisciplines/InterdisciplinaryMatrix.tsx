@@ -14,10 +14,8 @@ import {
   type Pairing,
 } from "./data";
 
-const CELL_SIZE = 12;
-const LABEL_WIDTH = 124;
-const INSPECTOR_WIDTH = 348;
-const INSPECTOR_GAP = 28;
+const CELL_SIZE = 14;
+const LABEL_WIDTH = 144;
 
 type DisplayCell = Pairing & { pure?: boolean };
 
@@ -55,7 +53,6 @@ export default function InterdisciplinaryMatrix({ axes }: { axes: readonly Matri
   })).filter((group) => group.axes.length > 0);
 
   const matrixWidth = LABEL_WIDTH + axes.length * CELL_SIZE;
-  const contentWidth = matrixWidth + INSPECTOR_GAP + INSPECTOR_WIDTH;
   const activeIds = new Set([activeA?.id, activeB?.id].filter(Boolean));
 
   return (
@@ -63,16 +60,16 @@ export default function InterdisciplinaryMatrix({ axes }: { axes: readonly Matri
       <div className="pointer-events-none absolute inset-0 opacity-35 [background-image:linear-gradient(rgba(251,146,60,0.022)_1px,transparent_1px),linear-gradient(90deg,rgba(251,146,60,0.022)_1px,transparent_1px)] [background-size:30px_30px]" />
       <div className="pointer-events-none absolute right-[6%] top-[8%] h-72 w-72 rounded-full bg-orange-400/[0.045] blur-3xl" />
 
-      <div className="relative h-full overflow-auto p-3 custom-scrollbar sm:p-4">
-        <div className="relative mx-auto" style={{ width: contentWidth, minWidth: contentWidth }}>
-          <div style={{ width: matrixWidth }}>
+      <div className="relative grid min-h-0 gap-4 p-3 sm:p-4 xl:h-full xl:grid-cols-[minmax(0,1fr)_360px] xl:items-start">
+        <div className="min-h-0 overflow-auto rounded-[18px] border border-white/[0.045] bg-black/[0.08] custom-scrollbar xl:h-full">
+          <div className="p-3 sm:p-4" style={{ width: matrixWidth, minWidth: matrixWidth }}>
             <div className="flex" style={{ marginLeft: LABEL_WIDTH }}>
               {groups.map((group) => {
                 const meta = DOMAIN_META[group.domainId];
                 return (
                   <div
                     key={group.domainId}
-                    className="flex h-5 items-center border-b px-1.5 font-mono text-[6px] uppercase tracking-[0.14em]"
+                    className="flex h-7 items-center border-b px-1.5 font-mono text-[8px] font-semibold uppercase tracking-[0.10em]"
                     style={{
                       width: group.axes.length * CELL_SIZE,
                       color: `rgb(${meta.rgb})`,
@@ -87,7 +84,7 @@ export default function InterdisciplinaryMatrix({ axes }: { axes: readonly Matri
             </div>
 
             <div className="flex">
-              <div className="h-10 shrink-0 border-b border-r border-white/[0.06]" style={{ width: LABEL_WIDTH }} />
+              <div className="h-12 shrink-0 border-b border-r border-white/[0.06]" style={{ width: LABEL_WIDTH }} />
               {axes.map((axis, index) => {
                 const meta = DOMAIN_META[axis.domainId];
                 const groupStart = index === 0 || axes[index - 1]?.domainId !== axis.domainId;
@@ -95,16 +92,16 @@ export default function InterdisciplinaryMatrix({ axes }: { axes: readonly Matri
                   <div
                     key={`column-${axis.id}`}
                     title={axis.label}
-                    className="relative flex h-10 shrink-0 items-end justify-center border-b border-white/[0.05] pb-1"
+                    className="relative flex h-12 shrink-0 items-end justify-center border-b border-white/[0.05] pb-1.5"
                     style={{
                       width: CELL_SIZE,
                       borderLeft: groupStart ? `1px solid rgba(${meta.rgb},0.24)` : undefined,
                     }}
                   >
                     <span
-                      className="max-h-9 truncate font-mono text-[5px] font-semibold uppercase tracking-[0.06em]"
+                      className="max-h-10 truncate font-mono text-[7px] font-semibold uppercase tracking-[0.04em]"
                       style={{
-                        color: `rgba(${meta.rgb},0.70)`,
+                        color: `rgba(${meta.rgb},0.78)`,
                         writingMode: "vertical-rl",
                         transform: "rotate(180deg)",
                       }}
@@ -129,10 +126,10 @@ export default function InterdisciplinaryMatrix({ axes }: { axes: readonly Matri
                       style={{
                         width: LABEL_WIDTH,
                         borderTop: rowGroupStart ? `1px solid rgba(${rowMeta.rgb},0.28)` : undefined,
-                        background: activeIds.has(row.id) ? `rgba(${rowMeta.rgb},0.065)` : undefined,
+                        background: activeIds.has(row.id) ? `rgba(${rowMeta.rgb},0.075)` : undefined,
                       }}
                     >
-                      <span className="truncate pl-2 text-[7px] font-medium text-slate-500">{row.label}</span>
+                      <span className="truncate pl-2 text-[9px] font-medium text-slate-400">{row.label}</span>
                       <span
                         className="ml-2 h-1.5 w-1.5 shrink-0 rounded-full"
                         style={{ background: `rgb(${rowMeta.rgb})`, opacity: activeIds.has(row.id) ? 1 : 0.58 }}
@@ -158,7 +155,7 @@ export default function InterdisciplinaryMatrix({ axes }: { axes: readonly Matri
                               height: CELL_SIZE,
                               borderLeft: colGroupStart ? `1px solid rgba(${colMeta.rgb},0.18)` : undefined,
                               borderTop: rowGroupStart ? `1px solid rgba(${rowMeta.rgb},0.18)` : undefined,
-                              background: inCrosshair ? "rgba(251,146,60,0.024)" : "rgba(0,0,0,0.08)",
+                              background: inCrosshair ? "rgba(251,146,60,0.028)" : "rgba(0,0,0,0.08)",
                             }}
                           />
                         );
@@ -173,7 +170,7 @@ export default function InterdisciplinaryMatrix({ axes }: { axes: readonly Matri
                           onMouseEnter={() => setActiveKey(key)}
                           onFocus={() => setActiveKey(key)}
                           onClick={() => setActiveKey(key)}
-                          className="relative flex shrink-0 items-center justify-center border-b border-r transition-transform hover:z-20 hover:scale-[1.45] focus:z-20 focus:scale-[1.45] focus:outline-none"
+                          className="relative flex shrink-0 items-center justify-center border-b border-r transition-transform hover:z-20 hover:scale-[1.38] focus:z-20 focus:scale-[1.38] focus:outline-none"
                           style={{
                             width: CELL_SIZE,
                             height: CELL_SIZE,
@@ -189,8 +186,8 @@ export default function InterdisciplinaryMatrix({ axes }: { axes: readonly Matri
                           <span
                             className="rounded-full"
                             style={{
-                              width: selected ? 4 : 3,
-                              height: selected ? 4 : 3,
+                              width: selected ? 5 : 3,
+                              height: selected ? 5 : 3,
                               background: pure ? `rgb(${rowMeta.rgb})` : "rgba(255,255,255,0.82)",
                               boxShadow: selected ? "0 0 7px rgba(255,255,255,0.85)" : undefined,
                             }}
@@ -203,51 +200,53 @@ export default function InterdisciplinaryMatrix({ axes }: { axes: readonly Matri
               })}
             </div>
           </div>
+        </div>
 
-          <aside
-            className="absolute right-0 top-0 overflow-hidden rounded-[22px] border border-orange-300/16 bg-[#0a0705]/82 p-5 shadow-[0_22px_60px_rgba(0,0,0,0.26)] backdrop-blur-xl"
-            style={{ width: INSPECTOR_WIDTH, minHeight: 318 }}
-          >
-            <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-orange-300/55 to-transparent" />
-            <div className="pointer-events-none absolute -right-16 -top-16 h-44 w-44 rounded-full bg-orange-400/[0.08] blur-3xl" />
+        <aside className="relative overflow-hidden rounded-[22px] border border-orange-300/16 bg-[#0a0705]/88 p-5 shadow-[0_22px_60px_rgba(0,0,0,0.26)] backdrop-blur-xl xl:sticky xl:top-0 xl:self-start">
+          <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-orange-300/55 to-transparent" />
+          <div className="pointer-events-none absolute -right-16 -top-16 h-44 w-44 rounded-full bg-orange-400/[0.08] blur-3xl" />
 
-            {activeA && activeB && current && CurrentIcon ? (
-              <div className="relative flex min-h-[278px] flex-col">
-                <div className="flex flex-wrap items-center gap-2">
-                  <AxisChip axis={activeA} />
-                  {activeA.id !== activeB.id ? (
-                    <>
-                      <Plus size={11} className="text-orange-300/55" />
-                      <AxisChip axis={activeB} />
-                    </>
-                  ) : null}
-                </div>
-
-                <div className="mt-5 flex items-start gap-4">
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-orange-300/14 bg-orange-400/[0.045] text-orange-100">
-                    <CurrentIcon size={22} strokeWidth={1.45} />
-                  </div>
-                  <div className="min-w-0">
-                    <h2 className="text-xl font-semibold tracking-[-0.035em] text-white">{current.title}</h2>
-                    <div className="mt-1 font-mono text-[7px] uppercase tracking-[0.14em] text-orange-300/55">{current.field}</div>
-                  </div>
-                </div>
-
-                <p className="mt-4 text-[12px] leading-5 text-slate-400">{current.desc}</p>
-
-                {current.href ? (
-                  <Link
-                    href={current.href}
-                    className="group mt-auto flex items-center justify-between rounded-xl border border-orange-300/16 bg-orange-400/[0.045] px-3 py-2.5 text-xs font-semibold text-orange-100 transition-colors hover:bg-orange-400/[0.08]"
-                  >
-                    Open {current.title}
-                    <ArrowRight size={13} className="transition-transform group-hover:translate-x-1" />
-                  </Link>
+          {activeA && activeB && current && CurrentIcon ? (
+            <div className="relative flex min-h-[330px] flex-col">
+              <div className="flex flex-wrap items-center gap-2">
+                <AxisChip axis={activeA} />
+                {activeA.id !== activeB.id ? (
+                  <>
+                    <Plus size={12} className="text-orange-300/55" />
+                    <AxisChip axis={activeB} />
+                  </>
                 ) : null}
               </div>
-            ) : null}
-          </aside>
-        </div>
+
+              <div className="mt-5 flex items-start gap-4">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-orange-300/14 bg-orange-400/[0.045] text-orange-100">
+                  <CurrentIcon size={22} strokeWidth={1.45} />
+                </div>
+                <div className="min-w-0">
+                  <h2 className="text-[22px] font-semibold tracking-[-0.035em] text-white">{current.title}</h2>
+                  <div className="mt-1 font-mono text-[10px] uppercase tracking-[0.10em] text-orange-300/58">{current.field}</div>
+                </div>
+              </div>
+
+              <p className="mt-4 text-[14px] leading-6 text-slate-300/72">{current.desc}</p>
+
+              <div className="mt-5 border-l-2 border-orange-300/28 pl-3">
+                <strong className="text-[11px] text-orange-100/78">What the overlap means</strong>
+                <p className="mt-1 text-[12px] leading-5 text-slate-500">The two axes are ingredients, not ownership claims. Interdisciplinary fields borrow questions, evidence, methods, and constraints from several established disciplines and often develop methods of their own.</p>
+              </div>
+
+              {current.href ? (
+                <Link
+                  href={current.href}
+                  className="group mt-auto flex items-center justify-between rounded-xl border border-orange-300/16 bg-orange-400/[0.045] px-3.5 py-3 text-[13px] font-semibold text-orange-100 transition-colors hover:bg-orange-400/[0.08]"
+                >
+                  Open {current.title}
+                  <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
+                </Link>
+              ) : null}
+            </div>
+          ) : null}
+        </aside>
       </div>
     </section>
   );
@@ -266,8 +265,8 @@ function AxisChip({ axis }: { axis: MatrixAxisSeed }) {
         background: `rgba(${meta.rgb},0.055)`,
       }}
     >
-      <Icon size={11} />
-      <span className="max-w-[112px] truncate text-[8px] font-semibold uppercase tracking-[0.08em]">{axis.label}</span>
+      <Icon size={12} />
+      <span className="max-w-[132px] truncate text-[10px] font-semibold uppercase tracking-[0.06em]">{axis.label}</span>
     </span>
   );
 }

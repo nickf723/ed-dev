@@ -1,24 +1,22 @@
-import { Braces, GitBranch, Box, Hash, Type, List, ShieldAlert, Book, Terminal } from "lucide-react";
+import { Book, Box, Braces, GitBranch, Hash, List, ShieldAlert, Type, type LucideIcon } from "lucide-react";
 
 export type CodeConcept = {
   id: string;
-  category: 'PRIMITIVES' | 'DATA STRUCTURES' | 'CONTROL FLOW' | 'MODULARITY';
+  category: "PRIMITIVES" | "DATA STRUCTURES" | "CONTROL FLOW" | "MODULARITY";
   title: string;
   desc: string;
-  icon: any;
+  icon: LucideIcon;
   snippet: string;
   output: string;
-  memory: { name: string, val: string, type: string }[]; // Visual Memory Stack
-  diagramQuery?: string;
+  memory: { name: string; val: string; type: string }[];
 };
 
 export const FUNDAMENTALS_DATA: CodeConcept[] = [
-  // --- PRIMITIVES ---
   {
     id: "prim_vars",
     category: "PRIMITIVES",
-    title: "Variables & Types",
-    desc: "Containers for storing data. Statically typed languages require defining the shape (int, float, bool) upfront.",
+    title: "Values, Variables & Types",
+    desc: "Programs manipulate values. Variables bind names to values, while type systems describe which values and operations are valid; languages differ in how explicitly and when types are checked.",
     icon: Hash,
     snippet: `int health = 100;
 string player = "Ready One";
@@ -27,152 +25,137 @@ bool is_alive = true;
 print(player + " HP: " + health);`,
     output: "> Ready One HP: 100",
     memory: [
-        { name: "health", val: "100", type: "int" },
-        { name: "player", val: "\"Ready One\"", type: "string" },
-        { name: "is_alive", val: "true", type: "bool" }
-    ]
+      { name: "health", val: "100", type: "int" },
+      { name: "player", val: "\"Ready One\"", type: "string" },
+      { name: "is_alive", val: "true", type: "bool" },
+    ],
   },
-
-  // --- DATA STRUCTURES ---
   {
     id: "ds_arrays",
     category: "DATA STRUCTURES",
-    title: "Arrays / Lists",
-    desc: "Ordered collections accessible by a numerical index (0-based). Efficient for ordered data.",
+    title: "Sequences / Lists",
+    desc: "Ordered collections preserve position. Different languages provide arrays, lists, vectors, or related sequence types with different storage and resizing behavior.",
     icon: List,
-    diagramQuery: "array memory allocation diagram",
     snippet: `string[] inventory = ["Sword", "Shield"];
 
-// Access Index 0
 print("Equipped: " + inventory[0]);
-
 inventory.push("Potion");`,
     output: "> Equipped: Sword",
     memory: [
-        { name: "inventory[0]", val: "\"Sword\"", type: "string" },
-        { name: "inventory[1]", val: "\"Shield\"", type: "string" },
-        { name: "inventory[2]", val: "\"Potion\"", type: "string" }
-    ]
+      { name: "inventory[0]", val: "\"Sword\"", type: "string" },
+      { name: "inventory[1]", val: "\"Shield\"", type: "string" },
+      { name: "inventory[2]", val: "\"Potion\"", type: "string" },
+    ],
   },
   {
     id: "ds_maps",
     category: "DATA STRUCTURES",
-    title: "Hash Maps",
-    desc: "Key-Value pairs. Data is retrieved by a unique key. O(1) lookup time.",
+    title: "Key–Value Maps",
+    desc: "Maps associate keys with values. Hash-table implementations often provide expected constant-time lookup under suitable hashing and load assumptions, while other map structures make different tradeoffs.",
     icon: Book,
-    diagramQuery: "hash table key value data structure",
     snippet: `map config = {
-    "vol": 80,
-    "diff": "Hard"
+  "vol": 80,
+  "diff": "Hard"
 };
 
 print("Volume: " + config["vol"]);`,
     output: "> Volume: 80",
     memory: [
-        { name: "key: vol", val: "80", type: "int" },
-        { name: "key: diff", val: "\"Hard\"", type: "string" }
-    ]
+      { name: "key: vol", val: "80", type: "int" },
+      { name: "key: diff", val: "\"Hard\"", type: "string" },
+    ],
   },
-
-  // --- CONTROL FLOW ---
   {
     id: "flow_if",
     category: "CONTROL FLOW",
     title: "Conditionals",
-    desc: "Branching logic. Code executes only if the boolean condition evaluates to True.",
+    desc: "Conditional control flow selects which operations execute according to a Boolean condition or another branching rule.",
     icon: GitBranch,
-    diagramQuery: "if else flowchart programming logic",
     snippet: `int ammo = 0;
 
 if (ammo > 0) {
-    fire();
+  fire();
 } else {
-    print("Click... Empty.");
-    reload();
+  print("Click... Empty.");
+  reload();
 }`,
     output: "> Click... Empty.",
     memory: [
-        { name: "ammo", val: "0", type: "int" },
-        { name: "condition", val: "false", type: "eval" }
-    ]
+      { name: "ammo", val: "0", type: "int" },
+      { name: "ammo > 0", val: "false", type: "bool" },
+    ],
   },
   {
     id: "flow_loop",
     category: "CONTROL FLOW",
-    title: "Loops",
-    desc: "Iteration. Repeating a block of code while a condition remains true.",
+    title: "Iteration",
+    desc: "Loops repeat operations according to a condition, collection, counter, iterator, event stream, or another source of successive work.",
     icon: Braces,
-    diagramQuery: "while loop logic flowchart",
     snippet: `int i = 3;
 while (i > 0) {
-    print("T-Minus " + i);
-    i--;
+  print("T-Minus " + i);
+  i--;
 }
 print("Liftoff");`,
     output: "> T-Minus 3\n> T-Minus 2\n> T-Minus 1\n> Liftoff",
     memory: [
-        { name: "i", val: "0", type: "int" },
-        { name: "status", val: "\"Liftoff\"", type: "output" }
-    ]
+      { name: "i", val: "0", type: "int" },
+      { name: "status", val: "\"Liftoff\"", type: "output" },
+    ],
   },
   {
     id: "flow_catch",
     category: "CONTROL FLOW",
-    title: "Error Handling",
-    desc: "Safety nets. Using Try/Catch blocks prevents the entire program from crashing on error.",
+    title: "Errors & Exceptions",
+    desc: "Programs need explicit failure behavior. Exception mechanisms are one way to transfer control when an operation cannot complete normally; they do not eliminate the need to design recovery and validation.",
     icon: ShieldAlert,
-    diagramQuery: "try catch exception handling diagram",
     snippet: `try {
-    connect_server();
+  connect_server();
 } catch (err) {
-    print("Error: " + err);
-    print("Offline Mode Active");
+  print("Error: " + err);
+  print("Offline Mode Active");
 }`,
-    output: "> Error: 404 Not Found\n> Offline Mode Active",
+    output: "> Error: connection failed\n> Offline Mode Active",
     memory: [
-        { name: "err", val: "\"404 Not Found\"", type: "error" },
-        { name: "state", val: "\"Offline\"", type: "enum" }
-    ]
+      { name: "err", val: "\"connection failed\"", type: "error" },
+      { name: "state", val: "\"Offline\"", type: "mode" },
+    ],
   },
-
-  // --- MODULARITY ---
   {
     id: "mod_func",
     category: "MODULARITY",
     title: "Functions",
-    desc: "Reusable logic. Functions accept arguments, process them, and return a result.",
+    desc: "Functions name reusable behavior, accept inputs, create local state, and may return outputs. They provide one of programming's most common abstraction boundaries.",
     icon: Box,
-    diagramQuery: "function call stack diagram",
     snippet: `function add(a, b) {
-    return a + b;
+  return a + b;
 }
 
 int result = add(10, 5);
 print("Sum: " + result);`,
     output: "> Sum: 15",
     memory: [
-        { name: "arg: a", val: "10", type: "int" },
-        { name: "arg: b", val: "5", type: "int" },
-        { name: "return", val: "15", type: "int" }
-    ]
+      { name: "arg: a", val: "10", type: "int" },
+      { name: "arg: b", val: "5", type: "int" },
+      { name: "result", val: "15", type: "int" },
+    ],
   },
   {
     id: "mod_class",
     category: "MODULARITY",
-    title: "Classes (OOP)",
-    desc: "Blueprints for objects. Encapsulates data (properties) and behavior (methods).",
+    title: "Objects & Classes",
+    desc: "Object-oriented languages can group data and behavior behind object interfaces. Classes are one common mechanism for constructing such objects, not a requirement of programming in general.",
     icon: Type,
-    diagramQuery: "object oriented programming class diagram",
     snippet: `class Droid {
-    string id;
-    constructor(id) { this.id = id; }
+  string id;
+  constructor(id) { this.id = id; }
 }
 
 Droid d1 = new Droid("R2");`,
     output: "> Droid Created: R2",
     memory: [
-        { name: "d1", val: "0x3F2A...", type: "ptr" },
-        { name: "d1.id", val: "\"R2\"", type: "string" }
-    ]
-  }
+      { name: "d1", val: "Droid instance", type: "object" },
+      { name: "d1.id", val: "\"R2\"", type: "string" },
+    ],
+  },
 ];

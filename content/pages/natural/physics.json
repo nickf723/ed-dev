@@ -1,0 +1,197 @@
+{
+  "version": 1,
+  "id": "natural.physics",
+  "nodeId": "natural.physics",
+  "route": "/natural-science/physics",
+  "depth": "subject-hub",
+  "identity": {
+    "title": "Physics",
+    "eyebrow": "Matter · motion · energy · fields · spacetime",
+    "subtitle": "Physics builds models of the physical world. Begin with the regime that matches the system: familiar macroscopic conditions, or the high-speed, strong-gravity, atomic, and subatomic regimes where classical assumptions stop working.",
+    "icon": "Atom",
+    "breadcrumbs": [
+      { "label": "Natural Science", "href": "/natural-science" },
+      { "label": "Physics" }
+    ]
+  },
+  "theme": {
+    "family": "physics",
+    "paletteId": "physics-field",
+    "typographyId": "scientific-instrument",
+    "accentRgb": "56, 189, 248",
+    "background": "field-grid",
+    "backgroundStrength": 0.82,
+    "density": "balanced",
+    "surface": "glass",
+    "surfaceOpacity": 0.11,
+    "panelRadius": "xl",
+    "sectionGap": "md",
+    "motion": "subtle",
+    "contentWidth": "standard",
+    "headerScale": "standard",
+    "borderStrength": "standard",
+    "shadow": "soft",
+    "displayFont": "mono",
+    "bodyFont": "sans",
+    "titleCase": "uppercase",
+    "eyebrowStyle": "dot"
+  },
+  "organization": {
+    "kind": "split-regimes",
+    "groupColumns": 2,
+    "itemColumns": 2,
+    "groups": [
+      {
+        "id": "classical",
+        "label": "Classical Physics",
+        "kicker": "Everyday regime",
+        "condition": "Best fit: ordinary speeds, macroscopic scales, and weak gravity.",
+        "description": "Classical models describe most everyday systems extremely well. They treat motion, fields, waves, and bulk matter with continuous quantities and deterministic laws.",
+        "accentRgb": "251, 146, 60",
+        "colorRole": "secondary",
+        "visual": "classical",
+        "items": [
+          {
+            "id": "mechanics",
+            "nodeId": "natural.physics.mechanics",
+            "label": "Mechanics",
+            "summary": "Describe motion, identify interactions, and track energy and momentum through physical systems.",
+            "icon": "Orbit",
+            "accentRgb": "251, 146, 60",
+            "colorRole": "secondary",
+            "status": "active",
+            "tags": ["motion", "forces", "energy"]
+          },
+          {
+            "id": "waves",
+            "nodeId": "natural.physics.waves-optics",
+            "label": "Waves & Optics",
+            "summary": "Study oscillation, propagation, interference, sound, light, reflection, refraction, and imaging.",
+            "icon": "Waves",
+            "accentRgb": "96, 165, 250",
+            "colorRole": "primary",
+            "status": "active",
+            "tags": ["oscillation", "light", "sound"]
+          },
+          {
+            "id": "thermodynamics",
+            "nodeId": "natural.physics.thermodynamics",
+            "label": "Thermodynamics",
+            "summary": "Connect microscopic motion to temperature, heat, internal energy, entropy, and macroscopic change.",
+            "icon": "Flame",
+            "accentRgb": "248, 113, 113",
+            "colorRole": "danger",
+            "status": "active",
+            "tags": ["temperature", "transfer", "entropy"]
+          },
+          {
+            "id": "electromagnetism",
+            "nodeId": "natural.physics.electromagnetism",
+            "label": "Electromagnetism",
+            "summary": "Model charge, electric and magnetic fields, circuits, induction, and electromagnetic radiation.",
+            "icon": "Zap",
+            "accentRgb": "34, 211, 238",
+            "colorRole": "primary",
+            "status": "active",
+            "tags": ["charge", "fields", "circuits"]
+          }
+        ]
+      },
+      {
+        "id": "modern",
+        "label": "Modern Physics",
+        "kicker": "Extended regime",
+        "condition": "Required for near-light speed, strong gravity, and atomic or subatomic scales.",
+        "description": "Modern physics extends the classical picture when its assumptions fail. Relativity changes spacetime; quantum theory changes how physical states and measurements behave.",
+        "accentRgb": "192, 132, 252",
+        "colorRole": "tertiary",
+        "visual": "modern",
+        "items": [
+          {
+            "id": "relativity",
+            "nodeId": "natural.physics.relativity",
+            "label": "Relativity",
+            "summary": "Rebuild space, time, motion, and gravity when speed or gravitational curvature becomes significant.",
+            "icon": "Hourglass",
+            "accentRgb": "167, 139, 250",
+            "colorRole": "tertiary",
+            "status": "active",
+            "tags": ["spacetime", "speed", "gravity"]
+          },
+          {
+            "id": "quantum",
+            "nodeId": "natural.physics.quantum-mechanics",
+            "label": "Quantum Physics",
+            "summary": "Describe states, amplitudes, quantization, uncertainty, measurement, and nonclassical behavior.",
+            "icon": "Atom",
+            "accentRgb": "232, 121, 249",
+            "colorRole": "quaternary",
+            "status": "active",
+            "tags": ["states", "probability", "measurement"]
+          },
+          {
+            "id": "atomic",
+            "nodeId": "natural.physics.atomic",
+            "label": "Atomic Physics",
+            "summary": "Apply quantum theory to electron structure, spectra, energy levels, transitions, and atom-light interactions.",
+            "icon": "RefreshCw",
+            "accentRgb": "52, 211, 153",
+            "colorRole": "success",
+            "status": "active",
+            "tags": ["electrons", "spectra", "photons"]
+          },
+          {
+            "id": "nuclear",
+            "nodeId": "natural.physics.nuclear",
+            "label": "Nuclear Physics",
+            "summary": "Study nuclei, binding energy, radioactivity, fission, fusion, and nuclear reactions.",
+            "icon": "Microscope",
+            "accentRgb": "244, 114, 182",
+            "colorRole": "danger",
+            "status": "active",
+            "tags": ["nuclei", "decay", "reactions"]
+          }
+        ]
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "model-guide",
+      "type": "model-guide",
+      "eyebrow": "Choosing a model",
+      "title": "The conditions tell you which theory to use.",
+      "summary": "A newer theory does not make an older one useless. It explains where the older model works, and what must change outside that range.",
+      "icon": "Gauge",
+      "choices": [
+        {
+          "id": "classical",
+          "question": "Are speeds far below light speed and gravity relatively weak?",
+          "answer": "Start with classical physics.",
+          "detail": "Mechanics, thermodynamics, electromagnetism, and waves cover most human-scale phenomena.",
+          "icon": "Orbit",
+          "accentRgb": "251, 146, 60",
+          "colorRole": "secondary"
+        },
+        {
+          "id": "relativity",
+          "question": "Are speeds close to light speed, or is gravity strongly curving spacetime?",
+          "answer": "Use relativity.",
+          "detail": "Special relativity handles inertial high-speed motion; general relativity handles gravity as geometry.",
+          "icon": "Hourglass",
+          "accentRgb": "167, 139, 250",
+          "colorRole": "tertiary"
+        },
+        {
+          "id": "quantum",
+          "question": "Does the system depend on atoms, nuclei, photons, or quantized states?",
+          "answer": "Use quantum physics.",
+          "detail": "Atomic and nuclear physics apply quantum rules to particular kinds of matter and interaction.",
+          "icon": "Atom",
+          "accentRgb": "232, 121, 249",
+          "colorRole": "quaternary"
+        }
+      ]
+    }
+  ]
+}

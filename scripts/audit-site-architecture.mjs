@@ -110,6 +110,25 @@ function curriculumRouteLiterals(files) {
   return routes;
 }
 
+function renderedHrefLiterals(files) {
+  const hrefs = [];
+  const hrefPattern = /\bhref\s*=\s*(?:\{\s*)?(["'`])([^"'`{}\n]+)\1(?:\s*\})?/g;
+
+  for (const file of files) {
+    const source = read(file);
+    for (const match of source.matchAll(hrefPattern)) {
+      const href = match[2].trim();
+      if (href) hrefs.push({ file, href });
+    }
+  }
+
+  return hrefs;
+}
+
+function isExternalHref(href) {
+  return href.startsWith("//") || /^[a-z][a-z0-9+.-]*:/i.test(href);
+}
+
 function printFileSection(title, files) {
   console.log(`\n${title} (${files.length})`);
   if (files.length === 0) {
@@ -136,6 +155,7 @@ const sourceFiles = [
 ].filter((file, index, all) => all.indexOf(file) === index);
 const sourceByFile = new Map(sourceFiles.map((file) => [file, read(file)]));
 
+const appSourceFiles = sourceFiles.filter((file) => relative(file).startsWith("app/"));
 const pageFiles = sourceFiles.filter((file) => relative(file).endsWith("/page.tsx"));
 const layoutFiles = sourceFiles.filter((file) => relative(file).endsWith("/layout.tsx"));
 const sharedComponents = sourceFiles.filter((file) => relative(file).startsWith("app/_components/"));
@@ -156,6 +176,13 @@ const concreteAcademicRoutes = new Set(
   concreteAcademicPages.map((info) => info.route),
 );
 const curriculumRoutes = curriculumRouteLiterals(walk(curriculumRoot));
+const renderedHrefs = renderedHrefLiterals(appSourceFiles);
+
+function hasPageForRoute(route) {
+  return routeInfos.some((info) =>
+    info.dynamic ? info.matcher.test(route) : info.route === route,
+  );
+}
 
 const manualBreadcrumbs = pageFiles.filter((file) => /breadcrumbs\s*=\s*\{/.test(sourceByFile.get(file) ?? ""));
 const hardcodedSequenceNavigation = pageFiles.filter((file) => /Previous lesson|Next lesson/.test(sourceByFile.get(file) ?? ""));
@@ -199,11 +226,36 @@ const dynamicAcademicRoutePages = dynamicAcademicPages
   .map((info) => `${info.route} ← ${relative(info.file)}`)
   .sort();
 
+const placeholderRenderedLinks = renderedHrefs
+  .filter(({ href }) => href === "#")
+  .map(({ file }) => relative(file))
+  .sort();
+
+const relativeInternalLinks = renderedHrefs
+  .filter(({ href }) =>
+    !href.startsWith("/") &&
+    !href.startsWith("#") &&
+    !href.startsWith("?") &&
+    !isExternalHref(href),
+  )
+  .map(({ file, href }) => `${href} ← ${relative(file)}`)
+  .sort();
+
+const academicLinksWithoutPage = renderedHrefs
+  .filter(({ href }) => href.startsWith("/"))
+  .map(({ file, href }) => ({ file, route: normalizeRoute(href) }))
+  .filter(({ route }) => isAcademicRoute(route))
+  .filter(({ route }) => !hasPageForRoute(route))
+  .map(({ file, route }) => `${route} ← ${relative(file)}`)
+  .filter((value, index, all) => all.indexOf(value) === index)
+  .sort();
+
 console.log("Education Station 64 — site architecture audit");
 console.log("Informational only: findings describe migration debt and do not fail the command.");
 console.log(`\nRoute pages scanned: ${pageFiles.length}`);
 console.log(`Source files scanned: ${sourceFiles.length}`);
 console.log(`Curriculum route literals scanned: ${curriculumRoutes.size}`);
+console.log(`Rendered href literals scanned: ${renderedHrefs.length}`);
 
 printFileSection("Pages manually declaring breadcrumbs", manualBreadcrumbs);
 printFileSection("Pages containing hard-coded previous/next lesson language", hardcodedSequenceNavigation);
@@ -212,7 +264,16 @@ printFileSection("Shared components rendering a <main> landmark", sharedMainLand
 printFileSection("Client components importing the curriculum registry directly", clientRegistryImports);
 printFileSection("Shared components hard-coding curriculum node IDs", sharedCurriculumIdSpecialCases);
 printFileSection("Top-level shared components with no direct import reference", unusedTopLevelSharedComponents);
+printFileSection("Source files rendering placeholder href=\"#\" links", placeholderRenderedLinks.map((entry) => path.join(ROOT, entry)));
 
+printValueSection(
+  "Rendered relative internal hrefs that should be reviewed",
+  relativeInternalLinks,
+);
+printValueSection(
+  "Rendered academic links without a matching page route",
+  academicLinksWithoutPage,
+);
 printValueSection(
   "Concrete academic page routes missing a curriculum route literal",
   pageRoutesMissingCurriculum,
@@ -228,6 +289,9 @@ printValueSection(
 
 console.log("\nInterpretation");
 console.log("  • Breadcrumb and sequence findings are migration candidates, not automatic bugs.");
+console.log("  • Rendered href=\"#\" values are almost always unfinished navigation or controls masquerading as links.");
+console.log("  • Relative internal hrefs are risky in the App Router because their destination depends on the current URL; prefer canonical absolute routes unless relativity is intentional.");
+console.log("  • Academic hrefs without page targets are strong dead-navigation candidates; planned curriculum nodes should normally be visible without becoming clickable links.");
 console.log("  • Pathname policy lists should move toward stable node-ID page policy when practical.");
 console.log("  • Shared <main> findings require semantic review because route pages should normally own the page-level main landmark.");
 console.log("  • Client registry imports are worth reviewing for smaller server-resolved page-context contracts.");

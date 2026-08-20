@@ -1,161 +1,119 @@
-"use client";
-import React, { useState } from "react";
 import Link from "next/link";
+import type { LucideIcon } from "lucide-react";
+import { ArrowRight, BarChart3, BookOpen, Compass, Eye, History, Layers3, Scale, ShieldCheck } from "lucide-react";
+import DomainPageHeader from "@/app/_components/DomainPageHeader";
+import { SceneFrame, Surface } from "@/app/_page-system/scene";
+import { FUTUROLOGY_CURRICULUM } from "@/lib/curriculum/humanities/futurology";
 import FuturologyBackground from "./FuturologyBackground";
-import { SCENARIOS, KARDASHEV_LEVELS } from "./futurology-data";
-import { ArrowLeft, Zap, Radio, AlertTriangle, TrendingUp, Clock } from "lucide-react";
+import ScenarioMatrixLab from "./ScenarioMatrixLab";
+import { FORECAST_HYGIENE, FUTURES_LENSES } from "./futurology-data";
+
+const RGB = [
+  "103,232,249",
+  "251,191,36",
+  "192,132,252",
+  "96,165,250",
+  "94,234,212",
+  "248,113,113",
+  "244,114,182",
+  "74,222,128",
+  "251,146,60",
+] as const;
+
+const PRINCIPLES = [
+  ["Possible is not probable", "A future can be imaginable without being likely. Scenarios, forecasts, risk cases, and preferred futures answer different questions and should not be labeled interchangeably."],
+  ["Long horizons widen uncertainty", "Small differences in assumptions, feedback, institutions, behavior, shocks, and technical change can compound. Precision should generally decrease when evidence does not support it."],
+  ["Trends can bend or break", "Extrapolation assumes some underlying structure continues. Saturation, policy, substitution, adaptation, feedback, conflict, innovation, or measurement changes can alter a trend."],
+  ["Values are not predictions", "A desired future is a normative claim. It can guide strategy and design, but describing what ought to happen is different from forecasting what will happen."],
+  ["Surprise is part of the subject", "Futures work should expose assumptions and dependencies so plans can adapt when reality departs from the scenario, rather than polishing one story until it looks inevitable."],
+  ["The present has agency", "Futures are shaped by decisions, institutions, investments, habits, technologies, conflicts, accidents, and collective action. Studying futures is partly studying which choices remain open now."],
+] as const;
 
 export default function FuturologyPage() {
-  const [civilizationLevel, setCivilizationLevel] = useState(0.73); // Current Humanity
-  const [activeScenario, setActiveScenario] = useState<string | null>(null);
+  const branches = FUTUROLOGY_CURRICULUM.children ?? [];
 
   return (
-    <main className="min-h-screen bg-[#05000a] text-fuchsia-100 font-sans pl-0 md:pl-80 relative overflow-hidden selection:bg-cyan-500/30">
-      
-      {/* 1. VISUAL ENGINE */}
-      <FuturologyBackground />
-      <div className="fixed inset-0 bg-gradient-to-b from-transparent via-transparent to-black pointer-events-none" />
-
-      <div className="relative z-10 p-6 md:p-12 min-h-screen flex flex-col">
-        
-        {/* HEADER */}
-        <header className="mb-12">
-            <Link href="/humanities" className="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-cyan-400 hover:text-white transition-colors mb-6">
-                <ArrowLeft size={10} /> Humanities Division
-            </Link>
-            <h1 className="text-5xl md:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-fuchsia-400 to-yellow-400 tracking-tighter mb-2 italic">
-                THE CHRONOSPHERE
-            </h1>
-            <p className="text-cyan-500/60 font-mono text-xs uppercase tracking-widest">
-                Forecasting // Predictive Modeling // Existential Risk
-            </p>
-        </header>
-
-        {/* KARDASHEV SCALE CALCULATOR */}
-        <section className="mb-16 p-8 rounded-2xl bg-black/40 border border-fuchsia-500/30 backdrop-blur-md relative overflow-hidden group">
-            {/* Holographic scanning effect */}
-            <div className="absolute top-0 left-0 w-full h-1 bg-cyan-400/50 blur-sm animate-scan pointer-events-none opacity-20" />
-
-            <div className="flex flex-col md:flex-row justify-between items-end mb-6">
-                <div>
-                    <h2 className="text-2xl font-bold text-white mb-2 flex items-center gap-2">
-                        <Radio className="text-fuchsia-500" /> Kardashev Scale
-                    </h2>
-                    <p className="text-sm text-stone-400 max-w-md">
-                        Measuring a civilization's level of technological advancement based on the amount of energy it is able to use.
-                    </p>
-                </div>
-                <div className="text-right mt-4 md:mt-0">
-                    <div className="text-[10px] font-mono uppercase text-cyan-500 mb-1">Current Status</div>
-                    <div className="text-4xl font-black text-white font-mono">TYPE {civilizationLevel.toFixed(2)}</div>
-                </div>
-            </div>
-
-            {/* The Slider / Bar */}
-            <div className="relative h-4 bg-stone-900 rounded-full overflow-hidden mb-8 border border-white/10">
-                <div 
-                    className="absolute top-0 left-0 h-full bg-gradient-to-r from-cyan-500 via-fuchsia-500 to-yellow-500 transition-all duration-1000 ease-out"
-                    style={{ width: `${(civilizationLevel / 3) * 100}%` }}
-                />
-                {/* Markers */}
-                {[0, 1, 2, 3].map(lvl => (
-                    <div key={lvl} className="absolute top-0 h-full w-0.5 bg-white/20" style={{ left: `${(lvl/3)*100}%` }} />
-                ))}
-            </div>
-
-            {/* Interactive Buttons to Advance Time */}
-            <div className="flex gap-4 overflow-x-auto pb-2">
-                {KARDASHEV_LEVELS.map((k) => (
-                    <button
-                        key={k.level}
-                        onClick={() => setCivilizationLevel(k.level + (k.level === 0 ? 0.73 : 0))}
-                        className={`
-                            flex-1 min-w-[200px] p-4 rounded border transition-all text-left
-                            ${civilizationLevel >= k.level && civilizationLevel < k.level + 1 
-                                ? "bg-fuchsia-900/40 border-fuchsia-500 text-white" 
-                                : "bg-black/40 border-white/5 text-stone-500 hover:border-white/20"}
-                        `}
-                    >
-                        <div className="text-[10px] font-bold uppercase tracking-widest mb-1">Type {k.level}</div>
-                        <div className="font-bold text-sm mb-2">{k.label}</div>
-                        <div className="text-[10px] opacity-60 font-mono">{k.energy}</div>
-                    </button>
-                ))}
-            </div>
-        </section>
-
-        {/* TIMELINE PREDICTIONS */}
-        <h3 className="text-xl font-bold text-white mb-8 flex items-center gap-2">
-            <Clock size={18} className="text-cyan-400" /> Probability Timeline
-        </h3>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pb-20">
-            {SCENARIOS.map((item) => {
-                const Icon = item.icon;
-                const isActive = activeScenario === item.id;
-                
-                return (
-                    <div 
-                        key={item.id}
-                        onClick={() => setActiveScenario(isActive ? null : item.id)}
-                        className={`
-                            group relative p-1 rounded-xl bg-gradient-to-br from-white/10 to-transparent hover:from-cyan-500/20 transition-all duration-300 cursor-pointer
-                            ${isActive ? 'scale-105 z-10' : 'hover:scale-105'}
-                        `}
-                    >
-                        <div className="relative h-full bg-[#0a0510] rounded-lg p-6 border border-white/5 group-hover:border-cyan-500/40 overflow-hidden">
-                            
-                            {/* Neon Glow on Active */}
-                            {isActive && <div className="absolute inset-0 bg-cyan-500/5 animate-pulse" />}
-
-                            {/* Header */}
-                            <div className="flex justify-between items-start mb-4">
-                                <div className="p-3 rounded-lg bg-black border border-white/10 group-hover:text-cyan-400 transition-colors">
-                                    <Icon size={24} />
-                                </div>
-                                <div className="text-right">
-                                    <div className="text-2xl font-black text-white">{item.year}</div>
-                                    <div className="text-[9px] font-mono text-fuchsia-400 uppercase">Estimated Arrival</div>
-                                </div>
-                            </div>
-
-                            <h3 className="text-xl font-bold text-white mb-2">{item.title}</h3>
-                            
-                            {/* Probability Bar */}
-                            <div className="mb-4">
-                                <div className="flex justify-between text-[10px] font-bold uppercase tracking-widest text-stone-500 mb-1">
-                                    <span>Probability</span>
-                                    <span className="text-cyan-400">{item.probability}%</span>
-                                </div>
-                                <div className="h-1.5 w-full bg-stone-900 rounded-full overflow-hidden">
-                                    <div 
-                                        className="h-full bg-gradient-to-r from-cyan-500 to-fuchsia-500" 
-                                        style={{ width: `${item.probability}%` }} 
-                                    />
-                                </div>
-                            </div>
-
-                            <p className="text-sm text-stone-400 leading-relaxed mb-4">
-                                {item.desc}
-                            </p>
-
-                            {/* Footer Tags */}
-                            <div className="flex gap-2 mt-auto pt-4 border-t border-white/5">
-                                <span className="px-2 py-1 rounded bg-white/5 text-[9px] font-bold uppercase text-stone-400 border border-white/5">
-                                    {item.category}
-                                </span>
-                                <span className={`px-2 py-1 rounded bg-white/5 text-[9px] font-bold uppercase border border-white/5 ${item.impact === 'EXTREME' || item.impact === 'UNCALCULABLE' ? 'text-red-400' : 'text-yellow-400'}`}>
-                                    Impact: {item.impact}
-                                </span>
-                            </div>
-
-                        </div>
-                    </div>
-                )
-            })}
+    <SceneFrame
+      background={<FuturologyBackground />}
+      className="bg-[#071019] text-slate-100 selection:bg-cyan-300/25"
+      maxWidthClassName="max-w-[1600px]"
+      headerBackground="rgba(7,16,25,0.49)"
+      header={
+        <DomainPageHeader
+          breadcrumbs={[{ label: "Home", href: "/" }, { label: "Humanities", href: "/humanities" }, { label: "Futurology" }]}
+          eyebrow="Signals · uncertainty · scenarios · forecasts · choices"
+          eyebrowStyle="rule"
+          icon={Compass}
+          title={<span>Futurology</span>}
+          subtitle="Explore possible futures systematically without confusing imagination with evidence. Futures studies combines scanning, scenarios, forecasting, systems thinking, technology assessment, risk analysis, history, and values to make uncertainty more explicit and decisions more robust."
+          accentRgb="103, 232, 249"
+          titleClassName="font-sans text-[clamp(3rem,5.5vw,6rem)] font-semibold leading-[0.84] tracking-[-0.065em] text-[#ecfeff]"
+          headerClassName="border-cyan-100/[0.10]"
+        />
+      }
+    >
+      <section className="relative isolate mt-5 overflow-hidden border-y border-cyan-100/[0.10] py-5">
+        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(7,16,25,0.46),transparent_31%,transparent_72%,rgba(18,10,25,0.34))] backdrop-blur-[2px]" />
+        <div className="relative grid gap-5 xl:grid-cols-[minmax(0,1fr)_350px] xl:items-end">
+          <div>
+            <div className="flex items-center gap-2 font-mono text-[11px] font-semibold uppercase tracking-[0.11em] text-cyan-200/62"><BookOpen size={14} /> Primary navigation · Chronosphere observatory</div>
+            <h2 className="mt-2 max-w-5xl text-[clamp(2rem,3.8vw,3.8rem)] font-semibold leading-[0.94] tracking-[-0.052em] text-white">The future is plural until evidence earns something narrower.</h2>
+            <p className="mt-3 max-w-4xl text-[14px] leading-6 text-slate-300/70">The observatory behind the page begins at one present and fans into several scenario corridors. They are deliberately equal in visual status. Weak signals, assumptions, uncertainties, and wild cards sit around the fan because the method should make its uncertainty visible rather than hide it behind a glowing destination.</p>
+          </div>
+          <div className="grid grid-cols-2 gap-2">
+            <Neighbor href="/humanities/history" icon={History} label="History" note="change, precedent, path dependence" />
+            <Neighbor href="/formal-science/data-science" icon={BarChart3} label="Data Science" note="models, inference, evaluation" />
+            <Neighbor href="/formal-science/systems-science" icon={Layers3} label="Systems Science" note="feedback, emergence, resilience" />
+            <Neighbor href="/humanities/philosophy" icon={Scale} label="Philosophy" note="values, ethics, knowledge claims" />
+          </div>
         </div>
 
-      </div>
-    </main>
+        <div className="relative mt-5 grid border-y border-white/[0.07] md:grid-cols-2 xl:grid-cols-3">
+          {branches.map((branch, index) => {
+            const rgb = RGB[index % RGB.length];
+            return <div key={branch.id} aria-disabled="true" className="min-h-[142px] border-b border-white/[0.06] px-4 py-4 backdrop-blur-[7px] md:border-r md:[&:nth-child(2n)]:border-r-0 xl:[&:nth-child(2n)]:border-r xl:[&:nth-child(3n)]:border-r-0"><div className="flex items-center justify-between gap-3"><span className="font-mono text-[10px] font-semibold" style={{ color: `rgba(${rgb},0.68)` }}>FT.{String(index + 1).padStart(2, "0")}</span><span className="font-mono text-[9px] uppercase tracking-[0.06em] text-slate-600">planned</span></div><strong className="mt-2 block text-[14px] text-white/84">{branch.label}</strong><p className="mt-2 text-[11px] leading-4 text-slate-500">{branch.description}</p></div>;
+          })}
+        </div>
+      </section>
+
+      <section className="mt-7">
+        <div className="mb-3 grid gap-3 lg:grid-cols-[minmax(0,1fr)_410px] lg:items-end">
+          <div><div className="font-mono text-[11px] font-semibold uppercase tracking-[0.10em] text-violet-200/58">Signature instrument · scenario planning</div><h2 className="mt-1 text-[24px] font-semibold tracking-[-0.04em] text-white">Use uncertainty to widen the test, not to manufacture percentages.</h2></div>
+          <p className="text-[12px] leading-5 text-slate-500">The fictional scenario matrix below demonstrates one common futures move: select important uncertainties, explore contrasting combinations, and ask what assumptions and strategies survive across them. It does not forecast 2045.</p>
+        </div>
+        <ScenarioMatrixLab />
+      </section>
+
+      <section className="mt-8 grid gap-6 xl:grid-cols-[minmax(0,1.15fr)_420px] xl:items-start">
+        <Surface variant="open" className="rounded-[28px] border-cyan-100/[0.08]" style={{ background: "rgba(7,16,25,0.025)" }}>
+          <div className="p-5"><div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.08em] text-cyan-200/50"><Eye size={12} /> Evidence vocabulary · not navigation</div><h3 className="mt-2 text-[21px] font-semibold tracking-[-0.035em] text-white">Name what kind of future claim you are looking at.</h3></div>
+          <div className="grid border-y border-white/[0.07] sm:grid-cols-2 xl:grid-cols-3">
+            {FUTURES_LENSES.map((lens) => <div key={lens.label} className="border-b border-white/[0.06] p-4 sm:border-r sm:[&:nth-child(2n)]:border-r-0 xl:[&:nth-child(2n)]:border-r xl:[&:nth-child(3n)]:border-r-0 xl:[&:nth-last-child(-n+3)]:border-b-0"><span className="font-mono text-[10px] uppercase tracking-[0.07em]" style={{ color: `rgba(${lens.rgb},0.62)` }}>{lens.label}</span><p className="mt-2 text-[11px] leading-5 text-slate-500">{lens.description}</p></div>)}
+          </div>
+        </Surface>
+
+        <Surface variant="glass" className="overflow-hidden rounded-[28px] border-violet-100/[0.09]" style={{ background: "rgba(12,10,25,0.13)" }}>
+          <div className="p-5"><div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.08em] text-violet-200/48"><ShieldCheck size={12} /> Forecast hygiene</div><h3 className="mt-2 text-[20px] font-semibold tracking-[-0.035em] text-white">A number deserves more scrutiny, not less.</h3></div>
+          <div className="divide-y divide-white/[0.06] border-y border-white/[0.07]">
+            {FORECAST_HYGIENE.map((item, index) => <div key={item} className="grid grid-cols-[34px_minmax(0,1fr)] gap-2 px-4 py-3"><span className="font-mono text-[10px] text-violet-200/38">0{index + 1}</span><p className="text-[11px] leading-5 text-slate-500">{item}</p></div>)}
+          </div>
+          <p className="p-5 text-[10px] leading-5 text-slate-600">The old page attached exact years and probabilities to speculative events without a forecasting model or source. Those values have been removed rather than restyled.</p>
+        </Surface>
+      </section>
+
+      <section className="mt-9 border-t border-cyan-100/[0.10] pt-5">
+        <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_430px] lg:items-end">
+          <div><div className="flex items-center gap-2 font-mono text-[11px] font-semibold uppercase tracking-[0.10em] text-amber-200/54"><Compass size={13} /> Futures principles · reference, not navigation</div><h2 className="mt-2 max-w-4xl text-[clamp(1.8rem,3.2vw,3rem)] font-semibold leading-[0.96] tracking-[-0.048em] text-white">Good futures work makes uncertainty easier to see, not easier to forget.</h2></div>
+          <p className="text-[13px] leading-6 text-slate-400/70">Some futures questions support quantitative forecasting. Others are better explored with scenarios, stress tests, historical analogies, participatory methods, or qualitative scanning. Method should follow the question and the evidence.</p>
+        </div>
+        <div className="mt-5 grid border-y border-white/[0.08] md:grid-cols-2 xl:grid-cols-3">
+          {PRINCIPLES.map(([term, detail], index) => <div key={term} className="grid grid-cols-[40px_minmax(0,1fr)] gap-3 border-b border-white/[0.06] px-4 py-4 xl:border-r xl:[&:nth-child(3n)]:border-r-0 xl:[&:nth-last-child(-n+3)]:border-b-0"><span className="font-mono text-[10px] text-cyan-200/38">0{index + 1}</span><span><strong className="block text-[13px] text-slate-200/86">{term}</strong><span className="mt-1 block text-[11px] leading-5 text-slate-500">{detail}</span></span></div>)}
+        </div>
+      </section>
+    </SceneFrame>
   );
+}
+
+function Neighbor({ href, icon: Icon, label, note }: { href: string; icon: LucideIcon; label: string; note: string }) {
+  return <Link href={href} className="group flex min-h-[72px] flex-col justify-between border border-white/[0.07] bg-black/[0.055] px-3 py-3 backdrop-blur-[8px] transition hover:bg-black/[0.11]"><span className="flex items-center gap-2 text-[11px] font-semibold text-white/78"><Icon size={12} className="text-cyan-200/52" />{label}</span><span className="flex items-end justify-between gap-2"><span className="text-[9px] leading-4 text-slate-600">{note}</span><ArrowRight size={10} className="text-slate-600 transition group-hover:translate-x-1" /></span></Link>;
 }

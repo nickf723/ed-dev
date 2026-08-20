@@ -2,424 +2,385 @@
 
 This document is the binding build contract for atomic lesson pages in Education Station 64.
 
-The Design Docket governs visual/product behavior. The Learning Design Playbook governs pedagogy across page types. This constitution is narrower and stricter: it defines what an **atomic lesson must contain, how it should flow, and when it is ready to build**.
-
-Its purpose is to stop discovering lesson architecture through repeated screenshot tweaks. We should be able to name an atomic topic, write a compact lesson brief, build the complete instructional arc, visually verify it, and move on.
+The Design Constitution governs site-wide production behavior. This constitution is narrower: it defines how one coherent idea becomes a lesson that a learner can understand, manipulate, formalize, and use elsewhere.
 
 ## Prime directive
 
-> **An atomic lesson must explain the idea, let the learner do the idea, and let the learner check whether they understood the idea.**
+> **An atomic lesson must make the learner understand the idea, do the idea, and recognize or use the idea in a fresh conventional context.**
 
-An interaction is not a substitute for explanation. A paragraph is not a substitute for a model. A quiz is not a substitute for guided practice.
-
-Every atomic lesson must satisfy the three-part gate:
-
-1. **Explain** — make the mental model clear.
-2. **Do** — let the learner enact the central process or relationship.
-3. **Check** — require a fresh case, prediction, construction, classification, or explanation.
-
-If one of these is missing, the page is not a finished atomic lesson.
+An interaction is not a substitute for explanation. A paragraph is not a substitute for a model. A quiz is not a substitute for guided practice. Discovery and formal instruction are partners, not rivals.
 
 ---
 
 ## 1. Start with a seven-line lesson brief
 
-Before layout or code, write these seven lines:
+Before layout or code, write:
 
 1. **Learner outcome:** After this page, the learner can...
 2. **Prerequisite:** This assumes the learner already understands...
 3. **Mental model:** The learner should picture / understand...
-4. **Core rule or relationship:** In one sentence...
-5. **Primary action:** The learner will physically/intellectually do...
+4. **Core relationship:** In one sentence...
+5. **Primary action:** The learner will physically or intellectually do...
 6. **Likely misconception:** The tempting wrong idea is...
-7. **Transfer check:** A new case proves understanding if the learner can...
+7. **Transfer check:** A fresh case proves understanding if the learner can...
 
-If these seven lines are fuzzy, do not begin visual composition. Clarify the lesson first.
+If these are fuzzy, do not solve the problem with more cards.
 
 ### Atomicity test
 
-The lesson is probably too broad if:
+Split the lesson if:
 
-- the outcome contains several independent verbs joined by “and”;
-- the page needs multiple unrelated primary instruments;
-- the misconception list describes several different conceptual families;
-- the transfer check requires a different mental model from the main lesson;
-- the page needs a mini-dashboard to hold all of its content.
-
-Split the topic instead of compressing several lessons into one page.
+- the outcome contains several independent skills;
+- multiple unrelated instruments compete for attention;
+- the misconceptions belong to different conceptual families;
+- the transfer task requires a new mental model;
+- the page needs a dashboard just to hold the ideas.
 
 ---
 
-## 2. Use one instructional spine
+## 2. Use a discovery-to-formalization spine
 
-The default atomic lesson rhythm is:
+A strong default rhythm is:
 
-### A. Orient
-Answer: **What are we learning, and why does it matter here?**
+### A. Phenomenon or task
 
-- Connect to prior knowledge in one compact paragraph or visual statement.
-- Put the central learner question in plain language.
-- Avoid throat-clearing, module codes, and generic “explore” copy.
+Give the learner something concrete to solve, notice, predict, compare, or explain.
 
-### B. Model
-Answer: **What does the idea look like when it works?**
+Use the conventional representation when one exists. A student learning substitution should recognize a system of equations. A student learning entropy should recognize a box of particles or gas expansion. A history learner should see sources, events, places, or claims rather than only a summary paragraph.
 
-- Show one carefully chosen worked example or canonical representation.
-- Keep the example simple enough that the intended structure is visible.
-- If the lesson is procedural, show the process in order rather than revealing only the final state.
+### B. Primary sandbox / model
 
-### C. Distill
-Answer: **What reusable rule, relationship, or distinction should I keep?**
+Let the learner manipulate the mechanism before over-explaining it.
 
-- State the rule explicitly after or alongside the model.
-- Include the reason when the reason is central to understanding.
-- Use canonical terminology without turning the section into a definition dump.
+The sandbox should begin from a meaningful example, not an empty toy.
 
-### D. Do
-Answer: **Can I perform or manipulate the idea myself?**
+### C. Conceptual bridge
 
-- Use one primary instrument whenever possible.
-- The learner’s action should mirror the real mathematical, scientific, linguistic, historical, or practical process being taught.
-- Controls and consequences must be visually close.
+After the learner has something to name, give them the vocabulary and causal explanation.
 
-### E. Stress-test
-Answer: **Where does this rule stop, fail, or get confused with something nearby?**
+Answer: **what did you just do or observe, and why did it work?**
 
-- Show at least one misconception, invalid case, boundary, or legal-but-unhelpful move when relevant.
-- Explain why it fails or why it is less useful.
+### D. Formal structure
 
-### F. Check transfer
-Answer: **Can I use the idea in a new case without being walked through the exact same example?**
+Organize the reusable rule, law, procedure, distinctions, timeline, or notation.
 
-- Use 2–4 concise questions or one stronger construction/prediction task.
-- Assess the learning goal, not familiarity with the page controls.
+Keep it compact and structured. Formal structure is where clarity lives, not where prose accumulates.
+
+### E. Pitfall / boundary
+
+Expose the tempting misconception, invalid move, legal-but-unhelpful move, limiting case, or scope condition.
+
+### F. Application / transfer
+
+Require the idea in a fresh context without repeating the exact guided path.
 
 ### G. Connect
-Answer: **What does this unlock next?**
 
-- Usually one sentence plus normal previous/next navigation is enough.
-- Do not add a giant summary card merely to announce that the lesson ended.
+Use ordinary previous/next navigation and a brief forward connection. Do not add a victory dashboard just because the lesson ended.
 
-These functions may share a section. A short lesson does not need seven giant cards. The **instructional jobs must exist; the UI containers do not need to map one-to-one to them**.
+These are instructional functions, not mandatory one-to-one UI blocks.
 
 ---
 
-## 3. The primary instrument must enact the concept
+## 3. Progressive disclosure is not progression gating
 
-The main interaction is the page’s laboratory, not its decoration and not its pre-test.
+This distinction is binding.
 
-Before building it, answer:
+**Progressive disclosure orders attention. It does not lock required lesson content.**
 
-- What learner action represents the actual concept?
+- The learner can scroll to the explanation, formal structure, pitfall, and application without completing the sandbox.
+- Returning to the page must not require replaying prior interactions just to access the lesson.
+- A widget may stage its own internal states. For example, a derivation can reveal the next operation after the current operation is performed.
+- Do not gate required definitions, navigation, accessibility content, or reference material behind completion.
+- Optional depth may use disclosure controls when it is truly optional.
+
+The page is a lesson, not an escape room.
+
+---
+
+## 4. The primary instrument must enact the concept
+
+Ask before building it:
+
+- What action represents the real academic process?
 - What changes because of that action?
 - What remains invariant?
-- What should the learner notice after the action?
-- What mistake can the instrument diagnose meaningfully?
+- What should the learner notice?
+- What wrong or inefficient move can we explain meaningfully?
 
-### Instrument validity test
+### Strong examples
 
-A strong primary instrument:
-
-- begins from a meaningful example, not a blank sandbox;
-- teaches through a sequence the learner can understand;
-- lets the learner cause the important transformation;
-- shows cause and effect together;
-- gives explanatory feedback for wrong or unhelpful choices;
-- ends in a state that connects naturally to the stated rule;
-- can be understood without reading UI-development language.
+- expressions: vary a variable and watch the expression value respond;
+- equation solving: apply equivalent operations to both sides;
+- substitution: replace one quantity with an equal expression;
+- elimination: add or scale whole equations and visibly cancel additive inverses;
+- geometry: construct, drag, measure, or preserve an invariant;
+- entropy: compare macrostates by how many microstates realize them;
+- history: sequence evidence, compare accounts, map consequences, or construct a claim from sources;
+- programming: trace state changes or modify an algorithm and observe consequences.
 
 ### Forbidden inversion
 
-Do not ask the learner to supply knowledge the lesson has not taught yet just to make the primary interaction function.
+Do not make the learner guess knowledge the lesson has not taught merely to operate the widget.
+
+A slider is appropriate for continuous variation. It is usually a poor replacement for symbolic reasoning, proof, classification, construction, or causal analysis.
+
+---
+
+## 5. Procedural lessons use state -> move -> state
+
+When an object changes through reasoning, the representation should distinguish **what the object is** from **what caused it to change**.
+
+A useful visual grammar is:
+
+`state 1 -> move 1.5 -> state 2 -> move 2.5 -> state 3`
+
+Whole/half numbering is optional. The distinction is mandatory when ambiguity would otherwise arise.
+
+### Trace rules
+
+- Put the operation or explanation between the states it connects.
+- Do not label a result with the operation that produced it in a way that makes the learner think the operation comes afterward.
+- Keep earlier states and completed moves visible when space permits.
+- The final interaction state should read as a coherent worked artifact, not a pile of button history.
+- Show invariants directly: the same operation on both sides, conservation across reservoirs, equal transformations of equivalent structures, or preserved constraints.
+- For group operations such as distribution or scaling, show the operation reaching every affected term.
+
+The same grammar can describe algebra, code execution, reaction sequences, source-to-inference reasoning, or any other transformation process.
+
+---
+
+## 6. Formal task grammar anchors discovery
+
+Where learners will encounter a conventional prompt outside the site, teach the bridge explicitly.
 
 Examples:
 
-- Bad: choose the correct value of `x` before the equation-solving process has been taught.
-- Better: perform balanced operations to solve, then substitute the derived value into the original equation as verification.
-- Bad: guess which number set contains a value before the containment model has been explained.
-- Better: model the set extensions first, then classify fresh values.
+- “Solve the system by elimination. Show your work. State the solution as an ordered pair and check it.”
+- “Use the graph to estimate the intersection.”
+- “Rank these macrostates from least to most likely.”
+- “Use the evidence to support or challenge the claim.”
 
-The instrument should **engineer the understanding**, not reverse-engineer whether the learner already has it.
+The site can explain more intuitively than a worksheet while still preparing the learner to recognize the worksheet.
 
----
-
-## 4. Explanation is mandatory, but must stay concise
-
-An atomic lesson cannot be “just interactives.” It also should not become a textbook wall.
-
-Every lesson should normally contain:
-
-- one clear orientation;
-- one worked/model example;
-- one explicit rule or relationship statement;
-- one short explanation of **why** the rule works or what structure it expresses;
-- one misconception, limitation, or contrast where relevant;
-- one transfer check.
-
-### Explanation density
-
-- Prefer 1–3 short paragraphs per explanatory chunk.
-- Put explanations next to the representation they explain.
-- Use equations, diagrams, tables, annotated examples, and short callouts to reduce prose when they encode the concept faithfully.
-- Do not hide required explanation behind hover.
-- Do not create a separate “Quick Reference” section when the lesson itself already provides the needed rule at the point of use.
-
-A learner should be able to skim headings, examples, and highlighted rules and reconstruct the lesson’s logic.
+Use Education Station visual language around the task. Do not paste unrelated paper, textbook, or LMS aesthetics into the page merely to signal schoolwork.
 
 ---
 
-## 5. Examples form a deliberate ladder
+## 7. Intuition belongs beside the formal move
 
-Do not choose examples merely because the arithmetic is convenient.
+Whenever possible, attach a small conceptual reason to the exact point where it matters.
 
-A complete atomic lesson should draw from this ladder as appropriate:
+Examples:
 
-1. **Canonical case** — the cleanest example of the idea.
-2. **Contrast case** — nearby case that changes one important feature.
-3. **Misconception case** — tempting wrong move or classification.
-4. **Boundary case** — where the rule changes, stops, or needs a condition.
-5. **Transfer case** — unfamiliar surface, same underlying idea.
+- `+y` and `-y` cancel because they are additive inverses;
+- dividing both sides by 3 keeps equality because equal quantities split into the same number of equal groups;
+- a coefficient outside parentheses reaches every term in the group;
+- high entropy corresponds to high multiplicity because far more microstates produce that macrostate;
+- a historical claim is stronger when the cited evidence actually supports the inference being made.
 
-The primary instrument usually needs only the first 2–3. The transfer check can carry the later cases.
-
-Keep numbers and labels simple unless handling complexity is itself the lesson.
+Prefer local mathematical/scientific/historical structure to distant analogies. The representation itself should carry as much intuition as possible.
 
 ---
 
-## 6. One viewport, one center of gravity
+## 8. Explanation is mandatory, but concise
 
-Atomic lessons should feel like a guided path, not a dashboard.
+A normal lesson should contain:
 
-- One major instructional region should dominate each viewport.
-- Supporting explanation should frame the active model rather than compete with it.
-- Avoid several equally loud glass panels stacked or overlapping around the same concept.
-- Do not duplicate the same information in the header, orientation card, instrument label, and footer.
-- Let the page scroll naturally from concept → model → action → check.
+- one clear orientation or task;
+- one canonical model or worked case;
+- one explicit reusable relationship;
+- one short explanation of why it works;
+- one misconception or boundary when relevant;
+- one transfer task.
 
-### No instructional overlap
+Prefer 1-3 short paragraphs per explanatory chunk. Put explanation next to the object it explains. Do not hide required explanation behind hover.
 
-- Instructional content belongs in normal document flow by default.
-- Absolute positioning is for decorative backgrounds, glows, canvases, and bounded diagrams whose geometry is intrinsic.
-- Sticky utilities must reserve enough clearance that they never cover headings, equations, controls, breadcrumbs, or feedback.
-- Selection states must not grow over neighboring instructional content.
-- Glass effects may layer visually, but readable content must retain a clear foreground/background hierarchy.
-
-If a screenshot exposes overlap, first ask whether the composition is violating the lesson flow before patching z-indexes or offsets.
+A learner should be able to skim headings, representations, and highlighted rules and reconstruct the logic.
 
 ---
 
-## 7. Progressive disclosure beats simultaneous completeness
+## 9. Example selection forms a ladder
 
-Do not show every explanation, control, edge case, and advanced variation at once.
+Choose examples deliberately:
 
-Preferred sequence:
+1. **Canonical case:** cleanest view of the idea.
+2. **Contrast case:** one meaningful feature changes.
+3. **Misconception case:** tempting wrong move or interpretation.
+4. **Boundary case:** where a condition matters.
+5. **Transfer case:** unfamiliar surface, same underlying structure.
 
-1. model the default case;
-2. explain the relationship;
-3. unlock or emphasize the meaningful action;
-4. show the consequence;
-5. introduce the contrast/boundary;
-6. offer independent practice.
-
-Optional complexity may use details, tabs, presets, or later chunks, but the first state should make the lesson’s central idea obvious.
-
-A learner should not need to learn the interface before learning the concept.
+Not every lesson needs all five in the primary instrument. Use them across the worked example, guided transfer, and independent practice.
 
 ---
 
-## 8. Feedback must preserve the learner’s reasoning
+## 10. Practice ladder
 
-Wrong choices are opportunities to compare models.
+When the subject supports conventional practice, prefer:
 
-Good feedback says one of:
+### 1. Worked canonical example
 
-- **invalid because...**
-- **valid, but it does not move toward the goal because...**
-- **almost; this part is correct, but...**
-- **this boundary behaves differently because...**
+The learner sees the recognizable task and receives guided reasoning.
 
-Avoid feedback that is only red/green or “try again.”
+### 2. Guided transfer
 
-When possible, keep the learner’s attempted state visible long enough to compare it with the correction.
+Change an important surface feature. Require more action and less narration.
 
----
+### 3. Independent practice
 
-## 9. Practice comes after instruction
+Offer a small number of fresh tasks in the notation or format learners are likely to meet outside the site.
 
-Practice should not be the first time the lesson explains the rule.
-
-A normal atomic lesson ends with a concise check that:
-
-- uses a new example;
-- changes at least one surface feature from the worked example;
-- includes explanation after submission;
-- contains at least one item that diagnoses the primary misconception;
-- stays subordinate to the lesson, rather than becoming a giant assessment dashboard.
-
-If the learner can pass only by memorizing which page button was correct, the check is invalid.
+Multiple choice is a fallback. Prefer solving, constructing, predicting, ranking, tracing, sorting, transforming, annotating, classifying, or explaining when those actions better match the learning goal.
 
 ---
 
-## 10. Visual identity supports the lesson process
+## 11. One viewport, one center of gravity
 
-Atomic lessons should inherit shell consistency while becoming more subject-specific in the instrument and local environment.
+Atomic lessons are guided paths, not dashboards.
 
-Use visual identity to reinforce structure:
+- One major instructional object should dominate each viewport.
+- Supporting explanation frames the active model rather than competing with it.
+- A normal reading frame is usually around 900-1050px unless the instrument needs more width.
+- Prose can be narrower than the instrument.
+- Rich lessons may scroll and breathe.
+- Short lessons should condense rather than stretching themselves across empty screen space.
+- Sequence ideas before shrinking typography.
 
-- equality may use balance/invariance;
-- set theory may use containment;
-- transformations may use before/after mapping;
-- graphing may coordinate equation and coordinate plane;
-- anatomy may use spatial labeling;
-- chronology may use ordered sequence.
+### Readability floor
 
-Do not make every lesson a differently colored card grid.
+For school-facing content:
 
-The local visual grammar should answer: **what kind of thinking does this concept require?**
-
----
-
-## 11. The atomic lesson build flow
-
-This is the default production workflow.
-
-### Pass 1 — Lesson brief
-Write the seven lines. Confirm scope and sequence.
-
-### Pass 2 — Text storyboard
-Before styling, write the lesson as a simple vertical outline:
-
-- orientation;
-- model/example;
-- rule/why;
-- primary learner action;
-- misconception/boundary;
-- transfer check;
-- forward connection.
-
-If the storyboard does not teach the topic clearly without decoration, do not proceed.
-
-### Pass 3 — Primary model and instrument
-Build the representation and causal interaction first.
-
-Do not spend the pass tuning glows, background intensity, or tiny spacing while the instructional model is still changing.
-
-### Pass 4 — Explanatory spine and feedback
-Add the concise prose, labels, rule callout, misconception handling, and immediate feedback around the model.
-
-### Pass 5 — Practice and navigation
-Add the transfer check, vocabulary access when useful, and correct semantic previous/next navigation.
-
-### Pass 6 — Visual composition
-Tune spacing, hierarchy, glass treatment, background participation, responsive layout, and local subject identity.
-
-### Pass 7 — Verification
-Test:
-
-- default state;
-- all guided states;
-- wrong/unhelpful states;
-- longest explanation;
-- multiline notation;
-- narrower desktop width;
-- sticky utilities;
-- final transfer check;
-- previous/next navigation.
-
-Then run available code/build checks.
+- instructional prose is generally at least about 15-17px on desktop;
+- primary equations, prompts, excerpts, and labels are larger;
+- tiny structural metadata never carries essential instruction;
+- contrast must remain comfortable over the subject background.
 
 ---
 
-## 12. Stop-tweaking protocol
+## 12. Feedback preserves reasoning
 
-Repeated cosmetic edits are a signal to diagnose the layer that is actually failing.
+Wrong choices are comparison opportunities.
 
-### If the page feels empty
-Do not add filler. Check whether explanation, a worked example, a misconception, or transfer is missing.
+Good feedback distinguishes:
 
-### If the page feels busy
-Do not shrink everything. Check whether several learner questions or instruments are competing and should be sequenced or split.
+- invalid because...
+- valid, but it does not move toward the goal because...
+- almost; this part works, but...
+- this boundary behaves differently because...
 
-### If the interaction feels awkward
-Do not immediately restyle the controls. Re-check whether the learner action actually enacts the concept.
-
-### If the page “doesn’t explain anything”
-Do not add tooltips to every control. Restore the explanatory spine: model → rule → why → guided action.
-
-### If elements overlap
-Do not begin with z-index patches. Verify normal flow, sticky clearance, container ownership, and whether too many surfaces occupy the same instructional moment.
-
-### If we have made two rounds of small fixes without resolving the problem
-Stop implementation and return to the seven-line lesson brief and text storyboard.
-
-The constitution outranks sunk-cost attachment to an existing layout.
+Keep the learner’s attempted state visible long enough to compare when practical.
 
 ---
 
-## 13. Definition of done
+## 13. Visual identity supports the thinking mode
 
-An atomic lesson is complete only if a learner can answer all five questions after using it:
+The shell supplies cohesion. The local lesson supplies cognitive identity.
 
-1. **What is this idea?**
-2. **How do I use or recognize it?**
-3. **Why does the central rule/process work?**
-4. **What is a common wrong interpretation or boundary?**
-5. **Can I handle a fresh example?**
+Examples:
 
-And the page itself must pass these gates:
+- equality: alignment, balance, invariance;
+- elimination: stacked rows and cancellation;
+- sets: containment;
+- graphing: equation and coordinate plane;
+- entropy: many microstates funneling into fewer macrostates;
+- anatomy: spatial relationships;
+- chronology: ordered sequence;
+- source analysis: evidence and inference links.
 
-- the learner outcome is one coherent idea;
-- Explain → Do → Check is present;
-- one obvious primary instrument exists;
-- the instrument enacts the concept rather than pre-testing it;
-- at least one worked/model example exists;
-- the reusable rule is stated explicitly;
-- the main misconception or boundary is addressed;
-- practice requires transfer to a new case;
-- required content does not overlap or clip;
-- visual polish reinforces hierarchy rather than replacing instruction;
-- navigation is semantically correct;
-- available build/type checks pass;
-- the page has been visually verified in its important states when preview capability is available.
+Do not turn a successful lesson’s component layout into a universal template.
+
+> **Reuse the learning logic. Re-invent the interaction for the subject.**
 
 ---
 
-## 14. Worked planning examples
+## 14. Atomic lesson build flow
 
-### Solving Two-Step Equations
+### Pass 1: Brief
 
-- **Outcome:** solve equations of the form `ax + b = c` using equivalent transformations.
-- **Mental model:** equality is preserved while operations are peeled away from the variable.
-- **Model:** `2x + 6 = 14 → 2x = 8 → x = 4` with the same operation visibly applied to both sides.
-- **Rule:** undo the outer additive layer, then undo the multiplicative coefficient; preserve equality at every move.
-- **Primary action:** choose and apply operations to both sides.
-- **Misconception:** an operation can be mathematically balanced but unhelpful; changing only one side is invalid.
-- **Check:** substitute the derived solution into the original equation, then solve a fresh equation independently.
+Write the seven lines and confirm atomic scope.
 
-The substitution check belongs **after** the solution is engineered.
+### Pass 2: Storyboard
 
-### Number Systems
+Write the vertical lesson as plain structure:
 
-- **Outcome:** identify the smallest standard real-number set that classifies a value and understand the containment hierarchy.
-- **Mental model:** number systems are nested extensions; irrational numbers occupy the real numbers outside the rationals.
-- **Model:** build outward from natural → integer → rational → real, while placing irrationals within real but outside rational.
-- **Rule:** membership accumulates outward; the smallest containing set is the most specific useful label.
-- **Primary action:** classify curated values after the containment structure is explained.
-- **Misconception:** “real” is often true but too broad; repeating decimals are rational; irrational + irrational need not be irrational.
-- **Check:** classify unfamiliar values and explain one boundary case.
+- task / phenomenon;
+- canonical model;
+- learner action;
+- conceptual bridge;
+- formal structure;
+- misconception / boundary;
+- transfer;
+- connection.
 
-The containment model must be taught before the classification lab becomes the center of the page.
+If the storyboard cannot teach without decoration, fix it first.
+
+### Pass 3: Primary representation
+
+Build the academic object and its interaction before atmosphere.
+
+### Pass 4: Reasoning and feedback
+
+Attach concise intuition to transitions, states, and consequential choices.
+
+### Pass 5: Transfer and navigation
+
+Add guided transfer, independent practice when useful, vocabulary access, and semantic previous/next navigation.
+
+### Pass 6: Composition
+
+Tune spacing, readability, background participation, responsive behavior, and local identity.
+
+### Pass 7: Push and verify
+
+Push coherent work to `studio` promptly. Test the default state, guided states, mistakes, longest content, narrow desktop, mobile fallback, and transfer task. Run available build/type checks and verify a preview when possible.
 
 ---
 
-## 15. Relationship to the other rule documents
+## 15. Stop-tweaking protocol
 
-When rules appear to conflict:
+If the page feels empty, check for missing explanation, example, misconception, or transfer before adding filler.
 
-1. **Accuracy and curriculum ontology** win first.
-2. **This Atomic Lesson Constitution** decides atomic lesson structure and workflow.
-3. **Learning Design Playbook** supplies broader pedagogical principles and edge-case guidance.
-4. **Design Docket** governs visual/product composition and interaction quality.
-5. **Page Planning Template** records the concrete plan for the page being built.
+If it feels busy, sequence or split the learner questions before shrinking them.
 
-These documents are complementary. The constitution exists to make the atomic-lesson workflow fast enough to use every time, not to replace the deeper references.
+If the interaction feels awkward, re-check whether the action represents the concept.
+
+If it feels like an encyclopedia, move the phenomenon/task and manipulation earlier.
+
+If the learner understands the page but would freeze on ordinary coursework, add the conventional task bridge.
+
+If two rounds of small fixes do not solve the problem, return to the brief and storyboard.
+
+---
+
+## 16. Definition of done
+
+An atomic lesson is complete when the learner can answer:
+
+1. What is this idea or task?
+2. What does it look like or do?
+3. Why does the central rule/process work?
+4. What is a common wrong interpretation or boundary?
+5. Can I handle a fresh case in recognizable notation or context?
+
+And the page passes these gates:
+
+- one coherent outcome;
+- recognizable task or phenomenon;
+- one primary interaction or model;
+- required lesson content is not progression-gated;
+- the interaction enacts the academic process;
+- formal terminology follows or accompanies meaningful experience;
+- procedural transformations distinguish state from move;
+- important invariants are visible;
+- a worked/model case exists;
+- the reusable rule is explicit;
+- the primary misconception or boundary is addressed;
+- transfer uses a fresh case;
+- readability is appropriate for the target learner;
+- the environment reinforces the subject without competing with it;
+- content does not overlap or clip;
+- semantic navigation is correct;
+- the current change is pushed to `studio`;
+- available build/type checks and preview verification pass when available.
+
+These rules exist so every new lesson can inherit what we learned without inheriting the same exact layout.

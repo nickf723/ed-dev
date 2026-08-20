@@ -1,147 +1,214 @@
-"use client";
-import React from "react";
-import { AstronomyBackground } from "./AstronomyBackground";
-import { DashboardCard } from "@/app/_components/ui/DashboardCard";
-import { 
-  Telescope, 
-  Orbit, 
-  Sun, 
-  Sparkles, 
-  Aperture, 
-  Rocket, 
-  Eye, 
-  Sigma,
-  Infinity
-} from "lucide-react";
+import DomainPageHeader from "@/app/_components/DomainPageHeader";
+import GalacticExpeditionBackground from "@/app/_page-system/backgrounds/GalacticExpeditionBackground";
+import SceneFrame from "@/app/_page-system/scene/SceneFrame";
+import WorldWindow from "@/app/_page-system/scene/WorldWindow";
+import ExpeditionRouteTopology, {
+  type ExpeditionStop,
+} from "@/app/_page-system/topologies/ExpeditionRouteTopology";
+import LightTravelTime, {
+  type LightTravelExample,
+} from "@/app/_page-system/widgets/LightTravelTime";
+import { requireCurriculumPageContext } from "@/lib/curriculum/page-context";
+import { Telescope } from "lucide-react";
+import AstronomySignalLab from "./AstronomySignalLab";
+
+const NODE_ID = "natural.astronomy";
+
+type AstronomyMeta = {
+  scaleLabel?: string;
+  icon: ExpeditionStop["icon"];
+  scene: "local" | "galaxy" | "web";
+  rgb: string;
+  kind: "destination" | "method";
+};
+
+const META: Record<string, AstronomyMeta> = {
+  "natural.astronomy.planetary": {
+    scaleLabel: "worlds · moons · systems",
+    icon: "orbit",
+    scene: "local",
+    rgb: "34, 211, 238",
+    kind: "destination",
+  },
+  "natural.astronomy.stellar": {
+    scaleLabel: "stars · formation · evolution",
+    icon: "sparkles",
+    scene: "local",
+    rgb: "250, 204, 21",
+    kind: "destination",
+  },
+  "natural.astronomy.galactic": {
+    scaleLabel: "galaxies · structure · dynamics",
+    icon: "aperture",
+    scene: "galaxy",
+    rgb: "52, 211, 153",
+    kind: "destination",
+  },
+  "natural.astronomy.extragalactic": {
+    scaleLabel: "populations · clusters · filaments",
+    icon: "aperture",
+    scene: "web",
+    rgb: "192, 132, 252",
+    kind: "destination",
+  },
+  "natural.astronomy.cosmology": {
+    scaleLabel: "origin · expansion · whole universe",
+    icon: "sigma",
+    scene: "web",
+    rgb: "244, 114, 182",
+    kind: "destination",
+  },
+  "natural.astronomy.methods": {
+    icon: "eye",
+    scene: "local",
+    rgb: "96, 165, 250",
+    kind: "method",
+  },
+};
+
+const ASTRONOMY_SCENES = [
+  {
+    id: "local",
+    label: "Local systems",
+    description: "Orbiting worlds, stellar motion, and nearby physical scale.",
+    accentRgb: "34, 211, 238",
+  },
+  {
+    id: "galaxy",
+    label: "Galactic survey",
+    description: "Differential rotation, dust, lensing, and stellar populations.",
+    accentRgb: "167, 139, 250",
+  },
+  {
+    id: "web",
+    label: "Cosmic web",
+    description: "Clusters and filaments emerging across the largest scales.",
+    accentRgb: "244, 114, 182",
+  },
+] as const;
+
+const LIGHT_TIMES: LightTravelExample[] = [
+  {
+    id: "moon",
+    label: "Moon",
+    travelTime: "1.3 seconds",
+    distance: "384,400 km",
+    note: "The lunar surface appears as it was roughly 1.3 seconds earlier.",
+    accentRgb: "203, 213, 225",
+  },
+  {
+    id: "sun",
+    label: "Sun",
+    travelTime: "8 min 20 sec",
+    distance: "1 astronomical unit",
+    note: "Every view of the Sun is a report carried across space for more than eight minutes.",
+    accentRgb: "250, 204, 21",
+  },
+  {
+    id: "proxima",
+    label: "Proxima Centauri",
+    travelTime: "4.24 years",
+    distance: "4.24 light-years",
+    note: "The nearest star beyond the Sun is already being observed several years in its past.",
+    accentRgb: "248, 113, 113",
+  },
+  {
+    id: "andromeda",
+    label: "Andromeda Galaxy",
+    travelTime: "about 2.5 million years",
+    distance: "about 2.5 million light-years",
+    note: "Andromeda appears as it was long before our species began recording history.",
+    accentRgb: "167, 139, 250",
+  },
+  {
+    id: "cmb",
+    label: "Cosmic microwave background",
+    travelTime: "about 13.8 billion years",
+    distance: "the early observable universe",
+    note: "This oldest observable light was released when the young universe first became transparent.",
+    accentRgb: "34, 211, 238",
+  },
+];
 
 export default function AstronomyHub() {
+  const context = requireCurriculumPageContext(NODE_ID);
+  const destinations: ExpeditionStop[] = context.children
+    .filter((child) => META[child.id]?.kind === "destination")
+    .map((child) => {
+      const meta = META[child.id];
+      return {
+        id: child.id,
+        label: child.label,
+        scaleLabel: meta.scaleLabel ?? "cosmic scale",
+        summary: child.description ?? "",
+        accentRgb: meta.rgb,
+        icon: meta.icon,
+        scene: meta.scene,
+        href: child.href,
+        status: child.status === "placeholder" ? "planned" : "active",
+      };
+    });
+  const methods = context.children.find(
+    (child) => META[child.id]?.kind === "method",
+  );
+
   return (
-    <div className="p-8 md:p-12 min-h-screen space-y-12 animate-in fade-in duration-1000">
-      <AstronomyBackground />
-      
-      {/* HEADER */}
-      <header className="relative z-10 flex flex-col items-center text-center gap-4 mb-16">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-purple-500/30 bg-purple-950/30 text-purple-300 text-[10px] font-bold uppercase tracking-widest backdrop-blur-md">
-           <Telescope size={12} /> Sector 01: Cosmos
-        </div>
-        <h1 className="text-6xl md:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-white/20 tracking-tighter">
-          ASTRONOMY
-        </h1>
-        <p className="text-slate-400 max-w-lg mx-auto text-lg">
-          The observation and explanation of events occurring outside Earth's atmosphere.
-        </p>
-      </header>
-
-      {/* THE CONSTELLATION GRID */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
-        
-        {/* 1. PLANETARY (Earth's Neighborhood) */}
-        <DashboardCard 
-          title="Planetary" 
-          icon={Orbit} 
-          href="/natural-science/astronomy/planetary-astronomy"
-          accentColor="cyan"
-          className="bg-black/40 border-cyan-500/20"
+    <SceneFrame
+      background={<GalacticExpeditionBackground />}
+      className="bg-[#010208] text-slate-100 selection:bg-violet-400/[0.25]"
+      initialScene="local"
+      maxWidthClassName="max-w-[1580px]"
+      headerBackground="rgba(2,4,14,0.56)"
+      header={
+        <DomainPageHeader
+          breadcrumbs={[
+            { label: "Natural Science", href: "/natural-science" },
+            { label: "Astronomy" },
+          ]}
+          eyebrow="Cosmic scale · arriving signals · physical inference"
+          eyebrowStyle="dot"
+          icon={Telescope}
+          title={<span>Astronomy</span>}
+          subtitle="Travel outward from nearby worlds to the observable universe, then follow the evidence back through light, instruments, and physical models."
+          accentRgb="167, 139, 250"
+          titleClassName="font-sans text-[clamp(3rem,5.8vw,6.6rem)] font-semibold leading-[0.82] tracking-[-0.068em] text-[#faf9ff]"
+          headerClassName="border-white/[0.08]"
+        />
+      }
+    >
+      <section className="mt-5">
+        <WorldWindow
+          eyebrow="Interactive observatory · direct branches by scale"
+          title="Choose the scale of universe you want to investigate."
+          description="The academic route moves from worlds and stars to galaxies, cosmic structure, and the universe as a whole. Hovering a field previews its scale in the observatory controls while the moving universe remains exposed."
+          scenes={[...ASTRONOMY_SCENES]}
         >
-          <div className="mt-auto text-xs text-slate-400">
-            Study of planets, moons, and systems.
-          </div>
-        </DashboardCard>
+          <ExpeditionRouteTopology
+            title="Choose the scale of universe you want to investigate."
+            description="The direct branches of astronomy move outward by scale."
+            stops={destinations}
+            presentation="world"
+          />
+        </WorldWindow>
+      </section>
 
-        {/* 2. SOLAR (The Source) */}
-        <DashboardCard 
-          title="Solar" 
-          icon={Sun} 
-          href="/natural-science/astronomy/solar-astronomy"
-          accentColor="orange"
-          className="bg-black/40 border-orange-500/20"
-        >
-          <div className="mt-auto text-xs text-slate-400">
-            Physics of our nearest star.
-          </div>
-        </DashboardCard>
+      <section className="mt-8">
+        <AstronomySignalLab
+          methods={
+            methods
+              ? {
+                  href: methods.href,
+                  status: methods.status,
+                  description: methods.description ?? "",
+                }
+              : undefined
+          }
+        />
+      </section>
 
-        {/* 3. STELLAR (The Population) */}
-        <DashboardCard 
-          title="Stellar" 
-          icon={Sparkles} 
-          href="/natural-science/astronomy/stellar-astronomy"
-          accentColor="purple"
-          className="bg-black/40 border-purple-500/20"
-        >
-          <div className="mt-auto text-xs text-slate-400">
-            Star formation, evolution, and death.
-          </div>
-        </DashboardCard>
-
-        {/* 4. GALACTIC (The City) */}
-        <DashboardCard 
-          title="Galactic" 
-          icon={Aperture} 
-          href="/natural-science/astronomy/galactic-astronomy"
-          accentColor="emerald"
-          className="bg-black/40 border-emerald-500/20"
-        >
-          <div className="mt-auto text-xs text-slate-400">
-            Structure and motion of the Milky Way.
-          </div>
-        </DashboardCard>
-
-        {/* 5. EXTRA-GALACTIC (The Ocean) */}
-        <DashboardCard 
-          title="Extragalactic" 
-          icon={Infinity} 
-          href="/natural-science/astronomy/extragalactic-astronomy"
-          accentColor="purple"
-          className="lg:col-span-2 bg-gradient-to-r from-purple-950/20 to-black/40 border-purple-500/20"
-        >
-          <div className="flex items-center justify-between mt-auto">
-            <div className="text-sm font-bold text-white">Beyond the Milky Way</div>
-            <div className="text-[10px] font-mono text-purple-400">Active Galactic Nuclei • Quasars</div>
-          </div>
-        </DashboardCard>
-
-        {/* 6. COSMOLOGY (The Fabric) */}
-        <DashboardCard 
-          title="Cosmology" 
-          icon={Sigma} 
-          href="/natural-science/astronomy/cosmology"
-          accentColor="slate"
-          className="lg:col-span-2 bg-gradient-to-l from-slate-900/40 to-black/40 border-white/10"
-        >
-           <div className="flex items-center justify-between mt-auto">
-            <div className="text-sm font-bold text-white">Origin & Evolution</div>
-            <div className="text-[10px] font-mono text-slate-400">Big Bang • Dark Matter • Inflation</div>
-          </div>
-        </DashboardCard>
-
-        {/* 7. OBSERVATIONAL (The Method) */}
-        <DashboardCard 
-          title="Observational" 
-          icon={Eye} 
-          href="/natural-science/astronomy/observational-astronomy"
-          accentColor="cyan"
-          className="bg-black/40"
-        >
-           <div className="mt-auto text-xs text-slate-400">
-            Data acquisition via telescope.
-          </div>
-        </DashboardCard>
-
-        {/* 8. THEORETICAL (The Code) */}
-        <DashboardCard 
-          title="Theoretical" 
-          icon={Rocket} 
-          href="/natural-science/astronomy/theoretical-astronomy"
-          accentColor="orange"
-          className="bg-black/40"
-        >
-           <div className="mt-auto text-xs text-slate-400">
-            Simulations and analytical models.
-          </div>
-        </DashboardCard>
-
-      </div>
-    </div>
+      <section className="mt-8">
+        <LightTravelTime examples={LIGHT_TIMES} />
+      </section>
+    </SceneFrame>
   );
 }

@@ -1,78 +1,60 @@
 "use client";
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Info, Shield, Zap, Layers, Star } from "lucide-react";
 
-const ZONES = [
-  { id: "cost", label: "Mana Cost", x: 85, y: 8, w: 10, h: 5, desc: "What you must pay to cast the spell. Colors dictate identity." },
-  { id: "type", label: "Type Line", x: 5, y: 58, w: 90, h: 5, desc: "Card Type (Creature, Instant) and Subtype (Goblin, Arcane)." },
-  { id: "text", label: "Rules Text", x: 5, y: 65, w: 90, h: 25, desc: "The card's abilities. 'Oracle Text' is the final authority." },
-  { id: "pt", label: "Power/Toughness", x: 80, y: 92, w: 15, h: 5, desc: "Damage dealt (Power) and damage required to kill it (Toughness)." },
-  { id: "set", label: "Expansion Symbol", x: 90, y: 60, w: 5, h: 5, desc: "The set the card is from. Color indicates Rarity." }
-];
+import { useState, type CSSProperties } from "react";
+import { Info, Layers3 } from "lucide-react";
+
+type ZoneId = "name" | "cost" | "art" | "type" | "text" | "pt";
+
+const ZONES: readonly {
+  id: ZoneId;
+  label: string;
+  short: string;
+  detail: string;
+  style: CSSProperties;
+  rgb: string;
+}[] = [
+  { id: "name", label: "Name", short: "identity", detail: "The card name identifies the game object. Deck-building and copy-limit rules can refer to card names, while differently printed versions may represent the same card name.", style: { left: "5%", top: "4%", width: "63%", height: "7%" }, rgb: "250,204,21" },
+  { id: "cost", label: "Mana cost", short: "casting requirement", detail: "Mana symbols in the upper-right contribute to the card's mana cost. Mana value is a numerical property derived from that cost under the rules; color identity is a separate concept used by some formats.", style: { right: "5%", top: "4%", width: "24%", height: "7%" }, rgb: "167,139,250" },
+  { id: "art", label: "Illustration", short: "visual representation", detail: "Artwork is visually prominent and culturally important, but it normally does not define rules behavior unless a rule or card specifically refers to information represented elsewhere on the card.", style: { left: "5%", top: "14%", width: "90%", height: "39%" }, rgb: "244,114,182" },
+  { id: "type", label: "Type line", short: "card types & subtypes", detail: "The type line tells you whether a card is a land, creature, artifact, enchantment, instant, sorcery, planeswalker, battle, or another defined type, plus any subtypes or supertypes it has.", style: { left: "5%", top: "56%", width: "90%", height: "8%" }, rgb: "34,211,238" },
+  { id: "text", label: "Rules text", short: "abilities & instructions", detail: "Rules text defines abilities and instructions. The official current wording is its Oracle text, which can differ from older printed wording after errata or templating updates.", style: { left: "5%", top: "67%", width: "90%", height: "23%" }, rgb: "94,234,212" },
+  { id: "pt", label: "Power / toughness", short: "creature combat values", detail: "On creature cards, power contributes to combat damage dealt and toughness is used when checking lethal marked damage and some effects. These numbers do not by themselves determine every way a creature can leave the battlefield.", style: { right: "5%", bottom: "3%", width: "27%", height: "7%" }, rgb: "248,113,113" },
+] as const;
 
 export default function CardAnatomyWidget() {
-  const [activeZone, setActiveZone] = useState<typeof ZONES[0] | null>(null);
+  const [activeId, setActiveId] = useState<ZoneId>("text");
+  const active = ZONES.find((zone) => zone.id === activeId) ?? ZONES[4];
 
   return (
-    <div className="glass overflow-hidden rounded-xl border border-white/10 bg-neutral-900/80 backdrop-blur-xl">
-      <div className="border-b border-white/5 px-5 py-4 flex justify-between items-center">
-        <h3 className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-neutral-300">
-          <Info size={14} className="text-amber-400" /> Card Anatomy
-        </h3>
+    <section className="overflow-hidden rounded-[22px] border border-amber-100/[0.10] bg-[#100c07]/70 backdrop-blur-xl">
+      <div className="border-b border-white/[0.07] p-4">
+        <div className="flex items-center gap-2 font-mono text-[10px] font-semibold uppercase tracking-[0.09em] text-amber-200/68"><Info size={13} /> Card anatomy</div>
+        <h3 className="mt-2 text-[20px] font-semibold tracking-[-0.035em] text-white">A card is both a physical component and a structured rules object.</h3>
       </div>
 
-      <div className="p-6 flex flex-col items-center">
-        
-        {/* The Card Schematic */}
-        <div className="relative w-[200px] aspect-[2.5/3.5] bg-neutral-800 rounded-lg border-2 border-neutral-600 shadow-2xl mb-6 overflow-hidden group">
-            
-            {/* Art Placeholder */}
-            <div className="absolute top-[10%] left-[5%] right-[5%] h-[45%] bg-neutral-900/50 border border-white/5 flex items-center justify-center">
-                <Star size={32} className="text-white/10" />
-            </div>
+      <div className="grid gap-5 p-4 lg:grid-cols-[240px_minmax(0,1fr)] sm:p-5 lg:items-center">
+        <div className="relative mx-auto aspect-[2.5/3.5] w-full max-w-[240px] rounded-[18px] border-2 border-amber-100/22 bg-[linear-gradient(145deg,#2b2419,#14110d)] p-3 shadow-[0_22px_60px_rgba(0,0,0,0.30)]">
+          <div className="absolute inset-[5%] rounded-[12px] border border-white/[0.07]" />
+          <div className="absolute left-[8%] right-[8%] top-[16%] h-[34%] rounded-[8px] border border-white/[0.06] bg-[radial-gradient(circle_at_65%_35%,rgba(251,191,36,0.18),transparent_30%),linear-gradient(145deg,rgba(96,165,250,0.14),rgba(0,0,0,0.12))]" />
+          <div className="absolute left-[9%] right-[9%] top-[70%] space-y-2"><span className="block h-2 rounded bg-white/[0.08]" /><span className="block h-2 w-[88%] rounded bg-white/[0.06]" /><span className="block h-2 w-[72%] rounded bg-white/[0.05]" /></div>
+          <Layers3 size={28} className="absolute left-1/2 top-[31%] -translate-x-1/2 text-white/12" />
 
-            {/* Interactive Zones */}
-            {ZONES.map((z) => (
-                <motion.button
-                    key={z.id}
-                    onMouseEnter={() => setActiveZone(z)}
-                    className={`absolute border-2 rounded transition-all duration-200 z-10
-                        ${activeZone?.id === z.id ? "border-amber-400 bg-amber-500/20" : "border-transparent hover:border-white/30"}
-                    `}
-                    style={{ 
-                        left: `${z.x}%`, top: `${z.y}%`, 
-                        width: `${z.w}%`, height: `${z.h}%` 
-                    }}
-                />
-            ))}
-
-            {/* Labels (Static for visual flavor) */}
-            <div className="absolute top-2 left-2 w-3/4 h-4 bg-white/10 rounded-sm" />
+          {ZONES.map((zone) => {
+            const selected = zone.id === activeId;
+            return <button key={zone.id} type="button" onClick={() => setActiveId(zone.id)} onMouseEnter={() => setActiveId(zone.id)} className="absolute rounded-[6px] border-2 transition" style={{ ...zone.style, borderColor: selected ? `rgba(${zone.rgb},0.88)` : "rgba(255,255,255,0.04)", background: selected ? `rgba(${zone.rgb},0.13)` : "transparent", boxShadow: selected ? `0 0 18px rgba(${zone.rgb},0.16)` : undefined }} aria-label={`Inspect ${zone.label}`} />;
+          })}
         </div>
 
-        {/* Info Panel */}
-        <div className="w-full min-h-[80px] bg-neutral-950/50 rounded-lg border border-white/5 p-4 text-center flex flex-col items-center justify-center">
-            <AnimatePresence mode="wait">
-                {activeZone ? (
-                    <motion.div
-                        key={activeZone.id}
-                        initial={{ opacity: 0, y: 5 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -5 }}
-                    >
-                        <h4 className="text-xs font-bold text-amber-400 mb-1">{activeZone.label}</h4>
-                        <p className="text-[10px] text-neutral-300 leading-relaxed">
-                            {activeZone.desc}
-                        </p>
-                    </motion.div>
-                ) : (
-                    <span className="text-[10px] text-neutral-500 italic">Hover over the card schematic to analyze components.</span>
-                )}
-            </AnimatePresence>
+        <div>
+          <div className="font-mono text-[10px] uppercase tracking-[0.07em]" style={{ color: `rgba(${active.rgb},0.70)` }}>{active.short}</div>
+          <h4 className="mt-1 text-[24px] font-semibold text-white">{active.label}</h4>
+          <p className="mt-3 text-[13px] leading-6 text-slate-300/76">{active.detail}</p>
+          <div className="mt-5 grid grid-cols-2 gap-2 sm:grid-cols-3">
+            {ZONES.map((zone) => <button key={zone.id} type="button" onClick={() => setActiveId(zone.id)} className="rounded-[12px] border px-2.5 py-2 text-[10px] font-semibold transition" style={{ borderColor: zone.id === activeId ? `rgba(${zone.rgb},0.28)` : "rgba(255,255,255,0.06)", color: zone.id === activeId ? `rgb(${zone.rgb})` : "rgb(148,163,184)", background: zone.id === activeId ? `rgba(${zone.rgb},0.04)` : "rgba(0,0,0,0.05)" }}>{zone.label}</button>)}
+          </div>
+          <p className="mt-4 border-l-2 border-amber-300/28 pl-3 text-[11px] leading-5 text-slate-500">This schematic uses a creature-like card frame so power/toughness has somewhere to appear. Not every Magic card has every zone shown here.</p>
         </div>
-
       </div>
-    </div>
+    </section>
   );
 }

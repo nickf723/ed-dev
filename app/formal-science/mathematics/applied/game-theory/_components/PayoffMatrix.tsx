@@ -1,125 +1,116 @@
 "use client";
-import React, { useState } from 'react';
-import { Swords, Handshake, RotateCcw, AlertTriangle } from 'lucide-react';
+
+import { useMemo, useState } from "react";
+import { ArrowRightLeft, Handshake, Target, UsersRound } from "lucide-react";
+
+type Strategy = "C" | "D";
+
+type Cell = {
+  row: Strategy;
+  column: Strategy;
+  p1: number;
+  p2: number;
+  label: string;
+};
+
+const CELLS: readonly Cell[] = [
+  { row: "C", column: "C", p1: 3, p2: 3, label: "Mutual cooperation" },
+  { row: "C", column: "D", p1: 0, p2: 5, label: "Player 2 exploits" },
+  { row: "D", column: "C", p1: 5, p2: 0, label: "Player 1 exploits" },
+  { row: "D", column: "D", p1: 1, p2: 1, label: "Mutual defection" },
+];
+
+function payoff(row: Strategy, column: Strategy): Cell {
+  return CELLS.find((cell) => cell.row === row && cell.column === column) ?? CELLS[0];
+}
 
 export default function PayoffMatrix() {
-  const [p1Score, setP1Score] = useState(0);
-  const [p2Score, setP2Score] = useState(0);
-  const [lastMove, setLastMove] = useState<{p1: string, p2: string, p1Earned: number, p2Earned: number} | null>(null);
+  const [row, setRow] = useState<Strategy>("D");
+  const [column, setColumn] = useState<Strategy>("D");
+  const selected = payoff(row, column);
 
-  // Classic Prisoner's Dilemma Payoffs (P1, P2)
-  const payoffs = {
-    'CC': [3, 3], // Mutual Cooperation
-    'CD': [0, 5], // P1 Cooperates (Sucker), P2 Defects (Temptation)
-    'DC': [5, 0], // P1 Defects (Temptation), P2 Cooperates (Sucker)
-    'DD': [1, 1], // Mutual Defection (Nash Equilibrium)
-  };
+  const deviations = useMemo(() => {
+    const p1Alternative = payoff(row === "C" ? "D" : "C", column);
+    const p2Alternative = payoff(row, column === "C" ? "D" : "C");
+    return {
+      p1Gain: p1Alternative.p1 - selected.p1,
+      p2Gain: p2Alternative.p2 - selected.p2,
+    };
+  }, [row, column, selected]);
 
-  const playRound = (p1Choice: 'C' | 'D') => {
-    // Opponent acts randomly for this simulation
-    const p2Choice = Math.random() > 0.5 ? 'C' : 'D';
-    const key = `${p1Choice}${p2Choice}` as keyof typeof payoffs;
-    
-    const [p1Earned, p2Earned] = payoffs[key];
-    
-    setP1Score(s => s + p1Earned);
-    setP2Score(s => s + p2Earned);
-    setLastMove({ p1: p1Choice, p2: p2Choice, p1Earned, p2Earned });
-  };
-
-  const reset = () => {
-    setP1Score(0); setP2Score(0); setLastMove(null);
-  };
-
-  const getCellClass = (p1: string, p2: string) => {
-    const isActive = lastMove?.p1 === p1 && lastMove?.p2 === p2;
-    return `flex flex-col items-center justify-center p-4 border rounded-xl transition-all duration-300 ${
-      isActive 
-        ? 'bg-amber-500/20 border-amber-400 shadow-[0_0_20px_rgba(245,158,11,0.3)] scale-105 z-10' 
-        : 'bg-black/40 border-white/10 opacity-70'
-    }`;
-  };
+  const isNash = deviations.p1Gain <= 0 && deviations.p2Gain <= 0;
 
   return (
-    <div className="w-full h-full bg-black/40 backdrop-blur-md border border-amber-500/20 rounded-3xl p-8 shadow-2xl relative overflow-hidden font-mono flex flex-col">
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(245,158,11,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(245,158,11,0.03)_1px,transparent_1px)] bg-[size:20px_20px] pointer-events-none" />
-      
-      <div className="relative z-10 flex justify-between items-center mb-8 border-b border-amber-500/20 pb-4">
-        <div>
-          <div className="flex items-center gap-2 text-amber-400 mb-1">
-            <Swords size={18} />
-            <h3 className="font-bold uppercase tracking-widest text-sm">The Prisoner's Dilemma</h3>
-          </div>
-          <div className="text-[10px] text-slate-500 tracking-widest uppercase">Payoff Matrix Simulator</div>
+    <section className="overflow-hidden rounded-[30px] border border-amber-200/[0.12] bg-black/[0.18] shadow-[0_24px_90px_rgba(0,0,0,0.24)] backdrop-blur-xl">
+      <div className="grid border-b border-white/[0.07] lg:grid-cols-[minmax(0,1fr)_390px]">
+        <div className="px-5 py-5 sm:px-6">
+          <div className="flex items-center gap-2 font-mono text-[9px] font-semibold uppercase tracking-[0.15em] text-amber-200/62"><UsersRound size={13} /> Payoff matrix explorer</div>
+          <h2 className="mt-2 text-[clamp(1.8rem,3.2vw,3rem)] font-semibold tracking-[-0.047em] text-white">A strategy profile is stable only if nobody benefits by deviating alone.</h2>
+          <p className="mt-2 max-w-3xl text-[12px] leading-6 text-slate-400">Choose one strategy for each player in a classic Prisoner&apos;s Dilemma. The matrix shows the outcome, then checks what each player would gain or lose by changing only their own move while the other player stays fixed.</p>
         </div>
-        <button onClick={reset} className="p-2 bg-white/5 border border-white/10 hover:bg-white/10 rounded-lg text-slate-400 transition-colors">
-          <RotateCcw size={16} />
-        </button>
+        <div className="border-t border-white/[0.07] p-5 lg:border-l lg:border-t-0">
+          <div className="font-mono text-[8px] uppercase tracking-[0.12em] text-slate-600">Selected profile</div>
+          <div className="mt-2 text-[24px] font-semibold tracking-[-0.04em] text-white">{selected.label}</div>
+          <div className={`mt-2 inline-flex rounded-full border px-3 py-1 font-mono text-[8px] uppercase tracking-[0.1em] ${isNash ? "border-emerald-200/[0.18] bg-emerald-200/[0.035] text-emerald-200/68" : "border-amber-200/[0.16] bg-amber-200/[0.025] text-amber-200/60"}`}>{isNash ? "Nash equilibrium" : "profitable deviation exists"}</div>
+        </div>
       </div>
 
-      <div className="relative z-10 flex flex-col lg:flex-row gap-12 flex-1 items-center">
-        
-        {/* MATRIX BOARD */}
-        <div className="relative w-full lg:w-3/5 aspect-square max-w-md mx-auto">
-          {/* Labels */}
-          <div className="absolute -top-8 left-1/2 -translate-x-1/2 text-xs font-bold text-slate-400 tracking-widest uppercase">Opponent</div>
-          <div className="absolute top-1/2 -left-12 -translate-y-1/2 -rotate-90 text-xs font-bold text-amber-400 tracking-widest uppercase">You</div>
-          
-          <div className="grid grid-cols-2 grid-rows-2 gap-4 h-full pt-4 pl-4">
-            {/* CC */}
-            <div className={getCellClass('C', 'C')}>
-              <span className="text-[10px] text-slate-500 mb-2 uppercase tracking-widest">Mutual Reward</span>
-              <div className="text-2xl font-black text-white">+3, +3</div>
-            </div>
-            {/* CD */}
-            <div className={getCellClass('C', 'D')}>
-              <span className="text-[10px] text-slate-500 mb-2 uppercase tracking-widest text-center">Opponent Betrays</span>
-              <div className="text-2xl font-black text-white"><span className="text-amber-400">0</span>, 5</div>
-            </div>
-            {/* DC */}
-            <div className={getCellClass('D', 'C')}>
-              <span className="text-[10px] text-slate-500 mb-2 uppercase tracking-widest text-center">You Betray</span>
-              <div className="text-2xl font-black text-white"><span className="text-amber-400">5</span>, 0</div>
-            </div>
-            {/* DD */}
-            <div className={getCellClass('D', 'D')}>
-              <span className="text-[10px] text-slate-500 mb-2 uppercase tracking-widest">Nash Equilibrium</span>
-              <div className="text-2xl font-black text-white">+1, +1</div>
-            </div>
+      <div className="grid lg:grid-cols-[minmax(0,1fr)_420px]">
+        <div className="border-b border-white/[0.07] p-5 sm:p-6 lg:border-b-0 lg:border-r">
+          <div className="grid grid-cols-[70px_repeat(2,minmax(0,1fr))] grid-rows-[48px_repeat(2,minmax(120px,1fr))] gap-2">
+            <div />
+            <ColumnLabel active={column === "C"} label="P2 Cooperate" onClick={() => setColumn("C")} />
+            <ColumnLabel active={column === "D"} label="P2 Defect" onClick={() => setColumn("D")} />
+            <RowLabel active={row === "C"} label="P1 Cooperate" onClick={() => setRow("C")} />
+            <MatrixCell cell={payoff("C", "C")} selected={row === "C" && column === "C"} />
+            <MatrixCell cell={payoff("C", "D")} selected={row === "C" && column === "D"} />
+            <RowLabel active={row === "D"} label="P1 Defect" onClick={() => setRow("D")} />
+            <MatrixCell cell={payoff("D", "C")} selected={row === "D" && column === "C"} />
+            <MatrixCell cell={payoff("D", "D")} selected={row === "D" && column === "D"} />
           </div>
+          <p className="mt-4 text-[9px] leading-4 text-slate-600">Each ordered pair is (Player 1 payoff, Player 2 payoff). The numbers encode preferences for this example; they are not money or universal units.</p>
         </div>
 
-        {/* CONTROLS & SCORE */}
-        <div className="w-full lg:w-2/5 flex flex-col gap-8">
-          <div className="flex gap-4">
-            <div className="flex-1 p-4 bg-amber-950/30 border-l-2 border-amber-500 rounded-r-xl">
-              <div className="text-[10px] text-amber-500/80 uppercase tracking-widest mb-1">Your Score</div>
-              <div className="text-4xl font-black text-amber-400">{p1Score}</div>
-            </div>
-            <div className="flex-1 p-4 bg-slate-900/50 border-l-2 border-slate-500 rounded-r-xl">
-              <div className="text-[10px] text-slate-500 uppercase tracking-widest mb-1">Opponent Score</div>
-              <div className="text-4xl font-black text-white">{p2Score}</div>
-            </div>
+        <div className="p-5 sm:p-6">
+          <div className="flex items-center gap-2 font-mono text-[8px] uppercase tracking-[0.12em] text-slate-600"><ArrowRightLeft size={11} /> Unilateral deviation test</div>
+          <div className="mt-4 grid grid-cols-2 gap-2">
+            <Deviation label="Player 1" gain={deviations.p1Gain} />
+            <Deviation label="Player 2" gain={deviations.p2Gain} />
           </div>
 
-          <div className="space-y-4 mt-auto">
-            <div className="text-xs text-center text-slate-400 uppercase tracking-widest mb-2">Make Your Move</div>
-            <button 
-              onClick={() => playRound('C')}
-              className="w-full flex items-center justify-center gap-3 p-4 bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 font-bold uppercase tracking-widest rounded-xl transition-all"
-            >
-              <Handshake size={18} /> Cooperate
-            </button>
-            <button 
-              onClick={() => playRound('D')}
-              className="w-full flex items-center justify-center gap-3 p-4 bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-400 font-bold uppercase tracking-widest rounded-xl transition-all"
-            >
-              <AlertTriangle size={18} /> Defect (Betray)
-            </button>
+          <div className="mt-5 rounded-[18px] border border-white/[0.07] bg-black/[0.12] p-4">
+            <div className="flex items-center gap-2 font-mono text-[8px] uppercase tracking-[0.1em] text-amber-200/48"><Target size={11} /> Best-response logic</div>
+            <p className="mt-2 text-[10px] leading-5 text-slate-500">
+              {isNash
+                ? "Neither player can improve their own payoff by changing strategies alone. That makes this profile a Nash equilibrium, even though mutual cooperation gives both players a higher payoff."
+                : "At least one player can improve their own payoff by switching strategies while the other player stays fixed, so this profile is not a Nash equilibrium."}
+            </p>
+          </div>
+
+          <div className="mt-5 rounded-[18px] border border-emerald-200/[0.10] bg-emerald-200/[0.02] p-4">
+            <div className="flex items-center gap-2 font-mono text-[8px] uppercase tracking-[0.1em] text-emerald-200/46"><Handshake size={11} /> Equilibrium ≠ collective optimum</div>
+            <p className="mt-2 text-[10px] leading-5 text-slate-600">The Prisoner&apos;s Dilemma is famous precisely because individually stable incentives can lead to an outcome both players prefer less than mutual cooperation.</p>
           </div>
         </div>
-
       </div>
-    </div>
+    </section>
   );
+}
+
+function MatrixCell({ cell, selected }: { cell: Cell; selected: boolean }) {
+  return <div className={`flex min-h-[120px] flex-col items-center justify-center rounded-[16px] border p-3 text-center transition ${selected ? "border-amber-200/[0.34] bg-amber-200/[0.07] shadow-[0_0_30px_rgba(251,191,36,0.08)]" : "border-white/[0.06] bg-black/[0.10]"}`}><div className="font-mono text-[24px] font-semibold tracking-[-0.04em] text-white">{cell.p1}, {cell.p2}</div><div className="mt-2 text-[8px] uppercase tracking-[0.09em] text-slate-600">{cell.label}</div></div>;
+}
+
+function ColumnLabel({ active, label, onClick }: { active: boolean; label: string; onClick: () => void }) {
+  return <button type="button" onClick={onClick} className={`rounded-[12px] border px-2 text-center font-mono text-[8px] uppercase tracking-[0.08em] transition ${active ? "border-amber-200/[0.24] bg-amber-200/[0.045] text-amber-100/72" : "border-white/[0.06] text-slate-600 hover:bg-white/[0.025]"}`}>{label}</button>;
+}
+
+function RowLabel({ active, label, onClick }: { active: boolean; label: string; onClick: () => void }) {
+  return <button type="button" onClick={onClick} className={`rounded-[12px] border px-2 font-mono text-[7px] uppercase tracking-[0.07em] [writing-mode:vertical-rl] transition ${active ? "border-amber-200/[0.24] bg-amber-200/[0.045] text-amber-100/72" : "border-white/[0.06] text-slate-600 hover:bg-white/[0.025]"}`}>{label}</button>;
+}
+
+function Deviation({ label, gain }: { label: string; gain: number }) {
+  const positive = gain > 0;
+  const neutral = gain === 0;
+  return <div className={`rounded-[16px] border p-4 ${positive ? "border-rose-200/[0.13] bg-rose-200/[0.025]" : "border-emerald-200/[0.10] bg-emerald-200/[0.02]"}`}><div className="font-mono text-[8px] uppercase tracking-[0.1em] text-slate-600">{label} deviation</div><div className={`mt-2 text-[24px] font-semibold tracking-[-0.04em] ${positive ? "text-rose-200/78" : "text-emerald-200/70"}`}>{gain > 0 ? "+" : ""}{gain}</div><div className="mt-1 text-[9px] text-slate-600">{positive ? "would improve payoff" : neutral ? "same payoff" : "would reduce payoff"}</div></div>;
 }

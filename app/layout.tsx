@@ -8,8 +8,8 @@ import { NAVIGATION_DATA } from "@/lib/navigation";
 import { buildPagePolicyRouteSnapshot } from "@/lib/page-policy-snapshot";
 
 export const metadata = {
-  title: "The Knowledge Web",
-  description: "Educational ontological structures",
+  title: "Education Station 64",
+  description: "An interactive curriculum atlas for exploring connected fields of knowledge.",
 };
 
 const PAGE_POLICY_ROUTES = buildPagePolicyRouteSnapshot();

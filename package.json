@@ -8,7 +8,8 @@
     "gen": "plop",
     "start": "next start",
     "lint": "eslint",
-    "audit:architecture": "node scripts/audit-site-architecture.mjs"
+    "audit:architecture": "node scripts/audit-site-architecture.mjs",
+    "audit:readability": "node scripts/audit-page-readability.mjs"
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",

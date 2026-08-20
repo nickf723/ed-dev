@@ -1,162 +1,346 @@
-"use client";
 import Link from "next/link";
-import { motion } from "framer-motion";
-import PaleoBackground from "@/app/social-science/anthropology/PaleoBackground";
-import SkullTimeline from "@/app/social-science/anthropology/SkullTimeline";
-import { 
-  Skull, Shovel, Globe, MessageSquare, 
-  Search, Landmark, Footprints, BookOpen 
+import DomainPageHeader from "@/app/_components/DomainPageHeader";
+import { SceneFrame, Surface } from "@/app/_page-system/scene";
+import { requireCurriculumPageContext } from "@/lib/curriculum/page-context";
+import type { CurriculumNode } from "@/lib/curriculum/types";
+import {
+  ArrowRight,
+  BookOpen,
+  Dna,
+  Languages,
+  Layers3,
+  Search,
+  Shovel,
+  Sparkles,
+  UsersRound,
+  type LucideIcon,
 } from "lucide-react";
+import PaleoBackground from "./PaleoBackground";
+import SkullTimeline from "./SkullTimeline";
+
+const NODE_ID = "social.anthropology";
+
+type FieldMeta = {
+  icon: LucideIcon;
+  evidence: string;
+  question: string;
+  rgb: string;
+  index: string;
+  motif: "culture" | "biology" | "archaeology" | "language";
+};
+
+const FIELD_META: Record<string, FieldMeta> = {
+  "social.anthropology.cultural": {
+    icon: UsersRound,
+    evidence: "practice · meaning · relationship",
+    question: "How do people make social worlds meaningful, durable, and changeable?",
+    rgb: "250,204,21",
+    index: "01",
+    motif: "culture",
+  },
+  "social.anthropology.biological": {
+    icon: Dna,
+    evidence: "body · variation · deep time",
+    question: "How did human biology evolve, vary, and interact with environments and culture?",
+    rgb: "52,211,153",
+    index: "02",
+    motif: "biology",
+  },
+  "social.anthropology.archaeology": {
+    icon: Shovel,
+    evidence: "site · artifact · context",
+    question: "What can material traces reveal about people who are no longer present to explain them?",
+    rgb: "251,146,60",
+    index: "03",
+    motif: "archaeology",
+  },
+  "social.anthropology.linguistic": {
+    icon: Languages,
+    evidence: "speech · interaction · identity",
+    question: "How does language both express and produce social relationships, identities, and power?",
+    rgb: "34,211,238",
+    index: "04",
+    motif: "language",
+  },
+};
+
+const METHOD_ROWS = [
+  {
+    label: "Observe",
+    text: "Record behavior, context, interaction, material conditions, and the researcher's own position in the encounter.",
+    rgb: "250,204,21",
+  },
+  {
+    label: "Compare",
+    text: "Ask what changes across communities, environments, periods, populations, or cases without assuming one universal path.",
+    rgb: "52,211,153",
+  },
+  {
+    label: "Contextualize",
+    text: "Treat an artifact, word, trait, or custom as evidence whose meaning depends on relationships around it.",
+    rgb: "251,146,60",
+  },
+  {
+    label: "Collaborate",
+    text: "Research ethics include consent, reciprocity, stewardship, descendant communities, and consequences beyond publication.",
+    rgb: "34,211,238",
+  },
+] as const;
 
 export default function AnthropologyPage() {
+  const context = requireCurriculumPageContext(NODE_ID);
+
   return (
-    <main className="relative min-h-screen overflow-hidden bg-stone-950 text-stone-200 font-sans selection:bg-amber-500/30">
-      {/* Visual Engine: Primal Earth */}
-      <PaleoBackground />
-
-      {/* Anthropology Hero Replacement */}
-      <div className="relative z-20 pt-20 pb-10 px-6 max-w-5xl">
-        <div className="flex items-start gap-6">
-          <div className="hidden md:block w-24 h-24 border border-amber-500/30 rounded-lg flex items-center justify-center text-amber-500/20">
-            <Skull size={48} />
-          </div>
-          <div className="space-y-2">
-            <div className="flex items-center gap-4">
-              <span className="text-xs font-mono text-amber-500/50 underline">REF: SPECIES_STORY</span>
-              <span className="text-xs font-mono text-amber-500/50 italic">Location: Earth (Global)</span>
+    <SceneFrame
+      background={<PaleoBackground />}
+      className="bg-[#160d09] text-stone-100 selection:bg-amber-300/25"
+      maxWidthClassName="max-w-[1580px]"
+      headerBackground="rgba(20,12,8,0.48)"
+      header={
+        <DomainPageHeader
+          breadcrumbs={context.breadcrumbs}
+          eyebrow="Culture · biology · material traces · language · comparison"
+          eyebrowStyle="rule"
+          icon={Search}
+          title={<span>Anthropology</span>}
+          subtitle="Anthropology studies human life by combining evidence that rarely lives in one place: bodies, objects, language, relationships, environments, memory, and deep time. The four fields ask different questions, but their strongest explanations overlap."
+          accentRgb="245, 158, 11"
+          titleClassName="font-serif text-[clamp(3rem,5.7vw,6.4rem)] font-semibold leading-[0.82] tracking-[-0.058em] text-[#fff3d6]"
+          headerClassName="border-amber-100/[0.10]"
+        />
+      }
+    >
+      <section className="relative isolate mt-5 overflow-hidden border-y border-amber-100/[0.12] py-5 sm:py-6">
+        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(25,13,7,0.24),rgba(14,11,9,0.08)_54%,transparent_82%)] backdrop-blur-[3px]" />
+        <div className="relative grid gap-5 xl:grid-cols-[minmax(0,1.08fr)_minmax(390px,0.72fr)]">
+          <div className="min-w-0">
+            <div className="max-w-4xl px-1">
+              <div className="flex items-center gap-2 font-mono text-[11px] font-semibold uppercase tracking-[0.13em] text-amber-200/72">
+                <Layers3 size={14} /> Primary navigation · four-field anthropology
+              </div>
+              <h2 className="mt-2 text-[clamp(2rem,4vw,4rem)] font-semibold leading-[0.94] tracking-[-0.052em] text-white">
+                One species leaves many kinds of evidence.
+              </h2>
+              <p className="mt-3 max-w-3xl text-[14px] leading-6 text-stone-300/72">
+                Choose the evidence stream that matches the question. Cultural anthropology studies living social worlds, biological anthropology studies human biology and evolution, archaeology reconstructs activity from material remains, and linguistic anthropology studies language in social life.
+              </p>
             </div>
-            <h1 className="text-6xl font-serif font-bold text-amber-50 text-shadow-glow">ANTHROPOLOGY</h1>
-            <div className="h-1 w-32 bg-amber-500/50" />
-            <p className="text-sm text-amber-200/40 italic pt-4">
-              "To understand the present, we must unearth the biological and cultural foundations of the past".
-            </p>
+
+            <nav aria-label="Anthropology fields" className="mt-5 grid gap-3">
+              {context.children.map((child) => (
+                <FieldRoute key={child.id} child={child} />
+              ))}
+            </nav>
+          </div>
+
+          <EvidenceCompass />
+        </div>
+      </section>
+
+      <section className="mt-8 grid gap-5 xl:grid-cols-[minmax(0,0.86fr)_minmax(420px,1.14fr)] xl:items-start">
+        <div>
+          <div className="flex items-center gap-2 font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-emerald-200/68">
+            <Dna size={14} /> Preserved specimen viewer · reference, not navigation
+          </div>
+          <h2 className="mt-2 text-[clamp(1.8rem,3.4vw,3.3rem)] font-semibold leading-[0.96] tracking-[-0.048em] text-white">
+            Deep time is a branching story, not a ladder toward the present.
+          </h2>
+          <p className="mt-3 max-w-2xl text-[14px] leading-6 text-stone-300/70">
+            The existing hominin viewer remains as a compact biological-anthropology preview. Read each specimen as one branch in a larger, overlapping evolutionary history rather than as a simple sequence of replacements.
+          </p>
+          <div className="mt-5 max-w-[620px]">
+            <SkullTimeline />
           </div>
         </div>
+
+        <CrossFieldCase />
+      </section>
+
+      <section className="mt-8 border-t border-stone-100/[0.10] pt-5">
+        <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_430px] lg:items-end">
+          <div>
+            <div className="flex items-center gap-2 font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-cyan-100/62">
+              <BookOpen size={14} /> Field practice · reference, not navigation
+            </div>
+            <h2 className="mt-2 max-w-5xl text-[clamp(1.9rem,3.6vw,3.5rem)] font-semibold leading-[0.95] tracking-[-0.05em] text-white">
+              Context is not decoration around evidence. It is part of the evidence.
+            </h2>
+          </div>
+          <p className="text-[14px] leading-6 text-stone-400/74">
+            Anthropology often becomes most powerful where methods meet: excavation gains meaning from ethnography, biological variation gains meaning from history and environment, and language becomes evidence through the relationships in which it is used.
+          </p>
+        </div>
+
+        <div className="mt-5 grid border-y border-stone-100/[0.09] md:grid-cols-2 xl:grid-cols-4">
+          {METHOD_ROWS.map((row, index) => (
+            <MethodRow key={row.label} {...row} index={index + 1} />
+          ))}
+        </div>
+      </section>
+    </SceneFrame>
+  );
+}
+
+function FieldRoute({ child }: { child: CurriculumNode }) {
+  const meta = FIELD_META[child.id] ?? {
+    icon: Search,
+    evidence: "anthropological evidence",
+    question: child.description ?? "Explore this field of anthropology.",
+    rgb: "245,158,11",
+    index: "--",
+    motif: "culture" as const,
+  };
+  const Icon = meta.icon;
+  const planned = child.status === "placeholder";
+  const content = (
+    <Surface
+      variant="glass"
+      className={`group relative overflow-hidden rounded-l-[18px] rounded-r-[34px] p-0 transition ${planned ? "opacity-58" : "hover:translate-x-1"}`}
+      style={{
+        borderColor: `rgba(${meta.rgb},${planned ? 0.09 : 0.20})`,
+        background: `linear-gradient(90deg,rgba(24,13,8,0.52),rgba(${meta.rgb},0.045)_58%,rgba(8,7,7,0.08))`,
+        boxShadow: planned ? undefined : `inset 3px 0 0 rgba(${meta.rgb},0.54)`,
+      }}
+    >
+      <div className="grid min-h-[108px] gap-4 px-4 py-4 sm:grid-cols-[42px_52px_220px_minmax(0,1fr)_28px] sm:items-center sm:px-5">
+        <span className="font-mono text-[12px] text-stone-600">{meta.index}</span>
+        <span
+          className="flex h-11 w-11 items-center justify-center rounded-[13px] border"
+          style={{ color: `rgb(${meta.rgb})`, borderColor: `rgba(${meta.rgb},0.28)`, background: `rgba(${meta.rgb},0.055)` }}
+        >
+          <Icon size={18} />
+        </span>
+        <span>
+          <span className="font-mono text-[11px] font-semibold uppercase tracking-[0.09em]" style={{ color: `rgba(${meta.rgb},0.74)` }}>
+            {meta.evidence}
+          </span>
+          <strong className="mt-1 block text-[18px] font-semibold text-white">{child.label}</strong>
+        </span>
+        <span className="text-[13px] leading-5 text-stone-300/72">{meta.question}</span>
+        {planned ? <span className="h-2 w-2 rounded-full border border-white/[0.14]" /> : <ArrowRight size={16} className="text-white/30 transition group-hover:translate-x-1 group-hover:text-white/82" />}
       </div>
-      <div className="absolute inset-0 bg-radial-vignette opacity-80 pointer-events-none" />
+      <FieldMotif motif={meta.motif} rgb={meta.rgb} />
+    </Surface>
+  );
 
-      <div className="relative z-10 container mx-auto px-6 py-12">
+  return planned ? <div aria-disabled="true">{content}</div> : <Link href={child.href}>{content}</Link>;
+}
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 mt-12">
-          
+function FieldMotif({ motif, rgb }: { motif: FieldMeta["motif"]; rgb: string }) {
+  if (motif === "archaeology") {
+    return (
+      <div className="pointer-events-none absolute inset-y-0 right-0 w-[28%] opacity-50">
+        {[0, 1, 2, 3].map((row) => (
+          <span key={row} className="absolute left-0 right-0 h-px" style={{ top: `${28 + row * 18}%`, background: `rgba(${rgb},${0.24 - row * 0.03})`, transform: `rotate(${row % 2 ? -1.2 : 1.1}deg)` }} />
+        ))}
+        <span className="absolute bottom-[18%] right-[22%] h-5 w-4 rotate-[18deg] border" style={{ borderColor: `rgba(${rgb},0.34)` }} />
+      </div>
+    );
+  }
+  if (motif === "biology") {
+    return (
+      <svg className="pointer-events-none absolute inset-y-0 right-0 h-full w-[26%] opacity-38" viewBox="0 0 220 108" aria-hidden="true">
+        <path d="M24 8 C80 32 80 76 190 102" fill="none" stroke={`rgba(${rgb},0.48)`} strokeWidth="1.5" />
+        <path d="M190 8 C134 34 140 77 34 102" fill="none" stroke={`rgba(${rgb},0.32)`} strokeWidth="1.5" />
+        {[18, 36, 54, 72, 90].map((y, index) => <line key={y} x1={54 + index * 13} y1={y} x2={164 - index * 13} y2={y} stroke={`rgba(${rgb},0.24)`} />)}
+      </svg>
+    );
+  }
+  if (motif === "language") {
+    return (
+      <svg className="pointer-events-none absolute inset-y-0 right-0 h-full w-[28%] opacity-40" viewBox="0 0 240 108" aria-hidden="true">
+        <path d="M0 54 C18 18 34 90 52 54 S86 18 104 54 S138 90 156 54 S190 18 208 54 S230 82 240 54" fill="none" stroke={`rgba(${rgb},0.50)`} strokeWidth="1.8" />
+        <path d="M0 54 C24 37 34 71 58 54 S94 37 118 54 S154 71 178 54 S216 39 240 54" fill="none" stroke={`rgba(${rgb},0.22)`} />
+      </svg>
+    );
+  }
+  return (
+    <svg className="pointer-events-none absolute inset-y-0 right-0 h-full w-[28%] opacity-38" viewBox="0 0 240 108" aria-hidden="true">
+      {[{ x: 50, y: 30 }, { x: 110, y: 20 }, { x: 168, y: 45 }, { x: 88, y: 80 }, { x: 190, y: 82 }].map((point, index, points) => (
+        <g key={`${point.x}-${point.y}`}>
+          {index > 0 ? <line x1={points[index - 1].x} y1={points[index - 1].y} x2={point.x} y2={point.y} stroke={`rgba(${rgb},0.25)`} /> : null}
+          <circle cx={point.x} cy={point.y} r="5" fill={`rgba(${rgb},0.30)`} />
+        </g>
+      ))}
+    </svg>
+  );
+}
 
+function EvidenceCompass() {
+  const streams = [
+    { label: "Culture", note: "meaning in practice", rgb: "250,204,21", left: "13%", top: "18%" },
+    { label: "Biology", note: "variation through time", rgb: "52,211,153", left: "66%", top: "17%" },
+    { label: "Material", note: "traces in context", rgb: "251,146,60", left: "12%", top: "70%" },
+    { label: "Language", note: "interaction made audible", rgb: "34,211,238", left: "65%", top: "72%" },
+  ] as const;
 
-
-          {/* LEFT COLUMN: THE PHYSICAL & MATERIAL (PAST) */}
-          <div className="lg:col-span-7 space-y-12">
-            
-            {/* 1. BIOLOGICAL MODULE: Specimen View */}
-            <section className="group">
-              <div className="flex items-center gap-3 mb-6">
-                <Skull className="text-amber-500" size={24} />
-                <h2 className="text-2xl font-black tracking-tighter uppercase italic">Biological Specimen</h2>
-                <div className="h-px flex-1 bg-amber-500/20" />
-              </div>
-              
-              <div className="relative overflow-hidden rounded-2xl bg-stone-900/80 border border-amber-900/30 p-8 hover:border-amber-500/50 transition-all">
-                <div className="flex flex-col md:flex-row gap-8 items-center">
-                  <div className="w-full md:w-1/2">
-                    <SkullTimeline /> {/* The Immersive Specimen Widget */}
-                  </div>
-                  <div className="w-full md:w-1/2 space-y-4">
-                    <h3 className="text-xl font-bold text-amber-500">Human Evolution</h3>
-                    <p className="text-sm text-stone-400 leading-relaxed">
-                      Tracing the 7-million-year journey from the first hominids to modern <span className="text-white italic">Homo Sapiens</span>. Analyzing morphology, genetics, and adaptation.
-                    </p>
-                    <Link href="/social-science/anthropology/evolution" className="inline-flex items-center gap-2 text-xs font-bold text-amber-500 hover:text-white transition-colors uppercase tracking-widest">
-                      Enter Laboratory <Footprints size={14} />
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </section>
-
-            {/* 2. ARCHAEOLOGY MODULE: The Stratigraphy View */}
-            <section>
-              <div className="flex items-center gap-3 mb-6">
-                <Shovel className="text-orange-500" size={24} />
-                <h2 className="text-2xl font-black tracking-tighter uppercase italic">Archaeological Dig</h2>
-                <div className="h-px flex-1 bg-orange-500/20" />
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="bg-gradient-to-b from-orange-950/20 to-stone-900 border border-orange-900/30 p-6 rounded-xl relative overflow-hidden group hover:border-orange-500/50 transition-all">
-                  <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-30 transition-opacity">
-                    <Landmark size={80} />
-                  </div>
-                  <h3 className="text-lg font-bold text-orange-400 mb-2">Civilization Roots</h3>
-                  <p className="text-xs text-stone-500 mb-4">The rise of complex societies, urban sprawl, and the material history of power.</p>
-                  <Link href="/social-science/anthropology/civilization" className="text-[10px] font-bold uppercase tracking-widest text-orange-500 hover:text-white transition-colors underline decoration-orange-500/30 underline-offset-4">Excavate Site</Link>
-                </div>
-
-                <div className="bg-stone-900/80 border border-orange-900/30 p-6 rounded-xl hover:border-orange-500/50 transition-all">
-                  <h3 className="text-lg font-bold text-orange-400 mb-2">Artifact Analysis</h3>
-                  <p className="text-xs text-stone-500 mb-4">Reading the stories left behind in pottery shards, tools, and architecture.</p>
-                  <Link href="/social-science/anthropology/archaeology" className="text-[10px] font-bold uppercase tracking-widest text-orange-500 hover:text-white transition-colors underline decoration-orange-500/30 underline-offset-4">Open Archive</Link>
-                </div>
-              </div>
-            </section>
+  return (
+    <Surface variant="ghost" className="relative min-h-[500px] overflow-hidden rounded-[30px] border-amber-100/[0.09]" style={{ background: "rgba(13,9,7,0.08)" }}>
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(245,158,11,0.10),transparent_23%)]" />
+      <div className="relative p-5">
+        <div className="font-mono text-[11px] font-semibold uppercase tracking-[0.11em] text-amber-200/64">Evidence compass</div>
+        <p className="mt-2 max-w-md text-[13px] leading-5 text-stone-400/72">Anthropological questions often become clearer when several evidence streams point toward the same human problem.</p>
+      </div>
+      <div className="absolute inset-x-5 bottom-5 top-[105px]">
+        <div className="absolute left-1/2 top-1/2 flex h-40 w-40 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-amber-100/[0.16] bg-black/[0.12] p-5 text-center backdrop-blur-[12px]">
+          <span>
+            <Sparkles size={22} className="mx-auto text-amber-200/76" />
+            <strong className="mt-3 block text-[18px] leading-5 text-white">Human life</strong>
+            <span className="mt-2 block text-[12px] leading-5 text-stone-400">adaptation · meaning · memory · relationship</span>
+          </span>
+        </div>
+        {streams.map((stream) => (
+          <div key={stream.label} className="absolute w-[150px]" style={{ left: stream.left, top: stream.top }}>
+            <div className="h-px w-full" style={{ background: `linear-gradient(90deg,rgba(${stream.rgb},0.08),rgba(${stream.rgb},0.42),rgba(${stream.rgb},0.08))` }} />
+            <strong className="mt-2 block text-[14px]" style={{ color: `rgb(${stream.rgb})` }}>{stream.label}</strong>
+            <span className="mt-1 block text-[11px] leading-4 text-stone-500">{stream.note}</span>
           </div>
+        ))}
+      </div>
+    </Surface>
+  );
+}
 
-          {/* RIGHT COLUMN: THE SOCIAL & VIRTUAL (PRESENT/FUTURE) */}
-          <div className="lg:col-span-5 space-y-12">
-            
-            {/* 3. CULTURAL MODULE: The Field Journal */}
-            <section className="bg-stone-900/60 backdrop-blur-md border border-yellow-900/20 p-8 rounded-3xl relative overflow-hidden group">
-               {/* Visual Flourish: Journal Paper Texture */}
-              <div className="absolute inset-0 bg-[url('/noise.png')] opacity-[0.03] pointer-events-none" />
-              <div className="relative z-10">
-                <div className="flex items-center gap-3 mb-6">
-                  <Globe className="text-yellow-500" />
-                  <h2 className="text-xl font-bold tracking-tight text-white uppercase tracking-widest">Field Journal</h2>
-                </div>
-                
-                <div className="space-y-6">
-                  <div className="border-l-2 border-yellow-500/30 pl-4 py-2">
-                    <h4 className="font-bold text-yellow-500 uppercase text-xs mb-1">Ethnography</h4>
-                    <p className="text-sm text-stone-300 leading-relaxed italic">
-                      "Deep Hanging Out" — The systematic study of people and cultures through participant observation.
-                    </p>
-                  </div>
-                  
-                  <div className="bg-black/20 p-4 rounded-lg border border-white/5">
-                    <h4 className="font-bold text-white text-sm mb-2 flex items-center gap-2">
-                      <Search size={14} className="text-yellow-500" /> Cultural Relativism
-                    </h4>
-                    <p className="text-xs text-stone-500">
-                      Understanding beliefs and activities within their own context rather than judging them by outside standards.
-                    </p>
-                  </div>
+function CrossFieldCase() {
+  const rows = [
+    { label: "Cultural", text: "How is food shared, valued, restricted, celebrated, or tied to identity?", rgb: "250,204,21" },
+    { label: "Biological", text: "How do nutrition, disease, activity, ancestry, and environment shape bodies?", rgb: "52,211,153" },
+    { label: "Archaeological", text: "What do hearths, vessels, animal remains, tools, and residues reveal about past meals?", rgb: "251,146,60" },
+    { label: "Linguistic", text: "How do names, stories, categories, politeness, and conversation organize food practices?", rgb: "34,211,238" },
+  ] as const;
 
-                  <Link href="/social-science/anthropology/ethnography" className="block w-full text-center py-3 rounded-xl bg-yellow-500 text-stone-950 font-bold text-xs uppercase tracking-widest hover:bg-white transition-colors">
-                    Start Fieldwork
-                  </Link>
-                </div>
-              </div>
-            </section>
-
-            {/* 4. DIGITAL MODULE: The Network HUD */}
-            <section className="bg-black border border-cyan-900/30 p-8 rounded-3xl relative overflow-hidden group">
-              <div className="absolute -right-20 -bottom-20 w-64 h-64 bg-cyan-500/10 rounded-full blur-[100px]" />
-              <div className="relative z-10">
-                <div className="flex items-center gap-3 mb-4 text-cyan-400">
-                  <MessageSquare size={20} />
-                  <h3 className="font-mono text-sm font-bold uppercase tracking-[0.2em]">Digital Mankind</h3>
-                </div>
-                <h4 className="text-2xl font-bold text-white mb-4 tracking-tighter">Cyber-Ethnography</h4>
-                <p className="text-xs text-stone-400 leading-relaxed mb-6">
-                  How technology reshapes identity. Studying communities in the metaverse, digital kinship, and the evolution of the "Digital Tribe."
-                </p>
-                <Link href="/social-science/anthropology/digital" className="flex items-center justify-between text-xs font-mono text-cyan-400 hover:text-white transition-colors">
-                  <span>ACCESS NETWORK DATA</span>
-                  <span className="animate-pulse">_</span>
-                </Link>
-              </div>
-            </section>
-
-          </div>
+  return (
+    <Surface variant="glass" className="overflow-hidden rounded-[32px] border-amber-100/[0.11]" style={{ background: "rgba(18,11,8,0.28)" }}>
+      <div className="grid border-b border-amber-100/[0.08] lg:grid-cols-[minmax(0,1fr)_250px]">
+        <div className="p-5 sm:p-6">
+          <div className="font-mono text-[11px] font-semibold uppercase tracking-[0.11em] text-amber-200/68">Cross-field synthesis</div>
+          <h2 className="mt-2 text-[clamp(1.8rem,3vw,2.8rem)] font-semibold tracking-[-0.045em] text-white">One ordinary meal can become four different datasets.</h2>
+          <p className="mt-3 text-[13px] leading-6 text-stone-300/70">No single field owns the question. Each changes what counts as evidence and what kinds of claims can be supported.</p>
+        </div>
+        <div className="border-t border-amber-100/[0.08] bg-black/[0.08] p-5 backdrop-blur-[12px] lg:border-l lg:border-t-0">
+          <div className="font-mono text-[11px] uppercase tracking-[0.09em] text-stone-500">Shared question</div>
+          <p className="mt-3 text-[16px] font-medium leading-7 text-amber-50/88">What can food reveal about human adaptation, identity, inequality, memory, and social connection?</p>
         </div>
       </div>
-    </main>
+      <div className="divide-y divide-white/[0.07]">
+        {rows.map((row, index) => (
+          <div key={row.label} className="grid gap-3 px-5 py-4 sm:grid-cols-[34px_110px_minmax(0,1fr)] sm:items-start">
+            <span className="font-mono text-[11px] text-stone-600">0{index + 1}</span>
+            <strong className="text-[13px]" style={{ color: `rgb(${row.rgb})` }}>{row.label}</strong>
+            <p className="text-[13px] leading-5 text-stone-400/74">{row.text}</p>
+          </div>
+        ))}
+      </div>
+    </Surface>
+  );
+}
+
+function MethodRow({ label, text, rgb, index }: { label: string; text: string; rgb: string; index: number }) {
+  return (
+    <article className="relative min-h-[170px] border-b border-white/[0.07] px-5 py-5 md:[&:nth-last-child(-n+2)]:border-b-0 xl:border-b-0 xl:border-r xl:last:border-r-0">
+      <span className="font-mono text-[11px]" style={{ color: `rgba(${rgb},0.56)` }}>0{index}</span>
+      <h3 className="mt-4 text-[17px] font-semibold" style={{ color: `rgb(${rgb})` }}>{label}</h3>
+      <p className="mt-2 text-[13px] leading-6 text-stone-400/72">{text}</p>
+    </article>
   );
 }

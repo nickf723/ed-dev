@@ -1,145 +1,210 @@
 "use client";
-import React, { useState } from 'react';
-import { Beaker, CheckCircle2, AlertTriangle } from 'lucide-react';
+
+import { useState, type ReactNode } from "react";
+import { AlertTriangle, Beaker, CheckCircle2, Minus, Plus, Scale } from "lucide-react";
+
+type Coefficients = {
+  methane: number;
+  oxygen: number;
+  carbonDioxide: number;
+  water: number;
+};
+
+const INITIAL: Coefficients = {
+  methane: 1,
+  oxygen: 1,
+  carbonDioxide: 1,
+  water: 1,
+};
 
 export default function ReactionBalancer() {
-    // Coefficients for: aCH4 + bO2 -> cCO2 + dH2O
-    const [a, setA] = useState(1);
-    const [b, setB] = useState(1);
-    const [c, setC] = useState(1);
-    const [d, setD] = useState(1);
+  const [coefficients, setCoefficients] = useState(INITIAL);
+  const reactants = {
+    C: coefficients.methane,
+    H: coefficients.methane * 4,
+    O: coefficients.oxygen * 2,
+  };
+  const products = {
+    C: coefficients.carbonDioxide,
+    H: coefficients.water * 2,
+    O: coefficients.carbonDioxide * 2 + coefficients.water,
+  };
+  const balanced = (Object.keys(reactants) as Array<keyof typeof reactants>).every(
+    (element) => reactants[element] === products[element],
+  );
 
-    // Calculate atoms on the Reactant (Left) side
-    const reactants = {
-        C: a * 1,
-        H: a * 4,
-        O: b * 2
-    };
+  function adjust(key: keyof Coefficients, amount: number) {
+    setCoefficients((current) => ({
+      ...current,
+      [key]: Math.min(9, Math.max(1, current[key] + amount)),
+    }));
+  }
 
-    // Calculate atoms on the Product (Right) side
-    const products = {
-        C: c * 1,
-        H: d * 2,
-        O: (c * 2) + (d * 1)
-    };
-
-    // Check if the equation is perfectly balanced
-    const isBalanced = 
-        reactants.C === products.C && 
-        reactants.H === products.H && 
-        reactants.O === products.O;
-
-    const increment = (setter: React.Dispatch<React.SetStateAction<number>>, val: number) => {
-        setter(prev => Math.min(Math.max(1, prev + val), 9));
-    };
-
-    return (
-        <div className="w-full bg-zinc-950/80 backdrop-blur-xl border border-zinc-800 rounded-2xl overflow-hidden shadow-2xl font-sans">
-            <div className="bg-zinc-900 border-b border-zinc-800 p-5 flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                    <div className="p-2 bg-emerald-500/20 border border-emerald-500/30 rounded-lg">
-                        <Beaker size={18} className="text-emerald-400" />
-                    </div>
-                    <div>
-                        <h3 className="text-white font-bold tracking-wide">Conservation of Mass</h3>
-                        <p className="text-[10px] text-zinc-500 font-mono uppercase tracking-widest">Combustion of Methane</p>
-                    </div>
-                </div>
-                <div className={`px-3 py-1 rounded text-xs font-bold uppercase tracking-widest border ${isBalanced ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/50' : 'bg-red-500/20 text-red-400 border-red-500/50'}`}>
-                    {isBalanced ? 'Balanced' : 'Unbalanced'}
-                </div>
-            </div>
-
-            <div className="p-6 md:p-8 space-y-8">
-                
-                {/* The Equation UI */}
-                <div className="flex flex-wrap items-center justify-center gap-4 text-2xl md:text-4xl font-black text-white">
-                    {/* CH4 */}
-                    <div className="flex items-center gap-2">
-                        <div className="flex flex-col items-center gap-1">
-                            <button onClick={() => increment(setA, 1)} className="text-zinc-500 hover:text-emerald-400 text-sm">▲</button>
-                            <span className={a > 1 ? 'text-emerald-400' : 'text-zinc-600'}>{a}</span>
-                            <button onClick={() => increment(setA, -1)} className="text-zinc-500 hover:text-red-400 text-sm">▼</button>
-                        </div>
-                        <span>CH<sub className="text-lg text-zinc-400">4</sub></span>
-                    </div>
-
-                    <span className="text-zinc-600">+</span>
-
-                    {/* O2 */}
-                    <div className="flex items-center gap-2">
-                        <div className="flex flex-col items-center gap-1">
-                            <button onClick={() => increment(setB, 1)} className="text-zinc-500 hover:text-emerald-400 text-sm">▲</button>
-                            <span className={b > 1 ? 'text-emerald-400' : 'text-zinc-600'}>{b}</span>
-                            <button onClick={() => increment(setB, -1)} className="text-zinc-500 hover:text-red-400 text-sm">▼</button>
-                        </div>
-                        <span>O<sub className="text-lg text-zinc-400">2</sub></span>
-                    </div>
-
-                    <span className="text-zinc-600 mx-4">→</span>
-
-                    {/* CO2 */}
-                    <div className="flex items-center gap-2">
-                        <div className="flex flex-col items-center gap-1">
-                            <button onClick={() => increment(setC, 1)} className="text-zinc-500 hover:text-emerald-400 text-sm">▲</button>
-                            <span className={c > 1 ? 'text-emerald-400' : 'text-zinc-600'}>{c}</span>
-                            <button onClick={() => increment(setC, -1)} className="text-zinc-500 hover:text-red-400 text-sm">▼</button>
-                        </div>
-                        <span>CO<sub className="text-lg text-zinc-400">2</sub></span>
-                    </div>
-
-                    <span className="text-zinc-600">+</span>
-
-                    {/* H2O */}
-                    <div className="flex items-center gap-2">
-                        <div className="flex flex-col items-center gap-1">
-                            <button onClick={() => increment(setD, 1)} className="text-zinc-500 hover:text-emerald-400 text-sm">▲</button>
-                            <span className={d > 1 ? 'text-emerald-400' : 'text-zinc-600'}>{d}</span>
-                            <button onClick={() => increment(setD, -1)} className="text-zinc-500 hover:text-red-400 text-sm">▼</button>
-                        </div>
-                        <span>H<sub className="text-lg text-zinc-400">2</sub>O</span>
-                    </div>
-                </div>
-
-                {/* The Atom Counter Diagnostic */}
-                <div className="grid grid-cols-2 gap-4">
-                    {/* Reactants */}
-                    <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4">
-                        <h4 className="text-xs font-bold uppercase tracking-widest text-zinc-500 mb-3 border-b border-zinc-800 pb-2">Reactants</h4>
-                        <div className="space-y-2 font-mono text-sm">
-                            <div className={`flex justify-between ${reactants.C === products.C ? 'text-emerald-400' : 'text-zinc-300'}`}><span>Carbon (C):</span> <span>{reactants.C}</span></div>
-                            <div className={`flex justify-between ${reactants.H === products.H ? 'text-emerald-400' : 'text-zinc-300'}`}><span>Hydrogen (H):</span> <span>{reactants.H}</span></div>
-                            <div className={`flex justify-between ${reactants.O === products.O ? 'text-emerald-400' : 'text-zinc-300'}`}><span>Oxygen (O):</span> <span>{reactants.O}</span></div>
-                        </div>
-                    </div>
-
-                    {/* Products */}
-                    <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4">
-                        <h4 className="text-xs font-bold uppercase tracking-widest text-zinc-500 mb-3 border-b border-zinc-800 pb-2">Products</h4>
-                        <div className="space-y-2 font-mono text-sm">
-                            <div className={`flex justify-between ${reactants.C === products.C ? 'text-emerald-400' : 'text-zinc-300'}`}><span>Carbon (C):</span> <span>{products.C}</span></div>
-                            <div className={`flex justify-between ${reactants.H === products.H ? 'text-emerald-400' : 'text-zinc-300'}`}><span>Hydrogen (H):</span> <span>{products.H}</span></div>
-                            <div className={`flex justify-between ${reactants.O === products.O ? 'text-emerald-400' : 'text-zinc-300'}`}><span>Oxygen (O):</span> <span>{products.O}</span></div>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Dynamic Status Message */}
-                <div className="pt-4 border-t border-zinc-800">
-                    {isBalanced ? (
-                        <div className="flex items-start gap-2 text-emerald-400 text-sm bg-emerald-500/10 p-4 rounded border border-emerald-500/20">
-                            <CheckCircle2 size={16} className="shrink-0 mt-0.5" />
-                            <p><strong>Perfect Balance.</strong> Matter cannot be created or destroyed. You have exactly 1 Carbon, 4 Hydrogens, and 4 Oxygens on both sides of the equation.</p>
-                        </div>
-                    ) : (
-                        <div className="flex items-start gap-2 text-zinc-400 text-sm bg-zinc-900 p-4 rounded border border-zinc-800">
-                            <AlertTriangle size={16} className="shrink-0 mt-0.5" />
-                            <p>Adjust the coefficients (the numbers in front of the molecules) until the atoms on both sides are exactly equal.</p>
-                        </div>
-                    )}
-                </div>
-
-            </div>
+  return (
+    <article className="overflow-hidden rounded-[24px] border border-amber-100/[0.11] bg-black/[0.25] shadow-[0_24px_85px_rgba(0,0,0,0.22)] backdrop-blur-xl">
+      <div className="flex flex-col gap-3 border-b border-white/[0.08] px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <div className="flex items-center gap-2 font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-amber-200/74">
+            <Beaker size={14} /> Conservation ledger
+          </div>
+          <p className="mt-1 text-[13px] text-slate-400/68">Combustion of methane</p>
         </div>
-    );
+        <span
+          className={`inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-[12px] font-semibold ${
+            balanced
+              ? "border-emerald-300/[0.30] bg-emerald-300/[0.08] text-emerald-200"
+              : "border-rose-300/[0.24] bg-rose-300/[0.06] text-rose-200"
+          }`}
+        >
+          {balanced ? <CheckCircle2 size={14} /> : <AlertTriangle size={14} />}
+          {balanced ? "Balanced" : "Atoms do not match"}
+        </span>
+      </div>
+
+      <div className="p-5 sm:p-6">
+        <div className="flex flex-wrap items-center justify-center gap-3 rounded-[20px] border border-white/[0.07] bg-black/[0.22] p-5 sm:gap-5 sm:p-7">
+          <MoleculeCoefficient
+            value={coefficients.methane}
+            formula={<>CH<sub>4</sub></>}
+            onDecrease={() => adjust("methane", -1)}
+            onIncrease={() => adjust("methane", 1)}
+          />
+          <Operator>+</Operator>
+          <MoleculeCoefficient
+            value={coefficients.oxygen}
+            formula={<>O<sub>2</sub></>}
+            onDecrease={() => adjust("oxygen", -1)}
+            onIncrease={() => adjust("oxygen", 1)}
+          />
+          <Operator>→</Operator>
+          <MoleculeCoefficient
+            value={coefficients.carbonDioxide}
+            formula={<>CO<sub>2</sub></>}
+            onDecrease={() => adjust("carbonDioxide", -1)}
+            onIncrease={() => adjust("carbonDioxide", 1)}
+          />
+          <Operator>+</Operator>
+          <MoleculeCoefficient
+            value={coefficients.water}
+            formula={<>H<sub>2</sub>O</>}
+            onDecrease={() => adjust("water", -1)}
+            onIncrease={() => adjust("water", 1)}
+          />
+        </div>
+
+        <div className="mt-5 grid gap-3 md:grid-cols-2">
+          <AtomLedger title="Reactants" counts={reactants} comparison={products} />
+          <AtomLedger title="Products" counts={products} comparison={reactants} />
+        </div>
+
+        <div
+          className={`mt-5 flex items-start gap-3 rounded-[16px] border p-4 text-[14px] leading-6 ${
+            balanced
+              ? "border-emerald-300/[0.18] bg-emerald-300/[0.045] text-emerald-100/82"
+              : "border-white/[0.08] bg-white/[0.018] text-slate-300/72"
+          }`}
+        >
+          {balanced ? (
+            <CheckCircle2 size={18} className="mt-0.5 shrink-0 text-emerald-300" />
+          ) : (
+            <Scale size={18} className="mt-0.5 shrink-0 text-amber-200/66" />
+          )}
+          <p>
+            {balanced
+              ? "Every carbon, hydrogen, and oxygen nucleus is accounted for. The coefficients describe how many whole molecules participate."
+              : "Change coefficients only. Subscripts belong to the molecular identity, while coefficients change the number of molecules in the reaction."}
+          </p>
+        </div>
+      </div>
+    </article>
+  );
+}
+
+function MoleculeCoefficient({
+  value,
+  formula,
+  onDecrease,
+  onIncrease,
+}: {
+  value: number;
+  formula: ReactNode;
+  onDecrease: () => void;
+  onIncrease: () => void;
+}) {
+  return (
+    <div className="flex items-center gap-2.5">
+      <div className="grid gap-1">
+        <ControlButton label="Increase coefficient" onClick={onIncrease} icon={Plus} />
+        <span className={`min-w-8 text-center text-[24px] font-semibold ${value > 1 ? "text-emerald-200" : "text-slate-500"}`}>
+          {value}
+        </span>
+        <ControlButton label="Decrease coefficient" onClick={onDecrease} icon={Minus} />
+      </div>
+      <span className="text-[28px] font-semibold tracking-[-0.04em] text-white sm:text-[34px] [&_sub]:text-[16px] [&_sub]:text-slate-400">
+        {formula}
+      </span>
+    </div>
+  );
+}
+
+function ControlButton({
+  label,
+  onClick,
+  icon: Icon,
+}: {
+  label: string;
+  onClick: () => void;
+  icon: typeof Plus;
+}) {
+  return (
+    <button
+      type="button"
+      aria-label={label}
+      onClick={onClick}
+      className="flex h-7 w-8 items-center justify-center rounded-[8px] border border-white/[0.08] bg-white/[0.025] text-slate-500 transition hover:bg-white/[0.08] hover:text-white"
+    >
+      <Icon size={13} />
+    </button>
+  );
+}
+
+function Operator({ children }: { children: ReactNode }) {
+  return <span className="px-1 text-[24px] font-light text-white/28">{children}</span>;
+}
+
+function AtomLedger({
+  title,
+  counts,
+  comparison,
+}: {
+  title: string;
+  counts: Record<"C" | "H" | "O", number>;
+  comparison: Record<"C" | "H" | "O", number>;
+}) {
+  return (
+    <div className="rounded-[17px] border border-white/[0.08] bg-white/[0.018] p-4">
+      <h4 className="border-b border-white/[0.07] pb-3 font-mono text-[11px] font-semibold uppercase tracking-[0.11em] text-slate-400">
+        {title}
+      </h4>
+      <div className="mt-3 space-y-2">
+        {(["C", "H", "O"] as const).map((element) => {
+          const matches = counts[element] === comparison[element];
+          return (
+            <div key={element} className="flex items-center justify-between gap-4 text-[14px]">
+              <span className="text-slate-400">{elementName(element)}</span>
+              <span className={`font-mono font-semibold ${matches ? "text-emerald-300" : "text-slate-200"}`}>
+                {counts[element]}
+              </span>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function elementName(symbol: "C" | "H" | "O") {
+  if (symbol === "C") return "Carbon (C)";
+  if (symbol === "H") return "Hydrogen (H)";
+  return "Oxygen (O)";
 }

@@ -1,188 +1,221 @@
-"use client";
-import React from "react";
 import Link from "next/link";
-import { 
-  ArrowLeft, Cpu, Lock, Network, 
-  LineChart, Waves, Zap, BookOpen, Calculator, Braces
+import DomainPageHeader from "@/app/_components/DomainPageHeader";
+import { requireCurriculumPageContext } from "@/lib/curriculum/page-context";
+import type { CurriculumNode } from "@/lib/curriculum/types";
+import {
+  ArrowRight,
+  Calculator,
+  ChartNoAxesCombined,
+  Cpu,
+  Dices,
+  FlaskConical,
+  KeyRound,
+  Network,
+  Route,
+  Scale,
+  Sigma,
+  type LucideIcon,
 } from "lucide-react";
-// Assumes you have your assessment and the new widget in your _components folder
-import Assessment, { AssessmentQuestion } from "@/app/_components/Assessment"; 
 import CipherWidget from "./_components/CipherWidget";
 
-// --- CONFIGURATION ---
-const SUBDOMAINS = [
-  {
-    id: "cryptography", title: "Cryptography", subtitle: "Secrets & Security",
-    desc: "The mathematical foundation of secure communication, encryption algorithms, and digital signatures.",
-    icon: Lock, color: "text-cyan-400", border: "border-cyan-500/30", bg: "bg-cyan-950/20",
-    equation: "E(x) = (x + k) mod 26", href: "formal-science/mathematics/applied/cryptography",
-    span: "col-span-1 md:col-span-2 lg:col-span-2" 
-  },
-  {
-    id: "game-theory", title: "Game Theory", subtitle: "Strategic Decision Making",
-    desc: "Mathematical models of strategic interactions among rational decision-makers.",
-    icon: Network, color: "text-amber-400", border: "border-amber-500/30", bg: "bg-amber-950/20",
-    equation: "max U_i(s_i, s_-i)", href: "formal-science/mathematics/applied/game-theory",
-    span: "col-span-1 md:col-span-2 lg:col-span-2" 
-  },
-  {
-    id: "operations", title: "Operations Research", subtitle: "Optimization",
-    desc: "Using advanced analytical methods to help make better complex decisions and optimize systems.",
-    icon: Cpu, color: "text-emerald-400", border: "border-emerald-500/30", bg: "bg-emerald-950/20",
-    equation: "min c^T x s.t. Ax ≤ b", href: "formal-science/mathematics/applied/operations", span: "col-span-1"
-  },
-  {
-    id: "financial", title: "Financial Math", subtitle: "Markets & Risk",
-    desc: "Applied mathematics used in financial markets, pricing derivatives, and risk management.",
-    icon: LineChart, color: "text-rose-400", border: "border-rose-500/30", bg: "bg-rose-950/20",
-    equation: "dS_t = μS_t dt + σS_t dW_t", href: "formal-science/mathematics/applied/financial", span: "col-span-1"
-  },
-  {
-    id: "fluid", title: "Fluid Dynamics", subtitle: "Flow & Mechanics",
-    desc: "The study of fluids in motion, combining calculus, physics, and computational modeling.",
-    icon: Waves, color: "text-blue-400", border: "border-blue-500/30", bg: "bg-blue-950/20",
-    equation: "∇ · v = 0", href: "formal-science/mathematics/applied/fluid-dynamics", span: "col-span-1 lg:col-span-2" 
-  }
-];
+const NODE_ID = "formal.mathematics.applied";
 
-const appliedQuiz: AssessmentQuestion[] = [
-  { id: 'a1', type: 'mcq', prompt: 'Which field of applied mathematics is primarily concerned with finding the absolute "best" outcome given a set of strict constraints (like maximizing profit while minimizing materials)?', options: ['Cryptography', 'Operations Research', 'Fluid Dynamics', 'Game Theory'], correctAnswer: 'Operations Research', explanation: 'Operations Research (Optimization) focuses on finding the maximum or minimum of a mathematical function subject to specific constraints.' },
-  { id: 'a2', type: 'matching', prompt: 'Match the Applied Math field to its real-world application.', leftItems: ['Cryptography', 'Game Theory', 'Financial Math'], rightItems: ['Securing WhatsApp messages', 'Stock market derivatives pricing', 'Analyzing Cold War nuclear deterrence'], correctPairs: { 'Cryptography': 'Securing WhatsApp messages', 'Game Theory': 'Analyzing Cold War nuclear deterrence', 'Financial Math': 'Stock market derivatives pricing' }, explanation: 'Crypto hides data, Game Theory models strategic conflict/cooperation, and Financial math models economies.' },
-  { id: 'a3', type: 'tf', prompt: 'True or False: A Caesar Cipher shifts letters by a set number and is considered unbreakable by modern computers.', correctAnswer: false, explanation: 'False. The Caesar Cipher has only 25 possible keys, making it incredibly easy for a modern computer to break in milliseconds via a "brute force" attack.' }
-];
+type BranchMeta = {
+  icon: LucideIcon;
+  code: string;
+  question: string;
+  rgb: string;
+};
 
-export default function AppliedMathPage() {
+const BRANCH_META: Record<string, BranchMeta> = {
+  "formal.mathematics.applied.optimization": {
+    icon: Scale,
+    code: "OPT",
+    question: "What choice best meets an objective while respecting constraints?",
+    rgb: "52, 211, 153",
+  },
+  "formal.mathematics.applied.game-theory": {
+    icon: Network,
+    code: "GAM",
+    question: "What should an agent do when outcomes depend on other agents too?",
+    rgb: "250, 204, 21",
+  },
+  "formal.mathematics.applied.modeling": {
+    icon: FlaskConical,
+    code: "MOD",
+    question: "Which mathematical structure captures the mechanism well enough to answer the question?",
+    rgb: "56, 189, 248",
+  },
+  "formal.mathematics.applied.numerical": {
+    icon: Cpu,
+    code: "NUM",
+    question: "How can computation approximate a useful solution when exact analysis is unavailable?",
+    rgb: "167, 139, 250",
+  },
+  "formal.mathematics.applied.financial-risk": {
+    icon: ChartNoAxesCombined,
+    code: "RSK",
+    question: "How should uncertain future outcomes be valued, compared, hedged, or controlled?",
+    rgb: "244, 114, 182",
+  },
+  "formal.mathematics.applied.cryptography": {
+    icon: KeyRound,
+    code: "CRY",
+    question: "How can mathematical structure make information difficult to recover or alter without the right key?",
+    rgb: "34, 211, 238",
+  },
+};
+
+const MODEL_LOOP = [
+  {
+    number: "01",
+    label: "Frame",
+    detail: "Define the question, system boundary, objective, outputs, and what a useful answer would mean.",
+    rgb: "125, 211, 252",
+  },
+  {
+    number: "02",
+    label: "Represent",
+    detail: "Choose variables, parameters, states, relationships, constraints, randomness, and assumptions.",
+    rgb: "167, 139, 250",
+  },
+  {
+    number: "03",
+    label: "Solve",
+    detail: "Analyze symbolically, optimize, simulate, approximate numerically, or compute strategic and probabilistic outcomes.",
+    rgb: "52, 211, 153",
+  },
+  {
+    number: "04",
+    label: "Validate",
+    detail: "Compare the model with data, limiting cases, known behavior, alternative models, and domain knowledge.",
+    rgb: "250, 204, 21",
+  },
+  {
+    number: "05",
+    label: "Stress-test",
+    detail: "Vary assumptions and parameters to see which conclusions are robust and where uncertainty matters most.",
+    rgb: "244, 114, 182",
+  },
+  {
+    number: "06",
+    label: "Revise",
+    detail: "Change the model when evidence, scale, purpose, or decision context shows that its simplifications are no longer useful.",
+    rgb: "34, 211, 238",
+  },
+] as const;
+
+const MODEL_CHOICES = [
+  ["Deterministic ↔ stochastic", "Are uncertain influences negligible for this question, or must randomness be represented explicitly?"],
+  ["Discrete ↔ continuous", "Does the system change in countable events or states, continuously through time and space, or through both?"],
+  ["Mechanistic ↔ empirical", "Should the model encode proposed causal mechanisms, fit observed relationships, or combine both approaches?"],
+  ["Exact ↔ approximate", "Is a closed-form solution possible and useful, or is numerical approximation the practical mathematical object?"],
+] as const;
+
+export default function AppliedMathematicsPage() {
+  const context = requireCurriculumPageContext(NODE_ID);
+
   return (
-    <main className="relative min-h-screen bg-[#020617] text-white overflow-hidden font-mono selection:bg-cyan-500/50">
-      
-      {/* VISUAL ENGINE (Tech Theme) */}
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(6,182,212,0.03)_2px,transparent_2px),linear-gradient(90deg,rgba(6,182,212,0.03)_2px,transparent_2px)] bg-[size:50px_50px] pointer-events-none z-0" />
-      <div className="absolute inset-0 bg-radial-vignette opacity-80 pointer-events-none z-0" />
+    <main className="relative min-h-screen overflow-x-hidden bg-[#03070a] text-slate-100 selection:bg-cyan-300/25">
+      <div className="pointer-events-none fixed inset-0 z-0 bg-[radial-gradient(circle_at_78%_14%,rgba(34,211,238,0.11),transparent_29%),radial-gradient(circle_at_18%_84%,rgba(167,139,250,0.065),transparent_28%),linear-gradient(to_bottom,rgba(3,7,10,0.05),rgba(3,7,10,0.80)_78%,rgba(2,5,7,0.98))]" aria-hidden="true" />
+      <div className="pointer-events-none fixed inset-0 z-0 opacity-[0.12] [background-image:linear-gradient(rgba(34,211,238,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(34,211,238,0.08)_1px,transparent_1px)] [background-size:48px_48px] [mask-image:linear-gradient(to_bottom,black,transparent_92%)]" aria-hidden="true" />
 
-      <div className="relative z-10 container mx-auto px-6 py-12 min-h-screen flex flex-col">
-        
-        {/* HEADER */}
-        <header className="flex flex-col mb-12">
-             <Link href="/mathematics" className="flex items-center gap-2 text-xs text-cyan-400 hover:text-white transition-colors mb-4 uppercase tracking-widest group w-max">
-                <ArrowLeft size={12} className="group-hover:-translate-x-1 transition-transform"/> Domain_01 // Mathematics
-             </Link>
-             <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 border-b border-cyan-500/20 pb-8">
-                 <div className="flex items-center gap-6">
-                     <div className="w-16 h-16 border border-cyan-500/50 flex items-center justify-center bg-black/50 backdrop-blur-sm relative overflow-hidden group">
-                        <div className="absolute inset-0 bg-cyan-500/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
-                        <Cpu size={32} className="text-cyan-400 relative z-10" />
-                     </div>
-                     <div>
-                        <h1 className="text-5xl md:text-7xl font-bold tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-white">
-                           APPLIED MATH
-                        </h1>
-                        <div className="flex gap-4 text-xs text-cyan-300/60 uppercase tracking-widest mt-2">
-                            <span>Language: Implementation</span>
-                            <span>Status: Operational</span>
-                        </div>
-                     </div>
-                 </div>
-                 
-                 <div className="flex gap-4">
-                    <div className="bg-black/40 border border-cyan-500/30 rounded-lg p-3 backdrop-blur-sm">
-                        <div className="text-[10px] text-cyan-400 uppercase tracking-widest mb-1">Modules</div>
-                        <div className="text-xl font-bold text-white">05</div>
-                    </div>
-                    <div className="bg-black/40 border border-cyan-500/30 rounded-lg p-3 backdrop-blur-sm">
-                        <div className="text-[10px] text-cyan-400 uppercase tracking-widest mb-1">Live Simulators</div>
-                        <div className="text-xl font-bold text-white">01</div>
-                    </div>
-                 </div>
-             </div>
-        </header>
-
-        
-
-        {/* CONTENT GRID */}
-        <div className="mb-16">
-            <div className="flex items-center gap-3 mb-6">
-                <div className="h-px w-8 bg-cyan-500" />
-                <h2 className="text-lg font-bold text-cyan-300 uppercase tracking-widest">Operational Domains</h2>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                {SUBDOMAINS.map((item, i) => (
-                    <Link 
-                        key={item.id}
-                        href={item.href}
-                        className={`
-                            ${item.span}
-                            group relative flex flex-col justify-between
-                            p-6 border rounded-lg backdrop-blur-md transition-all duration-300
-                            hover:-translate-y-1 hover:shadow-2xl hover:bg-opacity-40
-                            ${item.border} ${item.bg}
-                        `}
-                    >
-                        <div className="absolute top-0 left-0 w-2 h-2 border-l border-t border-white/20" />
-                        <div className="absolute top-0 right-0 w-2 h-2 border-r border-t border-white/20" />
-                        <div className="absolute bottom-0 left-0 w-2 h-2 border-l border-b border-white/20" />
-                        <div className="absolute bottom-0 right-0 w-2 h-2 border-r border-b border-white/20" />
-
-                        <div className="flex justify-between items-start mb-4">
-                            <div className={`p-2 rounded border border-white/10 bg-black/40 ${item.color}`}>
-                                <item.icon size={20} />
-                            </div>
-                            <span className="text-[10px] opacity-40 uppercase tracking-widest">{`0${i+1}`}</span>
-                        </div>
-
-                        <div>
-                            <h2 className="text-xl font-bold text-white mb-1 group-hover:text-cyan-300 transition-colors">{item.title}</h2>
-                            <div className={`text-[10px] font-bold uppercase mb-3 opacity-70 ${item.color}`}>{item.subtitle}</div>
-                            <p className="text-xs text-zinc-400 leading-relaxed mb-6 h-10 line-clamp-2">{item.desc}</p>
-                        </div>
-
-                        <div className="pt-4 border-t border-white/5 flex items-center justify-between">
-                            <div className="font-mono text-xs opacity-50 group-hover:opacity-100 transition-opacity">{item.equation}</div>
-                            <Braces size={14} className="text-zinc-600 group-hover:text-white transition-colors" />
-                        </div>
-                    </Link>
-                ))}
-            </div>
+      <div className="relative z-10 mx-auto w-full max-w-[1580px] px-4 pb-14 sm:px-6 xl:px-8">
+        <div className="sticky top-0 z-30 -mx-4 border-b border-white/[0.06] bg-[#03070a]/80 px-4 pb-3 pt-5 shadow-[0_18px_58px_rgba(0,0,0,0.24)] backdrop-blur-2xl sm:-mx-6 sm:px-6 xl:-mx-8 xl:px-8">
+          <DomainPageHeader
+            breadcrumbs={context.breadcrumbs}
+            eyebrow="Model · optimize · simulate · decide · validate"
+            eyebrowStyle="rule"
+            icon={Calculator}
+            title={<span>Applied Mathematics</span>}
+            subtitle="Applied mathematics turns real questions into mathematical objects that can be analyzed, computed, tested, and revised. The central skill is not merely selecting a formula: it is deciding what to represent, what to ignore, which method fits the structure, and how strongly the result should be trusted."
+            accentRgb="34, 211, 238"
+            titleClassName="font-sans text-[clamp(2.9rem,5.5vw,6.1rem)] font-semibold leading-[0.84] tracking-[-0.066em] text-[#f2fdff]"
+            headerClassName="border-cyan-100/[0.10]"
+          />
         </div>
 
-        {/* --- THE INTERACTIVE LAB --- */}
-        <div className="mb-16">
-            <div className="flex items-center gap-3 mb-6">
-                <div className="h-px w-8 bg-cyan-500" />
-                <h2 className="text-lg font-bold text-cyan-300 uppercase tracking-widest">The Implementation Lab</h2>
+        <section className="mt-5 overflow-hidden rounded-[32px] border border-cyan-200/[0.10] bg-black/[0.14] backdrop-blur-xl">
+          <div className="grid gap-4 border-b border-white/[0.07] px-5 py-5 lg:grid-cols-[minmax(0,1fr)_430px] lg:items-end sm:px-6">
+            <div>
+              <div className="flex items-center gap-2 font-mono text-[9px] font-semibold uppercase tracking-[0.14em] text-cyan-200/58"><Route size={13} /> Modeling cycle</div>
+              <h2 className="mt-2 text-[clamp(1.9rem,3.7vw,3.4rem)] font-semibold leading-[0.94] tracking-[-0.052em] text-white">A useful model is a controlled simplification, not a miniature copy of reality.</h2>
             </div>
-            
-            <div className="w-full animate-in fade-in slide-in-from-bottom-4 duration-700 delay-100">
-                <CipherWidget />
-            </div>
-        </div>
-
-        {/* --- THE DAILY HUB --- */}
-        <div className="w-full mt-auto grid grid-cols-1 lg:grid-cols-3 gap-8 pb-16">
-          <div className="col-span-1 flex flex-col gap-8">
-            <div className="bg-black/40 backdrop-blur-md border border-white/5 rounded-3xl p-8 w-full shadow-2xl relative overflow-hidden group hover:border-cyan-500/30 transition-colors h-full">
-                 <div className="absolute top-0 right-0 p-4 text-cyan-500/10 group-hover:text-cyan-500/20 transition-colors"><BookOpen size={64} /></div>
-                 <div className="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-cyan-400 mb-6"><Zap size={14} className="text-amber-400" /> Core Terminology</div>
-                 <h4 className="text-4xl font-serif italic text-white mb-2">Equilibrium</h4>
-                 <div className="text-[10px] text-slate-500 font-mono mb-6 uppercase tracking-wider">noun | [ ee-kwuh-lib-ree-uhm ] | Game Theory</div>
-                 <p className="text-sm text-slate-300 leading-relaxed mb-6">A state in a game where no player has an incentive to change their chosen strategy after considering an opponent's choice. Most commonly known as a "Nash Equilibrium."</p>
-                 <div className="p-4 bg-cyan-950/30 border-l-2 border-cyan-500 rounded-r-lg mt-auto">
-                    <p className="text-xs text-cyan-200/80 italic font-serif">"In the prisoner's dilemma, both players betraying each other is the Nash Equilibrium."</p>
-                 </div>
-            </div>
+            <p className="text-[12px] leading-6 text-slate-400">The mathematics depends on the question. A routing problem, epidemic model, fluid flow, pricing problem, strategic interaction, and encryption scheme may use very different methods while sharing the same modeling discipline.</p>
           </div>
-          <div className="col-span-1 lg:col-span-2">
-            <Assessment title="Knowledge Check: Applied Mathematics" questions={appliedQuiz} onComplete={(score, total) => console.log(`Applied Quiz Scored: ${score}/${total}`)} />
+          <div className="grid md:grid-cols-2 xl:grid-cols-3">
+            {MODEL_LOOP.map((step) => (
+              <article key={step.label} className="min-h-[180px] border-b border-white/[0.06] px-5 py-5 md:border-r md:[&:nth-child(2n)]:border-r-0 xl:[&:nth-child(2n)]:border-r xl:[&:nth-child(3n)]:border-r-0 xl:[&:nth-last-child(-n+3)]:border-b-0">
+                <div className="flex items-center justify-between gap-3"><span className="font-mono text-[8px] text-slate-700">{step.number}</span><span className="h-2 w-2 rounded-full" style={{ background: `rgb(${step.rgb})`, boxShadow: `0 0 18px rgba(${step.rgb},0.24)` }} /></div>
+                <h3 className="mt-4 text-[14px] font-semibold text-white/86">{step.label}</h3>
+                <p className="mt-2 text-[10px] leading-5 text-slate-600">{step.detail}</p>
+              </article>
+            ))}
           </div>
-        </div>
-        
-        {/* FOOTER */}
-        <div className="border-t border-cyan-900/30 pt-6 flex justify-between items-center text-[10px] text-cyan-500/60 font-mono uppercase tracking-widest mt-8">
-            <span>EXECUTED SUCCESSFULLY</span>
-            <span>Turing Complete Architecture</span>
-        </div>
+        </section>
 
+        <section className="mt-6 grid gap-5 xl:grid-cols-[minmax(0,1fr)_390px]">
+          <nav aria-label="Applied Mathematics branches" className="overflow-hidden rounded-[30px] border border-white/[0.08] bg-black/[0.14] backdrop-blur-xl">
+            <div className="border-b border-white/[0.07] px-5 py-5 sm:px-6">
+              <div className="font-mono text-[9px] font-semibold uppercase tracking-[0.14em] text-cyan-200/58">Problem families · primary navigation</div>
+              <h2 className="mt-2 text-[clamp(1.7rem,3vw,2.7rem)] font-semibold tracking-[-0.045em] text-white">Choose the structure of the problem, not the industry label.</h2>
+            </div>
+            <div className="grid sm:grid-cols-2">
+              {context.children.map((branch: CurriculumNode, index: number) => <BranchRoute key={branch.id} branch={branch} index={index} />)}
+            </div>
+          </nav>
+
+          <aside className="rounded-[30px] border border-white/[0.08] bg-black/[0.14] p-5 backdrop-blur-xl sm:p-6">
+            <div className="flex items-center gap-2 font-mono text-[9px] font-semibold uppercase tracking-[0.14em] text-violet-200/54"><Sigma size={13} /> Modeling choices</div>
+            <h2 className="mt-2 text-[23px] font-semibold tracking-[-0.04em] text-white">Different abstractions answer different questions.</h2>
+            <p className="mt-3 text-[11px] leading-5 text-slate-500">A model can be mathematically correct and still be inappropriate for the decision, scale, data, mechanism, or uncertainty that matters.</p>
+            <div className="mt-5 space-y-1">
+              {MODEL_CHOICES.map(([choice, detail], index) => (
+                <div key={choice} className="grid grid-cols-[30px_minmax(0,1fr)] gap-3 border-b border-white/[0.055] py-3 last:border-b-0">
+                  <span className="font-mono text-[8px] text-cyan-200/34">0{index + 1}</span>
+                  <span><strong className="block text-[11px] text-slate-200/82">{choice}</strong><span className="mt-1 block text-[9px] leading-4 text-slate-600">{detail}</span></span>
+                </div>
+              ))}
+            </div>
+          </aside>
+        </section>
+
+        <section className="mt-6">
+          <div className="mb-3 grid gap-3 lg:grid-cols-[minmax(0,1fr)_430px] lg:items-end">
+            <div><div className="font-mono text-[9px] font-semibold uppercase tracking-[0.14em] text-cyan-200/50">Small example · discrete transformation</div><h2 className="mt-1 text-[24px] font-semibold tracking-[-0.04em] text-white">Cryptography shows how simple mathematical rules can produce useful transformations.</h2></div>
+            <p className="text-[11px] leading-5 text-slate-500">The Caesar cipher is intentionally elementary and insecure. It is included as a compact example of modular structure and algorithmic transformation, not as a representative model of modern cryptography or applied mathematics as a whole.</p>
+          </div>
+          <CipherWidget />
+        </section>
+
+        <section className="mt-6 grid gap-3 sm:grid-cols-3">
+          <Neighbor href="/formal-science/mathematics/statistics" label="Statistics" note="Estimate, infer, quantify uncertainty, and validate models against data." rgb="129, 140, 248" icon={Dices} />
+          <Neighbor href="/formal-science/mathematics/calculus" label="Calculus" note="Describe continuous change, accumulation, optimization, and differential systems." rgb="248, 113, 113" icon={Sigma} />
+          <Neighbor href="/formal-science/computer-science" label="Computer Science" note="Algorithms and computation turn many applied models into executable methods." rgb="167, 139, 250" icon={Cpu} />
+        </section>
       </div>
     </main>
   );
+}
+
+function BranchRoute({ branch, index }: { branch: CurriculumNode; index: number }) {
+  const meta = BRANCH_META[branch.id] ?? BRANCH_META["formal.mathematics.applied.modeling"];
+  const Icon = meta.icon;
+  const planned = branch.status === "placeholder";
+  const content = (
+    <div className={`group min-h-[170px] border-b border-white/[0.06] px-5 py-5 sm:border-r sm:[&:nth-child(2n)]:border-r-0 ${planned ? "opacity-55" : "transition hover:bg-white/[0.025]"}`}>
+      <div className="flex items-start justify-between gap-3">
+        <span className="flex h-10 w-10 items-center justify-center rounded-[13px] border" style={{ color: `rgb(${meta.rgb})`, borderColor: `rgba(${meta.rgb},0.22)`, background: `rgba(${meta.rgb},0.035)` }}><Icon size={16} /></span>
+        <span className="font-mono text-[8px] text-slate-700">0{index + 1} · {meta.code}</span>
+      </div>
+      <h3 className="mt-4 text-[13px] font-semibold text-white/86">{branch.label}</h3>
+      <p className="mt-2 text-[10px] leading-5 text-slate-600">{meta.question}</p>
+      <div className="mt-3 flex items-center justify-between gap-3 font-mono text-[7px] uppercase tracking-[0.08em] text-slate-700"><span className="line-clamp-1">{branch.description}</span><span className="shrink-0">{planned ? "planned" : "open"}</span></div>
+    </div>
+  );
+  return planned ? <div aria-label={`${branch.label}, planned`}>{content}</div> : <Link href={branch.href}>{content}</Link>;
+}
+
+function Neighbor({ href, label, note, rgb, icon: Icon }: { href: string; label: string; note: string; rgb: string; icon: LucideIcon }) {
+  return <Link href={href} className="group flex min-h-[88px] items-center gap-3 rounded-[18px] border border-white/[0.07] bg-black/[0.12] px-4 py-3 backdrop-blur-md transition hover:bg-white/[0.025]"><span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border" style={{ color: `rgb(${rgb})`, borderColor: `rgba(${rgb},0.20)`, background: `rgba(${rgb},0.03)` }}><Icon size={14} /></span><span className="min-w-0 flex-1"><strong className="block text-[12px] text-white/82">{label}</strong><span className="mt-1 block text-[10px] leading-4 text-slate-600">{note}</span></span><ArrowRight size={12} className="text-slate-600 transition group-hover:translate-x-1" /></Link>;
 }

@@ -49,7 +49,7 @@ const academicDomains: NavigationItem[] = curriculumRegistry.allDomains().map((e
  */
 export const NAVIGATION_DATA: NavigationSection[] = [
   {
-    title: "Knowledge Graph",
+    title: "Domains",
     items: academicDomains,
   },
   {

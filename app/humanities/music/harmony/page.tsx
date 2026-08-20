@@ -1,148 +1,139 @@
-"use client";
-import { useState } from "react";
-import PianoRollBackground from "@/app/humanities/music/harmony/PianoRollBackground";
-import IntervalWidget from "@/app/humanities/music/harmony/IntervalWidget";
-import { motion } from "framer-motion";
+import Link from "next/link";
 import {
-  Music, Activity, ListMusic, AlignVerticalJustifyCenter, Layers, ArrowRight, Mic2
+  ArrowRight,
+  AudioLines,
+  Clock3,
+  Layers3,
+  Music2,
+  ScrollText,
+  Waves,
 } from "lucide-react";
+import DomainPageHeader from "@/app/_components/DomainPageHeader";
+import IntervalWidget from "./IntervalWidget";
+import PianoRollBackground from "./PianoRollBackground";
+import VoiceLeadingLab from "./VoiceLeadingLab";
 
-// --- DATA ---
-const sectors = [
+const NEIGHBORS = [
   {
-    name: "The X-Axis: Melody",
-    desc: "The linear succession of musical tones that the listener perceives as a single entity.",
-    color: "text-rose-400",
-    icon: Activity,
-    items: [
-      { 
-        title: "Scale & Mode", 
-        desc: "The ordered sequence of notes that defines a key (Major, Minor, Dorian, etc.).", 
-        href: "/humanities/arts-aesthetics/music/scales", 
-        Icon: Music, 
-        className: "theme-humanities",
-        subtitle: "The Palette" 
-      },
-      { 
-        title: "Contour & Phrasing", 
-        desc: "The shape of the melody line and how it breathes (sentences in sound).", 
-        href: "/humanities/arts-aesthetics/music/phrasing", 
-        Icon: Activity, 
-        className: "theme-humanities",
-        subtitle: "The Shape" 
-      }
-    ]
+    href: "/humanities/music/chords",
+    label: "Chords",
+    question: "Which pitches sound at once?",
+    icon: Layers3,
+    rgb: "251, 146, 60",
   },
   {
-    name: "The Y-Axis: Harmony",
-    desc: "The vertical aspect of music. Notes played simultaneously to create chords.",
-    color: "text-amber-400",
-    icon: AlignVerticalJustifyCenter,
-    items: [
-      { 
-        title: "Chords & Triads", 
-        desc: "Stacking intervals to create stability (Major) or tension (Diminished).", 
-        href: "/humanities/arts-aesthetics/music/chords", 
-        Icon: AlignVerticalJustifyCenter, 
-        className: "theme-humanities",
-        subtitle: "Vertical Structure" 
-      },
-      { 
-        title: "Progression", 
-        desc: "The movement from one chord to another, creating a narrative of tension and release.", 
-        href: "/humanities/arts-aesthetics/music/progression", 
-        Icon: ListMusic, 
-        className: "theme-humanities",
-        subtitle: "Harmonic Motion" 
-      }
-    ]
+    href: "/humanities/music/scales",
+    label: "Scales & Modes",
+    question: "Which pitches belong to the field?",
+    icon: Waves,
+    rgb: "244, 114, 182",
   },
   {
-    name: "The Z-Axis: Texture",
-    desc: "How the melodic, rhythmic, and harmonic materials are combined.",
-    color: "text-violet-400",
-    icon: Layers,
-    items: [
-      { 
-        title: "Counterpoint", 
-        desc: "The art of combining different melodic lines in a musical composition.", 
-        href: "/humanities/arts-aesthetics/music/counterpoint", 
-        Icon: Layers, 
-        className: "theme-humanities",
-        subtitle: "Polyphony" 
-      }
-    ]
-  }
-];
+    href: "/humanities/music/rhythm",
+    label: "Rhythm & Meter",
+    question: "When do harmonic events occur?",
+    icon: Clock3,
+    rgb: "45, 212, 191",
+  },
+  {
+    href: "/humanities/music/notation",
+    label: "Notation",
+    question: "How are the relationships encoded?",
+    icon: ScrollText,
+    rgb: "96, 165, 250",
+  },
+] as const;
+
+const HARMONY_LENSES = [
+  ["Sonority", "Which pitches are sounding together right now?"],
+  ["Function", "What role does this harmony play inside a tonal context?"],
+  ["Progression", "How does one sonority lead to the next?"],
+  ["Voice leading", "How do individual pitch lines move through those sonorities?"],
+  ["Cadence", "Does a phrase create arrival, continuation, interruption, or ambiguity?"],
+  ["Tuning", "Which frequency system determines the exact pitch relationships?"],
+] as const;
 
 export default function HarmonyPage() {
   return (
-    <main className="relative min-h-screen overflow-hidden bg-neutral-950 lg:px-12">
-      
-      {/* 1. Background */}
+    <main className="relative min-h-screen overflow-x-hidden bg-[#080309] text-slate-100 selection:bg-violet-400/25">
       <PianoRollBackground />
-      
-      <div className="relative z-10 mx-auto flex max-w-7xl flex-col py-10">
-        
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 items-start">
-          
-          {/* MAIN CONTENT (8 cols) */}
-          <div className="lg:col-span-9 space-y-10">
-             {sectors.map((sector, idx) => (
-              <section key={sector.name}>
-                 <motion.div 
-                    initial={{ opacity: 0, x: -10 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.4, delay: idx * 0.1 }}
-                    className="mb-4 flex items-center gap-3"
-                 >
-                    <sector.icon className={sector.color} size={20} />
-                    <h2 className="text-lg font-bold text-white tracking-wide">{sector.name}</h2>
-                    <div className="h-[1px] flex-1 bg-white/10"></div>
-                 </motion.div>
+      <div className="pointer-events-none fixed inset-0 z-[1] bg-[radial-gradient(circle_at_20%_15%,rgba(244,114,182,0.055),transparent_26%),linear-gradient(to_bottom,rgba(8,3,9,0.05),rgba(8,3,9,0.58))]" />
 
-                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-2">
-                    {sector.items.map((item, i) => (
-                        <motion.div
-                            key={item.title}
-                            initial={{ opacity: 0, y: 15 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.3, delay: 0.1 + (i * 0.05) }}
-                        >
-                        </motion.div>
-                    ))}
-                 </div>
-              </section>
-            ))}
-          </div>
+      <div className="relative z-10 mx-auto w-full max-w-[1500px] px-4 pb-14 sm:px-6 xl:px-8">
+        <div className="sticky top-0 z-30 -mx-4 border-b border-white/[0.055] bg-[#080309]/76 px-4 pb-3 pt-4 shadow-[0_18px_58px_rgba(0,0,0,0.22)] backdrop-blur-2xl sm:-mx-6 sm:px-6 xl:-mx-8 xl:px-8">
+          <DomainPageHeader
+            breadcrumbs={[
+              { label: "Humanities", href: "/humanities" },
+              { label: "Music", href: "/humanities/music" },
+              { label: "Theory & Composition", href: "/humanities/music/theory" },
+              { label: "Harmony" },
+            ]}
+            eyebrow="Sonority · function · progression · voice leading · cadence · tuning"
+            eyebrowStyle="rule"
+            icon={AudioLines}
+            title={<span>Harmony</span>}
+            subtitle="Study how simultaneous pitches form sonorities, how those sonorities connect through time, and how voice leading, function, cadence, register, and tuning change what a progression does without reducing harmony to a single recipe."
+            accentRgb="167, 139, 250"
+            titleClassName="font-sans text-[clamp(2.7rem,5vw,5.5rem)] font-semibold leading-[0.86] tracking-[-0.062em] text-[#fff8ff]"
+            headerClassName="border-white/[0.07]"
+          />
+        </div>
 
-          {/* SIDEBAR (3 cols) */}
-          <div className="flex flex-col gap-6 lg:col-span-3 lg:sticky lg:top-6 h-fit pt-2">
-            
-            {/* Interval Widget */}
-            <motion.div 
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.4 }}
-            >
-               <IntervalWidget />
-            </motion.div>
+        <div className="mt-4">
+          <VoiceLeadingLab />
+        </div>
 
-            {/* Quote */}
-            <div className="p-5 rounded-xl border border-dashed border-neutral-700 bg-neutral-900/40">
-                <h4 className="text-xs font-bold uppercase text-rose-400 mb-2 flex items-center gap-2">
-                    <Mic2 size={14} /> The Overtone Series
-                </h4>
-                <p className="text-[11px] text-neutral-500 leading-relaxed">
-                    Why does a major chord sound "happy" or stable? Because the notes (Root, 3rd, 5th) are the first few audible frequencies in nature's own harmonic series.
-                </p>
+        <section className="mt-4 grid gap-4 xl:grid-cols-[minmax(0,1.08fr)_minmax(350px,0.92fr)]">
+          <IntervalWidget />
+
+          <div className="rounded-[24px] border border-violet-200/[0.12] bg-[#0c0710]/76 p-5 backdrop-blur-xl">
+            <div className="flex items-center gap-2 font-mono text-[9px] font-semibold uppercase tracking-[0.14em] text-violet-300/65">
+              <Music2 size={13} /> Harmony coordinates
+            </div>
+            <h2 className="mt-2 text-[24px] font-semibold tracking-[-0.04em] text-white">One chord can participate in several different stories.</h2>
+            <p className="mt-2 text-[11px] leading-5 text-slate-500">
+              Harmonic analysis asks multiple questions at once. Roman numerals can describe scale-degree relationships in tonal music, but other repertoires may organize harmony through modes, drones, pitch-class sets, parallel sonorities, timbre, tuning systems, or practices that do not center functional tonality at all.
+            </p>
+
+            <div className="mt-4 grid gap-2 sm:grid-cols-2">
+              {HARMONY_LENSES.map(([label, question]) => (
+                <div key={label} className="rounded-xl border border-white/[0.055] bg-white/[0.014] p-3">
+                  <div className="font-mono text-[8px] uppercase tracking-[0.1em] text-violet-300/48">{label}</div>
+                  <p className="mt-1.5 text-[10px] leading-4 text-slate-500">{question}</p>
+                </div>
+              ))}
             </div>
 
+            <div className="mt-4 rounded-xl border border-amber-200/[0.08] bg-amber-100/[0.018] p-3 text-[10px] leading-5 text-slate-600">
+              “Tension” and “resolution” are useful analytical words in many musical contexts, but they are not universal emotional labels attached permanently to particular chords or intervals.
+            </div>
           </div>
+        </section>
 
-        </div>
+        <nav className="mt-4 grid gap-2 sm:grid-cols-2 xl:grid-cols-4" aria-label="Nearby music theory pages">
+          {NEIGHBORS.map((item) => {
+            const Icon = item.icon;
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="group flex min-h-[92px] items-center gap-3 rounded-[18px] border border-white/[0.065] bg-black/22 p-3.5 backdrop-blur-lg transition-colors hover:border-white/[0.13] hover:bg-black/32"
+              >
+                <span
+                  className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border"
+                  style={{ color: `rgb(${item.rgb})`, borderColor: `rgba(${item.rgb},0.2)`, background: `rgba(${item.rgb},0.035)` }}
+                >
+                  <Icon size={16} strokeWidth={1.5} />
+                </span>
+                <div className="min-w-0 flex-1">
+                  <div className="text-[12px] font-semibold text-slate-200">{item.label}</div>
+                  <div className="mt-1 text-[9px] leading-4 text-slate-600">{item.question}</div>
+                </div>
+                <ArrowRight size={13} className="shrink-0 text-slate-700 transition-transform group-hover:translate-x-0.5 group-hover:text-slate-400" />
+              </Link>
+            );
+          })}
+        </nav>
       </div>
     </main>
   );

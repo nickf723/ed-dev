@@ -1,122 +1,116 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
-import { motion } from "framer-motion";
-import { Music, Divide, Activity } from "lucide-react";
 
-const INTERVALS = [
-  { name: "Unison", ratio: 1/1, desc: "Perfect blending (1:1)", consonance: "Perfect" },
-  { name: "Octave", ratio: 2/1, desc: "Same note, higher (2:1)", consonance: "Perfect" },
-  { name: "Perfect 5th", ratio: 3/2, desc: "Rich & stable (3:2)", consonance: "High" },
-  { name: "Major 3rd", ratio: 5/4, desc: "Happy & bright (5:4)", consonance: "Medium" },
-  { name: "Tritone", ratio: 45/32, desc: "Tension & unrest (45:32)", consonance: "Low" },
+import { useMemo, useState } from "react";
+import { Activity, Divide, Music2 } from "lucide-react";
+
+type Interval = {
+  name: string;
+  semitones: number;
+  justLabel?: string;
+  justFactor?: number;
+  note: string;
+};
+
+const INTERVALS: readonly Interval[] = [
+  { name: "Unison", semitones: 0, justLabel: "1:1", justFactor: 1, note: "Both tones use the same frequency." },
+  { name: "Minor third", semitones: 3, justLabel: "6:5", justFactor: 6 / 5, note: "One common just-intonation form uses the ratio 6:5." },
+  { name: "Major third", semitones: 4, justLabel: "5:4", justFactor: 5 / 4, note: "One common just-intonation form uses the ratio 5:4." },
+  { name: "Perfect fifth", semitones: 7, justLabel: "3:2", justFactor: 3 / 2, note: "A 3:2 fifth is slightly wider than the equal-tempered fifth." },
+  { name: "Tritone", semitones: 6, note: "Equal temperament places this interval exactly halfway through the octave; just-intonation practice does not reduce it to one universal ratio." },
+  { name: "Octave", semitones: 12, justLabel: "2:1", justFactor: 2, note: "Doubling frequency produces an octave in both systems shown here." },
 ];
 
+function wavePath(factor: number, width: number, height: number, phase = 0) {
+  const points: string[] = [];
+  const center = height / 2;
+  const amplitude = height * 0.23;
+  const cycles = 2.15 * factor;
+  for (let x = 0; x <= width; x += 4) {
+    const y = center + Math.sin((x / width) * Math.PI * 2 * cycles + phase) * amplitude;
+    points.push(`${x === 0 ? "M" : "L"}${x.toFixed(1)},${y.toFixed(1)}`);
+  }
+  return points.join(" ");
+}
+
 export default function IntervalWidget() {
-  const [active, setActive] = useState(INTERVALS[2]); // Default to 5th
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    let animId: number;
-    let time = 0;
-
-    // Visualizer Settings
-    const w = canvas.width;
-    const h = canvas.height;
-    const centerY = h / 2;
-    const baseFreq = 0.05;
-    const amp = 15;
-
-    const draw = () => {
-        ctx.clearRect(0, 0, w, h);
-        
-        // Draw Base Wave (Root Note)
-        ctx.beginPath();
-        ctx.strokeStyle = "rgba(255, 255, 255, 0.1)";
-        ctx.lineWidth = 2;
-        for (let x = 0; x < w; x++) {
-            const y = centerY + Math.sin(x * baseFreq + time) * amp;
-            if (x === 0) ctx.moveTo(x, y);
-            else ctx.lineTo(x, y);
-        }
-        ctx.stroke();
-
-        // Draw Interval Wave (Harmony Note)
-        ctx.beginPath();
-        ctx.strokeStyle = "rgba(251, 113, 133, 0.3)"; // Rose-400
-        for (let x = 0; x < w; x++) {
-            const y = centerY + Math.sin(x * baseFreq * active.ratio + time) * amp;
-            if (x === 0) ctx.moveTo(x, y);
-            else ctx.lineTo(x, y);
-        }
-        ctx.stroke();
-
-        // Draw Combined Interference Pattern (The Resulting Sound)
-        ctx.beginPath();
-        ctx.strokeStyle = "#fb7185"; // Rose-400 Bright
-        ctx.lineWidth = 3;
-        for (let x = 0; x < w; x++) {
-            // Sum of both waves
-            const y1 = Math.sin(x * baseFreq + time) * amp;
-            const y2 = Math.sin(x * baseFreq * active.ratio + time) * amp;
-            const y = centerY + (y1 + y2);
-            
-            if (x === 0) ctx.moveTo(x, y);
-            else ctx.lineTo(x, y);
-        }
-        ctx.stroke();
-
-        time += 0.05;
-        animId = requestAnimationFrame(draw);
-    };
-
-    draw();
-    return () => cancelAnimationFrame(animId);
-  }, [active]);
+  const [activeName, setActiveName] = useState("Perfect fifth");
+  const active = useMemo(() => INTERVALS.find((item) => item.name === activeName) ?? INTERVALS[0], [activeName]);
+  const equalFactor = Math.pow(2, active.semitones / 12);
+  const equalPath = useMemo(() => wavePath(equalFactor, 640, 150), [equalFactor]);
+  const basePath = useMemo(() => wavePath(1, 640, 150), []);
 
   return (
-    <div className="glass overflow-hidden rounded-xl border border-white/10 bg-neutral-900/80 backdrop-blur-xl">
-      <div className="border-b border-white/5 px-5 py-4 flex justify-between items-center">
-        <h3 className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-neutral-300">
-          <Activity size={14} className="text-rose-400" /> Interval Math
-        </h3>
+    <section className="overflow-hidden rounded-[24px] border border-rose-200/[0.14] bg-[#0c080e]/82 backdrop-blur-xl">
+      <div className="border-b border-white/[0.06] p-4">
+        <div className="flex items-center gap-2 font-mono text-[9px] font-semibold uppercase tracking-[0.14em] text-rose-300/65">
+          <Activity size={13} /> Interval tuning lens
+        </div>
+        <h3 className="mt-2 text-lg font-semibold text-white">The same interval can be tuned more than one way.</h3>
+        <p className="mt-1.5 text-[11px] leading-5 text-slate-500">
+          Twelve-tone equal temperament divides the octave into twelve equal logarithmic steps. Just intonation instead describes selected intervals with whole-number frequency ratios.
+        </p>
       </div>
 
-      {/* Visualizer */}
-      <div className="relative h-32 w-full bg-neutral-950/50 border-b border-white/5">
-        <canvas ref={canvasRef} width={300} height={128} className="w-full h-full" />
-        <div className="absolute bottom-2 right-2 text-[10px] font-mono text-neutral-500">
-            Ratio: {active.ratio.toFixed(2)}
+      <div className="grid gap-3 p-4 lg:grid-cols-[minmax(0,1fr)_250px]">
+        <div>
+          <div className="relative h-[150px] overflow-hidden rounded-2xl border border-white/[0.06] bg-black/28">
+            <svg viewBox="0 0 640 150" preserveAspectRatio="none" className="h-full w-full">
+              <path d={basePath} fill="none" stroke="rgba(255,255,255,0.16)" strokeWidth="2" />
+              <path d={equalPath} fill="none" stroke="rgba(244,114,182,0.72)" strokeWidth="2.4" />
+            </svg>
+            <div className="absolute left-3 top-3 rounded-lg border border-white/[0.06] bg-black/35 px-2 py-1 font-mono text-[8px] uppercase tracking-[0.08em] text-slate-600">
+              reference tone + equal-tempered interval
+            </div>
+          </div>
+
+          <div className="mt-3 grid grid-cols-2 gap-2">
+            <div className="rounded-xl border border-rose-300/12 bg-rose-300/[0.025] p-3">
+              <div className="flex items-center gap-1.5 font-mono text-[8px] uppercase tracking-[0.1em] text-slate-600">
+                <Divide size={10} /> 12-TET factor
+              </div>
+              <div className="mt-1 text-xl font-semibold text-rose-200">{equalFactor.toFixed(4)}</div>
+              <div className="mt-1 text-[9px] text-slate-600">2^({active.semitones}/12)</div>
+            </div>
+            <div className="rounded-xl border border-violet-300/12 bg-violet-300/[0.025] p-3">
+              <div className="flex items-center gap-1.5 font-mono text-[8px] uppercase tracking-[0.1em] text-slate-600">
+                <Music2 size={10} /> just example
+              </div>
+              <div className="mt-1 text-xl font-semibold text-violet-200">{active.justLabel ?? "varies"}</div>
+              <div className="mt-1 text-[9px] text-slate-600">{active.justFactor ? active.justFactor.toFixed(4) : "no single ratio shown"}</div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div className="grid grid-cols-2 gap-1.5 lg:grid-cols-1">
+            {INTERVALS.map((interval) => {
+              const selected = interval.name === active.name;
+              return (
+                <button
+                  key={interval.name}
+                  type="button"
+                  onClick={() => setActiveName(interval.name)}
+                  className={`flex min-h-10 items-center justify-between rounded-xl border px-3 py-2 text-left text-[10px] transition-colors ${
+                    selected
+                      ? "border-rose-300/28 bg-rose-300/[0.07] text-rose-100"
+                      : "border-white/[0.055] bg-black/15 text-slate-500 hover:text-slate-300"
+                  }`}
+                >
+                  <span className="font-semibold">{interval.name}</span>
+                  <span className="font-mono text-[8px] text-slate-700">{interval.semitones} st</span>
+                </button>
+              );
+            })}
+          </div>
+          <div className="mt-3 rounded-xl border border-white/[0.055] bg-white/[0.014] p-3 text-[10px] leading-5 text-slate-500">
+            {active.note}
+          </div>
         </div>
       </div>
 
-      {/* Controls */}
-      <div className="p-4 grid grid-cols-1 gap-2">
-        {INTERVALS.map((interval) => (
-            <button
-                key={interval.name}
-                onClick={() => setActive(interval)}
-                className={`flex items-center justify-between px-3 py-2 rounded-lg transition-all border text-xs
-                    ${active.name === interval.name 
-                        ? "bg-rose-500/10 border-rose-500/50 text-white" 
-                        : "bg-transparent border-transparent text-neutral-400 hover:bg-white/5 hover:text-neutral-200"}
-                `}
-            >
-                <span className="font-bold">{interval.name}</span>
-                <span className="font-mono opacity-50">{interval.desc}</span>
-            </button>
-        ))}
+      <div className="border-t border-white/[0.055] bg-black/18 px-4 py-3 text-[10px] leading-5 text-slate-600">
+        Frequency relationships help describe tuning and beating, but they do not assign one universal emotional meaning or a single culture-independent consonance ranking to every interval.
       </div>
-      
-      <div className="bg-neutral-950/50 px-5 py-3 border-t border-white/5">
-        <p className="text-[10px] text-neutral-500 leading-relaxed">
-           <strong>Consonance:</strong> {active.consonance}. Simpler ratios (like 3:2) create patterns that align frequently, sounding smooth to the ear.
-        </p>
-      </div>
-    </div>
+    </section>
   );
 }

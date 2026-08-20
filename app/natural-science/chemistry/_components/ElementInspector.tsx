@@ -1,66 +1,89 @@
 "use client";
-import { motion, AnimatePresence } from "framer-motion";
-import { Atom, Scale, Zap, Layers } from "lucide-react";
 
-// Re-using the type locally for simplicity
-export type Element = { z: number; symbol: string; name: string; group: string; mass: number; config: string };
+import { Atom, Layers, Scale, Sparkles } from "lucide-react";
+import type { APIElement } from "./chemistry-api";
 
-export default function ElementInspector({ element }: { element: Element | null }) {
-  
+export default function ElementInspector({ element }: { element: APIElement | null }) {
   if (!element) {
-      return (
-          <div className="glass h-full rounded-xl border border-white/10 bg-neutral-900/80 p-8 flex flex-col items-center justify-center text-center text-neutral-500">
-              <Atom size={48} className="mb-4 opacity-20" />
-              <p className="text-xs uppercase tracking-widest">Select an Element</p>
-          </div>
-      );
+    return (
+      <div className="flex min-h-[420px] flex-col items-center justify-center rounded-[24px] border border-white/[0.09] bg-black/[0.24] p-8 text-center backdrop-blur-md">
+        <span className="flex h-20 w-20 items-center justify-center rounded-full border border-emerald-200/[0.15] bg-emerald-300/[0.04] text-emerald-100/30">
+          <Atom size={34} strokeWidth={1.4} />
+        </span>
+        <h3 className="mt-5 text-[20px] font-semibold text-white/78">Select an element</h3>
+        <p className="mt-2 max-w-xs text-[14px] leading-6 text-slate-400/68">
+          Open a cell to inspect identity, mass, electronic structure, and chemical family.
+        </p>
+      </div>
+    );
   }
 
   return (
-    <div className="glass overflow-hidden rounded-xl border border-white/10 bg-neutral-900/80 backdrop-blur-xl">
-      <div className="border-b border-white/5 px-5 py-4 flex justify-between items-center">
-        <h3 className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-neutral-300">
-          <Atom size={14} className="text-lime-400" /> Atomic Data
-        </h3>
-        <span className="text-2xl font-black text-white/10">{element.z}</span>
-      </div>
-
-      <div className="p-6 flex flex-col items-center">
-        
-        {/* Big Symbol */}
-        <div className="relative w-32 h-32 mb-6 flex items-center justify-center bg-neutral-950 rounded-2xl border border-white/10 shadow-inner">
-            <span className="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-br from-white to-neutral-600">
-                {element.symbol}
-            </span>
-            <div className="absolute top-2 left-3 text-xs font-mono text-lime-400">{element.z}</div>
-            <div className="absolute bottom-2 right-3 text-xs font-mono text-neutral-500">{element.mass.toFixed(2)}</div>
+    <article className="overflow-hidden rounded-[24px] border border-white/[0.10] bg-black/[0.28] shadow-[0_24px_80px_rgba(0,0,0,0.24)] backdrop-blur-xl">
+      <div className="flex items-center justify-between border-b border-white/[0.08] px-5 py-4">
+        <div className="flex items-center gap-2 font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-emerald-200/72">
+          <Atom size={14} /> Atomic record
         </div>
-
-        <h2 className="text-2xl font-bold text-white mb-1">{element.name}</h2>
-        <span className="inline-block px-2 py-0.5 rounded-full bg-white/5 border border-white/10 text-[10px] text-lime-300 mb-6">
-            {element.group}
+        <span className="font-mono text-[22px] font-semibold text-white/18">
+          {String(element.number).padStart(3, "0")}
         </span>
+      </div>
 
-        {/* Stats Grid */}
-        <div className="w-full grid grid-cols-1 gap-3">
-            <StatRow icon={Scale} label="Atomic Mass" value={`${element.mass} u`} />
-            <StatRow icon={Layers} label="Electron Config" value={element.config} />
-            <StatRow icon={Zap} label="Electronegativity" value="Unknown" /> {/* Placeholder for expansion */}
+      <div className="p-6">
+        <div className="grid gap-5 sm:grid-cols-[150px_minmax(0,1fr)] sm:items-center xl:grid-cols-1">
+          <div className="relative flex h-36 w-36 items-center justify-center rounded-[26px] border border-white/[0.10] bg-[radial-gradient(circle_at_35%_28%,rgba(255,255,255,0.12),transparent_28%),linear-gradient(145deg,rgba(52,211,153,0.08),rgba(0,0,0,0.28))] shadow-inner">
+            <span className="text-[64px] font-semibold tracking-[-0.07em] text-white">
+              {element.symbol}
+            </span>
+            <span className="absolute left-3 top-3 font-mono text-[12px] text-emerald-200/76">
+              {element.number}
+            </span>
+            <span className="absolute bottom-3 right-3 font-mono text-[11px] text-slate-400/60">
+              {element.atomic_mass.toFixed(2)}
+            </span>
+          </div>
+
+          <div>
+            <h2 className="text-[30px] font-semibold tracking-[-0.045em] text-white">
+              {element.name}
+            </h2>
+            <span className="mt-2 inline-flex rounded-full border border-emerald-200/[0.15] bg-emerald-300/[0.045] px-3 py-1.5 text-[12px] font-medium capitalize text-emerald-100/78">
+              {element.category}
+            </span>
+            <p className="mt-4 text-[14px] leading-6 text-slate-300/66">
+              Atomic number fixes the element&apos;s identity. Electron configuration and periodic position expose recurring chemical behavior.
+            </p>
+          </div>
         </div>
 
+        <div className="mt-6 grid gap-3">
+          <StatRow icon={Scale} label="Atomic mass" value={`${element.atomic_mass.toFixed(4)} u`} />
+          <StatRow icon={Layers} label="Electron configuration" value={element.electron_configuration || "Not reported"} />
+          <StatRow icon={Sparkles} label="Periodic family" value={element.category} />
+        </div>
       </div>
-    </div>
+    </article>
   );
 }
 
-function StatRow({ icon: Icon, label, value }: any) {
-    return (
-        <div className="flex items-center justify-between p-3 rounded-lg bg-neutral-950/50 border border-white/5">
-            <div className="flex items-center gap-2 text-neutral-400">
-                <Icon size={14} />
-                <span className="text-xs font-medium">{label}</span>
-            </div>
-            <span className="text-xs font-mono text-white">{value}</span>
-        </div>
-    );
+function StatRow({
+  icon: Icon,
+  label,
+  value,
+}: {
+  icon: typeof Atom;
+  label: string;
+  value: string;
+}) {
+  return (
+    <div className="flex flex-col gap-2 rounded-[15px] border border-white/[0.07] bg-white/[0.018] p-4 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex items-center gap-2 text-[13px] font-medium text-slate-400">
+        <Icon size={15} className="text-emerald-200/58" />
+        {label}
+      </div>
+      <span className="break-words font-mono text-[12px] text-slate-200/82 sm:max-w-[58%] sm:text-right">
+        {value}
+      </span>
+    </div>
+  );
 }

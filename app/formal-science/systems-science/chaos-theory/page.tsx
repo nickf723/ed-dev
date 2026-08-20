@@ -1,96 +1,115 @@
-"use client";
-import React from "react";
 import Link from "next/link";
-import LorenzAttractor from "./LorenzAttractor";
-import { ArrowLeft, Zap, GitFork, Tornado, Infinity as InfinityIcon } from "lucide-react";
+import DomainPageHeader from "@/app/_components/DomainPageHeader";
+import { SceneFrame, Surface } from "@/app/_page-system/scene";
 import SystemsBackground from "./SystemsBackground";
+import LogisticMapLab from "./LogisticMapLab";
+import {
+  ArrowRight,
+  GitFork,
+  Orbit,
+  RefreshCw,
+  Triangle,
+  Waves,
+} from "lucide-react";
+
+const CONCEPTS = [
+  ["Determinism", "A deterministic model assigns the next state from the current state and parameters. Deterministic does not guarantee easy long-range prediction."],
+  ["Sensitive dependence", "Nearby initial states can separate rapidly in some nonlinear regimes, so small measurement uncertainty eventually grows into large trajectory uncertainty."],
+  ["Attractors", "Long-run motion may remain confined to a point, cycle, curve, region, or more complicated invariant set even when exact future position is hard to predict."],
+  ["Bifurcation", "Changing a parameter can change the qualitative long-run behavior of a system, such as moving from a fixed point to cycles and eventually to chaotic regimes."],
+] as const;
+
+const BOUNDARIES = [
+  ["Chaos ≠ randomness", "A chaotic trajectory can come from a fully deterministic rule. Randomness and deterministic chaos are different sources of uncertainty even when their outputs can look irregular."],
+  ["Sensitivity ≠ every small cause becomes enormous", "The butterfly effect is shorthand for sensitive dependence. It is not a literal rule that any tiny disturbance must produce a dramatic event such as a tornado."],
+  ["Prediction horizon is system-specific", "Useful forecast horizons depend on dynamics, observations, model error, scale, and the quantity being forecast. There is no single universal 'two-week Lyapunov time' for all weather variables or chaotic systems."],
+] as const;
 
 export default function ChaosTheoryPage() {
   return (
-    <main className="min-h-screen bg-[#050202] text-red-100 font-sans relative overflow-hidden selection:bg-red-500/30">
-      
-      {/* 1. SHARED ATMOSPHERE */}
-      <SystemsBackground />
-      <div className="fixed inset-0 bg-gradient-to-b from-[#050202] via-transparent to-[#050202] pointer-events-none" />
-
-      <div className="relative z-10 p-6 md:p-12 min-h-screen flex flex-col">
-        
-        {/* HEADER */}
-        <header className="mb-12">
-            <Link href="/formal-science/systems-science" className="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-red-600 hover:text-white transition-colors mb-6">
-                <ArrowLeft size={10} /> Systems Science
-            </Link>
-            <h1 className="text-5xl md:text-7xl font-black text-white tracking-tighter mb-4 flex items-center gap-4">
-                CHAOS THEORY <Tornado className="text-red-600 opacity-80 animate-spin-slow" size={48} />
-            </h1>
-            <p className="text-red-400/60 font-mono text-xs uppercase tracking-widest max-w-xl">
-                Deterministic Chaos // Nonlinear Dynamics // Sensitive Dependence
-            </p>
-        </header>
-
-        {/* 2. HERO: THE LORENZ ATTRACTOR */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
-            <div className="lg:col-span-2">
-                <LorenzAttractor />
-            </div>
-            <div className="flex flex-col justify-center gap-6 p-6 rounded-xl bg-black/40 border border-red-900/20 backdrop-blur-sm">
-                <div>
-                    <h3 className="text-xl font-bold text-white mb-2 flex items-center gap-2">
-                        <GitFork size={18} className="text-red-500" /> Sensitive Dependence
-                    </h3>
-                    <p className="text-sm text-red-200/60 leading-relaxed">
-                        Often called the <strong>Butterfly Effect</strong>. In nonlinear systems, a tiny difference in starting conditions (like the flap of a butterfly's wings) can lead to vastly different outcomes (like a tornado weeks later).
-                    </p>
-                </div>
-                
-                <div className="w-full h-px bg-red-900/30" />
-
-                <div>
-                    <h3 className="text-xl font-bold text-white mb-2 flex items-center gap-2">
-                        <InfinityIcon size={18} className="text-red-500" /> Strange Attractors
-                    </h3>
-                    <p className="text-sm text-red-200/60 leading-relaxed">
-                        Despite being unpredictable in the moment, chaotic systems often settle into a distinct shape or pattern over time. The Lorenz Attractor (left) is a "Strange Attractor"—the system orbits these two loops forever, never crossing the same path twice.
-                    </p>
-                </div>
-            </div>
+    <SceneFrame
+      background={<SystemsBackground />}
+      className="bg-[#080508] text-slate-100 selection:bg-violet-300/25"
+      maxWidthClassName="max-w-[1500px]"
+      headerBackground="rgba(8,5,8,0.55)"
+      header={
+        <DomainPageHeader
+          breadcrumbs={[
+            { label: "Formal Science", href: "/formal-science" },
+            { label: "Systems Science", href: "/formal-science/systems-science" },
+            { label: "Chaos & Nonlinear Dynamics" },
+          ]}
+          eyebrow="Determinism · nonlinearity · sensitivity · bifurcation · attractors"
+          eyebrowStyle="rule"
+          icon={Orbit}
+          title={<span>Chaos &amp; Nonlinear Dynamics</span>}
+          subtitle="Study deterministic systems whose nonlinear evolution can amplify tiny uncertainty, change qualitative behavior across parameter regimes, and limit long-range trajectory prediction."
+          accentRgb="192, 132, 252"
+          titleClassName="font-sans text-[clamp(2.6rem,5vw,5.7rem)] font-semibold leading-[0.84] tracking-[-0.062em] text-[#faf5ff]"
+          headerClassName="border-violet-100/[0.10]"
+        />
+      }
+    >
+      <section className="relative isolate mt-5 overflow-hidden border-y border-violet-100/[0.10] py-5 sm:py-6">
+        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(16,8,20,0.34),transparent_30%,transparent_70%,rgba(10,8,5,0.26))] backdrop-blur-[4px]" />
+        <div className="relative grid gap-5 xl:grid-cols-[minmax(0,1fr)_390px] xl:items-end">
+          <div>
+            <div className="flex items-center gap-2 font-mono text-[11px] font-semibold uppercase tracking-[0.10em] text-violet-200/68"><GitFork size={14} /> Predictability under nonlinear dynamics</div>
+            <h2 className="mt-2 max-w-5xl text-[clamp(1.9rem,3.7vw,3.6rem)] font-semibold leading-[0.95] tracking-[-0.05em] text-white">Knowing the rule exactly does not mean knowing a distant future state exactly.</h2>
+            <p className="mt-3 max-w-4xl text-[14px] leading-6 text-slate-300/74">When trajectories are sensitive to initial conditions, finite measurement precision matters. Two states that are initially indistinguishable at the scale of a measurement can eventually evolve into very different trajectories.</p>
+          </div>
+          <div className="grid grid-cols-2 gap-2">
+            <Neighbor href="/formal-science/systems-science/complexity-chaos" label="Complexity & Emergence" note="collective pattern · local interaction" />
+            <Neighbor href="/formal-science/systems-science/complexity-chaos/fractals" label="Fractals" note="iteration · scaling · geometry" />
+          </div>
         </div>
+      </section>
 
-        {/* 3. CORE CONCEPTS GRID */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pb-20">
-            
-            {/* CARD 1: DETERMINISM */}
-            <div className="p-6 rounded-xl bg-black/40 border border-red-900/20 hover:border-red-500/50 transition-all">
-                <div className="text-[10px] font-bold uppercase tracking-widest text-red-600 mb-2">Misconception</div>
-                <h3 className="text-xl font-bold text-white mb-2">Chaos ≠ Randomness</h3>
-                <p className="text-xs text-red-200/50 leading-relaxed mb-4">
-                    Chaotic systems are <em>deterministic</em>. They follow strict laws of physics (no dice rolling). They only <em>appear</em> random because we cannot measure the current state with infinite precision.
-                </p>
-            </div>
+      <section className="mt-7">
+        <LogisticMapLab />
+      </section>
 
-            {/* CARD 2: FRACTALS */}
-            <div className="p-6 rounded-xl bg-black/40 border border-red-900/20 hover:border-red-500/50 transition-all group">
-                <div className="text-[10px] font-bold uppercase tracking-widest text-red-600 mb-2">Geometry</div>
-                <h3 className="text-xl font-bold text-white mb-2">Fractals</h3>
-                <p className="text-xs text-red-200/50 leading-relaxed mb-4">
-                    Chaos often leaves a visual footprint called a fractal—shapes that look similar at any scale. Coastlines, clouds, and blood vessels are all fractal structures generated by chaotic growth processes.
-                </p>
-                
-            </div>
+      <section className="mt-8 grid gap-5 xl:grid-cols-[minmax(0,1.05fr)_minmax(390px,0.95fr)] xl:items-start">
+        <Surface variant="glass" className="rounded-[24px] border-violet-100/[0.09] p-5 sm:p-6" style={{ background: "rgba(15,8,20,0.16)" }}>
+          <div className="flex items-center gap-2 font-mono text-[10px] font-semibold uppercase tracking-[0.09em] text-violet-200/58"><Orbit size={13} /> Formal structure</div>
+          <div className="mt-4 grid gap-3 sm:grid-cols-2">
+            {CONCEPTS.map(([title, text], index) => (
+              <div key={title} className="grid grid-cols-[30px_minmax(0,1fr)] gap-3 rounded-[16px] border border-white/[0.06] bg-black/[0.10] p-3">
+                <span className="font-mono text-[9px] text-violet-200/42">0{index + 1}</span>
+                <div><strong className="text-[13px] text-white">{title}</strong><p className="mt-1 text-[12px] leading-5 text-slate-400">{text}</p></div>
+              </div>
+            ))}
+          </div>
+        </Surface>
 
-             {/* CARD 3: BIFURCATION */}
-             <div className="p-6 rounded-xl bg-black/40 border border-red-900/20 hover:border-red-500/50 transition-all">
-                <div className="text-[10px] font-bold uppercase tracking-widest text-red-600 mb-2">Transition</div>
-                <h3 className="text-xl font-bold text-white mb-2">Bifurcation</h3>
-                <p className="text-xs text-red-200/50 leading-relaxed mb-4">
-                    As you turn up the energy in a system (like turning up a faucet), it transitions from smooth flow (order) to dripping (periodicity) to splashing (chaos). This splitting point is a bifurcation.
-                </p>
-                
-            </div>
+        <Surface variant="open" className="rounded-[24px] border-cyan-100/[0.08] p-5 sm:p-6 xl:sticky xl:top-[170px]">
+          <div className="flex items-center gap-2 font-mono text-[10px] font-semibold uppercase tracking-[0.09em] text-cyan-200/58"><RefreshCw size={13} /> Predictability is a scale question</div>
+          <h3 className="mt-2 text-[21px] font-semibold text-white">Forecast failure does not mean the model has no structure.</h3>
+          <p className="mt-3 text-[13px] leading-6 text-slate-400">A chaotic system can preserve statistical regularities, invariant sets, parameter regimes, or short-range predictability even while exact long-range trajectories become extremely sensitive to initial uncertainty.</p>
+          <p className="mt-3 text-[12px] leading-5 text-slate-500">This is why chaos research studies more than “what happens next?” It also studies stability, attractors, rates of separation, bifurcations, recurrence, and ensemble behavior.</p>
+        </Surface>
+      </section>
 
+      <section className="mt-8 border-t border-violet-100/[0.09] pt-5">
+        <div className="flex items-center gap-2 font-mono text-[10px] font-semibold uppercase tracking-[0.09em] text-amber-200/58"><Triangle size={13} /> Common overstatements</div>
+        <div className="mt-4 grid gap-3 md:grid-cols-3">
+          {BOUNDARIES.map(([title, text]) => <div key={title} className="rounded-[18px] border border-white/[0.07] bg-black/[0.10] p-4 backdrop-blur-[12px]"><strong className="text-[13px] text-white/86">{title}</strong><p className="mt-2 text-[11px] leading-5 text-slate-400">{text}</p></div>)}
         </div>
+      </section>
 
-      </div>
-    </main>
+      <section className="mt-8 rounded-[22px] border border-cyan-100/[0.08] bg-cyan-300/[0.02] p-5 backdrop-blur-xl">
+        <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-center">
+          <div>
+            <div className="flex items-center gap-2 font-mono text-[10px] font-semibold uppercase tracking-[0.09em] text-cyan-200/58"><Waves size={13} /> The butterfly effect, precisely</div>
+            <p className="mt-2 text-[13px] leading-6 text-slate-300/74">The phrase refers to sensitive dependence on initial conditions: small differences in the represented state can grow substantially under the dynamics. It is a metaphor for predictability limits, not a license to trace any distant event to any arbitrarily tiny cause.</p>
+          </div>
+          <Link href="/formal-science/systems-science" className="group flex items-center justify-between rounded-[16px] border border-white/[0.07] bg-black/[0.10] p-4 text-[12px] font-semibold text-white/80 transition hover:bg-black/[0.18]">Systems Science map <ArrowRight size={13} className="text-violet-200/55 transition group-hover:translate-x-1" /></Link>
+        </div>
+      </section>
+    </SceneFrame>
   );
+}
+
+function Neighbor({ href, label, note }: { href: string; label: string; note: string }) {
+  return <Link href={href} className="group flex min-h-[80px] flex-col justify-between rounded-[15px] border border-white/[0.07] bg-black/[0.08] p-3 backdrop-blur-[10px] transition hover:bg-black/[0.16]"><strong className="text-[12px] text-white/84">{label}</strong><span className="flex items-end justify-between gap-2"><span className="text-[10px] leading-4 text-slate-500">{note}</span><ArrowRight size={11} className="text-violet-200/55 transition group-hover:translate-x-1" /></span></Link>;
 }

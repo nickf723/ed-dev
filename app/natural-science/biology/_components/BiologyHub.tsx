@@ -27,288 +27,205 @@ export type BiologyHubNode = {
   status?: "active" | "placeholder";
 };
 
-type DisciplinePresentation = {
-  icon: LucideIcon;
-  rgb: string;
-  accent: string;
-  border: string;
-  soft: string;
-  shortLabel: string;
-};
-
-type GroupPresentation = {
+type DisciplineMeta = { icon: LucideIcon; rgb: string; short: string };
+type ResolvedNode = BiologyHubNode & DisciplineMeta;
+type ScaleBand = {
   id: string;
   eyebrow: string;
   title: string;
   description: string;
-  accent: string;
-  border: string;
-  glow: string;
+  measure: string;
+  rgb: string;
   nodeIds: readonly string[];
 };
 
-const DISCIPLINES: Record<string, DisciplinePresentation> = {
-  "natural.biology.cytology": {
-    icon: Microscope,
-    rgb: "34, 211, 238",
-    accent: "text-cyan-300",
-    border: "border-cyan-400/50",
-    soft: "bg-cyan-400/10",
-    shortLabel: "Cells",
-  },
-  "natural.biology.genetics": {
-    icon: Dna,
-    rgb: "168, 85, 247",
-    accent: "text-purple-300",
-    border: "border-purple-400/50",
-    soft: "bg-purple-400/10",
-    shortLabel: "Inheritance",
-  },
-  "natural.biology.molecular": {
-    icon: Atom,
-    rgb: "96, 165, 250",
-    accent: "text-blue-300",
-    border: "border-blue-400/50",
-    soft: "bg-blue-400/10",
-    shortLabel: "Molecules",
-  },
-  "natural.biology.microbiology": {
-    icon: Bug,
-    rgb: "45, 212, 191",
-    accent: "text-teal-300",
-    border: "border-teal-400/50",
-    soft: "bg-teal-400/10",
-    shortLabel: "Microbes",
-  },
-  "natural.biology.mycology": {
-    icon: Sprout,
-    rgb: "192, 132, 252",
-    accent: "text-violet-300",
-    border: "border-violet-400/50",
-    soft: "bg-violet-400/10",
-    shortLabel: "Fungi",
-  },
-  "natural.biology.botany": {
-    icon: Leaf,
-    rgb: "132, 204, 22",
-    accent: "text-lime-300",
-    border: "border-lime-400/50",
-    soft: "bg-lime-400/10",
-    shortLabel: "Plants",
-  },
-  "natural.biology.zoology": {
-    icon: PawPrint,
-    rgb: "251, 146, 60",
-    accent: "text-orange-300",
-    border: "border-orange-400/50",
-    soft: "bg-orange-400/10",
-    shortLabel: "Animals",
-  },
-  "natural.biology.anatomy": {
-    icon: HeartPulse,
-    rgb: "251, 113, 133",
-    accent: "text-rose-300",
-    border: "border-rose-400/50",
-    soft: "bg-rose-400/10",
-    shortLabel: "Body systems",
-  },
-  "natural.biology.ecology": {
-    icon: Globe2,
-    rgb: "52, 211, 153",
-    accent: "text-emerald-300",
-    border: "border-emerald-400/50",
-    soft: "bg-emerald-400/10",
-    shortLabel: "Ecosystems",
-  },
-  "natural.biology.evolution": {
-    icon: Activity,
-    rgb: "250, 204, 21",
-    accent: "text-yellow-300",
-    border: "border-yellow-400/50",
-    soft: "bg-yellow-400/10",
-    shortLabel: "Change",
-  },
+const META: Record<string, DisciplineMeta> = {
+  "natural.biology.cytology": { icon: Microscope, rgb: "34, 211, 238", short: "Cells" },
+  "natural.biology.genetics": { icon: Dna, rgb: "168, 85, 247", short: "Inheritance" },
+  "natural.biology.molecular": { icon: Atom, rgb: "96, 165, 250", short: "Molecules" },
+  "natural.biology.microbiology": { icon: Bug, rgb: "45, 212, 191", short: "Microbes" },
+  "natural.biology.mycology": { icon: Sprout, rgb: "192, 132, 252", short: "Fungi" },
+  "natural.biology.botany": { icon: Leaf, rgb: "132, 204, 22", short: "Plants" },
+  "natural.biology.zoology": { icon: PawPrint, rgb: "251, 146, 60", short: "Animals" },
+  "natural.biology.anatomy": { icon: HeartPulse, rgb: "251, 113, 133", short: "Body systems" },
+  "natural.biology.ecology": { icon: Globe2, rgb: "52, 211, 153", short: "Ecosystems" },
+  "natural.biology.evolution": { icon: Activity, rgb: "250, 204, 21", short: "Generational change" },
 };
 
-const GROUPS: readonly GroupPresentation[] = [
+const BANDS: readonly ScaleBand[] = [
   {
-    id: "inside-life",
-    eyebrow: "01 · Mechanisms",
-    title: "Inside Life",
-    description: "How cells store information, build molecules, and keep themselves alive.",
-    accent: "text-cyan-200",
-    border: "border-cyan-400/20",
-    glow: "rgba(34,211,238,0.10)",
-    nodeIds: [
-      "natural.biology.cytology",
-      "natural.biology.genetics",
-      "natural.biology.molecular",
-    ],
+    id: "molecular",
+    eyebrow: "01 · Molecular scale",
+    title: "Information & machinery",
+    description: "Genes and biomolecules store instructions, catalyze reactions, and build living structures.",
+    measure: "nm → µm",
+    rgb: "139, 92, 246",
+    nodeIds: ["natural.biology.molecular", "natural.biology.genetics"],
   },
   {
-    id: "forms-of-life",
-    eyebrow: "02 · Diversity",
-    title: "Forms of Life",
-    description: "The major living forms and the structures and strategies that make each distinct.",
-    accent: "text-lime-200",
-    border: "border-lime-400/20",
-    glow: "rgba(132,204,22,0.10)",
-    nodeIds: [
-      "natural.biology.microbiology",
-      "natural.biology.mycology",
-      "natural.biology.botany",
-      "natural.biology.zoology",
-    ],
+    id: "cellular",
+    eyebrow: "02 · Cellular scale",
+    title: "The living unit",
+    description: "Cells organize chemistry into self-maintaining systems; microbes show how much life fits at tiny scales.",
+    measure: "µm → mm",
+    rgb: "34, 211, 238",
+    nodeIds: ["natural.biology.cytology", "natural.biology.microbiology"],
   },
   {
-    id: "living-systems",
-    eyebrow: "03 · Relationships",
-    title: "Living Systems",
-    description: "How bodies function, organisms interact, and populations change across generations.",
-    accent: "text-emerald-200",
-    border: "border-emerald-400/20",
-    glow: "rgba(52,211,153,0.10)",
-    nodeIds: [
-      "natural.biology.anatomy",
-      "natural.biology.ecology",
-      "natural.biology.evolution",
-    ],
+    id: "organismal",
+    eyebrow: "03 · Organismal scale",
+    title: "Bodies & forms of life",
+    description: "Organisms coordinate structures and functions while fungi, plants, and animals solve survival differently.",
+    measure: "mm → 100 m",
+    rgb: "132, 204, 22",
+    nodeIds: ["natural.biology.mycology", "natural.biology.botany", "natural.biology.zoology", "natural.biology.anatomy"],
+  },
+  {
+    id: "ecological",
+    eyebrow: "04 · Ecological scale",
+    title: "Populations & ecosystems",
+    description: "Organisms form populations, communities, food webs, and ecosystems linked by energy and material cycles.",
+    measure: "m → planet",
+    rgb: "52, 211, 153",
+    nodeIds: ["natural.biology.ecology"],
   },
 ];
 
-const CORE_THEMES = ["Information", "Energy", "Homeostasis", "Evolution"] as const;
+const THEMES = ["Information", "Energy", "Homeostasis", "Evolution"] as const;
 
-function resolveGroups(nodes: readonly BiologyHubNode[]) {
-  const byId = new Map(nodes.map((node) => [node.id, node]));
-  return GROUPS.map((group) => ({
-    ...group,
-    nodes: group.nodeIds.map((id) => {
-      const node = byId.get(id);
-      const presentation = DISCIPLINES[id];
-      if (!node || !presentation) {
-        throw new Error(`Biology hub node ${id} is incomplete.`);
-      }
-      return { ...node, ...presentation };
-    }),
-  }));
+function resolveNode(byId: Map<string, BiologyHubNode>, id: string): ResolvedNode {
+  const node = byId.get(id);
+  const meta = META[id];
+  if (!node || !meta) throw new Error(`Biology hub node ${id} is incomplete.`);
+  return { ...node, ...meta };
 }
 
 export default function BiologyHub({ nodes }: { nodes: readonly BiologyHubNode[] }) {
-  const groups = resolveGroups(nodes);
+  const byId = new Map(nodes.map((node) => [node.id, node]));
+  const bands = BANDS.map((band) => ({ ...band, nodes: band.nodeIds.map((id) => resolveNode(byId, id)) }));
+  const evolution = resolveNode(byId, "natural.biology.evolution");
 
   return (
-    <main className="relative min-h-screen overflow-x-hidden bg-[#031008] text-stone-100 selection:bg-emerald-400/30">
+    <main className="relative min-h-screen overflow-x-hidden bg-[#020b06] text-stone-100 selection:bg-emerald-400/30">
       <DnaBackground />
-      <div className="pointer-events-none fixed inset-0 z-0 bg-[radial-gradient(circle_at_15%_12%,rgba(34,197,94,0.16),transparent_30%),radial-gradient(circle_at_88%_78%,rgba(34,211,238,0.07),transparent_28%),linear-gradient(to_bottom,rgba(2,12,7,0.06),rgba(2,9,6,0.68))]" />
-      <div className="pointer-events-none fixed inset-0 z-0 opacity-12 [background-image:radial-gradient(circle_at_center,rgba(187,247,208,0.18)_1px,transparent_1px)] [background-size:42px_42px] [mask-image:linear-gradient(to_bottom,black,transparent_85%)]" />
+      <div className="pointer-events-none fixed inset-0 z-0 bg-[radial-gradient(circle_at_12%_14%,rgba(34,197,94,0.15),transparent_27%),radial-gradient(circle_at_88%_70%,rgba(34,211,238,0.08),transparent_30%),linear-gradient(to_bottom,rgba(2,12,7,0.04),rgba(1,7,4,0.76))]" aria-hidden="true" />
+      <div className="pointer-events-none fixed inset-0 z-0 opacity-[0.13] [background-image:radial-gradient(circle_at_center,rgba(187,247,208,0.24)_1px,transparent_1.2px)] [background-size:38px_38px] [mask-image:linear-gradient(to_bottom,black,transparent_88%)]" aria-hidden="true" />
 
-      <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-[1500px] flex-col px-4 py-4 sm:px-6 lg:px-8 lg:py-5">
+      <div className="relative z-10 mx-auto w-full max-w-[1540px] px-4 pb-12 pt-4 sm:px-6 lg:px-8 lg:pt-5">
         <DomainPageHeader
           breadcrumbs={[
             { label: "Home", href: "/" },
             { label: "Natural Sciences", href: "/natural-science" },
             { label: "Biology" },
           ]}
-          eyebrow="Living Systems"
+          eyebrow="Life across scale"
           icon={Dna}
           accentRgb="34, 197, 94"
           title="Biology"
-          titleClassName="text-[clamp(3.4rem,6vw,6.2rem)] font-semibold leading-[0.86] tracking-[-0.06em] text-[#f5fff7] drop-shadow-[0_0_28px_rgba(34,197,94,0.11)]"
-          subtitle="How living things are built, function, diversify, interact, and change."
+          titleClassName="text-[clamp(3.4rem,6vw,6.4rem)] font-semibold leading-[0.84] tracking-[-0.064em] text-[#f5fff7] drop-shadow-[0_0_30px_rgba(34,197,94,0.11)]"
+          subtitle="Zoom from molecules to cells, organisms, populations, and ecosystems. Biology changes its tools as scale changes, while the same living processes keep connecting the whole system."
           aside={
-            <div className="max-w-[300px] text-right">
-              <div className="font-mono text-[8px] uppercase tracking-[0.17em] text-green-300/55">Core themes</div>
-              <div className="mt-2 flex flex-wrap justify-end gap-1.5">
-                {CORE_THEMES.map((theme) => (
-                  <span
-                    key={theme}
-                    className="rounded-full border border-green-300/15 bg-green-400/[0.055] px-2.5 py-1 text-[10px] text-stone-300/80 backdrop-blur-md"
-                  >
-                    {theme}
-                  </span>
-                ))}
+            <div className="hidden min-w-[250px] text-right sm:block">
+              <div className="font-mono text-[8px] uppercase tracking-[0.18em] text-emerald-300/55">Observation scale</div>
+              <div className="mt-2 flex items-center justify-end gap-2 font-mono text-[10px] uppercase tracking-[0.11em] text-stone-400">
+                <span>molecules</span>
+                <span className="h-px w-12 bg-gradient-to-r from-violet-400/60 via-cyan-400/60 to-emerald-400/60" />
+                <span>biosphere</span>
               </div>
             </div>
           }
         />
 
-        <section className="mt-4 grid flex-1 gap-4 lg:grid-cols-3">
-          {groups.map((group) => (
-            <article
-              key={group.id}
-              className={`relative overflow-hidden rounded-[26px] border bg-black/[0.16] p-4 backdrop-blur-md sm:p-5 ${group.border}`}
-              style={{ boxShadow: `inset 0 1px 0 rgba(255,255,255,0.035), 0 18px 60px rgba(0,0,0,0.16), 0 0 44px ${group.glow}` }}
-            >
-              <div className="pointer-events-none absolute -right-12 -top-14 h-40 w-40 rounded-full blur-3xl" style={{ background: group.glow }} />
+        <section className="relative mt-5 overflow-hidden rounded-[34px] border border-emerald-300/[0.12] bg-[#020a06]/58 shadow-[0_30px_100px_rgba(0,0,0,0.28)] backdrop-blur-xl">
+          <div className="pointer-events-none absolute -right-24 -top-28 h-[390px] w-[390px] rounded-full border border-emerald-300/[0.06]" aria-hidden="true" />
+          <div className="pointer-events-none absolute -right-6 -top-12 h-[250px] w-[250px] rounded-full border border-cyan-300/[0.07]" aria-hidden="true" />
 
-              <div className="relative border-b border-white/[0.065] pb-4">
-                <div className={`font-mono text-[8px] uppercase tracking-[0.18em] ${group.accent}`}>{group.eyebrow}</div>
-                <h2 className="mt-1 text-2xl font-semibold tracking-[-0.03em] text-white">{group.title}</h2>
-                <p className="mt-2 max-w-sm text-xs leading-5 text-stone-500">{group.description}</p>
+          <div className="relative grid gap-5 border-b border-white/[0.07] px-5 py-6 sm:px-7 lg:grid-cols-[minmax(0,1fr)_390px] lg:items-end lg:px-8 lg:py-7">
+            <div>
+              <div className="flex items-center gap-2 font-mono text-[9px] font-semibold uppercase tracking-[0.17em] text-emerald-300/65">
+                <Microscope size={13} /> Scale atlas
               </div>
+              <h2 className="mt-2 max-w-4xl text-[clamp(2rem,4vw,4rem)] font-semibold leading-[0.92] tracking-[-0.052em] text-white">
+                Biology is a zoom lens on the same living world.
+              </h2>
+            </div>
+            <p className="max-w-xl text-[13px] leading-6 text-stone-400 lg:text-[14px]">
+              Start at the scale of the system you want to explain. The fields overlap because living systems cross boundaries constantly.
+            </p>
+          </div>
 
-              <div className="relative mt-3 space-y-2.5">
-                {group.nodes.map((node) => (
-                  <DisciplineCard key={node.id} node={node} />
-                ))}
-              </div>
-            </article>
-          ))}
+          <div className="relative">
+            <div className="pointer-events-none absolute bottom-0 left-[78px] top-0 hidden w-px bg-gradient-to-b from-violet-400/35 via-cyan-400/35 via-lime-400/35 to-emerald-400/35 lg:block" aria-hidden="true" />
+            {bands.map((band, index) => <ScaleBandRow key={band.id} band={band} index={index} />)}
+          </div>
         </section>
 
-        <footer className="mt-4 shrink-0 rounded-[18px] border border-emerald-300/10 bg-black/10 px-4 py-3 backdrop-blur-md">
-          <div className="flex items-center gap-2 text-xs text-stone-500">
-            <Sparkles size={13} className="text-green-300/60" />
-            Biology connects information, structure, function, diversity, and adaptation into one study of life.
+        <EvolutionRail node={evolution} />
+
+        <section className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 rounded-[20px] border border-white/[0.07] bg-black/[0.14] px-5 py-4 backdrop-blur-md sm:px-6">
+          <div className="mr-auto flex items-center gap-2 text-[11px] text-stone-400">
+            <Sparkles size={13} className="text-emerald-300/70" /> Recurring at every scale
           </div>
-        </footer>
+          {THEMES.map((theme) => (
+            <span key={theme} className="font-mono text-[8px] font-semibold uppercase tracking-[0.14em] text-emerald-100/55">{theme}</span>
+          ))}
+        </section>
       </div>
     </main>
   );
 }
 
-function DisciplineCard({
-  node,
-}: {
-  node: BiologyHubNode & DisciplinePresentation;
-}) {
+function ScaleBandRow({ band, index }: { band: ScaleBand & { nodes: ResolvedNode[] }; index: number }) {
+  return (
+    <section className={`relative grid gap-4 px-5 py-6 sm:px-7 lg:grid-cols-[125px_300px_minmax(0,1fr)] lg:gap-6 lg:px-8 lg:py-7 ${index ? "border-t border-white/[0.065]" : ""}`}>
+      <div className="relative flex items-center gap-3 lg:block">
+        <div className="relative z-10 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border bg-[#06110a] font-mono text-[9px] font-semibold lg:ml-[30px]" style={{ color: `rgb(${band.rgb})`, borderColor: `rgba(${band.rgb},0.34)` }}>
+          {String(index + 1).padStart(2, "0")}
+        </div>
+        <div className="font-mono text-[8px] uppercase tracking-[0.14em] lg:mt-3 lg:text-center" style={{ color: `rgba(${band.rgb},0.64)` }}>{band.measure}</div>
+      </div>
+
+      <div>
+        <div className="font-mono text-[8px] font-semibold uppercase tracking-[0.16em]" style={{ color: `rgba(${band.rgb},0.66)` }}>{band.eyebrow}</div>
+        <h3 className="mt-1 text-[22px] font-semibold tracking-[-0.035em] text-white sm:text-[24px]">{band.title}</h3>
+        <p className="mt-2 max-w-md text-[12px] leading-5 text-stone-500">{band.description}</p>
+      </div>
+
+      <nav aria-label={`${band.title} biology fields`} className="grid gap-x-7 sm:grid-cols-2">
+        {band.nodes.map((node) => <DisciplineLink key={node.id} node={node} />)}
+      </nav>
+    </section>
+  );
+}
+
+function DisciplineLink({ node }: { node: ResolvedNode }) {
   const Icon = node.icon;
   const planned = node.status === "placeholder";
-
+  const className = `group flex min-h-[84px] items-center gap-3 border-b px-1 py-3 transition-colors ${planned ? "cursor-default border-white/[0.045] opacity-45" : "border-white/[0.07] hover:bg-white/[0.025]"}`;
   const content = (
     <>
-      <div
-        className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-        style={{ background: `linear-gradient(100deg, rgba(${node.rgb},0.10), transparent 72%)` }}
-      />
-      <div className="relative flex items-center gap-3">
-        <span className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border ${node.border} ${node.soft} ${node.accent}`}>
-          <Icon size={18} />
-        </span>
-        <span className="min-w-0 flex-1">
-          <span className="flex items-center gap-2">
-            <strong className={`truncate text-sm font-semibold ${planned ? "text-stone-500" : "text-white"}`}>{node.label}</strong>
-            {planned ? (
-              <span className="rounded-full border border-white/[0.08] bg-white/[0.03] px-2 py-0.5 font-mono text-[7px] uppercase tracking-[0.12em] text-stone-600">planned</span>
-            ) : null}
-          </span>
-          <span className={`mt-0.5 block font-mono text-[8px] uppercase tracking-[0.12em] ${planned ? "text-stone-700" : node.accent}`}>
-            {node.shortLabel}
-          </span>
-        </span>
-        {!planned ? <ArrowRight size={14} className={`shrink-0 transition-transform group-hover:translate-x-1 ${node.accent}`} /> : null}
-      </div>
-      <p className={`relative mt-2 line-clamp-2 pl-[52px] text-[11px] leading-4 ${planned ? "text-stone-700" : "text-stone-500"}`}>
-        {node.description}
-      </p>
+      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[13px] border" style={{ color: `rgb(${node.rgb})`, borderColor: `rgba(${node.rgb},0.22)`, background: `rgba(${node.rgb},0.055)` }}><Icon size={17} /></span>
+      <span className="min-w-0 flex-1">
+        <span className="flex items-center gap-2"><strong className="text-[13px] font-semibold text-stone-100">{node.label}</strong>{planned ? <span className="font-mono text-[7px] uppercase tracking-[0.11em] text-stone-600">planned</span> : null}</span>
+        <span className="mt-0.5 block font-mono text-[8px] uppercase tracking-[0.11em]" style={{ color: `rgba(${node.rgb},0.62)` }}>{node.short}</span>
+        <span className="mt-1 line-clamp-1 block text-[10px] leading-4 text-stone-600">{node.description}</span>
+      </span>
+      {!planned ? <ArrowRight size={13} className="shrink-0 transition-transform group-hover:translate-x-1" style={{ color: `rgba(${node.rgb},0.62)` }} /> : null}
     </>
   );
+  return planned ? <div className={className} aria-label={`${node.label}, planned`}>{content}</div> : <Link href={node.href} className={className}>{content}</Link>;
+}
 
-  const className = `group relative block overflow-hidden rounded-[16px] border px-3.5 py-3 transition-all ${planned ? "cursor-default border-white/[0.045] bg-black/[0.09] opacity-70" : "border-white/[0.075] bg-black/[0.16] hover:-translate-y-0.5 hover:border-white/15 hover:bg-black/25"}`;
-
-  return planned ? (
-    <div className={className} aria-label={`${node.label}, planned`}>{content}</div>
-  ) : (
-    <Link href={node.href} className={className}>{content}</Link>
+function EvolutionRail({ node }: { node: ResolvedNode }) {
+  const Icon = node.icon;
+  const planned = node.status === "placeholder";
+  const inner = (
+    <div className="grid gap-4 rounded-[26px] border border-yellow-300/[0.14] bg-[linear-gradient(100deg,rgba(250,204,21,0.075),rgba(8,13,7,0.62)_46%,rgba(34,197,94,0.05))] px-5 py-5 backdrop-blur-lg sm:px-7 lg:grid-cols-[125px_300px_minmax(0,1fr)_auto] lg:items-center lg:gap-6 lg:px-8">
+      <div className="flex items-center gap-3 lg:justify-center"><span className="flex h-10 w-10 items-center justify-center rounded-full border border-yellow-300/30 bg-yellow-300/[0.07] text-yellow-200"><Icon size={17} /></span><span className="font-mono text-[8px] uppercase tracking-[0.14em] text-yellow-200/55 lg:hidden">all scales</span></div>
+      <div><div className="font-mono text-[8px] font-semibold uppercase tracking-[0.16em] text-yellow-200/62">Cross-scale process</div><h3 className="mt-1 text-[22px] font-semibold tracking-[-0.035em] text-white">Evolution crosses the whole atlas.</h3></div>
+      <p className="max-w-2xl text-[12px] leading-5 text-stone-400">Inheritance begins within organisms, selection acts on populations, and change accumulates across generations. Evolution links every biological scale.</p>
+      <div className="flex items-center gap-2 font-mono text-[9px] font-semibold uppercase tracking-[0.12em] text-yellow-200/70">{planned ? "planned field" : <>open evolution <ArrowRight size={13} /></>}</div>
+    </div>
   );
+  return planned ? <div className="mt-4 opacity-55">{inner}</div> : <Link href={node.href} className="group mt-4 block transition-transform hover:-translate-y-0.5">{inner}</Link>;
 }

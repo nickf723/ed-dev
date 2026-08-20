@@ -4,418 +4,510 @@ This is the binding production contract for page design across Education Station
 
 The Design Docket is the deeper visual/product reference. The Educational Content Playbook governs pedagogy. The Atomic Lesson Constitution governs atomic lesson structure. This document is the fast contract we use on **every page build** so we do not rediscover the same corrections through repeated screenshot tweaks.
 
-Its purpose is simple:
+> **Decide the knowledge structure, learner task, visual grammar, atmosphere, density, and interaction before polishing components.**
 
-> **Decide the hierarchy, visual grammar, navigation topology, atmosphere, and page density before polishing individual components.**
-
-A page should normally reach a coherent first version in one substantial development pass, followed by verification, not a chain of small corrective edits.
+The site should feel like a knowledge network learners can explore, not a collection of encyclopedia articles wearing glass panels.
 
 ---
 
 ## 1. Ontology comes before layout
 
-The page must express the actual knowledge hierarchy, not the most convenient set of links to place on screen.
+The page must express the actual knowledge hierarchy.
 
-- Primary navigation on a hub should expose its **direct children**.
-- Do not promote grandchildren into peer status merely because they are useful or already built.
-- A deeper descendant may be previewed inside its parent region, but it must remain visually subordinate to that parent.
-- Conceptual cross-links are allowed, but they must look like cross-links rather than primary ancestry navigation.
-- Breadcrumbs, sidebar nesting, page-local navigation, and curriculum ancestry must agree.
-- If the hierarchy feels unintuitive, fix the curriculum model before styling around it.
+- Hubs expose direct children as primary navigation.
+- Grandchildren may be previewed, but they remain visually subordinate.
+- Cross-links must look like cross-links, not ancestry.
+- Breadcrumbs, sidebar nesting, curriculum ancestry, and local navigation must agree.
+- If the hierarchy feels wrong, fix the curriculum model before styling around it.
 
-### Hierarchy test
-
-Ask:
-
-1. What is this page's parent?
-2. What are its direct children?
-3. Which visible destinations are grandchildren or cross-links?
-4. Does the composition make those relationships obvious without reading explanatory copy?
-
-If a learner could reasonably infer the wrong parent-child relationship from the layout, the page fails this gate.
-
----
-
-## 2. Route, curriculum, and sidebar are one change
-
-Creating an academic route is not complete until the curriculum registry knows where it belongs.
-
-- New, moved, or deleted academic pages must update the relevant curriculum module in the **same development pass**.
-- The sidebar is derived from the curriculum registry. Do not hand-edit `Sidebar.tsx` to surface a new academic child.
-- A live child should appear in the sidebar automatically once it is registered as active.
-- Planned nodes may exist in the curriculum as placeholders, but must not masquerade as live navigation.
-- Substantial subject branches should use a focused curriculum module under `lib/curriculum/...` rather than repeatedly expanding the broad migration tree.
-- When a live route moves, preserve the old route with a redirect when practical.
-- Page-local breadcrumbs and ancestry should be derived from curriculum context whenever the architecture supports it.
-
-### Route-completeness test
-
-A route is not done until all four agree:
+A route is not complete until these agree:
 
 `filesystem route = curriculum node = sidebar ancestry = page breadcrumbs`
 
 ---
 
-## 3. Navigation topology should teach the subject structure
+## 2. Page depth determines the job
 
-A rectangular card grid is a fallback, not the default navigation design.
-
-Choose the visual topology that matches the relationship being taught:
-
-- **Hierarchy:** tree, atlas, constellation, nested regions, branching diagram.
-- **Sequence or prerequisite path:** timeline, route, stepping path, progression rail.
-- **Scale:** spectrum, zoom ladder, magnitude axis, nested scale bands.
-- **Containment:** nested regions, set-like enclosures, part-whole composition.
-- **Process:** flow, pipeline, cycle, state machine, transformation path.
-- **Spatial subject:** map, field, anatomical layout, coordinate space.
-- **Comparison:** matrix, aligned columns, shared-axis comparison.
-- **True flat peers:** grid or cards.
-
-Cards may still label nodes or hold local summaries. They should not automatically become the whole composition.
-
-### Shape test
-
-Before coding a hub, finish this sentence:
-
-> The structure of this subject is best understood as a ______, so the page navigation will behave like a ______.
-
-If the second blank is always “grid,” stop and reconsider.
-
----
-
-## 4. Page depth determines the job
-
-The deeper the page, the more specific and instructional it should become.
-
-- **Domain / subject hub:** reveal the field's ontology and major relationships.
-- **Branch hub:** explain the branch's internal structure and route learners to its direct children.
-- **Unit page:** present the throughline and deliberate lesson sequence.
-- **Atomic lesson:** teach one coherent idea through Explain -> Do -> Check.
-- **Reference / tool:** optimize retrieval or application rather than pretending to be a lesson.
+- **Domain / subject hub:** reveal the field and its major relationships.
+- **Branch hub:** explain internal structure and route to direct children.
+- **Unit page:** establish a throughline and lesson sequence.
+- **Atomic lesson:** teach one coherent idea through explanation, discovery, application, and transfer.
+- **Reference / tool:** optimize retrieval or use instead of pretending to be a lesson.
 
 Do not make a hub behave like a lesson dashboard. Do not make an atomic lesson behave like a directory.
 
 ---
 
-## 5. The top context must stay anchored
+## 3. Navigation topology should teach the subject
 
-Long pages should preserve local orientation while the learner scrolls.
+A rectangular card grid is a fallback, not the default.
 
-- The local context layer should normally remain sticky or otherwise anchored below the global shell.
-- At minimum, ancestry and current page identity must remain easy to recover without scrolling back to the top.
-- A large hero may scroll away, but a compact context/header state should remain when useful.
-- Sticky UI must reserve clearance and may never cover headings, equations, controls, feedback, or breadcrumbs.
-- On smaller screens, reduce sticky height before sacrificing content area.
-- A sticky bar should use translucency and local theme cues, not become an opaque slab that disconnects the page from its background.
+Choose a topology that matches the relationship:
 
-### Anchor test
+- hierarchy: tree, atlas, constellation, nested regions;
+- sequence: timeline, route, progression rail;
+- scale: spectrum, zoom ladder, magnitude axis;
+- containment: nested regions or set-like enclosures;
+- process: flow, cycle, state machine, transformation path;
+- spatial subject: map, field, anatomy, coordinate space;
+- comparison: aligned columns, matrix, shared axis;
+- true flat peers: cards or grid.
 
-Scroll halfway down the page. Can the learner still answer “where am I?” and “what branch am I in?” immediately?
+Before coding a hub, finish:
 
----
+> The structure of this subject is best understood as a ______, so the page will behave like a ______.
 
-## 6. Backgrounds must be visibly alive
-
-A background is part of the page identity, not an almost-invisible texture hidden beneath black panels.
-
-- The subject background must be recognizable in a normal screenshot without squinting.
-- If turning the background off barely changes the composition, it is too weak.
-- Glass and panel surfaces must preserve enough transparency for the environment to participate.
-- Avoid full-page dark overlays whose main effect is to erase the visual system underneath them.
-- Dynamic motion is encouraged when it expresses the subject: trajectories, fields, waves, particles, flow, orbit, growth, diffusion, topology, chronology, or other meaningful structure.
-- **Clarity is the floor, not a mandate for restraint.** When a subject naturally supports spectacle, the page may be flashy, saturated, animated, and dramatic as long as the spectacle communicates something true about the subject and preserves readability.
-- A high-level subject or branch with a naturally dynamic visual language should aim for at least one **memorable environmental behavior**: a particle field, reactive atmosphere, field-line system, living map, wave environment, orbital structure, dynamic geometry, or equivalent subject-specific moment.
-- Do not remove a distinctive legacy visual merely because it is less minimal than the new shell. Preserve it or replace it with something at least as memorable, intuitive, and semantically appropriate.
-- Hover or selection may retune the background when that reinforces branch identity, as long as layout geometry remains stable.
-- Motion should be perceptible but not frantic. Prefer slow continuous motion, phase shifts, drift, pulse, rotation, field movement, and smooth palette transitions.
-- Respect reduced-motion preferences by preserving the visual state without requiring animation.
-- Child pages may inherit the parent's environmental family, but should specialize the motif around the child concept.
-
-### Background test
-
-At default state and at one meaningful hover/selection state:
-
-1. Is the background clearly visible?
-2. Does it communicate subject identity rather than generic neon ambience?
-3. Does it change enough to be noticed when the interaction is supposed to retune it?
-4. Can all required text still be read comfortably?
-5. Is there at least one visual behavior a learner is likely to remember after leaving the page?
+If the second blank is always “grid,” reconsider.
 
 ---
 
-## 7. Meaningful density beats both emptiness and clutter
+## 4. Atomic lessons begin with a learner task, not an encyclopedia entry
 
-A page should feel intentionally occupied, not sparse by accident and not filled with decorative fragments.
+When a topic has a recognizable task, phenomenon, source, experiment, or conventional school representation, put that in front of the learner early.
 
-- Meaningful content should normally occupy most of the useful first viewport below the persistent shell.
-- Do not leave large unexplained voids while the subject has useful relationships that could be shown.
-- When a hub feels sparse, add **structure**, not filler: relationships, scales, overlaps, dependency paths, canonical examples, contrasts, shared principles, or a live inspector.
-- Do not solve sparseness by adding another row of generic cards, pills, counters, or “quick facts.”
-- A large panel must do real work: navigation, explanation, comparison, visualization, interaction, or subject-specific atmosphere.
-- Allow the next meaningful section to enter the viewport rather than artificially stretching a weak section to fill height.
-- If the page feels crowded, sequence or nest information before shrinking typography.
+Examples:
 
-### Density test
+- mathematics: “Solve this system by elimination. Show your work and check the ordered pair.”
+- physics: “The laws do not forbid all the gas particles from returning to one corner. Why does that effectively never happen?”
+- history: present the conflicting sources, map, timeline, or decision before summarizing the event;
+- language: let the learner hear, sort, transform, or compare examples before presenting terminology;
+- computer science: let the learner trace or manipulate the process before presenting an inventory of definitions.
 
-Every major region should answer at least one of:
+**Conventional representation is part of usability.** Learners should recognize how the idea appears in homework, exams, labs, source documents, diagrams, code, maps, or real practice.
 
-- What is this field?
-- How is it organized?
-- How do these ideas relate?
-- Where should I go next?
-- What should I notice or do?
-
-If a region answers none of them, remove it.
+Use Education Station styling around that representation. Borrow the clarity and structure of a worksheet or lab sheet without importing an alien paper skin into the interface.
 
 ---
 
-## 8. Subject identity must be structural, not merely chromatic
+## 5. Discovery comes before vocabulary when the concept supports it
 
-A page is not unique because its accent changed from blue to orange.
+A strong lesson often follows this rhythm:
 
-Subject identity may come from:
+1. **Phenomenon / task:** give the learner a concrete reason to act or wonder.
+2. **Primary interaction:** let them manipulate the central mechanism.
+3. **Conceptual bridge:** name and explain what they just experienced.
+4. **Formal structure:** organize the reusable rule, facts, laws, or sequence.
+5. **Pitfall / boundary:** show the tempting wrong interpretation or where the rule changes.
+6. **Application / transfer:** require the idea in a fresh case.
 
-- navigation geometry;
-- background behavior;
-- diagrams and models;
-- typography or notation treatment;
-- motion language;
-- data organization;
-- spatial composition;
-- interaction mechanics;
-- the relationship between foreground content and environment.
+This is a learning grammar, not a mandatory six-card component template. Short lessons may merge functions. Different subjects should express the sequence differently.
 
-The global shell creates cohesion. The page's central visual grammar creates identity.
+### Critical rule
 
-### Uniqueness test
+> **Copy the learning logic, not the component arrangement.**
 
-If all accent colors were converted to grayscale, would the page still look meaningfully specific to its subject?
-
-If not, the theme is too color-dependent.
+Substitution can use clickable replacement and a derivation rail. Entropy can use particle multiplicity. History can use evidence sequencing. Anatomy can use spatial labeling. The constitution should make pages more coherent without making them look interchangeable.
 
 ---
 
-## 9. One viewport needs one center of gravity
+## 6. Progressive disclosure orders attention; it does not lock the lesson
+
+Progressive disclosure means sequencing and emphasis, not access control.
+
+- Required lesson content remains scrollable and revisitable without completing earlier interactions.
+- Leaving and returning to a page must not require replaying the sandbox merely to reach the explanation or reference material.
+- A stateful widget may reveal its **own internal next step** after a learner action.
+- Do not gate definitions, navigation, conceptual explanations, accessibility content, or later lesson sections behind completion state.
+- Advanced detail may use tabs, disclosure panels, presets, or later chunks when it is optional rather than prerequisite.
+
+If the page feels busy, sequence the ideas before shrinking typography or hiding required content.
+
+---
+
+## 7. The interaction must enact the academic action
+
+The primary instrument is a laboratory, not decoration and not a disguised pre-test.
+
+Ask before building it:
+
+- What action represents the actual concept?
+- What changes because of the action?
+- What remains invariant?
+- What should the learner notice?
+- What wrong or unhelpful move can the instrument explain?
+
+Examples:
+
+- equation solving: perform equality-preserving operations, not guess a value with a slider;
+- expressions: a slider may be excellent when the lesson is about how changing a variable changes output;
+- elimination: add or scale whole equations and visibly cancel additive inverses;
+- entropy: manipulate or compare macrostates and discover multiplicity rather than merely reading `S = k_B ln Ω`;
+- proof: construct or test logical steps rather than click through a definition carousel.
+
+Never require knowledge the lesson has not taught just to make the instrument work.
+
+---
+
+## 8. For transformations, separate states from moves
+
+When a lesson teaches a sequence of transformations, the learner must be able to distinguish:
+
+- **state:** what the mathematical object, system, text, diagram, or evidence set looks like now;
+- **move:** what operation or reasoning transforms that state into the next one.
+
+A useful pattern is:
+
+`state 1 -> move 1.5 -> state 2 -> move 2.5 -> state 3`
+
+Whole-step / half-step numbering is optional. The underlying distinction is not.
+
+### Derivation-trace rules
+
+- Put the explanation **between** the states it connects, not underneath the result in a way that makes chronology ambiguous.
+- Keep completed moves visible when possible so the final state reads as a coherent worked example.
+- Show invariants visually. If the same operation must affect both sides of an equation, align it on both sides. If a coefficient distributes across a group, show its reach. If a conserved quantity moves between reservoirs, show the conservation.
+- Legal-but-unhelpful and invalid moves should receive different feedback.
+- A completed guided interaction should leave behind something a learner could recognize as legitimate conventional work.
+
+This principle also applies outside mathematics: timeline events and causes, code state and execution step, evidence and inference, chemical state and reaction, or anatomical structure and transformation.
+
+---
+
+## 9. Formalism and intuition must reinforce each other
+
+Do not choose between intuitive explanation and conventional procedure. Bridge them.
+
+For every important formal move, ask whether a short local intuition can make it visible:
+
+- `2y + y = 3y`: three quantities of the same kind;
+- divide both sides by 3: split two equal quantities into the same number of groups;
+- `+y + (-y) = 0`: additive inverses cancel;
+- high multiplicity: many microscopic arrangements correspond to the same macroscopic appearance;
+- a source supports a claim: identify the evidence-to-inference link rather than merely color-coding the citation.
+
+Keep the intuition beside the move it explains. Avoid analogy detours that compete with the actual representation.
+
+---
+
+## 10. Lessons need breathing room and a readable measure
+
+Atomic lessons should feel like a guided path, not a widescreen dashboard.
+
+- A normal lesson reading frame should usually be roughly `900-1050px` wide unless the primary instrument genuinely requires more room.
+- Explanatory prose should often be narrower than the instrument.
+- One major learner question or object dominates each viewport.
+- Use vertical space to establish pacing between meaningful ideas.
+- Let the subject background appear in the margins and between sections.
+- Do not stretch weak content across the screen merely because horizontal space exists.
+- If content is sparse, condense it. If content is rich, let the page scroll and breathe.
+
+### Readability floor
+
+For school-facing lessons:
+
+- normal instructional prose should generally be at least about `15-17px` on desktop;
+- important equations, source excerpts, labels, and task prompts should be clearly larger than supporting chrome;
+- structural metadata may be smaller, but it must never carry essential instruction;
+- strong contrast is mandatory for required text;
+- fix crowding with layout and sequencing before making text smaller.
+
+---
+
+## 11. Examples form a deliberate practice ladder
+
+Where appropriate, use three layers:
+
+1. **Canonical worked case:** clean structure, explicit task, guided reasoning.
+2. **Guided transfer:** change an important surface feature and require more learner action.
+3. **Independent conventional practice:** a few fresh examples in the notation or format learners will meet outside the site.
+
+Add contrast, misconception, and boundary cases when they teach something real.
+
+Multiple choice is a fallback, not the default. Prefer construction, prediction, tracing, ranking, sorting, transforming, annotating, classifying, or solving when those better match the learning goal.
+
+---
+
+## 12. One viewport needs one center of gravity
 
 Every viewport should have an obvious primary object or learner question.
 
 - Hubs may center an atlas, tree, timeline, map, spectrum, or other navigation structure.
-- Lessons should center the main explanatory model or primary instrument.
-- Supporting panels should frame the center, not compete with it.
-- Avoid several equally loud card groups, dashboards, or unrelated interactives at once.
-- Progressive disclosure is preferred when several rich ideas deserve attention.
+- Lessons center the main explanatory model, worked example, or primary instrument.
+- Supporting panels frame the center rather than compete with it.
+- Avoid several equally loud card groups and unrelated widgets at once.
 
 The goal is not minimalism. The goal is **directed attention**.
 
 ---
 
-## 10. Navigation relationships must look different
+## 13. Backgrounds are part of the subject identity
 
-Do not use one visual treatment for every link.
+A background is not a nearly invisible texture under black panels.
 
-- **Breadcrumb:** ancestry.
-- **Parent / up:** one-level structural movement.
-- **Direct child:** primary descent into the current branch.
-- **Previous / next:** sequence among siblings.
-- **Cross-link:** related idea outside the current ancestry path.
-- **Planned node:** known ontology, unavailable route.
+- It should be recognizable in a normal screenshot without squinting.
+- Glass surfaces must preserve enough transparency for the environment to participate.
+- Motion is encouraged when it expresses the subject: trajectories, fields, waves, particles, flow, orbit, growth, diffusion, chronology, topology, and similar structures.
+- Motion must not compete with the lesson. A background should not become a second uncontrolled simulation.
+- Child pages may inherit an environmental family, but should specialize it around the child concept.
+- Respect reduced-motion preferences.
 
-These relationships should differ in placement, labeling, or visual weight.
-
-A large hub should not give a grandchild shortcut the same visual prominence as a direct child.
+If turning off the background barely changes the composition, it is too weak. If the learner is tracking the background instead of the lesson, it is too loud.
 
 ---
 
-## 11. Mathematical and technical notation must render cleanly
+## 14. Subject identity is structural, not merely chromatic
 
-Visible notation is content, not an implementation string.
+A page is not unique because its accent changed.
 
-- Mathematical expressions must use the shared math renderer (`M` / KaTeX or the current canonical equivalent).
-- Never display raw LaTeX commands, escaped backslashes, regex artifacts, or developer-oriented formatting strings.
-- Do not build visible equations through ad hoc regex replacement when a structured renderer exists.
-- Test fractions, subscripts, superscripts, deltas, inequalities, vectors, units, and multiline notation before calling a page complete.
-- Plain-text notation is acceptable only when it is intentionally plain language or a compact label that does not require mathematical typesetting.
+Identity may come from:
 
-### Notation test
+- navigation geometry;
+- background behavior;
+- diagrams and models;
+- notation or source treatment;
+- motion language;
+- spatial composition;
+- data organization;
+- interaction mechanics.
 
-Search the rendered page mentally for anything that would look like `\\frac`, `\\Delta`, escaped braces, or raw syntax. None should reach the learner.
+If all accent colors became grayscale, the page should still feel specific to its subject.
 
 ---
 
-## 12. Stable geometry, natural growth
+## 15. Navigation relationships must look different
+
+- breadcrumb: ancestry;
+- parent / up: one-level structural movement;
+- direct child: primary descent;
+- previous / next: sibling sequence;
+- cross-link: related idea outside ancestry;
+- planned node: known ontology, unavailable route.
+
+Do not give every link the same visual treatment.
+
+---
+
+## 16. Notation and representation are content
+
+- Use the shared math renderer for notation that needs typesetting.
+- Never expose raw LaTeX, regex artifacts, escaped commands, or developer strings.
+- Align mathematical operations when alignment carries meaning.
+- Keep source text, code, maps, diagrams, timelines, and tables large enough to function as primary instructional objects.
+- Do not fake runtime data, scientific precision, historical certainty, or simulation behavior for visual flavor.
+
+---
+
+## 17. Stable geometry, natural growth
 
 - Hover may emphasize but should not reflow the page.
-- Selection-dependent regions reserve enough space for their longest normal state.
-- Instructional text and controls use natural document flow.
-- `overflow: hidden` is for decorative geometry, not legitimate content.
-- Use minimum heights plus growth instead of screenshot-specific hard heights.
-- Let the owning component solve its geometry. Do not patch descendant layouts from global CSS.
-- Test narrower desktop widths and zoomed text before concluding that a fixed composition is safe.
+- Instructional text and controls use normal document flow.
+- Selection-dependent regions reserve enough space for their longest ordinary state.
+- `overflow: hidden` belongs to decorative geometry, not legitimate content.
+- Use minimum heights plus growth instead of screenshot-specific fixed heights.
+- Test narrower desktop widths and zoomed text.
 
 ---
 
-## 13. The default page production flow
-
-This is the normal workflow for a new or substantially remastered page.
+## 18. Production flow
 
 ### Pass 1: Structure
 
-Before styling:
-
 1. classify the page type;
-2. inspect parent, siblings, direct children, prerequisites, and live descendants;
-3. update or create the focused curriculum module;
-4. decide which routes are live, planned, moved, or redirected;
-5. confirm the sidebar hierarchy that should result.
+2. inspect ancestry, siblings, direct children, prerequisites, and live descendants;
+3. update the curriculum when routes or hierarchy change;
+4. write the one-sentence page job and learner task;
+5. for atomic lessons, write the seven-line lesson brief.
 
-### Pass 2: Page contract
+### Pass 2: Storyboard
 
-Define:
+Before polish, establish the vertical instructional sequence. For lessons, identify:
 
-- the page's one-sentence job;
-- its primary learner/user question;
-- its direct-child navigation;
-- its main relationships to show;
-- what belongs on deeper pages instead.
+- phenomenon or task;
+- canonical model / worked case;
+- primary action;
+- conceptual bridge;
+- formal structure;
+- pitfall or boundary;
+- transfer task.
 
-For atomic lessons, complete the seven-line lesson brief and storyboard from the Atomic Lesson Constitution.
+### Pass 3: Primary representation and interaction
 
-### Pass 3: Visual grammar
+Build the academic object first. Do not tune glows while the mental model is still changing.
 
-Decide before coding polish:
+### Pass 4: Explanation and feedback
 
-- navigation topology;
-- center of gravity;
-- subject-specific structure;
-- background motif and dynamic behavior;
-- local accent palette;
-- anchored header/context behavior;
-- how the first viewport will be meaningfully occupied.
+Attach concise reasoning to the representation and to transitions between states.
 
-### Pass 4: Build the structural version
+### Pass 5: Practice and navigation
 
-Implement:
+Add guided transfer, independent practice when useful, vocabulary access, and semantic previous/next navigation.
 
-- route and registry together;
-- semantic breadcrumbs/context;
-- primary navigation topology;
-- main model / content / instrument;
-- live versus planned states;
-- responsive fallback that preserves hierarchy.
+### Pass 6: Atmosphere and composition
 
-Do not spend this pass micro-tuning glows and borders.
+Tune spacing, typography, glass, background participation, responsive behavior, and subject-specific identity.
 
-### Pass 5: Atmosphere and composition
+### Pass 7: Verification and push
 
-Tune:
+Test important states and run available build/type checks.
 
-- background visibility and motion;
-- glass transparency;
-- typography and spacing;
-- panel hierarchy;
-- selected/hover states;
-- meaningful density;
-- subject-specific detail;
-- memorable truthful spectacle when the subject supports it.
-
-### Pass 6: Preflight
-
-Run the checks below before asking for screenshot feedback.
+**A coherent inspectable development change must be pushed to `studio` promptly.** Do not let finished work accumulate on hidden validation branches. If the deployment system needs a separate exact-head trigger, keep the runtime work on `studio` and use the trigger branch only to verify that exact tree.
 
 ---
 
-## 14. The TREE / FRAME / FIELD / FLOW preflight
+## 19. TREE / FRAME / FIELD / FLOW preflight
 
-### TREE: Is the knowledge structure correct?
+### TREE
 
-- registry ancestry is correct;
-- sidebar follows automatically;
-- breadcrumbs match;
+- registry ancestry, sidebar, breadcrumbs, and routes agree;
 - primary hub navigation uses direct children;
-- grandchildren and cross-links are not promoted into false peers;
-- moved routes redirect when needed.
+- cross-links and planned nodes are honest.
 
-### FRAME: Is the page physically composed?
+### FRAME
 
-- top context remains anchored when useful;
-- no large accidental voids;
-- first viewport has a clear center of gravity;
-- required text meets readability floors;
-- no clipping, overlap, or unstable hover geometry;
-- responsive fallback preserves the structure.
+- one clear center of gravity per viewport;
+- lesson width and typography are readable for the target learner;
+- no accidental voids, clipping, overlap, or unstable geometry;
+- rich lessons breathe rather than compressing into dashboards.
 
-### FIELD: Does the page have a real environment?
+### FIELD
 
-- background is visible at a glance;
-- background motif belongs to the subject;
-- dynamic behavior is noticeable but readable;
-- glass surfaces reveal the environment;
-- grayscale structure still feels subject-specific;
-- cleanup has not sterilized a distinctive visual behavior that should have been preserved or evolved.
+- the background is visibly subject-specific;
+- motion is meaningful and readable;
+- glass reveals the environment;
+- subject identity survives grayscale.
 
-### FLOW: Can the learner move and understand naturally?
+### FLOW
 
-- link styling communicates relationship type;
-- hub descent follows the ontology;
-- lessons follow Explain -> Do -> Check;
-- controls and consequences stay together;
-- notation renders cleanly;
-- live and planned states are unmistakable.
-
-A page should pass all four groups before small aesthetic tweaks become the main work.
+- the learner knows what task or question they are addressing;
+- discovery, explanation, and formalism connect rather than compete;
+- progressive disclosure does not gate required page content;
+- controls enact the actual academic process;
+- transformations distinguish state from move;
+- practice transfers the idea to a fresh case;
+- conventional notation or representation is recognizable.
 
 ---
 
-## 15. Stop the micro-edit loop
+## 20. Stop the micro-edit loop
 
-A repeated correction is evidence that the rule is missing or the wrong layer is being fixed.
+A repeated correction is evidence that the rule or mental model is missing.
 
-- If the same issue appears on two pages, update this constitution, the Design Docket, the Atomic Lesson Constitution, or the architecture documentation before building the third.
-- If a page requires two rounds of “make it less sparse,” “make the background visible,” “fix the hierarchy,” or “stop using generic cards,” stop patching and revisit the visual grammar / topology decision.
-- If a route exists but navigation is wrong, inspect the curriculum registry before editing presentation code.
-- If every page needs the same local fix, promote the behavior into a shared component or shell contract.
-- If every page looks the same, the shell has swallowed the subject identity.
-- If every page looks unrelated, local identity has swallowed the shell.
-
-The constitution exists so we can move quickly **because the defaults are already decided**.
+- If the page feels empty, add missing instructional structure, not filler.
+- If it feels busy, sequence or split ideas before shrinking them.
+- If an interaction feels awkward, re-check whether the learner action actually enacts the concept.
+- If the page explains too much before the learner can act, move the phenomenon or sandbox earlier.
+- If the learner can interact but would freeze on ordinary homework or practice, add the conventional task bridge.
+- If two rounds of small fixes fail, return to the lesson brief and storyboard.
+- If the same issue appears on two pages, promote the correction into this constitution or a shared component before building the third.
 
 ---
 
-## 16. Definition of done for a substantial page pass
+## 21. Definition of done
 
-Before moving immediately to the next page, verify:
+A substantial page pass is complete when:
 
-- ontology and direct-child hierarchy are correct;
-- route and curriculum registry shipped together;
-- sidebar and breadcrumbs reflect that hierarchy;
-- navigation topology expresses the subject relationship rather than defaulting to a card grid;
-- local context remains anchored on long pages when appropriate;
-- the background is visible and meaningfully subject-specific;
-- dynamic background behavior works where specified;
-- a naturally visual subject has at least one memorable visual behavior rather than being reduced to generic glass panels;
-- the page is neither accidentally sparse nor padded with filler;
-- first viewport has one clear center of gravity;
-- live, planned, parent, child, sequence, and cross-link relationships are visually distinct;
-- technical/math notation contains no raw rendering artifacts;
-- legitimate content states do not clip or overlap;
-- narrower desktop and mobile fallbacks preserve hierarchy;
+- ontology and navigation are honest;
+- the page job is obvious;
+- the first viewport has a center of gravity;
+- the background contributes real subject identity;
+- required text is comfortably readable;
+- the primary interaction or representation expresses the actual academic process;
+- atomic lessons bridge phenomenon, intuition, formal structure, and conventional application;
+- page content is not locked behind lesson progression;
+- important transformations preserve a readable trace when appropriate;
+- practice requires genuine transfer;
+- live/planned and navigation relationship types are clear;
+- notation and technical representations are clean;
+- responsive states do not clip or overlap;
 - available build/type checks pass;
-- the page has been visually verified when preview capability is available.
+- the current work is pushed to the inspectable `studio` branch;
+- preview verification is performed when available.
 
 If these are true, move on. Do not polish indefinitely.
 
 ---
 
-## 17. Relationship to the other rule documents
+## 22. Navigation pages are cognitive maps before they are directories
+
+A navigation page is successful only when the learner understands the territory better after looking at it, even before opening a child route.
+
+Every substantial hub, branch hub, or unit navigation page should answer three questions:
+
+1. **What are the direct children?**
+2. **How are those children related?**
+3. **When or why would I choose each one?**
+
+Do not assume direct children are equivalent merely because they share a parent. They may play different cognitive roles:
+
+- foundation before application;
+- representation before method;
+- sequential prerequisites;
+- alternative strategies;
+- theory lenses feeding one shared practice;
+- cases or stress tests downstream from a general framework;
+- scales, regions, categories, or processes with different functions.
+
+The layout should encode those roles instead of giving every child the same card weight.
+
+### Navigation-map rules
+
+- Use a central specimen, question, object, map, or process when it helps anchor the children to one shared idea.
+- Show sequence as sequence, alternatives as forks, lenses as converging perspectives, and stress tests as downstream checks.
+- Planned nodes may remain visible when they clarify the ontology, but they must look unavailable and must not masquerade as live links.
+- A hub may teach a small amount of subject structure when that structure explains the navigation. It should not become a substitute for the child lessons.
+- When the learner reaches a child, the parent map should make the child’s role predictable rather than surprising.
+
+Examples of valid shapes include a method fork, an inquiry map, a theory-to-practice flow, a chronological route, a scale ladder, or an atlas. The invariant is not the geometry. The invariant is that **navigation teaches relationships and choice criteria, not merely destinations**.
+
+---
+
+## 23. Reading measure is not interface width
+
+The readable prose column defines the measure for sustained reading. It does not imprison every control, visualization, inspector, legend, or auxiliary tool inside that same width.
+
+When a page has a clear primary instrument, secondary controls may deliberately expand into available margins on wide screens.
+
+### Auxiliary-sidecar rules
+
+- Keep the primary object visible while the learner manipulates controls that affect it.
+- If scrolling to reach a control pushes the controlled visualization mostly off-screen, the ownership relationship is wrong.
+- Auxiliary controls may use collapsible or sticky sidecars, margin rails, inspectors, legends, or tool shelves when they reduce vertical competition.
+- Sidecars should contain secondary state selection, filters, readouts, legends, or inspection tools rather than essential long-form instruction.
+- A collapsible sidecar should preserve a small, obvious way to restore it.
+- Sticky auxiliary UI must respect the persistent header and may never cover the primary object or required text.
+- On narrower screens, sidecars return to normal document flow or another compact responsive disclosure pattern.
+- Wide-screen margin use should support the center of gravity, not create a second competing dashboard.
+
+The lesson reading frame can stay calm and narrow while an instrument temporarily uses more of the viewport. **Prose measure and interaction footprint are separate design decisions.**
+
+---
+
+## 24. Controls and consequences must remain co-visible
+
+If control A changes visualization, model, inspector, or result B, the learner should be able to operate A and immediately see or read B without scrolling at the breakpoint where that interaction is intended.
+
+This applies to buttons, sliders, presets, hover targets, filters, draggable objects, timeline windows, lens selectors, and any other interaction state.
+
+### Co-visibility rules
+
+- Do not make learners remember a control state while scrolling to discover its effect.
+- Keep control, primary object, and essential readout in one usable interaction zone whenever they form one conceptual action.
+- Compress nonessential chrome before separating cause from effect vertically.
+- Use sticky inspectors or sidecars for long matrices, maps, timelines, specimens, or tables whose interpretation must remain visible throughout the full interaction surface.
+- If hovering or selecting an item updates an inspector, that inspector must remain visible while the entire hover/select surface is usable.
+- A long interaction may scroll internally only when shrinking it would make the academic representation illegible; ordinary page scrolling should not sever the control/result relationship.
+- On narrow screens, preserve cause and effect with compact inline controls, reordered layout, or local disclosure rather than simply stacking them far apart.
+- Sequential phases may occupy different viewports only when the academic task itself is genuinely sequential and the later phase does not require live comparison with the earlier control state.
+
+### Design test
+
+Ask:
+
+> **Can the learner manipulate this control and immediately perceive what changed without scrolling?**
+
+If the answer is no, the interaction composition is not finished.
+
+---
+
+## 25. Relationship to other rule documents
 
 When guidance overlaps:
 
-1. Accuracy and curriculum ontology win first.
-2. This Design Constitution defines the fast production defaults for every page.
-3. The Atomic Lesson Constitution defines lesson structure and workflow for atomic lessons.
-4. The Educational Content Playbook supplies broader pedagogical guidance.
-5. The Design Docket supplies deeper visual/product guidance and edge cases.
-6. The Page Planning Template records the page-specific plan.
-7. Site Architecture defines source-of-truth and implementation boundaries.
+1. accuracy and curriculum ontology win first;
+2. this Design Constitution defines site-wide production defaults;
+3. the Atomic Lesson Constitution defines atomic lesson pedagogy and workflow;
+4. the Educational Content Playbook supplies broader teaching guidance;
+5. the Design Docket supplies deeper visual/product guidance;
+6. Site Architecture defines source-of-truth and implementation boundaries.
 
-The purpose of this document is not to add bureaucracy. It is to make **rapid page production predictable**.
+The constitution should make development faster by preserving what we learn from real pages without turning successful pages into rigid templates.

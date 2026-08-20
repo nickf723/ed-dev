@@ -1,20 +1,33 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
 import {
   ArrowLeft,
   ArrowRight,
   Check,
-  RefreshCcw,
+  Gauge,
+  Minus,
+  MoveRight,
+  MoveVertical,
   Sparkles,
+  Table2,
+  TrendingDown,
   TrendingUp,
+  type LucideIcon,
 } from "lucide-react";
-import Assessment, { type AssessmentQuestion } from "@/app/_components/Assessment";
+import Assessment, {
+  type AssessmentQuestion,
+} from "@/app/_components/Assessment";
 import DomainPageHeader from "@/app/_components/DomainPageHeader";
 import LessonUtilityBar from "@/app/_components/LessonUtilityBar";
-import LinearBackground from "./LinearBackground";
-import LinearMiniGraph from "./LinearMiniGraph";
+import {
+  SceneFrame,
+  Surface,
+  WorldSceneFocus,
+  WorldWindow,
+} from "@/app/_page-system/scene";
+import SlopeRateBackground from "./SlopeRateBackground";
+import SlopeRateWorkbench from "./SlopeRateWorkbench";
 
 export type LinearLessonNavItem = {
   label: string;
@@ -28,43 +41,74 @@ type SlopeRateLessonExperienceProps = {
   unitHref: string;
 };
 
-type PairCase = {
-  label: string;
-  a: { x: number; y: number };
-  b: { x: number; y: number };
-};
-
 const ACCENT = "45, 212, 191";
-const SECONDARY = "244, 114, 182";
 
-const PAIRS: readonly PairCase[] = [
-  { label: "Wide interval", a: { x: -2, y: -3 }, b: { x: 0, y: 1 } },
-  { label: "One-unit run", a: { x: 0, y: 1 }, b: { x: 1, y: 3 } },
-  { label: "Different points", a: { x: -1, y: -1 }, b: { x: 2, y: 5 } },
+const SLOPE_SCENES = [
+  {
+    id: "positive",
+    label: "Positive rate",
+    description:
+      "As x increases, y increases. The line rises from left to right.",
+    accentRgb: "45, 212, 191",
+  },
+  {
+    id: "negative",
+    label: "Negative rate",
+    description:
+      "As x increases, y decreases. The line falls from left to right.",
+    accentRgb: "244, 114, 182",
+  },
+  {
+    id: "zero",
+    label: "Zero rate",
+    description:
+      "x changes while y stays constant, producing a horizontal line.",
+    accentRgb: "96, 165, 250",
+  },
+  {
+    id: "vertical",
+    label: "No horizontal run",
+    description:
+      "The selected points share an x-value, so Δx = 0 and slope is undefined.",
+    accentRgb: "250, 204, 21",
+  },
 ] as const;
 
 const QUIZ: AssessmentQuestion[] = [
   {
-    id: "slope-transfer-points",
+    id: "slope-points",
     type: "short_answer",
     prompt: "Find the slope through (1, 2) and (4, 8). Enter m.",
     acceptableAnswers: ["2", "m=2", "m = 2"],
-    explanation: "Δy = 8 − 2 = 6 and Δx = 4 − 1 = 3, so m = 6/3 = 2.",
+    explanation:
+      "Δy = 8 − 2 = 6 and Δx = 4 − 1 = 3, so m = 6/3 = 2.",
   },
   {
-    id: "slope-transfer-negative",
+    id: "slope-negative",
     type: "mcq",
-    prompt: "A line falls 3 units for every 2 units it moves right. What is its slope?",
+    prompt:
+      "A line falls 3 units for every 2 units it moves right. What is its slope?",
     options: ["−3/2", "3/2", "−2/3", "0"],
     correctAnswer: "−3/2",
-    explanation: "Moving right makes Δx positive while the fall makes Δy negative, so the ratio is −3/2.",
+    explanation:
+      "The run is positive and the vertical change is negative, so m = −3/2.",
   },
   {
-    id: "slope-transfer-vertical",
+    id: "slope-order",
+    type: "tf",
+    prompt:
+      "Reversing the point order changes both Δy and Δx, so the slope stays the same.",
+    correctAnswer: true,
+    explanation:
+      "Both differences change sign. Their ratio is unchanged because the two negatives cancel.",
+  },
+  {
+    id: "slope-vertical",
     type: "tf",
     prompt: "A vertical line has slope 0.",
     correctAnswer: false,
-    explanation: "A vertical line has Δx = 0, so Δy/Δx would require division by zero. Its slope is undefined.",
+    explanation:
+      "A vertical line has Δx = 0. Division by zero is undefined, so its slope is undefined rather than zero.",
   },
 ];
 
@@ -74,273 +118,411 @@ export default function SlopeRateLessonExperience({
   next,
   unitHref,
 }: SlopeRateLessonExperienceProps) {
-  const [pairIndex, setPairIndex] = useState(0);
-  const [reversed, setReversed] = useState(false);
-  const [measured, setMeasured] = useState(false);
-
-  const pair = PAIRS[pairIndex];
-  const first = reversed ? pair.b : pair.a;
-  const second = reversed ? pair.a : pair.b;
-  const rise = second.y - first.y;
-  const run = second.x - first.x;
-  const slope = rise / run;
-
-  function choosePair(index: number) {
-    setPairIndex(index);
-    setReversed(false);
-    setMeasured(false);
-  }
-
   return (
-    <main className="relative min-h-screen overflow-x-hidden bg-[#041018] text-slate-100">
-      <div className="pointer-events-none fixed inset-0 z-0 opacity-55">
-        <LinearBackground />
-      </div>
-      <div className="pointer-events-none fixed inset-0 z-0 bg-[radial-gradient(circle_at_76%_13%,rgba(45,212,191,0.11),transparent_26%),radial-gradient(circle_at_13%_80%,rgba(59,130,246,0.07),transparent_27%),linear-gradient(to_bottom,rgba(4,16,24,0.18),rgba(2,8,14,0.88))]" />
-
-      <div className="relative z-10 mx-auto w-full max-w-[1380px] px-4 py-4 sm:px-6 xl:px-8 xl:py-5">
+    <SceneFrame
+      background={<SlopeRateBackground />}
+      initialScene="positive"
+      className="bg-[#020810] text-slate-100 selection:bg-teal-400/25"
+      maxWidthClassName="max-w-[1560px]"
+      headerBackground="rgba(1,8,14,0.62)"
+      header={
         <DomainPageHeader
           breadcrumbs={breadcrumbs}
-          eyebrow="Lesson 01 · Slope & Rate of Change"
+          eyebrow="Linear equations · lesson 01 · constant rate"
+          eyebrowStyle="rule"
           icon={TrendingUp}
-          title={<span>Slope & Rate of Change</span>}
-          subtitle="Measure how two quantities change together, turn that comparison into slope, and learn why a straight line keeps the same rate between any two of its points."
+          title={<span>Slope &amp; Rate of Change</span>}
+          subtitle="Slope compares how two quantities change together. Read it as a ratio, see it as a rise-and-run triangle, and interpret it in the units of the situation."
           accentRgb={ACCENT}
-          titleClassName="font-mono text-[clamp(2.2rem,4.35vw,4.55rem)] font-semibold uppercase leading-[0.88] tracking-[-0.055em] text-[#f4fffe]"
+          titleClassName="font-sans text-[clamp(2.35rem,4.6vw,5.1rem)] font-semibold leading-[0.86] tracking-[-0.062em] text-[#f3fffe]"
           iconClassName="rounded-[16px]"
-          headerClassName="border-teal-300/[0.14]"
+          headerClassName="border-teal-200/[0.11]"
         />
-
+      }
+    >
+      <div className="mt-2">
         <LessonUtilityBar
           practiceTargetId="slope-practice"
           vocabulary
           accentRgb={ACCENT}
         />
-
-        <section className="mt-4 grid gap-4 rounded-[26px] border border-teal-200/[0.11] bg-black/[0.20] p-5 backdrop-blur-2xl lg:grid-cols-[minmax(0,1.2fr)_minmax(300px,0.8fr)]">
-          <div>
-            <div className="text-[9px] font-semibold uppercase tracking-[0.14em] text-teal-300/75">The learner question</div>
-            <h2 className="mt-2 max-w-4xl text-[clamp(1.5rem,2.6vw,2.1rem)] font-semibold tracking-[-0.035em] text-white">
-              How fast is y changing compared with x?
-            </h2>
-            <p className="mt-3 max-w-3xl text-[13px] leading-6 text-slate-400">
-              Slope is a comparison of two changes. Instead of asking only where two points are, it asks how much the output changed while the input changed by some amount.
-            </p>
-          </div>
-          <div className="rounded-[18px] border border-teal-200/[0.09] bg-teal-400/[0.025] px-4 py-4">
-            <div className="text-[9px] font-semibold uppercase tracking-[0.12em] text-teal-300/65">Core relationship</div>
-            <div className="mt-2 font-mono text-[clamp(1.25rem,2.4vw,1.8rem)] text-teal-100">m = Δy / Δx</div>
-            <p className="mt-2 text-[11px] leading-5 text-slate-500">
-              Read it as “change in y divided by change in x.” The differences must be taken in the same point order.
-            </p>
-          </div>
-        </section>
-
-        <section className="mt-4 rounded-[28px] border border-white/[0.09] bg-black/[0.18] p-5 backdrop-blur-2xl">
-          <div className="max-w-3xl">
-            <div className="text-[9px] font-semibold uppercase tracking-[0.14em] text-teal-300/72">Worked model</div>
-            <h2 className="mt-1 text-[22px] font-semibold tracking-[-0.025em] text-white">First notice the repeated change.</h2>
-            <p className="mt-2 text-[12px] leading-5 text-slate-500">
-              In this table, every increase of 1 in x produces an increase of 2 in y. That constant change is what makes the relationship linear.
-            </p>
-          </div>
-
-          <div className="mt-5 grid gap-4 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
-            <div className="rounded-[22px] border border-white/[0.06] bg-black/[0.14] p-4">
-              <div className="grid grid-cols-2 overflow-hidden rounded-[16px] border border-white/[0.06] font-mono text-center">
-                <div className="bg-teal-400/[0.05] px-4 py-3 text-[11px] font-semibold text-teal-200">x</div>
-                <div className="bg-pink-400/[0.05] px-4 py-3 text-[11px] font-semibold text-pink-200">y</div>
-                {[[-1, -1], [0, 1], [1, 3], [2, 5]].map(([x, y]) => (
-                  <div key={`${x}-${y}`} className="contents">
-                    <div className="border-t border-white/[0.05] px-4 py-3 text-slate-300">{x}</div>
-                    <div className="border-t border-white/[0.05] px-4 py-3 text-slate-300">{y}</div>
-                  </div>
-                ))}
-              </div>
-              <div className="mt-4 grid gap-2 sm:grid-cols-2">
-                <ChangeCard label="Input change" formula="Δx = +1" text="Move one column-step to the right." rgb="251, 191, 36" />
-                <ChangeCard label="Output change" formula="Δy = +2" text="The output rises by two each time." rgb={SECONDARY} />
-              </div>
-            </div>
-
-            <div className="rounded-[22px] border border-white/[0.06] bg-black/[0.14] p-4">
-              <div className="text-[9px] font-semibold uppercase tracking-[0.12em] text-slate-600">Turn the pattern into a ratio</div>
-              <div className="mt-5 flex items-center justify-center gap-5 font-mono text-[clamp(1.35rem,3vw,2.2rem)]">
-                <span className="text-teal-200">m</span>
-                <span className="text-slate-600">=</span>
-                <span className="rounded-xl border border-pink-300/[0.14] bg-pink-400/[0.035] px-4 py-3 text-pink-200">+2</span>
-                <span className="text-slate-600">/</span>
-                <span className="rounded-xl border border-amber-300/[0.14] bg-amber-400/[0.035] px-4 py-3 text-amber-200">+1</span>
-                <span className="text-slate-600">=</span>
-                <span className="text-white">2</span>
-              </div>
-              <p className="mx-auto mt-5 max-w-xl text-center text-[12px] leading-5 text-slate-500">
-                A slope of 2 means: for every +1 in x, y increases by 2. The units of slope are “y-units per x-unit.”
-              </p>
-            </div>
-          </div>
-        </section>
-
-        <section className="mt-4 grid gap-4 lg:grid-cols-[minmax(0,1.15fr)_minmax(310px,0.85fr)]">
-          <div className="rounded-[28px] border border-teal-200/[0.12] bg-black/[0.20] p-5 backdrop-blur-2xl">
-            <div>
-              <div className="text-[9px] font-semibold uppercase tracking-[0.14em] text-teal-300/72">Same line, different point pairs</div>
-              <h2 className="mt-1 text-[21px] font-semibold tracking-[-0.025em] text-white">A straight line keeps the same slope everywhere.</h2>
-              <p className="mt-2 text-[12px] leading-5 text-slate-500">
-                Pick different pairs on the line y = 2x + 1. The rise and run change size, but their ratio does not.
-              </p>
-            </div>
-
-            <div className="mt-4">
-              <LinearMiniGraph
-                slope={2}
-                intercept={1}
-                points={[{ ...first, label: `A (${first.x}, ${first.y})` }, { ...second, label: `B (${second.x}, ${second.y})` }]}
-                showRiseRun={measured}
-                accentRgb={ACCENT}
-                secondaryRgb={SECONDARY}
-                ariaLabel="Graph of y equals 2x plus 1 with two selected points"
-              />
-            </div>
-
-            <div className="mt-3 grid gap-2 sm:grid-cols-3">
-              {PAIRS.map((item, index) => (
-                <button
-                  key={item.label}
-                  type="button"
-                  onClick={() => choosePair(index)}
-                  className="rounded-[15px] border px-3 py-3 text-left"
-                  style={{
-                    borderColor: pairIndex === index ? `rgba(${ACCENT},0.28)` : "rgba(255,255,255,0.06)",
-                    background: pairIndex === index ? `rgba(${ACCENT},0.05)` : "rgba(0,0,0,0.10)",
-                  }}
-                >
-                  <span className="block text-[10px] font-semibold text-slate-300">{item.label}</span>
-                  <span className="mt-1 block font-mono text-[10px] text-slate-600">({item.a.x}, {item.a.y}) → ({item.b.x}, {item.b.y})</span>
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div className="flex flex-col gap-3">
-            <div className="rounded-[22px] border border-white/[0.07] bg-black/[0.18] p-4">
-              <div className="text-[9px] font-semibold uppercase tracking-[0.12em] text-slate-600">Measure this pair</div>
-              <div className="mt-3 font-mono text-[17px] text-white">A ({first.x}, {first.y}) → B ({second.x}, {second.y})</div>
-              {!measured ? (
-                <button
-                  type="button"
-                  onClick={() => setMeasured(true)}
-                  className="mt-4 w-full rounded-xl border border-teal-300/[0.20] bg-teal-400/[0.045] px-4 py-3 text-[11px] font-semibold text-teal-200"
-                >
-                  Measure Δy and Δx
-                </button>
-              ) : (
-                <div className="mt-4 space-y-2">
-                  <Readout label="Rise" value={`Δy = ${rise}`} rgb={SECONDARY} />
-                  <Readout label="Run" value={`Δx = ${run}`} rgb="251, 191, 36" />
-                  <Readout label="Slope" value={`m = ${rise}/${run} = ${formatNumber(slope)}`} rgb={ACCENT} />
-                </div>
-              )}
-            </div>
-
-            <div className="rounded-[22px] border border-indigo-200/[0.08] bg-black/[0.18] p-4">
-              <div className="text-[9px] font-semibold uppercase tracking-[0.12em] text-indigo-300/65">Reverse the point order</div>
-              <p className="mt-2 text-[11px] leading-5 text-slate-500">
-                If you reverse the points, both differences change sign. The slope stays the same because the signs cancel together.
-              </p>
-              <button
-                type="button"
-                onClick={() => { setReversed((value) => !value); setMeasured(true); }}
-                className="mt-3 inline-flex items-center gap-2 rounded-xl border border-indigo-300/[0.16] px-3 py-2 text-[10px] font-semibold text-indigo-200"
-              >
-                <RefreshCcw size={13} />
-                Reverse A and B
-              </button>
-            </div>
-          </div>
-        </section>
-
-        <section className="mt-4 rounded-[28px] border border-white/[0.09] bg-black/[0.18] p-5 backdrop-blur-2xl">
-          <div>
-            <div className="text-[9px] font-semibold uppercase tracking-[0.14em] text-amber-300/72">Read the sign and boundary</div>
-            <h2 className="mt-1 text-[21px] font-semibold tracking-[-0.025em] text-white">Slope describes direction as well as steepness.</h2>
-          </div>
-          <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-            <BoundaryCard title="Positive" formula="m > 0" text="As x increases, y increases. The line rises left to right." rgb="45, 212, 191" />
-            <BoundaryCard title="Negative" formula="m < 0" text="As x increases, y decreases. The line falls left to right." rgb="244, 114, 182" />
-            <BoundaryCard title="Zero" formula="m = 0" text="y does not change while x changes. The line is horizontal." rgb="96, 165, 250" />
-            <BoundaryCard title="Undefined" formula="Δx = 0" text="A vertical line has no run, so Δy/Δx would divide by zero." rgb="251, 191, 36" />
-          </div>
-        </section>
-
-        <section id="slope-practice" className="scroll-mt-24 mt-4">
-          <details className="group overflow-hidden rounded-[22px] border border-white/[0.09] bg-black/[0.18] backdrop-blur-2xl">
-            <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-4">
-              <span>
-                <span className="block text-[9px] font-semibold uppercase tracking-[0.13em] text-teal-300/72">Transfer check</span>
-                <strong className="mt-1 block text-[15px] text-slate-200">Use slope on three fresh cases</strong>
-              </span>
-              <Sparkles size={16} className="text-teal-300" />
-            </summary>
-            <div className="linear-assessment border-t border-white/[0.06] p-3 sm:p-4">
-              <Assessment title="Slope & Rate of Change check" questions={QUIZ} accentColor="cyan" />
-            </div>
-          </details>
-        </section>
-
-        <div className="mt-4 rounded-[18px] border border-teal-200/[0.08] bg-teal-400/[0.025] px-4 py-3 text-[11px] leading-5 text-slate-500">
-          <strong className="text-teal-200">Next:</strong> slope becomes the <span className="font-mono text-slate-300">m</span> in <span className="font-mono text-slate-300">y = mx + b</span>, where we pair a constant rate with a starting value.
-        </div>
-
-        <LessonNavigation previous={previous} next={next} unitHref={unitHref} />
       </div>
 
+      <section className="mt-3">
+        <WorldWindow
+          density="compact"
+          eyebrow="Rate-of-change observatory"
+          title="Slope is one ratio seen in several forms."
+          description="Change the rise, run, starting value, or point order. The graph, numerical ratio, verbal interpretation, and moving direction field remain synchronized."
+          scenes={[...SLOPE_SCENES]}
+        >
+          <SlopeRateWorkbench />
+        </WorldWindow>
+      </section>
+
+      <section className="mt-9">
+        <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_430px] lg:items-end">
+          <div>
+            <div className="flex items-center gap-2 font-mono text-[11px] font-semibold uppercase tracking-[0.13em] text-cyan-200/72">
+              <Table2 size={14} /> One rate, three representations
+            </div>
+            <h2 className="mt-3 max-w-5xl text-[clamp(2rem,4vw,4.1rem)] font-semibold leading-[0.94] tracking-[-0.055em] text-white">
+              The table, graph, and context should tell the same change story.
+            </h2>
+          </div>
+          <p className="text-[15px] leading-7 text-slate-300/72">
+            For the relationship y = 1.5x + 1, every increase of 2 in x produces an increase of 3 in y. The slope is 3/2, or 1.5 output units per input unit.
+          </p>
+        </div>
+
+        <div className="mt-5 grid gap-3 lg:grid-cols-3">
+          <RepresentationCard
+            icon={Table2}
+            eyebrow="Table"
+            title="Repeated differences"
+            rgb="45,212,191"
+          >
+            <div className="overflow-hidden rounded-[15px] border border-white/[0.08] font-mono text-[13px]">
+              <div className="grid grid-cols-2 bg-white/[0.025] text-center font-semibold text-slate-300">
+                <span className="border-r border-white/[0.08] px-3 py-2">x</span>
+                <span className="px-3 py-2">y</span>
+              </div>
+              {[
+                [0, 1],
+                [2, 4],
+                [4, 7],
+              ].map(([x, y]) => (
+                <div
+                  key={x}
+                  className="grid grid-cols-2 border-t border-white/[0.07] text-center text-slate-400"
+                >
+                  <span className="border-r border-white/[0.07] px-3 py-2">{x}</span>
+                  <span className="px-3 py-2">{y}</span>
+                </div>
+              ))}
+            </div>
+            <div className="mt-3 flex items-center justify-center gap-3 font-mono text-[14px]">
+              <span className="text-pink-200">Δy = 3</span>
+              <span className="text-slate-600">/</span>
+              <span className="text-amber-200">Δx = 2</span>
+            </div>
+          </RepresentationCard>
+
+          <RepresentationCard
+            icon={MoveRight}
+            eyebrow="Graph"
+            title="A repeated staircase"
+            rgb="244,114,182"
+          >
+            <MiniRateGraph />
+            <p className="mt-3 text-[13px] leading-5 text-slate-400/74">
+              Any rise-and-run triangle drawn on the same line reduces to the same ratio.
+            </p>
+          </RepresentationCard>
+
+          <RepresentationCard
+            icon={Gauge}
+            eyebrow="Context"
+            title="Units complete the meaning"
+            rgb="250,204,21"
+          >
+            <div className="rounded-[17px] border border-amber-200/[0.12] bg-amber-300/[0.035] p-5 text-center">
+              <div className="font-mono text-[28px] font-semibold text-amber-100">
+                3 liters
+              </div>
+              <div className="my-2 h-px bg-amber-100/[0.16]" />
+              <div className="font-mono text-[28px] font-semibold text-cyan-100">
+                2 minutes
+              </div>
+            </div>
+            <p className="mt-3 text-[13px] leading-5 text-slate-400/74">
+              A tank gains 1.5 liters per minute. The ratio carries output units over input units.
+            </p>
+          </RepresentationCard>
+        </div>
+      </section>
+
+      <section className="mt-9 grid gap-4 xl:grid-cols-[minmax(0,1.08fr)_minmax(360px,0.92fr)]">
+        <Surface variant="glass" className="rounded-[30px] p-6 sm:p-7">
+          <div className="flex items-center gap-2 font-mono text-[11px] font-semibold uppercase tracking-[0.13em] text-teal-200/72">
+            <MoveRight size={14} /> Two-point formula
+          </div>
+          <h2 className="mt-3 text-[clamp(1.9rem,3.5vw,3.5rem)] font-semibold leading-[0.96] tracking-[-0.052em] text-white">
+            Keep the subtraction order consistent in the numerator and denominator.
+          </h2>
+          <div className="mt-5 rounded-[20px] border border-teal-100/[0.10] bg-black/[0.22] p-5 text-center font-mono text-[clamp(1.2rem,2.5vw,1.9rem)] text-white">
+            m = (y₂ − y₁) / (x₂ − x₁)
+          </div>
+          <div className="mt-5 grid gap-3 md:grid-cols-2">
+            <OrderExample
+              label="A → B"
+              calculation="(5 − 1) / (2 − 0) = 4/2 = 2"
+              rgb="45,212,191"
+            />
+            <OrderExample
+              label="B → A"
+              calculation="(1 − 5) / (0 − 2) = −4/−2 = 2"
+              rgb="167,139,250"
+            />
+          </div>
+          <p className="mt-4 text-[14px] leading-6 text-slate-300/70">
+            Reversing the points is legal. Mixing the orders is not: using y₂ − y₁ with x₁ − x₂ would change only one sign and produce the opposite slope.
+          </p>
+        </Surface>
+
+        <Surface variant="ghost" className="rounded-[30px] p-6 sm:p-7">
+          <div className="font-mono text-[11px] font-semibold uppercase tracking-[0.13em] text-amber-200/72">
+            Sign and boundary cases
+          </div>
+          <div className="mt-4 grid gap-2 sm:grid-cols-2">
+            <WorldSceneFocus scene="positive">
+              <BoundaryCard
+                icon={TrendingUp}
+                title="Positive"
+                formula="m > 0"
+                text="The line rises left to right."
+                rgb="45,212,191"
+              />
+            </WorldSceneFocus>
+            <WorldSceneFocus scene="negative">
+              <BoundaryCard
+                icon={TrendingDown}
+                title="Negative"
+                formula="m < 0"
+                text="The line falls left to right."
+                rgb="244,114,182"
+              />
+            </WorldSceneFocus>
+            <WorldSceneFocus scene="zero">
+              <BoundaryCard
+                icon={Minus}
+                title="Zero"
+                formula="m = 0"
+                text="y stays constant while x changes."
+                rgb="96,165,250"
+              />
+            </WorldSceneFocus>
+            <WorldSceneFocus scene="vertical">
+              <BoundaryCard
+                icon={MoveVertical}
+                title="Undefined"
+                formula="Δx = 0"
+                text="A vertical line would divide by zero."
+                rgb="250,204,21"
+              />
+            </WorldSceneFocus>
+          </div>
+        </Surface>
+      </section>
+
+      <section id="slope-practice" className="mt-8 scroll-mt-24">
+        <details className="group overflow-hidden rounded-[24px] border border-white/[0.09] bg-black/[0.18] backdrop-blur-xl">
+          <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-4">
+            <span>
+              <span className="block font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-teal-200/72">
+                Transfer check
+              </span>
+              <strong className="mt-1 block text-[16px] text-slate-200">
+                Use slope on four fresh cases
+              </strong>
+            </span>
+            <Sparkles size={17} className="text-teal-300" />
+          </summary>
+          <div className="linear-assessment border-t border-white/[0.07] p-3 sm:p-4">
+            <Assessment
+              title="Slope & Rate of Change check"
+              questions={QUIZ}
+              accentColor="cyan"
+            />
+          </div>
+        </details>
+      </section>
+
+      <LessonNavigation previous={previous} next={next} unitHref={unitHref} />
+
       <style>{`
-        .linear-assessment > div { border-radius: 18px !important; padding: 16px !important; background: rgba(0,0,0,0.10) !important; box-shadow: none !important; }
+        .linear-assessment > div {
+          border-radius: 18px !important;
+          padding: 16px !important;
+          background: rgba(0,0,0,0.10) !important;
+          box-shadow: none !important;
+        }
         .linear-assessment > div > div { min-height: 300px !important; }
       `}</style>
-    </main>
+    </SceneFrame>
   );
 }
 
-function ChangeCard({ label, formula, text, rgb }: { label: string; formula: string; text: string; rgb: string }) {
+function RepresentationCard({
+  icon: Icon,
+  eyebrow,
+  title,
+  rgb,
+  children,
+}: {
+  icon: LucideIcon;
+  eyebrow: string;
+  title: string;
+  rgb: string;
+  children: import("react").ReactNode;
+}) {
   return (
-    <div className="rounded-[16px] border border-white/[0.05] bg-white/[0.012] p-3">
-      <div className="text-[9px] font-semibold uppercase tracking-[0.11em]" style={{ color: `rgba(${rgb},0.72)` }}>{label}</div>
-      <div className="mt-1.5 font-mono text-[15px]" style={{ color: `rgb(${rgb})` }}>{formula}</div>
-      <p className="mt-1.5 text-[10px] leading-4 text-slate-600">{text}</p>
+    <Surface
+      variant="ghost"
+      className="rounded-[24px] p-5"
+      style={{ borderColor: `rgba(${rgb},0.15)` }}
+    >
+      <span
+        className="flex h-11 w-11 items-center justify-center rounded-[14px] border"
+        style={{
+          color: `rgb(${rgb})`,
+          borderColor: `rgba(${rgb},0.24)`,
+          background: `rgba(${rgb},0.05)`,
+        }}
+      >
+        <Icon size={18} />
+      </span>
+      <div
+        className="mt-4 font-mono text-[11px] font-semibold uppercase tracking-[0.10em]"
+        style={{ color: `rgba(${rgb},0.72)` }}
+      >
+        {eyebrow}
+      </div>
+      <h3 className="mt-1 text-[20px] font-semibold tracking-[-0.035em] text-white">
+        {title}
+      </h3>
+      <div className="mt-4">{children}</div>
+    </Surface>
+  );
+}
+
+function MiniRateGraph() {
+  return (
+    <svg
+      viewBox="0 0 320 190"
+      className="h-[190px] w-full rounded-[16px] border border-white/[0.08] bg-black/[0.18]"
+      role="img"
+      aria-label="Line with repeated rise three and run two triangles"
+    >
+      {Array.from({ length: 9 }, (_, index) => (
+        <g key={index}>
+          <line
+            x1={24 + index * 34}
+            y1="14"
+            x2={24 + index * 34}
+            y2="176"
+            stroke="rgba(94,234,212,0.08)"
+          />
+          <line
+            x1="18"
+            y1={20 + index * 19}
+            x2="302"
+            y2={20 + index * 19}
+            stroke="rgba(125,211,252,0.07)"
+          />
+        </g>
+      ))}
+      <line x1="18" y1="164" x2="302" y2="164" stroke="rgba(226,232,240,0.34)" />
+      <line x1="42" y1="14" x2="42" y2="176" stroke="rgba(226,232,240,0.34)" />
+      <line x1="42" y1="145" x2="278" y2="38" stroke="rgb(45,212,191)" strokeWidth="4" />
+      <path d="M76 130 H144 V99" fill="none" stroke="rgb(250,204,21)" strokeWidth="3" strokeDasharray="7 6" />
+      <path d="M144 130 V99" fill="none" stroke="rgb(244,114,182)" strokeWidth="3" strokeDasharray="7 6" />
+      <path d="M178 83 H246 V52" fill="none" stroke="rgb(250,204,21)" strokeWidth="3" strokeDasharray="7 6" opacity="0.55" />
+      <path d="M246 83 V52" fill="none" stroke="rgb(244,114,182)" strokeWidth="3" strokeDasharray="7 6" opacity="0.55" />
+      <text x="110" y="149" fill="rgb(250,204,21)" fontSize="12" textAnchor="middle">run 2</text>
+      <text x="153" y="117" fill="rgb(244,114,182)" fontSize="12">rise 3</text>
+    </svg>
+  );
+}
+
+function OrderExample({
+  label,
+  calculation,
+  rgb,
+}: {
+  label: string;
+  calculation: string;
+  rgb: string;
+}) {
+  return (
+    <div className="rounded-[17px] border border-white/[0.08] bg-black/[0.17] p-4">
+      <div
+        className="font-mono text-[11px] font-semibold uppercase tracking-[0.09em]"
+        style={{ color: `rgba(${rgb},0.72)` }}
+      >
+        {label}
+      </div>
+      <div className="mt-2 font-mono text-[14px] leading-6 text-slate-200/82">
+        {calculation}
+      </div>
     </div>
   );
 }
 
-function Readout({ label, value, rgb }: { label: string; value: string; rgb: string }) {
+function BoundaryCard({
+  icon: Icon,
+  title,
+  formula,
+  text,
+  rgb,
+}: {
+  icon: LucideIcon;
+  title: string;
+  formula: string;
+  text: string;
+  rgb: string;
+}) {
   return (
-    <div className="flex items-center justify-between gap-3 rounded-[14px] border border-white/[0.05] bg-white/[0.012] px-3 py-2.5">
-      <span className="text-[10px] text-slate-600">{label}</span>
-      <strong className="font-mono text-[12px]" style={{ color: `rgb(${rgb})` }}>{value}</strong>
+    <div
+      className="h-full rounded-[17px] border bg-black/[0.16] p-4 transition hover:-translate-y-0.5 hover:bg-black/[0.24]"
+      style={{ borderColor: `rgba(${rgb},0.14)` }}
+    >
+      <Icon size={17} style={{ color: `rgb(${rgb})` }} />
+      <div className="mt-3 text-[15px] font-semibold text-white">{title}</div>
+      <div className="mt-1 font-mono text-[13px]" style={{ color: `rgb(${rgb})` }}>
+        {formula}
+      </div>
+      <p className="mt-2 text-[12px] leading-5 text-slate-400/72">{text}</p>
     </div>
   );
 }
 
-function BoundaryCard({ title, formula, text, rgb }: { title: string; formula: string; text: string; rgb: string }) {
+function LessonNavigation({
+  previous,
+  next,
+  unitHref,
+}: {
+  previous?: LinearLessonNavItem;
+  next?: LinearLessonNavItem;
+  unitHref: string;
+}) {
   return (
-    <div className="rounded-[18px] border border-white/[0.06] bg-black/[0.12] p-4">
-      <div className="text-[10px] font-semibold text-white">{title}</div>
-      <div className="mt-2 font-mono text-[15px]" style={{ color: `rgb(${rgb})` }}>{formula}</div>
-      <p className="mt-2 text-[10px] leading-4 text-slate-600">{text}</p>
-    </div>
-  );
-}
-
-function LessonNavigation({ previous, next, unitHref }: { previous?: LinearLessonNavItem; next?: LinearLessonNavItem; unitHref: string }) {
-  return (
-    <nav className="mt-4 pb-8" aria-label="Graphing Linear Equations lesson navigation">
-      <div className="mb-2 flex justify-end"><span className="font-mono text-[10px] text-slate-700">01 / 04</span></div>
+    <nav className="mt-8 pb-8" aria-label="Graphing Linear Equations lesson navigation">
+      <div className="mb-2 flex justify-end">
+        <span className="font-mono text-[11px] text-slate-600">01 / 04</span>
+      </div>
       <div className="grid gap-3 sm:grid-cols-2">
-        {previous ? <NavCard item={previous} direction="previous" /> : <div className="hidden sm:block" aria-hidden="true" />}
-        {next ? <NavCard item={next} direction="next" /> : (
-          <Link href={unitHref} className="flex min-h-[76px] items-center rounded-[18px] border border-teal-300/[0.14] bg-teal-400/[0.025] px-4">
-            <span className="min-w-0 flex-1 text-right"><span className="block text-[9px] font-semibold uppercase tracking-[0.10em] text-slate-600">Unit</span><strong className="mt-1 block text-[14px] text-slate-200">Graphing Linear Equations</strong></span><Check size={15} className="ml-3 text-teal-300" />
+        {previous ? (
+          <NavCard item={previous} direction="previous" />
+        ) : (
+          <div className="hidden sm:block" aria-hidden="true" />
+        )}
+        {next ? (
+          <NavCard item={next} direction="next" />
+        ) : (
+          <Link
+            href={unitHref}
+            className="flex min-h-[76px] items-center rounded-[18px] border border-teal-300/[0.14] bg-teal-400/[0.025] px-4"
+          >
+            <span className="min-w-0 flex-1 text-right">
+              <span className="block text-[11px] font-semibold uppercase tracking-[0.10em] text-slate-500">
+                Unit
+              </span>
+              <strong className="mt-1 block text-[14px] text-slate-200">
+                Graphing Linear Equations
+              </strong>
+            </span>
+            <Check size={15} className="ml-3 text-teal-300" />
           </Link>
         )}
       </div>
@@ -348,21 +530,29 @@ function LessonNavigation({ previous, next, unitHref }: { previous?: LinearLesso
   );
 }
 
-function NavCard({ item, direction }: { item: LinearLessonNavItem; direction: "previous" | "next" }) {
-  const isPrevious = direction === "previous";
+function NavCard({
+  item,
+  direction,
+}: {
+  item: LinearLessonNavItem;
+  direction: "previous" | "next";
+}) {
+  const previous = direction === "previous";
   return (
-    <Link href={item.href} className="flex min-h-[76px] items-center gap-3 rounded-[18px] border border-teal-300/[0.12] bg-teal-400/[0.018] px-4 py-3">
-      {isPrevious ? <ArrowLeft size={15} className="text-teal-300" /> : null}
-      <span className={`min-w-0 flex-1 ${isPrevious ? "" : "text-right"}`}>
-        <span className="block text-[9px] font-semibold uppercase tracking-[0.10em] text-slate-600">{isPrevious ? "Previous lesson" : "Next lesson"}</span>
-        <strong className="mt-1 block text-[14px] text-slate-200">{item.label}</strong>
+    <Link
+      href={item.href}
+      className="flex min-h-[76px] items-center gap-3 rounded-[18px] border border-teal-300/[0.12] bg-teal-400/[0.018] px-4 py-3"
+    >
+      {previous ? <ArrowLeft size={15} className="text-teal-300" /> : null}
+      <span className={`min-w-0 flex-1 ${previous ? "" : "text-right"}`}>
+        <span className="block text-[11px] font-semibold uppercase tracking-[0.10em] text-slate-500">
+          {previous ? "Previous lesson" : "Next lesson"}
+        </span>
+        <strong className="mt-1 block text-[14px] text-slate-200">
+          {item.label}
+        </strong>
       </span>
-      {!isPrevious ? <ArrowRight size={15} className="text-teal-300" /> : null}
+      {!previous ? <ArrowRight size={15} className="text-teal-300" /> : null}
     </Link>
   );
-}
-
-function formatNumber(value: number) {
-  if (Number.isInteger(value)) return String(value);
-  return String(Number(value.toFixed(2)));
 }

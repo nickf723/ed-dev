@@ -1,122 +1,241 @@
 "use client";
-import { useState } from "react";
-import { Sprout, Wheat, Leaf, RefreshCw, AlertTriangle } from "lucide-react";
 
-type Crop = "corn" | "soy" | "fallow";
+import { useMemo, useState } from "react";
+import { ArrowDown, CircleGauge, FlaskConical, Leaf, RotateCcw, Sprout, Wheat } from "lucide-react";
+import { Surface } from "@/app/_page-system/scene";
+
+type SystemKey = "cereal" | "grain-legume" | "cover";
+
+type CropSystem = {
+  key: SystemKey;
+  label: string;
+  subtitle: string;
+  demand: number;
+  fixationPotential: number;
+  harvestFraction: number;
+  icon: typeof Wheat;
+  rgb: string;
+};
+
+const SYSTEMS: readonly CropSystem[] = [
+  {
+    key: "cereal",
+    label: "Cereal crop",
+    subtitle: "soil-derived N dominates",
+    demand: 72,
+    fixationPotential: 0,
+    harvestFraction: 0.72,
+    icon: Wheat,
+    rgb: "250,204,21",
+  },
+  {
+    key: "grain-legume",
+    label: "Grain legume",
+    subtitle: "soil N + biological fixation",
+    demand: 62,
+    fixationPotential: 35,
+    harvestFraction: 0.64,
+    icon: Sprout,
+    rgb: "74,222,128",
+  },
+  {
+    key: "cover",
+    label: "Legume cover crop",
+    subtitle: "biomass retained, little harvest export",
+    demand: 50,
+    fixationPotential: 32,
+    harvestFraction: 0.08,
+    icon: Leaf,
+    rgb: "134,239,172",
+  },
+] as const;
+
+const INITIAL_MINERAL_POOL = 45;
 
 export default function NitrogenLab() {
-  const [nitrogen, setNitrogen] = useState(100);
-  const [yieldTotal, setYieldTotal] = useState(0);
-  const [season, setSeason] = useState(1);
-  const [history, setHistory] = useState<Crop[]>([]);
+  const [systemKey, setSystemKey] = useState<SystemKey>("grain-legume");
+  const [amendment, setAmendment] = useState(24);
+  const [lossPressure, setLossPressure] = useState(35);
+  const [residueRetention, setResidueRetention] = useState(75);
 
-  const plant = (crop: Crop) => {
-      let nChange = 0;
-      let yChange = 0;
-
-      if (crop === "corn") {
-          if (nitrogen < 30) return; // Cannot plant
-          nChange = -30;
-          yChange = 100;
-      } else if (crop === "soy") {
-          nChange = 20;
-          yChange = 50;
-      } else if (crop === "fallow") {
-          nChange = 10;
-          yChange = 0;
-      }
-
-      setNitrogen(prev => Math.min(120, prev + nChange)); // Max 120
-      setYieldTotal(prev => prev + yChange);
-      setSeason(prev => prev + 1);
-      setHistory(prev => [crop, ...prev].slice(0, 5));
-  };
+  const system = SYSTEMS.find((item) => item.key === systemKey) ?? SYSTEMS[0];
+  const values = useMemo(() => calculateBudget(system, amendment, lossPressure, residueRetention), [system, amendment, lossPressure, residueRetention]);
 
   const reset = () => {
-      setNitrogen(100);
-      setYieldTotal(0);
-      setSeason(1);
-      setHistory([]);
+    setSystemKey("grain-legume");
+    setAmendment(24);
+    setLossPressure(35);
+    setResidueRetention(75);
   };
 
   return (
-    <div className="bg-[#2e2315]/90 border border-green-700/50 rounded-xl p-6 backdrop-blur-md shadow-2xl w-full max-w-md font-sans">
-        
-        <div className="flex justify-between items-center mb-6">
-            <h3 className="font-bold text-green-400 flex items-center gap-2 tracking-wider text-sm">
-                <Sprout size={16} /> AGRI_MANAGER
-            </h3>
-            <div className="text-[10px] text-amber-500 font-mono">SEASON {season}</div>
+    <Surface
+      variant="glass"
+      className="overflow-hidden rounded-[32px] border-lime-100/[0.13]"
+      style={{ background: "rgba(15,20,10,0.25)" }}
+    >
+      <div className="grid border-b border-lime-100/[0.08] lg:grid-cols-[minmax(0,1fr)_330px]">
+        <div className="p-5 sm:p-6">
+          <div className="flex items-center gap-2 font-mono text-[11px] font-semibold uppercase tracking-[0.11em] text-lime-200/62"><FlaskConical size={14} /> Nitrogen pathways studio · normalized teaching model</div>
+          <h3 className="mt-2 text-[clamp(1.8rem,3vw,2.9rem)] font-semibold tracking-[-0.047em] text-white">Follow nitrogen through soil, plants, fixation, harvest, residues, and loss pathways.</h3>
+          <p className="mt-3 max-w-3xl text-[14px] leading-6 text-stone-300/68">
+            This is a bookkeeping model, not a field recommendation. Real nitrogen rates and transformations depend on crop, cultivar, soil, weather, inoculation, organic matter, timing, fertilizer form, irrigation, rotation, yield, and many other conditions.
+          </p>
+        </div>
+        <div className="border-t border-lime-100/[0.08] bg-black/[0.07] p-5 backdrop-blur-[14px] lg:border-l lg:border-t-0">
+          <div className="flex items-start justify-between gap-3">
+            <span>
+              <span className="font-mono text-[11px] font-semibold uppercase tracking-[0.09em] text-amber-200/56">Current scenario</span>
+              <strong className="mt-2 block text-[17px] text-white">{system.label}</strong>
+              <span className="mt-1 block text-[12px] leading-5 text-stone-500">{system.subtitle}</span>
+            </span>
+            <button type="button" onClick={reset} className="flex h-9 w-9 items-center justify-center border border-white/[0.08] text-stone-500 transition hover:border-lime-200/25 hover:text-lime-200" aria-label="Reset nitrogen model"><RotateCcw size={14} /></button>
+          </div>
+        </div>
+      </div>
+
+      <div className="grid gap-5 p-4 xl:grid-cols-[300px_minmax(0,1fr)] sm:p-5">
+        <div>
+          <div className="grid gap-2">
+            {SYSTEMS.map((item) => {
+              const Icon = item.icon;
+              const selected = item.key === systemKey;
+              return (
+                <button
+                  key={item.key}
+                  type="button"
+                  onClick={() => setSystemKey(item.key)}
+                  className="grid grid-cols-[40px_minmax(0,1fr)] gap-3 border px-3 py-3 text-left transition"
+                  style={{ borderColor: selected ? `rgba(${item.rgb},0.34)` : "rgba(255,255,255,0.07)", background: selected ? `rgba(${item.rgb},0.065)` : "rgba(0,0,0,0.055)" }}
+                >
+                  <span className="flex h-9 w-9 items-center justify-center border" style={{ color: `rgb(${item.rgb})`, borderColor: `rgba(${item.rgb},0.25)`, background: `rgba(${item.rgb},0.04)` }}><Icon size={15} /></span>
+                  <span><strong className="block text-[13px] text-white/88">{item.label}</strong><span className="mt-1 block text-[11px] leading-4 text-stone-500">{item.subtitle}</span></span>
+                </button>
+              );
+            })}
+          </div>
+
+          <div className="mt-5 space-y-5 border-t border-white/[0.07] pt-5">
+            <Control label="External N input" value={amendment} min={0} max={60} suffix=" units" onChange={setAmendment} />
+            <Control label="Loss pressure" value={lossPressure} min={0} max={100} suffix="%" onChange={setLossPressure} />
+            <Control label="Residue retained" value={residueRetention} min={0} max={100} suffix="%" onChange={setResidueRetention} />
+          </div>
         </div>
 
-        {/* METRICS */}
-        <div className="grid grid-cols-2 gap-4 mb-6">
-            <div className="bg-black/30 p-3 rounded border border-white/5 relative overflow-hidden">
-                <div className="text-[10px] text-zinc-400 uppercase font-bold mb-1">Soil Nitrogen</div>
-                <div className={`text-2xl font-mono font-bold ${nitrogen < 30 ? "text-red-500 animate-pulse" : "text-green-400"}`}>
-                    {nitrogen}%
-                </div>
-                {/* Bar */}
-                <div className="absolute bottom-0 left-0 h-1 bg-green-500 transition-all duration-500" style={{ width: `${(nitrogen/120)*100}%` }} />
-            </div>
-            <div className="bg-black/30 p-3 rounded border border-white/5">
-                <div className="text-[10px] text-zinc-400 uppercase font-bold mb-1">Total Yield</div>
-                <div className="text-2xl font-mono font-bold text-amber-400">
-                    {yieldTotal}
-                </div>
-            </div>
+        <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_260px]">
+          <FlowDiagram system={system} values={values} />
+          <div className="space-y-3">
+            <Metric label="Mineral N remaining" value={values.residualMineral} note="current mineral pool after modeled loss exposure and plant uptake" rgb="125,211,252" />
+            <Metric label="Plant N acquired" value={values.plantN} note={`${values.soilUptake.toFixed(0)} from soil + ${values.fixation.toFixed(0)} from illustrative fixation`} rgb="134,239,172" />
+            <Metric label="Harvest export" value={values.harvestRemoval} note="plant N leaving the field in harvested biomass" rgb="251,191,36" />
+            <Metric label="Retained residue N" value={values.retainedResidue} note="organic residue pathway, not immediate mineral N" rgb="192,132,252" />
+            {values.shortfall > 0.5 ? <Metric label="Modeled N shortfall" value={values.shortfall} note="unmet normalized plant demand in this toy scenario" rgb="248,113,113" /> : null}
+          </div>
         </div>
+      </div>
 
-        {/* SOIL PLOT VISUAL */}
-        <div className="h-24 bg-[#3f2e18] rounded-lg border-b-4 border-[#281d0f] mb-6 flex items-end justify-center relative overflow-hidden shadow-inner">
-             {/* Render history as plants */}
-             <div className="flex gap-4 items-end mb-2">
-                 {history.length === 0 && <span className="text-white/20 text-xs">READY TO PLANT</span>}
-                 {history.slice(0,1).map((c, i) => (
-                     <div key={i} className="flex flex-col items-center animate-in slide-in-from-bottom duration-500">
-                        {c === "corn" && <Wheat size={48} className="text-yellow-500" />}
-                        {c === "soy" && <Sprout size={40} className="text-green-500" />}
-                        {c === "fallow" && <div className="text-white/20 text-xs font-mono mb-2">RESTING</div>}
-                     </div>
-                 ))}
-             </div>
-             {/* Soil texture overlay */}
-             <div className="absolute inset-0 bg-[url('/noise.png')] opacity-10 pointer-events-none" />
-        </div>
+      <div className="grid border-t border-lime-100/[0.08] md:grid-cols-3">
+        <Boundary title="Legumes are not fertilizer buttons">Biological fixation supplies N to the plant system. Whether a legume increases soil N for a following crop depends on fixation, harvest removal, residue quantity and quality, decomposition, losses, and management.</Boundary>
+        <Boundary title="Residues are delayed pathways">Retained plant N enters organic residues. Mineralization and immobilization unfold later, so this model intentionally does not dump retained residue straight back into the current mineral pool.</Boundary>
+        <Boundary title="Loss is many processes">Leaching, denitrification, volatilization, erosion, runoff, and other losses respond differently to soil, water, timing, form, temperature, and management. One slider only represents aggregate pressure.</Boundary>
+      </div>
+    </Surface>
+  );
+}
 
-        {/* CONTROLS */}
-        <div className="grid grid-cols-3 gap-2 mb-4">
-            <button 
-                onClick={() => plant("corn")}
-                disabled={nitrogen < 30}
-                className="py-3 bg-yellow-600 hover:bg-yellow-500 text-black font-bold rounded flex flex-col items-center justify-center gap-1 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
-            >
-                <Wheat size={18} />
-                <span className="text-[10px]">CORN</span>
-                <span className="text-[9px] opacity-70">-30 N</span>
-            </button>
-            <button 
-                onClick={() => plant("soy")}
-                className="py-3 bg-green-700 hover:bg-green-600 text-white font-bold rounded flex flex-col items-center justify-center gap-1 transition-colors"
-            >
-                <Sprout size={18} />
-                <span className="text-[10px]">SOY</span>
-                <span className="text-[9px] opacity-70">+20 N</span>
-            </button>
-            <button 
-                onClick={() => plant("fallow")}
-                className="py-3 bg-stone-700 hover:bg-stone-600 text-white font-bold rounded flex flex-col items-center justify-center gap-1 transition-colors"
-            >
-                <Leaf size={18} />
-                <span className="text-[10px]">FALLOW</span>
-                <span className="text-[9px] opacity-70">+10 N</span>
-            </button>
-        </div>
+function calculateBudget(system: CropSystem, amendment: number, lossPressure: number, residueRetention: number) {
+  const startingMineral = INITIAL_MINERAL_POOL + amendment;
+  const lossFraction = 0.05 + (lossPressure / 100) * 0.25;
+  const losses = startingMineral * lossFraction;
+  const mineralAfterLoss = Math.max(0, startingMineral - losses);
+  const soilUptake = Math.min(system.demand, mineralAfterLoss);
+  const remainingDemand = Math.max(0, system.demand - soilUptake);
+  const fixation = Math.min(system.fixationPotential, remainingDemand);
+  const plantN = soilUptake + fixation;
+  const shortfall = Math.max(0, system.demand - plantN);
+  const harvestRemoval = plantN * system.harvestFraction;
+  const nonHarvestPlantN = Math.max(0, plantN - harvestRemoval);
+  const retainedResidue = nonHarvestPlantN * (residueRetention / 100);
+  const removedResidue = Math.max(0, nonHarvestPlantN - retainedResidue);
+  const residualMineral = Math.max(0, mineralAfterLoss - soilUptake);
 
-        <button onClick={reset} className="w-full py-2 flex items-center justify-center gap-2 text-xs text-zinc-500 hover:text-white transition-colors">
-            <RefreshCw size={12} /> RESET FIELD
-        </button>
+  return { startingMineral, losses, soilUptake, fixation, plantN, shortfall, harvestRemoval, retainedResidue, removedResidue, residualMineral };
+}
 
+type Budget = ReturnType<typeof calculateBudget>;
+
+function FlowDiagram({ system, values }: { system: CropSystem; values: Budget }) {
+  const max = Math.max(100, values.startingMineral + values.fixation);
+  const width = (value: number) => `${Math.max(2, Math.min(100, (value / max) * 100))}%`;
+
+  return (
+    <div className="relative min-h-[470px] overflow-hidden border border-white/[0.07] bg-black/[0.065] p-4 backdrop-blur-[10px] sm:p-5">
+      <div className="flex items-start justify-between gap-3">
+        <span><span className="font-mono text-[11px] font-semibold uppercase tracking-[0.09em] text-stone-500">Normalized N ledger</span><strong className="mt-1 block text-[16px] text-white">Track pathways, not prescriptions</strong></span>
+        <CircleGauge size={18} className="text-lime-200/44" />
+      </div>
+
+      <FlowNode label="Starting soil mineral + external input" value={values.startingMineral} bar={width(values.startingMineral)} rgb="125,211,252" />
+      <ArrowDown size={14} className="mx-auto my-2 text-stone-600" />
+      <div className="grid grid-cols-2 gap-3">
+        <FlowNode label="Loss pathways" value={values.losses} bar={width(values.losses)} rgb="248,113,113" compact />
+        <FlowNode label="Soil-derived plant uptake" value={values.soilUptake} bar={width(values.soilUptake)} rgb="134,239,172" compact />
+      </div>
+
+      {system.fixationPotential > 0 ? (
+        <>
+          <div className="my-3 flex items-center gap-3"><span className="h-px flex-1 bg-white/[0.06]" /><span className="font-mono text-[11px] uppercase tracking-[0.07em] text-lime-200/40">separate biological pathway</span><span className="h-px flex-1 bg-white/[0.06]" /></div>
+          <FlowNode label="Illustrative biological fixation contribution" value={values.fixation} bar={width(values.fixation)} rgb="74,222,128" />
+        </>
+      ) : null}
+
+      <ArrowDown size={14} className="mx-auto my-2 text-stone-600" />
+      <FlowNode label="Plant N acquired" value={values.plantN} bar={width(values.plantN)} rgb="190,242,100" />
+      <ArrowDown size={14} className="mx-auto my-2 text-stone-600" />
+      <div className="grid grid-cols-2 gap-3">
+        <FlowNode label="Harvest export" value={values.harvestRemoval} bar={width(values.harvestRemoval)} rgb="251,191,36" compact />
+        <FlowNode label="Retained residue" value={values.retainedResidue} bar={width(values.retainedResidue)} rgb="192,132,252" compact />
+      </div>
+
+      <div className="mt-4 border-l-2 border-lime-200/20 pl-3 text-[12px] leading-5 text-stone-500">
+        Mineral N left in soil: <strong className="text-sky-200/72">{values.residualMineral.toFixed(0)}</strong> units. Residue removed rather than retained: <strong className="text-stone-300/70">{values.removedResidue.toFixed(0)}</strong> units.
+      </div>
+    </div>
+  );
+}
+
+function FlowNode({ label, value, bar, rgb, compact = false }: { label: string; value: number; bar: string; rgb: string; compact?: boolean }) {
+  return (
+    <div className={`border border-white/[0.065] bg-black/[0.055] ${compact ? "p-3" : "p-4"}`}>
+      <div className="flex items-end justify-between gap-3"><span className="text-[12px] leading-4 text-stone-400/72">{label}</span><strong className="font-mono text-[15px]" style={{ color: `rgba(${rgb},0.82)` }}>{value.toFixed(0)}</strong></div>
+      <div className="mt-3 h-1.5 bg-white/[0.05]"><div className="h-full transition-[width] duration-300" style={{ width: bar, background: `rgba(${rgb},0.62)` }} /></div>
+    </div>
+  );
+}
+
+function Control({ label, value, min, max, suffix, onChange }: { label: string; value: number; min: number; max: number; suffix: string; onChange: (value: number) => void }) {
+  return (
+    <label className="block">
+      <span className="flex items-center justify-between gap-3 text-[12px] text-stone-400"><span>{label}</span><strong className="font-mono text-lime-200/72">{value}{suffix}</strong></span>
+      <input type="range" min={min} max={max} value={value} onChange={(event) => onChange(Number(event.target.value))} className="mt-2 w-full accent-lime-400" />
+    </label>
+  );
+}
+
+function Metric({ label, value, note, rgb }: { label: string; value: number; note: string; rgb: string }) {
+  return (
+    <div className="border-l-2 bg-black/[0.055] px-3 py-3 backdrop-blur-[8px]" style={{ borderColor: `rgba(${rgb},0.42)` }}>
+      <div className="flex items-baseline justify-between gap-3"><span className="text-[12px] text-stone-400/78">{label}</span><strong className="font-mono text-[18px]" style={{ color: `rgba(${rgb},0.82)` }}>{value.toFixed(0)}</strong></div>
+      <p className="mt-1 text-[11px] leading-4 text-stone-600">{note}</p>
+    </div>
+  );
+}
+
+function Boundary({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <div className="border-b border-white/[0.06] px-4 py-4 md:border-b-0 md:border-r md:last:border-r-0">
+      <strong className="block text-[12px] text-stone-300/82">{title}</strong>
+      <p className="mt-2 text-[11px] leading-5 text-stone-500">{children}</p>
     </div>
   );
 }

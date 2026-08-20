@@ -1,95 +1,62 @@
-"use client";
-import { useEffect, useRef } from "react";
-
 export default function HumanitiesBackground() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+  return (
+    <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden bg-[#090708]" aria-hidden="true">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_16%,rgba(251,191,36,0.09),transparent_27%),radial-gradient(circle_at_82%_42%,rgba(232,121,249,0.065),transparent_28%),radial-gradient(circle_at_58%_84%,rgba(129,140,248,0.07),transparent_32%),linear-gradient(135deg,#090708_0%,#080609_48%,#0a0807_100%)]" />
 
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
+      <svg className="absolute inset-0 h-full w-full opacity-75" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice">
+        <defs>
+          <linearGradient id="humanities-current-a" x1="0" x2="1">
+            <stop offset="0" stopColor="rgba(251,191,36,0)" />
+            <stop offset="0.45" stopColor="rgba(251,191,36,0.16)" />
+            <stop offset="1" stopColor="rgba(251,191,36,0)" />
+          </linearGradient>
+          <linearGradient id="humanities-current-b" x1="0" x2="1">
+            <stop offset="0" stopColor="rgba(232,121,249,0)" />
+            <stop offset="0.52" stopColor="rgba(232,121,249,0.12)" />
+            <stop offset="1" stopColor="rgba(232,121,249,0)" />
+          </linearGradient>
+          <linearGradient id="humanities-current-c" x1="0" x2="1">
+            <stop offset="0" stopColor="rgba(129,140,248,0)" />
+            <stop offset="0.58" stopColor="rgba(129,140,248,0.12)" />
+            <stop offset="1" stopColor="rgba(129,140,248,0)" />
+          </linearGradient>
+        </defs>
 
-    let w = (canvas.width = window.innerWidth);
-    let h = (canvas.height = window.innerHeight);
+        <g fill="none" strokeLinecap="round">
+          <path d="M-80 285 C240 165, 420 410, 760 270 S1280 160, 1700 310" stroke="url(#humanities-current-a)" strokeWidth="2" />
+          <path d="M-100 500 C270 680, 500 360, 820 515 S1300 700, 1710 470" stroke="url(#humanities-current-b)" strokeWidth="1.6" />
+          <path d="M-80 760 C260 590, 520 880, 900 710 S1350 620, 1690 780" stroke="url(#humanities-current-c)" strokeWidth="1.5" />
 
-    // --- STATE ---
-    const particleCount = 2000;
-    const particles: {x: number, y: number, vx: number, vy: number, life: number, color: string}[] = [];
-    
-    // Palette: Classic Humanities (Ochre, Sienna, Ink, Gold)
-    const colors = [
-        "rgb(234, 238, 3)",   // Amber
-        "rgba(2, 162, 236, 0.86)",    // Sienna
-        "rgba(14, 12, 173, 0.5)",  // Gold
-        "rgba(30, 58, 138, 0.5)",   // Deep Blue
-        "rgb(0, 0, 0)"  // Parchment White
-    ];
+          <path d="M90 150H510" stroke="rgba(251,191,36,0.055)" />
+          <path d="M90 174H430" stroke="rgba(251,191,36,0.038)" />
+          <path d="M90 198H555" stroke="rgba(251,191,36,0.042)" />
+          <path d="M90 222H370" stroke="rgba(251,191,36,0.032)" />
 
-    const initParticle = () => ({
-        x: Math.random() * w,
-        y: Math.random() * h,
-        vx: 0,
-        vy: 0,
-        life: Math.random() * 100 + 50,
-        color: colors[Math.floor(Math.random() * colors.length)]
-    });
+          <rect x="1170" y="125" width="250" height="165" stroke="rgba(232,121,249,0.045)" />
+          <rect x="1200" y="155" width="190" height="105" stroke="rgba(232,121,249,0.035)" />
+          <path d="M1225 225 C1260 185, 1290 245, 1320 205 S1370 190, 1400 228" stroke="rgba(232,121,249,0.07)" />
 
-    for(let i=0; i<particleCount; i++) particles.push(initParticle());
+          <line x1="188" y1="610" x2="188" y2="930" stroke="rgba(251,191,36,0.055)" />
+          {Array.from({ length: 9 }).map((_, index) => (
+            <g key={index}>
+              <line x1="178" y1={635 + index * 33} x2={index % 3 === 0 ? 210 : 199} y2={635 + index * 33} stroke="rgba(251,191,36,0.075)" />
+              <circle cx="188" cy={635 + index * 33} r={index % 3 === 0 ? 3 : 1.8} fill="rgba(251,191,36,0.10)" />
+            </g>
+          ))}
 
-    // Simplex/Perlin noise approximation for flow field
-    const noise = (x: number, y: number) => {
-        return Math.sin(x * 0.002) + Math.cos(y * 0.002 + x * 0.001);
-    };
+          <path d="M1110 780 q35 -42 70 0 t70 0 t70 0 t70 0" stroke="rgba(129,140,248,0.075)" />
+          <path d="M1110 810 q28 -28 56 0 t56 0 t56 0 t56 0 t56 0" stroke="rgba(129,140,248,0.050)" />
+        </g>
 
-    const render = () => {
-      // Fade out effect (Instead of clearing, we draw a semi-transparent rect)
-      // This creates the "trails" or "brushstrokes"
-      ctx.fillStyle = "rgba(6, 0, 95, 0.05)"; // Very dark warm black
-      ctx.fillRect(0, 0, w, h);
+        <g fill="rgba(226,232,240,0.11)" fontFamily="serif">
+          <text x="128" y="116" fontSize="68">A</text>
+          <text x="1428" y="372" fontSize="54">α</text>
+          <text x="1325" y="885" fontSize="58">♪</text>
+        </g>
+      </svg>
 
-      particles.forEach((p, i) => {
-          // Calculate Flow Angle
-          const angle = noise(p.x, p.y) * Math.PI * 2;
-          
-          // Update Velocity
-          p.vx += Math.cos(angle) * 0.1;
-          p.vy += Math.sin(angle) * 0.1;
-          
-          // Friction
-          p.vx *= 0.95;
-          p.vy *= 0.95;
-
-          // Move
-          p.x += p.vx;
-          p.y += p.vy;
-
-          // Draw Brushstroke
-          ctx.beginPath();
-          ctx.strokeStyle = p.color;
-          ctx.lineWidth = 2;
-          ctx.moveTo(p.x - p.vx*2, p.y - p.vy*2);
-          ctx.lineTo(p.x, p.y);
-          ctx.stroke();
-
-          // Reset if out of bounds or dead
-          p.life--;
-          if (p.life <= 0 || p.x < 0 || p.x > w || p.y < 0 || p.y > h) {
-              particles[i] = initParticle();
-          }
-      });
-
-      requestAnimationFrame(render);
-    };
-
-    const animId = requestAnimationFrame(render);
-    const handleResize = () => { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; };
-    window.addEventListener("resize", handleResize);
-    return () => {
-        window.removeEventListener("resize", handleResize);
-        cancelAnimationFrame(animId);
-    };
-  }, []);
-
-  return <canvas ref={canvasRef} className="fixed inset-0 z-0 opacity-60 pointer-events-none" />;
+      <div className="absolute inset-0 opacity-20 [background-image:linear-gradient(rgba(251,191,36,0.022)_1px,transparent_1px),linear-gradient(90deg,rgba(251,191,36,0.016)_1px,transparent_1px)] [background-size:72px_72px]" />
+      <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(9,7,8,0.05),rgba(9,7,8,0.36)_55%,rgba(9,7,8,0.88))]" />
+    </div>
+  );
 }

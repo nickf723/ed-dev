@@ -1,184 +1,282 @@
-import React from 'react';
-import Link from 'next/link';
-import { ArrowLeft, Orbit, Zap, Waves, Infinity, Radio, Layers } from 'lucide-react';
-import QuantumBackground from './_components/QuantumBackground';
-import OrbitalVisualizer from './_components/OrbitalVisualizer';
+import DomainPageHeader from "@/app/_components/DomainPageHeader";
+import { M } from "@/app/_components/Math";
+import {
+  SceneFrame,
+  Surface,
+  WorldSceneFocus,
+  WorldWindow,
+} from "@/app/_page-system/scene";
+import QuantumBackground from "./_components/QuantumBackground";
+import OrbitalVisualizer from "./_components/OrbitalVisualizer";
+import {
+  Atom,
+  Layers,
+  Orbit,
+  Radio,
+  Sparkles,
+  Waves,
+  Zap,
+  type LucideIcon,
+} from "lucide-react";
 
-// IMPORTING YOUR CUSTOM MATH ENGINE
-import { M } from '@/app/_components/Math';
+const ORBITAL_SCENES = [
+  {
+    id: "1s",
+    label: "1s · ground state",
+    description:
+      "No node and no preferred direction: probability is concentrated around the nucleus.",
+    accentRgb: "34, 211, 238",
+  },
+  {
+    id: "2s",
+    label: "2s · radial node",
+    description:
+      "Two probability regions are separated by a radius where the wavefunction is zero.",
+    accentRgb: "52, 211, 153",
+  },
+  {
+    id: "2px",
+    label: "2pₓ · angular node",
+    description:
+      "Opposite phase lobes lie along one axis and are separated by a nodal plane.",
+    accentRgb: "192, 132, 252",
+  },
+  {
+    id: "2py",
+    label: "2pᵧ · orientation",
+    description:
+      "The same p-state geometry points along a different spatial axis.",
+    accentRgb: "244, 114, 182",
+  },
+] as const;
 
-// FUTURE INFRASTRUCTURE: Quantum Routing Array
-const QUANTUM_MODULES = [
-    {
-        id: 'wave-particle',
-        title: 'Wave-Particle Duality',
-        description: 'The double-slit experiment, De Broglie wavelengths, and the collapse of the wave function.',
-        icon: Waves,
-        color: 'cyan',
-        href: '#'
-    },
-    {
-        id: 'molecular-orbitals',
-        title: 'Molecular Orbital Theory',
-        description: 'Constructive and destructive interference, sigma/pi bonds, and anti-bonding orbitals.',
-        icon: Infinity,
-        color: 'violet',
-        href: '#'
-    },
-    {
-        id: 'spectroscopy',
-        title: 'Quantum Spectroscopy',
-        description: 'Photonic emission, absorption spectra, and how we measure the invisible.',
-        icon: Radio,
-        color: 'emerald',
-        href: '#'
-    },
-    {
-        id: 'spin',
-        title: 'Spin & Pauli Exclusion',
-        description: 'Fermions, quantum numbers, and why two electrons cannot share the exact same state.',
-        icon: Layers,
-        color: 'rose',
-        href: '#'
-    }
+const MODULES: Array<{
+  icon: LucideIcon;
+  title: string;
+  question: string;
+  description: string;
+  rgb: string;
+  scene: "1s" | "2s" | "2px" | "2py";
+}> = [
+  {
+    icon: Waves,
+    title: "Wave-particle behavior",
+    question: "Why does interference appear in particle experiments?",
+    description:
+      "Quantum states propagate and interfere as amplitudes, while individual measurements produce discrete outcomes.",
+    rgb: "34, 211, 238",
+    scene: "1s",
+  },
+  {
+    icon: Orbit,
+    title: "Molecular orbitals",
+    question: "How do atomic wavefunctions become bonds?",
+    description:
+      "Constructive and destructive combinations distribute electron density across more than one nucleus.",
+    rgb: "192, 132, 252",
+    scene: "2px",
+  },
+  {
+    icon: Radio,
+    title: "Spectroscopy",
+    question: "How can energy gaps become observable signals?",
+    description:
+      "Absorption and emission connect quantized states to measured wavelengths, revealing structure without direct sight.",
+    rgb: "52, 211, 153",
+    scene: "2s",
+  },
+  {
+    icon: Layers,
+    title: "Spin & exclusion",
+    question: "Why can electrons not all occupy the same state?",
+    description:
+      "Spin and the Pauli exclusion principle organize electron configurations and therefore periodic chemical behavior.",
+    rgb: "244, 114, 182",
+    scene: "2py",
+  },
 ];
 
 export default function QuantumChemistryPage() {
-    return (
-        <main className="relative min-h-screen bg-zinc-950 text-zinc-300 font-sans selection:bg-cyan-500/30 overflow-x-hidden">
-            
-            <QuantumBackground />
+  return (
+    <SceneFrame
+      background={<QuantumBackground />}
+      initialScene="1s"
+      className="bg-[#010208] text-slate-100 selection:bg-cyan-400/25"
+      maxWidthClassName="max-w-[1580px]"
+      headerBackground="rgba(1,3,11,0.58)"
+      header={
+        <DomainPageHeader
+          breadcrumbs={[
+            { label: "Natural Science", href: "/natural-science" },
+            { label: "Chemistry", href: "/natural-science/chemistry" },
+            { label: "Quantum Chemistry" },
+          ]}
+          eyebrow="Wavefunctions · probability · nodes · energy · bonding"
+          eyebrowStyle="dot"
+          icon={Orbit}
+          title={<span>Quantum Chemistry</span>}
+          subtitle="Quantum states replace miniature planetary paths with amplitudes and probability. Their shape, energy, and symmetry explain electronic structure, bonding, and spectroscopy."
+          accentRgb="34, 211, 238"
+          titleClassName="font-sans text-[clamp(2.5rem,4.7vw,5.25rem)] font-semibold leading-[0.86] tracking-[-0.062em] text-[#f7fbff]"
+          headerClassName="border-white/[0.08]"
+        />
+      }
+    >
+      <section className="mt-4">
+        <WorldWindow
+          density="compact"
+          eyebrow="Wavefunction observatory"
+          title="An orbital is a probability state, not a track."
+          description="Change the state and keep its controls, density map, nodes, and explanation in one visual field. Empty regions and phase changes are features of the wavefunction."
+          scenes={[...ORBITAL_SCENES]}
+        >
+          <OrbitalVisualizer compact />
+        </WorldWindow>
+      </section>
 
-            <div className="relative z-10 max-w-[85rem] mx-auto px-6 py-12 md:py-24">
-                
-                {/* HEADER */}
-                <header className="mb-16 border-b border-white/10 pb-8 backdrop-blur-sm">
-                    <Link href="/natural-science/chemistry" className="inline-flex items-center gap-2 text-zinc-500 hover:text-zinc-300 text-xs font-bold uppercase tracking-widest mb-6 transition-colors">
-                        <ArrowLeft size={14} /> Chemistry Hub
-                    </Link>
-                    
-                    <div className="flex items-center gap-3 mb-4">
-                        <span className="p-2 bg-black/50 border border-cyan-500/30 rounded-lg text-cyan-400 shadow-[0_0_15px_rgba(34,211,238,0.2)]">
-                            <Orbit size={24} />
-                        </span>
-                        <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-cyan-300/50">
-                            Physical Chemistry // Mechanics
-                        </span>
-                    </div>
-                    
-                    <h1 className="text-5xl md:text-7xl font-black text-white tracking-tighter mb-6">
-                        QUANTUM <br />
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-violet-400">CHEMISTRY</span>
-                    </h1>
-                    <p className="text-lg md:text-xl text-zinc-400 font-light max-w-3xl leading-relaxed">
-                        At the subatomic scale, classical physics breaks down. Electrons do not orbit the nucleus in neat circles; they exist in clouds of probability. Understanding chemical bonds requires understanding the wave nature of matter.
-                    </p>
-                </header>
+      <section className="mt-10 grid gap-5 xl:grid-cols-[minmax(0,1.08fr)_minmax(380px,0.92fr)]">
+        <Surface variant="glass" className="rounded-[30px] p-6 sm:p-7">
+          <div className="flex items-center gap-2 font-mono text-[11px] font-semibold uppercase tracking-[0.13em] text-cyan-200/72">
+            <Waves size={14} /> State evolution
+          </div>
+          <h2 className="mt-3 text-[clamp(1.9rem,3.5vw,3.5rem)] font-semibold leading-[0.95] tracking-[-0.052em] text-white">
+            The Schrödinger equation evolves amplitudes, not hidden classical trajectories.
+          </h2>
+          <p className="mt-4 max-w-3xl text-[15px] leading-7 text-slate-300/72">
+            The wavefunction <M>{String.raw`\Psi`}</M> carries the information used to predict measurement probabilities. Its time evolution is determined by the system&apos;s kinetic and potential energy.
+          </p>
+          <div className="mt-5 overflow-x-auto rounded-[18px] border border-cyan-100/[0.10] bg-black/[0.24] p-5 text-center text-[18px] text-white sm:text-[21px]">
+            <M display>{String.raw`i\hbar\frac{\partial}{\partial t}\Psi(\mathbf{r},t)=\hat{H}\Psi(\mathbf{r},t)`}</M>
+          </div>
+          <div className="mt-5 grid gap-3 sm:grid-cols-3">
+            <Concept
+              label="State"
+              text="The mathematical object containing amplitudes for possible outcomes."
+              rgb="34, 211, 238"
+            />
+            <Concept
+              label="Hamiltonian"
+              text="The operator representing the system's total energy and constraints."
+              rgb="192, 132, 252"
+            />
+            <Concept
+              label="Probability"
+              text="The squared magnitude of an amplitude predicts outcome frequency."
+              rgb="52, 211, 153"
+            />
+          </div>
+        </Surface>
 
-                {/* CORE CONTENT & LAB */}
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 mb-24">
-                    
-                    {/* LEFT: THEORETICAL TEXT */}
-                    <div className="lg:col-span-5 space-y-12">
-                        
-                        <section>
-                            <h2 className="text-2xl font-bold text-white mb-4 flex items-center gap-3">
-                                <Waves className="text-cyan-400" /> The Schrödinger Equation
-                            </h2>
-                            <p className="text-zinc-400 leading-relaxed font-light mb-6">
-                                The foundational equation of quantum mechanics. Instead of calculating the exact position of a particle, it calculates a wave function (<M>{String.raw`\Psi`}</M>), which describes the probability of finding an electron in a specific region of space.
-                            </p>
-                            
-                            {/* BLOCK MATH INTEGRATION */}
-                            <div className="p-6 bg-zinc-900/50 border border-white/10 rounded-xl flex justify-center overflow-x-auto text-xl text-white mb-6 shadow-inner">
-                                <M display>{String.raw`i\hbar\frac{\partial}{\partial t}\Psi(\mathbf{r},t) = \left[ -\frac{\hbar^2}{2\mu}\nabla^2 + V(\mathbf{r},t) \right] \Psi(\mathbf{r},t)`}</M>
-                            </div>
+        <Surface variant="ghost" className="rounded-[30px] p-6 sm:p-7">
+          <div className="flex items-center gap-2 font-mono text-[11px] font-semibold uppercase tracking-[0.13em] text-violet-200/72">
+            <Zap size={14} /> Measurement limit
+          </div>
+          <h2 className="mt-3 text-[clamp(1.8rem,3vw,3rem)] font-semibold leading-[0.97] tracking-[-0.048em] text-white">
+            Uncertainty is built into the state description.
+          </h2>
+          <p className="mt-4 text-[15px] leading-7 text-slate-300/70">
+            Position and momentum are represented by incompatible observables. Sharpening one distribution necessarily broadens the other; this is not merely an instrument defect.
+          </p>
+          <div className="mt-5 rounded-[18px] border border-violet-100/[0.11] bg-black/[0.24] p-5 text-center text-[21px] text-white">
+            <M display>{String.raw`\Delta x\,\Delta p\geq\frac{\hbar}{2}`}</M>
+          </div>
+          <div className="mt-5 rounded-[16px] border border-white/[0.08] bg-white/[0.018] p-4 text-[14px] leading-6 text-slate-300/68">
+            The probability cloud is therefore not a fuzzy drawing of an unknown orbit. It is a map of what the quantum state permits a position measurement to reveal.
+          </div>
+        </Surface>
+      </section>
 
-                            <p className="text-zinc-400 leading-relaxed font-light mt-4">
-                                When we solve this equation for a Hydrogen atom, the mathematical solutions give us 3D geometric shapes. These are the "orbitals" (<M>{String.raw`s, p, d, f`}</M>) where chemistry actually happens.
-                            </p>
-                            
-                            <div className="mt-6 border border-white/10 rounded-xl overflow-hidden shadow-inner">
-                                
-                            </div>
-                        </section>
+      <section className="mt-10">
+        <div className="max-w-5xl">
+          <div className="flex items-center gap-2 font-mono text-[11px] font-semibold uppercase tracking-[0.13em] text-emerald-200/72">
+            <Atom size={14} /> From states to chemistry
+          </div>
+          <h2 className="mt-3 text-[clamp(2rem,4vw,4.2rem)] font-semibold leading-[0.93] tracking-[-0.055em] text-white">
+            Quantum structure becomes chemical structure when states interact.
+          </h2>
+          <p className="mt-4 max-w-4xl text-[15px] leading-7 text-slate-300/70">
+            The same framework that shapes one-electron orbitals also explains electron configuration, bonding combinations, allowed transitions, and the spectral fingerprints used to infer molecular structure.
+          </p>
+        </div>
 
-                        <section className="pt-8 border-t border-white/5">
-                            <h2 className="text-2xl font-bold text-white mb-4 flex items-center gap-3">
-                                <Zap className="text-violet-400" /> Heisenberg Uncertainty
-                            </h2>
-                            <p className="text-zinc-400 leading-relaxed font-light mb-4">
-                                Why can't we just measure exactly where the electron is? The Heisenberg Uncertainty Principle states that there is a fundamental limit to how precisely we can know both the position (<M>{String.raw`x`}</M>) and momentum (<M>{String.raw`p`}</M>) of a quantum particle simultaneously.
-                            </p>
-                            
-                            {/* BLOCK MATH INTEGRATION */}
-                            <div className="p-6 bg-zinc-900/50 border border-white/10 rounded-xl flex justify-center text-xl text-white mb-4 shadow-inner">
-                                <M display>{String.raw`\Delta x \Delta p \ge \frac{\hbar}{2}`}</M>
-                            </div>
-                            
-                            <div className="p-5 bg-black/40 border-l-4 border-violet-500 text-sm text-zinc-300 font-serif italic rounded-r-xl mb-6">
-                                The more accurately you try to pin down an electron's location, the more erratic its speed and direction become. The "probability cloud" is not a failure of our measuring tools; it is a fundamental property of the universe.
-                            </div>
+        <div className="mt-6 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+          {MODULES.map((module) => (
+            <WorldSceneFocus key={module.title} scene={module.scene}>
+              <ModuleCard {...module} />
+            </WorldSceneFocus>
+          ))}
+        </div>
+      </section>
+    </SceneFrame>
+  );
+}
 
-                            <div className="border border-white/10 rounded-xl overflow-hidden shadow-inner">
-                                
-                            </div>
-                        </section>
+function Concept({
+  label,
+  text,
+  rgb,
+}: {
+  label: string;
+  text: string;
+  rgb: string;
+}) {
+  return (
+    <div className="rounded-[16px] border border-white/[0.08] bg-black/[0.18] p-4">
+      <div
+        className="font-mono text-[11px] font-semibold uppercase tracking-[0.09em]"
+        style={{ color: `rgba(${rgb},0.74)` }}
+      >
+        {label}
+      </div>
+      <p className="mt-2 text-[13px] leading-6 text-slate-400/72">{text}</p>
+    </div>
+  );
+}
 
-                    </div>
-
-                    {/* RIGHT: INTERACTIVE LAB */}
-                    <div className="lg:col-span-7">
-                        <div className="sticky top-24">
-                            <OrbitalVisualizer />
-                        </div>
-                    </div>
-
-                </div>
-
-                {/* BOTTOM: FUTURE INFRASTRUCTURE / ROUTING */}
-                <div className="pt-16 border-t border-white/10">
-                    <h2 className="text-2xl font-bold text-white mb-2 flex items-center gap-3">
-                        <Infinity className="text-cyan-400" /> Theoretical Modules
-                    </h2>
-                    <p className="text-zinc-500 font-light mb-8">Expand your quantum state space by initializing a sub-discipline.</p>
-                    
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                        {QUANTUM_MODULES.map((topic) => {
-                            const Icon = topic.icon;
-                            // Safe tailwind color mapping
-                            const borderHover = 
-                                topic.color === 'cyan' ? 'hover:border-cyan-500/50' :
-                                topic.color === 'violet' ? 'hover:border-violet-500/50' :
-                                topic.color === 'emerald' ? 'hover:border-emerald-500/50' :
-                                'hover:border-rose-500/50';
-                                
-                            const iconColor = 
-                                topic.color === 'cyan' ? 'text-cyan-400' :
-                                topic.color === 'violet' ? 'text-violet-400' :
-                                topic.color === 'emerald' ? 'text-emerald-400' :
-                                'text-rose-400';
-
-                            return (
-                                <Link key={topic.id} href={topic.href} className={`bg-black/40 border border-white/5 p-6 rounded-2xl transition-all duration-300 group hover:-translate-y-1 ${borderHover}`}>
-                                    <div className="flex items-start justify-between mb-4">
-                                        <div className={`p-3 bg-white/5 rounded-xl ${iconColor}`}>
-                                            <Icon size={24} />
-                                        </div>
-                                    </div>
-                                    <h3 className="font-bold text-white mb-2 group-hover:text-white transition-colors">
-                                        {topic.title}
-                                    </h3>
-                                    <p className="text-xs text-zinc-400 leading-relaxed">
-                                        {topic.description}
-                                    </p>
-                                </Link>
-                            );
-                        })}
-                    </div>
-                </div>
-
-            </div>
-        </main>
-    );
+function ModuleCard({
+  icon: Icon,
+  title,
+  question,
+  description,
+  rgb,
+}: {
+  icon: LucideIcon;
+  title: string;
+  question: string;
+  description: string;
+  rgb: string;
+}) {
+  return (
+    <Surface
+      variant="ghost"
+      className="flex min-h-[260px] flex-col rounded-[22px] p-5 transition hover:-translate-y-1 hover:bg-black/[0.28]"
+      style={{ borderColor: `rgba(${rgb},0.16)` }}
+    >
+      <span
+        className="flex h-11 w-11 items-center justify-center rounded-[14px] border"
+        style={{
+          color: `rgb(${rgb})`,
+          borderColor: `rgba(${rgb},0.28)`,
+          background: `rgba(${rgb},0.055)`,
+        }}
+      >
+        <Icon size={18} />
+      </span>
+      <h3 className="mt-5 text-[20px] font-semibold tracking-[-0.035em] text-white">
+        {title}
+      </h3>
+      <strong className="mt-3 block text-[13px] leading-5 text-slate-200/82">
+        {question}
+      </strong>
+      <p className="mt-2 text-[14px] leading-6 text-slate-400/70">
+        {description}
+      </p>
+      <span
+        className="mt-auto flex items-center gap-2 pt-5 font-mono text-[11px] font-semibold uppercase tracking-[0.09em]"
+        style={{ color: `rgba(${rgb},0.72)` }}
+      >
+        <Sparkles size={13} /> conceptual module
+      </span>
+    </Surface>
+  );
 }

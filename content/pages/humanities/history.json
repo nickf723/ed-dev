@@ -1,0 +1,121 @@
+{
+  "version": 1,
+  "id": "humanities.history",
+  "nodeId": "humanities.history",
+  "route": "/humanities/history",
+  "depth": "subject-hub",
+  "identity": {
+    "title": "History",
+    "eyebrow": "Evidence · context · change · continuity",
+    "subtitle": "The human past is too large for one path. Read it by time, by place, or by a recurring theme—then combine the lenses to explain how change happened.",
+    "icon": "BookOpen",
+    "breadcrumbs": [
+      { "label": "Humanities", "href": "/humanities" },
+      { "label": "History" }
+    ]
+  },
+  "theme": {
+    "family": "history",
+    "paletteId": "history-archive",
+    "typographyId": "humanities-editorial",
+    "accentRgb": "217, 119, 6",
+    "background": "archival-river",
+    "backgroundStrength": 1.35,
+    "density": "balanced",
+    "surface": "glass",
+    "surfaceOpacity": 0.12,
+    "panelRadius": "xl",
+    "sectionGap": "md",
+    "motion": "subtle",
+    "contentWidth": "standard",
+    "headerScale": "standard",
+    "borderStrength": "standard",
+    "shadow": "soft",
+    "displayFont": "serif",
+    "bodyFont": "sans",
+    "titleCase": "natural",
+    "eyebrowStyle": "rule"
+  },
+  "organization": {
+    "kind": "multiple-lenses",
+    "eyebrow": "Three ways into the past",
+    "title": "One history. Three coordinate systems.",
+    "description": "Each lens keeps different relationships visible. None is complete alone, and none is merely a different menu for the same list.",
+    "columns": 3,
+    "cardHeight": "standard",
+    "items": [
+      {
+        "id": "time",
+        "nodeId": "humanities.history.chronology",
+        "label": "History by Time",
+        "question": "When?",
+        "summary": "Follow sequence, duration, turning points, change, and continuity from deep human history to the present.",
+        "icon": "Clock",
+        "accentRgb": "217, 119, 6",
+        "colorRole": "primary",
+        "visual": "timeline",
+        "status": "active"
+      },
+      {
+        "id": "place",
+        "nodeId": "humanities.history.regional",
+        "label": "History by Place",
+        "question": "Where?",
+        "summary": "Compare local experiences and trace the movement of people, goods, ideas, institutions, and environments across regions.",
+        "icon": "Map",
+        "accentRgb": "16, 185, 129",
+        "colorRole": "secondary",
+        "visual": "map",
+        "status": "active"
+      },
+      {
+        "id": "theme",
+        "nodeId": "humanities.history.theme",
+        "label": "History by Theme",
+        "question": "What pattern?",
+        "summary": "Follow power, exchange, belief, technology, health, environment, and everyday life across many eras and places.",
+        "icon": "Lightbulb",
+        "accentRgb": "129, 140, 248",
+        "colorRole": "tertiary",
+        "visual": "network",
+        "status": "active"
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "printing-press",
+      "type": "case-study",
+      "eyebrow": "Combine the lenses",
+      "title": "The printing press is not only a date.",
+      "summary": "A historical explanation gets stronger when the same development is located in sequence, geography, and recurring human systems.",
+      "icon": "BookOpen",
+      "columns": [
+        {
+          "id": "time",
+          "label": "Time",
+          "question": "What changed before and after print became widespread?",
+          "answer": "Compare manuscript culture, expanding print networks, and later mass publishing.",
+          "accentRgb": "217, 119, 6",
+          "colorRole": "primary"
+        },
+        {
+          "id": "place",
+          "label": "Place",
+          "question": "Where did presses, books, and literacy move?",
+          "answer": "Trace cities, trade routes, language regions, states, and the uneven reach of print.",
+          "accentRgb": "16, 185, 129",
+          "colorRole": "secondary"
+        },
+        {
+          "id": "theme",
+          "label": "Theme",
+          "question": "Which systems did print reshape?",
+          "answer": "Follow effects on religion, politics, education, commerce, science, and public debate.",
+          "accentRgb": "129, 140, 248",
+          "colorRole": "tertiary"
+        }
+      ]
+    }
+  ]
+}

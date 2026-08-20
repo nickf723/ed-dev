@@ -1,120 +1,45 @@
-"use client";
-import { useEffect, useRef } from "react";
+const ALTITUDE_LINES = [18, 32, 48, 66, 82] as const;
 
 export default function AeroBackground() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+  return (
+    <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden bg-[#03101c]" aria-hidden="true">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_72%_18%,rgba(125,211,252,0.09),transparent_28%),radial-gradient(circle_at_18%_72%,rgba(251,146,60,0.055),transparent_30%),linear-gradient(180deg,#061828_0%,#03101c_50%,#020711_100%)]" />
 
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d")!;
+      <div className="absolute inset-[8%_5%_10%_6%] opacity-60">
+        {ALTITUDE_LINES.map((top, index) => (
+          <div key={top} className="absolute left-0 right-0 border-t border-sky-100/[0.045]" style={{ top: `${top}%` }}>
+            <span className="absolute -top-4 left-0 font-mono text-[7px] uppercase tracking-[0.13em] text-sky-100/14">band 0{index + 1}</span>
+          </div>
+        ))}
 
-    let w = (canvas.width = window.innerWidth);
-    let h = (canvas.height = window.innerHeight);
+        <svg viewBox="0 0 1000 600" preserveAspectRatio="none" className="absolute inset-0 h-full w-full">
+          <path d="M30 470 C180 390 300 355 438 338 C600 318 742 249 958 104" fill="none" stroke="rgba(125,211,252,0.10)" strokeWidth="1.5" strokeDasharray="7 8" />
+          <path d="M45 510 C206 460 380 450 558 408 C720 370 825 298 954 222" fill="none" stroke="rgba(251,146,60,0.075)" strokeWidth="1.1" />
+          <circle cx="438" cy="338" r="5" fill="rgba(125,211,252,0.18)" />
+          <circle cx="558" cy="408" r="4" fill="rgba(251,146,60,0.16)" />
+          <path d="M438 338 h74" stroke="rgba(226,232,240,0.065)" />
+          <path d="M558 408 v-72" stroke="rgba(226,232,240,0.055)" />
+        </svg>
+      </div>
 
-    class Particle {
-        x: number;
-        y: number;
-        vx: number;
-        vy: number;
-        history: {x: number, y: number}[];
+      <div className="absolute right-[8%] top-[12%] w-[330px] rounded-[28px] border border-sky-100/[0.035] bg-black/[0.035] p-5 opacity-52">
+        <div className="font-mono text-[8px] uppercase tracking-[0.14em] text-sky-100/18">flight state</div>
+        <div className="mt-4 grid grid-cols-2 gap-x-5 gap-y-3">
+          {['airspeed','angle','lift / weight','drag / thrust','stability','margin'].map((label, index) => (
+            <div key={label} className="border-b border-sky-100/[0.035] pb-1.5 font-mono text-[7px] uppercase tracking-[0.10em] text-slate-100/12"><span className="mr-2 text-sky-100/10">0{index + 1}</span>{label}</div>
+          ))}
+        </div>
+      </div>
 
-        constructor() {
-            this.x = Math.random() * w;
-            this.y = Math.random() * h;
-            this.vx = 2 + Math.random() * 2; // Flow speed
-            this.vy = 0;
-            this.history = [];
-        }
+      <div className="absolute bottom-[8%] left-[7%] w-[290px] opacity-45">
+        <div className="flex items-center gap-3 font-mono text-[7px] uppercase tracking-[0.13em] text-orange-100/14"><span>atmosphere</span><span className="h-px flex-1 bg-gradient-to-r from-orange-100/[0.07] to-transparent" /></div>
+        <div className="mt-3 flex items-center gap-3 font-mono text-[7px] uppercase tracking-[0.13em] text-violet-100/14"><span>orbit</span><span className="h-px flex-1 bg-gradient-to-r from-violet-100/[0.07] to-transparent" /></div>
+      </div>
 
-        update() {
-            // Airfoil Math (Simplified obstacle avoidance)
-            // Obstacle center
-            const ox = w / 2;
-            const oy = h / 2;
-            const radius = 100;
-
-            const dx = this.x - ox;
-            const dy = this.y - oy;
-            const dist = Math.sqrt(dx*dx + dy*dy);
-
-            // Flow Field Logic (Potential Flow approx)
-            if (dist < 200) {
-                // Deflect particles around the "wing" area
-                // Push Y away from center
-                const force = (200 - dist) / 200;
-                if (this.y < oy) this.vy -= force * 0.5;
-                if (this.y > oy) this.vy += force * 0.5;
-                
-                // Speed up over the top (Bernoulli!)
-                if (this.y < oy) this.vx += force * 1.5;
-            } else {
-                // Return to laminar flow
-                this.vy *= 0.95;
-                this.vx += (3 - this.vx) * 0.05;
-            }
-
-            this.x += this.vx;
-            this.y += this.vy;
-
-            // Trail
-            this.history.push({x: this.x, y: this.y});
-            if(this.history.length > 10) this.history.shift();
-
-            // Reset
-            if (this.x > w) {
-                this.x = -50;
-                this.y = Math.random() * h;
-                this.history = [];
-            }
-        }
-
-        draw() {
-            if (this.history.length < 2) return;
-            ctx.beginPath();
-            ctx.moveTo(this.history[0].x, this.history[0].y);
-            for(let i=1; i<this.history.length; i++) {
-                ctx.lineTo(this.history[i].x, this.history[i].y);
-            }
-            // Color based on speed (High speed = Red/Orange, Low = Blue/White)
-            const speed = Math.sqrt(this.vx*this.vx + this.vy*this.vy);
-            const r = Math.min(255, (speed - 2) * 100);
-            const b = Math.max(100, 255 - (speed - 2) * 50);
-            
-            ctx.strokeStyle = `rgba(${r}, 200, ${b}, 0.2)`;
-            ctx.stroke();
-        }
-    }
-
-    const particles = Array.from({ length: 300 }, () => new Particle());
-
-    const animate = () => {
-      ctx.fillStyle = "#0f172a"; // Stratosphere Blue
-      ctx.fillRect(0, 0, w, h);
-
-      particles.forEach(p => {
-          p.update();
-          p.draw();
-      });
-
-      // Draw Airfoil Silhouette (Ghostly)
-      ctx.beginPath();
-      ctx.ellipse(w/2, h/2, 100, 25, 0.2, 0, Math.PI*2);
-      ctx.fillStyle = "rgba(255,255,255,0.02)";
-      ctx.fill();
-
-      requestAnimationFrame(animate);
-    };
-
-    const animId = requestAnimationFrame(animate);
-    const handleResize = () => { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; };
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-        window.removeEventListener("resize", handleResize);
-        cancelAnimationFrame(animId);
-    };
-  }, []);
-
-  return <canvas ref={canvasRef} className="fixed inset-0 z-0 pointer-events-none" />;
+      <div className="absolute inset-0 opacity-[0.07] [background-image:linear-gradient(rgba(186,230,253,0.09)_1px,transparent_1px),linear-gradient(90deg,rgba(186,230,253,0.09)_1px,transparent_1px)] [background-size:44px_44px]" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_26%,rgba(1,5,10,0.76)_100%)]" />
+      <div className="absolute inset-x-0 top-0 h-[20%] bg-gradient-to-b from-[#03101c] via-[#03101c]/82 to-transparent" />
+      <div className="absolute inset-x-0 bottom-0 h-[25%] bg-gradient-to-t from-[#020711] via-[#020711]/90 to-transparent" />
+    </div>
+  );
 }

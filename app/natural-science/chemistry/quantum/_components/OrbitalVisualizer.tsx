@@ -1,123 +1,343 @@
 "use client";
-import React, { useEffect, useRef, useState } from 'react';
-import { Orbit, RefreshCw } from 'lucide-react';
 
-type OrbitalType = '1s' | '2s' | '2px' | '2py';
+import { useEffect, useRef, useState } from "react";
+import { Orbit, ScanSearch } from "lucide-react";
+import { Surface, useWorldDirector } from "@/app/_page-system/scene";
 
-export default function OrbitalVisualizer() {
-    const canvasRef = useRef<HTMLCanvasElement>(null);
-    const [orbital, setOrbital] = useState<OrbitalType>('1s');
+type OrbitalType = "1s" | "2s" | "2px" | "2py";
+type Particle = {
+  x: number;
+  y: number;
+  alpha: number;
+  life: number;
+  phase: number;
+};
 
-    useEffect(() => {
-        const canvas = canvasRef.current;
-        if (!canvas) return;
-        const ctx = canvas.getContext('2d');
-        if (!ctx) return;
+const ORBITAL_COPY: Record<
+  OrbitalType,
+  { label: string; nodes: string; meaning: string }
+> = {
+  "1s": {
+    label: "1s orbital",
+    nodes: "No radial or angular nodes",
+    meaning:
+      "The lowest-energy hydrogen-like orbital concentrates probability around the nucleus without a preferred direction.",
+  },
+  "2s": {
+    label: "2s orbital",
+    nodes: "One radial node",
+    meaning:
+      "An inner and outer probability region are separated by a radius where the wavefunction passes through zero.",
+  },
+  "2px": {
+    label: "2pₓ orbital",
+    nodes: "One angular node",
+    meaning:
+      "Two lobes carry opposite wavefunction phase and are separated by a nodal plane through the nucleus.",
+  },
+  "2py": {
+    label: "2pᵧ orbital",
+    nodes: "One angular node",
+    meaning:
+      "The same p-orbital shape is oriented along a different spatial axis, showing that orientation is part of the quantum state.",
+  },
+};
 
-        let animationFrameId: number;
-        const particles: { x: number, y: number, alpha: number, life: number }[] = [];
-        const maxParticles = 2000;
+export default function OrbitalVisualizer({
+  compact = false,
+}: {
+  compact?: boolean;
+}) {
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const director = useWorldDirector();
+  const [localOrbital, setLocalOrbital] = useState<OrbitalType>("1s");
+  const directedScene: string | null = director.scene;
+  const orbital: OrbitalType = isOrbital(directedScene)
+    ? directedScene
+    : localOrbital;
+  const copy = ORBITAL_COPY[orbital];
 
-        const render = () => {
-            // Fade effect to create trailing probability clouds
-            ctx.fillStyle = 'rgba(9, 9, 11, 0.2)'; 
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
-            const cx = canvas.width / 2;
-            const cy = canvas.height / 2;
+  function chooseOrbital(next: OrbitalType) {
+    setLocalOrbital(next);
+    director.pinScene(next);
+  }
 
-            // Add new particles based on orbital probability density
-            for (let i = 0; i < 20; i++) {
-                if (particles.length < maxParticles) {
-                    let r = 0, theta = 0;
+  useEffect(() => {
+    const canvasElement = canvasRef.current;
+    if (!canvasElement) return;
+    const drawingContext = canvasElement.getContext("2d");
+    if (!drawingContext) return;
+    const canvas: HTMLCanvasElement = canvasElement;
+    const context: CanvasRenderingContext2D = drawingContext;
+    const reducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    const particles: Particle[] = [];
+    const maximum = compact ? 1700 : 2300;
 
-                    // Simplified Probability Distribution Functions
-                    if (orbital === '1s') {
-                        // Dense near center, fading out spherically
-                        r = (Math.random() * Math.random()) * 80;
-                        theta = Math.random() * Math.PI * 2;
-                    } else if (orbital === '2s') {
-                        // Node in the middle (empty space), then an outer ring
-                        r = Math.random() > 0.5 ? (Math.random() * 30) : 70 + (Math.random() * 40);
-                        theta = Math.random() * Math.PI * 2;
-                    } else if (orbital === '2px') {
-                        // Dumbbell along X axis
-                        const lobe = Math.random() > 0.5 ? 1 : -1;
-                        r = Math.random() * 90;
-                        // Skew angle towards 0 or 180 degrees
-                        theta = (Math.random() * 1.5 - 0.75) + (lobe === -1 ? Math.PI : 0);
-                    } else if (orbital === '2py') {
-                        // Dumbbell along Y axis
-                        const lobe = Math.random() > 0.5 ? 1 : -1;
-                        r = Math.random() * 90;
-                        // Skew angle towards 90 or 270 degrees
-                        theta = (Math.random() * 1.5 - 0.75) + (lobe === -1 ? Math.PI / 2 : (Math.PI * 3) / 2);
-                    }
+    let width = 1;
+    let height = 1;
+    let ratio = 1;
+    let frame = 0;
+    let previous = performance.now();
 
-                    particles.push({
-                        x: cx + r * Math.cos(theta),
-                        y: cy + r * Math.sin(theta),
-                        alpha: Math.random() * 0.8 + 0.2,
-                        life: Math.random() * 50 + 50
-                    });
-                }
-            }
+    function resize() {
+      const bounds = canvas.getBoundingClientRect();
+      width = Math.max(280, bounds.width);
+      height = Math.max(compact ? 280 : 380, bounds.height);
+      ratio = Math.min(window.devicePixelRatio || 1, 1.65);
+      canvas.width = Math.floor(width * ratio);
+      canvas.height = Math.floor(height * ratio);
+      context.setTransform(ratio, 0, 0, ratio, 0, 0);
+      particles.length = 0;
+      draw(performance.now(), 0);
+    }
 
-            // Draw and age particles
-            for (let i = particles.length - 1; i >= 0; i--) {
-                const p = particles[i];
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, 1.5, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(34, 211, 238, ${p.alpha * (p.life / 100)})`; // Cyan-400
-                ctx.fill();
+    function emit(count: number) {
+      const centerX = width / 2;
+      const centerY = height / 2;
+      const scale = Math.min(width, height) * (compact ? 0.38 : 0.34);
+      for (
+        let index = 0;
+        index < count && particles.length < maximum;
+        index += 1
+      ) {
+        const sample = sampleOrbital(orbital);
+        particles.push({
+          x: centerX + sample.x * scale,
+          y: centerY + sample.y * scale,
+          alpha: 0.28 + Math.random() * 0.66,
+          life: 70 + Math.random() * 100,
+          phase: sample.phase,
+        });
+      }
+    }
 
-                p.life -= 1;
-                if (p.life <= 0) particles.splice(i, 1);
-            }
+    function draw(_now: number, delta: number) {
+      context.setTransform(ratio, 0, 0, ratio, 0, 0);
+      context.fillStyle = reducedMotion
+        ? "rgba(2,6,12,1)"
+        : "rgba(2,6,12,0.18)";
+      context.fillRect(0, 0, width, height);
 
-            animationFrameId = requestAnimationFrame(render);
-        };
+      const centerX = width / 2;
+      const centerY = height / 2;
+      const scale = Math.min(width, height) * (compact ? 0.38 : 0.34);
+      drawAxes(context, centerX, centerY, scale, orbital);
+      emit(
+        reducedMotion
+          ? compact
+            ? 650
+            : 900
+          : Math.max(12, Math.round(16 + delta * 420)),
+      );
 
-        render();
-        return () => cancelAnimationFrame(animationFrameId);
-    }, [orbital]);
+      context.save();
+      context.globalCompositeOperation = "lighter";
+      for (let index = particles.length - 1; index >= 0; index -= 1) {
+        const particle = particles[index];
+        const lifeRatio = Math.min(1, particle.life / 80);
+        const rgb = particle.phase > 0 ? "34,211,238" : "192,132,252";
+        context.fillStyle = `rgba(${rgb},${particle.alpha * lifeRatio})`;
+        context.beginPath();
+        context.arc(
+          particle.x,
+          particle.y,
+          compact ? 1 + lifeRatio * 0.65 : 1.15 + lifeRatio * 0.85,
+          0,
+          Math.PI * 2,
+        );
+        context.fill();
+        if (!reducedMotion) particle.life -= 1;
+        if (particle.life <= 0) particles.splice(index, 1);
+      }
+      context.restore();
 
-    return (
-        <div className="w-full bg-zinc-950/80 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden shadow-2xl">
-            <div className="bg-zinc-900 border-b border-white/5 p-5 flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                    <div className="p-2 bg-cyan-500/20 border border-cyan-500/30 rounded-lg">
-                        <Orbit size={18} className="text-cyan-400" />
-                    </div>
-                    <div>
-                        <h3 className="text-white font-bold tracking-wide">Probability Density</h3>
-                        <p className="text-[10px] text-zinc-500 font-mono uppercase tracking-widest">Wave Function Visualizer</p>
-                    </div>
-                </div>
-            </div>
+      const core = context.createRadialGradient(
+        centerX,
+        centerY,
+        0,
+        centerX,
+        centerY,
+        compact ? 24 : 30,
+      );
+      core.addColorStop(0, "rgba(255,255,255,0.96)");
+      core.addColorStop(0.18, "rgba(250,204,21,0.62)");
+      core.addColorStop(1, "rgba(250,204,21,0)");
+      context.fillStyle = core;
+      context.beginPath();
+      context.arc(centerX, centerY, compact ? 24 : 30, 0, Math.PI * 2);
+      context.fill();
+    }
 
-            <div className="p-6 md:p-8 flex flex-col items-center">
-                <div className="relative w-full max-w-sm aspect-square bg-black/50 border border-white/5 rounded-full mb-8 overflow-hidden flex items-center justify-center shadow-inner">
-                    <canvas ref={canvasRef} width={400} height={400} className="w-full h-full" />
-                    {/* Crosshairs */}
-                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-20">
-                        <div className="w-full h-px bg-cyan-500" />
-                        <div className="absolute h-full w-px bg-cyan-500" />
-                    </div>
-                </div>
+    function loop(now: number) {
+      const delta = Math.min(0.042, (now - previous) / 1000);
+      previous = now;
+      draw(now, delta);
+      frame = requestAnimationFrame(loop);
+    }
 
-                <div className="grid grid-cols-4 gap-2 w-full max-w-sm">
-                    {(['1s', '2s', '2px', '2py'] as OrbitalType[]).map(orb => (
-                        <button
-                            key={orb}
-                            onClick={() => setOrbital(orb)}
-                            className={`py-2 rounded-lg text-xs font-bold font-mono transition-all border ${orbital === orb ? 'bg-cyan-500/20 border-cyan-500/50 text-cyan-300' : 'bg-zinc-900 border-zinc-800 text-zinc-500 hover:border-zinc-700 hover:text-white'}`}
-                        >
-                            {orb}
-                        </button>
-                    ))}
-                </div>
-            </div>
+    const observer = new ResizeObserver(resize);
+    observer.observe(canvas);
+    resize();
+    if (!reducedMotion) frame = requestAnimationFrame(loop);
+
+    return () => {
+      observer.disconnect();
+      cancelAnimationFrame(frame);
+    };
+  }, [compact, orbital]);
+
+  return (
+    <Surface
+      variant="ghost"
+      className={`overflow-hidden rounded-[26px] ${compact ? "h-full" : ""}`}
+    >
+      <div className="flex flex-col gap-2 border-b border-white/[0.08] px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-5">
+        <div>
+          <div className="flex items-center gap-2 font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-cyan-200/72">
+            <Orbit size={14} /> Probability density
+          </div>
+          <h3 className="mt-1 text-[20px] font-semibold tracking-[-0.035em] text-white sm:text-[22px]">
+            {copy.label}
+          </h3>
         </div>
-    );
+        <span className="inline-flex items-center gap-2 self-start rounded-full border border-white/[0.08] bg-black/[0.20] px-3 py-1.5 text-[12px] text-slate-300/68 sm:self-auto">
+          <ScanSearch size={14} /> sampled, not an electron path
+        </span>
+      </div>
+
+      <canvas
+        ref={canvasRef}
+        className={
+          compact
+            ? "h-[330px] w-full border-b border-white/[0.08] 2xl:h-[350px]"
+            : "h-[520px] w-full border-b border-white/[0.08]"
+        }
+      />
+
+      <div
+        className={
+          compact
+            ? "grid gap-3 p-4 xl:grid-cols-[minmax(0,1fr)_minmax(280px,0.78fr)]"
+            : "p-5 sm:p-6"
+        }
+      >
+        <div className="grid grid-cols-4 gap-2">
+          {(["1s", "2s", "2px", "2py"] as OrbitalType[]).map(
+            (option) => {
+              const selected = orbital === option;
+              return (
+                <button
+                  key={option}
+                  type="button"
+                  onClick={() => chooseOrbital(option)}
+                  onMouseEnter={() => director.previewSceneById(option)}
+                  onMouseLeave={() => director.previewSceneById(null)}
+                  onFocus={() => director.previewSceneById(option)}
+                  onBlur={() => director.previewSceneById(null)}
+                  className={`min-h-[44px] rounded-[12px] border px-2 py-2 text-[13px] font-semibold transition ${
+                    selected
+                      ? "border-cyan-200/[0.34] bg-cyan-300/[0.09] text-cyan-100"
+                      : "border-white/[0.08] bg-white/[0.018] text-slate-400 hover:bg-white/[0.05] hover:text-white"
+                  }`}
+                >
+                  {option}
+                </button>
+              );
+            },
+          )}
+        </div>
+
+        <div
+          className={
+            compact
+              ? "grid gap-2 sm:grid-cols-[150px_minmax(0,1fr)] xl:grid-cols-1"
+              : "mt-5 grid gap-3 sm:grid-cols-[220px_minmax(0,1fr)]"
+          }
+        >
+          <div className="rounded-[14px] border border-white/[0.08] bg-black/[0.18] p-3">
+            <div className="font-mono text-[11px] font-semibold uppercase tracking-[0.09em] text-cyan-200/62">
+              Nodes
+            </div>
+            <div className="mt-1.5 text-[13px] font-medium text-white">
+              {copy.nodes}
+            </div>
+          </div>
+          <p className="rounded-[14px] border border-white/[0.08] bg-black/[0.18] p-3 text-[13px] leading-5 text-slate-300/70">
+            {copy.meaning}
+          </p>
+        </div>
+      </div>
+    </Surface>
+  );
+}
+
+function isOrbital(value: string | null): value is OrbitalType {
+  return value === "1s" || value === "2s" || value === "2px" || value === "2py";
+}
+
+function sampleOrbital(orbital: OrbitalType) {
+  const angle = Math.random() * Math.PI * 2;
+  if (orbital === "1s") {
+    const radius = Math.pow(Math.random(), 1.9) * 0.94;
+    return {
+      x: Math.cos(angle) * radius,
+      y: Math.sin(angle) * radius,
+      phase: 1,
+    };
+  }
+  if (orbital === "2s") {
+    const inner = Math.random() < 0.38;
+    const radius = inner
+      ? Math.sqrt(Math.random()) * 0.28
+      : 0.48 + Math.sqrt(Math.random()) * 0.48;
+    return {
+      x: Math.cos(angle) * radius,
+      y: Math.sin(angle) * radius,
+      phase: inner ? 1 : -1,
+    };
+  }
+  const lobe = Math.random() < 0.5 ? -1 : 1;
+  const major = lobe * (0.18 + Math.pow(Math.random(), 0.75) * 0.78);
+  const minor = (Math.random() - 0.5) * (0.18 + Math.abs(major) * 0.42);
+  return orbital === "2px"
+    ? { x: major, y: minor, phase: lobe }
+    : { x: minor, y: major, phase: lobe };
+}
+
+function drawAxes(
+  context: CanvasRenderingContext2D,
+  centerX: number,
+  centerY: number,
+  scale: number,
+  orbital: OrbitalType,
+) {
+  context.save();
+  context.strokeStyle = "rgba(125,211,252,0.12)";
+  context.lineWidth = 1;
+  context.setLineDash([4, 9]);
+  context.beginPath();
+  context.moveTo(centerX - scale, centerY);
+  context.lineTo(centerX + scale, centerY);
+  context.moveTo(centerX, centerY - scale);
+  context.lineTo(centerX, centerY + scale);
+  context.stroke();
+  context.setLineDash([]);
+
+  if (orbital === "2s") {
+    context.strokeStyle = "rgba(255,255,255,0.14)";
+    context.beginPath();
+    context.arc(centerX, centerY, scale * 0.36, 0, Math.PI * 2);
+    context.stroke();
+  }
+  if (orbital === "2px" || orbital === "2py") {
+    context.fillStyle = "rgba(255,255,255,0.035)";
+    if (orbital === "2px") {
+      context.fillRect(centerX - 1.5, centerY - scale, 3, scale * 2);
+    } else {
+      context.fillRect(centerX - scale, centerY - 1.5, scale * 2, 3);
+    }
+  }
+  context.restore();
 }

@@ -1,130 +1,179 @@
+import Link from "next/link";
+import DomainPageHeader from "@/app/_components/DomainPageHeader";
+import { SceneFrame } from "@/app/_page-system/scene";
+import { requireCurriculumPageContext } from "@/lib/curriculum/page-context";
+import type { CurriculumNode } from "@/lib/curriculum/types";
+import type { LucideIcon } from "lucide-react";
 import {
   Archive,
+  ArrowRight,
   BookOpen,
+  Boxes,
+  FileSearch,
+  FolderArchive,
+  GraduationCap,
   Library,
   Search,
   ShieldCheck,
   Tags,
+  Users,
 } from "lucide-react";
-import DomainPageHeader from "@/app/_components/DomainPageHeader";
+import LibraryWorld from "./LibraryWorld";
+import StewardshipLab from "./StewardshipLab";
+
+const NODE_ID = "applied.library-science";
+
+type BranchMeta = {
+  icon: LucideIcon;
+  code: string;
+  rgb: string;
+  short: string;
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+};
+
+const BRANCH_META: Record<string, BranchMeta> = {
+  "applied.library-science.collection-development": { icon: BookOpen, code: "COL", rgb: "251,191,36", short: "select · acquire · license · retain · evaluate", x: 4, y: 7, w: 27, h: 18 },
+  "applied.library-science.cataloging-metadata": { icon: Tags, code: "CAT", rgb: "34,211,238", short: "identify · describe · relate · authorize", x: 4, y: 30, w: 27, h: 18 },
+  "applied.library-science.classification-organization": { icon: Boxes, code: "ORG", rgb: "96,165,250", short: "classify · arrange · browse · expose bias", x: 4, y: 53, w: 27, h: 18 },
+  "applied.library-science.reference-services": { icon: FileSearch, code: "REF", rgb: "52,211,153", short: "clarify questions · search · refer · support research", x: 36, y: 7, w: 28, h: 20 },
+  "applied.library-science.information-literacy": { icon: GraduationCap, code: "ILI", rgb: "244,114,182", short: "frame questions · evaluate sources · teach discovery", x: 36, y: 34, w: 28, h: 17 },
+  "applied.library-science.management-community": { icon: Users, code: "MGT", rgb: "253,186,116", short: "staff · spaces · programs · partnerships · mission", x: 36, y: 58, w: 28, h: 17 },
+  "applied.library-science.archives-special-collections": { icon: Archive, code: "ARC", rgb: "167,139,250", short: "provenance · appraisal · arrangement · finding aids", x: 69, y: 7, w: 27, h: 18 },
+  "applied.library-science.preservation-conservation": { icon: ShieldCheck, code: "PRE", rgb: "134,239,172", short: "stabilize · house · treat · plan for loss", x: 69, y: 30, w: 27, h: 18 },
+  "applied.library-science.digital-libraries": { icon: FolderArchive, code: "DIG", rgb: "96,165,250", short: "ingest · store · fixity · migrate · interoperate", x: 69, y: 53, w: 27, h: 18 },
+  "applied.library-science.ethics-access": { icon: ShieldCheck, code: "ETH", rgb: "192,132,252", short: "privacy · intellectual freedom · rights · accessibility · stewardship", x: 17, y: 80, w: 66, h: 13 },
+};
 
 const FUNCTIONS = [
-  {
-    title: "Organize",
-    detail: "Describe collections with metadata, classification, controlled vocabularies, and relationships.",
-    icon: Tags,
-    rgb: "34, 211, 238",
-  },
-  {
-    title: "Preserve",
-    detail: "Keep records, media, and cultural memory usable across changing formats, systems, and time.",
-    icon: Archive,
-    rgb: "167, 139, 250",
-  },
-  {
-    title: "Retrieve",
-    detail: "Design indexes, catalogs, search systems, and discovery tools that connect questions to sources.",
-    icon: Search,
-    rgb: "96, 165, 250",
-  },
-  {
-    title: "Provide Access",
-    detail: "Balance openness, privacy, copyright, stewardship, accessibility, and community needs.",
-    icon: ShieldCheck,
-    rgb: "52, 211, 153",
-  },
+  { title: "Organize", detail: "Describe and arrange resources so people and systems can distinguish, relate, browse, and discover them.", icon: Tags, rgb: "34,211,238" },
+  { title: "Preserve", detail: "Keep physical and digital materials intelligible and usable across wear, disasters, changing formats, and time.", icon: Archive, rgb: "167,139,250" },
+  { title: "Retrieve", detail: "Connect questions with sources through catalogs, indexes, finding aids, search strategies, reference work, and discovery systems.", icon: Search, rgb: "96,165,250" },
+  { title: "Provide access", detail: "Design services around use while negotiating privacy, intellectual freedom, copyright, accessibility, restrictions, and stewardship obligations.", icon: ShieldCheck, rgb: "52,211,153" },
 ] as const;
 
-const FLOW = ["Acquire", "Describe", "Index", "Preserve", "Retrieve"] as const;
-
 export default function LibrarySciencePage() {
-  return (
-    <main className="relative min-h-screen overflow-hidden bg-[#05090d] text-slate-100 selection:bg-cyan-400/25">
-      <div className="pointer-events-none fixed inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(34,211,238,0.13),transparent_29%),radial-gradient(circle_at_18%_78%,rgba(96,165,250,0.08),transparent_28%),linear-gradient(135deg,#05090d,#070910_52%,#05080c)]" />
-      <div className="pointer-events-none fixed inset-0 opacity-45 [background-image:linear-gradient(rgba(34,211,238,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(34,211,238,0.03)_1px,transparent_1px)] [background-size:44px_44px]" />
-      <div className="pointer-events-none fixed inset-0 overflow-hidden">
-        <div className="absolute right-[7%] top-[13%] grid grid-cols-5 gap-2 opacity-[0.055]">
-          {Array.from({ length: 30 }, (_, index) => (
-            <div key={index} className="h-10 w-7 rounded-sm border border-cyan-200" />
-          ))}
-        </div>
-        <div className="absolute bottom-[5%] left-[6%] text-[180px] font-semibold leading-none text-cyan-100/[0.018]">Aa</div>
-      </div>
+  const { node } = requireCurriculumPageContext(NODE_ID);
+  const children = node.children ?? [];
 
-      <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-[1500px] flex-col px-4 py-4 sm:px-6 lg:px-8 lg:py-5">
+  return (
+    <SceneFrame
+      background={<LibraryWorld />}
+      className="bg-[#05090d] text-slate-100 selection:bg-cyan-300/25"
+      maxWidthClassName="max-w-[1680px]"
+      headerBackground="rgba(5,9,13,0.55)"
+      header={
         <DomainPageHeader
-          breadcrumbs={[
-            { label: "Home", href: "/" },
-            { label: "Applied Sciences", href: "/applied-science" },
-            { label: "Library Science" },
-          ]}
-          eyebrow="Organize · Preserve · Retrieve · Access"
+          breadcrumbs={[{ label: "Home", href: "/" }, { label: "Applied Sciences", href: "/applied-science" }, { label: "Library Science" }]}
+          eyebrow="Collections · description · preservation · discovery · access · service"
+          eyebrowStyle="rule"
           icon={Library}
           title={<span>Library Science</span>}
-          subtitle="Build systems that make knowledge describable, durable, discoverable, and usable across people, collections, and time."
+          subtitle="Steward collections and information services so resources remain describable, durable, discoverable, interpretable, and usable across formats, communities, rights, technologies, institutions, and time."
           accentRgb="34, 211, 238"
-          titleClassName="text-[clamp(3.0rem,5.5vw,5.5rem)] font-semibold leading-[0.84] tracking-[-0.06em] text-white"
-          iconClassName="rounded-[18px]"
+          titleClassName="font-sans text-[clamp(2.8rem,5.4vw,5.9rem)] font-semibold leading-[0.84] tracking-[-0.064em] text-[#ecfeff]"
+          headerClassName="border-cyan-100/[0.10]"
         />
-
-        <section className="relative mt-4 grid min-h-0 flex-1 gap-4 lg:grid-cols-[minmax(0,1.55fr)_minmax(300px,0.85fr)]">
-          <div className="grid min-h-0 gap-3 sm:grid-cols-2">
-            {FUNCTIONS.map((item) => {
-              const Icon = item.icon;
-              return (
-                <article
-                  key={item.title}
-                  className="relative overflow-hidden rounded-[22px] border p-5 backdrop-blur-xl"
-                  style={{
-                    borderColor: `rgba(${item.rgb},0.22)`,
-                    background: `linear-gradient(145deg, rgba(${item.rgb},0.095), rgba(5,9,13,0.78) 56%, rgba(5,9,13,0.66))`,
-                  }}
-                >
-                  <span
-                    className="flex h-11 w-11 items-center justify-center rounded-xl border"
-                    style={{
-                      color: `rgb(${item.rgb})`,
-                      borderColor: `rgba(${item.rgb},0.32)`,
-                      background: `rgba(${item.rgb},0.07)`,
-                    }}
-                  >
-                    <Icon size={20} strokeWidth={1.55} />
-                  </span>
-                  <h2 className="mt-5 text-xl font-semibold tracking-[-0.03em] text-white">{item.title}</h2>
-                  <p className="mt-3 max-w-md text-sm leading-6 text-slate-400">{item.detail}</p>
-                </article>
-              );
-            })}
+      }
+    >
+      <section className="relative isolate mt-5 border-y border-cyan-100/[0.10] py-5 sm:py-6">
+        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(5,9,13,0.28),transparent_28%,transparent_72%,rgba(5,9,13,0.24))] backdrop-blur-[5px]" />
+        <div className="relative grid gap-4 lg:grid-cols-[minmax(0,1fr)_420px] lg:items-end">
+          <div className="-mx-3 rounded-[20px] bg-[#071019]/[0.30] px-3 py-2 backdrop-blur-[20px]">
+            <div className="font-mono text-[11px] font-semibold uppercase tracking-[0.10em] text-cyan-100/66">Primary navigation · stewardship floor</div>
+            <h2 className="mt-1 max-w-5xl text-[clamp(1.8rem,3.2vw,3rem)] font-semibold leading-[0.96] tracking-[-0.046em] text-white">Move through the work that keeps a collection meaningful, findable, durable, and usable.</h2>
+            <p className="mt-2 max-w-4xl text-[14px] leading-6 text-slate-300/76">This is a conceptual service floor, not a recommended architectural plan. The zones expose relationships among direct branches; real libraries combine, distribute, outsource, or overlap these functions in many different ways.</p>
           </div>
+          <div className="grid grid-cols-2 gap-2">
+            <Neighbor href="/formal-science/information-science" label="Information Science" note="representation · retrieval · information systems" />
+            <Neighbor href="/humanities/history" label="History" note="sources · context · interpretation" />
+          </div>
+        </div>
 
-          <aside className="relative overflow-hidden rounded-[24px] border border-cyan-300/18 bg-black/25 p-5 backdrop-blur-xl">
-            <div className="pointer-events-none absolute -right-16 -top-16 h-52 w-52 rounded-full bg-cyan-400/[0.08] blur-3xl" />
-            <div className="relative flex h-full flex-col">
-              <div className="flex items-center gap-3">
-                <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-cyan-300/20 bg-cyan-400/[0.06] text-cyan-300">
-                  <BookOpen size={18} />
-                </span>
-                <h2 className="text-lg font-semibold text-white">Information lifecycle</h2>
-              </div>
+        <LibraryServiceFloor children={children} />
+      </section>
 
-              <div className="mt-7 grid gap-2">
-                {FLOW.map((stage, index) => (
-                  <div key={stage} className="grid grid-cols-[38px_minmax(0,1fr)] items-center gap-3 rounded-xl border border-white/[0.06] bg-white/[0.02] px-3 py-2.5">
-                    <span className="font-mono text-[9px] text-cyan-300/75">{String(index + 1).padStart(2, "0")}</span>
-                    <span className="text-sm font-semibold text-slate-200">{stage}</span>
-                  </div>
-                ))}
-              </div>
+      <section className="mt-8">
+        <div className="mb-3 grid gap-3 border-b border-cyan-100/[0.08] pb-3 lg:grid-cols-[minmax(0,1fr)_430px] lg:items-end">
+          <div className="rounded-[18px] bg-[#071019]/[0.18] px-3 py-2 backdrop-blur-[14px]"><div className="font-mono text-[11px] font-semibold uppercase tracking-[0.10em] text-cyan-100/60">Stewardship instrument · after the field map</div><h2 className="mt-1 text-[clamp(1.55rem,2.6vw,2.45rem)] font-semibold tracking-[-0.042em] text-white">The object changes what stewardship has to protect.</h2></div>
+          <p className="rounded-[16px] bg-[#071019]/[0.18] px-3 py-2 text-[14px] leading-6 text-slate-300/72 backdrop-blur-[14px]">The same lifecycle questions behave differently for a circulating book, rare manuscript, oral-history recording, or born-digital collection. The lab keeps those object-specific tradeoffs separate from the field navigation above.</p>
+        </div>
+        <StewardshipLab />
+      </section>
 
-              <div className="mt-auto border-t border-white/[0.07] pt-5">
-                <p className="text-sm leading-6 text-slate-500">
-                  Library science sits where information science, history, technology, language, law, design, and public service meet. The collection is only useful when people can trust it and find what they need.
-                </p>
-              </div>
-            </div>
-          </aside>
-        </section>
-      </div>
-    </main>
+      <section className="mt-8 border-t border-cyan-100/[0.09] pt-5">
+        <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_430px] lg:items-end">
+          <div className="rounded-[18px] bg-[#071019]/[0.16] px-3 py-2 backdrop-blur-[14px]"><div className="font-mono text-[11px] font-semibold uppercase tracking-[0.10em] text-violet-100/58">Core stewardship functions · reference, not navigation</div><h2 className="mt-2 max-w-4xl text-[clamp(1.8rem,3.2vw,3rem)] font-semibold leading-[0.96] tracking-[-0.048em] text-white">Organization, preservation, retrieval, and access form a loop around people and collections, not a one-way conveyor belt.</h2></div>
+          <p className="rounded-[16px] bg-[#071019]/[0.16] px-3 py-2 text-[14px] leading-6 text-slate-300/72 backdrop-blur-[14px]">Libraries also acquire and license resources, teach research and information-literacy practices, manage spaces and technology, build community services, document decisions, evaluate use, and negotiate ethical or legal tensions. The four functions below are a compact lens, not the whole profession.</p>
+        </div>
+        <div className="mt-5 grid border-y border-white/[0.07] md:grid-cols-2 xl:grid-cols-4">
+          {FUNCTIONS.map((item, index) => <FunctionStrip key={item.title} item={item} number={`0${index + 1}`} />)}
+        </div>
+      </section>
+    </SceneFrame>
   );
+}
+
+function LibraryServiceFloor({ children }: { children: readonly CurriculumNode[] }) {
+  return (
+    <nav aria-label="Library Science conceptual service floor" className="relative mt-5 overflow-hidden border border-cyan-100/[0.11] bg-[#071019]/[0.30] shadow-[0_30px_95px_rgba(0,0,0,0.18)] backdrop-blur-[22px] backdrop-saturate-[1.07]">
+      <div className="relative hidden min-h-[660px] lg:block">
+        <div className="pointer-events-none absolute inset-[4%]">
+          <div className="absolute inset-x-[31%] top-[5%] bottom-[20%] border-x border-cyan-100/[0.055] bg-cyan-100/[0.008]" />
+          <div className="absolute left-[31%] right-[31%] top-[28%] h-px bg-cyan-100/[0.07]" />
+          <div className="absolute left-[31%] right-[31%] top-[52%] h-px bg-cyan-100/[0.07]" />
+          <div className="absolute left-[31%] right-[31%] top-[77%] h-px bg-cyan-100/[0.07]" />
+          <div className="absolute left-[33%] right-[33%] top-[45%] rounded-[16px] border border-cyan-100/[0.08] bg-[#071019]/55 px-4 py-3 text-center backdrop-blur-[16px]">
+            <span className="font-mono text-[10px] uppercase tracking-[0.08em] text-cyan-100/52">collection + circulation spine</span>
+            <span className="mt-1 block text-[12px] leading-5 text-slate-400">objects, records, requests, rights, and stewardship decisions move between service zones</span>
+          </div>
+        </div>
+
+        <div className="absolute inset-[4%]">
+          {children.map((child, index) => <LibraryZone key={child.id} child={child} index={index} />)}
+        </div>
+        <div className="absolute bottom-3 left-4 rounded-full bg-[#071019]/60 px-2.5 py-1 font-mono text-[9px] uppercase tracking-[0.07em] text-cyan-100/44 backdrop-blur-[14px]">conceptual service floor · not a building prescription</div>
+        <div className="absolute bottom-3 right-4 rounded-full bg-[#071019]/60 px-2.5 py-1 font-mono text-[9px] uppercase tracking-[0.07em] text-slate-500 backdrop-blur-[14px]">planned zones define direct curriculum branches</div>
+      </div>
+
+      <div className="grid gap-2 p-3 sm:grid-cols-2 lg:hidden">
+        {children.map((child, index) => <MobileLibraryZone key={child.id} child={child} index={index} />)}
+      </div>
+    </nav>
+  );
+}
+
+function LibraryZone({ child, index }: { child: CurriculumNode; index: number }) {
+  const meta = BRANCH_META[child.id] ?? { icon: Library, code: `L${index + 1}`, rgb: "148,163,184", short: child.description ?? "Explore this library-science field.", x: 36, y: 36, w: 28, h: 18 };
+  const Icon = meta.icon;
+  const active = child.status === "active";
+  const content = (
+    <div className={`group absolute flex flex-col border bg-[#071019]/[0.56] px-3 py-3 shadow-[0_14px_45px_rgba(0,0,0,0.18)] backdrop-blur-[18px] transition ${active ? "hover:bg-[#071019]/[0.70]" : "opacity-58"}`} style={{ left: `${meta.x}%`, top: `${meta.y}%`, width: `${meta.w}%`, height: `${meta.h}%`, borderColor: `rgba(${meta.rgb},0.18)` }}>
+      <div className="flex items-center justify-between gap-2"><span className="flex h-8 w-8 items-center justify-center rounded-full border" style={{ color: `rgb(${meta.rgb})`, borderColor: `rgba(${meta.rgb},0.25)`, background: `rgba(${meta.rgb},0.04)` }}><Icon size={13} /></span><span className="font-mono text-[9px] uppercase tracking-[0.06em] text-slate-500">{active ? "open" : "planned"}</span></div>
+      <span className="mt-2 font-mono text-[9px] font-semibold uppercase tracking-[0.06em]" style={{ color: `rgba(${meta.rgb},0.68)` }}>{meta.code}</span>
+      <strong className="mt-0.5 text-[13px] leading-4 text-white/90">{child.label}</strong>
+      <span className="mt-1 text-[11px] leading-4 text-slate-400">{meta.short}</span>
+      {active ? <span className="mt-auto flex items-center justify-end gap-1 font-mono text-[9px] uppercase tracking-[0.06em]" style={{ color: `rgba(${meta.rgb},0.66)` }}>open zone <ArrowRight size={10} className="transition group-hover:translate-x-1" /></span> : null}
+    </div>
+  );
+  return active ? <Link href={child.href ?? "#"}>{content}</Link> : <div aria-disabled="true">{content}</div>;
+}
+
+function MobileLibraryZone({ child, index }: { child: CurriculumNode; index: number }) {
+  const meta = BRANCH_META[child.id] ?? { icon: Library, code: `L${index + 1}`, rgb: "148,163,184", short: child.description ?? "Explore this library-science field.", x: 0, y: 0, w: 0, h: 0 };
+  const Icon = meta.icon;
+  const active = child.status === "active";
+  const content = <div className={`group grid min-h-[96px] grid-cols-[40px_minmax(0,1fr)_18px] gap-2 border bg-[#071019]/[0.42] px-3 py-3 backdrop-blur-[18px] ${active ? "" : "opacity-58"}`} style={{ borderColor: `rgba(${meta.rgb},0.16)` }}><span className="flex h-9 w-9 items-center justify-center rounded-full border" style={{ color: `rgb(${meta.rgb})`, borderColor: `rgba(${meta.rgb},0.24)` }}><Icon size={13} /></span><span><span className="font-mono text-[9px] uppercase tracking-[0.06em]" style={{ color: `rgba(${meta.rgb},0.64)` }}>{meta.code}</span><strong className="mt-0.5 block text-[12px] text-white/88">{child.label}</strong><span className="mt-1 block text-[11px] leading-4 text-slate-400">{meta.short}</span></span>{active ? <ArrowRight size={12} className="mt-2 text-slate-400 transition group-hover:translate-x-1" /> : null}</div>;
+  return active ? <Link href={child.href ?? "#"}>{content}</Link> : <div aria-disabled="true">{content}</div>;
+}
+
+function Neighbor({ href, label, note }: { href: string; label: string; note: string }) {
+  return <Link href={href} className="group flex min-h-[72px] flex-col justify-between border border-white/[0.08] bg-[#071019]/[0.34] px-3 py-2.5 backdrop-blur-[18px] transition hover:bg-[#071019]/[0.46]"><span className="text-[12px] font-semibold text-white/86">{label}</span><span className="flex items-end justify-between gap-2"><span className="text-[10px] leading-4 text-slate-400">{note}</span><ArrowRight size={12} className="text-slate-400 transition group-hover:translate-x-1" /></span></Link>;
+}
+
+function FunctionStrip({ item, number }: { item: (typeof FUNCTIONS)[number]; number: string }) {
+  const Icon = item.icon;
+  return <div className="grid min-h-[160px] grid-cols-[42px_minmax(0,1fr)] gap-2 border-b border-white/[0.06] bg-[#071019]/[0.14] px-4 py-4 backdrop-blur-[12px] xl:border-r xl:border-b-0 xl:last:border-r-0"><span className="font-mono text-[10px]" style={{ color: `rgba(${item.rgb},0.48)` }}>{number}</span><span><span className="flex h-8 w-8 items-center justify-center rounded-full border" style={{ color: `rgb(${item.rgb})`, borderColor: `rgba(${item.rgb},0.24)` }}><Icon size={13} /></span><strong className="mt-2 block text-[13px]" style={{ color: `rgba(${item.rgb},0.84)` }}>{item.title}</strong><span className="mt-2 block text-[12px] leading-5 text-slate-400">{item.detail}</span></span></div>;
 }

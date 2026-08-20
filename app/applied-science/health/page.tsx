@@ -1,190 +1,162 @@
-"use client";
-import React from 'react';
-import Link from 'next/link';
-import { 
-  Activity, Microscope, TestTube, 
-  Stethoscope, Syringe, Scissors, 
-  Apple, Dumbbell, Brain, Globe, 
-  ArrowRight, Lock, 
-  HeartPulse
-} from 'lucide-react';
-import HealthBackground from './_components/HealthBackground';
+import Link from "next/link";
+import DomainPageHeader from "@/app/_components/DomainPageHeader";
+import { SceneFrame } from "@/app/_page-system/scene";
+import { requireCurriculumPageContext } from "@/lib/curriculum/page-context";
+import type { CurriculumNode } from "@/lib/curriculum/types";
+import type { LucideIcon } from "lucide-react";
+import {
+  Activity,
+  Apple,
+  ArrowRight,
+  Dumbbell,
+  Globe,
+  HeartPulse,
+  Microscope,
+  Network,
+  Stethoscope,
+  TestTube,
+  Users,
+} from "lucide-react";
+import HealthBackground from "./_components/HealthBackground";
+import CareNetworkLab from "./CareNetworkLab";
 
-type Lesson = {
-  id: string;
-  title: string;
-  subtitle: string;
-  description: string;
-  icon: React.ReactNode;
-  href: string;
-  color: string;
-  status?: 'locked' | 'open';
+const NODE_ID = "applied.health";
+
+type BranchMeta = { icon: LucideIcon; code: string; rgb: string; x: number; y: number };
+
+const BRANCH_META: Record<string, BranchMeta> = {
+  "applied.health.nursing": { icon: HeartPulse, code: "NUR", rgb: "244,114,182", x: 18, y: 20 },
+  "applied.health.public-health": { icon: Globe, code: "PH", rgb: "94,234,212", x: 82, y: 25 },
+  "applied.health.epidemiology-biostatistics": { icon: Activity, code: "EPI", rgb: "125,211,252", x: 82, y: 73 },
+  "applied.health.rehabilitation": { icon: Dumbbell, code: "REH", rgb: "251,191,36", x: 23, y: 54 },
+  "applied.health.nutrition-dietetics": { icon: Apple, code: "NUT", rgb: "134,239,172", x: 39, y: 34 },
+  "applied.health.diagnostic-sciences": { icon: Microscope, code: "DIA", rgb: "147,197,253", x: 46, y: 70 },
+  "applied.health.respiratory-care": { icon: Stethoscope, code: "RESP", rgb: "103,232,249", x: 39, y: 15 },
+  "applied.health.community-environmental": { icon: Users, code: "COM", rgb: "110,231,183", x: 69, y: 43 },
+  "applied.health.informatics-systems": { icon: Network, code: "HIS", rgb: "192,132,252", x: 66, y: 78 },
+  "applied.health.specializations": { icon: TestTube, code: "ATLAS", rgb: "253,164,175", x: 55, y: 50 },
 };
 
-const LESSONS: Lesson[] = [
-  {
-    id: 'anatomy',
-    title: 'Anatomy & Physiology',
-    subtitle: 'The Biological Machine',
-    description: 'The structural mapping and functional systems of the human body.',
-    icon: <Activity size={20} className="text-cyan-500" />,
-    href: 'applied-science/health/anatomy',
-    color: 'cyan'
-  },
-  {
-    id: 'pathology',
-    title: 'Pathology & Immunology',
-    subtitle: 'System Failures',
-    description: 'The study of disease, pathogens, and the body\'s cellular defense mechanisms.',
-    icon: <Microscope size={20} className="text-rose-500" />,
-    href: 'applied-science/health/pathology',
-    color: 'rose'
-  },
-  {
-    id: 'pharmacology',
-    title: 'Pharmacology',
-    subtitle: 'Chemical Intervention',
-    description: 'How drugs interact with biological systems to alter function or treat disease.',
-    icon: <TestTube size={20} className="text-purple-500" />,
-    href: 'applied-science/health/pharmacology',
-    color: 'purple'
-  },
-  {
-    id: 'clinical',
-    title: 'Clinical Practice',
-    subtitle: 'Medicine & Nursing',
-    description: 'The applied science of patient diagnosis, care, and treatment protocols.',
-    icon: <Stethoscope size={20} className="text-blue-500" />,
-    href: 'applied-science/health/clinical',
-    color: 'blue'
-  },
-  {
-    id: 'surgery',
-    title: 'Surgery',
-    subtitle: 'Mechanical Intervention',
-    description: 'Operative manual and instrumental techniques to investigate or treat conditions.',
-    icon: <Scissors size={20} className="text-zinc-400" />,
-    href: 'applied-science/health/surgery',
-    color: 'zinc'
-  },
-  {
-    id: 'mental-health',
-    title: 'Psychiatry & Psychology',
-    subtitle: 'The Cognitive System',
-    description: 'The intersection of neurology and behavior, focusing on mental health.',
-    icon: <Brain size={20} className="text-indigo-500" />,
-    href: 'applied-science/health/mental-health',
-    color: 'indigo'
-  },
-  {
-    id: 'nutrition',
-    title: 'Nutrition & Dietetics',
-    subtitle: 'System Fuel',
-    description: 'The biochemical processing of macronutrients and their impact on longevity.',
-    icon: <Apple size={20} className="text-green-500" />,
-    href: 'applied-science/health/nutrition',
-    color: 'green'
-  },
-  {
-    id: 'kinesiology',
-    title: 'Kinesiology & Fitness',
-    subtitle: 'Movement Optimization',
-    description: 'Biomechanics, physical conditioning, and rehabilitative sciences.',
-    icon: <Dumbbell size={20} className="text-amber-500" />,
-    href: 'applied-science/health/kinesiology',
-    color: 'amber'
-  },
-  {
-    id: 'public-health',
-    title: 'Public Health',
-    subtitle: 'Macro Epidemiology',
-    description: 'Health outcomes, disease tracking, and preventative measures at the population scale.',
-    icon: <Globe size={20} className="text-teal-500" />,
-    href: 'applied-science/health/public-health',
-    color: 'teal'
-  },
-  {
-    id: 'specializations',
-    title: 'Specializations',
-    subtitle: 'Specialized Fields',
-    description: 'Explore the various specialized fields within health sciences.',
-    icon: <HeartPulse size={20} className="text-pink-500" />,
-    href: 'applied-science/health/specializations',
-    color: 'pink'
-  }
-];
-
 export default function HealthHubPage() {
+  const { node } = requireCurriculumPageContext(NODE_ID);
+  const children = node.children ?? [];
+
   return (
-    <main className="relative min-h-screen bg-black overflow-hidden selection:bg-rose-900/30 font-sans">
-      <HealthBackground />
-      
-      <div className="relative z-10 max-w-7xl mx-auto px-6 py-24">
-         
-         {/* HEADER */}
-         <div className="mb-20">
-             <div className="flex items-center gap-3 text-rose-500 mb-4 font-mono text-sm tracking-widest uppercase">
-                 <span className="w-8 h-px bg-rose-500"></span>
-                 Life Sciences
-             </div>
-             <h1 className="text-6xl md:text-8xl font-black text-white mb-6 tracking-tighter">
-                 HEALTH SCIENCES
-             </h1>
-             <p className="text-xl text-neutral-400 max-w-2xl leading-relaxed">
-                 The study of the most complex machine known to science: The Human Body. 
-                 Explore how it is <span className="text-white font-bold">structured</span>, how it <span className="text-rose-400 font-bold">breaks</span>, and how we <span className="text-cyan-400 font-bold">fix</span> it.
-             </p>
-         </div>
+    <SceneFrame
+      background={<HealthBackground />}
+      className="bg-[#07100f] text-slate-100 selection:bg-teal-300/25"
+      maxWidthClassName="max-w-[1680px]"
+      headerBackground="rgba(7,16,15,0.54)"
+      header={
+        <DomainPageHeader
+          breadcrumbs={[{ label: "Home", href: "/" }, { label: "Applied Sciences", href: "/applied-science" }, { label: "Health Sciences" }]}
+          eyebrow="Professions · prevention · rehabilitation · population · systems"
+          eyebrowStyle="rule"
+          icon={HeartPulse}
+          title={<span>Health Sciences</span>}
+          subtitle="Study health as a coordinated human and systems problem. Health sciences connect patient care, prevention, rehabilitation, nutrition, diagnostics, population measurement, community conditions, informatics, and professional collaboration across settings and time."
+          accentRgb="94, 234, 212"
+          titleClassName="font-sans text-[clamp(2.8rem,5.4vw,5.9rem)] font-semibold leading-[0.84] tracking-[-0.064em] text-[#ecfeff]"
+          headerClassName="border-teal-100/[0.10]"
+        />
+      }
+    >
+      <section className="relative isolate mt-5 border-y border-teal-100/[0.10] py-5 sm:py-6">
+        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(6,20,18,0.26),transparent_28%,transparent_72%,rgba(6,20,18,0.22))] backdrop-blur-[5px]" />
+        <div className="relative grid gap-4 lg:grid-cols-[minmax(0,1fr)_420px] lg:items-end">
+          <div className="-mx-3 rounded-[20px] bg-[#071613]/[0.28] px-3 py-2 backdrop-blur-[20px]">
+            <div className="font-mono text-[12px] font-semibold uppercase tracking-[0.10em] text-teal-100/66">Primary navigation · field orientation</div>
+            <h2 className="mt-1 max-w-5xl text-[clamp(1.9rem,3.3vw,3.1rem)] font-semibold leading-[0.96] tracking-[-0.046em] text-white">Where does a health-science question sit between a person, a population, direct care, and the systems that support both?</h2>
+            <p className="mt-3 max-w-4xl text-[14px] leading-6 text-slate-300/72">The positions below are an orientation aid, not a ranking or scope-of-practice chart. Every field can cross both axes depending on setting, role, population, question, and jurisdiction.</p>
+          </div>
+          <div className="grid grid-cols-2 gap-2">
+            <Neighbor href="/applied-science/medicine" label="Medicine" note="diagnosis · treatment · clinical reasoning" />
+            <Neighbor href="/social-science/psychology" label="Psychology" note="mind · behavior · cognition" />
+          </div>
+        </div>
 
-         {/* ONTOLOGY GRID */}
-         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-             {LESSONS.map((lesson, idx) => {
-                 const isLocked = lesson.status === 'locked';
+        <HealthOrientationMap children={children} />
+      </section>
 
-                 return (
-                 <Link 
-                    key={lesson.id}
-                    href={isLocked ? '#' : lesson.href}
-                    className={`
-                        group relative p-8 rounded-2xl border transition-all duration-300 flex flex-col
-                        ${
-                            isLocked
-                            ? 'bg-neutral-900/20 border-neutral-800 cursor-not-allowed opacity-60 grayscale' 
-                            : 'bg-neutral-900/40 border-neutral-800 hover:bg-neutral-900 hover:border-rose-500/30 hover:-translate-y-1 hover:shadow-2xl'}
-                    `}
-                 >
-                    <div className="flex justify-between items-start mb-6">
-                        <div className={`p-3 rounded-xl bg-black border border-neutral-800 group-hover:border-${lesson.color}-500/50 transition-colors`}>
-                            {lesson.icon}
-                        </div>
-                        <div className="text-xs font-black text-neutral-700 font-mono">
-                            HS.{String(idx + 1).padStart(2, '0')}
-                        </div>
-                    </div>
+      <section className="mt-9">
+        <div className="mb-4 grid gap-3 border-b border-teal-100/[0.08] pb-3 lg:grid-cols-[minmax(0,1fr)_430px] lg:items-end">
+          <div className="rounded-[18px] bg-[#071613]/[0.18] px-3 py-2 backdrop-blur-[14px]"><div className="font-mono text-[12px] font-semibold uppercase tracking-[0.09em] text-teal-100/60">Coordination instrument · after the field map</div><h2 className="mt-1 text-[clamp(1.65rem,2.7vw,2.55rem)] font-semibold tracking-[-0.042em] text-white">A useful handoff preserves the person, the evidence, and the next responsibility.</h2></div>
+          <p className="rounded-[16px] bg-[#071613]/[0.18] px-3 py-2 text-[13px] leading-6 text-slate-400/74 backdrop-blur-[14px]">The fictional care-network lab keeps the task non-prescriptive: it shows how different professions and settings contribute information and continuity without pretending to issue clinical orders.</p>
+        </div>
+        <CareNetworkLab />
+      </section>
 
-                    <h3 className="text-xl font-bold text-white mb-1 group-hover:text-rose-400 transition-colors">
-                        {lesson.title}
-                    </h3>
-                    <div className="text-[10px] font-bold text-neutral-500 uppercase tracking-wide mb-4">
-                        {lesson.subtitle}
-                    </div>
-                    <p className="text-sm text-neutral-400 leading-relaxed mb-8 flex-1">
-                        {lesson.description}
-                    </p>
-
-                    <div className="pt-6 border-t border-neutral-800 flex items-center justify-between text-xs font-bold uppercase tracking-widest">
-                        {isLocked ? (
-                            <span className="text-neutral-600 flex items-center gap-2"><Lock size={12}/> Locked</span>
-                        ) : (
-                            <span className="text-rose-500 flex items-center gap-2 group-hover:gap-3 transition-all">Enter <ArrowRight size={12}/></span>
-                        )}
-                    </div>
-                 </Link>
-                 );
-             })}
-         </div>
-
-      </div>
-    </main>
+      <section className="mt-9 border-t border-teal-100/[0.09] pt-5">
+        <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_430px] lg:items-end">
+          <div className="rounded-[18px] bg-[#071613]/[0.16] px-3 py-2 backdrop-blur-[14px]"><div className="font-mono text-[12px] font-semibold uppercase tracking-[0.09em] text-emerald-100/56">Health-science guardrails · reference, not navigation</div><h2 className="mt-2 max-w-4xl text-[clamp(1.8rem,3.2vw,3rem)] font-semibold leading-[0.96] tracking-[-0.048em] text-white">No single profession, measurement, or setting owns the whole picture.</h2></div>
+          <p className="rounded-[16px] bg-[#071613]/[0.16] px-3 py-2 text-[14px] leading-6 text-slate-300/70 backdrop-blur-[14px]">Scopes of practice, workflows, resources, access, and professional roles vary across jurisdictions and institutions. This parent maps disciplines and coordination questions, not clinical orders or individualized health advice.</p>
+        </div>
+        <div className="mt-5 grid border-y border-white/[0.07] md:grid-cols-2 xl:grid-cols-4">
+          <Guardrail number="01" title="Person before pathway" text="Care systems should preserve goals, context, language, access needs, daily life, and preferences rather than reducing a person to a service queue." />
+          <Guardrail number="02" title="Roles overlap, scopes differ" text="Collaboration does not erase professional boundaries. Training, licensure, local practice, setting, and task determine who can do what." />
+          <Guardrail number="03" title="Close the loop" text="A referral, result, education plan, or discharge message is not complete merely because it was sent. Responsibility and follow-up need to survive the handoff." />
+          <Guardrail number="04" title="Population and individual differ" text="A population pattern can guide programs and questions without determining what is true or appropriate for a particular person." />
+        </div>
+      </section>
+    </SceneFrame>
   );
+}
+
+function HealthOrientationMap({ children }: { children: readonly CurriculumNode[] }) {
+  return (
+    <nav aria-label="Health Sciences orientation map" className="relative mt-5 overflow-hidden rounded-[26px] border border-teal-100/[0.11] bg-[#071613]/[0.30] shadow-[0_30px_95px_rgba(0,0,0,0.18)] backdrop-blur-[22px] backdrop-saturate-[1.07]">
+      <div className="hidden min-h-[620px] lg:block">
+        <div className="pointer-events-none absolute inset-[8%_6%_10%_7%]">
+          <div className="absolute left-0 right-0 top-1/2 h-px bg-gradient-to-r from-pink-200/10 via-teal-100/17 to-cyan-200/10" />
+          <div className="absolute bottom-0 top-0 left-1/2 w-px bg-gradient-to-b from-rose-200/10 via-teal-100/17 to-violet-200/10" />
+          <span className="absolute -left-1 top-[47%] rounded-full bg-[#071613]/78 px-2.5 py-1.5 font-mono text-[11px] uppercase tracking-[0.07em] text-pink-100/58 backdrop-blur-md">person / encounter</span>
+          <span className="absolute -right-1 top-[47%] rounded-full bg-[#071613]/78 px-2.5 py-1.5 font-mono text-[11px] uppercase tracking-[0.07em] text-teal-100/58 backdrop-blur-md">population / system</span>
+          <span className="absolute left-[51%] top-0 rounded-full bg-[#071613]/78 px-2.5 py-1.5 font-mono text-[11px] uppercase tracking-[0.07em] text-rose-100/58 backdrop-blur-md">direct support / intervention</span>
+          <span className="absolute bottom-0 left-[51%] rounded-full bg-[#071613]/78 px-2.5 py-1.5 font-mono text-[11px] uppercase tracking-[0.07em] text-violet-100/58 backdrop-blur-md">measurement / coordination / infrastructure</span>
+        </div>
+
+        <div className="absolute inset-[9%_7%_11%_8%]">
+          {children.map((child, index) => <OrientationStation key={child.id} child={child} index={index} />)}
+        </div>
+
+        <div className="absolute bottom-3 left-4 rounded-full bg-[#071613]/72 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.07em] text-teal-100/48 backdrop-blur-[14px]">orientation only · fields cross axes in real practice</div>
+        <div className="absolute bottom-3 right-4 rounded-full bg-[#071613]/72 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.07em] text-slate-500 backdrop-blur-[14px]">active routes open · planned routes remain visible</div>
+      </div>
+
+      <div className="grid gap-2 p-3 sm:grid-cols-2 lg:hidden">
+        {children.map((child, index) => <MobileOrientationStation key={child.id} child={child} index={index} />)}
+      </div>
+    </nav>
+  );
+}
+
+function OrientationStation({ child, index }: { child: CurriculumNode; index: number }) {
+  const meta = BRANCH_META[child.id] ?? { icon: Activity, code: `HS${index + 1}`, rgb: "148,163,184", x: 50, y: 50 };
+  const Icon = meta.icon;
+  const active = child.status === "active";
+  const body = (
+    <div className={`group absolute w-[210px] -translate-x-1/2 -translate-y-1/2 rounded-[16px] border bg-[#071613]/[0.64] px-3.5 py-3.5 shadow-[0_16px_45px_rgba(0,0,0,0.18)] backdrop-blur-[18px] transition ${active ? "hover:-translate-y-[54%] hover:bg-[#071613]/[0.76]" : "opacity-52"}`} style={{ left: `${meta.x}%`, top: `${meta.y}%`, borderColor: `rgba(${meta.rgb},0.20)` }}>
+      <div className="flex items-center justify-between gap-2"><span className="flex h-9 w-9 items-center justify-center rounded-full border" style={{ color: `rgb(${meta.rgb})`, borderColor: `rgba(${meta.rgb},0.28)`, background: `rgba(${meta.rgb},0.05)` }}><Icon size={14} /></span><span className="font-mono text-[10px] uppercase tracking-[0.06em] text-slate-500">{active ? "open" : "planned"}</span></div>
+      <span className="mt-2 block font-mono text-[10px] font-semibold uppercase tracking-[0.06em]" style={{ color: `rgba(${meta.rgb},0.68)` }}>{meta.code}</span>
+      <strong className="mt-0.5 block text-[13px] leading-5 text-white/88">{child.label}</strong>
+      {active ? <span className="mt-2 flex items-center justify-end gap-1 font-mono text-[10px] uppercase tracking-[0.06em]" style={{ color: `rgba(${meta.rgb},0.64)` }}>open field <ArrowRight size={11} className="transition group-hover:translate-x-1" /></span> : null}
+    </div>
+  );
+  return active ? <Link href={child.href ?? "#"}>{body}</Link> : <div aria-disabled="true">{body}</div>;
+}
+
+function MobileOrientationStation({ child, index }: { child: CurriculumNode; index: number }) {
+  const meta = BRANCH_META[child.id] ?? { icon: Activity, code: `HS${index + 1}`, rgb: "148,163,184", x: 50, y: 50 };
+  const Icon = meta.icon;
+  const active = child.status === "active";
+  const body = <div className={`group grid min-h-[100px] grid-cols-[42px_minmax(0,1fr)_20px] gap-2 border bg-[#071613]/[0.46] px-3.5 py-3.5 backdrop-blur-[18px] ${active ? "" : "opacity-52"}`} style={{ borderColor: `rgba(${meta.rgb},0.18)` }}><span className="flex h-9 w-9 items-center justify-center rounded-full border" style={{ color: `rgb(${meta.rgb})`, borderColor: `rgba(${meta.rgb},0.26)` }}><Icon size={14} /></span><span><span className="font-mono text-[10px] uppercase tracking-[0.06em]" style={{ color: `rgba(${meta.rgb},0.64)` }}>{meta.code}</span><strong className="mt-0.5 block text-[13px] text-white/86">{child.label}</strong><span className="mt-1 block text-[11px] leading-5 text-slate-400/72">orientation: {meta.x < 50 ? "person-facing" : "population/system-facing"} · {meta.y < 50 ? "direct/support" : "measurement/coordination"}</span></span>{active ? <ArrowRight size={12} className="mt-2 text-slate-400 transition group-hover:translate-x-1" /> : null}</div>;
+  return active ? <Link href={child.href ?? "#"}>{body}</Link> : <div aria-disabled="true">{body}</div>;
+}
+
+function Neighbor({ href, label, note }: { href: string; label: string; note: string }) {
+  return <Link href={href} className="group flex min-h-[76px] flex-col justify-between rounded-[15px] border border-white/[0.08] bg-[#071613]/[0.34] px-3.5 py-3 backdrop-blur-[18px] transition hover:bg-[#071613]/[0.46]"><span className="text-[13px] font-semibold text-white/86">{label}</span><span className="flex items-end justify-between gap-2"><span className="text-[11px] leading-4 text-slate-400/72">{note}</span><ArrowRight size={12} className="text-slate-400 transition group-hover:translate-x-1" /></span></Link>;
+}
+
+function Guardrail({ number, title, text }: { number: string; title: string; text: string }) {
+  return <div className="grid min-h-[150px] grid-cols-[40px_minmax(0,1fr)] gap-3 border-b border-white/[0.06] bg-[#071613]/[0.14] px-4 py-4 backdrop-blur-[12px] xl:border-r xl:border-b-0 xl:last:border-r-0"><span className="font-mono text-[11px] text-teal-100/40">{number}</span><span><strong className="text-[13px] text-white/84">{title}</strong><span className="mt-2 block text-[12px] leading-5 text-slate-400/74">{text}</span></span></div>;
 }

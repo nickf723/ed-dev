@@ -1,10 +1,12 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
-import { motion } from "framer-motion";
-import { Brain, Network, Shuffle, Activity } from "lucide-react";
+
+import { useEffect, useRef, useState } from "react";
+import { Brain, Network } from "lucide-react";
+
+const NETWORK_COLORS = ["#f87171", "#60a5fa", "#4ade80"] as const;
 
 export default function BrainStateWidget() {
-  const [entropy, setEntropy] = useState(0); // 0 = Rigid, 1 = Chaos
+  const [mixing, setMixing] = useState(38);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -13,118 +15,108 @@ export default function BrainStateWidget() {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    let animId: number;
     const w = canvas.width;
     const h = canvas.height;
     const cx = w / 2;
     const cy = h / 2;
-    const r = 80;
+    const radius = 84;
+    const nodes = Array.from({ length: 12 }, (_, index) => {
+      const angle = (index / 12) * Math.PI * 2 - Math.PI / 2;
+      return {
+        x: cx + Math.cos(angle) * radius,
+        y: cy + Math.sin(angle) * radius,
+        group: index % 3,
+      };
+    });
 
-    // Brain Regions (Nodes in a circle)
-    const nodes: {x: number, y: number, group: number}[] = [];
-    const count = 12;
-    
-    for(let i=0; i<count; i++) {
-        const a = (i / count) * Math.PI * 2;
-        nodes.push({
-            x: cx + Math.cos(a) * r,
-            y: cy + Math.sin(a) * r,
-            group: i % 3 // 3 functional networks (e.g. Visual, Motor, DMN)
-        });
-    }
+    ctx.clearRect(0, 0, w, h);
+    const crossWeight = mixing / 100;
+    const withinWeight = 1 - crossWeight * 0.55;
 
-    const draw = () => {
-        ctx.clearRect(0, 0, w, h);
+    nodes.forEach((a, i) => {
+      nodes.forEach((b, j) => {
+        if (i >= j) return;
+        const sameGroup = a.group === b.group;
+        const visible = sameGroup ? ((i + j) % 2 === 0 || withinWeight > 0.65) : ((i * 7 + j * 3) % 10) / 10 < crossWeight;
+        if (!visible) return;
+        ctx.beginPath();
+        ctx.moveTo(a.x, a.y);
+        ctx.lineTo(b.x, b.y);
+        ctx.lineWidth = sameGroup ? 1.5 : 1;
+        ctx.strokeStyle = sameGroup
+          ? `rgba(226,232,240,${0.10 + withinWeight * 0.18})`
+          : `rgba(217,70,239,${0.08 + crossWeight * 0.34})`;
+        ctx.stroke();
+      });
+    });
 
-        // Draw Connections
-        // Low Entropy: Only connect within groups (Segregation)
-        // High Entropy: Connect everything (Integration/Desegregation)
-        
-        ctx.lineWidth = 1;
-        
-        nodes.forEach((n1, i) => {
-            nodes.forEach((n2, j) => {
-                if (i >= j) return;
-                
-                const sameGroup = n1.group === n2.group;
-                
-                // Probability of connection
-                // If entropy is low, only sameGroup connects high prob
-                // If entropy is high, cross-group connects high prob
-                
-                let probability = 0;
-                if (sameGroup) probability = 1 - entropy * 0.5; // Weakens slightly
-                else probability = entropy; // Strenghtens significantly
-                
-                if (Math.random() < probability) { // Flicker effect for "firing"
-                     ctx.beginPath();
-                     ctx.moveTo(n1.x, n1.y);
-                     ctx.lineTo(n2.x, n2.y);
-                     
-                     // Color based on state
-                     if (sameGroup) ctx.strokeStyle = "rgba(255, 255, 255, 0.1)";
-                     else ctx.strokeStyle = `hsla(${entropy * 360}, 70%, 60%, ${entropy * 0.5})`; // Rainbow chaos
-                     
-                     ctx.stroke();
-                }
-            });
-        });
+    nodes.forEach((node) => {
+      ctx.beginPath();
+      ctx.arc(node.x, node.y, 5, 0, Math.PI * 2);
+      ctx.fillStyle = NETWORK_COLORS[node.group];
+      ctx.fill();
+      ctx.beginPath();
+      ctx.arc(node.x, node.y, 9, 0, Math.PI * 2);
+      ctx.strokeStyle = "rgba(255,255,255,0.08)";
+      ctx.stroke();
+    });
+  }, [mixing]);
 
-        // Draw Nodes
-        nodes.forEach(n => {
-            ctx.beginPath();
-            ctx.arc(n.x, n.y, 4, 0, Math.PI*2);
-            ctx.fillStyle = n.group === 0 ? "#f87171" : n.group === 1 ? "#60a5fa" : "#4ade80";
-            ctx.fill();
-        });
-
-        animId = requestAnimationFrame(draw);
-    };
-
-    draw();
-    return () => cancelAnimationFrame(animId);
-  }, [entropy]);
+  const withinLabel = mixing < 35 ? "strong" : mixing < 70 ? "moderate" : "weaker";
+  const crossLabel = mixing < 35 ? "limited" : mixing < 70 ? "moderate" : "strong";
 
   return (
-    <div className="glass overflow-hidden rounded-xl border border-white/10 bg-neutral-900/80 backdrop-blur-xl">
-      <div className="border-b border-white/5 px-5 py-4 flex justify-between items-center">
-        <h3 className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-neutral-300">
-          <Brain size={14} className="text-fuchsia-400" /> Functional Connectivity
-        </h3>
+    <section className="overflow-hidden rounded-[24px] border border-fuchsia-100/[0.10] bg-[#100815]/66 backdrop-blur-xl">
+      <div className="grid gap-3 border-b border-white/[0.07] p-4 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-end">
+        <div>
+          <div className="flex items-center gap-2 font-mono text-[10px] font-semibold uppercase tracking-[0.09em] text-fuchsia-200/68"><Brain size={13} /> Network organization model</div>
+          <h3 className="mt-2 text-[21px] font-semibold tracking-[-0.035em] text-white">What changes when a network becomes less segregated?</h3>
+        </div>
+        <span className="font-mono text-[9px] uppercase tracking-[0.07em] text-slate-500">toy graph · not brain telemetry</span>
       </div>
 
-      <div className="p-6 flex flex-col items-center">
-        
-        {/* Visualizer */}
-        <div className="relative mb-6 bg-black/40 rounded-full border border-white/5 shadow-inner">
-            <canvas ref={canvasRef} width={240} height={240} className="w-[240px] h-[240px]" />
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                <span className="text-[10px] font-bold uppercase tracking-widest text-neutral-700">DMN</span>
-            </div>
+      <div className="grid gap-4 p-4 lg:grid-cols-[280px_minmax(0,1fr)] sm:p-5">
+        <div className="relative mx-auto flex h-[260px] w-full max-w-[280px] items-center justify-center rounded-[22px] border border-white/[0.07] bg-black/[0.20]">
+          <canvas ref={canvasRef} width={260} height={260} className="h-[260px] w-[260px]" aria-label="Toy graph with three networks and adjustable cross-network connections" />
+          <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+            <span className="rounded-full border border-white/[0.07] bg-black/55 px-3 py-1.5 font-mono text-[9px] uppercase tracking-[0.06em] text-slate-400 backdrop-blur-sm">network graph</span>
+          </div>
         </div>
 
-        {/* Slider */}
-        <div className="w-full space-y-2">
-            <div className="flex justify-between text-[10px] font-bold uppercase text-neutral-500">
-                <span>Rigid (Sober)</span>
-                <span>Chaotic (Psychedelic)</span>
+        <div>
+          <label className="block rounded-[18px] border border-white/[0.07] bg-black/[0.14] p-4">
+            <div className="flex items-center justify-between gap-3">
+              <span className="flex items-center gap-2 text-[13px] font-semibold text-white"><Network size={15} className="text-fuchsia-200" /> Cross-network mixing</span>
+              <span className="font-mono text-[12px] text-fuchsia-100">{mixing}%</span>
             </div>
-            <input 
-                type="range" min="0" max="1" step="0.01" 
-                value={entropy} 
-                onChange={(e) => setEntropy(Number(e.target.value))}
-                className="w-full h-2 bg-neutral-800 rounded-lg appearance-none cursor-pointer"
-                style={{
-                    background: `linear-gradient(to right, #333 0%, #d946ef 100%)`
-                }}
+            <input
+              type="range"
+              min={0}
+              max={100}
+              step={1}
+              value={mixing}
+              onChange={(event) => setMixing(Number(event.target.value))}
+              className="mt-4 h-2 w-full cursor-pointer appearance-none rounded-full bg-slate-800 accent-fuchsia-400"
+              aria-label="Cross-network mixing in toy graph"
             />
+            <div className="mt-2 flex justify-between font-mono text-[9px] uppercase tracking-[0.05em] text-slate-500"><span>more segregated</span><span>more mixed</span></div>
+          </label>
+
+          <div className="mt-3 grid gap-2 sm:grid-cols-2">
+            <Readout label="Within-network emphasis" value={withinLabel} rgb="96,165,250" />
+            <Readout label="Cross-network emphasis" value={crossLabel} rgb="217,70,239" />
+          </div>
+
+          <div className="mt-4 border-l-2 border-fuchsia-300/32 pl-3">
+            <strong className="text-[12px] text-fuchsia-100/80">Model boundary</strong>
+            <p className="mt-2 text-[12px] leading-6 text-slate-400">This slider only changes a graph. It does not simulate a sober brain, a psychedelic state, the default mode network, or a particular compound. Human neuroimaging research measures several kinds of connectivity and network organization, and translating those measurements into subjective experience remains an active research problem.</p>
+          </div>
         </div>
-
-        <p className="mt-4 text-[10px] text-neutral-400 text-center leading-relaxed">
-            The <strong>Entropic Brain</strong>: Psychedelics relax the brain's top-down constraints (The Default Mode Network), allowing disparate regions to talk to each other freely.
-        </p>
-
       </div>
-    </div>
+    </section>
   );
+}
+
+function Readout({ label, value, rgb }: { label: string; value: string; rgb: string }) {
+  return <div className="rounded-[15px] border border-white/[0.06] bg-black/[0.14] p-3"><div className="font-mono text-[9px] uppercase tracking-[0.06em] text-slate-500">{label}</div><strong className="mt-1 block text-[14px] capitalize" style={{ color: `rgba(${rgb},0.84)` }}>{value}</strong></div>;
 }

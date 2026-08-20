@@ -1,185 +1,180 @@
-"use client";
-import { useState } from "react";
-import LivingCanvasBackground from "@/app/humanities/arts-aesthetics/LivingCanvasBackground";
-import ColorTheoryWidget from "@/app/humanities/arts-aesthetics/ColorTheoryWidget";
-import { motion } from "framer-motion";
+import Link from "next/link";
+import DomainPageHeader from "@/app/_components/DomainPageHeader";
+import { SceneFrame, Surface } from "@/app/_page-system/scene";
+import LivingCanvasBackground from "./LivingCanvasBackground";
 import {
-  Palette, Eye, Brush, Box,
-  Music, Clapperboard, Mic2, Theater,
-  Landmark, PenTool, Frame
+  Aperture,
+  ArrowRight,
+  Brush,
+  Building2,
+  Drama,
+  Eye,
+  Music2,
+  Palette,
+  PenTool,
+  Scale,
+  type LucideIcon,
 } from "lucide-react";
 
-// --- DATA ---
-const sectors = [
+type Route = {
+  label: string;
+  href: string;
+  role: string;
+  question: string;
+  icon: LucideIcon;
+  rgb: string;
+};
+
+const MAKING: readonly Route[] = [
   {
-    name: "Visual Arts",
-    desc: "The creation of works that are primarily visual in nature (Space).",
-    color: "text-pink-400",
-    icon: Palette,
-    items: [
-      { 
-        title: "Painting & 2D", 
-        desc: "Expression through pigment, color, and composition on a flat surface.", 
-        href: "/humanities/arts-aesthetics/visual", 
-        Icon: Brush, 
-        className: "theme-humanities",
-        subtitle: "Image" 
-      },
-      { 
-        title: "Sculpture & 3D", 
-        desc: "Shaping materials like stone, metal, or clay into three-dimensional form.", 
-        href: "/humanities/arts-aesthetics/sculpture", 
-        Icon: Box, 
-        className: "theme-humanities",
-        subtitle: "Form" 
-      },
-      { 
-        title: "Architecture", 
-        desc: "The art and science of designing and constructing buildings and spaces.", 
-        href: "/humanities/arts-aesthetics/architecture", 
-        Icon: Landmark, 
-        className: "theme-humanities",
-        subtitle: "Space" 
-      }
-    ]
+    label: "Visual Arts",
+    href: "/humanities/visual-arts",
+    role: "image · object · material · space",
+    question: "How do marks, materials, images, objects, and spatial arrangements become artworks?",
+    icon: Brush,
+    rgb: "244,63,94",
   },
   {
-    name: "Performing Arts",
-    desc: "Art forms in which artists use their voices or bodies (Time).",
-    color: "text-orange-400",
-    icon: Theater,
-    items: [
-      { 
-        title: "Film & Media", 
-        desc: "Storytelling through moving images, editing, and sound design.", 
-        href: "/humanities/arts-aesthetics/film", 
-        Icon: Clapperboard, 
-        className: "theme-humanities",
-        subtitle: "Motion" 
-      },
-      { 
-        title: "Theater & Dance", 
-        desc: "Live performance involving acting, movement, and stagecraft.", 
-        href: "/humanities/arts-aesthetics/performance", 
-        Icon: Theater, 
-        className: "theme-humanities",
-        subtitle: "Presence" 
-      }
-    ]
+    label: "Music",
+    href: "/humanities/music",
+    role: "sound · time · performance · composition",
+    question: "How do pitch, rhythm, timbre, form, performance, and recording organize sound through time?",
+    icon: Music2,
+    rgb: "167,139,250",
   },
   {
-    name: "Theory & Criticism",
-    desc: "The intellectual framework for understanding and valuing art.",
-    color: "text-yellow-500",
-    icon: Eye,
-    items: [
-      { 
-        title: "Art History", 
-        desc: "The study of art objects in their historical development and stylistic context.", 
-        href: "/humanities/arts-aesthetics/art-history", 
-        Icon: Frame, 
-        className: "theme-humanities",
-        subtitle: "Context" 
-      },
-      { 
-        title: "Aesthetics", 
-        desc: "The branch of philosophy dealing with the nature of beauty and taste.", 
-        href: "/humanities/arts-aesthetics/aesthetics", 
-        Icon: Eye, 
-        className: "theme-humanities",
-        subtitle: "Philosophy" 
-      },
-      { 
-        title: "Design", 
-        desc: "The planning and creation of objects with a specific function and form.", 
-        href: "/humanities/arts-aesthetics/design", 
-        Icon: PenTool, 
-        className: "theme-humanities",
-        subtitle: "Function" 
-      }
-    ]
-  }
-];
+    label: "Performing Arts",
+    href: "/humanities/performing-arts",
+    role: "body · voice · stage · screen · audience",
+    question: "What changes when artistic work unfolds through performers, timing, staging, and an audience?",
+    icon: Drama,
+    rgb: "251,146,60",
+  },
+  {
+    label: "Film & Television",
+    href: "/humanities/performing-arts/tv-film",
+    role: "shot · edit · sound · performance · sequence",
+    question: "How do moving images, sound, editing, performance, and screen conventions create audiovisual form?",
+    icon: Aperture,
+    rgb: "34,211,238",
+  },
+] as const;
+
+const SHAPING: readonly Route[] = [
+  {
+    label: "Design",
+    href: "/humanities/visual-arts/design",
+    role: "use · form · communication · constraint",
+    question: "How do aesthetic choices interact with function, users, production, communication, and constraints?",
+    icon: PenTool,
+    rgb: "94,234,212",
+  },
+  {
+    label: "Architecture",
+    href: "/humanities/visual-arts/architecture",
+    role: "space · structure · use · place",
+    question: "How do buildings and environments organize material, movement, function, symbolism, and lived space?",
+    icon: Building2,
+    rgb: "250,204,21",
+  },
+] as const;
+
+const QUESTIONS = [
+  ["Medium", "What materials, bodies, instruments, technologies, or conventions make the work possible?"],
+  ["Form", "How are color, line, rhythm, space, sequence, scale, sound, contrast, repetition, or emphasis organized?"],
+  ["Experience", "What does the work ask the viewer, listener, reader, participant, or audience to notice or do?"],
+  ["Context", "How do maker, patronage, institution, culture, history, genre, circulation, and interpretation change the work's meaning?"],
+  ["Value", "What do we mean when we call something beautiful, moving, skillful, original, ugly, kitsch, profound, useful, or art at all?"],
+] as const;
 
 export default function ArtsPage() {
   return (
-    <main className="relative min-h-screen overflow-hidden bg-neutral-950 lg:px-12">
-      
-      {/* 1. Living Canvas Background */}
-      <LivingCanvasBackground />
-      
-      <div className="relative z-10 mx-auto flex max-w-7xl flex-col py-10">
-        
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 items-start">
-          
-          {/* MAIN CONTENT (9 cols) */}
-          <div className="lg:col-span-9 space-y-10">
-            {sectors.map((sector, idx) => (
-              <section key={sector.name}>
-                 <motion.div 
-                    initial={{ opacity: 0, x: -10 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.4, delay: idx * 0.1 }}
-                    className="mb-4 flex items-center gap-3"
-                 >
-                    <sector.icon className={sector.color} size={20} />
-                    <h2 className="text-lg font-bold text-white tracking-wide">{sector.name}</h2>
-                    <div className="h-[1px] flex-1 bg-white/10"></div>
-                 </motion.div>
+    <SceneFrame
+      background={<LivingCanvasBackground />}
+      className="bg-[#0b0709] text-stone-100 selection:bg-pink-300/25"
+      maxWidthClassName="max-w-[1540px]"
+      headerBackground="rgba(11,7,9,0.54)"
+      header={
+        <DomainPageHeader
+          breadcrumbs={[
+            { label: "Humanities", href: "/humanities" },
+            { label: "Arts & Aesthetics" },
+          ]}
+          eyebrow="Medium · form · performance · experience · interpretation · value"
+          eyebrowStyle="rule"
+          icon={Palette}
+          title={<span>Arts &amp; Aesthetics</span>}
+          subtitle="Use this crossroads to move between artistic practices and the questions we ask about form, experience, interpretation, design, and aesthetic value."
+          accentRgb="244, 114, 182"
+          titleClassName="font-sans text-[clamp(2.7rem,5.2vw,5.9rem)] font-semibold leading-[0.84] tracking-[-0.062em] text-[#fff7fb]"
+          headerClassName="border-pink-100/[0.10]"
+        />
+      }
+    >
+      <section className="relative isolate mt-5 overflow-hidden border-y border-pink-100/[0.10] py-5 sm:py-6">
+        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(22,8,16,0.34),transparent_30%,transparent_70%,rgba(10,8,20,0.28))] backdrop-blur-[4px]" />
+        <div className="relative grid gap-5 xl:grid-cols-[minmax(0,1fr)_390px] xl:items-end">
+          <div>
+            <div className="flex items-center gap-2 font-mono text-[11px] font-semibold uppercase tracking-[0.10em] text-pink-200/68"><Eye size={14} /> Cross-disciplinary map</div>
+            <h2 className="mt-2 max-w-5xl text-[clamp(1.9rem,3.7vw,3.6rem)] font-semibold leading-[0.95] tracking-[-0.05em] text-white">Artistic media differ, but many analytical questions travel between them.</h2>
+            <p className="mt-3 max-w-4xl text-[14px] leading-6 text-stone-300/74">This route is a crossroads rather than a parent hierarchy. Visual Arts, Music, Performing Arts, and Philosophy each have their own canonical homes in Humanities; use this page to compare the questions that connect them.</p>
+          </div>
+          <Link href="/humanities/philosophy/aesthetics" className="group rounded-[20px] border border-violet-200/[0.12] bg-violet-300/[0.025] p-4 backdrop-blur-xl transition hover:bg-violet-300/[0.045]">
+            <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.08em] text-violet-200/58"><Scale size={13} /> Philosophical aesthetics</div>
+            <strong className="mt-2 block text-[18px] text-white">What is aesthetic value?</strong>
+            <p className="mt-2 text-[12px] leading-5 text-stone-400">Move from making and interpreting works into philosophical questions about beauty, taste, art, representation, expression, judgment, and aesthetic experience.</p>
+            <span className="mt-4 flex items-center justify-between text-[11px] font-semibold text-violet-100/70">open Aesthetics <ArrowRight size={13} className="transition group-hover:translate-x-1" /></span>
+          </Link>
+        </div>
 
-                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                    {sector.items.map((item, i) => (
-                        <motion.div
-                            key={item.title}
-                            initial={{ opacity: 0, y: 15 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.3, delay: 0.1 + (i * 0.05) }}
-                        >
-                        </motion.div>
-                    ))}
-                 </div>
-              </section>
+        <div className="relative mt-5 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+          {MAKING.map((route) => <RouteCard key={route.href} route={route} />)}
+        </div>
+      </section>
+
+      <section className="mt-8 grid gap-5 xl:grid-cols-[minmax(0,1fr)_460px] xl:items-start">
+        <div>
+          <div className="font-mono text-[10px] font-semibold uppercase tracking-[0.09em] text-emerald-200/60">Art meets designed use</div>
+          <h2 className="mt-2 text-[clamp(1.8rem,3.2vw,3rem)] font-semibold tracking-[-0.045em] text-white">Some practices make the boundary between aesthetic and practical judgment especially visible.</h2>
+          <div className="mt-4 grid gap-3 sm:grid-cols-2">
+            {SHAPING.map((route) => <RouteCard key={route.href} route={route} />)}
+          </div>
+        </div>
+
+        <Surface variant="glass" className="rounded-[24px] border-pink-100/[0.09] p-5 xl:sticky xl:top-[170px]" style={{ background: "rgba(20,8,16,0.16)" }}>
+          <div className="font-mono text-[10px] font-semibold uppercase tracking-[0.09em] text-pink-200/58">Reading a work</div>
+          <div className="mt-4 space-y-3">
+            {QUESTIONS.map(([term, text], index) => (
+              <div key={term} className="grid grid-cols-[28px_minmax(0,1fr)] gap-3 border-b border-white/[0.06] pb-3 last:border-b-0">
+                <span className="font-mono text-[9px] text-pink-200/42">0{index + 1}</span>
+                <div><strong className="text-[12px] text-white">{term}</strong><p className="mt-1 text-[11px] leading-5 text-stone-400">{text}</p></div>
+              </div>
             ))}
           </div>
+        </Surface>
+      </section>
 
-          {/* SIDEBAR (3 cols) */}
-          <div className="flex flex-col gap-6 lg:col-span-3 lg:sticky lg:top-6 h-fit pt-2">
-            
-            {/* Color Theory Widget */}
-            <motion.div 
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.4 }}
-            >
-               <ColorTheoryWidget />
-            </motion.div>
-
-            {/* Quote Box */}
-            <motion.div 
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.6 }}
-                className="rounded-lg border border-pink-500/20 bg-pink-950/10 p-4 backdrop-blur-md"
-            >
-                <div className="flex items-start gap-3">
-                    <Brush size={18} className="text-pink-400 shrink-0 mt-1"/>
-                    <div>
-                        <h4 className="text-xs font-bold uppercase text-pink-400 mb-1">
-                            Mimesis
-                        </h4>
-                        <p className="text-[11px] text-neutral-400 leading-relaxed">
-                            Aristotle defined art as <em>Mimesis</em>—the imitation of life. We create to reflect, distort, or idealize the reality we experience.
-                        </p>
-                    </div>
-                </div>
-            </motion.div>
-
+      <section className="mt-8 rounded-[22px] border border-amber-100/[0.09] bg-amber-300/[0.022] p-5 backdrop-blur-xl">
+        <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-center">
+          <div>
+            <div className="font-mono text-[10px] font-semibold uppercase tracking-[0.09em] text-amber-200/58">A useful correction</div>
+            <p className="mt-2 text-[13px] leading-6 text-stone-300/74">No single theory, including imitation or representation, defines all art. Works can represent, perform, decorate, document, intervene, ritualize, communicate, organize space, foreground material, challenge categories, or pursue many of these at once.</p>
           </div>
-
+          <Link href="/humanities" className="group flex items-center justify-between rounded-[16px] border border-white/[0.07] bg-black/[0.10] p-4 text-[12px] font-semibold text-white/80 transition hover:bg-black/[0.18]">Return to Humanities <ArrowRight size={13} className="text-pink-200/55 transition group-hover:translate-x-1" /></Link>
         </div>
-      </div>
-    </main>
+      </section>
+    </SceneFrame>
+  );
+}
+
+function RouteCard({ route }: { route: Route }) {
+  const Icon = route.icon;
+  return (
+    <Link href={route.href} className="group flex min-h-[210px] flex-col rounded-[20px] border p-4 backdrop-blur-[12px] transition hover:-translate-y-0.5" style={{ borderColor: `rgba(${route.rgb},0.16)`, background: `linear-gradient(145deg,rgba(${route.rgb},0.045),rgba(9,6,10,0.18))` }}>
+      <div className="flex items-start justify-between gap-3"><span className="flex h-10 w-10 items-center justify-center rounded-[13px] border" style={{ color: `rgb(${route.rgb})`, borderColor: `rgba(${route.rgb},0.26)`, background: `rgba(${route.rgb},0.04)` }}><Icon size={17} /></span><ArrowRight size={13} className="text-white/28 transition group-hover:translate-x-1" /></div>
+      <div className="mt-4 font-mono text-[9px] uppercase tracking-[0.06em]" style={{ color: `rgba(${route.rgb},0.66)` }}>{route.role}</div>
+      <h3 className="mt-1 text-[17px] font-semibold text-white">{route.label}</h3>
+      <p className="mt-2 text-[11px] leading-5 text-stone-400">{route.question}</p>
+    </Link>
   );
 }

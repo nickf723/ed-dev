@@ -1,207 +1,307 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
-import { motion } from "framer-motion";
-import { Atom, Box, RefreshCw } from "lucide-react";
 
-const MOLECULES = [
+import { useEffect, useRef, useState } from "react";
+import { Atom, Rotate3D } from "lucide-react";
+
+type AtomPoint = {
+  element: string;
+  x: number;
+  y: number;
+  z: number;
+  radius: number;
+  color: string;
+};
+
+type Molecule = {
+  id: string;
+  name: string;
+  formula: string;
+  geometry: string;
+  polarity: string;
+  description: string;
+  atoms: AtomPoint[];
+  bonds: [number, number][];
+};
+
+const MOLECULES: Molecule[] = [
   {
     id: "h2o",
-    name: "Water (H₂O)",
-    desc: "Bent geometry. Polar. Essential for life.",
+    name: "Water",
+    formula: "H₂O",
+    geometry: "Bent",
+    polarity: "Polar",
+    description: "Two O–H bonds point in different directions, so their charge imbalance does not cancel.",
     atoms: [
-        { element: "O", x: 0, y: 0, z: 0, r: 20, color: "#ef4444" },
-        { element: "H", x: -25, y: 25, z: 0, r: 12, color: "#fff" },
-        { element: "H", x: 25, y: 25, z: 0, r: 12, color: "#fff" },
+      { element: "O", x: 0, y: -8, z: 0, radius: 22, color: "#ef4444" },
+      { element: "H", x: -34, y: 30, z: 0, radius: 13, color: "#f8fafc" },
+      { element: "H", x: 34, y: 30, z: 0, radius: 13, color: "#f8fafc" },
     ],
-    bonds: [[0,1], [0,2]]
+    bonds: [[0, 1], [0, 2]],
   },
   {
     id: "ch4",
-    name: "Methane (CH₄)",
-    desc: "Tetrahedral. Primary component of natural gas.",
+    name: "Methane",
+    formula: "CH₄",
+    geometry: "Tetrahedral",
+    polarity: "Nonpolar",
+    description: "Four equivalent bonds spread through three dimensions and cancel their bond dipoles.",
     atoms: [
-        { element: "C", x: 0, y: 0, z: 0, r: 20, color: "#525252" },
-        { element: "H", x: 0, y: -35, z: 0, r: 12, color: "#fff" },
-        { element: "H", x: -33, y: 11, z: -20, r: 12, color: "#fff" },
-        { element: "H", x: 33, y: 11, z: -20, r: 12, color: "#fff" },
-        { element: "H", x: 0, y: 11, z: 35, r: 12, color: "#fff" },
+      { element: "C", x: 0, y: 0, z: 0, radius: 22, color: "#64748b" },
+      { element: "H", x: 0, y: -48, z: 0, radius: 13, color: "#f8fafc" },
+      { element: "H", x: -42, y: 19, z: -28, radius: 13, color: "#f8fafc" },
+      { element: "H", x: 42, y: 19, z: -28, radius: 13, color: "#f8fafc" },
+      { element: "H", x: 0, y: 20, z: 48, radius: 13, color: "#f8fafc" },
     ],
-    bonds: [[0,1], [0,2], [0,3], [0,4]]
+    bonds: [[0, 1], [0, 2], [0, 3], [0, 4]],
   },
   {
     id: "co2",
-    name: "Carbon Dioxide",
-    desc: "Linear geometry. Non-polar gas.",
+    name: "Carbon dioxide",
+    formula: "CO₂",
+    geometry: "Linear",
+    polarity: "Nonpolar overall",
+    description: "Each C=O bond is polar, but the equal and opposite bond dipoles cancel in a linear molecule.",
     atoms: [
-        { element: "C", x: 0, y: 0, z: 0, r: 20, color: "#525252" },
-        { element: "O", x: -45, y: 0, z: 0, r: 18, color: "#ef4444" },
-        { element: "O", x: 45, y: 0, z: 0, r: 18, color: "#ef4444" },
+      { element: "C", x: 0, y: 0, z: 0, radius: 21, color: "#64748b" },
+      { element: "O", x: -58, y: 0, z: 0, radius: 19, color: "#ef4444" },
+      { element: "O", x: 58, y: 0, z: 0, radius: 19, color: "#ef4444" },
     ],
-    bonds: [[0,1], [0,2]]
+    bonds: [[0, 1], [0, 2]],
   },
   {
     id: "nh3",
-    name: "Ammonia (NH₃)",
-    desc: "Trigonal pyramidal geometry. A pungent, foundational chemical.",
+    name: "Ammonia",
+    formula: "NH₃",
+    geometry: "Trigonal pyramidal",
+    polarity: "Polar",
+    description: "A lone pair changes the geometry and leaves a net molecular dipole.",
     atoms: [
-        { element: "N", x: 0, y: -10, z: 0, r: 20, color: "#3b82f6" }, // Blue Nitrogen
-        { element: "H", x: -28, y: 20, z: -15, r: 12, color: "#fff" },
-        { element: "H", x: 28, y: 20, z: -15, r: 12, color: "#fff" },
-        { element: "H", x: 0, y: 20, z: 30, r: 12, color: "#fff" },
+      { element: "N", x: 0, y: -14, z: 0, radius: 22, color: "#3b82f6" },
+      { element: "H", x: -38, y: 28, z: -22, radius: 13, color: "#f8fafc" },
+      { element: "H", x: 38, y: 28, z: -22, radius: 13, color: "#f8fafc" },
+      { element: "H", x: 0, y: 29, z: 42, radius: 13, color: "#f8fafc" },
     ],
-    bonds: [[0,1], [0,2], [0,3]]
+    bonds: [[0, 1], [0, 2], [0, 3]],
   },
   {
     id: "c2h4",
-    name: "Ethylene (C₂H₄)",
-    desc: "Planar geometry. Features a carbon-carbon double bond.",
+    name: "Ethene",
+    formula: "C₂H₄",
+    geometry: "Planar around each carbon",
+    polarity: "Mostly nonpolar",
+    description: "The carbon–carbon double bond restricts rotation and creates a planar local structure.",
     atoms: [
-        { element: "C", x: -20, y: 0, z: 0, r: 20, color: "#525252" },
-        { element: "C", x: 20, y: 0, z: 0, r: 20, color: "#525252" },
-        { element: "H", x: -45, y: -25, z: 0, r: 12, color: "#fff" },
-        { element: "H", x: -45, y: 25, z: 0, r: 12, color: "#fff" },
-        { element: "H", x: 45, y: -25, z: 0, r: 12, color: "#fff" },
-        { element: "H", x: 45, y: 25, z: 0, r: 12, color: "#fff" },
+      { element: "C", x: -24, y: 0, z: 0, radius: 21, color: "#64748b" },
+      { element: "C", x: 24, y: 0, z: 0, radius: 21, color: "#64748b" },
+      { element: "H", x: -58, y: -35, z: 0, radius: 13, color: "#f8fafc" },
+      { element: "H", x: -58, y: 35, z: 0, radius: 13, color: "#f8fafc" },
+      { element: "H", x: 58, y: -35, z: 0, radius: 13, color: "#f8fafc" },
+      { element: "H", x: 58, y: 35, z: 0, radius: 13, color: "#f8fafc" },
     ],
-    bonds: [[0,1], [0,2], [0,3], [1,4], [1,5]] 
-  }
+    bonds: [[0, 1], [0, 2], [0, 3], [1, 4], [1, 5]],
+  },
 ];
 
 export default function MoleculeViewer() {
-  const [active, setActive] = useState(MOLECULES[0]);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  
-  useEffect(() => {
-      const canvas = canvasRef.current;
-      if (!canvas) return;
-      const ctx = canvas.getContext("2d");
-      if (!ctx) return;
-      
-      let angleX = 0;
-      let angleY = 0;
-      let animId: number;
-      
-      const render = () => {
-          ctx.clearRect(0, 0, 300, 200);
-          const cx = 150;
-          const cy = 100;
-          
-          // Project Atoms
-          const projected = active.atoms.map(a => {
-             // Rotate Y
-             let x = a.x * Math.cos(angleY) - a.z * Math.sin(angleY);
-             let z = a.z * Math.cos(angleY) + a.x * Math.sin(angleY);
-             // Rotate X
-             let y = a.y * Math.cos(angleX) - z * Math.sin(angleX);
-             z = z * Math.cos(angleX) + a.y * Math.sin(angleX);
-             
-             // Perspective scale
-             const scale = 400 / (400 + z);
-             
-             return { x: cx + x*scale, y: cy + y*scale, z, r: a.r*scale, color: a.color, scale };
-          });
-          
-          // Sort by Z (Painter's Algorithm)
-          projected.sort((a, b) => a.z - b.z);
-          
-          // Draw Bonds (Lines between projected points)
-          ctx.lineWidth = 4;
-          ctx.strokeStyle = "#888";
-          active.bonds.forEach(pair => {
-              const p1 = projected.find((_, i) => i === pair[0]);
-              const p2 = projected.find((_, i) => i === pair[1]);
-              // Simple match by index isn't quite right because we sorted projected array
-              // We need to map back to original indices. 
-              // Simple fix: Re-project without sorting for lines, then draw sorted atoms on top.
-          });
-          
-          // Correct Bond Drawing:
-          active.bonds.forEach(pair => {
-             // We need the raw coords again for lines
-             // This is expensive to re-calc, so let's just cheat and draw lines first based on the 'unsorted' logic
-             // But lines need depth too. 
-             // For this widget, drawing lines *behind* everything is acceptable.
-             
-             // Let's perform projection again for line endpoints
-             const getProj = (i: number) => {
-                 const a = active.atoms[i];
-                 let x = a.x * Math.cos(angleY) - a.z * Math.sin(angleY);
-                 let z = a.z * Math.cos(angleY) + a.x * Math.sin(angleY);
-                 let y = a.y * Math.cos(angleX) - z * Math.sin(angleX);
-                 z = z * Math.cos(angleX) + a.y * Math.sin(angleX);
-                 const scale = 400 / (400 + z);
-                 return { x: cx + x*scale, y: cy + y*scale };
-             };
-             
-             const p1 = getProj(pair[0]);
-             const p2 = getProj(pair[1]);
-             
-             ctx.beginPath();
-             ctx.moveTo(p1.x, p1.y);
-             ctx.lineTo(p2.x, p2.y);
-             ctx.stroke();
-          });
+  const [activeId, setActiveId] = useState(MOLECULES[0].id);
+  const active = MOLECULES.find((molecule) => molecule.id === activeId) ?? MOLECULES[0];
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
-          // Draw Atoms
-          projected.forEach(p => {
-              ctx.beginPath();
-              ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
-              ctx.fillStyle = p.color;
-              
-              // Fake 3D shading
-              const g = ctx.createRadialGradient(p.x - p.r*0.3, p.y - p.r*0.3, 0, p.x, p.y, p.r);
-              g.addColorStop(0, "#fff");
-              g.addColorStop(0.3, p.color);
-              g.addColorStop(1, "#000");
-              ctx.fillStyle = g;
-              
-              ctx.fill();
-          });
-          
-          angleY += 0.02;
-          angleX += 0.01;
-          animId = requestAnimationFrame(render);
+  useEffect(() => {
+    const canvasElement = canvasRef.current;
+    if (!canvasElement) return;
+    const drawingContext = canvasElement.getContext("2d");
+    if (!drawingContext) return;
+    const canvas: HTMLCanvasElement = canvasElement;
+    const context: CanvasRenderingContext2D = drawingContext;
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    let animationId = 0;
+    let width = 1;
+    let height = 1;
+    let ratio = 1;
+    let start = performance.now();
+
+    function resize() {
+      const bounds = canvas.getBoundingClientRect();
+      width = Math.max(280, bounds.width);
+      height = Math.max(260, bounds.height);
+      ratio = Math.min(window.devicePixelRatio || 1, 1.7);
+      canvas.width = Math.floor(width * ratio);
+      canvas.height = Math.floor(height * ratio);
+      context.setTransform(ratio, 0, 0, ratio, 0, 0);
+      draw(reducedMotion ? 8 : (performance.now() - start) / 1000);
+    }
+
+    function project(atom: AtomPoint, angleX: number, angleY: number) {
+      const rotatedX = atom.x * Math.cos(angleY) - atom.z * Math.sin(angleY);
+      let rotatedZ = atom.z * Math.cos(angleY) + atom.x * Math.sin(angleY);
+      const rotatedY = atom.y * Math.cos(angleX) - rotatedZ * Math.sin(angleX);
+      rotatedZ = rotatedZ * Math.cos(angleX) + atom.y * Math.sin(angleX);
+      const scale = 520 / (520 + rotatedZ);
+      const viewScale = Math.min(width, height) / 250;
+      return {
+        x: width / 2 + rotatedX * scale * viewScale,
+        y: height / 2 + rotatedY * scale * viewScale,
+        z: rotatedZ,
+        radius: atom.radius * scale * viewScale,
+        color: atom.color,
+        element: atom.element,
       };
-      
-      render();
-      return () => cancelAnimationFrame(animId);
+    }
+
+    function draw(time: number) {
+      context.setTransform(ratio, 0, 0, ratio, 0, 0);
+      context.clearRect(0, 0, width, height);
+      const background = context.createRadialGradient(width * 0.5, height * 0.48, 0, width * 0.5, height * 0.48, Math.max(width, height) * 0.62);
+      background.addColorStop(0, "rgba(34,211,238,0.075)");
+      background.addColorStop(0.45, "rgba(15,23,42,0.18)");
+      background.addColorStop(1, "rgba(2,6,8,0.72)");
+      context.fillStyle = background;
+      context.fillRect(0, 0, width, height);
+
+      const angleY = reducedMotion ? 0.55 : time * 0.36;
+      const angleX = reducedMotion ? -0.18 : Math.sin(time * 0.23) * 0.28;
+      const projected = active.atoms.map((atom) => project(atom, angleX, angleY));
+
+      context.lineCap = "round";
+      for (const [first, second] of active.bonds) {
+        const a = projected[first];
+        const b = projected[second];
+        const gradient = context.createLinearGradient(a.x, a.y, b.x, b.y);
+        gradient.addColorStop(0, "rgba(226,232,240,0.28)");
+        gradient.addColorStop(0.5, "rgba(125,211,252,0.58)");
+        gradient.addColorStop(1, "rgba(226,232,240,0.28)");
+        context.strokeStyle = gradient;
+        context.lineWidth = Math.max(3, Math.min(width, height) * 0.012);
+        context.beginPath();
+        context.moveTo(a.x, a.y);
+        context.lineTo(b.x, b.y);
+        context.stroke();
+      }
+
+      projected
+        .map((point, index) => ({ ...point, index }))
+        .sort((a, b) => a.z - b.z)
+        .forEach((point) => {
+          const glow = context.createRadialGradient(point.x, point.y, 0, point.x, point.y, point.radius * 2.6);
+          glow.addColorStop(0, hexToRgba(point.color, 0.52));
+          glow.addColorStop(1, hexToRgba(point.color, 0));
+          context.fillStyle = glow;
+          context.beginPath();
+          context.arc(point.x, point.y, point.radius * 2.6, 0, Math.PI * 2);
+          context.fill();
+
+          const sphere = context.createRadialGradient(
+            point.x - point.radius * 0.35,
+            point.y - point.radius * 0.38,
+            point.radius * 0.08,
+            point.x,
+            point.y,
+            point.radius,
+          );
+          sphere.addColorStop(0, "rgba(255,255,255,0.95)");
+          sphere.addColorStop(0.24, point.color);
+          sphere.addColorStop(1, "rgba(0,0,0,0.82)");
+          context.fillStyle = sphere;
+          context.beginPath();
+          context.arc(point.x, point.y, point.radius, 0, Math.PI * 2);
+          context.fill();
+
+          context.fillStyle = "rgba(255,255,255,0.72)";
+          context.font = `${Math.max(11, point.radius * 0.55)}px ui-monospace, SFMono-Regular, Menlo, monospace`;
+          context.textAlign = "center";
+          context.textBaseline = "middle";
+          context.fillText(point.element, point.x, point.y + 0.5);
+        });
+    }
+
+    function loop(now: number) {
+      draw((now - start) / 1000);
+      animationId = requestAnimationFrame(loop);
+    }
+
+    const observer = new ResizeObserver(resize);
+    observer.observe(canvas);
+    resize();
+    if (!reducedMotion) animationId = requestAnimationFrame(loop);
+
+    return () => {
+      observer.disconnect();
+      cancelAnimationFrame(animationId);
+    };
   }, [active]);
 
   return (
-    <div className="glass overflow-hidden rounded-xl border border-white/10 bg-neutral-900/80 backdrop-blur-xl">
-      <div className="border-b border-white/5 px-5 py-4 flex justify-between items-center">
-        <h3 className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-neutral-300">
-          <Atom size={14} className="text-lime-400" /> Molecular Geo
-        </h3>
-        <RefreshCw size={14} className="text-neutral-600 animate-spin-slow" />
-      </div>
-
-      <div className="p-0 bg-black/20 border-b border-white/5">
-          <canvas ref={canvasRef} width={300} height={200} className="w-full h-[200px]" />
-      </div>
-
-      <div className="p-6">
-        <div className="flex gap-2 mb-4 overflow-x-auto pb-2">
-            {MOLECULES.map(m => (
-                <button
-                    key={m.id}
-                    onClick={() => setActive(m)}
-                    className={`px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase whitespace-nowrap border transition-all
-                        ${active.id === m.id 
-                            ? "bg-lime-500/20 border-lime-500/50 text-lime-300" 
-                            : "bg-white/5 border-white/5 text-neutral-500 hover:text-white"}
-                    `}
-                >
-                    {m.id}
-                </button>
-            ))}
-        </div>
-        
+    <article className="overflow-hidden rounded-[24px] border border-cyan-100/[0.10] bg-black/[0.24] shadow-[0_24px_85px_rgba(0,0,0,0.22)] backdrop-blur-xl">
+      <div className="flex flex-col gap-3 border-b border-white/[0.08] px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-            <h4 className="text-sm font-bold text-white mb-1">{active.name}</h4>
-            <p className="text-xs text-neutral-400 leading-relaxed">{active.desc}</p>
+          <div className="flex items-center gap-2 font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-cyan-200/72">
+            <Atom size={14} /> Molecular geometry
+          </div>
+          <p className="mt-1 text-[13px] text-slate-400/68">Rotate structure into property.</p>
+        </div>
+        <span className="inline-flex items-center gap-2 text-[12px] text-cyan-100/54">
+          <Rotate3D size={15} /> three-dimensional view
+        </span>
+      </div>
+
+      <canvas ref={canvasRef} className="h-[330px] w-full border-b border-white/[0.08]" />
+
+      <div className="p-5 sm:p-6">
+        <div className="flex gap-2 overflow-x-auto pb-2">
+          {MOLECULES.map((molecule) => {
+            const selected = active.id === molecule.id;
+            return (
+              <button
+                key={molecule.id}
+                type="button"
+                onClick={() => setActiveId(molecule.id)}
+                className={`min-h-[42px] whitespace-nowrap rounded-[12px] border px-3 py-2 text-[12px] font-semibold transition ${
+                  selected
+                    ? "border-cyan-200/[0.30] bg-cyan-300/[0.09] text-cyan-100"
+                    : "border-white/[0.07] bg-white/[0.018] text-slate-400 hover:bg-white/[0.05] hover:text-white"
+                }`}
+              >
+                {molecule.formula}
+              </button>
+            );
+          })}
+        </div>
+
+        <div className="mt-4 grid gap-4 sm:grid-cols-[minmax(0,1fr)_220px]">
+          <div>
+            <h3 className="text-[24px] font-semibold tracking-[-0.035em] text-white">
+              {active.name} <span className="text-cyan-100/62">{active.formula}</span>
+            </h3>
+            <p className="mt-2 text-[14px] leading-6 text-slate-300/70">{active.description}</p>
+          </div>
+          <div className="grid grid-cols-2 gap-2 sm:grid-cols-1">
+            <Readout label="Geometry" value={active.geometry} />
+            <Readout label="Polarity" value={active.polarity} />
+          </div>
         </div>
       </div>
+    </article>
+  );
+}
+
+function Readout({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="rounded-[13px] border border-white/[0.07] bg-white/[0.018] p-3">
+      <div className="font-mono text-[11px] font-semibold uppercase tracking-[0.09em] text-slate-500">
+        {label}
+      </div>
+      <div className="mt-1 text-[13px] font-medium text-slate-200">{value}</div>
     </div>
   );
+}
+
+function hexToRgba(hex: string, alpha: number) {
+  const normalized = hex.replace("#", "");
+  const value = Number.parseInt(normalized.length === 3 ? normalized.split("").map((character) => character + character).join("") : normalized, 16);
+  const red = (value >> 16) & 255;
+  const green = (value >> 8) & 255;
+  const blue = value & 255;
+  return `rgba(${red},${green},${blue},${alpha})`;
 }

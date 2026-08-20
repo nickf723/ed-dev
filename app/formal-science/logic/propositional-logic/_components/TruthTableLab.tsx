@@ -1,105 +1,196 @@
 "use client";
-import React, { useState } from 'react';
-import { Table, Check, X, MousePointerClick } from 'lucide-react';
-import { M } from '@/app/_components/Math';
+
+import { useMemo, useState } from "react";
+import { Check, Table2, X } from "lucide-react";
+import { M } from "@/app/_components/Math";
+
+type OperatorId = "and" | "or" | "implies" | "iff" | "xor";
+
+type Operator = {
+  id: OperatorId;
+  label: string;
+  symbol: string;
+  expression: string;
+  evaluate: (p: boolean, q: boolean) => boolean;
+  rule: string;
+};
+
+const OPERATORS: readonly Operator[] = [
+  {
+    id: "and",
+    label: "AND",
+    symbol: "∧",
+    expression: "P \\land Q",
+    evaluate: (p, q) => p && q,
+    rule: "True only when both component propositions are true.",
+  },
+  {
+    id: "or",
+    label: "OR",
+    symbol: "∨",
+    expression: "P \\lor Q",
+    evaluate: (p, q) => p || q,
+    rule: "Inclusive OR is true when at least one component proposition is true.",
+  },
+  {
+    id: "implies",
+    label: "IMPLIES",
+    symbol: "→",
+    expression: "P \\to Q",
+    evaluate: (p, q) => !p || q,
+    rule: "Material implication is false only in the row where P is true and Q is false.",
+  },
+  {
+    id: "iff",
+    label: "IFF",
+    symbol: "↔",
+    expression: "P \\leftrightarrow Q",
+    evaluate: (p, q) => p === q,
+    rule: "The biconditional is true when P and Q have the same truth value.",
+  },
+  {
+    id: "xor",
+    label: "XOR",
+    symbol: "⊕",
+    expression: "P \\oplus Q",
+    evaluate: (p, q) => p !== q,
+    rule: "Exclusive OR is true when exactly one component proposition is true.",
+  },
+];
+
+const ROWS = [
+  { p: true, q: true },
+  { p: true, q: false },
+  { p: false, q: true },
+  { p: false, q: false },
+] as const;
+
+function TruthValue({ value, emphasized = false }: { value: boolean; emphasized?: boolean }) {
+  return (
+    <span
+      className={`inline-flex items-center gap-1.5 font-mono text-[12px] font-semibold ${
+        value
+          ? emphasized
+            ? "text-violet-200"
+            : "text-violet-300/65"
+          : emphasized
+            ? "text-slate-300"
+            : "text-slate-600"
+      }`}
+    >
+      {value ? <Check size={13} strokeWidth={2.5} /> : <X size={13} strokeWidth={2.5} />}
+      {value ? "T" : "F"}
+    </span>
+  );
+}
 
 export default function TruthTableLab() {
-  const [activeRow, setActiveRow] = useState<number | null>(0); // 0, 1, 2, or 3
-
-  // The 4 absolute states of a 2-variable universe
-  const rows = [
-    { p: true, q: true },
-    { p: true, q: false },
-    { p: false, q: true },
-    { p: false, q: false },
-  ];
-
-  const renderCell = (val: boolean, isHighlight: boolean) => (
-    <div className={`flex items-center justify-center gap-2 font-mono text-sm md:text-base font-black transition-colors ${
-      val 
-        ? (isHighlight ? 'text-purple-400' : 'text-purple-400/50') 
-        : (isHighlight ? 'text-neutral-500' : 'text-neutral-700')
-    }`}>
-      {val ? <Check size={16} strokeWidth={3} /> : <X size={16} strokeWidth={3} />}
-      {val ? 'T' : 'F'}
-    </div>
-  );
+  const [operatorId, setOperatorId] = useState<OperatorId>("implies");
+  const [activeRow, setActiveRow] = useState(1);
+  const operator = useMemo(() => OPERATORS.find((item) => item.id === operatorId) ?? OPERATORS[0], [operatorId]);
+  const selected = ROWS[activeRow];
+  const selectedResult = operator.evaluate(selected.p, selected.q);
 
   return (
-    <div className="my-12 border border-neutral-800 rounded-2xl overflow-hidden bg-neutral-900/50 shadow-2xl">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between px-6 py-4 bg-black/60 border-b border-neutral-800 gap-4">
-            <div className="text-xs font-bold uppercase text-purple-500 flex items-center gap-2 tracking-widest">
-                <Table size={14} /> The Universal Truth Table
+    <section className="overflow-hidden rounded-[28px] border border-violet-200/[0.16] bg-[#0b0710]/84 shadow-[0_28px_90px_rgba(0,0,0,0.28)] backdrop-blur-xl">
+      <div className="border-b border-white/[0.06] p-5 sm:p-6">
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+          <div>
+            <div className="flex items-center gap-2 font-mono text-[10px] font-semibold uppercase tracking-[0.16em] text-violet-300/70">
+              <Table2 size={14} /> Truth-table evaluator
             </div>
-            <div className="text-[10px] uppercase font-bold text-neutral-500 flex items-center gap-2">
-                <MousePointerClick size={14} /> Select a row to isolate
+            <h2 className="mt-2 text-[clamp(1.7rem,3vw,2.6rem)] font-semibold tracking-[-0.045em] text-white">
+              Hold the four input states fixed. Change the connective.
+            </h2>
+            <p className="mt-2 max-w-3xl text-[12px] leading-5 text-slate-400">
+              With two propositional variables there are four possible truth-value assignments. A connective is defined by what output it assigns to each of those rows.
+            </p>
+          </div>
+          <div className="shrink-0 rounded-xl border border-violet-300/15 bg-violet-300/[0.04] px-4 py-3 text-center">
+            <div className="font-mono text-[8px] uppercase tracking-[0.12em] text-violet-300/50">active expression</div>
+            <div className="mt-1 text-lg text-violet-100"><M>{operator.expression}</M></div>
+          </div>
+        </div>
+
+        <div className="mt-4 flex flex-wrap gap-2">
+          {OPERATORS.map((item) => (
+            <button
+              key={item.id}
+              type="button"
+              onClick={() => setOperatorId(item.id)}
+              className={`rounded-xl border px-3 py-2 text-[10px] font-semibold transition-colors ${
+                operator.id === item.id
+                  ? "border-violet-300/32 bg-violet-300/[0.08] text-violet-100"
+                  : "border-white/[0.055] bg-black/16 text-slate-500 hover:border-violet-200/16 hover:text-slate-300"
+              }`}
+            >
+              <span className="mr-2 font-serif text-[14px]">{item.symbol}</span>{item.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="grid gap-4 p-4 sm:p-5 xl:grid-cols-[minmax(0,1fr)_330px]">
+        <div className="overflow-hidden rounded-[20px] border border-white/[0.065] bg-black/24">
+          <table className="w-full border-collapse text-center">
+            <thead>
+              <tr className="border-b border-white/[0.06] bg-black/25 font-mono text-[9px] uppercase tracking-[0.12em] text-slate-600">
+                <th className="px-3 py-3 font-medium">P</th>
+                <th className="px-3 py-3 font-medium">Q</th>
+                <th className="px-3 py-3 font-medium">{operator.label}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {ROWS.map((row, index) => {
+                const result = operator.evaluate(row.p, row.q);
+                const active = activeRow === index;
+                return (
+                  <tr
+                    key={`${row.p}-${row.q}`}
+                    onClick={() => setActiveRow(index)}
+                    className={`cursor-pointer border-b border-white/[0.045] transition-colors last:border-b-0 ${
+                      active ? "bg-violet-300/[0.075]" : "hover:bg-white/[0.018]"
+                    }`}
+                  >
+                    <td className="px-3 py-4"><TruthValue value={row.p} emphasized={active} /></td>
+                    <td className="px-3 py-4"><TruthValue value={row.q} emphasized={active} /></td>
+                    <td className="px-3 py-4"><TruthValue value={result} emphasized={active} /></td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+
+        <div className="space-y-3">
+          <div className="rounded-2xl border border-violet-300/12 bg-violet-300/[0.025] p-4">
+            <div className="font-mono text-[8px] uppercase tracking-[0.11em] text-violet-300/52">definition</div>
+            <p className="mt-2 text-[11px] leading-5 text-slate-400">{operator.rule}</p>
+          </div>
+
+          <div className="rounded-2xl border border-white/[0.06] bg-white/[0.014] p-4">
+            <div className="font-mono text-[8px] uppercase tracking-[0.11em] text-slate-600">selected row</div>
+            <div className="mt-3 flex items-center gap-3 text-[12px] text-slate-300">
+              <span>P = {selected.p ? "T" : "F"}</span>
+              <span className="text-slate-700">·</span>
+              <span>Q = {selected.q ? "T" : "F"}</span>
+              <span className="text-slate-700">→</span>
+              <TruthValue value={selectedResult} emphasized />
             </div>
-        </div>
+            <p className="mt-3 text-[10px] leading-5 text-slate-500">
+              {operator.id === "implies" && selected.p && !selected.q
+                ? "This is the one false row for material implication: the antecedent is true while the consequent is false."
+                : operator.id === "implies"
+                  ? "Material implication is true in this row. This truth-functional definition should not be confused with proof, causation, or everyday promises."
+                  : `Apply the ${operator.label} rule directly to this pair of truth values.`}
+            </p>
+          </div>
 
-        <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse">
-                <thead>
-                    <tr className="bg-black/40 border-b border-neutral-800 text-xs font-black uppercase tracking-widest text-neutral-400">
-                        <th className="p-4 text-center border-r border-neutral-800 w-1/6">P</th>
-                        <th className="p-4 text-center border-r border-neutral-800 w-1/6">Q</th>
-                        <th className="p-4 text-center border-r border-neutral-800 w-1/6"><M>P \land Q</M> <span className="block text-[8px] mt-1 text-neutral-600">AND</span></th>
-                        <th className="p-4 text-center border-r border-neutral-800 w-1/6"><M>P \lor Q</M> <span className="block text-[8px] mt-1 text-neutral-600">OR</span></th>
-                        <th className="p-4 text-center border-r border-neutral-800 w-1/6"><M>P \implies Q</M> <span className="block text-[8px] mt-1 text-neutral-600">IMPLIES</span></th>
-                        <th className="p-4 text-center w-1/6"><M>P \iff Q</M> <span className="block text-[8px] mt-1 text-neutral-600">XNOR (IFF)</span></th>
-                    </tr>
-                </thead>
-                <tbody className="divide-y divide-neutral-800/50">
-                    {rows.map((row, idx) => {
-                        const isHighlight = activeRow === idx;
-                        const andRes = row.p && row.q;
-                        const orRes = row.p || row.q;
-                        const impliesRes = !row.p || row.q;
-                        const iffRes = row.p === row.q;
-
-                        return (
-                            <tr 
-                                key={idx} 
-                                onClick={() => setActiveRow(idx)}
-                                className={`cursor-pointer transition-all duration-300 ${
-                                    isHighlight ? 'bg-purple-950/20 shadow-[inset_0_0_20px_rgba(168,85,247,0.1)]' : 'bg-transparent hover:bg-neutral-900/50'
-                                }`}
-                            >
-                                <td className={`p-4 border-r border-neutral-800/50 ${isHighlight ? 'bg-black/20' : ''}`}>{renderCell(row.p, isHighlight)}</td>
-                                <td className={`p-4 border-r border-neutral-800/50 ${isHighlight ? 'bg-black/20' : ''}`}>{renderCell(row.q, isHighlight)}</td>
-                                <td className="p-4 border-r border-neutral-800/50">{renderCell(andRes, isHighlight)}</td>
-                                <td className="p-4 border-r border-neutral-800/50">{renderCell(orRes, isHighlight)}</td>
-                                <td className="p-4 border-r border-neutral-800/50">{renderCell(impliesRes, isHighlight)}</td>
-                                <td className="p-4">{renderCell(iffRes, isHighlight)}</td>
-                            </tr>
-                        );
-                    })}
-                </tbody>
-            </table>
+          <div className="rounded-xl border border-white/[0.05] px-3 py-2.5 text-[10px] leading-5 text-slate-600">
+            Truth tables evaluate formulas under assignments. They do not determine whether an atomic proposition is factually true in the world.
+          </div>
         </div>
-
-        {/* Dynamic Explanation Panel */}
-        <div className="bg-[#05030a] p-6 border-t border-neutral-800 min-h-[120px] flex items-center">
-            {activeRow === 0 && (
-                <p className="text-sm text-neutral-400 font-light leading-relaxed m-0">
-                    <strong className="text-purple-400">State 1 (T, T):</strong> The only universe where <strong className="text-white">AND</strong> evaluates to True. Because P and Q match, the <strong className="text-white">Biconditional (IFF)</strong> is also True.
-                </p>
-            )}
-            {activeRow === 1 && (
-                <p className="text-sm text-neutral-400 font-light leading-relaxed m-0">
-                    <strong className="text-purple-400">State 2 (T, F):</strong> This is the <em>only</em> scenario that breaks the <strong className="text-white">IMPLIES</strong> statement. You cannot start with a True premise and deduce a False conclusion.
-                </p>
-            )}
-            {activeRow === 2 && (
-                <p className="text-sm text-neutral-400 font-light leading-relaxed m-0">
-                    <strong className="text-purple-400">State 3 (F, T):</strong> Notice that <strong className="text-white">IMPLIES</strong> is True here. In logic, a False premise implying a True conclusion is considered "Vacuously True."
-                </p>
-            )}
-            {activeRow === 3 && (
-                <p className="text-sm text-neutral-400 font-light leading-relaxed m-0">
-                    <strong className="text-purple-400">State 4 (F, F):</strong> The only universe where <strong className="text-white">OR</strong> evaluates to False. Because the inputs match, the <strong className="text-white">Biconditional (IFF)</strong> evaluates to True!
-                </p>
-            )}
-        </div>
-    </div>
+      </div>
+    </section>
   );
 }

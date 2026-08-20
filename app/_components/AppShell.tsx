@@ -38,6 +38,7 @@ export default function AppShell({
     "--domain-rgb": domainRgb,
     "--domain-accent": `rgb(${domainRgb})`,
   };
+  const isKnowledgeStudio = pathname === "/studio" || pathname.startsWith("/studio/");
 
   useEffect(() => {
     if (DEVTOOLS_DEFAULT) {
@@ -64,6 +65,8 @@ export default function AppShell({
       window.sessionStorage.getItem(DEVTOOLS_SESSION_KEY) === "1",
     );
   }, [pathname]);
+
+  if (isKnowledgeStudio) return <>{children}</>;
 
   return (
     <PagePolicyProvider routePolicies={pagePolicyRoutes}>

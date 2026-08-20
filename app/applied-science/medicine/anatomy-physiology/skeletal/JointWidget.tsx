@@ -1,111 +1,127 @@
 "use client";
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { CircleDot, MoveHorizontal, RotateCw, Settings } from "lucide-react";
 
-const JOINTS = [
-  { 
-    id: "hinge", 
-    name: "Hinge Joint", 
-    loc: "Elbow / Knee", 
-    mech: "Door Hinge", 
-    dof: "1 DoF (Flex/Extend)",
-    icon: MoveHorizontal 
+import { useState } from "react";
+import { CircleDot, MoveHorizontal, Move3D, RotateCw, Settings, type LucideIcon } from "lucide-react";
+
+const JOINTS: readonly {
+  id: string;
+  name: string;
+  examples: string;
+  motion: string;
+  axes: string;
+  constraint: string;
+  icon: LucideIcon;
+  rgb: string;
+}[] = [
+  {
+    id: "hinge",
+    name: "Hinge",
+    examples: "elbow · interphalangeal joints · knee (modified hinge)",
+    motion: "primarily flexion ↔ extension",
+    axes: "mostly one rotational axis",
+    constraint: "Bony geometry, capsule, ligaments, and surrounding muscle strongly constrain side-to-side motion.",
+    icon: MoveHorizontal,
+    rgb: "251,191,36",
   },
-  { 
-    id: "ball", 
-    name: "Ball & Socket", 
-    loc: "Shoulder / Hip", 
-    mech: "Joystick / Trailer Hitch", 
-    dof: "3 DoF (Rotation)",
-    icon: RotateCw 
+  {
+    id: "ball",
+    name: "Ball & socket",
+    examples: "shoulder · hip",
+    motion: "flex/extend · abduct/adduct · rotate · circumduct",
+    axes: "three rotational axes",
+    constraint: "The shoulder favors mobility; the hip gains more stability from a deeper socket and strong surrounding structures.",
+    icon: Move3D,
+    rgb: "34,211,238",
   },
-  { 
-    id: "pivot", 
-    name: "Pivot Joint", 
-    loc: "Neck (Atlas/Axis)", 
-    mech: "Axle / Wheel", 
-    dof: "1 DoF (Spin)",
-    icon: CircleDot 
+  {
+    id: "pivot",
+    name: "Pivot",
+    examples: "atlanto-axial joint · proximal radioulnar joint",
+    motion: "rotation around a longitudinal axis",
+    axes: "one rotational axis",
+    constraint: "A ring-and-axis arrangement permits rotation while limiting translation and other angular motions.",
+    icon: RotateCw,
+    rgb: "167,139,250",
   },
-];
+  {
+    id: "plane",
+    name: "Plane / gliding",
+    examples: "intercarpal joints · some vertebral facet joints",
+    motion: "small gliding translations between surfaces",
+    axes: "nonaxial or limited multiaxial glide",
+    constraint: "Small individual motions can combine across several joints into useful regional flexibility.",
+    icon: CircleDot,
+    rgb: "94,234,212",
+  },
+] as const;
 
 export default function JointWidget() {
-  const [active, setActive] = useState(JOINTS[0]);
+  const [activeId, setActiveId] = useState(JOINTS[0].id);
+  const active = JOINTS.find((joint) => joint.id === activeId) ?? JOINTS[0];
+  const ActiveIcon = active.icon;
 
   return (
-    <div className="glass overflow-hidden rounded-xl border border-white/10 bg-neutral-900/80 backdrop-blur-xl">
-      <div className="border-b border-white/5 px-5 py-4 flex justify-between items-center">
-        <h3 className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-neutral-300">
-          <Settings size={14} className="text-neutral-400" /> Joint Mechanics
-        </h3>
+    <section className="overflow-hidden rounded-[24px] border border-amber-100/[0.10] bg-[#0d0b0a]/68 backdrop-blur-xl">
+      <div className="grid gap-3 border-b border-white/[0.07] p-4 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-end">
+        <div>
+          <div className="flex items-center gap-2 font-mono text-[10px] font-semibold uppercase tracking-[0.09em] text-amber-200/68"><Settings size={13} /> Synovial joint lab</div>
+          <h3 className="mt-2 text-[21px] font-semibold tracking-[-0.035em] text-white">Joint shape permits some motions and constrains others.</h3>
+        </div>
+        <span className="font-mono text-[9px] uppercase tracking-[0.07em] text-stone-500">motion ≠ unlimited motion</span>
       </div>
 
-      {/* Visualization (Abstract) */}
-      <div className="h-32 bg-neutral-950/50 flex items-center justify-center relative overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-neutral-800/30 to-transparent" />
-        
-        <AnimatePresence mode="wait">
-            <motion.div
-                key={active.id}
-                initial={{ scale: 0.8, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.8, opacity: 0 }}
-                transition={{ type: "spring", bounce: 0.5 }}
-                className="text-neutral-200"
-            >
-                {active.id === 'hinge' && (
-                    <div className="w-16 h-16 border-l-4 border-b-4 border-neutral-400 rounded-bl-lg animate-pulse" />
-                )}
-                {active.id === 'ball' && (
-                    <div className="relative">
-                        <div className="w-12 h-12 rounded-full border-2 border-neutral-500" />
-                        <div className="absolute top-1 left-1 w-10 h-10 rounded-full bg-neutral-700 animate-ping opacity-20" />
-                    </div>
-                )}
-                {active.id === 'pivot' && (
-                    <div className="flex flex-col items-center">
-                        <div className="w-12 h-4 border-2 border-neutral-400 rounded-full" />
-                        <div className="w-1 h-12 bg-neutral-500" />
-                    </div>
-                )}
-            </motion.div>
-        </AnimatePresence>
-      </div>
+      <div className="grid lg:grid-cols-[210px_minmax(0,1fr)]">
+        <div className="grid grid-cols-2 gap-2 border-b border-white/[0.07] p-3 lg:grid-cols-1 lg:border-b-0 lg:border-r">
+          {JOINTS.map((joint) => {
+            const Icon = joint.icon;
+            const selected = joint.id === active.id;
+            return (
+              <button
+                key={joint.id}
+                type="button"
+                onClick={() => setActiveId(joint.id)}
+                className="rounded-[15px] border px-3 py-3 text-left transition"
+                style={{
+                  borderColor: selected ? `rgba(${joint.rgb},0.30)` : "rgba(255,255,255,0.06)",
+                  background: selected ? `rgba(${joint.rgb},0.055)` : "rgba(0,0,0,0.04)",
+                }}
+              >
+                <div className="flex items-center gap-2"><Icon size={14} style={{ color: `rgb(${joint.rgb})` }} /><strong className="text-[12px] text-white/86">{joint.name}</strong></div>
+                <span className="mt-1.5 block text-[10px] leading-4 text-stone-500">{joint.axes}</span>
+              </button>
+            );
+          })}
+        </div>
 
-      <div className="p-4 space-y-2">
-        {JOINTS.map((j) => (
-            <button
-                key={j.id}
-                onClick={() => setActive(j)}
-                className={`w-full flex items-center justify-between p-3 rounded-lg border transition-all text-xs
-                    ${active.id === j.id 
-                        ? "bg-neutral-800 border-neutral-600 text-white" 
-                        : "bg-transparent border-transparent text-neutral-500 hover:bg-white/5 hover:text-neutral-300"}
-                `}
-            >
-                <div className="flex items-center gap-3">
-                    <j.icon size={16} />
-                    <span className="font-bold">{j.name}</span>
-                </div>
-            </button>
-        ))}
-      </div>
+        <div className="p-4 sm:p-5">
+          <div className="grid gap-4 sm:grid-cols-[150px_minmax(0,1fr)] sm:items-center">
+            <div className="relative flex min-h-[150px] items-center justify-center overflow-hidden rounded-[20px] border border-white/[0.07] bg-black/[0.18]">
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(251,191,36,0.08),transparent_62%)]" />
+              <div className="relative flex h-24 w-24 items-center justify-center rounded-full border" style={{ color: `rgb(${active.rgb})`, borderColor: `rgba(${active.rgb},0.32)`, background: `rgba(${active.rgb},0.055)` }}>
+                <ActiveIcon size={34} />
+              </div>
+            </div>
+            <div>
+              <div className="font-mono text-[10px] uppercase tracking-[0.08em]" style={{ color: `rgba(${active.rgb},0.70)` }}>{active.axes}</div>
+              <h4 className="mt-1 text-[22px] font-semibold text-white">{active.name} joint</h4>
+              <p className="mt-2 text-[13px] leading-6 text-stone-300/76">{active.motion}</p>
+            </div>
+          </div>
 
-      <div className="bg-neutral-950/50 px-5 py-3 border-t border-white/5 space-y-1">
-        <div className="flex justify-between text-[10px] text-neutral-500">
-            <span>Biology:</span>
-            <span className="text-neutral-300">{active.loc}</span>
-        </div>
-        <div className="flex justify-between text-[10px] text-neutral-500">
-            <span>Machine:</span>
-            <span className="text-neutral-300">{active.mech}</span>
-        </div>
-        <div className="flex justify-between text-[10px] text-neutral-500">
-            <span>Motion:</span>
-            <span className="text-neutral-300">{active.dof}</span>
+          <div className="mt-4 grid gap-3 sm:grid-cols-2">
+            <div className="rounded-[16px] border border-white/[0.07] bg-black/[0.14] p-3">
+              <div className="font-mono text-[9px] font-semibold uppercase tracking-[0.07em] text-stone-500">Anatomical examples</div>
+              <p className="mt-2 text-[12px] leading-5 text-stone-300/74">{active.examples}</p>
+            </div>
+            <div className="rounded-[16px] border border-white/[0.07] bg-black/[0.14] p-3">
+              <div className="font-mono text-[9px] font-semibold uppercase tracking-[0.07em] text-stone-500">What constrains it</div>
+              <p className="mt-2 text-[12px] leading-5 text-stone-300/74">{active.constraint}</p>
+            </div>
+          </div>
+
+          <p className="mt-4 border-l-2 border-amber-200/35 pl-3 text-[11px] leading-5 text-stone-500">Joint classification describes typical motion. Real range of motion also depends on articular shape, capsule, ligaments, muscles, injury, age, and individual anatomy.</p>
         </div>
       </div>
-    </div>
+    </section>
   );
 }

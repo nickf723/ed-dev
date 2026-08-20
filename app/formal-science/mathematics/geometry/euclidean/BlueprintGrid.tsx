@@ -1,5 +1,16 @@
 "use client";
-import React, { useEffect, useRef } from 'react';
+
+import { useEffect, useRef } from "react";
+
+type ConstructionGhost = {
+  x: number;
+  y: number;
+  r: number;
+  angle: number;
+  speed: number;
+  life: number;
+  type: "arc" | "line";
+};
 
 export default function BlueprintGrid() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -7,90 +18,95 @@ export default function BlueprintGrid() {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    let width = (canvas.width = window.innerWidth);
-    let height = (canvas.height = window.innerHeight);
+    let width = 0;
+    let height = 0;
     let time = 0;
+    let frameId = 0;
+    let ghosts: ConstructionGhost[] = [];
 
-    // Construction Ghosts
-    const ghosts = Array.from({ length: 8 }, () => ({
-        x: Math.random() * width,
-        y: Math.random() * height,
-        r: Math.random() * 100 + 50,
-        startAngle: Math.random() * Math.PI * 2,
-        speed: (Math.random() - 0.5) * 0.02,
-        life: Math.random() * 100,
-        type: Math.random() > 0.5 ? 'arc' : 'line'
-    }));
+    const seedGhosts = () => {
+      ghosts = Array.from({ length: 7 }, (_, index) => ({
+        x: ((index * 0.173 + 0.08) % 1) * width,
+        y: ((index * 0.271 + 0.16) % 1) * height,
+        r: 54 + ((index * 31) % 78),
+        angle: index * 0.77,
+        speed: (index % 2 === 0 ? 1 : -1) * (0.002 + index * 0.00035),
+        life: 90 + index * 17,
+        type: index % 2 === 0 ? "arc" : "line",
+      }));
+    };
 
-    const animate = () => {
-      // 1. Blueprint Blue Background
-      const grad = ctx.createRadialGradient(width/2, height/2, 0, width/2, height/2, width);
-      grad.addColorStop(0, '#1e3a8a'); // Blue-900 (Center)
-      grad.addColorStop(1, '#172554'); // Blue-950 (Edges)
-      ctx.fillStyle = grad;
+    const resize = () => {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = Math.round(width * dpr);
+      canvas.height = Math.round(height * dpr);
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      seedGhosts();
+    };
+
+    const render = () => {
+      const gradient = ctx.createRadialGradient(width * 0.54, height * 0.42, 0, width * 0.54, height * 0.42, Math.max(width, height));
+      gradient.addColorStop(0, "#153b74");
+      gradient.addColorStop(0.58, "#0d2854");
+      gradient.addColorStop(1, "#07162f");
+      ctx.fillStyle = gradient;
       ctx.fillRect(0, 0, width, height);
 
-      // 2. The Grid (Drafting Paper)
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
+      const grid = 40;
       ctx.lineWidth = 1;
-      const gridSize = 40;
-      
+      ctx.strokeStyle = "rgba(186,230,253,0.055)";
       ctx.beginPath();
-      // Major lines
-      for(let x=0; x<=width; x+=gridSize) { ctx.moveTo(x,0); ctx.lineTo(x,height); }
-      for(let y=0; y<=height; y+=gridSize) { ctx.moveTo(0,y); ctx.lineTo(width,y); }
+      for (let x = 0; x <= width; x += grid) {
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, height);
+      }
+      for (let y = 0; y <= height; y += grid) {
+        ctx.moveTo(0, y);
+        ctx.lineTo(width, y);
+      }
       ctx.stroke();
 
-      // 3. Animated Constructions
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
-      ctx.lineWidth = 1.5;
-      
-      ghosts.forEach(g => {
-          g.life--;
-          if(g.life < 0) {
-              g.life = 200;
-              g.x = Math.random() * width;
-              g.y = Math.random() * height;
-              g.type = Math.random() > 0.5 ? 'arc' : 'line';
-          }
-          
-          const alpha = Math.sin((g.life / 200) * Math.PI); // Fade in/out
-          ctx.globalAlpha = alpha;
-          ctx.beginPath();
-          
-          if(g.type === 'arc') {
-              // Simulate Compass
-              ctx.arc(g.x, g.y, g.r, g.startAngle + time * g.speed, g.startAngle + time * g.speed + 1);
-          } else {
-              // Simulate Straightedge
-              const len = 200;
-              ctx.moveTo(g.x, g.y);
-              ctx.lineTo(g.x + Math.cos(g.startAngle)*len, g.y + Math.sin(g.startAngle)*len);
-              
-              // Draw "points" at ends
-              ctx.fillStyle = '#fff';
-              ctx.fillRect(g.x - 2, g.y - 2, 4, 4);
-          }
-          ctx.stroke();
-      });
+      ctx.strokeStyle = "rgba(224,242,254,0.16)";
+      ctx.lineWidth = 1.2;
+      for (const ghost of ghosts) {
+        ghost.life -= 0.28;
+        if (ghost.life <= 0) ghost.life = 180;
+        const alpha = Math.sin((ghost.life / 180) * Math.PI);
+        ctx.globalAlpha = Math.max(0, alpha) * 0.72;
+        ctx.beginPath();
+
+        if (ghost.type === "arc") {
+          const start = ghost.angle + time * ghost.speed;
+          ctx.arc(ghost.x, ghost.y, ghost.r, start, start + 1.12);
+        } else {
+          const direction = ghost.angle + Math.sin(time * ghost.speed) * 0.06;
+          const length = 170;
+          ctx.moveTo(ghost.x, ghost.y);
+          ctx.lineTo(ghost.x + Math.cos(direction) * length, ghost.y + Math.sin(direction) * length);
+        }
+        ctx.stroke();
+      }
       ctx.globalAlpha = 1;
-
-      time++;
-      requestAnimationFrame(animate);
+      time += 1;
+      frameId = requestAnimationFrame(render);
     };
 
-    const handleResize = () => {
-        width = canvas.width = window.innerWidth;
-        height = canvas.height = window.innerHeight;
-    };
-    window.addEventListener('resize', handleResize);
-    animate();
+    resize();
+    window.addEventListener("resize", resize);
+    frameId = requestAnimationFrame(render);
 
-    return () => window.removeEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener("resize", resize);
+      cancelAnimationFrame(frameId);
+    };
   }, []);
 
-  return <canvas ref={canvasRef} className="fixed inset-0 z-0 pointer-events-none" />;
+  return <canvas ref={canvasRef} className="fixed inset-0 z-0 pointer-events-none opacity-90" />;
 }

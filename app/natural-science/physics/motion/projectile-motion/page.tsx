@@ -20,7 +20,8 @@ export default function ProjectileMotionPage() {
   const [launchSpeed, setLaunchSpeed] = useState(14);
   const [angle, setAngle] = useState(45);
   const [timeFraction, setTimeFraction] = useState(0.42);
-  const [answer, setAnswer] = useState<string | null>(null);
+  const [challengeFraction, setChallengeFraction] = useState(0.34);
+  const [challengeChecked, setChallengeChecked] = useState(false);
 
   const theta = (angle * Math.PI) / 180;
   const vx0 = launchSpeed * Math.cos(theta);
@@ -58,6 +59,17 @@ export default function ProjectileMotionPage() {
   const projectileX = px(x);
   const projectileY = py(y);
 
+  const challengeSpeed = 17;
+  const challengeAngle = 38;
+  const challengeTheta = (challengeAngle * Math.PI) / 180;
+  const challengeVx = challengeSpeed * Math.cos(challengeTheta);
+  const challengeVy0 = challengeSpeed * Math.sin(challengeTheta);
+  const challengeFlight = (2 * challengeVy0) / G;
+  const challengeTime = challengeFlight * challengeFraction;
+  const challengeHeight = Math.max(0, challengeVy0 * challengeTime - 0.5 * G * challengeTime * challengeTime);
+  const challengeVy = challengeVy0 - G * challengeTime;
+  const challengeAtApex = Math.abs(challengeFraction - 0.5) <= 0.03;
+
   function applyPreset(preset: (typeof PRESETS)[number]) {
     setLaunchSpeed(preset.speed);
     setAngle(preset.angle);
@@ -80,42 +92,30 @@ export default function ProjectileMotionPage() {
             eyebrow="Motion · 02 / 03"
             icon={Route}
             title={<span>Projectile Motion</span>}
-            subtitle="Split a two-dimensional trajectory into independent horizontal and vertical motions, then recombine them into one path."
+            subtitle="Use one shared clock to uncover the two motions hidden inside a curved trajectory."
             accentRgb="34, 211, 238"
             titleClassName="font-mono text-[clamp(2.05rem,4.5vw,4.7rem)] font-semibold uppercase leading-[0.9] tracking-[-0.052em] text-[#effdff]"
             headerClassName="border-transparent"
           />
         </div>
 
-        <section className="mt-5 grid gap-4 rounded-[28px] border border-cyan-200/[0.10] bg-black/[0.12] p-5 backdrop-blur-xl lg:grid-cols-[minmax(0,1fr)_minmax(300px,0.72fr)] sm:p-6">
-          <div>
-            <div className="text-[10px] font-semibold uppercase tracking-[0.15em] text-cyan-300/70">The learner question</div>
-            <h2 className="mt-2 text-[clamp(1.6rem,3vw,2.35rem)] font-semibold tracking-[-0.04em] text-white">How can one curved path come from two simpler motions?</h2>
-            <p className="mt-3 max-w-3xl text-[13px] leading-6 text-slate-400">
-              Ignore air resistance and gravity changes only the vertical velocity. Horizontal motion keeps a constant velocity while vertical motion has constant downward acceleration. The projectile simply does both at once.
-            </p>
-          </div>
-          <div className="rounded-[18px] border border-cyan-200/[0.09] bg-cyan-400/[0.025] p-4">
-            <div className="text-[9px] font-semibold uppercase tracking-[0.12em] text-cyan-300/62">One launch, two components</div>
-            <div className="mt-3 space-y-2 text-[15px] text-white">
-              <div><M>{"v_{0x}=v_0\\cos\\theta"}</M></div>
-              <div><M>{"v_{0y}=v_0\\sin\\theta"}</M></div>
-            </div>
-            <p className="mt-2 text-[11px] leading-5 text-slate-500">The components share the same clock but follow different change rules.</p>
-          </div>
+        <section className="mt-5 rounded-[26px] border border-cyan-200/[0.10] bg-black/[0.12] p-5 backdrop-blur-xl sm:p-6">
+          <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-cyan-300/72">Phenomenon</div>
+          <h2 className="mt-2 max-w-5xl text-[clamp(1.8rem,3.4vw,2.8rem)] font-semibold tracking-[-0.045em] text-white">A thrown object follows a curve, but neither direction has to follow a curved rule.</h2>
+          <p className="mt-3 max-w-4xl text-[15px] leading-7 text-slate-300/76">Scrub through one flight below. Watch the orange horizontal velocity arrow and the violet vertical velocity arrow separately. Which one changes, and what happens to the other at the very top of the path?</p>
         </section>
 
-        <section className="mt-4 grid gap-4 lg:grid-cols-[minmax(0,1.18fr)_minmax(320px,0.82fr)]">
-          <div className="rounded-[30px] border border-white/[0.08] bg-black/[0.12] p-5 backdrop-blur-xl sm:p-6">
+        <section className="mt-4 grid gap-4 lg:grid-cols-[minmax(0,1.18fr)_minmax(320px,0.82fr)] lg:items-start">
+          <div className="rounded-[28px] border border-white/[0.08] bg-black/[0.12] p-5 backdrop-blur-xl sm:p-6">
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div>
-                <div className="text-[9px] font-semibold uppercase tracking-[0.14em] text-cyan-300/70">Trajectory lab</div>
-                <h2 className="mt-1 text-[21px] font-semibold tracking-[-0.025em] text-white">Scrub the same clock through x and y.</h2>
+                <div className="text-[10px] font-semibold uppercase tracking-[0.10em] text-cyan-300/72">Trajectory sandbox</div>
+                <h2 className="mt-1 text-[23px] font-semibold tracking-[-0.03em] text-white">Scrub the same clock through x and y.</h2>
               </div>
-              <div className="rounded-full border border-white/[0.07] bg-black/[0.18] px-3 py-1.5 font-mono text-[10px] text-slate-400">t = {time.toFixed(2)} s</div>
+              <div className="rounded-full border border-white/[0.07] bg-black/[0.18] px-3 py-1.5 font-mono text-[11px] text-slate-300">t = {time.toFixed(2)} s</div>
             </div>
 
-            <div className="mt-4 overflow-hidden rounded-[24px] border border-white/[0.07] bg-[#06131d]/84">
+            <div className="mt-4 overflow-hidden rounded-[22px] border border-white/[0.07] bg-[#06131d]/84">
               <svg viewBox={`0 0 ${width} ${height}`} className="h-auto w-full" role="img" aria-label="Projectile trajectory and velocity components">
                 <defs>
                   <linearGradient id="trajectoryGlow" x1="0" y1="0" x2="1" y2="0">
@@ -130,10 +130,10 @@ export default function ProjectileMotionPage() {
                 <line x1={padX} x2={projectileX} y1={projectileY} y2={projectileY} stroke="rgba(251,146,60,0.15)" strokeDasharray="5 6" />
                 <circle cx={projectileX} cy={projectileY} r="8" fill="rgb(34,211,238)" fillOpacity="0.92" />
                 <circle cx={projectileX} cy={projectileY} r="16" fill="none" stroke="rgba(34,211,238,0.20)" />
-                <line x1={projectileX} x2={projectileX + Math.min(95, 25 + vx0 * 4)} y1={projectileY} y2={projectileY} stroke="rgba(251,146,60,0.78)" strokeWidth="2" />
-                <line x1={projectileX} x2={projectileX} y1={projectileY} y2={projectileY - Math.max(-90, Math.min(90, vy * 5))} stroke="rgba(167,139,250,0.78)" strokeWidth="2" />
-                <text x={padX} y={height - 15} fill="rgba(148,163,184,0.55)" fontSize="10">0 m</text>
-                <text x={width - padX - 36} y={height - 15} fill="rgba(148,163,184,0.55)" fontSize="10">{range.toFixed(1)} m</text>
+                <line x1={projectileX} x2={projectileX + Math.min(95, 25 + vx0 * 4)} y1={projectileY} y2={projectileY} stroke="rgba(251,146,60,0.84)" strokeWidth="2.5" />
+                <line x1={projectileX} x2={projectileX} y1={projectileY} y2={projectileY - Math.max(-90, Math.min(90, vy * 5))} stroke="rgba(167,139,250,0.84)" strokeWidth="2.5" />
+                <text x={padX} y={height - 15} fill="rgba(148,163,184,0.62)" fontSize="12">0 m</text>
+                <text x={width - padX - 40} y={height - 15} fill="rgba(148,163,184,0.62)" fontSize="12">{range.toFixed(1)} m</text>
               </svg>
             </div>
 
@@ -151,25 +151,42 @@ export default function ProjectileMotionPage() {
             </div>
           </div>
 
-          <div className="space-y-4">
-            <div className="rounded-[24px] border border-white/[0.08] bg-black/[0.12] p-5 backdrop-blur-xl">
-              <div className="text-[9px] font-semibold uppercase tracking-[0.14em] text-slate-500">Launch presets</div>
-              <div className="mt-4 space-y-2">
+          <aside className="space-y-3 lg:sticky lg:top-[170px]">
+            <div className="rounded-[22px] border border-white/[0.08] bg-black/[0.12] p-4 backdrop-blur-xl">
+              <div className="text-[10px] font-semibold uppercase tracking-[0.09em] text-slate-400">Try different launches</div>
+              <div className="mt-3 space-y-2">
                 {PRESETS.map((preset) => (
-                  <button key={preset.label} type="button" onClick={() => applyPreset(preset)} className="flex w-full items-center justify-between rounded-[15px] border border-white/[0.06] bg-white/[0.012] px-3 py-3 text-left transition hover:border-cyan-200/[0.16]">
-                    <span className="text-[11px] font-semibold text-white">{preset.label}</span>
-                    <span className="font-mono text-[9px] text-cyan-100/55">{preset.speed} m/s · {preset.angle}°</span>
+                  <button key={preset.label} type="button" onClick={() => applyPreset(preset)} className="flex w-full items-center justify-between rounded-[14px] border border-white/[0.06] bg-white/[0.012] px-3 py-3 text-left transition hover:border-cyan-200/[0.16]">
+                    <span className="text-[12px] font-semibold text-white">{preset.label}</span>
+                    <span className="font-mono text-[10px] text-cyan-100/60">{preset.speed} m/s · {preset.angle}°</span>
                   </button>
                 ))}
               </div>
             </div>
-            <Summary label="Flight time" value={`${flightTime.toFixed(2)} s`} note="Set entirely by the vertical launch component for this level-ground model." rgb="167, 139, 250" />
-            <Summary label="Range" value={`${range.toFixed(1)} m`} note="Horizontal speed multiplied by the total time aloft." rgb="34, 211, 238" />
-            <Summary label="Maximum height" value={`${maxHeight.toFixed(1)} m`} note="Reached when the vertical velocity momentarily becomes zero." rgb="45, 212, 191" />
+            <Summary label="Flight time" value={`${flightTime.toFixed(2)} s`} note="How long this level-ground launch remains airborne." rgb="167, 139, 250" />
+            <Summary label="Range" value={`${range.toFixed(1)} m`} note="How far the unchanged horizontal component carries the projectile during that time." rgb="34, 211, 238" />
+            <Summary label="Maximum height" value={`${maxHeight.toFixed(1)} m`} note="The height at the instant the vertical component changes sign." rgb="45, 212, 191" />
+          </aside>
+        </section>
+
+        <section className="mt-6 grid gap-4 lg:grid-cols-[minmax(0,1fr)_390px] lg:items-start">
+          <div>
+            <div className="text-[10px] font-semibold uppercase tracking-[0.10em] text-cyan-300/68">Conceptual bridge</div>
+            <h2 className="mt-2 text-[clamp(1.8rem,3.2vw,3rem)] font-semibold tracking-[-0.045em] text-white">The curve is what two independent motions look like when they share one clock.</h2>
+            <p className="mt-3 max-w-4xl text-[15px] leading-7 text-slate-300/76">In this ideal model there is no horizontal acceleration, so the orange velocity component stays fixed. Gravity acts vertically, so the violet component steadily decreases, reaches zero for an instant, then points downward.</p>
+            <p className="mt-3 max-w-4xl text-[15px] leading-7 text-slate-300/76">The projectile does not switch from “horizontal motion” to “vertical motion.” It performs both at every moment. Their shared time coordinate is what recombines them into one trajectory.</p>
+          </div>
+          <div className="rounded-[20px] border border-cyan-200/[0.10] bg-cyan-400/[0.025] p-4">
+            <div className="text-[10px] font-semibold uppercase tracking-[0.09em] text-cyan-300/68">Launch decomposition</div>
+            <div className="mt-3 space-y-2 text-[17px] text-white">
+              <div><M>{"v_{0x}=v_0\\cos\\theta"}</M></div>
+              <div><M>{"v_{0y}=v_0\\sin\\theta"}</M></div>
+            </div>
+            <p className="mt-3 text-[12px] leading-5 text-slate-400">These are the two starting velocities you were already watching in the sandbox.</p>
           </div>
         </section>
 
-        <section className="mt-4 grid gap-3 md:grid-cols-2">
+        <section className="mt-5 grid gap-3 md:grid-cols-2">
           <ModelCard
             icon={MoveRight}
             title="Horizontal story"
@@ -188,36 +205,53 @@ export default function ProjectileMotionPage() {
           />
         </section>
 
-        <section className="mt-4 grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(300px,0.72fr)]">
-          <div className="rounded-[24px] border border-cyan-200/[0.10] bg-cyan-400/[0.025] p-5 backdrop-blur-xl">
-            <div className="flex items-center gap-2 text-[9px] font-semibold uppercase tracking-[0.14em] text-cyan-300/68"><TrendingUp size={12} /> Physics ↔ Algebra</div>
-            <h2 className="mt-2 text-[21px] font-semibold text-white">Eliminate time and the trajectory itself becomes quadratic.</h2>
-            <div className="mt-4 rounded-[17px] border border-white/[0.06] bg-black/[0.18] px-4 py-4 text-[15px] text-cyan-100"><M>{"y=x\\tan\\theta-\\frac{gx^2}{2v_0^2\\cos^2\\theta}"}</M></div>
-            <p className="mt-3 text-[11px] leading-5 text-slate-500">The parabola is not a decorative approximation. It follows directly from constant horizontal velocity plus constant vertical acceleration.</p>
+        <section className="mt-5 grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(300px,0.72fr)]">
+          <div className="rounded-[22px] border border-cyan-200/[0.10] bg-cyan-400/[0.025] p-5 backdrop-blur-xl">
+            <div className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.09em] text-cyan-300/68"><TrendingUp size={13} /> Physics ↔ Algebra</div>
+            <h2 className="mt-2 text-[22px] font-semibold text-white">Eliminate time and the trajectory itself becomes quadratic.</h2>
+            <div className="mt-4 rounded-[17px] border border-white/[0.06] bg-black/[0.18] px-4 py-4 text-[16px] text-cyan-100"><M>{"y=x\\tan\\theta-\\frac{gx^2}{2v_0^2\\cos^2\\theta}"}</M></div>
+            <p className="mt-3 text-[13px] leading-6 text-slate-400">The parabola follows directly from constant horizontal velocity plus constant vertical acceleration.</p>
           </div>
-          <div className="rounded-[24px] border border-white/[0.07] bg-black/[0.12] p-5 backdrop-blur-xl">
-            <div className="flex items-center gap-2 text-[9px] font-semibold uppercase tracking-[0.14em] text-slate-600"><Crosshair size={12} /> Key invariant</div>
-            <p className="mt-3 text-[12px] leading-6 text-slate-400">At the top of the arc, only the <strong className="text-white">vertical</strong> velocity is zero. The projectile is still moving horizontally.</p>
+          <div className="rounded-[22px] border border-amber-200/[0.10] bg-amber-300/[0.025] p-5 backdrop-blur-xl">
+            <div className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.09em] text-amber-200/70"><Crosshair size={13} /> Common pitfall</div>
+            <h3 className="mt-2 text-[20px] font-semibold text-white">The projectile does not stop at the top.</h3>
+            <p className="mt-3 text-[14px] leading-6 text-slate-300/72">Only the vertical velocity is zero there. Horizontal velocity remains nonzero, and gravity is still accelerating the projectile downward.</p>
           </div>
         </section>
 
-        <section className="mt-4 rounded-[26px] border border-white/[0.08] bg-black/[0.12] p-5 backdrop-blur-xl sm:p-6">
-          <div className="text-[9px] font-semibold uppercase tracking-[0.14em] text-emerald-300/65">Transfer check</div>
-          <h2 className="mt-1 text-[20px] font-semibold text-white">At the highest point of an ideal projectile's path, which statement is correct?</h2>
-          <div className="mt-4 flex flex-wrap gap-2">
-            {["all velocity is zero", "vertical velocity is zero", "acceleration is zero"].map((option) => (
-              <button key={option} type="button" onClick={() => setAnswer(option)} className="rounded-full border px-4 py-2 text-[11px]" style={{ borderColor: answer === option ? "rgba(45,212,191,0.35)" : "rgba(255,255,255,0.07)", background: answer === option ? "rgba(45,212,191,0.06)" : "rgba(0,0,0,0.12)", color: answer === option ? "rgb(209,250,229)" : "rgb(148,163,184)" }}>{option}</button>
-            ))}
-          </div>
-          {answer ? (
-            <div className={`mt-4 rounded-[16px] border p-4 ${answer === "vertical velocity is zero" ? "border-emerald-300/[0.16] bg-emerald-400/[0.03]" : "border-amber-300/[0.16] bg-amber-400/[0.025]"}`}>
-              <strong className={`text-[11px] ${answer === "vertical velocity is zero" ? "text-emerald-200" : "text-amber-200"}`}>{answer === "vertical velocity is zero" ? "Exactly" : "Keep the two axes separate"}</strong>
-              <p className="mt-1 text-[11px] leading-5 text-slate-500">Gravity is still accelerating the projectile downward, and horizontal velocity remains constant in the ideal model.</p>
+        <section className="mt-5 rounded-[24px] border border-emerald-200/[0.10] bg-black/[0.12] p-5 backdrop-blur-xl sm:p-6">
+          <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-start">
+            <div>
+              <div className="text-[10px] font-semibold uppercase tracking-[0.10em] text-emerald-300/70">Application · find the apex</div>
+              <h2 className="mt-2 text-[clamp(1.6rem,2.8vw,2.4rem)] font-semibold tracking-[-0.04em] text-white">Fresh launch: 17 m/s at 38°. Scrub until the projectile reaches its greatest height.</h2>
+              <p className="mt-3 max-w-3xl text-[14px] leading-6 text-slate-300/72">Use the height readout rather than memorizing a time fraction. Lock the moment you think is the apex, then inspect both velocity components.</p>
+
+              <label className="mt-5 block rounded-[18px] border border-white/[0.07] bg-black/[0.16] p-4">
+                <div className="flex items-center justify-between gap-3 text-[13px] text-slate-300"><span>Time through flight</span><span className="font-mono text-emerald-100">{challengeTime.toFixed(2)} s</span></div>
+                <input type="range" min={0} max={1} step={0.01} value={challengeFraction} onChange={(event) => { setChallengeFraction(Number(event.target.value)); setChallengeChecked(false); }} className="mt-4 w-full accent-emerald-400" aria-label="Challenge time through flight" />
+                <div className="mt-3 grid grid-cols-2 gap-2">
+                  <Readout label="height" value={`${challengeHeight.toFixed(2)} m`} rgb="45, 212, 191" />
+                  <Readout label="horizontal position" value={`${(challengeVx * challengeTime).toFixed(2)} m`} rgb="34, 211, 238" />
+                </div>
+              </label>
             </div>
-          ) : null}
-          <div className="mt-5 flex flex-wrap items-center justify-between gap-3">
-            <Link href="/natural-science/physics/motion/kinematics" className="text-[10px] text-slate-500 hover:text-slate-300">← Kinematics</Link>
-            <Link href="/natural-science/physics/motion/relative-motion" className="inline-flex items-center gap-2 rounded-full border border-violet-200/[0.12] bg-violet-400/[0.035] px-4 py-2 text-[10px] font-semibold text-violet-100/75">Next: Relative Motion <ArrowRight size={13} /></Link>
+
+            <aside className="rounded-[18px] border border-white/[0.07] bg-black/[0.16] p-4">
+              <button type="button" onClick={() => setChallengeChecked(true)} className="w-full rounded-[13px] border border-emerald-200/[0.18] bg-emerald-300/[0.05] px-4 py-3 text-[13px] font-semibold text-emerald-100">Lock this moment</button>
+              {challengeChecked ? (
+                <div className={`mt-4 rounded-[14px] border p-4 ${challengeAtApex ? "border-emerald-300/[0.18] bg-emerald-400/[0.035]" : "border-amber-300/[0.16] bg-amber-400/[0.025]"}`}>
+                  <strong className={`text-[13px] ${challengeAtApex ? "text-emerald-200" : "text-amber-200"}`}>{challengeAtApex ? "Apex found" : challengeFraction < 0.5 ? "Still rising" : "Already descending"}</strong>
+                  <p className="mt-2 text-[12px] leading-5 text-slate-400">{challengeAtApex ? `Vertical velocity is ${challengeVy.toFixed(2)} m/s, while horizontal velocity is still ${challengeVx.toFixed(2)} m/s.` : "Adjust the shared clock and look for the maximum height before locking again."}</p>
+                </div>
+              ) : (
+                <p className="mt-4 text-[12px] leading-5 text-slate-500">The velocity components stay hidden until you commit to a moment.</p>
+              )}
+            </aside>
+          </div>
+
+          <div className="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-white/[0.06] pt-4">
+            <Link href="/natural-science/physics/motion/kinematics" className="text-[11px] text-slate-400 hover:text-slate-200">← Kinematics</Link>
+            <Link href="/natural-science/physics/motion/relative-motion" className="inline-flex items-center gap-2 rounded-full border border-violet-200/[0.12] bg-violet-400/[0.035] px-4 py-2 text-[11px] font-semibold text-violet-100/80">Next: Relative Motion <ArrowRight size={13} /></Link>
           </div>
         </section>
       </div>
@@ -226,17 +260,17 @@ export default function ProjectileMotionPage() {
 }
 
 function Control({ label, value, min, max, step, unit, onChange }: { label: string; value: number; min: number; max: number; step: number; unit: string; onChange: (value: number) => void }) {
-  return <label className="block"><div className="mb-2 flex justify-between text-[9px] uppercase tracking-[0.11em] text-slate-600"><span>{label}</span><span className="font-mono text-cyan-100/60">{value.toFixed(step < 1 ? 1 : 0)} {unit}</span></div><input aria-label={label} type="range" min={min} max={max} step={step} value={value} onChange={(event) => onChange(Number(event.target.value))} className="h-1.5 w-full cursor-pointer appearance-none rounded-full bg-slate-800 accent-cyan-400" /></label>;
+  return <label className="block"><div className="mb-2 flex justify-between text-[10px] uppercase tracking-[0.08em] text-slate-500"><span>{label}</span><span className="font-mono text-cyan-100/70">{value.toFixed(step < 1 ? 1 : 0)} {unit}</span></div><input aria-label={label} type="range" min={min} max={max} step={step} value={value} onChange={(event) => onChange(Number(event.target.value))} className="h-2 w-full cursor-pointer appearance-none rounded-full bg-slate-800 accent-cyan-400" /></label>;
 }
 
 function Readout({ label, value, rgb }: { label: string; value: string; rgb: string }) {
-  return <div className="rounded-[14px] border border-white/[0.06] bg-black/[0.20] px-3 py-3"><div className="text-[8px] uppercase tracking-[0.10em] text-slate-600">{label}</div><div className="mt-1 font-mono text-[11px]" style={{ color: `rgba(${rgb},0.80)` }}>{value}</div></div>;
+  return <div className="rounded-[13px] border border-white/[0.06] bg-black/[0.20] px-3 py-3"><div className="text-[9px] uppercase tracking-[0.07em] text-slate-500">{label}</div><div className="mt-1 font-mono text-[12px]" style={{ color: `rgba(${rgb},0.88)` }}>{value}</div></div>;
 }
 
 function Summary({ label, value, note, rgb }: { label: string; value: string; note: string; rgb: string }) {
-  return <div className="rounded-[22px] border border-white/[0.07] bg-black/[0.12] p-4 backdrop-blur-xl"><div className="text-[9px] uppercase tracking-[0.12em] text-slate-600">{label}</div><div className="mt-2 font-mono text-[18px]" style={{ color: `rgba(${rgb},0.78)` }}>{value}</div><p className="mt-2 text-[11px] leading-5 text-slate-500">{note}</p></div>;
+  return <div className="rounded-[18px] border border-white/[0.07] bg-black/[0.12] p-4 backdrop-blur-xl"><div className="text-[10px] uppercase tracking-[0.08em] text-slate-500">{label}</div><div className="mt-2 font-mono text-[19px]" style={{ color: `rgba(${rgb},0.84)` }}>{value}</div><p className="mt-2 text-[12px] leading-5 text-slate-400">{note}</p></div>;
 }
 
 function ModelCard({ icon: Icon, title, question, text, formulas, rgb }: { icon: typeof MoveRight; title: string; question: string; text: string; formulas: string[]; rgb: string }) {
-  return <div className="rounded-[22px] border border-white/[0.07] bg-black/[0.12] p-5 backdrop-blur-xl"><div className="flex items-center justify-between"><div><div className="text-[9px] font-semibold uppercase tracking-[0.12em]" style={{ color: `rgba(${rgb},0.68)` }}>{question}</div><h3 className="mt-1 text-[18px] font-semibold text-white">{title}</h3></div><Icon size={18} style={{ color: `rgba(${rgb},0.78)` }} /></div><p className="mt-3 text-[11px] leading-5 text-slate-500">{text}</p><div className="mt-4 grid gap-2 sm:grid-cols-2">{formulas.map((formula) => <div key={formula} className="rounded-[14px] border border-white/[0.05] bg-black/[0.16] px-3 py-3 text-[13px] text-slate-200"><M>{formula}</M></div>)}</div></div>;
+  return <div className="rounded-[20px] border border-white/[0.07] bg-black/[0.12] p-5 backdrop-blur-xl"><div className="flex items-center justify-between"><div><div className="text-[10px] font-semibold uppercase tracking-[0.08em]" style={{ color: `rgba(${rgb},0.72)` }}>{question}</div><h3 className="mt-1 text-[19px] font-semibold text-white">{title}</h3></div><Icon size={18} style={{ color: `rgba(${rgb},0.82)` }} /></div><p className="mt-3 text-[13px] leading-6 text-slate-400">{text}</p><div className="mt-4 grid gap-2 sm:grid-cols-2">{formulas.map((formula) => <div key={formula} className="rounded-[13px] border border-white/[0.05] bg-black/[0.16] px-3 py-3 text-[14px] text-slate-200"><M>{formula}</M></div>)}</div></div>;
 }

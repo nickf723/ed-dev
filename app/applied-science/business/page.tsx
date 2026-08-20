@@ -1,132 +1,234 @@
-"use client";
 import Link from "next/link";
+import DomainPageHeader from "@/app/_components/DomainPageHeader";
+import { SceneFrame } from "@/app/_page-system/scene";
+import { requireCurriculumPageContext } from "@/lib/curriculum/page-context";
+import type { CurriculumNode } from "@/lib/curriculum/types";
+import type { LucideIcon } from "lucide-react";
+import {
+  ArrowRight,
+  BarChart3,
+  Briefcase,
+  Building2,
+  Coins,
+  Globe,
+  Lightbulb,
+  PieChart,
+  Scale,
+  Target,
+  TrendingUp,
+  Users,
+} from "lucide-react";
 import GlobalTradeBackground from "./GlobalTradeBackground";
 import GrowthSimulator from "./GrowthSimulator";
-import { 
-  Briefcase, TrendingUp, Users, PieChart, 
-  Globe, Building2, Target, ArrowRight 
-} from "lucide-react";
+
+const NODE_ID = "applied.business";
+
+type BranchMeta = { icon: LucideIcon; code: string; rgb: string; prompt: string };
+
+const BRANCH_META: Record<string, BranchMeta> = {
+  "applied.business.accounting": { icon: PieChart, code: "ACC", rgb: "192,132,252", prompt: "What happened, how should it be classified, and what can the records support?" },
+  "applied.business.marketing": { icon: Target, code: "MKT", rgb: "244,114,182", prompt: "Whose problem matters, how is demand understood, and how does an offer reach people?" },
+  "applied.business.finance": { icon: Coins, code: "FIN", rgb: "94,234,212", prompt: "How should capital, liquidity, risk, and time be traded against one another?" },
+  "applied.business.operations": { icon: Building2, code: "OPS", rgb: "251,191,36", prompt: "How do inputs become reliable products or services without queues, defects, or waste taking over?" },
+  "applied.business.management": { icon: Users, code: "MGT", rgb: "125,211,252", prompt: "How are people, authority, incentives, communication, and change coordinated?" },
+  "applied.business.strategy": { icon: Briefcase, code: "STR", rgb: "134,239,172", prompt: "Which goals, capabilities, positions, and tradeoffs will the organization actually commit to?" },
+  "applied.business.entrepreneurship": { icon: Lightbulb, code: "ENT", rgb: "253,186,116", prompt: "How can an uncertain opportunity be tested before resources are committed at scale?" },
+  "applied.business.analytics": { icon: BarChart3, code: "ANA", rgb: "103,232,249", prompt: "Which measurements, models, experiments, and forecasts improve a decision, and which do not?" },
+  "applied.business.governance-risk": { icon: Scale, code: "GRC", rgb: "248,113,113", prompt: "Who is accountable, what can fail, and which obligations constrain the organization?" },
+  "applied.business.international": { icon: Globe, code: "INT", rgb: "147,197,253", prompt: "How do borders, institutions, currencies, logistics, regulation, and local context change the operating model?" },
+};
+
+const LANES = [
+  {
+    id: "discover",
+    code: "01",
+    label: "Discover & position",
+    note: "Understand needs, choose where to compete, and test an opportunity.",
+    ids: ["applied.business.marketing", "applied.business.strategy", "applied.business.entrepreneurship"],
+    rgb: "244,114,182",
+  },
+  {
+    id: "deliver",
+    code: "02",
+    label: "Coordinate & deliver",
+    note: "Organize people and processes so a promise can be fulfilled in real settings.",
+    ids: ["applied.business.management", "applied.business.operations", "applied.business.international"],
+    rgb: "251,191,36",
+  },
+  {
+    id: "steward",
+    code: "03",
+    label: "Measure & steward",
+    note: "Record activity, allocate capital, learn from evidence, and manage accountability and risk.",
+    ids: ["applied.business.accounting", "applied.business.finance", "applied.business.analytics", "applied.business.governance-risk"],
+    rgb: "192,132,252",
+  },
+] as const;
+
+const OPERATING_FLOW = ["Need", "Offer", "Capability", "Delivery", "Outcome", "Cash + evidence", "Reinvestment"] as const;
 
 export default function BusinessPage() {
-  const sectors = [
-    { 
-      title: "Finance", 
-      icon: TrendingUp, 
-      color: "text-emerald-400", 
-      desc: "The language of business. Managing assets, risk, and capital markets.",
-      href: "/applied-science/business/finance"
-    },
-    { 
-      title: "Marketing", 
-      icon: Target, 
-      color: "text-rose-400", 
-      desc: "Understanding consumer needs and communicating value propositions.",
-      href: "/applied-science/business/marketing"
-    },
-    { 
-      title: "Management", 
-      icon: Users, 
-      color: "text-blue-400", 
-      desc: "Leading organizations, strategy, and human resources.",
-      href: "/applied-science/business/management" 
-    },
-    { 
-      title: "Operations", 
-      icon: Building2, 
-      color: "text-amber-400", 
-      desc: "The engine of the firm. Supply chain, logistics, and efficiency.",
-      href: "/applied-science/business/operations" 
-    },
-    {
-        title: "Accounting", 
-        icon: PieChart, 
-        color: "text-violet-400", 
-        desc: "Tracking financial performance and ensuring regulatory compliance.",
-        href: "/applied-science/business/accounting"
-    }
-  ];
+  const { node } = requireCurriculumPageContext(NODE_ID);
+  const children = node.children ?? [];
+  const byId = new Map(children.map((child) => [child.id, child]));
 
   return (
-    <main className="relative min-h-screen bg-[#020617] text-slate-200 overflow-hidden font-sans selection:bg-emerald-500/30">
-      <GlobalTradeBackground />
-      
-      {/* Overlay for readability */}
-      <div className="absolute inset-0 bg-radial-vignette opacity-60 pointer-events-none" />
-
-      <div className="relative z-10 container mx-auto px-6 py-12">
-        
-        {/* HEADER */}
-        <header className="mb-16 border-b border-emerald-500/20 pb-8">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="p-2 bg-emerald-500/10 border border-emerald-500/30 rounded">
-              <Briefcase className="text-emerald-400" size={20} />
-            </div>
-            <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-emerald-400">
-              Applied Science // Commerce
-            </span>
+    <SceneFrame
+      background={<GlobalTradeBackground />}
+      className="bg-[#07100c] text-slate-100 selection:bg-emerald-300/25"
+      maxWidthClassName="max-w-[1680px]"
+      headerBackground="rgba(7,16,12,0.54)"
+      header={
+        <DomainPageHeader
+          breadcrumbs={[{ label: "Home", href: "/" }, { label: "Applied Sciences", href: "/applied-science" }, { label: "Business" }]}
+          eyebrow="Customers · people · operations · information · capital · risk"
+          eyebrowStyle="rule"
+          icon={Briefcase}
+          title={<span>Business</span>}
+          subtitle="Study how organizations create and deliver value by coordinating customers, people, capabilities, operations, information, capital, accounting, marketing, strategy, governance, and adaptation under real resource constraints."
+          accentRgb="52, 211, 153"
+          titleClassName="font-sans text-[clamp(3rem,5.5vw,6rem)] font-semibold leading-[0.84] tracking-[-0.066em] text-[#ecfdf5]"
+          headerClassName="border-emerald-100/[0.10]"
+        />
+      }
+    >
+      <section className="relative isolate mt-4 border-y border-emerald-100/[0.10] py-4 sm:py-5">
+        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(6,20,13,0.26),transparent_28%,transparent_72%,rgba(6,20,13,0.24))] backdrop-blur-[5px]" />
+        <div className="relative flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
+          <div className="-mx-3 max-w-5xl rounded-[20px] bg-[#07140e]/[0.30] px-3 py-2 backdrop-blur-[20px] backdrop-saturate-[1.06]">
+            <div className="font-mono text-[10px] font-semibold uppercase tracking-[0.09em] text-emerald-100/65">Primary navigation · operating map</div>
+            <h2 className="mt-1.5 text-[clamp(1.7rem,3vw,2.9rem)] font-semibold leading-[0.96] tracking-[-0.046em] text-white">Where inside an organization do you want to ask the next question?</h2>
           </div>
-          <h1 className="text-6xl md:text-8xl font-black text-white tracking-tighter uppercase leading-none">
-            BUSINESS <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">ADMIN</span>
-          </h1>
-          <p className="mt-6 text-slate-400 max-w-2xl text-lg font-light border-l-2 border-emerald-500/30 pl-6">
-            The study of organizational management, markets, and value creation. Turning resources into goods and services to serve societal needs.
-          </p>
-        </header>
-
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-          
-          {/* LEFT: SECTORS */}
-          <div className="lg:col-span-7 space-y-8">
-            <div className="grid grid-cols-1 gap-4">
-              {sectors.map((s) => (
-                <Link key={s.title} href={`/applied-science/business/${s.title.toLowerCase()}`} className="group relative p-6 bg-slate-900/60 border border-white/5 hover:border-emerald-500/50 rounded-xl transition-all hover:translate-x-1">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-4">
-                      <div className={`p-3 rounded-lg bg-black/40 border border-white/5 ${s.color} group-hover:scale-110 transition-transform`}>
-                        <s.icon size={24} />
-                      </div>
-                      <div>
-                        <h3 className="font-bold text-white text-xl">{s.title}</h3>
-                        <p className="text-xs text-slate-400 mt-1">{s.desc}</p>
-                      </div>
-                    </div>
-                    <ArrowRight size={18} className="text-slate-600 group-hover:text-emerald-400 -translate-x-2 opacity-0 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
-                  </div>
-                </Link>
-              ))}
-            </div>
-
-            {/* Core Concept: The Triple Bottom Line */}
-            <div className="p-6 bg-emerald-900/10 border border-emerald-500/20 rounded-2xl">
-              <h4 className="text-sm font-bold text-white uppercase mb-3 flex items-center gap-2">
-                <Globe size={16} className="text-emerald-400" /> Modern Philosophy
-              </h4>
-              <p className="text-xs text-slate-400 leading-relaxed mb-4">
-                Contemporary business moves beyond profit maximization to the <strong>Triple Bottom Line</strong>: focusing on <span className="text-emerald-300">Profit</span>, <span className="text-emerald-300">People</span>, and <span className="text-emerald-300">Planet</span>.
-              </p>
-            </div>
+          <div className="flex gap-4 rounded-full bg-[#07140e]/[0.28] px-3 py-2 font-mono text-[10px] uppercase tracking-[0.06em] backdrop-blur-[18px]">
+            <Neighbor href="/social-science/economics" label="Economics" />
+            <Neighbor href="/social-science/law" label="Law" />
           </div>
-
-          {/* RIGHT: STRATEGY LAB */}
-          <div className="lg:col-span-5 space-y-6">
-            {/* The Simulation Widget */}
-            <GrowthSimulator />
-
-            {/* KPI Dashboard (Static Visual) */}
-            <div className="grid grid-cols-2 gap-4">
-              <div className="p-4 bg-black/40 border border-white/10 rounded-xl">
-                <span className="text-[10px] text-slate-500 uppercase font-bold">Global GDP</span>
-                <div className="text-lg font-mono text-white mt-1">$105 Trillion</div>
-              </div>
-              <div className="p-4 bg-black/40 border border-white/10 rounded-xl">
-                <span className="text-[10px] text-slate-500 uppercase font-bold">Startups/Year</span>
-                <div className="text-lg font-mono text-emerald-400 mt-1">305 Million</div>
-              </div>
-            </div>
-          </div>
-
         </div>
-      </div>
-    </main>
+
+        <div className="relative mt-4 hidden min-h-[650px] overflow-hidden border border-emerald-100/[0.11] bg-[#06130d]/[0.25] shadow-[inset_0_1px_0_rgba(255,255,255,0.025),0_28px_90px_rgba(0,0,0,0.16)] backdrop-blur-[20px] backdrop-saturate-[1.08] lg:block">
+          <OperatingFlow />
+          <div className="absolute inset-x-[4%] top-[17%] space-y-3">
+            {LANES.map((lane) => (
+              <OperatingLane key={lane.id} lane={lane} byId={byId} />
+            ))}
+          </div>
+          <div className="absolute bottom-3 left-4 rounded-full bg-[#07140e]/[0.42] px-2.5 py-1 font-mono text-[9px] uppercase tracking-[0.08em] text-emerald-100/42 backdrop-blur-[14px]">conceptual grouping · disciplines overlap lanes in real organizations</div>
+          <div className="absolute bottom-3 right-4 rounded-full bg-[#07140e]/[0.42] px-2.5 py-1 font-mono text-[9px] uppercase tracking-[0.08em] text-slate-500 backdrop-blur-[14px]">active stations open · muted stations are planned</div>
+        </div>
+
+        <div className="mt-4 space-y-3 lg:hidden">
+          {LANES.map((lane) => <MobileOperatingLane key={lane.id} lane={lane} byId={byId} />)}
+        </div>
+      </section>
+
+      <section className="mt-8">
+        <div className="mb-3 grid gap-3 border-b border-emerald-100/[0.08] pb-3 lg:grid-cols-[minmax(0,1fr)_440px] lg:items-end">
+          <div className="rounded-[18px] bg-[#07140e]/[0.18] px-3 py-2 backdrop-blur-[14px]">
+            <div className="font-mono text-[10px] font-semibold uppercase tracking-[0.09em] text-emerald-100/60">Strategy instrument · after the field map</div>
+            <h2 className="mt-1.5 text-[clamp(1.6rem,2.7vw,2.5rem)] font-semibold tracking-[-0.042em] text-white">Scarce resources make priorities visible.</h2>
+          </div>
+          <p className="rounded-[16px] bg-[#07140e]/[0.18] px-3 py-2.5 text-[13px] leading-6 text-slate-400 backdrop-blur-[14px]">This normalized teaching model asks a different question from the navigation above: once an organization has choices, how does a finite resource pool create tradeoffs among them?</p>
+        </div>
+        <GrowthSimulator />
+      </section>
+
+      <section className="mt-8 border-t border-emerald-100/[0.09] pt-5">
+        <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_430px] lg:items-end">
+          <div className="rounded-[18px] bg-[#07140e]/[0.16] px-3 py-2 backdrop-blur-[14px]">
+            <div className="font-mono text-[10px] font-semibold uppercase tracking-[0.09em] text-amber-100/58">Operating principles · reference, not navigation</div>
+            <h2 className="mt-2 max-w-4xl text-[clamp(1.8rem,3.2vw,3rem)] font-semibold leading-[0.96] tracking-[-0.048em] text-white">Performance depends on flows, constraints, incentives, tradeoffs, and what the organization chooses to measure.</h2>
+          </div>
+          <p className="rounded-[16px] bg-[#07140e]/[0.16] px-3 py-2.5 text-[13px] leading-6 text-slate-400/76 backdrop-blur-[14px]">Frameworks such as stakeholder analysis, the Triple Bottom Line, balanced scorecards, lean systems, or portfolio models can illuminate different questions. None is a universal law of how every organization should be run.</p>
+        </div>
+        <div className="mt-5 grid border-y border-white/[0.07] md:grid-cols-2 xl:grid-cols-4">
+          <Principle number="01" title="Revenue is not profit" text="Sales, costs, assets, liabilities, cash timing, working capital, taxes, financing, and investment describe different parts of financial performance." />
+          <Principle number="02" title="Strategy means saying no" text="A strategy concentrates scarce resources and creates tradeoffs. Trying to maximize every capability at once is not a strategy." />
+          <Principle number="03" title="Local optimization can hurt flow" text="A department can improve its own metric while increasing queues, inventory, delays, rework, handoff failures, or cost elsewhere in the system." />
+          <Principle number="04" title="Value has stakeholders" text="Customers, workers, owners, suppliers, communities, regulators, and environmental systems can experience different benefits, costs, and risks." />
+        </div>
+      </section>
+    </SceneFrame>
   );
+}
+
+function OperatingFlow() {
+  return (
+    <div className="pointer-events-none absolute inset-x-[5%] top-[4%] rounded-[18px] border border-emerald-100/[0.055] bg-[#06140e]/[0.40] px-5 py-2.5 backdrop-blur-[18px]">
+      <div className="relative flex items-center justify-between">
+        <div className="absolute left-0 right-0 top-[5px] h-px bg-gradient-to-r from-pink-300/12 via-emerald-200/18 to-violet-300/12" />
+        {OPERATING_FLOW.map((step, index) => (
+          <div key={step} className="relative z-10 flex flex-col items-center gap-1.5">
+            <span className="h-2.5 w-2.5 rounded-full border border-emerald-100/24 bg-[#07100c] shadow-[0_0_18px_rgba(52,211,153,0.08)]" />
+            <span className="font-mono text-[9px] uppercase tracking-[0.07em] text-slate-500">{String(index + 1).padStart(2, "0")}</span>
+            <span className="text-[11px] text-slate-400">{step}</span>
+          </div>
+        ))}
+      </div>
+      <div className="mt-1.5 text-center font-mono text-[9px] uppercase tracking-[0.08em] text-emerald-100/38">value, cash, and information loop through the organization rather than moving only one way</div>
+    </div>
+  );
+}
+
+function OperatingLane({ lane, byId }: { lane: (typeof LANES)[number]; byId: Map<string, CurriculumNode> }) {
+  const branches = lane.ids.map((id) => byId.get(id)).filter((branch): branch is CurriculumNode => Boolean(branch));
+  return (
+    <section className="grid min-h-[148px] grid-cols-[205px_minmax(0,1fr)] overflow-hidden border border-white/[0.065] bg-[#07150f]/[0.34] backdrop-blur-[18px] backdrop-saturate-[1.05]">
+      <div className="flex flex-col justify-between border-r border-white/[0.06] bg-black/[0.09] px-4 py-3.5">
+        <span className="font-mono text-[9px] font-semibold uppercase tracking-[0.09em]" style={{ color: `rgba(${lane.rgb},0.68)` }}>{lane.code}</span>
+        <span><strong className="block text-[16px] text-white/90">{lane.label}</strong><span className="mt-1.5 block text-[12px] leading-5 text-slate-400">{lane.note}</span></span>
+      </div>
+      <div className={`grid divide-x divide-white/[0.055] ${branches.length === 4 ? "grid-cols-4" : "grid-cols-3"}`}>
+        {branches.map((branch) => <BusinessStation key={branch.id} branch={branch} />)}
+      </div>
+    </section>
+  );
+}
+
+function BusinessStation({ branch }: { branch: CurriculumNode }) {
+  const meta = BRANCH_META[branch.id] ?? { icon: Briefcase, code: "BUS", rgb: "148,163,184", prompt: branch.description ?? "Explore this business discipline." };
+  const Icon = meta.icon;
+  const active = branch.status === "active";
+  const content = (
+    <div className={`group relative flex h-full min-h-[148px] flex-col bg-[#07150f]/[0.12] px-4 py-3.5 transition ${active ? "hover:bg-white/[0.025]" : "opacity-48"}`}>
+      <div className="flex items-center justify-between gap-2">
+        <span className="flex h-9 w-9 items-center justify-center rounded-full border" style={{ color: `rgb(${meta.rgb})`, borderColor: `rgba(${meta.rgb},0.24)`, background: `rgba(${meta.rgb},0.045)` }}><Icon size={14} /></span>
+        <span className="font-mono text-[8px] uppercase tracking-[0.07em] text-slate-500">{active ? "open" : "planned"}</span>
+      </div>
+      <div className="mt-2.5 font-mono text-[9px] font-semibold uppercase tracking-[0.07em]" style={{ color: `rgba(${meta.rgb},0.68)` }}>{meta.code}</div>
+      <strong className="mt-1 block text-[14px] leading-5 text-white/90">{branch.label}</strong>
+      <p className="mt-1.5 text-[11px] leading-5 text-slate-400">{meta.prompt}</p>
+      {active ? <span className="mt-auto flex items-center justify-end gap-1.5 pt-2 font-mono text-[8px] uppercase tracking-[0.07em]" style={{ color: `rgba(${meta.rgb},0.68)` }}>open station <ArrowRight size={10} className="transition group-hover:translate-x-1" /></span> : null}
+    </div>
+  );
+  return active ? <Link href={branch.href ?? "#"}>{content}</Link> : <div aria-disabled="true">{content}</div>;
+}
+
+function MobileOperatingLane({ lane, byId }: { lane: (typeof LANES)[number]; byId: Map<string, CurriculumNode> }) {
+  const branches = lane.ids.map((id) => byId.get(id)).filter((branch): branch is CurriculumNode => Boolean(branch));
+  return (
+    <section className="border border-white/[0.08] bg-[#07150f]/[0.44] backdrop-blur-[20px] backdrop-saturate-[1.06]">
+      <div className="grid grid-cols-[42px_minmax(0,1fr)] gap-2 border-b border-white/[0.06] px-3 py-3"><span className="font-mono text-[9px]" style={{ color: `rgba(${lane.rgb},0.62)` }}>{lane.code}</span><span><strong className="text-[14px] text-white/86">{lane.label}</strong><span className="mt-1 block text-[11px] leading-5 text-slate-400">{lane.note}</span></span></div>
+      {branches.map((branch) => {
+        const meta = BRANCH_META[branch.id] ?? { icon: Briefcase, code: "BUS", rgb: "148,163,184", prompt: branch.description ?? "Explore this business discipline." };
+        const Icon = meta.icon;
+        const active = branch.status === "active";
+        const content = (
+          <div className={`group grid grid-cols-[38px_minmax(0,1fr)_18px] gap-2 border-b border-white/[0.055] px-3 py-3 last:border-b-0 ${active ? "" : "opacity-48"}`}>
+            <span className="flex h-9 w-9 items-center justify-center rounded-full border" style={{ color: `rgb(${meta.rgb})`, borderColor: `rgba(${meta.rgb},0.20)` }}><Icon size={13} /></span>
+            <span><span className="font-mono text-[8px] uppercase tracking-[0.06em]" style={{ color: `rgba(${meta.rgb},0.62)` }}>{meta.code}</span><strong className="mt-0.5 block text-[13px] text-white/88">{branch.label}</strong><span className="mt-1 block text-[11px] leading-5 text-slate-400">{meta.prompt}</span></span>
+            {active ? <ArrowRight size={11} className="mt-2 text-slate-500 transition group-hover:translate-x-1" /> : null}
+          </div>
+        );
+        return active ? <Link key={branch.id} href={branch.href ?? "#"}>{content}</Link> : <div key={branch.id} aria-disabled="true">{content}</div>;
+      })}
+    </section>
+  );
+}
+
+function Neighbor({ href, label }: { href: string; label: string }) {
+  return <Link href={href} className="group flex items-center gap-1 border-b border-white/[0.06] pb-1 text-slate-400 transition hover:border-emerald-100/20 hover:text-slate-200">{label}<ArrowRight size={10} className="transition group-hover:translate-x-0.5" /></Link>;
+}
+
+function Principle({ number, title, text }: { number: string; title: string; text: string }) {
+  return <div className="grid min-h-[150px] grid-cols-[38px_minmax(0,1fr)] gap-3 border-b border-white/[0.06] bg-[#07140e]/[0.14] px-4 py-4 backdrop-blur-[12px] xl:border-r xl:border-b-0 xl:last:border-r-0"><span className="font-mono text-[10px] text-emerald-100/42">{number}</span><span><strong className="text-[14px] text-white/86">{title}</strong><span className="mt-2 block text-[12px] leading-5 text-slate-400">{text}</span></span></div>;
 }

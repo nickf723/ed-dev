@@ -105,20 +105,20 @@ export default function Sidebar({
             aria-label="Education Station 64 home"
           >
             <span
-              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[14px] border transition-all duration-300"
+              className="flex h-10 w-10 shrink-0 items-center justify-center border transition-all duration-300"
               style={{
                 color: `rgb(${shellRgb})`,
                 borderColor: `rgba(${shellRgb},0.34)`,
-                background: `rgba(${shellRgb},0.08)`,
-                boxShadow: `0 0 26px rgba(${shellRgb},0.08)`,
+                background: `rgba(${shellRgb},0.045)`,
+                boxShadow: `inset 0 0 0 1px rgba(${shellRgb},0.04)`,
               }}
             >
               <LayoutGrid size={18} />
             </span>
 
             <span className={`min-w-0 ${isCollapsed ? "md:hidden" : ""}`}>
-              <strong className="block text-sm font-semibold tracking-[0.14em] text-slate-100">KNOWLEDGE</strong>
-              <span className="mt-0.5 block font-mono text-[8px] uppercase tracking-[0.18em] text-slate-600">Education Station 64</span>
+              <strong className="block font-mono text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-400">Education</strong>
+              <span className="mt-0.5 block text-sm font-semibold tracking-[0.08em] text-slate-100">STATION 64</span>
             </span>
           </Link>
 
@@ -143,7 +143,7 @@ export default function Sidebar({
             {navigationData.map((section) => (
               <section key={section.title}>
                 <h2 className={`mb-2 px-3 font-mono text-[8px] uppercase tracking-[0.2em] text-slate-700 ${isCollapsed ? "md:hidden" : ""}`}>
-                  {section.title === "Knowledge Graph" ? "Knowledge" : section.title}
+                  {section.title}
                 </h2>
 
                 <div className="space-y-1">

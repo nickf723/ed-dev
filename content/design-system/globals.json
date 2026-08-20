@@ -1,0 +1,166 @@
+{
+  "version": 1,
+  "palettes": [
+    {
+      "id": "mathematics-red",
+      "label": "Mathematics Red",
+      "description": "A formal red system with blue, pink, and gold semantic companions.",
+      "roles": {
+        "primary": "239, 68, 68",
+        "secondary": "59, 130, 246",
+        "tertiary": "236, 72, 153",
+        "quaternary": "250, 204, 21",
+        "success": "34, 197, 94",
+        "warning": "251, 146, 60",
+        "danger": "244, 63, 94",
+        "background": "9, 3, 5",
+        "surface": "22, 6, 9",
+        "text": "255, 247, 248",
+        "muted": "148, 163, 184",
+        "border": "248, 113, 113"
+      }
+    },
+    {
+      "id": "physics-field",
+      "label": "Physics Field",
+      "description": "Cyan measurement language with orange classical and violet modern extensions.",
+      "roles": {
+        "primary": "56, 189, 248",
+        "secondary": "251, 146, 60",
+        "tertiary": "167, 139, 250",
+        "quaternary": "232, 121, 249",
+        "success": "52, 211, 153",
+        "warning": "250, 204, 21",
+        "danger": "248, 113, 113",
+        "background": "3, 7, 13",
+        "surface": "5, 15, 25",
+        "text": "247, 251, 255",
+        "muted": "148, 163, 184",
+        "border": "56, 189, 248"
+      }
+    },
+    {
+      "id": "history-archive",
+      "label": "History Archive",
+      "description": "Amber chronology, emerald geography, and indigo thematic analysis on warm archival surfaces.",
+      "roles": {
+        "primary": "217, 119, 6",
+        "secondary": "16, 185, 129",
+        "tertiary": "129, 140, 248",
+        "quaternary": "245, 158, 11",
+        "success": "52, 211, 153",
+        "warning": "251, 191, 36",
+        "danger": "248, 113, 113",
+        "background": "7, 5, 3",
+        "surface": "18, 12, 7",
+        "text": "255, 250, 240",
+        "muted": "168, 162, 158",
+        "border": "217, 119, 6"
+      }
+    },
+    {
+      "id": "biology-growth",
+      "label": "Biology Growth",
+      "description": "A living green system supported by cyan, lime, amber, and rose biological signals.",
+      "roles": {
+        "primary": "34, 197, 94",
+        "secondary": "45, 212, 191",
+        "tertiary": "132, 204, 22",
+        "quaternary": "250, 204, 21",
+        "success": "74, 222, 128",
+        "warning": "251, 146, 60",
+        "danger": "244, 63, 94",
+        "background": "3, 10, 7",
+        "surface": "6, 22, 15",
+        "text": "240, 253, 244",
+        "muted": "134, 239, 172",
+        "border": "34, 197, 94"
+      }
+    },
+    {
+      "id": "social-systems",
+      "label": "Social Systems",
+      "description": "Analytical blue and violet with gold, teal, and rose signals for institutions and behavior.",
+      "roles": {
+        "primary": "59, 130, 246",
+        "secondary": "139, 92, 246",
+        "tertiary": "14, 165, 233",
+        "quaternary": "245, 158, 11",
+        "success": "20, 184, 166",
+        "warning": "234, 179, 8",
+        "danger": "244, 63, 94",
+        "background": "4, 7, 15",
+        "surface": "8, 15, 31",
+        "text": "248, 250, 252",
+        "muted": "148, 163, 184",
+        "border": "96, 165, 250"
+      }
+    },
+    {
+      "id": "humanities-rose",
+      "label": "Humanities Rose",
+      "description": "Expressive rose, violet, amber, and cyan for interpretation, art, language, and culture.",
+      "roles": {
+        "primary": "244, 114, 182",
+        "secondary": "167, 139, 250",
+        "tertiary": "251, 146, 60",
+        "quaternary": "34, 211, 238",
+        "success": "52, 211, 153",
+        "warning": "250, 204, 21",
+        "danger": "248, 113, 113",
+        "background": "10, 4, 9",
+        "surface": "24, 8, 20",
+        "text": "255, 247, 252",
+        "muted": "192, 132, 252",
+        "border": "244, 114, 182"
+      }
+    }
+  ],
+  "typography": [
+    {
+      "id": "formal-system",
+      "label": "Formal System",
+      "description": "Monospaced display language with concise technical labels.",
+      "displayFont": "mono",
+      "bodyFont": "sans",
+      "titleCase": "uppercase",
+      "eyebrowStyle": "dot"
+    },
+    {
+      "id": "scientific-instrument",
+      "label": "Scientific Instrument",
+      "description": "Instrument-like monospaced headings with readable sans-serif explanations.",
+      "displayFont": "mono",
+      "bodyFont": "sans",
+      "titleCase": "uppercase",
+      "eyebrowStyle": "dot"
+    },
+    {
+      "id": "humanities-editorial",
+      "label": "Humanities Editorial",
+      "description": "Serif display type, natural casing, and rule-based contextual labels.",
+      "displayFont": "serif",
+      "bodyFont": "sans",
+      "titleCase": "natural",
+      "eyebrowStyle": "rule"
+    },
+    {
+      "id": "social-analytic",
+      "label": "Social Analytic",
+      "description": "Neutral sans-serif hierarchy with compact pill labels.",
+      "displayFont": "sans",
+      "bodyFont": "sans",
+      "titleCase": "natural",
+      "eyebrowStyle": "pill"
+    },
+    {
+      "id": "natural-organic",
+      "label": "Natural Organic",
+      "description": "Humanist sans-serif hierarchy with quiet contextual labels.",
+      "displayFont": "sans",
+      "bodyFont": "sans",
+      "titleCase": "natural",
+      "eyebrowStyle": "plain"
+    }
+  ]
+}
