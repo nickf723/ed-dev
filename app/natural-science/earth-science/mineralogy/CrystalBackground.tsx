@@ -1,171 +1,182 @@
-"use client";
-import { useEffect, useRef } from "react";
+const LATTICE_POINTS = [
+  [82, 72],
+  [142, 42],
+  [202, 72],
+  [82, 132],
+  [142, 102],
+  [202, 132],
+  [82, 192],
+  [142, 162],
+  [202, 192],
+] as const;
+
+const LATTICE_EDGES = [
+  [0, 1],
+  [1, 2],
+  [0, 3],
+  [0, 4],
+  [1, 4],
+  [2, 4],
+  [2, 5],
+  [3, 4],
+  [4, 5],
+  [3, 6],
+  [3, 7],
+  [4, 7],
+  [5, 7],
+  [5, 8],
+  [6, 7],
+  [7, 8],
+] as const;
 
 export default function CrystalBackground() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+  return (
+    <div
+      className="pointer-events-none fixed inset-0 z-0 overflow-hidden bg-[#08060b]"
+      aria-hidden="true"
+    >
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_78%_24%,rgba(216,180,254,0.17),transparent_29%),radial-gradient(circle_at_18%_72%,rgba(94,234,212,0.08),transparent_28%),linear-gradient(145deg,#08060b_0%,#100816_46%,#06080d_100%)]" />
 
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
+      <svg
+        viewBox="0 0 320 240"
+        className="absolute -left-12 top-[8%] h-[44vh] min-h-[340px] w-auto opacity-50 motion-safe:animate-[pulse_12s_ease-in-out_infinite]"
+      >
+        <g fill="none" stroke="rgba(103,232,249,0.30)" strokeWidth="0.8">
+          {LATTICE_EDGES.map(([from, to]) => (
+            <line
+              key={`${from}-${to}`}
+              x1={LATTICE_POINTS[from][0]}
+              y1={LATTICE_POINTS[from][1]}
+              x2={LATTICE_POINTS[to][0]}
+              y2={LATTICE_POINTS[to][1]}
+            />
+          ))}
+        </g>
+        {LATTICE_POINTS.map(([x, y], index) => (
+          <g key={`${x}-${y}`}>
+            <circle
+              cx={x}
+              cy={y}
+              r="5.5"
+              fill={
+                index % 3 === 1
+                  ? "rgba(216,180,254,0.24)"
+                  : "rgba(103,232,249,0.20)"
+              }
+            />
+            <circle
+              cx={x}
+              cy={y}
+              r="1.6"
+              fill={
+                index % 3 === 1
+                  ? "rgba(240,171,252,0.74)"
+                  : "rgba(165,243,252,0.70)"
+              }
+            />
+          </g>
+        ))}
+      </svg>
 
-    let w = (canvas.width = window.innerWidth);
-    let h = (canvas.height = window.innerHeight);
+      <svg
+        viewBox="0 0 760 760"
+        className="absolute -bottom-[15vh] -right-[9vw] h-[96vh] min-h-[740px] w-auto opacity-80 motion-safe:animate-[pulse_14s_ease-in-out_infinite]"
+      >
+        <defs>
+          <linearGradient id="crystal-amethyst" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stopColor="rgba(250,232,255,0.36)" />
+            <stop offset="0.38" stopColor="rgba(216,180,254,0.20)" />
+            <stop offset="1" stopColor="rgba(88,28,135,0.04)" />
+          </linearGradient>
+          <linearGradient id="crystal-cyan" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stopColor="rgba(207,250,254,0.28)" />
+            <stop offset="1" stopColor="rgba(8,145,178,0.035)" />
+          </linearGradient>
+          <filter
+            id="cabinet-glow"
+            x="-30%"
+            y="-30%"
+            width="160%"
+            height="160%"
+          >
+            <feGaussianBlur stdDeviation="11" result="blur" />
+            <feMerge>
+              <feMergeNode in="blur" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+        </defs>
 
-    // --- CONFIGURATION ---
-    const shardCount = 400;
-    const fuchsia = { r: 217, g: 70, b: 239 }; // Fuchsia-500
-    const purple = { r: 168, g: 85, b: 247 };  // Purple-500
-    const cyan = { r: 34, g: 211, b: 238 };    // Cyan-400 (Accents)
+        <g filter="url(#cabinet-glow)" strokeLinejoin="round">
+          <path
+            d="M120 647 168 274 263 90l88 187-38 370Z"
+            fill="url(#crystal-amethyst)"
+            stroke="rgba(232,121,249,0.45)"
+            strokeWidth="2"
+          />
+          <path
+            d="m168 274 95 58 88-55M263 332l-8 315M263 90v242"
+            fill="none"
+            stroke="rgba(255,255,255,0.24)"
+            strokeWidth="1.4"
+          />
 
-    // --- GENERATE SHARDS (TRIANGLES) ---
-    const shards: {
-      x: number; y: number; z: number;
-      rx: number; ry: number; rz: number; // Rotations
-      size: number;
-      speed: number;
-      color: { r: number, g: number, b: number };
-      vertices: { x: number, y: number, z: number }[];
-    }[] = [];
+          <path
+            d="m296 646 34-284 100-210 92 192 8 302Z"
+            fill="url(#crystal-cyan)"
+            stroke="rgba(103,232,249,0.34)"
+            strokeWidth="2"
+          />
+          <path
+            d="m330 362 100 57 92-75M430 419l-3 227M430 152v267"
+            fill="none"
+            stroke="rgba(255,255,255,0.20)"
+            strokeWidth="1.4"
+          />
 
-    for (let i = 0; i < shardCount; i++) {
-      // Random position in a large cloud
-      const range = 800;
-      const x = (Math.random() - 0.5) * range * 2;
-      const y = (Math.random() - 0.5) * range * 2;
-      const z = (Math.random() - 0.5) * range * 2;
+          <path
+            d="m478 647 20-240 79-151 75 144-4 247Z"
+            fill="url(#crystal-amethyst)"
+            stroke="rgba(196,181,253,0.34)"
+            strokeWidth="2"
+          />
+          <path
+            d="m498 407 79 48 75-55M577 455l-2 192M577 256v199"
+            fill="none"
+            stroke="rgba(255,255,255,0.18)"
+            strokeWidth="1.2"
+          />
 
-      // Pick color palette
-      const seed = Math.random();
-      let color = fuchsia;
-      if (seed > 0.6) color = purple;
-      if (seed > 0.9) color = cyan; // Rare cyan sparkles
+          <path
+            d="m56 647 18-176 56-115 51 111-7 180Z"
+            fill="url(#crystal-cyan)"
+            stroke="rgba(94,234,212,0.28)"
+            strokeWidth="1.6"
+          />
+          <path
+            d="m74 471 56 31 51-35M130 502l-2 145"
+            fill="none"
+            stroke="rgba(255,255,255,0.16)"
+          />
+        </g>
 
-      // Create a random triangle shape
-      const s = 5 + Math.random() * 15; // Size
-      const v1 = { x: (Math.random() - 0.5) * s, y: (Math.random() - 0.5) * s, z: (Math.random() - 0.5) * s };
-      const v2 = { x: (Math.random() - 0.5) * s, y: (Math.random() - 0.5) * s, z: (Math.random() - 0.5) * s };
-      const v3 = { x: (Math.random() - 0.5) * s, y: (Math.random() - 0.5) * s, z: (Math.random() - 0.5) * s };
+        <path
+          d="M42 648c166-31 432-26 668 0"
+          fill="none"
+          stroke="rgba(255,255,255,0.10)"
+          strokeWidth="2"
+        />
+        <path
+          d="M70 681c184-24 430-20 606 0"
+          fill="none"
+          stroke="rgba(216,180,254,0.10)"
+        />
+      </svg>
 
-      shards.push({
-        x, y, z,
-        rx: Math.random() * Math.PI, ry: Math.random() * Math.PI, rz: Math.random() * Math.PI,
-        size: s,
-        speed: (Math.random() * 0.01) + 0.002,
-        color,
-        vertices: [v1, v2, v3]
-      });
-    }
-
-    // --- 3D MATH HELPERS ---
-    const rotate = (x: number, y: number, z: number, pitch: number, yaw: number, roll: number) => {
-      // Simple rotation matrix logic (simplified for perf)
-      // Rotate Y (Yaw)
-      let x1 = x * Math.cos(yaw) - z * Math.sin(yaw);
-      let z1 = x * Math.sin(yaw) + z * Math.cos(yaw);
-      // Rotate X (Pitch)
-      let y1 = y * Math.cos(pitch) - z1 * Math.sin(pitch);
-      let z2 = y * Math.sin(pitch) + z1 * Math.cos(pitch);
-      // Rotate Z (Roll)
-      let x2 = x1 * Math.cos(roll) - y1 * Math.sin(roll);
-      let y2 = x1 * Math.sin(roll) + y1 * Math.cos(roll);
-      return { x: x2, y: y2, z: z2 };
-    };
-
-    // --- ANIMATION LOOP ---
-    let time = 0;
-    const render = () => {
-      time += 0.005;
-      
-      // Clear with deep purple void
-      ctx.fillStyle = "#0f0518"; 
-      ctx.fillRect(0, 0, w, h);
-
-      const cx = w / 2;
-      const cy = h / 2;
-      
-      // Sort shards by Z so back ones draw first (Painter's Algorithm)
-      // This is crucial for the "transparent crystal" feel, though simple here
-      shards.sort((a, b) => b.z - a.z);
-
-      shards.forEach(shard => {
-        // 1. Move the shard center (Slow rotation of the whole cloud)
-        const cloudRot = time * 0.5;
-        let sx = shard.x * Math.cos(cloudRot) - shard.z * Math.sin(cloudRot);
-        let sz = shard.x * Math.sin(cloudRot) + shard.z * Math.cos(cloudRot);
-        let sy = shard.y;
-
-        // 2. Local Rotation (The shard spinning)
-        shard.rx += shard.speed;
-        shard.ry += shard.speed;
-
-        // 3. Project Vertices
-        const projected = shard.vertices.map(v => {
-           // Rotate vertex around shard center
-           const rv = rotate(v.x, v.y, v.z, shard.rx, shard.ry, shard.rz);
-           // Add world position
-           const wx = sx + rv.x;
-           const wy = sy + rv.y;
-           const wz = sz + rv.z + 1000; // Push back from camera
-
-           // Perspective Projection
-           const scale = 600 / wz; // 600 = FOV
-           return {
-             x: cx + wx * scale,
-             y: cy + wy * scale,
-             z: wz // for lighting
-           };
-        });
-
-        // 4. Draw Triangle
-        // Calculate "Glint" - simple normal approximation
-        // If the triangle is facing us, it reflects light
-        // (Cross product logic simplified for visual effect)
-        const p0 = projected[0]; const p1 = projected[1]; const p2 = projected[2];
-        const area = (p1.x - p0.x) * (p2.y - p0.y) - (p1.y - p0.y) * (p2.x - p0.x);
-        
-        // Only draw front-facing triangles (Back-face culling)
-        if (area > 0) {
-           // Light Intensity based on how "flat" it is to the screen
-           // + distance fade
-           const brightness = Math.min(1, Math.abs(area) / 200); 
-           const depthFade = 1 - (p0.z / 2000);
-           const alpha = brightness * depthFade;
-
-           if (alpha > 0.05) {
-               ctx.beginPath();
-               ctx.moveTo(p0.x, p0.y);
-               ctx.lineTo(p1.x, p1.y);
-               ctx.lineTo(p2.x, p2.y);
-               ctx.closePath();
-               
-               // Fill
-               ctx.fillStyle = `rgba(${shard.color.r}, ${shard.color.g}, ${shard.color.b}, ${alpha * 0.6})`;
-               ctx.fill();
-               
-               // Stroke (The wireframe edges make it look sharper)
-               ctx.strokeStyle = `rgba(255, 255, 255, ${alpha * 0.8})`;
-               ctx.lineWidth = 0.5;
-               ctx.stroke();
-
-               // SUPER GLINT (The "Bedazzled" flash)
-               if (alpha > 0.8) {
-                   ctx.fillStyle = "rgba(255, 255, 255, 0.8)";
-                   ctx.fill();
-               }
-           }
-        }
-      });
-
-      requestAnimationFrame(render);
-    };
-
-    render();
-    const handleResize = () => { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; };
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  return <canvas ref={canvasRef} className="fixed inset-0 z-0 pointer-events-none" />;
+      <div className="absolute inset-y-0 left-[23%] hidden w-px bg-gradient-to-b from-transparent via-fuchsia-100/10 to-transparent 2xl:block" />
+      <div className="absolute inset-y-0 left-[24.4%] hidden w-px bg-gradient-to-b from-transparent via-cyan-100/[0.06] to-transparent 2xl:block" />
+      <div className="absolute inset-x-0 bottom-[8%] h-px bg-gradient-to-r from-transparent via-fuchsia-100/10 to-transparent" />
+      <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(8,6,11,0.03),rgba(8,6,11,0.58)_72%,rgba(5,5,8,0.92))]" />
+    </div>
+  );
 }

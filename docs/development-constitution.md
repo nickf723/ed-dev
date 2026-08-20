@@ -84,7 +84,7 @@ Broad labels such as Engineering, Culture, Biology, History, Technology, or Busi
 - Keep the introductory definition compact enough that it does not delay route choice.
 - A signature widget may still appear on a broad hub, but it should support the field after the learner understands its branches. It should not visually outrank the branch map unless the page has a specific pedagogical reason.
 - The navigation itself should teach the structure of the field. Grouping, position, connection, scale, ordering, or material should communicate relationships among branches rather than merely listing them.
-- A hub does not pass because navigation is technically near the top. It must *read* as the page's center of gravity.
+- A hub does not pass because navigation is technically near the top. It must _read_ as the page's center of gravity.
 - When several branches are planned rather than live, keep them visible so the field map remains honest, but make active destinations unmistakably stronger.
 
 ---
@@ -355,6 +355,7 @@ Reusable collection logic should standardize records, facets, queries, provenanc
 - **Performance protects attention:** avoid shipping oversized client bundles, uncontrolled animation, or unnecessary API waterfalls that make the learning object feel sluggish.
 - **Reuse semantics, not sameness:** share adapters, validators, feedback grammar, and state models; reinvent subject-specific worlds, topology, and interaction where that improves understanding.
 - **Repair while expanding:** when work enters a branch, audit its parent and nearby legacy pages for structural debt, then make bounded improvements without derailing the current build.
+- **Bounded rotation:** after a coherent page or family pass is validated and published, move to a contrasting canonical branch or page kind before repeating the same academic world when practical. Keep the interrupted branch in an explicit return queue. Rotation must change at least two meaningful dimensions—such as macro-layout, interaction grammar, material language, environmental behavior, or page job—and never excuses an incomplete bundle or broken parent/child chain.
 
 ---
 
@@ -396,8 +397,9 @@ For each substantial page round:
 15. **FRAME**: test viewport budget, readability, text/background collisions, responsive fallback, stable geometry, background memorability, macro-layout distinctness, and before-versus-after preservation.
 16. **VALIDATE**: run repository checks.
 17. **PUBLISH**: commit and push the coherent batch to the active development branch, verify its remote ref points to it, and inspect CI/deployment status when accessible. Promote to `main` only through the explicit release step.
+18. **ROTATE**: record the next contrasting branch/page kind and the return target. Do not begin it until the current pass is published; do not immediately clone the completed page's composition into the next subject.
 
-No page round advances to the next target before step 17.
+No page round advances to the next target before step 17. Step 18 changes production cadence without weakening parent-first development or coherent branch audits.
 
 ---
 

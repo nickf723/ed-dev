@@ -10,11 +10,11 @@ import { logicVocab } from "./l/logic";
 import { naturalScienceVocab } from "./n/natural-science";
 import { biologyVocab } from "./natural-science/biology";
 import { chemistryVocab } from "./c/chemistry";
-import { earthScienceVocab } from "./e/earth-science";
 import { physicsVocab } from "./p/physics";
 import { propLogicVocab } from "./p/propositional-logic";
 import { systemsScienceVocab } from "./s/systems-science";
 import { ASTRONOMY_VOCABULARY_REGISTRATIONS } from "./astronomy-node-registry";
+import { EARTH_SCIENCE_VOCABULARY_REGISTRATIONS } from "./earth-science-node-registry";
 import { buildCurriculumVocabularyScopes } from "./aggregate.mjs";
 import { composeVocabulary } from "./compose";
 import { MATHEMATICS_VOCABULARY_REGISTRATIONS } from "./mathematics-node-registry";
@@ -108,8 +108,36 @@ const astronomyVocabulary = composeVocabulary(
   ...astronomyScope.groups.map((group) => group.terms)
 );
 
+const earthScienceNode = curriculumRegistry.getNode("natural.earth-science");
+if (!earthScienceNode) {
+  throw new Error(
+    "Earth Science curriculum node is required for vocabulary scopes"
+  );
+}
+
+const earthScienceVocabularyScopes = buildCurriculumVocabularyScopes({
+  roots: [earthScienceNode],
+  registrations: EARTH_SCIENCE_VOCABULARY_REGISTRATIONS,
+  accent: "violet",
+  accentByNodeId: {
+    "natural.earth-science": "cyan",
+  },
+});
+
+const earthScienceScope = earthScienceVocabularyScopes.find(
+  (scope) => scope.path === earthScienceNode.href
+);
+if (!earthScienceScope) {
+  throw new Error("Earth Science vocabulary scope could not be derived");
+}
+
+const earthScienceVocabulary = composeVocabulary(
+  ...earthScienceScope.groups.map((group) => group.terms)
+);
+
 export const naturalScienceVocabularyScopes: VocabularyScope[] = [
   ...astronomyVocabularyScopes,
+  ...earthScienceVocabularyScopes,
   {
     path: "/natural-science",
     title: "Natural Science",
@@ -126,7 +154,9 @@ export const naturalScienceVocabularyScopes: VocabularyScope[] = [
       {
         id: "earth-science",
         label: "Earth Science",
-        terms: earthScienceVocab,
+        terms: earthScienceVocabulary,
+        sourceNodeId: earthScienceNode.id,
+        sourcePath: earthScienceNode.href,
       },
       {
         id: "astronomy",

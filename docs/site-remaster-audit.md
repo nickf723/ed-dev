@@ -173,12 +173,14 @@ Use each science's own experimental, spatial, temporal, taxonomic, or field-base
 
 Rebuild relationships after canonical pages are strong enough to support precise concept-level links. Interdisciplines remains an atlas over the five branches, not a duplicate curriculum.
 
-## Current target
+## Current target and rotation queue
 
 The Discrete Mathematics parent now derives four live children from a focused curriculum module, contributes node-owned vocabulary, presents direct-child navigation before its graph workshop, and uses a finite-structure drafting table instead of the random network wallpaper and remote server-room hero. Set Theory is now classified and built as a bounded root unit with six direct planned lessons: membership precedes notation in its overview workshop, the preserved Venn-operation idea has become a rule-driven scanner with curated and boundary cases, registry vocabulary replaces the parallel glossary, and transfer plus deterministic generated practice complete the instructional contract. The parent and both rebuilt root units remain queued for rendered verification.
 
 Graph Theory is now a bounded six-lesson root unit. Its graph-building strength remains at the Discrete Mathematics parent, while the root preserves and clarifies pathfinding through a deterministic BFS/DFS traversal on the same seven-vertex graph used by the scenery, worked model, and degree ledger. The client-heavy random constellation, random maze, remote hero, local glossary, and implementation chrome are gone; curriculum context, inherited vocabulary, transfer reasoning, and generated fluency practice now travel as one bundle.
 
-Combinatorics is the next family target. Preserve its counting vault and cipher-ring strengths while repairing page depth, context, explanation, assessment, terminology, and its relationship to the newly stabilized Discrete Mathematics parent.
+Mineralogy is the active bounded-rotation pass after Graph Theory. Its Earth Science parent already exposes it as the Earth-materials branch, so the child can specialize that family without a parent repair. The remaster classifies it as a reference collection, preserves its chemistry → crystal structure → property → identification model, replaces the random shard field with a deterministic specimen-cabinet environment, expands four familiar examples into a reviewed curated collection, and adds search, disciplinary facets, stable record IDs, source links, honest scope, and property comparison.
+
+Combinatorics remains the Formal Science return target. Preserve its counting vault and cipher-ring strengths when the rotation returns, while repairing page depth, context, explanation, assessment, terminology, and its relationship to the stabilized Discrete Mathematics parent. Prefer a Social Science, Humanities, or Applied Science page as the next contrasting hop before another network or specimen-cabinet composition is repeated.
 
 The program advances one coherent page or family at a time. A route leaves the ledger only when its semantic structure, educational job, distinctive world, geometry, verification record, and published `studio` commit all agree.

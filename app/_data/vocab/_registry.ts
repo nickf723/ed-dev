@@ -63,6 +63,7 @@ import { discreteMathVocab } from "./d/discrete-math";
 import { graphTheoryVocab } from "./g/graph-theory";
 import { recursionVocab } from "./r/recursion";
 import { setTheoryVocab } from "./s/set-theory";
+import { mineralogyVocab } from "./m/mineralogy";
 
 export { mathVocab, abstractAlgebraVocab, ludologyVocab, gameDesignVocab };
 
@@ -127,5 +128,6 @@ export const ALL_VOCAB: VocabTerm[] = composeVocabulary(
   setTheoryVocab,
   graphTheoryVocab,
   combinatoricsVocab,
-  recursionVocab
+  recursionVocab,
+  mineralogyVocab
 );

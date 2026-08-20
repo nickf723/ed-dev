@@ -200,6 +200,12 @@ The latest work on these pages occurred without a trusted rendered browser pass,
 
 The parent, Set Theory, and Graph Theory are structurally refined. Combinatorics and Recursion Theory still predate the constitution. Preserve their counting and Hanoi/recursive systems while repairing page roles, context, assessment evidence, terminology, and isolated local glossaries.
 
+### Active bounded-rotation checkpoint
+
+- Natural Science → Earth Science → Mineralogy
+
+After the coherent Graph Theory pass, production rotates from a Formal Science unit/network world to a Natural Science reference/specimen world. Mineralogy preserves its composition → structure → property → identification throughline while replacing the random shard cloud and isolated four-specimen demo with a deterministic crystal cabinet, a reviewed teaching collection, disciplinary facets, source-linked records, and a co-visible comparison ledger. Combinatorics remains the explicit Formal Science return target; the rotation does not mark that family complete.
+
 ---
 
 ## 6. Site-wide audit waves
@@ -279,6 +285,8 @@ The question is not “How do we make this match the previous page?”
 The question is:
 
 > **What should feel familiar because it is the same product, and what should feel different because it is different knowledge?**
+
+For normal production, apply this as bounded rotation: finish and publish a coherent bundle, then prefer a contrasting branch or page kind before repeating the same academic world. Record the return target so variety does not become random abandonment.
 
 ---
 

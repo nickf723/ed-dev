@@ -59,6 +59,7 @@ For all substantial pages, the Design Constitution is not optional guidance. Res
 35. **Coordinated representations must agree.** When the background, worked model, diagram, instrument, or notation depicts the same academic object, derive them from one canonical example or verify exact parity of labels, values, membership, regions, and state. Instructional-looking backgrounds are content, not harmless decoration.
 36. **Data marks keep their identity.** Learner-facing tokens, specimens, points, and selected values retain the color, shape, or material that communicates their academic category. Selection strengthens that identity instead of replacing every mark with a generic white pill or cell.
 37. **Set a curriculum depth ceiling.** Define a bounded, useful layer of direct children. Keep advanced foundations as a visibly deferred horizon when helpful, and do not create deep placeholder taxonomies or routes merely because a subject can be subdivided further.
+38. **Rotate academic worlds deliberately.** After completing a coherent page or family pass, move to a contrasting canonical branch or page kind before returning when practical. A rotation should differ from recent work in at least two macro-layout, interaction, material, or environmental dimensions. Rotation is an anti-homogenization constraint, not permission to leave a broken parent, incomplete curriculum bundle, or unpublished pass behind.
 
 ## Required workflow for substantial page work
 
@@ -192,6 +193,8 @@ The current project workflow favors direct, meaningful improvements and preservi
 When a recurring design, pedagogy, or site-architecture correction appears more than once, update the appropriate repository rule document so the same correction does not need to be rediscovered page by page.
 
 When auditing a haphazardly developed branch, work branch-by-branch rather than page-by-page at random. Establish its ontology, identify legacy patterns, queue visual verification, then descend deliberately.
+
+For normal page production, use **bounded rotation**: complete the current parent/child repair and publish the coherent bundle, then hop to a contrasting branch or page kind before repeating the same academic world. Keep unfinished family work in an explicit return queue so rotation expands the site's visual vocabulary without turning development back into random page selection.
 
 The preferred rhythm for normal page production is now:
 
