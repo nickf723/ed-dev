@@ -90,6 +90,8 @@ export const MUSIC_CURRICULUM: CurriculumNode = {
       "Performance & Instrumentation",
       "/humanities/music/performance",
       "Technique, interpretation, ensembles, orchestration, instrumentation, improvisation, and live musical practice.",
+      undefined,
+      "active",
     ),
     node(
       "humanities.music.history-culture",
