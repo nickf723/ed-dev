@@ -1,151 +1,162 @@
 "use client";
-import { useState } from "react";
+
+import { useMemo, useState } from "react";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
-import { 
-  Dices, Sword, Users, Gamepad2, Filter, Beaker, ArrowRight, Layers 
+import {
+  ArrowRight,
+  Dices,
+  Filter,
+  Gamepad2,
+  Layers3,
+  Sparkles,
+  Sword,
+  Users,
+  type LucideIcon,
 } from "lucide-react";
 
-const GAMES = [
+type GameRecord = {
+  id: string;
+  title: string;
+  genre: string;
+  family: "tabletop" | "cards" | "roleplay" | "digital";
+  icon: LucideIcon;
+  rgb: string;
+  lenses: readonly string[];
+  description: string;
+  href?: string;
+};
+
+const GAMES: readonly GameRecord[] = [
   {
     id: "mtg",
     title: "Magic: The Gathering",
-    genre: "Deckbuilder / TCG",
+    genre: "Trading card game",
+    family: "cards",
     icon: Sword,
-    color: "text-amber-400",
-    tags: ["Resource Management", "Combinatorial Logic", "Metagaming"],
-    desc: "The grandmother of all trading card games. Players are planeswalkers dueling with spells.",
-    href: "/interdisciplines/game-studies/library/magic-the-gathering" 
+    rgb: "251,191,36",
+    lenses: ["resource systems", "hidden information", "deck construction", "metagame"],
+    description: "A customizable card game useful for studying resource conversion, combinatorial interactions, deck construction, probability, strategic adaptation, and changing metagames.",
+    href: "/interdisciplines/game-studies/library/magic-the-gathering",
   },
   {
     id: "dnd",
     title: "Dungeons & Dragons",
-    genre: "Tabletop RPG",
+    genre: "Tabletop role-playing game",
+    family: "roleplay",
     icon: Dices,
-    color: "text-red-400",
-    tags: ["Role-Playing", "Probabilistic Mechanics", "Collaborative Storytelling"],
-    desc: "The definitive fantasy role-playing game. A conversation between a Dungeon Master and players.",
-    href: "#"
+    rgb: "248,113,113",
+    lenses: ["shared fiction", "probability", "roles", "negotiated rules"],
+    description: "A tabletop role-playing system where procedures, probability, character roles, improvisation, and collaborative fiction interact across a long-running social play session.",
   },
   {
     id: "monopoly",
     title: "Monopoly",
-    genre: "Board Game",
+    genre: "Board game",
+    family: "tabletop",
     icon: Users,
-    color: "text-green-400",
-    tags: ["Zero-Sum Game", "Negotiation", "Negative Feedback Loops"],
-    desc: "A property trading game demonstrating the ruthless nature of unregulated capitalism.",
-    href: "#"
+    rgb: "74,222,128",
+    lenses: ["property control", "negotiation", "positive feedback", "player elimination"],
+    description: "A property-trading board game useful for examining asset accumulation, negotiation, spatial movement, positive feedback, bankruptcy, and the length of elimination-based play.",
   },
   {
     id: "uno",
-    title: "Uno",
-    genre: "Card Game",
-    icon: Layers,
-    color: "text-yellow-400",
-    tags: ["Pattern Matching", "Turn-Taking", "Stochastic"],
-    desc: "A simple color/number matching game known for destroying friendships.",
-    href: "#"
+    title: "UNO",
+    genre: "Shedding card game",
+    family: "cards",
+    icon: Layers3,
+    rgb: "250,204,21",
+    lenses: ["matching rules", "hand information", "turn order", "random draw"],
+    description: "A shedding card game with simple matching rules, changing hand information, action cards, turn-order effects, and a strong role for draw uncertainty.",
   },
   {
     id: "mario",
-    title: "Super Mario Bros",
-    genre: "Platformer",
+    title: "Super Mario Bros.",
+    genre: "Platform game",
+    family: "digital",
     icon: Gamepad2,
-    color: "text-blue-400",
-    tags: ["Flow State", "Level Design", "Reflexes"],
-    desc: "The archetypal platformer. Precise jumping and physics-based puzzle solving.",
-    href: "#"
-  }
-];
+    rgb: "96,165,250",
+    lenses: ["movement model", "level geometry", "timing", "feedback"],
+    description: "A platform game useful for studying movement rules, obstacle spacing, timing, audiovisual feedback, level sequencing, player learning, and the relationship between control and challenge.",
+  },
+] as const;
+
+const FILTERS: readonly { id: "all" | GameRecord["family"]; label: string }[] = [
+  { id: "all", label: "All specimens" },
+  { id: "cards", label: "Card games" },
+  { id: "tabletop", label: "Board games" },
+  { id: "roleplay", label: "Role-playing" },
+  { id: "digital", label: "Digital games" },
+] as const;
 
 export default function GameBrowser() {
-  const [filter, setFilter] = useState("All");
-
-  const filteredGames = filter === "All" 
-    ? GAMES 
-    : GAMES.filter(g => g.genre.includes(filter) || g.tags.some(t => t.includes(filter)));
+  const [filter, setFilter] = useState<(typeof FILTERS)[number]["id"]>("all");
+  const filteredGames = useMemo(() => filter === "all" ? GAMES : GAMES.filter((game) => game.family === filter), [filter]);
 
   return (
-    <div className="w-full space-y-8">
-      
-      {/* Filter Bar */}
-      <div className="flex items-center gap-4 overflow-x-auto pb-2 scrollbar-hide">
-        <Filter size={16} className="text-neutral-500 shrink-0" />
-        {["All", "TCG", "RPG", "Board Game", "Video Game"].map((cat) => (
-            <button
-                key={cat}
-                onClick={() => setFilter(cat)}
-                className={`px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all whitespace-nowrap
-                    ${filter === cat 
-                        ? "bg-purple-500 text-white shadow-[0_0_15px_rgba(168,85,247,0.4)]" 
-                        : "bg-white/5 text-neutral-400 hover:bg-white/10"}
-                `}
-            >
-                {cat}
-            </button>
+    <div className="w-full">
+      <div className="flex flex-wrap items-center gap-2 border-b border-white/[0.07] pb-4">
+        <span className="mr-1 flex items-center gap-2 font-mono text-[10px] font-semibold uppercase tracking-[0.08em] text-slate-500"><Filter size={13} /> specimen shelf</span>
+        {FILTERS.map((item) => (
+          <button
+            key={item.id}
+            type="button"
+            onClick={() => setFilter(item.id)}
+            className="rounded-full border px-3 py-2 text-[10px] font-semibold transition"
+            style={{
+              borderColor: filter === item.id ? "rgba(167,139,250,0.26)" : "rgba(255,255,255,0.07)",
+              background: filter === item.id ? "rgba(167,139,250,0.07)" : "rgba(255,255,255,0.015)",
+              color: filter === item.id ? "rgb(237,233,254)" : "rgb(148,163,184)",
+            }}
+          >
+            {item.label}
+          </button>
         ))}
+        <span className="ml-auto hidden font-mono text-[9px] uppercase tracking-[0.06em] text-slate-600 sm:block">live analyses open · planned specimens stay visible</span>
       </div>
 
-      {/* Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <AnimatePresence mode="popLayout">
-            {filteredGames.map((game) => (
-                <motion.div
-                    key={game.id}
-                    layout
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.9 }}
-                    className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-white/10 bg-neutral-900/60 p-6 hover:border-purple-500/50 hover:bg-neutral-900/90 transition-all duration-300"
-                >
-                    <div>
-                        <div className="flex items-start justify-between mb-4">
-                            <div className={`p-3 rounded-xl bg-white/5 ${game.color} group-hover:scale-110 transition-transform`}>
-                                <game.icon size={24} />
-                            </div>
-                            <span className="text-[10px] font-mono uppercase text-neutral-500 bg-black/20 px-2 py-1 rounded">
-                                {game.genre}
-                            </span>
-                        </div>
-
-                        <h3 className="text-xl font-bold text-white mb-2 group-hover:text-purple-300 transition-colors">
-                            {game.title}
-                        </h3>
-                        <p className="text-sm text-neutral-400 leading-relaxed mb-6">
-                            {game.desc}
-                        </p>
-                    </div>
-
-                    {/* Science Tags */}
-                    <div className="space-y-3">
-                        <div className="h-[1px] w-full bg-white/5" />
-                        <div className="flex items-center gap-2 text-[10px] font-bold uppercase text-purple-400">
-                            <Beaker size={12} /> Science of the Game
-                        </div>
-                        <div className="flex flex-wrap gap-2">
-                            {game.tags.map(tag => (
-                                <span key={tag} className="px-2 py-1 rounded bg-purple-900/20 border border-purple-500/20 text-[10px] text-purple-200">
-                                    {tag}
-                                </span>
-                            ))}
-                        </div>
-                        
-                        <Link 
-                            href={game.href}
-                            className={`flex items-center justify-between w-full mt-4 px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all
-                                ${game.href !== "#" ? "bg-purple-600 text-white hover:bg-purple-500 hover:shadow-[0_0_15px_rgba(168,85,247,0.4)]" : "bg-white/5 text-neutral-500 cursor-not-allowed"}
-                            `}
-                        >
-                            {game.href !== "#" ? "Analyze System" : "Data Pending"}
-                            <ArrowRight size={14} />
-                        </Link>
-                    </div>
-                </motion.div>
-            ))}
-        </AnimatePresence>
+      <div className="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+        {filteredGames.map((game) => <GameCard key={game.id} game={game} />)}
       </div>
-
     </div>
   );
+}
+
+function GameCard({ game }: { game: GameRecord }) {
+  const Icon = game.icon;
+  const live = Boolean(game.href);
+  const body = (
+    <article
+      className={`group flex min-h-[330px] flex-col rounded-[22px] border p-5 backdrop-blur-xl ${live ? "transition hover:-translate-y-0.5" : "opacity-66"}`}
+      style={{
+        borderColor: `rgba(${game.rgb},0.16)`,
+        background: `linear-gradient(145deg,rgba(${game.rgb},0.04),rgba(7,5,13,0.20))`,
+      }}
+    >
+      <div className="flex items-start justify-between gap-3">
+        <span className="flex h-11 w-11 items-center justify-center rounded-[14px] border" style={{ color: `rgb(${game.rgb})`, borderColor: `rgba(${game.rgb},0.26)`, background: `rgba(${game.rgb},0.045)` }}><Icon size={19} /></span>
+        <span className="rounded-full border border-white/[0.07] px-2.5 py-1 font-mono text-[9px] uppercase tracking-[0.06em] text-slate-500">{live ? "open analysis" : "planned"}</span>
+      </div>
+
+      <div className="mt-4 font-mono text-[10px] uppercase tracking-[0.07em]" style={{ color: `rgba(${game.rgb},0.66)` }}>{game.genre}</div>
+      <h3 className="mt-1 text-[20px] font-semibold tracking-[-0.025em] text-white">{game.title}</h3>
+      <p className="mt-3 text-[13px] leading-6 text-slate-400">{game.description}</p>
+
+      <div className="mt-5 border-t border-white/[0.06] pt-4">
+        <div className="flex items-center gap-2 font-mono text-[9px] font-semibold uppercase tracking-[0.06em] text-violet-200/55"><Sparkles size={11} /> study lenses</div>
+        <div className="mt-2 flex flex-wrap gap-2">
+          {game.lenses.map((lens) => <span key={lens} className="rounded-full border border-white/[0.06] bg-black/[0.12] px-2.5 py-1.5 text-[10px] text-slate-400">{lens}</span>)}
+        </div>
+      </div>
+
+      <div className="mt-auto pt-5">
+        {live ? (
+          <span className="flex items-center justify-between rounded-[13px] border border-violet-200/[0.12] bg-violet-300/[0.035] px-3 py-2.5 text-[11px] font-semibold text-violet-100/82">Open specimen <ArrowRight size={12} className="transition group-hover:translate-x-1" /></span>
+        ) : (
+          <span className="flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.06em] text-slate-600"><Sparkles size={10} /> analysis route not built yet</span>
+        )}
+      </div>
+    </article>
+  );
+
+  return live && game.href ? <Link href={game.href}>{body}</Link> : <div aria-disabled="true">{body}</div>;
 }
