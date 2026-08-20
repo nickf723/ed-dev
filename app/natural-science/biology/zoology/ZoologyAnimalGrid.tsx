@@ -32,7 +32,9 @@ export default function ZoologyAnimalGrid({
         <strong className="text-[15px] text-red-200">
           The live collection could not load.
         </strong>
-        <p className="mt-2 text-[12px] leading-5 text-red-200/[0.60]">{error}</p>
+        <p className="mt-2 text-[12px] leading-5 text-red-200/[0.60]">
+          {error}
+        </p>
       </div>
     );
   }
@@ -86,6 +88,9 @@ function AnimalCard({
     >
       <div className="relative aspect-[4/3] overflow-hidden bg-white/[0.025]">
         {animal.imageUrl ? (
+          // Provider-hosted, variably licensed field-guide media stays direct so
+          // a missing image can degrade locally without incurring image transforms.
+          // eslint-disable-next-line @next/next/no-img-element
           <img
             src={animal.imageUrl}
             alt={animal.commonName}

@@ -451,3 +451,11 @@ Whenever a page changes without reliable visual verification:
 - state the exact states that need checking
 - do not silently declare it visually finished
 - remove or mark an entry verified only after rendered inspection
+
+### Zoology living atlas
+
+**Route:** `/natural-science/biology/zoology`
+
+**Check:** Desktop and mobile layouts; habitat/lineage/ecology lens changes; collection loading; partial live-enrichment notice; global search with provider-wide count; class filter and all sort modes; empty, curated fallback, rate-limited, failed, and image-missing states; animal detail modal and keyboard focus.
+
+**Status:** Structural validation required in this pass; rendered verification pending.

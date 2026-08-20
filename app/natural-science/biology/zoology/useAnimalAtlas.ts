@@ -1,26 +1,38 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import type {
+  CollectionPagination,
+  CollectionProvenance,
+} from "@/lib/collections/schema";
 import type { AnimalRecord } from "./zoology-data";
 
 type ApiPayload = {
-  mode?: "collection" | "search";
-  collectionId?: string;
-  query?: string;
-  animals?: AnimalRecord[];
+  records?: AnimalRecord[];
   error?: string;
+  provenance?: CollectionProvenance;
+  pagination?: CollectionPagination;
+};
+
+type AtlasMeta = {
+  provenance?: CollectionProvenance;
+  pagination?: CollectionPagination;
 };
 
 type AtlasMode =
   | { kind: "collection"; collectionId: string }
   | { kind: "search"; query: string };
 
-const atlasCache = new Map<string, AnimalRecord[]>();
+const atlasCache = new Map<
+  string,
+  { records: AnimalRecord[]; meta: AtlasMeta }
+>();
 
 export function useAnimalAtlas(collectionId: string) {
   const [animals, setAnimals] = useState<AnimalRecord[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [meta, setMeta] = useState<AtlasMeta>({});
   const [mode, setMode] = useState<AtlasMode>({
     kind: "collection",
     collectionId,
@@ -42,7 +54,8 @@ export function useAnimalAtlas(collectionId: string) {
     if (!force) {
       const cached = atlasCache.get(key);
       if (cached) {
-        setAnimals(cached);
+        setAnimals(cached.records);
+        setMeta(cached.meta);
         setLoading(false);
         return;
       }
@@ -62,20 +75,27 @@ export function useAnimalAtlas(collectionId: string) {
       });
       const payload = (await response.json()) as ApiPayload;
       if (!response.ok) {
-        throw new Error(payload.error || "Unable to load the animal collection.");
+        throw new Error(
+          payload.error || "Unable to load the animal collection."
+        );
       }
 
-      const records = payload.animals ?? [];
-      atlasCache.set(key, records);
+      const records = payload.records ?? [];
+      const nextMeta = {
+        provenance: payload.provenance,
+        pagination: payload.pagination,
+      };
+      atlasCache.set(key, { records, meta: nextMeta });
       setAnimals(records);
+      setMeta(nextMeta);
     } catch (reason) {
-      if (reason instanceof DOMException && reason.name === "AbortError") return;
+      if (reason instanceof DOMException && reason.name === "AbortError")
+        return;
       setError(
         reason instanceof Error
           ? reason.message
-          : "Unable to load the animal collection.",
+          : "Unable to load the animal collection."
       );
-      setAnimals([]);
     } finally {
       if (!controller.signal.aborted) setLoading(false);
     }
@@ -92,7 +112,7 @@ export function useAnimalAtlas(collectionId: string) {
       if (!trimmed) return;
       await load({ kind: "search", query: trimmed });
     },
-    [load],
+    [load]
   );
 
   const clearSearch = useCallback(async () => {
@@ -111,6 +131,8 @@ export function useAnimalAtlas(collectionId: string) {
     search,
     clearSearch,
     refresh,
+    provenance: meta.provenance,
+    pagination: meta.pagination,
   };
 }
 

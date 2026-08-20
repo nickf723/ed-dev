@@ -72,7 +72,7 @@ export type CollectionMediaRecord = {
   sources: CollectionSource[];
 };
 
-export type CollectionSearchPayload<T extends CollectionMediaRecord = CollectionMediaRecord> = {
+export type CollectionSearchPayload<T = CollectionMediaRecord> = {
   query: string;
   records: T[];
   source: string;
@@ -81,7 +81,7 @@ export type CollectionSearchPayload<T extends CollectionMediaRecord = Collection
   pagination?: CollectionPagination;
 };
 
-export type ProviderCollectionSearchPayload<T extends CollectionMediaRecord = CollectionMediaRecord> =
+export type ProviderCollectionSearchPayload<T = CollectionMediaRecord> =
   CollectionSearchPayload<T> & {
     provenance: CollectionProvenance;
     pagination: CollectionPagination;
@@ -92,7 +92,9 @@ export type ProviderCollectionSearchPayload<T extends CollectionMediaRecord = Co
  * from completely different providers while the Studio/page system receives a
  * predictable set of searchable media records.
  */
-export type CollectionSourceAdapter<T extends CollectionMediaRecord = CollectionMediaRecord> = {
+export type CollectionSourceAdapter<
+  T extends CollectionMediaRecord = CollectionMediaRecord,
+> = {
   id: string;
   label: string;
   search(query: string): Promise<T[]>;

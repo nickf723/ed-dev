@@ -1,11 +1,10 @@
 import type {
-  CollectionMediaRecord,
   CollectionResultState,
   CollectionSource,
   ProviderCollectionSearchPayload,
 } from "./schema";
 
-export function createCollectionSearchPayload<T extends CollectionMediaRecord>(options: {
+export function createCollectionSearchPayload<T>(options: {
   query: string;
   records: readonly T[];
   source: string;

@@ -58,19 +58,22 @@ const ZOOLOGY_SCENES = [
   {
     id: "habitat",
     label: "Habitat",
-    description: "Follow movement through climate, terrain, water, and available resources.",
+    description:
+      "Follow movement through climate, terrain, water, and available resources.",
     accentRgb: "52, 211, 153",
   },
   {
     id: "lineage",
     label: "Lineage",
-    description: "Reveal inherited structure as a branching history of shared traits.",
+    description:
+      "Reveal inherited structure as a branching history of shared traits.",
     accentRgb: "34, 211, 238",
   },
   {
     id: "ecology",
     label: "Ecology",
-    description: "Watch energy, predation, mutualism, and decomposition connect a community.",
+    description:
+      "Watch energy, predation, mutualism, and decomposition connect a community.",
     accentRgb: "250, 204, 21",
   },
 ] as const;
@@ -94,6 +97,8 @@ export default function ZoologyAtlas({ palette, branches }: Props) {
     search,
     clearSearch,
     refresh,
+    provenance,
+    pagination,
   } = useAnimalAtlas(collection.id);
 
   const classes = useMemo(
@@ -102,19 +107,18 @@ export default function ZoologyAtlas({ palette, branches }: Props) {
         new Set(
           animals
             .map(
-              (animal) =>
-                animal.taxonomy.className ?? animal.iconicTaxonName,
+              (animal) => animal.taxonomy.className ?? animal.iconicTaxonName
             )
-            .filter((value): value is string => Boolean(value)),
-        ),
+            .filter((value): value is string => Boolean(value))
+        )
       ).sort(),
-    [animals],
+    [animals]
   );
 
   const visible = useMemo(() => {
     const local = query.trim().toLowerCase();
     const order = new Map(
-      collection.speciesIds.map((id, index) => [id, index]),
+      collection.speciesIds.map((id, index) => [id, index])
     );
 
     return animals
@@ -141,7 +145,7 @@ export default function ZoologyAtlas({ palette, branches }: Props) {
         }
         if (sort === "taxonomy") {
           return (a.taxonomy.className ?? "").localeCompare(
-            b.taxonomy.className ?? "",
+            b.taxonomy.className ?? ""
           );
         }
         return (
@@ -154,7 +158,7 @@ export default function ZoologyAtlas({ palette, branches }: Props) {
   const overlaps = useMemo(() => {
     const ids = new Set(collection.speciesIds);
     return ZOOLOGY_COLLECTIONS.filter(
-      (item) => item.id !== collection.id && item.lens !== collection.lens,
+      (item) => item.id !== collection.id && item.lens !== collection.lens
     )
       .map((item) => ({
         item,
@@ -171,15 +175,14 @@ export default function ZoologyAtlas({ palette, branches }: Props) {
         ? animals
             .filter((animal) => animal.id !== selected.id)
             .sort(
-              (a, b) =>
-                relationScore(selected, b) - relationScore(selected, a),
+              (a, b) => relationScore(selected, b) - relationScore(selected, a)
             )
         : [],
-    [animals, selected],
+    [animals, selected]
   );
 
   const liveCount = animals.filter(
-    (animal) => animal.source === "iNaturalist",
+    (animal) => animal.source === "iNaturalist"
   ).length;
   const activeLens =
     ZOOLOGY_LENSES.find((item) => item.id === lens) ?? ZOOLOGY_LENSES[0];
@@ -199,7 +202,7 @@ export default function ZoologyAtlas({ palette, branches }: Props) {
           accentRgb: style.rgb,
         };
       }),
-    [branches],
+    [branches]
   );
 
   function chooseLens(next: ZoologyLens) {
@@ -346,7 +349,11 @@ export default function ZoologyAtlas({ palette, branches }: Props) {
           {mode.kind === "search" ? (
             <div className="mt-3 flex flex-col gap-2 rounded-[15px] border border-cyan-300/[0.14] bg-[#071b1d]/[0.58] px-4 py-3 backdrop-blur-md sm:flex-row sm:items-center sm:justify-between">
               <span className="flex items-center gap-2 text-[13px] text-cyan-100/[0.76]">
-                <Search size={14} /> Global animal search · {animals.length} taxon records
+                <Search size={14} /> Global animal search · {animals.length}{" "}
+                shown
+                {pagination && pagination.total > pagination.returned
+                  ? ` of ${pagination.total.toLocaleString()} matches`
+                  : ""}
               </span>
               <button
                 type="button"
@@ -355,6 +362,15 @@ export default function ZoologyAtlas({ palette, branches }: Props) {
               >
                 Return to {collection.label}
               </button>
+            </div>
+          ) : null}
+
+          {provenance ? (
+            <div className="mt-3 flex flex-col gap-1 rounded-[15px] border border-emerald-300/[0.12] bg-[#07150f]/[0.56] px-4 py-3 text-[12px] leading-5 text-emerald-50/[0.62] sm:flex-row sm:items-center sm:justify-between">
+              <span>{provenance.note}</span>
+              <span className="shrink-0 font-mono text-[11px] font-semibold uppercase tracking-[0.08em] text-emerald-200/[0.58]">
+                {provenance.state} · iNaturalist + reviewed atlas
+              </span>
             </div>
           ) : null}
 
@@ -400,7 +416,10 @@ function CollectionHeader({
   onOverlap: (collection: ZoologyCollection) => void;
 }) {
   return (
-    <Surface variant="glass" className="overflow-hidden rounded-[30px] border-amber-100/[0.14] bg-[#16231a]/[0.58]">
+    <Surface
+      variant="glass"
+      className="overflow-hidden rounded-[30px] border-amber-100/[0.14] bg-[#16231a]/[0.58]"
+    >
       <div className="grid lg:grid-cols-[minmax(0,1fr)_370px]">
         <div className="relative p-6 sm:p-8">
           <div
@@ -435,8 +454,8 @@ function CollectionHeader({
             Cross-lens connections
           </div>
           <p className="mt-2 text-[12px] leading-5 text-amber-50/[0.48]">
-            Follow a shared species into another biological view without losing the
-            relationship that connected it here.
+            Follow a shared species into another biological view without losing
+            the relationship that connected it here.
           </p>
           <div className="mt-4 space-y-2">
             {overlaps.length ? (
@@ -472,15 +491,12 @@ function CollectionHeader({
 
 function relationScore(a: AnimalRecord, b: AnimalRecord) {
   let score = 0;
-  if (
-    a.taxonomy.className &&
-    a.taxonomy.className === b.taxonomy.className
-  )
+  if (a.taxonomy.className && a.taxonomy.className === b.taxonomy.className)
     score += 4;
   if (a.diet && a.diet === b.diet) score += 2;
   score +=
-    a.ecologicalRoles.filter((role) => b.ecologicalRoles.includes(role)).length *
-    3;
+    a.ecologicalRoles.filter((role) => b.ecologicalRoles.includes(role))
+      .length * 3;
   score +=
     a.habitats.filter((habitat) => b.habitats.includes(habitat)).length * 2;
   return score;
