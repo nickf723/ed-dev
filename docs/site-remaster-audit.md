@@ -10,16 +10,16 @@ Source audit recorded on 2026-08-20:
 
 Refresh this snapshot with `npm run audit:remaster` whenever routes are added, moved, or remastered in bulk.
 
-| Area | Route pages |
-| --- | ---: |
-| Formal Science | 144 |
-| Natural Science | 84 |
-| Social Science | 13 |
-| Humanities | 94 |
-| Applied Science | 41 |
-| Interdisciplines | 15 |
-| Other product routes | 4 |
-| **Total** | **395** |
+| Area                 | Route pages |
+| -------------------- | ----------: |
+| Formal Science       |         144 |
+| Natural Science      |          84 |
+| Social Science       |          13 |
+| Humanities           |          94 |
+| Applied Science      |          41 |
+| Interdisciplines     |          15 |
+| Other product routes |           4 |
+| **Total**            |     **395** |
 
 The audit covers every `app/**/page.tsx` route, including dynamic route families. A dynamic route counts as one route module even when it can render many records or lessons.
 
@@ -27,14 +27,14 @@ The audit covers every `app/**/page.tsx` route, including dynamic route families
 
 These are prompts for review, not automatic defects:
 
-- 183 route modules still declare the whole page as a Client Component.
-- 171 route modules use the shared `DomainPageHeader` family.
-- 123 route modules resolve curriculum page context directly.
+- 182 route modules still declare the whole page as a Client Component.
+- 172 route modules use the shared `DomainPageHeader` family.
+- 124 route modules resolve curriculum page context directly.
 - 62 route modules use the newer `SceneFrame` composition system.
-- 239 route modules explicitly import a background or world component.
-- 293 route modules contain at least one 6–10 px text token; every occurrence must be classified as decorative telemetry or raised to the readability floor.
-- 192 pages still manually declare breadcrumbs and should migrate when their branch is remastered.
-- 22 route modules contain legacy implementation-themed chrome; the current concentration is in older Mathematics families.
+- 240 route modules explicitly import a background or world component.
+- 292 route modules contain at least one 6–10 px text token; every occurrence must be classified as decorative telemetry or raised to the readability floor.
+- 193 pages still contain a page-local breadcrumb declaration or adapter call and should be reviewed when their branch is remastered.
+- 21 route modules contain legacy implementation-themed chrome; the current concentration is in older Mathematics families.
 - two route modules use randomness only inside explicit learner actions; static inspection found no page-level render-time randomness in the route modules.
 
 These numbers show why the remaster must be incremental. The site contains several development eras, and global replacement would erase good local work while leaving semantic debt untouched.
@@ -105,7 +105,7 @@ The site should feel inhabited, not tiled.
 
 ### Wave 1 · Mathematics
 
-- Finish parent coverage with Discrete Mathematics.
+- Discrete Mathematics parent coverage is structurally refined; continue through its Set Theory, Graph Theory, Combinatorics, and Recursion Theory children.
 - Then audit Foundations, Linear Algebra, Abstract Algebra, Calculus, Geometry, Statistics, Applied Mathematics, and their live child sequences.
 - Preserve the strongest existing instruments; migrate ontology, context, vocabulary, lesson flow, readability, and environment together.
 
@@ -175,6 +175,8 @@ Rebuild relationships after canonical pages are strong enough to support precise
 
 ## Current target
 
-Number Theory is the first page to receive the explicit scenery-corridor correction. Discrete Mathematics is next because its legacy implementation chrome, lab-first order, local data, relative navigation, and vocabulary structure make it the clearest remaining Mathematics parent debt.
+The Discrete Mathematics parent now derives four live children from a focused curriculum module, contributes node-owned vocabulary, presents direct-child navigation before its graph workshop, and uses a finite-structure drafting table instead of the random network wallpaper and remote server-room hero. The graph builder remains functional with curated triangle, path, and star cases plus custom vertex/edge construction. Rendered verification remains queued.
+
+Set Theory is the next family target. Its existing Venn environment and set-operation instrument are preserved strengths; the remaster should repair the client-heavy page shell, implementation labels, isolated glossary presentation, and lesson/retrieval contract without flattening those systems.
 
 The program advances one coherent page or family at a time. A route leaves the ledger only when its semantic structure, educational job, distinctive world, geometry, verification record, and published `studio` commit all agree.

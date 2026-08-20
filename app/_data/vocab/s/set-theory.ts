@@ -1,0 +1,51 @@
+import type { VocabTerm } from "../types";
+
+export const setTheoryVocab: VocabTerm[] = [
+  {
+    id: "log-set",
+    word: "Set",
+    definition:
+      "A well-defined collection of distinct mathematical objects, called elements or members.",
+    domain: "Set Theory",
+    tags: ["Collections", "Foundations"],
+    isAdult: false,
+  },
+  {
+    id: "set-element",
+    word: "Element",
+    definition: "An object that belongs to a set.",
+    domain: "Set Theory",
+    tags: ["Membership", "Collections"],
+    relatedTerms: ["log-set", "log-subset"],
+    isAdult: false,
+  },
+  {
+    id: "log-subset",
+    word: "Subset",
+    definition:
+      "Set A is a subset of set B if all elements of A are also elements of B. Denoted by ⊆.",
+    domain: "Set Theory",
+    tags: ["Relationships", "Containment"],
+    isAdult: false,
+  },
+  {
+    id: "set-union",
+    word: "Union",
+    definition:
+      "The set containing every element that belongs to at least one of the sets being combined.",
+    domain: "Set Theory",
+    tags: ["Operations", "Combination"],
+    relatedTerms: ["set-intersection"],
+    isAdult: false,
+  },
+  {
+    id: "set-intersection",
+    word: "Intersection",
+    definition:
+      "The set containing exactly the elements shared by all of the sets being compared.",
+    domain: "Set Theory",
+    tags: ["Operations", "Overlap"],
+    relatedTerms: ["set-union"],
+    isAdult: false,
+  },
+];

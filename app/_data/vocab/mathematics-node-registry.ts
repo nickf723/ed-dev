@@ -2,11 +2,14 @@ import { abstractAlgebraVocab } from "./a/abstract-algebra";
 import { algebraVocab } from "./a/algebra";
 import { algebraFundamentalsVocab } from "./a/algebra-fundamentals";
 import { propertiesVocab } from "./a/algebra-properties";
+import { combinatoricsVocab } from "./c/combinatorics";
+import { discreteMathVocab } from "./d/discrete-math";
 import { expressionsVocab } from "./a/algebra-expressions";
 import { equationsVocab } from "./e/equations";
 import { exponentsVocab } from "./e/exponents";
 import { formalScienceVocab } from "./f/formal-science";
 import { fractionsVocab } from "./f/fractions";
+import { graphTheoryVocab } from "./g/graph-theory";
 import { inequalitiesVocab } from "./i/inequalities";
 import { integersVocab } from "./i/integers";
 import { mathVocab } from "./m/math";
@@ -17,6 +20,8 @@ import { pemdasVocab } from "./p/pemdas";
 import { preAlgebraVocab } from "./p/pre-algebra";
 import { quadraticsVocab } from "./q/quadratics";
 import { ratiosVocab } from "./r/ratios";
+import { recursionVocab } from "./r/recursion";
+import { setTheoryVocab } from "./s/set-theory";
 import type { NodeVocabularyRegistration } from "./aggregate.mjs";
 
 const legacyMathematicsVocab = formalScienceVocab.filter((term) =>
@@ -27,7 +32,7 @@ const legacyMathematicsVocab = formalScienceVocab.filter((term) =>
     "Linear Algebra",
     "Geometry",
     "Game Theory",
-  ]).has(term.domain),
+  ]).has(term.domain)
 );
 
 /**
@@ -103,6 +108,26 @@ export const MATHEMATICS_VOCABULARY_REGISTRATIONS = [
   {
     nodeId: "formal.mathematics.number-theory.diophantine",
     terms: diophantineVocab,
+  },
+  {
+    nodeId: "formal.mathematics.discrete",
+    terms: discreteMathVocab,
+  },
+  {
+    nodeId: "formal.mathematics.discrete.set-theory",
+    terms: setTheoryVocab,
+  },
+  {
+    nodeId: "formal.mathematics.discrete.graph-theory",
+    terms: graphTheoryVocab,
+  },
+  {
+    nodeId: "formal.mathematics.discrete.combinatorics",
+    terms: combinatoricsVocab,
+  },
+  {
+    nodeId: "formal.mathematics.discrete.recursion-theory",
+    terms: recursionVocab,
   },
   {
     nodeId: "formal.mathematics.algebra.abstract-algebra",

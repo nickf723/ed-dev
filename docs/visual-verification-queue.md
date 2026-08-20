@@ -491,3 +491,11 @@ Whenever a page changes without reliable visual verification:
 **Check:** Confirm the deterministic integer lattice hydrates without a server/client mismatch, the local CSS grid replaces the remote background asset, and existing explanation and solver states remain visually unchanged apart from the repaired background notation.
 
 **Status:** Targeted regression verification pending.
+
+### Discrete Mathematics finite-structure hub
+
+**Route:** `/formal-science/mathematics/discrete`
+
+**Check:** Desktop, narrower desktop, and mobile composition; sticky header clearance; first-viewport dominance of the four direct-child lenses; registry-derived Set Theory, Graph Theory, Combinatorics, and Recursion Theory routes; shared six-object specimen; drafting-table background visibility and slow inspection-light behavior; reduced-motion state; scenery corridor before the graph workshop; triangle, path, and star presets; custom vertex placement by pointer and keyboard; edge linking by pointer and keyboard; duplicate-edge prevention; degree, maximum-degree, connectivity, and handshake readouts; empty/reset states; long curriculum descriptions without clipping; conceptual cross-link semantics; vocabulary drawer grouping at the parent and all four children; focus visibility and zoomed-text behavior.
+
+**Status:** TypeScript, full lint, vocabulary aggregation, architecture/readability audits, collection regressions, and production build passed; rendered verification pending.

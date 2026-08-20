@@ -58,6 +58,11 @@ import { equationsVocab } from "./e/equations";
 import { algebraFundamentalsVocab } from "./a/algebra-fundamentals";
 import { quadraticsVocab } from "./q/quadratics";
 import { diophantineVocab, numberTheoryVocab } from "./n/number-theory";
+import { combinatoricsVocab } from "./c/combinatorics";
+import { discreteMathVocab } from "./d/discrete-math";
+import { graphTheoryVocab } from "./g/graph-theory";
+import { recursionVocab } from "./r/recursion";
+import { setTheoryVocab } from "./s/set-theory";
 
 export { mathVocab, abstractAlgebraVocab, ludologyVocab, gameDesignVocab };
 
@@ -117,5 +122,10 @@ export const ALL_VOCAB: VocabTerm[] = composeVocabulary(
   algebraFundamentalsVocab,
   quadraticsVocab,
   numberTheoryVocab,
-  diophantineVocab
+  diophantineVocab,
+  discreteMathVocab,
+  setTheoryVocab,
+  graphTheoryVocab,
+  combinatoricsVocab,
+  recursionVocab
 );

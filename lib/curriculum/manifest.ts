@@ -10,6 +10,7 @@ import { NUMBER_THEORY_CURRICULUM } from "@/lib/curriculum/number-theory";
 import { SECURITY_CRYPTOGRAPHY_CURRICULUM } from "@/lib/curriculum/security-cryptography";
 import { SOFTWARE_CURRICULUM } from "@/lib/curriculum/software";
 import { DATA_SCIENCE_CURRICULUM } from "@/lib/curriculum/data-science";
+import { DISCRETE_MATHEMATICS_CURRICULUM } from "@/lib/curriculum/discrete-mathematics";
 import { GEOMETRY_CURRICULUM } from "@/lib/curriculum/geometry";
 import { GROUP_THEORY_CURRICULUM } from "@/lib/curriculum/group-theory";
 import { INFORMATION_SCIENCE_CURRICULUM } from "@/lib/curriculum/information-science";
@@ -78,6 +79,7 @@ export const CURRICULUM_MODULES: readonly CurriculumNode[] = [
   LIMITS_CURRICULUM,
   STATISTICS_CURRICULUM,
   NUMBER_THEORY_CURRICULUM,
+  DISCRETE_MATHEMATICS_CURRICULUM,
   APPLIED_MATHEMATICS_CURRICULUM,
   LOGIC_CURRICULUM,
   COMPUTER_SCIENCE_CURRICULUM,
