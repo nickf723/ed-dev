@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type DragEvent } from "react";
 import { CheckCircle2, MoveRight } from "lucide-react";
 
 type TokenId = "pin" | "spin" | "bin";
@@ -33,7 +33,7 @@ export default function PhonologyPractice() {
     setChecked(false);
   }
 
-  function drop(bucket: Bucket, event: React.DragEvent<HTMLDivElement>) {
+  function drop(bucket: Bucket, event: DragEvent<HTMLDivElement>) {
     event.preventDefault();
     const id = event.dataTransfer.getData("text/plain") as TokenId;
     if (TOKENS.some((token) => token.id === id)) assign(id, bucket);
@@ -94,7 +94,7 @@ export default function PhonologyPractice() {
   );
 }
 
-function BucketCard({ bucket, label, selected, onAssign, onDrop, assigned, rgb }: { bucket: Bucket; label: string; selected: TokenId | null; onAssign: (id: TokenId, bucket: Bucket) => void; onDrop: (bucket: Bucket, event: React.DragEvent<HTMLDivElement>) => void; assigned: readonly Token[]; rgb: string }) {
+function BucketCard({ bucket, label, selected, onAssign, onDrop, assigned, rgb }: { bucket: Bucket; label: string; selected: TokenId | null; onAssign: (id: TokenId, bucket: Bucket) => void; onDrop: (bucket: Bucket, event: DragEvent<HTMLDivElement>) => void; assigned: readonly Token[]; rgb: string }) {
   return (
     <div onDragOver={(event) => event.preventDefault()} onDrop={(event) => onDrop(bucket, event)} className="min-h-[190px] rounded-[18px] border p-4" style={{ borderColor: `rgba(${rgb},0.18)`, background: `rgba(${rgb},0.025)` }}>
       <div className="flex items-center justify-between gap-2"><strong className="text-[13px]" style={{ color: `rgb(${rgb})` }}>{label}</strong>{selected ? <button type="button" onClick={() => onAssign(selected, bucket)} className="flex items-center gap-1 rounded-full border px-2.5 py-1.5 font-mono text-[9px] uppercase tracking-[0.05em]" style={{ borderColor: `rgba(${rgb},0.24)`, color: `rgb(${rgb})` }}>place here <MoveRight size={10} /></button> : null}</div>
