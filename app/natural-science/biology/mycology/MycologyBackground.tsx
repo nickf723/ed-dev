@@ -1,195 +1,51 @@
-"use client";
-import { useEffect, useRef } from "react";
+const NODES = [
+  [10, 72], [17, 60], [23, 66], [29, 50], [35, 58], [40, 42], [47, 49], [53, 35], [60, 43], [67, 29],
+  [73, 38], [81, 24], [88, 31], [31, 78], [43, 70], [55, 78], [68, 68], [79, 76],
+] as const;
 
-// Define the structure for a growing fungal thread tip
-interface HyphaTip {
-    x: number;
-    y: number;
-    angle: number; // Current direction of growth
-    speed: number;
-    color: string;
-    shadowColor: string;
-    thickness: number;
-    life: number; // To eventually kill off old branches so screen doesn't fill
-}
-
-// Define structure for floating spores (from previous version)
-interface Spore {
-    x: number;
-    y: number;
-    vx: number;
-    vy: number;
-    size: number;
-    color: string;
-}
+const EDGES = [
+  [0,1],[1,2],[1,3],[2,4],[3,4],[3,5],[4,6],[5,6],[5,7],[6,8],[7,8],[7,9],[8,10],[9,10],[9,11],[10,12],
+  [2,13],[4,13],[13,14],[6,14],[14,15],[8,15],[15,16],[10,16],[16,17],[12,17],
+] as const;
 
 export default function MycologyBackground() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+  return (
+    <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden bg-[#07050a]" aria-hidden="true">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(192,132,252,0.08),transparent_30%),radial-gradient(circle_at_76%_70%,rgba(74,222,128,0.07),transparent_32%),linear-gradient(180deg,#0a0710_0%,#07050a_52%,#030304_100%)]" />
 
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
+      <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="absolute inset-[5%_3%_4%_3%] h-[91%] w-[94%] opacity-55">
+        <defs>
+          <linearGradient id="myco-thread" x1="0" x2="1">
+            <stop offset="0%" stopColor="rgba(192,132,252,0.10)" />
+            <stop offset="52%" stopColor="rgba(167,139,250,0.13)" />
+            <stop offset="100%" stopColor="rgba(74,222,128,0.10)" />
+          </linearGradient>
+        </defs>
+        {EDGES.map(([a, b], index) => {
+          const [x1, y1] = NODES[a];
+          const [x2, y2] = NODES[b];
+          const cx = (x1 + x2) / 2 + ((index % 3) - 1) * 2;
+          const cy = (y1 + y2) / 2 - 2 - (index % 2) * 2;
+          return <path key={index} d={`M${x1} ${y1} Q${cx} ${cy} ${x2} ${y2}`} fill="none" stroke="url(#myco-thread)" strokeWidth="0.32" vectorEffect="non-scaling-stroke" />;
+        })}
+        {NODES.map(([x, y], index) => <circle key={index} cx={x} cy={y} r={index % 4 === 0 ? 0.55 : 0.32} fill={index % 3 === 0 ? "rgba(74,222,128,0.14)" : "rgba(216,180,254,0.13)"} />)}
+      </svg>
 
-    // Ensure high-DPI rendering for crisp lines
-    const dpr = window.devicePixelRatio || 1;
-    let w = (canvas.width = window.innerWidth * dpr);
-    let h = (canvas.height = window.innerHeight * dpr);
-    canvas.style.width = `${window.innerWidth}px`;
-    canvas.style.height = `${window.innerHeight}px`;
-    ctx.scale(dpr, dpr);
-    w = window.innerWidth;
-    h = window.innerHeight;
+      <div className="absolute left-[8%] bottom-[9%] w-[310px] rounded-[28px] border border-purple-100/[0.035] bg-black/[0.04] p-5 opacity-50">
+        <div className="font-mono text-[8px] uppercase tracking-[0.15em] text-purple-100/18">mycelial scale</div>
+        <div className="mt-3 space-y-2">
+          {['hyphal tip','branch','network','substrate interface'].map((label, index) => <div key={label} className="grid grid-cols-[28px_minmax(0,1fr)] items-center gap-2"><span className="font-mono text-[8px] text-emerald-100/14">0{index + 1}</span><span className="h-px bg-gradient-to-r from-purple-100/[0.08] to-transparent" /><span className="col-start-2 font-mono text-[7px] uppercase tracking-[0.10em] text-slate-100/12">{label}</span></div>)}
+        </div>
+      </div>
 
-    let time = 0;
-    const spores: Spore[] = [];
-    let hyphae: HyphaTip[] = [];
+      <div className="absolute right-[8%] top-[18%] h-[240px] w-[240px] rounded-full border border-emerald-100/[0.035] bg-[radial-gradient(circle_at_44%_45%,rgba(74,222,128,0.035),transparent_48%)] opacity-50">
+        {Array.from({ length: 18 }, (_, index) => <span key={index} className="absolute rounded-full border border-emerald-100/[0.045] bg-emerald-200/[0.012]" style={{ left: `${12 + ((index * 29) % 76)}%`, top: `${10 + ((index * 43) % 78)}%`, width: `${3 + (index % 3)}px`, height: `${3 + (index % 3)}px` }} />)}
+      </div>
 
-    // --- CONFIG ---
-    const maxHyphae = 40; // Limit active growing tips to manage performance
-    const growthSpeed = 0.8;
-    const branchChance = 0.02; // Chance per frame to split
-    const sporeChance = 0.05; // Chance per frame to emit a spore
-    const turnSpeed = 0.1; // How sharply they curl
-
-    const colors = {
-        purple: { fill: "rgba(168, 85, 247, ", glow: "#a855f7" }, // Neon Purple
-        green:  { fill: "rgba(52, 211, 153, ", glow: "#34d399" }  // Neon Emerald
-    };
-
-    // Helper to create a new growing tip
-    const createHypha = (x: number, y: number, angle: number): HyphaTip => {
-        const isPurple = Math.random() > 0.5;
-        return {
-            x, y, angle,
-            speed: growthSpeed + Math.random() * 0.5,
-            color: isPurple ? colors.purple.fill : colors.green.fill,
-            shadowColor: isPurple ? colors.purple.glow : colors.green.glow,
-            thickness: Math.random() * 1.5 + 0.5,
-            life: Math.random() * 500 + 200
-        };
-    };
-
-    // Helper to create a spore
-    const createSpore = (x: number, y: number, colorPrefix: string): Spore => ({
-        x, y, vx: 0, vy: 0,
-        size: Math.random() * 1.5 + 0.5,
-        color: colorPrefix
-    });
-
-    // Initialize a few starting points randomly off-screen or central
-    for(let i =0; i < 5; i++) {
-        hyphae.push(createHypha(Math.random() * w, Math.random() * h, Math.random() * Math.PI * 2));
-    }
-
-    const render = () => {
-      // 1. THE FADE EFFECT
-      // Instead of clearing, draw a semi-transparent dark rectangle.
-      // This creates the "trails" of the growing mycelium.
-      // A lower opacity makes trails last longer.
-      ctx.globalCompositeOperation = "source-over";
-      ctx.fillStyle = "rgba(5, 5, 10, 0.08)"; // Very slow fade for long trails
-      ctx.fillRect(0, 0, w, h);
-
-      // 2. GROW THE MYCELIUM (Hyphae)
-      // Use lighter composition for glowing intersections
-      ctx.globalCompositeOperation = "lighter"; 
-
-      // Iterate backwards so we can splice (remove) dead tips easily
-      for (let i = hyphae.length - 1; i >= 0; i--) {
-          const tip = hyphae[i];
-          tip.life--;
-
-          // Kill old or off-screen tips, but always keep a minimum few
-          if ((tip.life <= 0 || tip.x < -50 || tip.x > w+50 || tip.y < -50 || tip.y > h+50) && hyphae.length > 5) {
-              hyphae.splice(i, 1);
-              continue;
-          }
-
-          // Move forward
-          const oldX = tip.x;
-          const oldY = tip.y;
-          tip.x += Math.cos(tip.angle) * tip.speed;
-          tip.y += Math.sin(tip.angle) * tip.speed;
-
-          // Randomly steer (Brownian-ish motion)
-          tip.angle += (Math.random() - 0.5) * turnSpeed;
-
-          // DRAW THE SEGMENT
-          ctx.beginPath();
-          ctx.moveTo(oldX, oldY);
-          ctx.lineTo(tip.x, tip.y);
-          ctx.strokeStyle = `${tip.color} 0.8)`;
-          ctx.lineWidth = tip.thickness;
-          ctx.lineCap = "round";
-          // Intense Glow effect
-          ctx.shadowBlur = 15;
-          ctx.shadowColor = tip.shadowColor;
-          ctx.stroke();
-
-          // BRANCHING EVENT
-          if (Math.random() < branchChance && hyphae.length < maxHyphae) {
-              // Branch off at a slight deviation from current angle
-              const deviation = (Math.random() > 0.5 ? 1 : -1) * (Math.PI / 4 + Math.random() * 0.5);
-              hyphae.push(createHypha(tip.x, tip.y, tip.angle + deviation));
-          }
-
-          // SPORING EVENT (Burst from tip)
-          if (Math.random() < sporeChance && spores.length < 300) {
-              spores.push(createSpore(tip.x, tip.y, tip.color));
-          }
-      }
-
-      // reset shadow for spores so they don't look too blurry
-      ctx.shadowBlur = 0; 
-
-      // 3. ANIMATE FLOATING SPORES (Flow Field Logic from previous version)
-      spores.forEach((p) => {
-          const noiseScale = 0.003;
-          // Simple flow field based on sine/cosine
-          const angle = (Math.cos(p.x * noiseScale + time * 0.001) + Math.sin(p.y * noiseScale + time * 0.001)) * Math.PI * 2;
-          
-          p.vx += Math.cos(angle) * 0.02;
-          p.vy += Math.sin(angle) * 0.02;
-          p.vx *= 0.99; // Friction
-          p.vy *= 0.99;
-          p.x += p.vx;
-          p.y += p.vy;
-
-          // Wrap around screen edges
-          if(p.x < 0) p.x = w; if(p.x > w) p.x = 0;
-          if(p.y < 0) p.y = h; if(p.y > h) p.y = 0;
-
-          const alpha = (Math.sin(time * 0.05 + p.x*0.01) + 1) / 2 * 0.5 + 0.3;
-          ctx.fillStyle = `${p.color}${alpha})`;
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-          ctx.fill();
-      });
-
-      time++;
-      requestAnimationFrame(render);
-    };
-
-    const animId = requestAnimationFrame(render);
-    const handleResize = () => {
-         // Reset canvas size on resize
-         w = canvas.width = window.innerWidth * dpr;
-         h = canvas.height = window.innerHeight * dpr;
-         canvas.style.width = `${window.innerWidth}px`;
-         canvas.style.height = `${window.innerHeight}px`;
-         ctx.scale(dpr, dpr);
-         // Clear background completely on resize to avoid trailing artifacts
-         ctx.fillStyle = "#05050a";
-         ctx.fillRect(0,0,w,h);
-         w = window.innerWidth;
-         h = window.innerHeight;
-    };
-    window.addEventListener("resize", handleResize);
-    return () => cancelAnimationFrame(animId);
-  }, []);
-
-  // Base background color matches the fade color for seamless look
-  return <canvas ref={canvasRef} className="fixed inset-0 z-0 pointer-events-none bg-[#05050a]" />;
+      <div className="absolute inset-0 opacity-[0.08] [background-image:radial-gradient(circle,rgba(226,232,240,0.13)_0.7px,transparent_0.8px)] [background-size:28px_28px]" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_25%,rgba(3,3,4,0.76)_100%)]" />
+      <div className="absolute inset-x-0 top-0 h-[20%] bg-gradient-to-b from-[#07050a] via-[#07050a]/84 to-transparent" />
+      <div className="absolute inset-x-0 bottom-0 h-[26%] bg-gradient-to-t from-[#030304] via-[#030304]/90 to-transparent" />
+    </div>
+  );
 }
