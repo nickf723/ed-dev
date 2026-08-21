@@ -438,3 +438,13 @@ Information Science now keeps seven direct branches rather than showing nine app
 The root advances from registry-owned navigation through empirical symbol entropy, synthetic vector retrieval, a no-render-fetch Library of Congress connector protocol, six system questions, and a four-file claim review. The active child advances from controlled vocabularies through taxonomy and ontology, comparing one fictional game across a category path and five typed relations before a deterministic design challenge. Fifty-eight terms are registered at their narrowest current nodes and aggregate into Information Science and Formal Science.
 
 The root visual grammar is a source-to-record signal desk; the child is a classification atelier with broader/narrower paths and typed graph relations. Deterministic server-rendered SVG/CSS replaces both animated canvas backgrounds, including the randomly regenerated taxonomy tree. Client ownership is limited to the entropy, retrieval, comparison, and assessment islands, with no initial-render randomness, viewport measurement, or wall-clock state.
+
+---
+
+## 18. Current cohesion checkpoint · History
+
+History keeps one three-lens root layer: Time, Place, and Theme. These are organizing coordinates rather than a forced sequence or mutually exclusive partitions. Source method remains at the root because provenance, contextualization, corroboration, perspective, interpretation, archives, and archival silence support every historical specialization.
+
+The root advances from direct lens navigation and the existing printing-press case through an observe–contextualize–corroborate workshop, a BCE/CE interval instrument, a four-file evidence review, and explicit collection boundaries. One tested model owns astronomical-year conversion, elapsed-year arithmetic, exact branch parity, and assessment fixtures. Thirty-five terms are registered at the root or narrowest current lens and aggregate into Humanities.
+
+The visual grammar is archival and editorial: warm paper light, printing marks, source ledgers, restrained classification colors, and dark reading surfaces. Root motion is disabled, and the client boundary is limited to the interval and assessment islands without random values, viewport reads, effects, timers, or wall-clock state. This preserves the product shell while avoiding Information Science's record pipeline and Earth Science's field transect.

@@ -71,6 +71,8 @@ import { graphTheoryVocab } from "./g/graph-theory";
 import { recursionVocab } from "./r/recursion";
 import { setTheoryVocab } from "./s/set-theory";
 import { mineralogyVocab } from "./m/mineralogy";
+import { historyVocab } from "./h/history";
+import { historyBranchVocab } from "./h/history-branches";
 
 export { mathVocab, abstractAlgebraVocab, ludologyVocab, gameDesignVocab };
 
@@ -143,5 +145,7 @@ export const ALL_VOCAB: VocabTerm[] = composeVocabulary(
   graphTheoryVocab,
   combinatoricsVocab,
   recursionVocab,
-  mineralogyVocab
+  mineralogyVocab,
+  historyVocab,
+  historyBranchVocab
 );

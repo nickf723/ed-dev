@@ -241,6 +241,28 @@ Verify:
 - fifty-eight vocabulary terms retain narrow ownership and aggregate through Taxonomy & Ontology, Information Science, and Formal Science
 - keyboard focus, zoomed text, responsive flow, and long-label behavior produce no clipping or overlap
 
+**Status:** Targeted React/Next lint, TypeScript, deterministic root/child model tests, vocabulary aggregation, all three informational audits, the 404-page production build, and generated-HTML hierarchy/model/source/background checks passed; rendered verification required
+
+---
+
+### History source workshop
+
+**Route:** `/humanities/history`
+
+Verify:
+
+- Time, Place, and Theme appear first, in registry order, and retain their existing active routes
+- the recipe background and printing-press case stay visually stable with motion disabled
+- the source workshop clearly separates observation, contextualization, and corroboration
+- the canonical 44 BCE → 14 CE fixture reports 57 years and never inserts a year zero
+- the two same-era presets report 177 and 336 years, editable controls remain usable, and reset restores the canonical interval
+- all four evidence files provide deterministic correct/wrong feedback and preserve source, causation, and periodization boundaries
+- History, Time, Place, and Theme vocabulary groups inherit into Humanities without duplicate term IDs
+- Library of Congress, National Archives, Chronicling America, and Smithsonian links expose collection and method boundaries without implying live repository coverage
+- typography, amber surfaces, and background breathing room remain legible at desktop, tablet, and narrow widths
+
+**Status:** Targeted React/Next lint, TypeScript, deterministic history-model tests, vocabulary aggregation, all three informational audits, the 404-page production build, and generated-HTML lens/model/source/metadata checks passed; rendered responsive and interaction verification required
+
 **Status:** Targeted React/Next lint, TypeScript, deterministic Information Science, entropy, retrieval, taxonomy, ontology, and evidence fixtures, vocabulary aggregation, all three informational audits, the 404-page production build, and generated-HTML ancestry/hierarchy/active-link/planned-non-link/model/source/background/no-canvas checks passed. The required browser CLI is unavailable, so rendered responsive and interaction verification remains pending. Remote publication and the zero-deployment guard are recorded in the commit handoff because they occur after this entry is committed.
 
 ---

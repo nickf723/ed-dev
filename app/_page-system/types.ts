@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import type { PageRecipe } from "@/lib/page-system/schema";
 
 export type DesignGuideCategory =
@@ -27,6 +28,7 @@ export type RendererStudioProps = {
 
 export type PageRendererProps = RendererStudioProps & {
   recipe: PageRecipe;
+  children?: ReactNode;
 };
 
 export function selectionKey(selection: StudioSelection | undefined) {

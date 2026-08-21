@@ -24,6 +24,7 @@ import { MUSIC_VOCABULARY_REGISTRATIONS } from "./music-node-registry";
 import { ARCHITECTURE_VOCABULARY_REGISTRATIONS } from "./architecture-node-registry";
 import { PSYCHOLOGY_VOCABULARY_REGISTRATIONS } from "./psychology-node-registry";
 import { INFORMATION_SCIENCE_VOCABULARY_REGISTRATIONS } from "./information-science-node-registry";
+import { HISTORY_VOCABULARY_REGISTRATIONS } from "./history-node-registry";
 import { buildCurriculumVocabularyScopes } from "./aggregate.mjs";
 import { composeVocabulary } from "./compose";
 import { MATHEMATICS_VOCABULARY_REGISTRATIONS } from "./mathematics-node-registry";
@@ -157,11 +158,11 @@ const earthScienceVocabulary = composeVocabulary(
 );
 
 const informationScienceNode = curriculumRegistry.getNode(
-  "formal.information-science",
+  "formal.information-science"
 );
 if (!informationScienceNode) {
   throw new Error(
-    "Information Science curriculum node is required for vocabulary scopes",
+    "Information Science curriculum node is required for vocabulary scopes"
   );
 }
 
@@ -175,14 +176,40 @@ const informationScienceVocabularyScopes = buildCurriculumVocabularyScopes({
 });
 
 const informationScienceScope = informationScienceVocabularyScopes.find(
-  (scope) => scope.path === informationScienceNode.href,
+  (scope) => scope.path === informationScienceNode.href
 );
 if (!informationScienceScope) {
   throw new Error("Information Science vocabulary scope could not be derived");
 }
 
 const informationScienceVocabulary = composeVocabulary(
-  ...informationScienceScope.groups.map((group) => group.terms),
+  ...informationScienceScope.groups.map((group) => group.terms)
+);
+
+const historyNode = curriculumRegistry.getNode("humanities.history");
+if (!historyNode) {
+  throw new Error("History curriculum node is required for vocabulary scopes");
+}
+
+const historyVocabularyScopes = buildCurriculumVocabularyScopes({
+  roots: [historyNode],
+  registrations: HISTORY_VOCABULARY_REGISTRATIONS,
+  accent: "amber",
+  accentByNodeId: {
+    "humanities.history.regional": "emerald",
+    "humanities.history.theme": "violet",
+  },
+});
+
+const historyScope = historyVocabularyScopes.find(
+  (scope) => scope.path === historyNode.href
+);
+if (!historyScope) {
+  throw new Error("History vocabulary scope could not be derived");
+}
+
+const historyVocabulary = composeVocabulary(
+  ...historyScope.groups.map((group) => group.terms)
 );
 
 const literatureNode = curriculumRegistry.getNode("humanities.literature");
@@ -459,6 +486,7 @@ const architectureVocabulary = composeVocabulary(
 );
 
 export const humanitiesVocabularyScopes: VocabularyScope[] = [
+  ...historyVocabularyScopes,
   ...literatureVocabularyScopes,
   ...visualArtsVocabularyScopes,
   ...musicVocabularyScopes,
@@ -467,6 +495,13 @@ export const humanitiesVocabularyScopes: VocabularyScope[] = [
     title: "Humanities",
     accent: "amber",
     groups: [
+      {
+        id: historyNode.id,
+        label: historyNode.label,
+        terms: historyVocabulary,
+        sourceNodeId: historyNode.id,
+        sourcePath: historyNode.href,
+      },
       {
         id: literatureNode.id,
         label: literatureNode.label,

@@ -36,6 +36,7 @@ export default function PageRenderer({
   showGuides = false,
   motionEnabled,
   onSelect,
+  children,
 }: PageRendererProps) {
   const Icon = resolvePageIcon(recipe.identity.icon);
   const motion = motionEnabled ?? recipe.theme.motion !== "off";
@@ -68,7 +69,9 @@ export default function PageRenderer({
           style={{ background: headerColor(recipe) }}
         >
           <DomainPageHeader
-            breadcrumbs={recipe.identity.breadcrumbs ?? [{ label: recipe.identity.title }]}
+            breadcrumbs={
+              recipe.identity.breadcrumbs ?? [{ label: recipe.identity.title }]
+            }
             eyebrow={recipe.identity.eyebrow}
             eyebrowStyle={recipe.theme.eyebrowStyle}
             icon={Icon}
@@ -80,12 +83,25 @@ export default function PageRenderer({
           />
         </div>
 
-        <LensTopology recipe={recipe} selected={selected} showGuides={showGuides} preview={preview} onSelect={onSelect} />
-        <RegimeTopology recipe={recipe} selected={selected} showGuides={showGuides} preview={preview} onSelect={onSelect} />
+        <LensTopology
+          recipe={recipe}
+          selected={selected}
+          showGuides={showGuides}
+          preview={preview}
+          onSelect={onSelect}
+        />
+        <RegimeTopology
+          recipe={recipe}
+          selected={selected}
+          showGuides={showGuides}
+          preview={preview}
+          onSelect={onSelect}
+        />
 
         {recipe.sections.map((section) => {
           if (section.hidden && !preview) return null;
-          const selectedSection = selectionKey(selected) === `section:${section.id}`;
+          const selectedSection =
+            selectionKey(selected) === `section:${section.id}`;
           return (
             <div
               key={section.id}
@@ -102,13 +118,30 @@ export default function PageRenderer({
               }
             >
               {section.type === "case-study" ? (
-                <CaseStudy recipe={recipe} section={section} selected={selected} showGuides={showGuides} preview={preview} onSelect={onSelect} />
+                <CaseStudy
+                  recipe={recipe}
+                  section={section}
+                  selected={selected}
+                  showGuides={showGuides}
+                  preview={preview}
+                  onSelect={onSelect}
+                />
               ) : (
-                <ModelGuide recipe={recipe} section={section} selected={selected} showGuides={showGuides} preview={preview} onSelect={onSelect} />
+                <ModelGuide
+                  recipe={recipe}
+                  section={section}
+                  selected={selected}
+                  showGuides={showGuides}
+                  preview={preview}
+                  onSelect={onSelect}
+                />
               )}
             </div>
           );
         })}
+        {children ? (
+          <div className={SECTION_GAP[recipe.theme.sectionGap]}>{children}</div>
+        ) : null}
       </div>
     </main>
   );
