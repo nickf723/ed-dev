@@ -1,6 +1,5 @@
 import "server-only";
 
-import { computerScienceVocab } from "./c/computer-science";
 import { firstOrderVocab } from "./f/first-order-logic";
 import { formalScienceVocab } from "./f/formal-science";
 import { formalScienceLocalVocab } from "./f/formal-science-local";
@@ -30,6 +29,7 @@ import { SOCIOLOGY_VOCABULARY_REGISTRATIONS } from "./sociology-node-registry";
 import { PHYSICS_VOCABULARY_REGISTRATIONS } from "./physics-node-registry";
 import { PHILOSOPHY_VOCABULARY_REGISTRATIONS } from "./philosophy-node-registry";
 import { ANTHROPOLOGY_VOCABULARY_REGISTRATIONS } from "./anthropology-node-registry";
+import { COMPUTER_SCIENCE_VOCABULARY_REGISTRATIONS } from "./computer-science-node-registry";
 import { buildCurriculumVocabularyScopes } from "./aggregate.mjs";
 import { composeVocabulary } from "./compose";
 import { MATHEMATICS_VOCABULARY_REGISTRATIONS } from "./mathematics-node-registry";
@@ -75,13 +75,35 @@ const mathematicsVocabulary = composeVocabulary(
   ...mathematicsScope.groups.map((group) => group.terms)
 );
 
+const computerScienceNode = curriculumRegistry.getNode(
+  "formal.computer-science"
+);
+if (!computerScienceNode) {
+  throw new Error(
+    "Computer Science curriculum node is required for vocabulary scopes"
+  );
+}
+
+const computerScienceVocabularyScopes = buildCurriculumVocabularyScopes({
+  roots: [computerScienceNode],
+  registrations: COMPUTER_SCIENCE_VOCABULARY_REGISTRATIONS,
+  accent: "cyan",
+  accentByNodeId: {
+    "formal.computer-science.artificial-intelligence": "amber",
+    "formal.computer-science.theory": "violet",
+    "formal.computer-science.security": "sky",
+  },
+});
+
+const computerScienceScope = computerScienceVocabularyScopes.find(
+  (scope) => scope.path === computerScienceNode.href
+);
+if (!computerScienceScope) {
+  throw new Error("Computer Science vocabulary scope could not be derived");
+}
+
 const computerScienceVocabulary = composeVocabulary(
-  computerScienceVocab,
-  legacyVocabularyByDomain(
-    "Computer Science",
-    "Theory of Computation",
-    "Cryptography"
-  )
+  ...computerScienceScope.groups.map((group) => group.terms)
 );
 
 const systemsScienceVocabulary = composeVocabulary(
@@ -894,18 +916,7 @@ export const formalScienceVocabularyScopes: VocabularyScope[] = [
     ],
   },
   ...mathematicsVocabularyScopes,
-  {
-    path: "/formal-science/computer-science",
-    title: "Computer Science",
-    accent: "violet",
-    groups: [
-      {
-        id: "computer-science",
-        label: "Computer Science",
-        terms: computerScienceVocabulary,
-      },
-    ],
-  },
+  ...computerScienceVocabularyScopes,
   ...informationScienceVocabularyScopes,
   ...dataScienceVocabularyScopes,
   {
@@ -933,9 +944,11 @@ export const formalScienceVocabularyScopes: VocabularyScope[] = [
       { id: "logic", label: "Logic", terms: logicVocabulary },
       { id: "mathematics", label: "Mathematics", terms: mathematicsVocabulary },
       {
-        id: "computer-science",
-        label: "Computer Science",
+        id: computerScienceNode.id,
+        label: computerScienceNode.label,
         terms: computerScienceVocabulary,
+        sourceNodeId: computerScienceNode.id,
+        sourcePath: computerScienceNode.href,
       },
       {
         id: "information-science",

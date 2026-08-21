@@ -14,6 +14,7 @@ import { philosophyVocab } from "./p/philosophy";
 import { philosophyBranchVocab } from "./p/philosophy-branches";
 import { earthScienceVocab } from "./e/earth-science";
 import { computerScienceVocab } from "./c/computer-science";
+import { computerScienceBranchVocab } from "./c/computer-science-branches";
 import { physicsVocab } from "./p/physics";
 import { physicsBranchVocab } from "./p/physics-branches";
 import { chemistryVocab } from "./c/chemistry";
@@ -97,6 +98,7 @@ export const ALL_VOCAB: VocabTerm[] = composeVocabulary(
   philosophyBranchVocab,
   earthScienceVocab,
   computerScienceVocab,
+  computerScienceBranchVocab,
   physicsVocab,
   physicsBranchVocab,
   chemistryVocab,

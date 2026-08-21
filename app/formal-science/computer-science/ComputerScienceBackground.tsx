@@ -1,298 +1,283 @@
-"use client";
-
-import { useEffect, useRef } from "react";
-
-type BusPath = {
-  y: number;
-  speed: number;
-  phase: number;
-  direction: 1 | -1;
-  rgb: string;
-};
-
-const BUS_PATHS: BusPath[] = [
-  { y: 0.22, speed: 0.018, phase: 0.08, direction: 1, rgb: "52,211,153" },
-  { y: 0.34, speed: 0.013, phase: 0.46, direction: -1, rgb: "34,211,238" },
-  { y: 0.52, speed: 0.016, phase: 0.72, direction: 1, rgb: "167,139,250" },
-  { y: 0.70, speed: 0.010, phase: 0.24, direction: -1, rgb: "96,165,250" },
-];
-
 export function ComputerScienceBackground() {
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
-
-  useEffect(() => {
-    const canvasElement = canvasRef.current;
-    if (!canvasElement) return;
-    const drawingContext = canvasElement.getContext("2d");
-    if (!drawingContext) return;
-    const canvas: HTMLCanvasElement = canvasElement;
-    const context: CanvasRenderingContext2D = drawingContext;
-
-    const reducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
-    let width = 1;
-    let height = 1;
-    let ratio = 1;
-    let frame = 0;
-    let paused = document.hidden;
-
-    function resize() {
-      width = Math.max(1, window.innerWidth);
-      height = Math.max(1, window.innerHeight);
-      ratio = Math.min(window.devicePixelRatio || 1, width < 900 ? 1.1 : 1.45);
-      canvas.width = Math.floor(width * ratio);
-      canvas.height = Math.floor(height * ratio);
-      canvas.style.width = `${width}px`;
-      canvas.style.height = `${height}px`;
-      context.setTransform(ratio, 0, 0, ratio, 0, 0);
-      draw(20);
-    }
-
-    function onVisibility() {
-      paused = document.hidden;
-      if (!paused && !reducedMotion) frame = requestAnimationFrame(loop);
-    }
-
-    function loop(now: number) {
-      if (paused) return;
-      draw(now / 1000);
-      frame = requestAnimationFrame(loop);
-    }
-
-    function draw(time: number) {
-      context.setTransform(ratio, 0, 0, ratio, 0, 0);
-      context.clearRect(0, 0, width, height);
-      drawBase(context, width, height);
-      drawMemoryBanks(context, width, height, time);
-      drawRuntimeBus(context, width, height, time);
-      drawExecutionCore(context, width, height, time);
-      drawNetworkPorts(context, width, height, time);
-      drawVignette(context, width, height);
-    }
-
-    resize();
-    window.addEventListener("resize", resize);
-    document.addEventListener("visibilitychange", onVisibility);
-    if (!reducedMotion) frame = requestAnimationFrame(loop);
-
-    return () => {
-      cancelAnimationFrame(frame);
-      window.removeEventListener("resize", resize);
-      document.removeEventListener("visibilitychange", onVisibility);
-    };
-  }, []);
+  const bits = [
+    [124, 257, 1],
+    [154, 257, 0],
+    [184, 257, 1],
+    [214, 257, 1],
+    [244, 257, 0],
+    [274, 257, 0],
+    [124, 303, 0],
+    [154, 303, 1],
+    [184, 303, 0],
+    [214, 303, 1],
+    [244, 303, 1],
+    [274, 303, 0],
+    [124, 349, 1],
+    [154, 349, 1],
+    [184, 349, 0],
+    [214, 349, 0],
+    [244, 349, 1],
+    [274, 349, 0],
+    [124, 395, 0],
+    [154, 395, 0],
+    [184, 395, 1],
+    [214, 395, 1],
+    [244, 395, 0],
+    [274, 395, 1],
+    [124, 441, 1],
+    [154, 441, 0],
+    [184, 441, 1],
+    [214, 441, 0],
+    [244, 441, 1],
+    [274, 441, 1],
+    [124, 487, 0],
+    [154, 487, 1],
+    [184, 487, 1],
+    [214, 487, 0],
+    [244, 487, 0],
+    [274, 487, 1],
+  ] as const;
 
   return (
     <div
-      className="pointer-events-none fixed inset-0 z-0 overflow-hidden"
+      className="pointer-events-none fixed inset-0 z-0 overflow-hidden bg-[#02080b]"
       aria-hidden="true"
     >
-      <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
-      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(1,8,10,0.12),transparent_25%,transparent_80%,rgba(2,5,9,0.24))]" />
-      <div className="absolute inset-x-0 top-0 h-[21%] bg-gradient-to-b from-[#010609]/62 to-transparent" />
-      <div className="absolute inset-x-0 bottom-0 h-[20%] bg-gradient-to-t from-[#010304]/54 to-transparent" />
+      <svg
+        viewBox="0 0 1600 1000"
+        preserveAspectRatio="xMidYMid slice"
+        className="absolute inset-0 h-full w-full"
+      >
+        <defs>
+          <linearGradient id="cs-field" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stopColor="#031218" />
+            <stop offset="0.52" stopColor="#07111a" />
+            <stop offset="1" stopColor="#05060d" />
+          </linearGradient>
+          <radialGradient id="cs-core" cx="50%" cy="50%" r="50%">
+            <stop offset="0" stopColor="#22d3ee" stopOpacity="0.18" />
+            <stop offset="0.5" stopColor="#a78bfa" stopOpacity="0.08" />
+            <stop offset="1" stopColor="#02080b" stopOpacity="0" />
+          </radialGradient>
+          <pattern
+            id="cs-grid"
+            width="72"
+            height="72"
+            patternUnits="userSpaceOnUse"
+          >
+            <path
+              d="M72 0H0V72"
+              fill="none"
+              stroke="#67e8f9"
+              strokeOpacity="0.035"
+            />
+          </pattern>
+          <filter id="cs-glow" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="9" />
+          </filter>
+        </defs>
+        <rect width="1600" height="1000" fill="url(#cs-field)" />
+        <rect width="1600" height="1000" fill="url(#cs-grid)" />
+
+        <g opacity="0.68">
+          <rect
+            x="90"
+            y="205"
+            width="238"
+            height="336"
+            rx="24"
+            fill="#020a0d"
+            fillOpacity="0.32"
+            stroke="#34d399"
+            strokeOpacity="0.13"
+          />
+          <path
+            d="M116 246H302M116 292H302M116 338H302M116 384H302M116 430H302M116 476H302"
+            stroke="#34d399"
+            strokeOpacity="0.16"
+          />
+          {bits.map(([x, y, active], index) => (
+            <rect
+              key={index}
+              x={x}
+              y={y}
+              width="16"
+              height="12"
+              rx="3"
+              fill={active ? "#34d399" : "#94a3b8"}
+              fillOpacity={active ? "0.44" : "0.08"}
+            />
+          ))}
+          <path
+            d="M328 270H468V365H568"
+            fill="none"
+            stroke="#34d399"
+            strokeOpacity="0.24"
+            strokeWidth="2"
+          />
+          <path
+            d="M328 362H430V425H568"
+            fill="none"
+            stroke="#22d3ee"
+            strokeOpacity="0.22"
+            strokeWidth="2"
+          />
+          <path
+            d="M328 454H468V485H568"
+            fill="none"
+            stroke="#a78bfa"
+            strokeOpacity="0.22"
+            strokeWidth="2"
+          />
+          <circle cx="468" cy="270" r="5" fill="#34d399" fillOpacity="0.62" />
+          <circle cx="430" cy="362" r="5" fill="#22d3ee" fillOpacity="0.62" />
+          <circle cx="468" cy="454" r="5" fill="#a78bfa" fillOpacity="0.62" />
+        </g>
+
+        <circle cx="790" cy="422" r="230" fill="url(#cs-core)" />
+        <circle
+          cx="790"
+          cy="422"
+          r="116"
+          fill="#09131d"
+          fillOpacity="0.28"
+          stroke="#a78bfa"
+          strokeOpacity="0.22"
+        />
+        <circle
+          cx="790"
+          cy="422"
+          r="78"
+          fill="#061016"
+          fillOpacity="0.5"
+          stroke="#22d3ee"
+          strokeOpacity="0.25"
+        />
+        <path
+          d="M746 387H834M746 422H834M746 457H834"
+          stroke="#e2e8f0"
+          strokeOpacity="0.13"
+        />
+        <path
+          d="M790 344V500M712 422H868"
+          stroke="#22d3ee"
+          strokeOpacity="0.12"
+        />
+        <circle cx="790" cy="422" r="7" fill="#67e8f9" fillOpacity="0.8" />
+        <circle
+          cx="790"
+          cy="422"
+          r="20"
+          fill="#22d3ee"
+          fillOpacity="0.28"
+          filter="url(#cs-glow)"
+        />
+
+        <g opacity="0.7">
+          <path
+            d="M908 365H1050V256H1260"
+            fill="none"
+            stroke="#34d399"
+            strokeOpacity="0.24"
+            strokeWidth="2"
+          />
+          <path
+            d="M908 422H1120"
+            fill="none"
+            stroke="#22d3ee"
+            strokeOpacity="0.24"
+            strokeWidth="2"
+          />
+          <path
+            d="M908 479H1050V586H1260"
+            fill="none"
+            stroke="#a78bfa"
+            strokeOpacity="0.24"
+            strokeWidth="2"
+          />
+          <circle cx="1050" cy="365" r="5" fill="#34d399" fillOpacity="0.62" />
+          <circle cx="1120" cy="422" r="5" fill="#22d3ee" fillOpacity="0.62" />
+          <circle cx="1050" cy="479" r="5" fill="#a78bfa" fillOpacity="0.62" />
+          <rect
+            x="1120"
+            y="196"
+            width="388"
+            height="452"
+            rx="28"
+            fill="#03080f"
+            fillOpacity="0.28"
+            stroke="#60a5fa"
+            strokeOpacity="0.13"
+          />
+          <rect
+            x="1160"
+            y="242"
+            width="302"
+            height="74"
+            rx="18"
+            fill="#34d399"
+            fillOpacity="0.035"
+            stroke="#34d399"
+            strokeOpacity="0.16"
+          />
+          <rect
+            x="1160"
+            y="348"
+            width="302"
+            height="74"
+            rx="18"
+            fill="#22d3ee"
+            fillOpacity="0.035"
+            stroke="#22d3ee"
+            strokeOpacity="0.16"
+          />
+          <rect
+            x="1160"
+            y="454"
+            width="302"
+            height="74"
+            rx="18"
+            fill="#a78bfa"
+            fillOpacity="0.035"
+            stroke="#a78bfa"
+            strokeOpacity="0.16"
+          />
+          <rect
+            x="1160"
+            y="560"
+            width="302"
+            height="42"
+            rx="14"
+            fill="#60a5fa"
+            fillOpacity="0.035"
+            stroke="#60a5fa"
+            strokeOpacity="0.16"
+          />
+          <path
+            d="M1190 279H1325M1190 385H1406M1190 491H1360M1190 581H1288"
+            stroke="#e2e8f0"
+            strokeOpacity="0.14"
+            strokeWidth="8"
+            strokeLinecap="round"
+          />
+        </g>
+
+        <g fill="none" strokeDasharray="7 12">
+          <path d="M52 132H1548" stroke="#34d399" strokeOpacity="0.07" />
+          <path d="M52 710H1548" stroke="#22d3ee" strokeOpacity="0.07" />
+          <path d="M390 94V730" stroke="#34d399" strokeOpacity="0.055" />
+          <path d="M1018 94V730" stroke="#a78bfa" strokeOpacity="0.055" />
+        </g>
+        <path d="M80 820H1520" stroke="#60a5fa" strokeOpacity="0.06" />
+        <path
+          d="M165 850H1435M245 884H1355"
+          stroke="#94a3b8"
+          strokeOpacity="0.035"
+        />
+      </svg>
+      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(1,8,10,0.18),transparent_24%,transparent_80%,rgba(2,5,9,0.25))]" />
+      <div className="absolute inset-x-0 top-0 h-[20%] bg-gradient-to-b from-[#010609]/65 to-transparent" />
+      <div className="from-[#010304]/62 absolute inset-x-0 bottom-0 h-[22%] bg-gradient-to-t to-transparent" />
     </div>
   );
-}
-
-function drawBase(
-  context: CanvasRenderingContext2D,
-  width: number,
-  height: number,
-) {
-  const gradient = context.createLinearGradient(0, 0, width, height);
-  gradient.addColorStop(0, "#021015");
-  gradient.addColorStop(0.50, "#05111a");
-  gradient.addColorStop(1, "#05060c");
-  context.fillStyle = gradient;
-  context.fillRect(0, 0, width, height);
-
-  const spacing = width < 900 ? 58 : 74;
-  context.save();
-  context.lineWidth = 1;
-  for (let x = 0; x < width; x += spacing) {
-    context.strokeStyle = "rgba(52,211,153,0.046)";
-    context.beginPath();
-    context.moveTo(x, 0);
-    context.lineTo(x, height);
-    context.stroke();
-  }
-  for (let y = 0; y < height; y += spacing) {
-    context.strokeStyle = "rgba(34,211,238,0.040)";
-    context.beginPath();
-    context.moveTo(0, y);
-    context.lineTo(width, y);
-    context.stroke();
-  }
-  context.restore();
-}
-
-function drawMemoryBanks(
-  context: CanvasRenderingContext2D,
-  width: number,
-  height: number,
-  time: number,
-) {
-  const left = width * 0.055;
-  const top = height * 0.18;
-  const bankWidth = Math.min(210, width * 0.18);
-  const rowHeight = 26;
-  const rows = Math.max(8, Math.min(18, Math.floor(height * 0.46 / rowHeight)));
-  const active = Math.floor((time * 0.22) % rows);
-
-  context.save();
-  for (let row = 0; row < rows; row += 1) {
-    const y = top + row * rowHeight;
-    const bright = row === active;
-    context.fillStyle = bright
-      ? "rgba(52,211,153,0.13)"
-      : "rgba(15,23,42,0.20)";
-    context.strokeStyle = bright
-      ? "rgba(52,211,153,0.38)"
-      : "rgba(52,211,153,0.11)";
-    context.beginPath();
-    context.roundRect(left, y, bankWidth, 18, 5);
-    context.fill();
-    context.stroke();
-
-    for (let cell = 0; cell < 6; cell += 1) {
-      const value = (row * 7 + cell * 3) % 5;
-      context.fillStyle = value < 2
-        ? "rgba(52,211,153,0.24)"
-        : "rgba(148,163,184,0.06)";
-      context.fillRect(left + 12 + cell * 29, y + 6, 15, 6);
-    }
-  }
-  context.restore();
-}
-
-function drawRuntimeBus(
-  context: CanvasRenderingContext2D,
-  width: number,
-  height: number,
-  time: number,
-) {
-  const startX = width * 0.20;
-  const endX = width * 0.88;
-  context.save();
-  context.globalCompositeOperation = "lighter";
-
-  BUS_PATHS.forEach((path, index) => {
-    const y = height * path.y;
-    context.strokeStyle = `rgba(${path.rgb},0.18)`;
-    context.lineWidth = index === 0 ? 1.7 : 1.2;
-    context.beginPath();
-    context.moveTo(startX, y);
-    context.lineTo(endX, y);
-    context.stroke();
-
-    const progress = (path.phase + time * path.speed) % 1;
-    const normalized = path.direction === 1 ? progress : 1 - progress;
-    const x = startX + (endX - startX) * normalized;
-    const glow = context.createRadialGradient(x, y, 0, x, y, 20);
-    glow.addColorStop(0, `rgba(${path.rgb},0.78)`);
-    glow.addColorStop(1, `rgba(${path.rgb},0)`);
-    context.fillStyle = glow;
-    context.fillRect(x - 22, y - 22, 44, 44);
-    context.fillStyle = `rgba(${path.rgb},0.88)`;
-    context.fillRect(x - 3, y - 3, 6, 6);
-  });
-  context.restore();
-}
-
-function drawExecutionCore(
-  context: CanvasRenderingContext2D,
-  width: number,
-  height: number,
-  time: number,
-) {
-  const x = width * 0.58;
-  const y = height * 0.42;
-  const radius = Math.min(width, height) * 0.075;
-  const pulse = 1 + Math.sin(time * 0.42) * 0.025;
-
-  context.save();
-  context.translate(x, y);
-  context.rotate(time * 0.012);
-  context.strokeStyle = "rgba(167,139,250,0.28)";
-  context.lineWidth = 1.2;
-  for (let ring = 1; ring <= 3; ring += 1) {
-    context.beginPath();
-    context.arc(0, 0, radius * ring * 0.54 * pulse, 0, Math.PI * 2);
-    context.stroke();
-  }
-  context.rotate(-time * 0.012);
-
-  const core = context.createRadialGradient(0, 0, 0, 0, 0, radius * 1.2);
-  core.addColorStop(0, "rgba(167,139,250,0.28)");
-  core.addColorStop(0.46, "rgba(34,211,238,0.12)");
-  core.addColorStop(1, "rgba(0,0,0,0)");
-  context.fillStyle = core;
-  context.beginPath();
-  context.arc(0, 0, radius * 1.2, 0, Math.PI * 2);
-  context.fill();
-
-  const stages = 8;
-  for (let index = 0; index < stages; index += 1) {
-    const angle = (index / stages) * Math.PI * 2 + time * 0.04;
-    const px = Math.cos(angle) * radius * 0.78;
-    const py = Math.sin(angle) * radius * 0.78;
-    context.fillStyle = index % 2 === 0
-      ? "rgba(34,211,238,0.56)"
-      : "rgba(167,139,250,0.54)";
-    context.beginPath();
-    context.arc(px, py, 2.4, 0, Math.PI * 2);
-    context.fill();
-  }
-  context.restore();
-}
-
-function drawNetworkPorts(
-  context: CanvasRenderingContext2D,
-  width: number,
-  height: number,
-  time: number,
-) {
-  const right = width * 0.92;
-  const centerY = height * 0.54;
-  const ports = 7;
-  context.save();
-  for (let index = 0; index < ports; index += 1) {
-    const y = centerY + (index - 3) * 42;
-    const phase = (time * 0.05 + index * 0.13) % 1;
-    const x = right - phase * Math.min(240, width * 0.18);
-    context.strokeStyle = "rgba(96,165,250,0.18)";
-    context.beginPath();
-    context.moveTo(right, y);
-    context.lineTo(right - Math.min(260, width * 0.2), y);
-    context.stroke();
-    context.fillStyle = "rgba(96,165,250,0.58)";
-    context.beginPath();
-    context.arc(x, y, 2.3, 0, Math.PI * 2);
-    context.fill();
-    context.strokeStyle = "rgba(96,165,250,0.28)";
-    context.strokeRect(right - 12, y - 7, 12, 14);
-  }
-  context.restore();
-}
-
-function drawVignette(
-  context: CanvasRenderingContext2D,
-  width: number,
-  height: number,
-) {
-  const vignette = context.createRadialGradient(
-    width * 0.52,
-    height * 0.40,
-    Math.min(width, height) * 0.10,
-    width * 0.52,
-    height * 0.40,
-    Math.max(width, height) * 0.78,
-  );
-  vignette.addColorStop(0, "rgba(0,0,0,0)");
-  vignette.addColorStop(0.72, "rgba(0,0,0,0.05)");
-  vignette.addColorStop(1, "rgba(0,0,0,0.48)");
-  context.fillStyle = vignette;
-  context.fillRect(0, 0, width, height);
 }

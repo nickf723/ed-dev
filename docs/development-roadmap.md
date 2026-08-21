@@ -309,6 +309,15 @@ Priority examples:
 - Reframed the stress widget around demand, resistance, and safety factor with explicit model boundaries.
 - Full 378-page Next.js preview build reached READY.
 
+### Computer Science root · Remastered
+
+- Preserved the six-layer computing stack and shared Represent → Transform → Execute → Communicate loop while making exact registry parity an executable contract.
+- Replaced the viewport-sized animated canvas with a deterministic server-rendered SVG field that visibly carries encoded state through buses, a transformation core, and output interfaces.
+- Added a four-trace review spanning an exact `2^8 = 256` state-space calculation, sorting correctness, versioned/paginated interface contracts, and threat-model properties.
+- Migrated Computer Science vocabulary from one legacy bucket to six root terms plus two terms owned by each direct branch, aggregated automatically into Computer Science and Formal Science with source-node provenance.
+- Defined future GitHub, RFC Editor, and NVD repository boundaries without introducing render-time fetching.
+- The 413-page production build reached READY.
+
 ## Phase C: curriculum depth
 
 Systematically fill learning sequences, beginning with mathematics because prerequisite order is unusually important there. Use curriculum nodes, prerequisites, and sequence navigation rather than creating isolated attractive pages.

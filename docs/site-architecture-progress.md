@@ -374,3 +374,18 @@ It should not normally need to retype:
 - broad curriculum imports inside client components for static semantic facts
 
 The site is succeeding when structural behavior becomes predictable while subject pages remain free to look and teach differently.
+
+## 2026-08-21 Computer Science root checkpoint
+
+The Computer Science root now resolves and asserts its exact six direct
+branches from the curriculum registry. It remains a server route; only the
+bounded four-case evidence review is client-owned. Its former canvas background
+has been replaced by a deterministic server SVG, and its vocabulary drawer now
+derives six root terms plus twelve branch-owned terms through curriculum
+containment. The root and Formal Science ancestor preserve group provenance.
+
+Focused model, aggregation, TypeScript, and touched-file lint checks passed,
+along with the informational architecture/readability/remaster scans, all 413
+static page generations, and generated-HTML route/source/vocabulary/no-canvas
+checks. Rendered browser verification remains queued because the local server
+cannot start in this workspace.

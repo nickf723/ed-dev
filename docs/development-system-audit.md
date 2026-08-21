@@ -32,7 +32,7 @@ The first implementation slice now registers Mathematics vocabulary by curriculu
 
 Remaining work:
 
-- migrate Logic, Computer Science, Information Science, Data Science, and Systems Science into node-owned registrations;
+- migrate Logic and Systems Science into node-owned registrations; Computer Science, Information Science, and Data Science now derive their route scopes from curriculum-node ownership;
 - migrate the other four domains branch by branch rather than through one mass rewrite;
 - move legacy broad-domain terms to the narrowest curriculum nodes that actually teach them;
 - derive domain and global glossary scopes from the same registry once each branch has trustworthy ownership;

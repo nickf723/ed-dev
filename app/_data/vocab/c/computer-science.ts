@@ -1,37 +1,64 @@
-import { VocabTerm } from '../_registry';
+import type { VocabTerm } from "@/app/_data/vocab/types";
 
 export const computerScienceVocab: VocabTerm[] = [
-    {
-        id: "cs-polymorphism",
-        word: "Polymorphism",
-        definition: "In object-oriented programming, the provision of a single interface to entities of different types, or the use of a single symbol to represent multiple different types.",
-        domain: "Computer Science",
-        tags: ["OOP", "Software Engineering"],
-        isAdult: false
-    },
-    {
-        id: "cs-recursion",
-        word: "Recursion",
-        definition: "A method of solving a computational problem where the solution depends on solutions to smaller instances of the same problem. Often implemented as a function that calls itself.",
-        domain: "Computer Science",
-        tags: ["Algorithms", "Logic"],
-        relatedTerms: ["cs-stack-overflow"],
-        isAdult: false
-    },
-    {
-        id: "cs-pointer",
-        word: "Pointer",
-        definition: "A variable that stores the memory address of another object or variable, rather than storing the data itself.",
-        domain: "Computer Science",
-        tags: ["Memory Management", "C/C++"],
-        isAdult: false
-    },
-    {
-        id: "cs-latency",
-        word: "Latency",
-        definition: "The delay before a transfer of data begins following an instruction for its transfer. In networking, it's the time it takes for a data packet to travel from source to destination.",
-        domain: "Computer Science",
-        tags: ["Networking", "Performance"],
-        isAdult: false
-    }
+  {
+    id: "cs-computation",
+    word: "Computation",
+    definition:
+      "A rule-governed transformation of represented state, considered as a formal process and as an execution carried out by physical or virtual machinery.",
+    domain: "Computer Science",
+    tags: ["Process", "State"],
+    relatedTerms: ["cs-representation", "cs-state"],
+    isAdult: false,
+  },
+  {
+    id: "cs-representation",
+    word: "Representation",
+    definition:
+      "A mapping that lets physical or symbolic states stand for numbers, text, images, instructions, relationships, or other information under an encoding rule.",
+    domain: "Computer Science",
+    tags: ["Encoding", "Meaning"],
+    relatedTerms: ["cs-state", "cs-interface"],
+    isAdult: false,
+  },
+  {
+    id: "cs-state",
+    word: "Computational State",
+    definition:
+      "The information required to describe a system at one step of execution, such as memory contents, registers, control position, stored objects, messages, or persistent records.",
+    domain: "Computer Science",
+    tags: ["Memory", "Execution"],
+    relatedTerms: ["cs-computation", "cs-machine-instruction"],
+    isAdult: false,
+  },
+  {
+    id: "cs-abstraction",
+    word: "Abstraction",
+    definition:
+      "A representation or interface that exposes the details relevant to one task while hiding other implementation details behind a stated contract.",
+    domain: "Computer Science",
+    tags: ["Layer", "Contract"],
+    relatedTerms: ["cs-interface", "cs-polymorphism"],
+    isAdult: false,
+  },
+  {
+    id: "cs-interface",
+    word: "Interface",
+    definition:
+      "A defined boundary through which components exchange operations, data, signals, or messages, including the inputs, outputs, errors, identity, and behavioral guarantees they rely on.",
+    domain: "Computer Science",
+    tags: ["Boundary", "Composition"],
+    relatedTerms: ["cs-abstraction", "cs-correctness"],
+    isAdult: false,
+  },
+  {
+    id: "cs-correctness",
+    word: "Correctness",
+    definition:
+      "The degree to which a program, algorithm, or system satisfies its stated specification for all conditions covered by the claim, rather than merely appearing to work on selected examples.",
+    domain: "Computer Science",
+    tags: ["Specification", "Evidence"],
+    relatedTerms: ["cs-algorithm", "cs-interface"],
+    isAdult: false,
+  },
 ];
