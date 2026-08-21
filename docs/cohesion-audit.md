@@ -368,3 +368,13 @@ Materials Science keeps one eight-branch root layer while clearly presenting its
 The root lesson now advances from the two-track atlas through the processing–structure–property–performance relationship, a normalized mechanical-response instrument, selection questions, and a specimen evidence review. One shared module owns the curve math and assessment fixtures; root vocabulary is registered to the curriculum node and inherited by Applied Science.
 
 The visual grammar is physical and test-conditioned: grips, gauge length, applied force, crack cues, microscope fields, grains, defects, service tags, and specimen records. It preserves product-level navigation, focus, feedback, and vocabulary conventions without importing Data Science's tables and split diagrams as the page's identity.
+
+---
+
+## 11. Current cohesion checkpoint · Economics
+
+Economics keeps one seven-branch root layer while distinguishing three kinds of foundation. Microeconomics and Macroeconomics change the scale of the question; Econometrics supplies measurement and identification tools across those scales; Behavioral, International, Public, and Development Economics organize cross-cutting problem areas. The page does not create a finance peer merely because financial examples are familiar.
+
+The root lesson now advances from branch navigation through circular resource and income flows, a normalized supply–demand instrument, and a four-file claim review. One shared module owns the curve math, GDP arithmetic, and assessment fixtures; root vocabulary is registered to the curriculum node and inherited by Social Science.
+
+The visual grammar is institutional and reconciliatory: households, firms, public systems, international exchange, curved flows, receipts, accounts, baskets, and comparison files. It preserves product-level navigation, focus, feedback, and vocabulary conventions without importing Materials Science's test bench or Data Science's fitted-model workbench as the page's identity.

@@ -20,6 +20,7 @@ import { DATA_SCIENCE_VOCABULARY_REGISTRATIONS } from "./data-science-node-regis
 import { MATERIALS_SCIENCE_VOCABULARY_REGISTRATIONS } from "./materials-science-node-registry";
 import { MEDICINE_VOCABULARY_REGISTRATIONS } from "./medicine-node-registry";
 import { GEOGRAPHY_VOCABULARY_REGISTRATIONS } from "./geography-node-registry";
+import { ECONOMICS_VOCABULARY_REGISTRATIONS } from "./economics-node-registry";
 import { buildCurriculumVocabularyScopes } from "./aggregate.mjs";
 import { composeVocabulary } from "./compose";
 import { MATHEMATICS_VOCABULARY_REGISTRATIONS } from "./mathematics-node-registry";
@@ -312,6 +313,30 @@ const geographyVocabulary = composeVocabulary(
   ...geographyScope.groups.map((group) => group.terms)
 );
 
+const economicsNode = curriculumRegistry.getNode("social.economics");
+if (!economicsNode) {
+  throw new Error(
+    "Economics curriculum node is required for vocabulary scopes"
+  );
+}
+
+const economicsVocabularyScopes = buildCurriculumVocabularyScopes({
+  roots: [economicsNode],
+  registrations: ECONOMICS_VOCABULARY_REGISTRATIONS,
+  accent: "emerald",
+});
+
+const economicsScope = economicsVocabularyScopes.find(
+  (scope) => scope.path === economicsNode.href
+);
+if (!economicsScope) {
+  throw new Error("Economics vocabulary scope could not be derived");
+}
+
+const economicsVocabulary = composeVocabulary(
+  ...economicsScope.groups.map((group) => group.terms)
+);
+
 export const humanitiesVocabularyScopes: VocabularyScope[] = [
   ...literatureVocabularyScopes,
   ...visualArtsVocabularyScopes,
@@ -366,6 +391,7 @@ export const appliedScienceVocabularyScopes: VocabularyScope[] = [
 
 export const socialScienceVocabularyScopes: VocabularyScope[] = [
   ...geographyVocabularyScopes,
+  ...economicsVocabularyScopes,
   {
     path: "/social-science",
     title: "Social Science",
@@ -377,6 +403,13 @@ export const socialScienceVocabularyScopes: VocabularyScope[] = [
         terms: geographyVocabulary,
         sourceNodeId: geographyNode.id,
         sourcePath: geographyNode.href,
+      },
+      {
+        id: economicsNode.id,
+        label: economicsNode.label,
+        terms: economicsVocabulary,
+        sourceNodeId: economicsNode.id,
+        sourcePath: economicsNode.href,
       },
     ],
   },
