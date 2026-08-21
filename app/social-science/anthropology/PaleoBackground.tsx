@@ -1,359 +1,328 @@
-"use client";
+const CONTOURS = [
+  "M-40 238C140 172 290 262 462 204S788 176 944 230s310 48 536-26",
+  "M-30 292C150 226 302 316 474 258S800 230 956 284s310 48 536-26",
+  "M-20 346C160 280 314 370 486 312S812 284 968 338s310 48 536-26",
+] as const;
 
-import { useEffect, useRef } from "react";
-
-type Spark = {
-  x: number;
-  y: number;
-  vx: number;
-  vy: number;
-  size: number;
-  phase: number;
-};
+const FIELD_NODES = [
+  { x: 180, label: "OBSERVE", rgb: "250,204,21" },
+  { x: 510, label: "RECORD", rgb: "34,211,238" },
+  { x: 840, label: "CONTEXT", rgb: "251,146,60" },
+  { x: 1170, label: "CONSULT", rgb: "52,211,153" },
+] as const;
 
 const STRATA = [
-  { top: 0.60, rgb: "120,73,43", amplitude: 17, period: 270 },
-  { top: 0.68, rgb: "154,92,48", amplitude: 14, period: 230 },
-  { top: 0.76, rgb: "103,67,46", amplitude: 18, period: 320 },
-  { top: 0.84, rgb: "75,53,43", amplitude: 13, period: 250 },
-  { top: 0.92, rgb: "50,40,37", amplitude: 10, period: 300 },
+  {
+    path: "M0 650C190 622 316 682 500 648s344-10 500 20 284 20 440-8V714H0Z",
+    fill: "rgba(180,112,62,0.08)",
+  },
+  {
+    path: "M0 714C180 682 326 746 510 708s352-4 504 28 276 20 426-6V778H0Z",
+    fill: "rgba(128,82,55,0.10)",
+  },
+  {
+    path: "M0 778C190 746 324 812 518 774s354-2 506 30 274 16 416-8V900H0Z",
+    fill: "rgba(75,57,48,0.16)",
+  },
 ] as const;
 
 export default function PaleoBackground() {
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
-
-  useEffect(() => {
-    const canvasElement = canvasRef.current;
-    if (!canvasElement) return;
-    const drawingContext = canvasElement.getContext("2d");
-    if (!drawingContext) return;
-
-    const canvas: HTMLCanvasElement = canvasElement;
-    const context: CanvasRenderingContext2D = drawingContext;
-    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-    let width = 1;
-    let height = 1;
-    let ratio = 1;
-    let frame = 0;
-    let paused = document.hidden;
-    let sparks: Spark[] = [];
-
-    function makeSparks() {
-      const count = width < 800 ? 18 : 34;
-      sparks = Array.from({ length: count }, (_, index) => ({
-        x: ((index * 173) % 997) / 997 * width,
-        y: height * (0.48 + ((index * 97) % 430) / 1000),
-        vx: (((index * 37) % 17) - 8) * 0.006,
-        vy: -(0.055 + ((index * 29) % 13) * 0.005),
-        size: 0.8 + ((index * 23) % 9) * 0.13,
-        phase: index * 0.73,
-      }));
-    }
-
-    function resize() {
-      width = Math.max(1, window.innerWidth);
-      height = Math.max(1, window.innerHeight);
-      ratio = Math.min(window.devicePixelRatio || 1, width < 900 ? 1.1 : 1.45);
-      canvas.width = Math.floor(width * ratio);
-      canvas.height = Math.floor(height * ratio);
-      canvas.style.width = `${width}px`;
-      canvas.style.height = `${height}px`;
-      context.setTransform(ratio, 0, 0, ratio, 0, 0);
-      makeSparks();
-      draw(reducedMotion ? 24 : performance.now() / 1000);
-    }
-
-    function onVisibility() {
-      paused = document.hidden;
-      if (!paused && !reducedMotion) frame = requestAnimationFrame(loop);
-    }
-
-    function loop(now: number) {
-      if (paused) return;
-      draw(now / 1000);
-      frame = requestAnimationFrame(loop);
-    }
-
-    function draw(time: number) {
-      context.setTransform(ratio, 0, 0, ratio, 0, 0);
-      context.clearRect(0, 0, width, height);
-      drawCave(context, width, height);
-      drawWallMarks(context, width, height);
-      drawStratigraphy(context, width, height, time);
-      drawExcavationGrid(context, width, height);
-      drawArtifacts(context, width, height, time);
-      drawSparks(context, width, height, time, sparks, reducedMotion);
-      drawTorchField(context, width, height, time, reducedMotion);
-      drawVignette(context, width, height);
-    }
-
-    resize();
-    window.addEventListener("resize", resize);
-    document.addEventListener("visibilitychange", onVisibility);
-    if (!reducedMotion) frame = requestAnimationFrame(loop);
-
-    return () => {
-      cancelAnimationFrame(frame);
-      window.removeEventListener("resize", resize);
-      document.removeEventListener("visibilitychange", onVisibility);
-    };
-  }, []);
-
   return (
-    <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden" aria-hidden="true">
-      <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
-      <div className="absolute inset-x-0 top-0 h-[18%] bg-gradient-to-b from-[#120b08]/72 to-transparent" />
-      <div className="absolute inset-x-0 bottom-0 h-[12%] bg-gradient-to-t from-[#090605]/66 to-transparent" />
-      <div className="hd-noise opacity-[0.055] mix-blend-overlay" />
+    <div
+      className="pointer-events-none fixed inset-0 z-0 overflow-hidden bg-[#160d09]"
+      aria-hidden="true"
+    >
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_15%_18%,rgba(250,204,21,0.08),transparent_26%),radial-gradient(circle_at_78%_24%,rgba(34,211,238,0.055),transparent_26%),radial-gradient(circle_at_67%_82%,rgba(251,146,60,0.07),transparent_31%),linear-gradient(145deg,#160d09_0%,#12100d_48%,#090908_100%)]" />
+      <svg
+        className="absolute inset-[4%_1%_7%_1%] h-[89%] w-[98%] opacity-75"
+        viewBox="0 0 1440 900"
+        preserveAspectRatio="xMidYMid slice"
+      >
+        <defs>
+          <pattern
+            id="anthropology-grid"
+            width="38"
+            height="38"
+            patternUnits="userSpaceOnUse"
+          >
+            <path d="M38 0H0V38" fill="none" stroke="rgba(255,243,214,0.028)" />
+          </pattern>
+          <linearGradient id="record-chain" x1="0" x2="1">
+            <stop offset="0" stopColor="rgba(250,204,21,0.22)" />
+            <stop offset="0.35" stopColor="rgba(34,211,238,0.20)" />
+            <stop offset="0.68" stopColor="rgba(251,146,60,0.22)" />
+            <stop offset="1" stopColor="rgba(52,211,153,0.22)" />
+          </linearGradient>
+        </defs>
+
+        <rect
+          x="16"
+          y="16"
+          width="1408"
+          height="868"
+          fill="url(#anthropology-grid)"
+          stroke="rgba(255,243,214,0.045)"
+        />
+        {CONTOURS.map((path) => (
+          <path
+            key={path}
+            d={path}
+            fill="none"
+            stroke="rgba(250,204,21,0.045)"
+          />
+        ))}
+
+        <text
+          x="62"
+          y="74"
+          fill="rgba(255,243,214,0.20)"
+          fontFamily="monospace"
+          fontSize="12"
+        >
+          FIELD RECORD · PERSON / PLACE / TIME / RELATIONSHIP / POSITION
+        </text>
+        <line
+          x1="180"
+          y1="170"
+          x2="1170"
+          y2="170"
+          stroke="url(#record-chain)"
+          strokeWidth="2"
+        />
+        {FIELD_NODES.map((node, index) => (
+          <g key={node.label}>
+            <circle
+              cx={node.x}
+              cy="170"
+              r="23"
+              fill={`rgba(${node.rgb},0.035)`}
+              stroke={`rgba(${node.rgb},0.20)`}
+            />
+            <circle
+              cx={node.x}
+              cy="170"
+              r="5"
+              fill={`rgba(${node.rgb},0.28)`}
+            />
+            <text
+              x={node.x}
+              y="212"
+              textAnchor="middle"
+              fill={`rgba(${node.rgb},0.28)`}
+              fontFamily="monospace"
+              fontSize="10"
+            >
+              0{index + 1} · {node.label}
+            </text>
+          </g>
+        ))}
+
+        <g transform="translate(82 310)">
+          <rect
+            width="360"
+            height="248"
+            rx="16"
+            fill="rgba(28,18,12,0.10)"
+            stroke="rgba(250,204,21,0.08)"
+          />
+          <text
+            x="26"
+            y="36"
+            fill="rgba(250,204,21,0.24)"
+            fontFamily="monospace"
+            fontSize="11"
+          >
+            ETHNOGRAPHIC NOTE · OBSERVATION ≠ INTERPRETATION
+          </text>
+          {[76, 108, 140, 172, 204].map((y, index) => (
+            <g key={y}>
+              <circle
+                cx="32"
+                cy={y - 3}
+                r="4"
+                fill={
+                  index === 1
+                    ? "rgba(34,211,238,0.26)"
+                    : "rgba(250,204,21,0.18)"
+                }
+              />
+              <line
+                x1="52"
+                y1={y}
+                x2={index % 2 ? 316 : 286}
+                y2={y}
+                stroke="rgba(255,243,214,0.075)"
+              />
+            </g>
+          ))}
+          <path
+            d="M248 60c38 18 55 44 54 78s-26 67-64 84"
+            fill="none"
+            stroke="rgba(34,211,238,0.10)"
+            strokeDasharray="5 8"
+          />
+        </g>
+
+        <g transform="translate(1002 310)">
+          <rect
+            width="350"
+            height="248"
+            rx="16"
+            fill="rgba(10,15,14,0.10)"
+            stroke="rgba(34,211,238,0.08)"
+          />
+          <text
+            x="24"
+            y="36"
+            fill="rgba(34,211,238,0.23)"
+            fontFamily="monospace"
+            fontSize="11"
+          >
+            SPEECH EVENT · AUDIENCE / TURN / REGISTER
+          </text>
+          <path
+            d="M22 130C42 78 62 184 82 130s40-52 60 0 40 54 60 0 40-48 60 0 42 46 66 0"
+            fill="none"
+            stroke="rgba(34,211,238,0.22)"
+            strokeWidth="2"
+          />
+          <path
+            d="M22 130c34-18 50 20 84 0s50-18 84 0 50 20 84 0 42-15 54 0"
+            fill="none"
+            stroke="rgba(250,204,21,0.10)"
+          />
+          {[82, 178, 276].map((x, index) => (
+            <g key={x}>
+              <circle
+                cx={x}
+                cy="192"
+                r="16"
+                fill="rgba(34,211,238,0.025)"
+                stroke="rgba(34,211,238,0.12)"
+              />
+              <line
+                x1={x - 30}
+                y1="226"
+                x2={x + 30}
+                y2="226"
+                stroke={
+                  index === 1
+                    ? "rgba(250,204,21,0.12)"
+                    : "rgba(34,211,238,0.10)"
+                }
+              />
+            </g>
+          ))}
+        </g>
+
+        <g transform="translate(536 300)">
+          <circle
+            cx="184"
+            cy="128"
+            r="112"
+            fill="rgba(251,146,60,0.018)"
+            stroke="rgba(251,146,60,0.10)"
+          />
+          <circle
+            cx="184"
+            cy="128"
+            r="74"
+            fill="none"
+            stroke="rgba(52,211,153,0.09)"
+          />
+          <path
+            d="M184 54v148M110 128h148"
+            stroke="rgba(255,243,214,0.06)"
+            strokeDasharray="4 7"
+          />
+          <text
+            x="184"
+            y="122"
+            textAnchor="middle"
+            fill="rgba(255,243,214,0.23)"
+            fontFamily="monospace"
+            fontSize="11"
+          >
+            CLAIM
+          </text>
+          <text
+            x="184"
+            y="143"
+            textAnchor="middle"
+            fill="rgba(255,243,214,0.15)"
+            fontFamily="monospace"
+            fontSize="10"
+          >
+            WHO · WHERE · WHEN · HOW
+          </text>
+        </g>
+
+        {STRATA.map((layer) => (
+          <path key={layer.path} d={layer.path} fill={layer.fill} />
+        ))}
+        <path
+          d="M0 650C190 622 316 682 500 648s344-10 500 20 284 20 440-8"
+          fill="none"
+          stroke="rgba(251,146,60,0.16)"
+        />
+        <g transform="translate(300 735) rotate(-8)">
+          <path
+            d="M0-22 17 18 0 9-17 18Z"
+            fill="rgba(251,146,60,0.06)"
+            stroke="rgba(251,146,60,0.20)"
+          />
+          <line
+            x1="28"
+            y1="0"
+            x2="178"
+            y2="0"
+            stroke="rgba(251,146,60,0.12)"
+            strokeDasharray="5 7"
+          />
+          <text
+            x="188"
+            y="4"
+            fill="rgba(251,146,60,0.21)"
+            fontFamily="monospace"
+            fontSize="10"
+          >
+            OBJECT + PROVENIENCE + ASSOCIATION
+          </text>
+        </g>
+        <g transform="translate(1010 740)">
+          {[0, 1, 2, 3, 4].map((index) => (
+            <g key={index} transform={`translate(${index * 58} 0)`}>
+              <circle
+                r={index === 2 ? 21 : 15}
+                fill="rgba(52,211,153,0.025)"
+                stroke="rgba(52,211,153,0.14)"
+              />
+              {index > 0 ? (
+                <line
+                  x1="-43"
+                  y1="0"
+                  x2="-18"
+                  y2="0"
+                  stroke="rgba(52,211,153,0.11)"
+                />
+              ) : null}
+            </g>
+          ))}
+          <text
+            x="116"
+            y="52"
+            textAnchor="middle"
+            fill="rgba(52,211,153,0.19)"
+            fontFamily="monospace"
+            fontSize="10"
+          >
+            VARIATION · OVERLAP · HISTORY
+          </text>
+        </g>
+      </svg>
+      <div className="absolute inset-x-0 top-0 h-[18%] bg-gradient-to-b from-[#160d09] to-transparent" />
+      <div className="absolute inset-x-0 bottom-0 h-[18%] bg-gradient-to-t from-[#090807] to-transparent" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_34%,rgba(9,6,5,0.72)_100%)]" />
     </div>
   );
-}
-
-function drawCave(context: CanvasRenderingContext2D, width: number, height: number) {
-  const gradient = context.createLinearGradient(0, 0, width, height);
-  gradient.addColorStop(0, "#1c100b");
-  gradient.addColorStop(0.46, "#17110e");
-  gradient.addColorStop(0.72, "#10100e");
-  gradient.addColorStop(1, "#090807");
-  context.fillStyle = gradient;
-  context.fillRect(0, 0, width, height);
-
-  context.save();
-  context.globalAlpha = 0.23;
-  for (let index = 0; index < 110; index += 1) {
-    const x = ((index * 181) % 1009) / 1009 * width;
-    const y = ((index * 263) % 1013) / 1013 * height * 0.64;
-    const radius = 12 + ((index * 31) % 50);
-    const rough = context.createRadialGradient(x, y, 0, x, y, radius);
-    rough.addColorStop(0, index % 3 === 0 ? "rgba(231,180,113,0.018)" : "rgba(255,255,255,0.012)");
-    rough.addColorStop(1, "rgba(0,0,0,0)");
-    context.fillStyle = rough;
-    context.fillRect(x - radius, y - radius, radius * 2, radius * 2);
-  }
-  context.restore();
-}
-
-function drawWallMarks(context: CanvasRenderingContext2D, width: number, height: number) {
-  const marks = [
-    { x: 0.10, y: 0.23, scale: 0.72, rotate: -0.17, rgb: "197,78,45" },
-    { x: 0.83, y: 0.18, scale: 0.58, rotate: 0.20, rgb: "231,173,85" },
-    { x: 0.73, y: 0.42, scale: 0.42, rotate: -0.10, rgb: "177,72,46" },
-  ];
-
-  context.save();
-  marks.forEach((mark) => {
-    context.save();
-    context.translate(width * mark.x, height * mark.y);
-    context.rotate(mark.rotate);
-    context.scale(mark.scale, mark.scale);
-    context.strokeStyle = `rgba(${mark.rgb},0.22)`;
-    context.fillStyle = `rgba(${mark.rgb},0.075)`;
-    context.lineWidth = 4;
-    context.beginPath();
-    context.ellipse(0, 8, 22, 28, 0, 0, Math.PI * 2);
-    context.fill();
-    context.stroke();
-    [-17, -8, 2, 12, 21].forEach((offset, fingerIndex) => {
-      context.beginPath();
-      context.moveTo(offset * 0.72, -11);
-      context.lineTo(offset, -42 - (fingerIndex === 2 ? 8 : fingerIndex % 2 === 0 ? 2 : 0));
-      context.stroke();
-    });
-    context.beginPath();
-    context.moveTo(-18, 18);
-    context.lineTo(-38, 2);
-    context.stroke();
-    context.restore();
-  });
-
-  context.strokeStyle = "rgba(214,125,63,0.12)";
-  context.lineWidth = 2;
-  context.beginPath();
-  context.moveTo(width * 0.16, height * 0.38);
-  context.bezierCurveTo(width * 0.24, height * 0.31, width * 0.32, height * 0.43, width * 0.40, height * 0.34);
-  context.bezierCurveTo(width * 0.48, height * 0.25, width * 0.56, height * 0.39, width * 0.64, height * 0.30);
-  context.stroke();
-  context.restore();
-}
-
-function drawStratigraphy(
-  context: CanvasRenderingContext2D,
-  width: number,
-  height: number,
-  time: number,
-) {
-  context.save();
-  STRATA.forEach((layer, index) => {
-    const top = height * layer.top;
-    const nextTop = index === STRATA.length - 1 ? height + 30 : height * STRATA[index + 1].top + 8;
-    context.beginPath();
-    context.moveTo(0, top);
-    for (let x = 0; x <= width + 30; x += 36) {
-      const y = top + Math.sin(x / layer.period + index * 1.7 + time * 0.012) * layer.amplitude;
-      context.lineTo(x, y);
-    }
-    context.lineTo(width, nextTop);
-    context.lineTo(0, nextTop);
-    context.closePath();
-    const opacity = 0.19 + index * 0.018;
-    context.fillStyle = `rgba(${layer.rgb},${opacity})`;
-    context.fill();
-    context.strokeStyle = `rgba(${layer.rgb},${0.27 - index * 0.025})`;
-    context.lineWidth = 1.2;
-    context.stroke();
-  });
-  context.restore();
-}
-
-function drawExcavationGrid(context: CanvasRenderingContext2D, width: number, height: number) {
-  const horizon = height * 0.61;
-  const bottom = height * 0.98;
-  context.save();
-  context.strokeStyle = "rgba(236,188,123,0.075)";
-  context.lineWidth = 1;
-  for (let index = -5; index <= 5; index += 1) {
-    const xBottom = width * 0.50 + index * width * 0.12;
-    const xTop = width * 0.50 + index * width * 0.035;
-    context.beginPath();
-    context.moveTo(xTop, horizon);
-    context.lineTo(xBottom, bottom);
-    context.stroke();
-  }
-  for (let row = 0; row < 5; row += 1) {
-    const t = row / 5;
-    const y = horizon + (bottom - horizon) * Math.pow(t, 1.28);
-    context.beginPath();
-    context.moveTo(width * (0.22 - t * 0.12), y);
-    context.lineTo(width * (0.78 + t * 0.12), y);
-    context.stroke();
-  }
-  context.restore();
-}
-
-function drawArtifacts(
-  context: CanvasRenderingContext2D,
-  width: number,
-  height: number,
-  time: number,
-) {
-  const items = [
-    { x: 0.26, y: 0.72, type: "point", rgb: "229,158,81" },
-    { x: 0.63, y: 0.79, type: "pot", rgb: "197,107,59" },
-    { x: 0.43, y: 0.87, type: "bone", rgb: "226,207,164" },
-    { x: 0.80, y: 0.68, type: "point", rgb: "183,139,90" },
-  ] as const;
-
-  context.save();
-  items.forEach((item, index) => {
-    const x = width * item.x;
-    const y = height * item.y;
-    const pulse = 0.72 + Math.sin(time * 0.18 + index * 1.3) * 0.08;
-    context.strokeStyle = `rgba(${item.rgb},${0.36 * pulse})`;
-    context.fillStyle = `rgba(${item.rgb},${0.12 * pulse})`;
-    context.lineWidth = 1.5;
-
-    if (item.type === "point") {
-      context.beginPath();
-      context.moveTo(x, y - 14);
-      context.lineTo(x + 11, y + 10);
-      context.lineTo(x, y + 5);
-      context.lineTo(x - 11, y + 10);
-      context.closePath();
-      context.fill();
-      context.stroke();
-    } else if (item.type === "pot") {
-      context.beginPath();
-      context.arc(x, y, 13, 0.12 * Math.PI, 0.88 * Math.PI, false);
-      context.lineTo(x - 9, y + 16);
-      context.quadraticCurveTo(x, y + 24, x + 9, y + 16);
-      context.closePath();
-      context.fill();
-      context.stroke();
-      context.beginPath();
-      context.moveTo(x - 10, y - 7);
-      context.lineTo(x + 10, y - 7);
-      context.stroke();
-    } else {
-      context.save();
-      context.translate(x, y);
-      context.rotate(-0.36);
-      context.beginPath();
-      context.moveTo(-19, 0);
-      context.lineTo(19, 0);
-      context.stroke();
-      [-20, 20].forEach((offset) => {
-        context.beginPath();
-        context.arc(offset, 0, 5.5, 0, Math.PI * 2);
-        context.fill();
-        context.stroke();
-      });
-      context.restore();
-    }
-  });
-  context.restore();
-}
-
-function drawSparks(
-  context: CanvasRenderingContext2D,
-  width: number,
-  height: number,
-  time: number,
-  sparks: Spark[],
-  reducedMotion: boolean,
-) {
-  context.save();
-  context.globalCompositeOperation = "lighter";
-  sparks.forEach((spark) => {
-    if (!reducedMotion) {
-      spark.x += spark.vx + Math.sin(time * 0.5 + spark.phase) * 0.018;
-      spark.y += spark.vy;
-      if (spark.y < height * 0.38) {
-        spark.y = height * (0.82 + (spark.phase % 1) * 0.12);
-        spark.x = (spark.x + width * 0.37) % width;
-      }
-    }
-    const alpha = 0.18 + Math.sin(time * 0.7 + spark.phase) * 0.05;
-    context.fillStyle = `rgba(245,158,11,${alpha})`;
-    context.beginPath();
-    context.arc(spark.x, spark.y, spark.size, 0, Math.PI * 2);
-    context.fill();
-  });
-  context.restore();
-}
-
-function drawTorchField(
-  context: CanvasRenderingContext2D,
-  width: number,
-  height: number,
-  time: number,
-  reducedMotion: boolean,
-) {
-  const progress = reducedMotion ? 0.48 : (Math.sin(time * 0.075) + 1) / 2;
-  const x = width * (0.18 + progress * 0.64);
-  const y = height * (0.39 + Math.sin(time * 0.043) * 0.025);
-  const radius = Math.max(width, height) * 0.44;
-  const glow = context.createRadialGradient(x, y, 0, x, y, radius);
-  glow.addColorStop(0, "rgba(255,201,116,0.18)");
-  glow.addColorStop(0.20, "rgba(245,158,11,0.10)");
-  glow.addColorStop(0.52, "rgba(180,83,9,0.035)");
-  glow.addColorStop(1, "rgba(0,0,0,0)");
-  context.fillStyle = glow;
-  context.fillRect(0, 0, width, height);
-}
-
-function drawVignette(context: CanvasRenderingContext2D, width: number, height: number) {
-  const vignette = context.createRadialGradient(
-    width * 0.50,
-    height * 0.42,
-    Math.min(width, height) * 0.12,
-    width * 0.50,
-    height * 0.42,
-    Math.max(width, height) * 0.80,
-  );
-  vignette.addColorStop(0, "rgba(0,0,0,0)");
-  vignette.addColorStop(0.70, "rgba(7,4,2,0.06)");
-  vignette.addColorStop(1, "rgba(5,2,1,0.68)");
-  context.fillStyle = vignette;
-  context.fillRect(0, 0, width, height);
 }

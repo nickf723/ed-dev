@@ -29,6 +29,7 @@ import { EDUCATION_VOCABULARY_REGISTRATIONS } from "./education-node-registry";
 import { SOCIOLOGY_VOCABULARY_REGISTRATIONS } from "./sociology-node-registry";
 import { PHYSICS_VOCABULARY_REGISTRATIONS } from "./physics-node-registry";
 import { PHILOSOPHY_VOCABULARY_REGISTRATIONS } from "./philosophy-node-registry";
+import { ANTHROPOLOGY_VOCABULARY_REGISTRATIONS } from "./anthropology-node-registry";
 import { buildCurriculumVocabularyScopes } from "./aggregate.mjs";
 import { composeVocabulary } from "./compose";
 import { MATHEMATICS_VOCABULARY_REGISTRATIONS } from "./mathematics-node-registry";
@@ -401,6 +402,35 @@ const geographyVocabulary = composeVocabulary(
   ...geographyScope.groups.map((group) => group.terms)
 );
 
+const anthropologyNode = curriculumRegistry.getNode("social.anthropology");
+if (!anthropologyNode) {
+  throw new Error(
+    "Anthropology curriculum node is required for vocabulary scopes"
+  );
+}
+
+const anthropologyVocabularyScopes = buildCurriculumVocabularyScopes({
+  roots: [anthropologyNode],
+  registrations: ANTHROPOLOGY_VOCABULARY_REGISTRATIONS,
+  accent: "amber",
+  accentByNodeId: {
+    "social.anthropology.biological": "emerald",
+    "social.anthropology.archaeology": "amber",
+    "social.anthropology.linguistic": "cyan",
+  },
+});
+
+const anthropologyScope = anthropologyVocabularyScopes.find(
+  (scope) => scope.path === anthropologyNode.href
+);
+if (!anthropologyScope) {
+  throw new Error("Anthropology vocabulary scope could not be derived");
+}
+
+const anthropologyVocabulary = composeVocabulary(
+  ...anthropologyScope.groups.map((group) => group.terms)
+);
+
 const psychologyNode = curriculumRegistry.getNode("social.psychology");
 if (!psychologyNode) {
   throw new Error(
@@ -737,6 +767,7 @@ export const appliedScienceVocabularyScopes: VocabularyScope[] = [
 export const socialScienceVocabularyScopes: VocabularyScope[] = [
   ...psychologyVocabularyScopes,
   ...geographyVocabularyScopes,
+  ...anthropologyVocabularyScopes,
   ...economicsVocabularyScopes,
   ...sociologyVocabularyScopes,
   {
@@ -757,6 +788,13 @@ export const socialScienceVocabularyScopes: VocabularyScope[] = [
         terms: geographyVocabulary,
         sourceNodeId: geographyNode.id,
         sourcePath: geographyNode.href,
+      },
+      {
+        id: anthropologyNode.id,
+        label: anthropologyNode.label,
+        terms: anthropologyVocabulary,
+        sourceNodeId: anthropologyNode.id,
+        sourcePath: anthropologyNode.href,
       },
       {
         id: economicsNode.id,

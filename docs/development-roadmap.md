@@ -53,7 +53,7 @@ Goal: every major subject parent should be Developed before broad child expansio
 - Economics: Developed
 - Sociology: Developed
 - Political Science: Developed
-- Anthropology: Developed
+- Anthropology: Developed / remastered as a four-field evidence record
 - Linguistics: Developed
 - Communication Studies: Developed
 - Geography: Developed
@@ -147,6 +147,15 @@ Priority examples:
 - Gives 12 broad Biology terms and 26 specialized branch terms narrow owners while preserving Botany's 10 existing terms, yielding 48 unique terms in the Biology drawer.
 - Replaces the animated DNA canvas with a static server-rendered living-scale field and confines state to two deterministic teaching islands.
 - Establishes explicit NCBI Taxonomy, GBIF occurrence, and Open Tree of Life boundaries for future organism and biodiversity repositories without a render-time fetch.
+
+### Anthropology · Developed
+
+- Preserves the four-field route structure and keeps Archaeology as the only active child while Cultural, Biological, and Linguistic Anthropology remain visible and inert.
+- Retains the hominin and shared-meal strengths while removing motion spectacle, ladder language, and cave imagery as the root's dominant definition of the field.
+- Adds one tested 18/48 = 37.5% observation-share fixture and four evidence files spanning sampling, interpretation, human variation, and provenience.
+- Gives 10 broad concepts and two terms per direct field narrow owners, yielding 18 unique terms that aggregate into Social Science.
+- Replaces the viewport canvas with a static field record and confines state to two deterministic teaching islands.
+- Establishes AAA ethics, Smithsonian Open Access, and National NAGPRA boundaries for future collections, including explicit sensitive, restricted, consultation, and no-display states.
 
 ### Business · Developed
 
