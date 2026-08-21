@@ -398,3 +398,13 @@ Music keeps one five-branch root layer. Theory & Composition, Acoustics, Perform
 The root lesson now advances from direct branch navigation through composition/performance/recording identity, sound/structure/meaning claim layers, and a four-file evidence review. One shared module owns pitch transposition, duration arithmetic, branch parity, and assessment fixtures; root vocabulary is registered to the curriculum node and inherited by Humanities. The existing MusicBrainz collection remains the specialized repository rather than being duplicated on the root.
 
 The visual grammar is temporal and layered: staff lines, pitch events, a fixed signal trace, recording grooves, and mixer channels. It preserves product-level navigation, focus, feedback, repositories, and vocabulary conventions without importing Chemistry's specimen bench or Visual Arts' pigment-and-gallery language as the page's identity.
+
+---
+
+## 14. Current cohesion checkpoint · Architecture
+
+Architecture keeps one eight-branch root layer. Design Studio, Building Technology, Structures, Environmental Systems, Urban & Site, History & Theory, Representation & Fabrication, and Practice/Codes describe coordinated fields rather than eight independent definitions of a building. All remain honest planned destinations while the root provides a substantive orientation lesson.
+
+The root lesson advances from the section-based branch atlas and body-to-city scale stack through a historically bounded Vitruvian question set, an integration desk, and a four-sheet coordination review. One shared module owns area, drawing-scale, and ramp-run arithmetic plus assessment fixtures; root vocabulary is registered to the curriculum node and inherited by Applied Science.
+
+The visual grammar is spatial and sectional: occupied levels, bays, stairs, voids, site contours, dimensions, daylight rays, load cues, plans, and coordination overlays. It preserves product-level navigation, focus, feedback, and vocabulary conventions without importing Music's mixer or Chemistry's specimen-and-reaction language as the page's identity.

@@ -1,401 +1,313 @@
-"use client";
-
-import { useEffect, useRef } from "react";
-
-type Room = {
-  floor: number;
-  bay: number;
+type SectionRoom = {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
   label: string;
   open?: boolean;
 };
 
-const ROOMS: readonly Room[] = [
-  { floor: 0, bay: 0, label: "ENTRY" },
-  { floor: 0, bay: 1, label: "COMMON" },
-  { floor: 0, bay: 2, label: "COURT", open: true },
-  { floor: 0, bay: 3, label: "WORK" },
-  { floor: 1, bay: 0, label: "STUDIO" },
-  { floor: 1, bay: 1, label: "STUDIO" },
-  { floor: 1, bay: 2, label: "VOID", open: true },
-  { floor: 1, bay: 3, label: "MEET" },
-  { floor: 2, bay: 0, label: "READ" },
-  { floor: 2, bay: 1, label: "GALLERY" },
-  { floor: 2, bay: 2, label: "VOID", open: true },
-  { floor: 2, bay: 3, label: "QUIET" },
+const ROOMS: readonly SectionRoom[] = [
+  { x: 348, y: 360, width: 136, height: 88, label: "ENTRY" },
+  { x: 484, y: 360, width: 136, height: 88, label: "COMMON" },
+  { x: 620, y: 360, width: 136, height: 88, label: "COURT", open: true },
+  { x: 756, y: 360, width: 136, height: 88, label: "WORK" },
+  { x: 348, y: 272, width: 136, height: 88, label: "STUDIO" },
+  { x: 484, y: 272, width: 136, height: 88, label: "STUDIO" },
+  { x: 620, y: 272, width: 136, height: 88, label: "VOID", open: true },
+  { x: 756, y: 272, width: 136, height: 88, label: "MEET" },
+  { x: 348, y: 184, width: 136, height: 88, label: "READ" },
+  { x: 484, y: 184, width: 136, height: 88, label: "GALLERY" },
+  { x: 620, y: 184, width: 136, height: 88, label: "VOID", open: true },
+  { x: 756, y: 184, width: 136, height: 88, label: "QUIET" },
 ];
 
 export default function BlueprintBackground() {
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
-
-  useEffect(() => {
-    const canvasElement = canvasRef.current;
-    if (!canvasElement) return;
-    const drawingContext = canvasElement.getContext("2d");
-    if (!drawingContext) return;
-
-    const canvas: HTMLCanvasElement = canvasElement;
-    const context: CanvasRenderingContext2D = drawingContext;
-    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-    let width = 1;
-    let height = 1;
-    let ratio = 1;
-    let frame = 0;
-    let paused = document.hidden;
-
-    function resize() {
-      width = Math.max(1, window.innerWidth);
-      height = Math.max(1, window.innerHeight);
-      ratio = Math.min(window.devicePixelRatio || 1, width < 900 ? 1.05 : 1.4);
-      canvas.width = Math.floor(width * ratio);
-      canvas.height = Math.floor(height * ratio);
-      canvas.style.width = `${width}px`;
-      canvas.style.height = `${height}px`;
-      context.setTransform(ratio, 0, 0, ratio, 0, 0);
-      draw(58);
-    }
-
-    function onVisibility() {
-      paused = document.hidden;
-      if (!paused && !reducedMotion) frame = requestAnimationFrame(loop);
-    }
-
-    function loop(now: number) {
-      if (paused) return;
-      draw(now / 1000);
-      frame = requestAnimationFrame(loop);
-    }
-
-    function draw(time: number) {
-      context.setTransform(ratio, 0, 0, ratio, 0, 0);
-      context.clearRect(0, 0, width, height);
-      drawPaper(context, width, height);
-      drawGrid(context, width, height);
-      drawBuildingSection(context, width, height, reducedMotion ? 58 : time);
-      drawPlanInset(context, width, height);
-      drawNotes(context, width, height);
-      drawVignette(context, width, height);
-    }
-
-    resize();
-    window.addEventListener("resize", resize);
-    document.addEventListener("visibilitychange", onVisibility);
-    if (!reducedMotion) frame = requestAnimationFrame(loop);
-
-    return () => {
-      cancelAnimationFrame(frame);
-      window.removeEventListener("resize", resize);
-      document.removeEventListener("visibilitychange", onVisibility);
-    };
-  }, []);
-
   return (
-    <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden" aria-hidden="true">
-      <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
-      <div className="absolute inset-x-0 top-0 h-[17%] bg-gradient-to-b from-[#04111d]/84 to-transparent" />
-      <div className="absolute inset-x-0 bottom-0 h-[17%] bg-gradient-to-t from-[#04111d]/80 to-transparent" />
+    <div
+      data-background="architecture-section-sheet"
+      className="pointer-events-none fixed inset-0 z-0 overflow-hidden"
+      aria-hidden="true"
+    >
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_64%_42%,rgba(125,211,252,0.085),transparent_38%),radial-gradient(circle_at_22%_72%,rgba(94,234,212,0.045),transparent_30%),linear-gradient(150deg,#061725_0%,#082238_52%,#04101d_100%)]" />
+      <svg
+        viewBox="0 0 1200 720"
+        preserveAspectRatio="xMidYMid slice"
+        className="absolute inset-0 h-full w-full opacity-[0.78]"
+      >
+        <defs>
+          <pattern
+            id="blueprint-minor"
+            width="32"
+            height="32"
+            patternUnits="userSpaceOnUse"
+          >
+            <path d="M32 0H0V32" fill="none" stroke="rgba(186,230,253,0.025)" />
+          </pattern>
+          <pattern
+            id="blueprint-major"
+            width="160"
+            height="160"
+            patternUnits="userSpaceOnUse"
+          >
+            <rect width="160" height="160" fill="url(#blueprint-minor)" />
+            <path
+              d="M160 0H0V160"
+              fill="none"
+              stroke="rgba(186,230,253,0.055)"
+            />
+          </pattern>
+          <linearGradient id="daylight-ray" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stopColor="rgba(253,230,138,0.23)" />
+            <stop offset="1" stopColor="rgba(253,230,138,0.015)" />
+          </linearGradient>
+        </defs>
+
+        <rect width="1200" height="720" fill="url(#blueprint-major)" />
+
+        <g opacity="0.78">
+          <path
+            d="M326 448 V164 H648 L686 124 H914 V448"
+            fill="rgba(2,11,20,0.06)"
+            stroke="rgba(224,242,254,0.34)"
+            strokeWidth="2"
+          />
+          {ROOMS.map((room, index) => (
+            <g key={`${room.x}-${room.y}`}>
+              <rect
+                x={room.x}
+                y={room.y}
+                width={room.width}
+                height={room.height}
+                fill={
+                  room.open
+                    ? "rgba(56,189,248,0.018)"
+                    : index % 3 === 0
+                      ? "rgba(251,191,36,0.018)"
+                      : "rgba(186,230,253,0.018)"
+                }
+                stroke={
+                  room.open
+                    ? "rgba(125,211,252,0.13)"
+                    : "rgba(224,242,254,0.24)"
+                }
+                strokeDasharray={room.open ? "5 7" : undefined}
+              />
+              <text
+                x={room.x + 10}
+                y={room.y + 18}
+                fill="rgba(224,242,254,0.25)"
+                fontSize="9"
+                letterSpacing="1.2"
+              >
+                {room.label}
+              </text>
+            </g>
+          ))}
+
+          <path
+            d="M368 438 h18 v-9 h18 v-9 h18 v-9 h18 v-9 h18 v-9 h18 v-9 h18 v-9 h18 v-9 h18 v-9 h18 v-9 h18"
+            fill="none"
+            stroke="rgba(192,132,252,0.27)"
+          />
+          <path
+            d="M368 350 h18 v-9 h18 v-9 h18 v-9 h18 v-9 h18 v-9 h18 v-9 h18 v-9 h18 v-9 h18 v-9 h18 v-9 h18 v-9 h18"
+            fill="none"
+            stroke="rgba(192,132,252,0.27)"
+          />
+
+          <path d="M688 443 V320" stroke="rgba(94,234,212,0.28)" />
+          <circle
+            cx="688"
+            cy="300"
+            r="31"
+            fill="rgba(94,234,212,0.04)"
+            stroke="rgba(94,234,212,0.19)"
+          />
+          <circle
+            cx="702"
+            cy="286"
+            r="22"
+            fill="rgba(94,234,212,0.025)"
+            stroke="rgba(94,234,212,0.12)"
+          />
+        </g>
+
+        <g opacity="0.66">
+          <circle
+            cx="1012"
+            cy="92"
+            r="9"
+            fill="rgba(253,230,138,0.12)"
+            stroke="rgba(253,230,138,0.36)"
+          />
+          <path d="M1004 104 L708 448" stroke="url(#daylight-ray)" />
+          <path d="M1018 104 L756 448" stroke="url(#daylight-ray)" />
+          <path d="M1030 106 L806 448" stroke="url(#daylight-ray)" />
+          <path
+            d="M646 184 L756 448 L826 448 L706 184 Z"
+            fill="rgba(253,230,138,0.024)"
+          />
+          <text
+            x="960"
+            y="72"
+            fill="rgba(253,230,138,0.32)"
+            fontSize="9"
+            letterSpacing="1.6"
+          >
+            DAYLIGHT SECTION
+          </text>
+        </g>
+
+        <g opacity="0.72">
+          {[0, 1, 2, 3, 4].map((index) => (
+            <path
+              key={index}
+              d={`M210 ${472 + index * 15} C350 ${455 + index * 17} 530 ${490 + index * 13} 704 ${468 + index * 16} S984 ${458 + index * 19} 1110 ${488 + index * 12}`}
+              fill="none"
+              stroke="rgba(94,234,212,0.14)"
+            />
+          ))}
+          <text
+            x="346"
+            y="470"
+            fill="rgba(153,246,228,0.26)"
+            fontSize="9"
+            letterSpacing="1.2"
+          >
+            SITE DATUM +0.00
+          </text>
+        </g>
+
+        <g opacity="0.65">
+          <path
+            d="M348 536 H892 M348 528 V544 M892 528 V544"
+            stroke="rgba(186,230,253,0.2)"
+          />
+          <text
+            x="620"
+            y="524"
+            fill="rgba(186,230,253,0.27)"
+            fontSize="9"
+            textAnchor="middle"
+            letterSpacing="1.2"
+          >
+            BUILDING SECTION · 4 BAYS
+          </text>
+          <path
+            d="M948 184 V448 M940 184 H956 M940 272 H956 M940 360 H956 M940 448 H956"
+            stroke="rgba(186,230,253,0.18)"
+          />
+          <text
+            x="970"
+            y="316"
+            fill="rgba(186,230,253,0.25)"
+            fontSize="9"
+            transform="rotate(90 970 316)"
+            textAnchor="middle"
+            letterSpacing="1.2"
+          >
+            3 OCCUPIED LEVELS
+          </text>
+        </g>
+
+        <g transform="translate(70 282)" opacity="0.7">
+          <rect
+            width="220"
+            height="164"
+            fill="rgba(4,17,29,0.18)"
+            stroke="rgba(186,230,253,0.16)"
+          />
+          <text
+            x="12"
+            y="22"
+            fill="rgba(186,230,253,0.28)"
+            fontSize="9"
+            letterSpacing="1.3"
+          >
+            LEVEL 01 · PLAN INSET
+          </text>
+          <rect
+            x="18"
+            y="38"
+            width="184"
+            height="106"
+            fill="none"
+            stroke="rgba(186,230,253,0.16)"
+          />
+          <path
+            d="M88 38V144 M146 38V144 M18 90H146"
+            stroke="rgba(186,230,253,0.14)"
+          />
+          <rect
+            x="146"
+            y="38"
+            width="56"
+            height="106"
+            fill="rgba(94,234,212,0.025)"
+            stroke="rgba(94,234,212,0.22)"
+            strokeDasharray="4 5"
+          />
+          <path
+            d="M38 122 C62 104 86 94 112 90 S158 72 184 56"
+            fill="none"
+            stroke="rgba(251,191,36,0.26)"
+            strokeDasharray="5 6"
+          />
+        </g>
+
+        <g transform="translate(70 500)" opacity="0.64">
+          <text fill="rgba(186,230,253,0.29)" fontSize="9" letterSpacing="1.4">
+            <tspan x="0" y="0">
+              SHEET A-201 · CONCEPT SECTION
+            </tspan>
+            <tspan x="0" y="18">
+              MODEL: SPATIAL COORDINATION
+            </tspan>
+            <tspan x="0" y="36">
+              VERIFY: SITE · ROUTE · LOAD · LIGHT
+            </tspan>
+          </text>
+        </g>
+
+        <g opacity="0.6">
+          <path
+            d="M416 150 V184 M552 150 V184 M824 150 V184"
+            stroke="rgba(244,114,182,0.24)"
+          />
+          <text
+            x="394"
+            y="138"
+            fill="rgba(244,114,182,0.27)"
+            fontSize="9"
+            letterSpacing="1.2"
+          >
+            LOAD
+          </text>
+          <text
+            x="530"
+            y="138"
+            fill="rgba(244,114,182,0.27)"
+            fontSize="9"
+            letterSpacing="1.2"
+          >
+            LOAD
+          </text>
+          <text
+            x="802"
+            y="138"
+            fill="rgba(244,114,182,0.27)"
+            fontSize="9"
+            letterSpacing="1.2"
+          >
+            LOAD
+          </text>
+        </g>
+      </svg>
+
+      <div className="from-[#04111d]/88 absolute inset-x-0 top-0 h-[18%] bg-gradient-to-b to-transparent" />
+      <div className="from-[#04111d]/84 absolute inset-x-0 bottom-0 h-[18%] bg-gradient-to-t to-transparent" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_48%,rgba(1,5,12,0.46)_100%)]" />
     </div>
   );
-}
-
-function drawPaper(context: CanvasRenderingContext2D, width: number, height: number) {
-  const gradient = context.createLinearGradient(0, 0, width, height);
-  gradient.addColorStop(0, "#061725");
-  gradient.addColorStop(0.54, "#082238");
-  gradient.addColorStop(1, "#04101d");
-  context.fillStyle = gradient;
-  context.fillRect(0, 0, width, height);
-
-  const glow = context.createRadialGradient(width * 0.62, height * 0.48, 0, width * 0.62, height * 0.48, Math.max(width, height) * 0.58);
-  glow.addColorStop(0, "rgba(125,211,252,0.065)");
-  glow.addColorStop(0.52, "rgba(56,189,248,0.022)");
-  glow.addColorStop(1, "rgba(2,6,23,0)");
-  context.fillStyle = glow;
-  context.fillRect(0, 0, width, height);
-}
-
-function drawGrid(context: CanvasRenderingContext2D, width: number, height: number) {
-  const minor = width < 800 ? 32 : 42;
-  context.save();
-  for (let x = 0; x <= width; x += minor) {
-    const major = Math.round(x / minor) % 5 === 0;
-    context.strokeStyle = major ? "rgba(186,230,253,0.052)" : "rgba(186,230,253,0.020)";
-    context.lineWidth = major ? 1 : 0.7;
-    context.beginPath();
-    context.moveTo(x, 0);
-    context.lineTo(x, height);
-    context.stroke();
-  }
-  for (let y = 0; y <= height; y += minor) {
-    const major = Math.round(y / minor) % 5 === 0;
-    context.strokeStyle = major ? "rgba(186,230,253,0.052)" : "rgba(186,230,253,0.020)";
-    context.lineWidth = major ? 1 : 0.7;
-    context.beginPath();
-    context.moveTo(0, y);
-    context.lineTo(width, y);
-    context.stroke();
-  }
-  context.restore();
-}
-
-function drawBuildingSection(context: CanvasRenderingContext2D, width: number, height: number, time: number) {
-  const left = width * (width < 900 ? 0.07 : 0.31);
-  const right = width * 0.93;
-  const baseY = height * 0.80;
-  const topY = height * 0.25;
-  const buildingW = right - left;
-  const buildingH = baseY - topY;
-  const floorH = buildingH / 3;
-  const bayW = buildingW / 4;
-
-  drawSite(context, left, right, baseY, width, height);
-  drawSunlight(context, left, right, topY, baseY, width, height, time);
-
-  context.save();
-  context.strokeStyle = "rgba(224,242,254,0.33)";
-  context.lineWidth = 1.4;
-
-  for (let floor = 0; floor <= 3; floor += 1) {
-    const y = baseY - floor * floorH;
-    context.beginPath();
-    context.moveTo(left, y);
-    context.lineTo(right, y);
-    context.stroke();
-  }
-
-  for (let bay = 0; bay <= 4; bay += 1) {
-    const x = left + bay * bayW;
-    context.beginPath();
-    context.moveTo(x, topY);
-    context.lineTo(x, baseY);
-    context.stroke();
-  }
-
-  // Envelope and roof profile
-  context.lineWidth = 2.2;
-  context.strokeStyle = "rgba(186,230,253,0.43)";
-  context.beginPath();
-  context.moveTo(left - 8, baseY);
-  context.lineTo(left - 8, topY - 20);
-  context.lineTo(left + buildingW * 0.56, topY - 20);
-  context.lineTo(left + buildingW * 0.63, topY - 58);
-  context.lineTo(right + 8, topY - 58);
-  context.lineTo(right + 8, baseY);
-  context.stroke();
-
-  ROOMS.forEach((room, index) => {
-    const x = left + room.bay * bayW;
-    const y = baseY - (room.floor + 1) * floorH;
-    if (room.open) {
-      context.fillStyle = "rgba(56,189,248,0.020)";
-      context.fillRect(x + 4, y + 4, bayW - 8, floorH - 8);
-      context.strokeStyle = "rgba(125,211,252,0.10)";
-      context.setLineDash([5, 7]);
-      context.strokeRect(x + 8, y + 8, bayW - 16, floorH - 16);
-      context.setLineDash([]);
-    } else {
-      context.fillStyle = index % 3 === 0 ? "rgba(251,191,36,0.018)" : "rgba(186,230,253,0.018)";
-      context.fillRect(x + 4, y + 4, bayW - 8, floorH - 8);
-    }
-    context.font = "9px ui-monospace, SFMono-Regular, Menlo, monospace";
-    context.fillStyle = "rgba(224,242,254,0.20)";
-    context.fillText(room.label, x + 10, y + 18);
-  });
-
-  // Stairs across the first two bays
-  drawStair(context, left + bayW * 0.14, baseY - floorH * 0.05, bayW * 1.35, floorH * 0.86, 12);
-  drawStair(context, left + bayW * 0.14, baseY - floorH * 1.05, bayW * 1.35, floorH * 0.86, 12);
-
-  // Courtyard tree cue
-  const courtX = left + bayW * 2.5;
-  const courtBase = baseY - floorH * 0.04;
-  context.strokeStyle = "rgba(94,234,212,0.24)";
-  context.beginPath();
-  context.moveTo(courtX, courtBase);
-  context.lineTo(courtX, courtBase - floorH * 1.36);
-  context.stroke();
-  context.fillStyle = "rgba(94,234,212,0.045)";
-  context.strokeStyle = "rgba(94,234,212,0.18)";
-  context.beginPath();
-  context.arc(courtX, courtBase - floorH * 1.48, Math.min(38, bayW * 0.24), 0, Math.PI * 2);
-  context.fill();
-  context.stroke();
-
-  context.restore();
-
-  drawDimensions(context, left, right, topY, baseY, floorH);
-}
-
-function drawSite(context: CanvasRenderingContext2D, left: number, right: number, baseY: number, width: number, height: number) {
-  context.save();
-  context.strokeStyle = "rgba(94,234,212,0.16)";
-  context.lineWidth = 1;
-  const siteLeft = Math.max(0, left - width * 0.14);
-  const siteRight = Math.min(width, right + width * 0.07);
-  for (let contour = 0; contour < 5; contour += 1) {
-    const y = baseY + 20 + contour * 15;
-    context.beginPath();
-    context.moveTo(siteLeft, y);
-    const span = siteRight - siteLeft;
-    for (let step = 1; step <= 12; step += 1) {
-      const t = step / 12;
-      context.lineTo(siteLeft + span * t, y + Math.sin(t * Math.PI * 2 + contour * 0.6) * (4 + contour));
-    }
-    context.stroke();
-  }
-  context.fillStyle = "rgba(153,246,228,0.22)";
-  context.font = "9px ui-monospace, SFMono-Regular, Menlo, monospace";
-  context.fillText("SITE DATUM +0.00", left, baseY + 18);
-  context.restore();
-}
-
-function drawSunlight(context: CanvasRenderingContext2D, left: number, right: number, topY: number, baseY: number, width: number, height: number, time: number) {
-  const cycle = (Math.sin(time * 0.025) + 1) / 2;
-  const sunX = left - width * 0.06 + cycle * (right - left + width * 0.12);
-  const sunY = topY - height * (0.13 + Math.sin(cycle * Math.PI) * 0.07);
-  const courtyardX = left + (right - left) * 0.625;
-
-  const halo = context.createRadialGradient(sunX, sunY, 0, sunX, sunY, 42);
-  halo.addColorStop(0, "rgba(253,230,138,0.20)");
-  halo.addColorStop(1, "rgba(253,230,138,0)");
-  context.fillStyle = halo;
-  context.fillRect(sunX - 45, sunY - 45, 90, 90);
-  context.strokeStyle = "rgba(253,230,138,0.30)";
-  context.beginPath();
-  context.arc(sunX, sunY, 7, 0, Math.PI * 2);
-  context.stroke();
-
-  context.save();
-  context.strokeStyle = "rgba(253,230,138,0.085)";
-  context.lineWidth = 1;
-  [0.33, 0.52, 0.69].forEach((fraction) => {
-    const targetX = courtyardX + (fraction - 0.52) * (right - left) * 0.18;
-    context.beginPath();
-    context.moveTo(sunX, sunY);
-    context.lineTo(targetX, baseY - (baseY - topY) * 0.03);
-    context.stroke();
-  });
-  context.restore();
-
-  // Daylight footprint through the courtyard opening
-  const footprintX = courtyardX + (cycle - 0.5) * (right - left) * 0.20;
-  const footprint = context.createLinearGradient(footprintX - 55, 0, footprintX + 55, 0);
-  footprint.addColorStop(0, "rgba(253,230,138,0)");
-  footprint.addColorStop(0.5, "rgba(253,230,138,0.055)");
-  footprint.addColorStop(1, "rgba(253,230,138,0)");
-  context.fillStyle = footprint;
-  context.fillRect(footprintX - 55, topY, 110, baseY - topY);
-
-  context.font = "9px ui-monospace, SFMono-Regular, Menlo, monospace";
-  context.fillStyle = "rgba(253,230,138,0.28)";
-  context.fillText("DAYLIGHT STUDY", Math.min(width - 110, sunX + 12), Math.max(20, sunY - 10));
-}
-
-function drawStair(context: CanvasRenderingContext2D, x: number, y: number, width: number, height: number, steps: number) {
-  context.save();
-  context.strokeStyle = "rgba(192,132,252,0.22)";
-  context.lineWidth = 1;
-  const stepW = width / steps;
-  const stepH = height / steps;
-  context.beginPath();
-  context.moveTo(x, y);
-  for (let index = 0; index < steps; index += 1) {
-    context.lineTo(x + stepW * (index + 1), y);
-    context.lineTo(x + stepW * (index + 1), y - stepH * (index + 1));
-  }
-  context.stroke();
-  context.restore();
-}
-
-function drawDimensions(context: CanvasRenderingContext2D, left: number, right: number, topY: number, baseY: number, floorH: number) {
-  context.save();
-  context.strokeStyle = "rgba(186,230,253,0.17)";
-  context.fillStyle = "rgba(186,230,253,0.25)";
-  context.lineWidth = 1;
-  context.font = "9px ui-monospace, SFMono-Regular, Menlo, monospace";
-
-  const dimY = baseY + 78;
-  context.beginPath();
-  context.moveTo(left, dimY);
-  context.lineTo(right, dimY);
-  context.moveTo(left, dimY - 7);
-  context.lineTo(left, dimY + 7);
-  context.moveTo(right, dimY - 7);
-  context.lineTo(right, dimY + 7);
-  context.stroke();
-  context.textAlign = "center";
-  context.fillText("BUILDING SECTION / 4 BAYS", (left + right) / 2, dimY - 8);
-
-  const dimX = right + 34;
-  context.beginPath();
-  context.moveTo(dimX, topY);
-  context.lineTo(dimX, baseY);
-  for (let floor = 0; floor <= 3; floor += 1) {
-    const y = baseY - floor * floorH;
-    context.moveTo(dimX - 6, y);
-    context.lineTo(dimX + 6, y);
-  }
-  context.stroke();
-  context.save();
-  context.translate(dimX + 16, (topY + baseY) / 2);
-  context.rotate(Math.PI / 2);
-  context.fillText("3 OCCUPIED LEVELS", 0, 0);
-  context.restore();
-  context.restore();
-}
-
-function drawPlanInset(context: CanvasRenderingContext2D, width: number, height: number) {
-  if (width < 950) return;
-  const x = width * 0.045;
-  const y = height * 0.53;
-  const w = width * 0.20;
-  const h = height * 0.22;
-  context.save();
-  context.strokeStyle = "rgba(186,230,253,0.16)";
-  context.fillStyle = "rgba(4,17,29,0.22)";
-  context.lineWidth = 1;
-  context.strokeRect(x, y, w, h);
-  context.fillRect(x, y, w, h);
-  context.font = "9px ui-monospace, SFMono-Regular, Menlo, monospace";
-  context.fillStyle = "rgba(186,230,253,0.28)";
-  context.fillText("LEVEL 01 / PLAN INSET", x + 10, y + 18);
-
-  const innerX = x + 18;
-  const innerY = y + 34;
-  const innerW = w - 36;
-  const innerH = h - 50;
-  context.strokeStyle = "rgba(186,230,253,0.14)";
-  context.strokeRect(innerX, innerY, innerW, innerH);
-  context.beginPath();
-  context.moveTo(innerX + innerW * 0.38, innerY);
-  context.lineTo(innerX + innerW * 0.38, innerY + innerH);
-  context.moveTo(innerX + innerW * 0.70, innerY);
-  context.lineTo(innerX + innerW * 0.70, innerY + innerH);
-  context.moveTo(innerX, innerY + innerH * 0.48);
-  context.lineTo(innerX + innerW * 0.70, innerY + innerH * 0.48);
-  context.stroke();
-  context.strokeStyle = "rgba(94,234,212,0.22)";
-  context.setLineDash([4, 5]);
-  context.strokeRect(innerX + innerW * 0.70, innerY, innerW * 0.30, innerH);
-  context.setLineDash([]);
-  context.restore();
-}
-
-function drawNotes(context: CanvasRenderingContext2D, width: number, height: number) {
-  if (width < 860) return;
-  context.save();
-  context.font = "9px ui-monospace, SFMono-Regular, Menlo, monospace";
-  context.fillStyle = "rgba(186,230,253,0.24)";
-  const x = width * 0.045;
-  const y = height * 0.30;
-  ["ARCHITECTURAL SECTION", "SPACE + STRUCTURE + ENVELOPE", "COURTYARD DAYLIGHT VOID", "CIRCULATION: TWO STAIR RUNS", "SITE + PLAN + SECTION COORDINATED"].forEach((line, index) => context.fillText(line, x, y + index * 18));
-  context.restore();
-}
-
-function drawVignette(context: CanvasRenderingContext2D, width: number, height: number) {
-  const vignette = context.createRadialGradient(width * 0.63, height * 0.52, Math.min(width, height) * 0.24, width * 0.63, height * 0.52, Math.max(width, height) * 0.78);
-  vignette.addColorStop(0, "rgba(2,6,23,0)");
-  vignette.addColorStop(1, "rgba(2,7,14,0.62)");
-  context.fillStyle = vignette;
-  context.fillRect(0, 0, width, height);
 }

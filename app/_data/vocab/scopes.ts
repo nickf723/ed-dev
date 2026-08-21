@@ -22,6 +22,7 @@ import { GEOGRAPHY_VOCABULARY_REGISTRATIONS } from "./geography-node-registry";
 import { ECONOMICS_VOCABULARY_REGISTRATIONS } from "./economics-node-registry";
 import { CHEMISTRY_VOCABULARY_REGISTRATIONS } from "./chemistry-node-registry";
 import { MUSIC_VOCABULARY_REGISTRATIONS } from "./music-node-registry";
+import { ARCHITECTURE_VOCABULARY_REGISTRATIONS } from "./architecture-node-registry";
 import { buildCurriculumVocabularyScopes } from "./aggregate.mjs";
 import { composeVocabulary } from "./compose";
 import { MATHEMATICS_VOCABULARY_REGISTRATIONS } from "./mathematics-node-registry";
@@ -384,6 +385,30 @@ const musicVocabulary = composeVocabulary(
   ...musicScope.groups.map((group) => group.terms)
 );
 
+const architectureNode = curriculumRegistry.getNode("applied.architecture");
+if (!architectureNode) {
+  throw new Error(
+    "Architecture curriculum node is required for vocabulary scopes"
+  );
+}
+
+const architectureVocabularyScopes = buildCurriculumVocabularyScopes({
+  roots: [architectureNode],
+  registrations: ARCHITECTURE_VOCABULARY_REGISTRATIONS,
+  accent: "sky",
+});
+
+const architectureScope = architectureVocabularyScopes.find(
+  (scope) => scope.path === architectureNode.href
+);
+if (!architectureScope) {
+  throw new Error("Architecture vocabulary scope could not be derived");
+}
+
+const architectureVocabulary = composeVocabulary(
+  ...architectureScope.groups.map((group) => group.terms)
+);
+
 export const humanitiesVocabularyScopes: VocabularyScope[] = [
   ...literatureVocabularyScopes,
   ...visualArtsVocabularyScopes,
@@ -421,6 +446,7 @@ export const humanitiesVocabularyScopes: VocabularyScope[] = [
 export const appliedScienceVocabularyScopes: VocabularyScope[] = [
   ...medicineVocabularyScopes,
   ...materialsScienceVocabularyScopes,
+  ...architectureVocabularyScopes,
   {
     path: "/applied-science",
     title: "Applied Science",
@@ -439,6 +465,13 @@ export const appliedScienceVocabularyScopes: VocabularyScope[] = [
         terms: materialsScienceVocabulary,
         sourceNodeId: materialsScienceNode.id,
         sourcePath: materialsScienceNode.href,
+      },
+      {
+        id: architectureNode.id,
+        label: architectureNode.label,
+        terms: architectureVocabulary,
+        sourceNodeId: architectureNode.id,
+        sourcePath: architectureNode.href,
       },
     ],
   },
