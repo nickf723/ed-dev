@@ -1,23 +1,26 @@
-import { astronomyVocab } from "@/app/_data/vocab/a/astronomy";
-import { planetaryAstronomyVocab } from "@/app/_data/vocab/natural-science/astronomy/planetary-astronomy";
-import type { VocabTerm } from "@/app/_data/vocab/types";
+import {
+  astronomicalMethodsVocab,
+  cosmologyVocab,
+  extragalacticAstronomyVocab,
+  galacticAstronomyVocab,
+  stellarAstronomyVocab,
+} from "./a/astronomy-branches";
+import { astronomyVocab } from "./a/astronomy";
+import { planetaryAstronomyVocab } from "./natural-science/astronomy/planetary-astronomy";
+import type { NodeVocabularyRegistration } from "./aggregate.mjs";
 
-export type AstronomyVocabularyRegistration = {
-  nodeId: string;
-  label: string;
-  terms: readonly VocabTerm[];
-};
-
-export const ASTRONOMY_VOCABULARY_REGISTRATIONS: readonly AstronomyVocabularyRegistration[] =
-  [
-    {
-      nodeId: "natural.astronomy",
-      label: "Astronomy",
-      terms: astronomyVocab,
-    },
-    {
-      nodeId: "natural.astronomy.planetary",
-      label: "Planetary Astronomy",
-      terms: planetaryAstronomyVocab,
-    },
-  ];
+export const ASTRONOMY_VOCABULARY_REGISTRATIONS = [
+  { nodeId: "natural.astronomy", terms: astronomyVocab },
+  {
+    nodeId: "natural.astronomy.planetary",
+    terms: planetaryAstronomyVocab,
+  },
+  { nodeId: "natural.astronomy.stellar", terms: stellarAstronomyVocab },
+  { nodeId: "natural.astronomy.galactic", terms: galacticAstronomyVocab },
+  {
+    nodeId: "natural.astronomy.extragalactic",
+    terms: extragalacticAstronomyVocab,
+  },
+  { nodeId: "natural.astronomy.cosmology", terms: cosmologyVocab },
+  { nodeId: "natural.astronomy.methods", terms: astronomicalMethodsVocab },
+] as const satisfies readonly NodeVocabularyRegistration[];

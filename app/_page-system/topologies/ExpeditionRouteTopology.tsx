@@ -154,8 +154,9 @@ export default function ExpeditionRouteTopology({
             <Compass size={13} /> Organizing principle
           </div>
           <p className="mt-3 text-[13px] leading-6 text-slate-300/[0.62]">
-            Each step changes the size of the system, the useful timescale, and the
-            model that can explain it. Methods remain shared across the entire route.
+            Each step changes the size of the system, the useful timescale, and
+            the model that can explain it. Methods remain shared across the
+            entire route.
           </p>
         </div>
       </div>
@@ -220,18 +221,26 @@ function StopBeacon({
       >
         {stop.scaleLabel}
       </div>
-      <h3 className="mt-2 text-[18px] font-semibold text-white">{stop.label}</h3>
+      <h3 className="mt-2 text-[18px] font-semibold text-white">
+        {stop.label}
+      </h3>
       <p className="mt-2 line-clamp-3 text-[13px] leading-5 text-slate-200/[0.68]">
         {stop.summary}
       </p>
       <div className="mt-4 flex items-center gap-1.5 font-mono text-[11px] font-semibold uppercase tracking-[0.07em] text-slate-400/[0.72]">
-        {active ? <Flag size={11} /> : <CircleDashed size={11} />} {active ? "open field" : "planned field"}
+        {active ? <Flag size={11} /> : <CircleDashed size={11} />}{" "}
+        {active ? "open field" : "planned field"}
       </div>
     </article>
   );
 
   return active && stop.href ? (
-    <Link href={stop.href}>{body}</Link>
+    <Link
+      href={stop.href}
+      className="block rounded-[23px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-200/60"
+    >
+      {body}
+    </Link>
   ) : (
     <div aria-disabled="true">{body}</div>
   );
@@ -255,13 +264,13 @@ function RouteField({
   transparent: boolean;
 }) {
   const points = Array.from({ length: stopCount }, (_, index) =>
-    routePosition(index, stopCount),
+    routePosition(index, stopCount)
   );
   const path = points.length
     ? `M 56 285 ${points
         .map(
           (point, index) =>
-            `${index === 0 ? "Q" : "T"} ${point.left * 12 - 34} ${point.top * 5.7} ${point.left * 12} ${point.top * 5.7}`,
+            `${index === 0 ? "Q" : "T"} ${point.left * 12 - 34} ${point.top * 5.7} ${point.left * 12} ${point.top * 5.7}`
         )
         .join(" ")}`
     : "M 56 285 L 1120 285";

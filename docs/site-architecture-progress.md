@@ -407,3 +407,25 @@ informational architecture/readability/remaster scans, all 413 static page
 generations, and generated-HTML route/source/vocabulary/no-canvas checks.
 Rendered browser verification remains queued because the local server cannot
 start in this workspace.
+
+## 2026-08-21 Astronomy root checkpoint
+
+The Astronomy root now resolves and asserts its exact six direct branches from
+the focused curriculum module. Planetary Astronomy remains active; Stellar,
+Galactic, Extragalactic, Cosmology, and Astronomical Methods remain visibly
+planned and inert. This repairs the prior dead Cosmology link and treats Methods
+as a cross-scale evidence branch rather than omitting it from primary
+navigation.
+
+The route remains server-owned around bounded scene, signal, lookback, and
+evidence client islands. Its viewport canvas is replaced by a deterministic
+server SVG that shares the canonical lookback examples with the lesson.
+Vocabulary now aggregates six root terms, eight Planetary terms, and ten terms
+owned by the remaining direct branches into Astronomy and Natural Science with
+source provenance.
+
+Focused model, aggregation, TypeScript, and touched-file lint checks passed,
+along with the informational architecture/readability/remaster scans, all 413
+static page generations, and generated-HTML route/source/vocabulary/no-canvas
+checks. Rendered browser verification remains queued because the local server
+cannot start in this workspace.

@@ -43,10 +43,15 @@ const SIGNALS: SignalDefinition[] = [
     icon: Eye,
     accentRgb: "103, 232, 249",
     source: "Stars and warm matter",
-    sourceDetail: "Thermal surfaces and atoms release photons across a spectrum.",
+    sourceDetail:
+      "Thermal surfaces and atoms release photons across a spectrum.",
     journey: "Dust can dim and redden the signal before it reaches Earth.",
     detector: "Optical telescope + spectrograph",
-    reveals: ["temperature", "chemical composition", "motion through Doppler shift"],
+    reveals: [
+      "temperature",
+      "chemical composition",
+      "motion through Doppler shift",
+    ],
     atmosphere: "partly transmitted",
     transmission: 0.82,
     amplitude: 18,
@@ -58,10 +63,16 @@ const SIGNALS: SignalDefinition[] = [
     icon: Radio,
     accentRgb: "52, 211, 153",
     source: "Cold gas, pulsars, and jets",
-    sourceDetail: "Long-wavelength emission traces structures that visible light can miss.",
-    journey: "Radio waves cross dust and much of Earth’s atmosphere efficiently.",
+    sourceDetail:
+      "Long-wavelength emission traces structures that visible light can miss.",
+    journey:
+      "Radio waves cross dust and much of Earth’s atmosphere efficiently.",
     detector: "Radio dish or interferometer",
-    reveals: ["cold hydrogen", "magnetic fields", "rotation and precise timing"],
+    reveals: [
+      "cold hydrogen",
+      "magnetic fields",
+      "rotation and precise timing",
+    ],
     atmosphere: "mostly transmitted",
     transmission: 0.94,
     amplitude: 25,
@@ -73,10 +84,16 @@ const SIGNALS: SignalDefinition[] = [
     icon: Satellite,
     accentRgb: "251, 191, 36",
     source: "Hot plasma and compact objects",
-    sourceDetail: "Violent acceleration and million-degree gas produce energetic photons.",
-    journey: "Earth’s atmosphere protects life by absorbing nearly all incoming X-rays.",
+    sourceDetail:
+      "Violent acceleration and million-degree gas produce energetic photons.",
+    journey:
+      "Earth’s atmosphere protects life by absorbing nearly all incoming X-rays.",
     detector: "Space-based X-ray observatory",
-    reveals: ["black-hole accretion", "supernova remnants", "extreme gas temperature"],
+    reveals: [
+      "black-hole accretion",
+      "supernova remnants",
+      "extreme gas temperature",
+    ],
     atmosphere: "blocked by atmosphere",
     transmission: 0.08,
     amplitude: 10,
@@ -89,8 +106,10 @@ const SIGNALS: SignalDefinition[] = [
     icon: Activity,
     accentRgb: "244, 114, 182",
     source: "Merging neutron stars and black holes",
-    sourceDetail: "Accelerating compact masses launch ripples through spacetime itself.",
-    journey: "The wave passes through matter with almost no absorption or scattering.",
+    sourceDetail:
+      "Accelerating compact masses launch ripples through spacetime itself.",
+    journey:
+      "The wave passes through matter with almost no absorption or scattering.",
     detector: "Laser interferometer",
     reveals: ["masses and orbit", "merger dynamics", "strong-field gravity"],
     atmosphere: "matter is nearly transparent",
@@ -112,7 +131,8 @@ export default function AstronomySignalLab({
   const [signalId, setSignalId] = useState<SignalId>("visible");
   const signal = SIGNALS.find((item) => item.id === signalId) ?? SIGNALS[0];
   const SignalIcon = signal.icon;
-  const methodsActive = methods?.status !== "placeholder" && Boolean(methods?.href);
+  const methodsActive =
+    methods?.status !== "placeholder" && Boolean(methods?.href);
 
   return (
     <section className="overflow-hidden rounded-[34px] border border-cyan-100/[0.14] bg-[#050a18]/[0.54] shadow-[0_36px_120px_rgba(0,0,0,0.34)] backdrop-blur-xl">
@@ -125,9 +145,9 @@ export default function AstronomySignalLab({
             Follow evidence from its source to a physical explanation.
           </h2>
           <p className="mt-4 max-w-3xl text-[15px] leading-7 text-slate-300/[0.72]">
-            Astronomers rarely touch the object they study. They identify a signal,
-            account for what happened during its journey, measure it with an instrument,
-            and compare the result with physical models.
+            Astronomers rarely touch the object they study. They identify a
+            signal, account for what happened during its journey, measure it
+            with an instrument, and compare the result with physical models.
           </p>
         </div>
 
@@ -143,7 +163,7 @@ export default function AstronomySignalLab({
             {methodsActive && methods ? (
               <Link
                 href={methods.href}
-                className="inline-flex min-h-11 items-center gap-2 rounded-[13px] border border-violet-200/[0.18] bg-violet-300/[0.06] px-4 text-[12px] font-semibold text-violet-100 transition hover:border-violet-100/[0.32] hover:bg-violet-300/[0.10]"
+                className="inline-flex min-h-11 items-center gap-2 rounded-[13px] border border-violet-200/[0.18] bg-violet-300/[0.06] px-4 text-[12px] font-semibold text-violet-100 transition hover:border-violet-100/[0.32] hover:bg-violet-300/[0.10] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-200/60"
               >
                 Open the instrument bay <ArrowRight size={14} />
               </Link>
@@ -171,7 +191,7 @@ export default function AstronomySignalLab({
                     active
                       ? "bg-white/[0.055] shadow-[0_16px_42px_rgba(0,0,0,0.20)]"
                       : "border-transparent bg-white/[0.012] hover:border-white/[0.08] hover:bg-white/[0.028]"
-                  }`}
+                  } focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-200/60`}
                   style={{
                     borderColor: active
                       ? `rgba(${item.accentRgb},0.28)`
@@ -190,7 +210,9 @@ export default function AstronomySignalLab({
                   </span>
                   <strong
                     className={`mt-3 block text-[13px] leading-5 ${
-                      active ? "text-white" : "text-slate-400 group-hover:text-slate-200"
+                      active
+                        ? "text-white"
+                        : "text-slate-400 group-hover:text-slate-200"
                     }`}
                   >
                     {item.label}
@@ -334,7 +356,7 @@ function SignalDiagram({ signal }: { signal: SignalDefinition }) {
     detectorX - 52,
     centerY,
     signal.amplitude,
-    signal.cycles,
+    signal.cycles
   );
 
   return (
@@ -459,9 +481,15 @@ function SignalDiagram({ signal }: { signal: SignalDefinition }) {
         fontSize="10"
         fontFamily="ui-monospace, SFMono-Regular, Menlo, monospace"
       >
-        <text x="32" y="180">SOURCE</text>
-        <text x="624" y="180">ATMOSPHERE</text>
-        <text x={detectorX - 34} y="180">DETECTOR</text>
+        <text x="32" y="180">
+          SOURCE
+        </text>
+        <text x="624" y="180">
+          ATMOSPHERE
+        </text>
+        <text x={detectorX - 34} y="180">
+          DETECTOR
+        </text>
       </g>
 
       <style>{`
@@ -506,7 +534,9 @@ function EvidenceStep({
       <div className="mt-3 font-mono text-[11px] font-semibold uppercase tracking-[0.11em] text-slate-500">
         {label}
       </div>
-      <p className="mt-2 text-[12px] leading-5 text-slate-200/[0.72]">{value}</p>
+      <p className="mt-2 text-[12px] leading-5 text-slate-200/[0.72]">
+        {value}
+      </p>
     </div>
   );
 }
@@ -516,7 +546,7 @@ function wavePath(
   endX: number,
   centerY: number,
   amplitude: number,
-  cycles: number,
+  cycles: number
 ) {
   const points = 96;
   let path = `M ${startX} ${centerY}`;

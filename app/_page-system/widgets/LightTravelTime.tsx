@@ -32,9 +32,9 @@ export default function LightTravelTime({
           Astronomy never sees the universe “right now.”
         </h2>
         <p className="mt-4 max-w-4xl text-[15px] leading-7 text-slate-300/[0.68]">
-          Light carries a past state of every distant object. Choose a destination
-          to compare the object’s distance with the age of the information arriving
-          at the observer.
+          Light carries a past state of every distant object. Choose a
+          destination to compare the object’s distance with the age of the
+          information arriving at the observer.
         </p>
       </div>
 
@@ -52,7 +52,7 @@ export default function LightTravelTime({
                     active
                       ? "bg-white/[0.055]"
                       : "border-transparent bg-white/[0.012] hover:border-white/[0.08] hover:bg-white/[0.025]"
-                  }`}
+                  } focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-200/60`}
                   style={{
                     borderColor: active
                       ? `rgba(${item.accentRgb},0.24)`
@@ -138,7 +138,9 @@ export default function LightTravelTime({
           </div>
 
           <div className="relative z-10 mx-auto max-w-3xl rounded-[18px] border border-white/[0.08] bg-black/[0.20] px-5 py-4 text-center">
-            <p className="text-[14px] leading-6 text-slate-200/[0.70]">{selected.note}</p>
+            <p className="text-[14px] leading-6 text-slate-200/[0.70]">
+              {selected.note}
+            </p>
           </div>
         </div>
       </div>

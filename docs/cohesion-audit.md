@@ -484,3 +484,26 @@ Philosophy keeps seven direct branches organized by the kinds of questions they 
 The root now puts its question matrix before the overview lesson, then separates a question, claim, reasons, objection, and reply in one inspectable argument. A four-case evidence review distinguishes validity from soundness, counterexample from universal opposite, necessary from sufficient conditions, and an argument-level objection from a personal attack. One tested model owns exact branch parity, the canonical argument tree, and every answer path. Twenty-eight terms are registered at the root or their narrowest current branch and aggregate into Humanities.
 
 The visual grammar is dialogical and editorial: fixed threads cross at junctions, while argument nodes and source trails expose where claims meet reasons and objections. The deterministic server-rendered field has no viewport reads, randomness, effects, timers, or animation loops; client ownership is confined to the question matrix, argument inspector, and evidence review. It avoids Physics' measurement sheet and does not turn positions into decorative teams or famous-name cards.
+
+---
+
+## 23. Current cohesion checkpoint · Astronomy
+
+Astronomy keeps six direct branches while making their different roles
+explicit. Planetary, Stellar, Galactic, Extragalactic, and Cosmology change the
+scale of the system; Astronomical Methods crosses every scale. Planetary remains
+the only active child. Cosmology is no longer presented as a live destination
+without a page, and Methods is no longer omitted from the primary field map.
+
+The root advances from scale navigation through the preserved messenger
+laboratory, the preserved lookback comparison, a four-signal evidence review,
+and official archive boundaries. One tested model owns branch parity, five
+lookback examples, redshift arithmetic, and assessment fixtures. Twenty-four
+narrowly owned terms aggregate into Natural Science.
+
+The visual grammar is observational and time-deep: a conceptual light cone,
+nested lookback intervals, source marks, detector geometry, wave paths, and
+spectral comparison. A deterministic server-rendered field replaces the root
+canvas while retaining the existing observatory character. It avoids
+Religion's comparative dossier and Computer Science's execution buses while
+keeping client state confined to purposeful navigation and evidence islands.

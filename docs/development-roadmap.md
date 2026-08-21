@@ -328,6 +328,16 @@ Priority examples:
 - Defined ethical and collection boundaries for future AAR, Library of Congress, and Met integrations without introducing render-time fetching.
 - The 413-page production build reached READY.
 
+### Astronomy root · Remastered
+
+- Preserved the outward expedition, four-messenger signal laboratory, five-case lookback comparison, and active Planetary Astronomy observatory.
+- Corrected Cosmology from a dead active link to an honest planned field and restored Astronomical Methods to the primary direct-child map as a cross-scale evidence rail.
+- Replaced the viewport-measured animated root canvas with a deterministic server-rendered lookback field derived from the same canonical examples used by the lesson.
+- Added a four-signal review spanning exact `z = 0.100` redshift arithmetic, detector placement, multi-wavelength comparison, and lookback-time inference.
+- Migrated Astronomy vocabulary to six root terms, eight existing Planetary terms, and two terms owned by each remaining direct branch, aggregated automatically into Astronomy and Natural Science with source-node provenance.
+- Defined future MAST, GWOSC, and NASA ADS repository boundaries without introducing render-time fetching.
+- The 413-page production build reached READY.
+
 ## Phase C: curriculum depth
 
 Systematically fill learning sequences, beginning with mathematics because prerequisite order is unusually important there. Use curriculum nodes, prerequisites, and sequence navigation rather than creating isolated attractive pages.
