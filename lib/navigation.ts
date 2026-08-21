@@ -2,7 +2,7 @@ import { curriculumRegistry } from "@/lib/curriculum/registry";
 import type { CurriculumNode } from "@/lib/curriculum/types";
 import { DOMAIN_BY_ID, type DomainId } from "@/lib/domains";
 
-export type NavigationIconKey = "book-open";
+export type NavigationIconKey = "book-open" | "school";
 
 export type NavigationItem = {
   label: string;
@@ -55,6 +55,7 @@ export const NAVIGATION_DATA: NavigationSection[] = [
   {
     title: "Meta",
     items: [
+      { label: "Classroom", href: "/classroom", icon: "school", domain: "meta" },
       { label: "Glossary", href: "/glossary", icon: "book-open", domain: "meta" },
     ],
   },

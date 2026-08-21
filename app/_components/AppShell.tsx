@@ -39,34 +39,39 @@ export default function AppShell({
     "--domain-accent": `rgb(${domainRgb})`,
   };
   const isKnowledgeStudio = pathname === "/studio" || pathname.startsWith("/studio/");
+  const isClassroom = pathname === "/classroom" || pathname.startsWith("/classroom/");
 
   useEffect(() => {
-    if (DEVTOOLS_DEFAULT) {
-      setDeveloperToolsEnabled(true);
-      return;
-    }
+    const frame = window.requestAnimationFrame(() => {
+      if (DEVTOOLS_DEFAULT) {
+        setDeveloperToolsEnabled(true);
+        return;
+      }
 
-    const params = new URLSearchParams(window.location.search);
-    const requestedState = params.get("devtools");
+      const params = new URLSearchParams(window.location.search);
+      const requestedState = params.get("devtools");
 
-    if (requestedState === "1") {
-      window.sessionStorage.setItem(DEVTOOLS_SESSION_KEY, "1");
-      setDeveloperToolsEnabled(true);
-      return;
-    }
+      if (requestedState === "1") {
+        window.sessionStorage.setItem(DEVTOOLS_SESSION_KEY, "1");
+        setDeveloperToolsEnabled(true);
+        return;
+      }
 
-    if (requestedState === "0") {
-      window.sessionStorage.removeItem(DEVTOOLS_SESSION_KEY);
-      setDeveloperToolsEnabled(false);
-      return;
-    }
+      if (requestedState === "0") {
+        window.sessionStorage.removeItem(DEVTOOLS_SESSION_KEY);
+        setDeveloperToolsEnabled(false);
+        return;
+      }
 
-    setDeveloperToolsEnabled(
-      window.sessionStorage.getItem(DEVTOOLS_SESSION_KEY) === "1",
-    );
+      setDeveloperToolsEnabled(
+        window.sessionStorage.getItem(DEVTOOLS_SESSION_KEY) === "1",
+      );
+    });
+
+    return () => window.cancelAnimationFrame(frame);
   }, [pathname]);
 
-  if (isKnowledgeStudio) return <>{children}</>;
+  if (isKnowledgeStudio || isClassroom) return <>{children}</>;
 
   return (
     <PagePolicyProvider routePolicies={pagePolicyRoutes}>

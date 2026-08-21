@@ -25,6 +25,7 @@ type AlgebraicPropertiesLessonExperienceProps = {
   previous?: PropertiesLessonNavItem;
   next?: PropertiesLessonNavItem;
   unitHref: string;
+  showVocabulary?: boolean;
 };
 
 type PropertyId =
@@ -169,6 +170,7 @@ export default function AlgebraicPropertiesLessonExperience({
   previous,
   next,
   unitHref,
+  showVocabulary = true,
 }: AlgebraicPropertiesLessonExperienceProps) {
   const [caseIndex, setCaseIndex] = useState(0);
   const [answer, setAnswer] = useState<PropertyAnswer | null>(null);
@@ -208,7 +210,7 @@ export default function AlgebraicPropertiesLessonExperience({
 
         <LessonUtilityBar
           practiceTargetId="properties-practice"
-          vocabulary
+          vocabulary={showVocabulary}
           accentRgb={ACCENT}
         />
 

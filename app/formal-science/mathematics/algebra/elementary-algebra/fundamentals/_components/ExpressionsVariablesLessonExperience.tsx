@@ -26,6 +26,7 @@ type ExpressionsLessonExperienceProps = {
   previous?: ExpressionsLessonNavItem;
   next?: ExpressionsLessonNavItem;
   unitHref: string;
+  showVocabulary?: boolean;
 };
 
 type TermFamily = "x2" | "x" | "constant";
@@ -103,6 +104,7 @@ export default function ExpressionsVariablesLessonExperience({
   previous,
   next,
   unitHref,
+  showVocabulary = true,
 }: ExpressionsLessonExperienceProps) {
   const [termIndex, setTermIndex] = useState(0);
   const [answer, setAnswer] = useState<TermFamily | null>(null);
@@ -158,7 +160,7 @@ export default function ExpressionsVariablesLessonExperience({
 
         <LessonUtilityBar
           practiceTargetId="expressions-practice"
-          vocabulary
+          vocabulary={showVocabulary}
           accentRgb={ACCENT}
         />
 

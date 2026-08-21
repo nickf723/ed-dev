@@ -4,6 +4,14 @@ Use this queue when code, curriculum, or educational structure changes while a r
 
 A successful type check is not visual verification. A page leaves this queue only after someone has looked at the rendered page at the relevant viewport sizes and exercised its important states.
 
+### Classroom course shell and NYS Algebra I Unit 1
+
+**Routes:** `/`, `/classroom`, `/classroom/math`, `/classroom/math/algebra-1`, `/classroom/math/algebra-1/unit-1`, and all five `/classroom/math/algebra-1/unit-1/[lesson]` routes.
+
+**Check:** Homepage Classroom call-to-action without weakening the existing atlas; standalone Classroom top bar at desktop and mobile widths; Subject -> Course -> Unit -> Lesson hierarchy; Math as the only active subject and Science, Social Studies, and English as visibly planned non-links; Algebra I standards/source panel; Unit 1 five-lesson order, duration, standard badges, long outcome copy, and teacher-guide disclosure states; official external links; classroom lesson breadcrumbs and previous/next links staying inside `/classroom`; no nonfunctional Vocabulary utility on classroom aliases; original atlas lesson vocabulary triggers and navigation unchanged; 200 responses for every active route; keyboard focus, text zoom, narrow-width overflow, light/dark shell transitions, and no clipping or hydration shift.
+
+**Status:** Targeted React/Next lint, regenerated route types, TypeScript, the architecture/readability/remaster audits, the 413-page production build, and 15 generated-HTML checks for content, active/planned navigation, teacher standards, classroom sequence links, shell separation, and atlas vocabulary preservation passed. The production server cannot start in this workspace because Node reports `uv_interface_addresses`, and the trusted browser runner is unavailable, so live HTTP, responsive, and interaction verification remain pending.
+
 ---
 
 ## Verification protocol

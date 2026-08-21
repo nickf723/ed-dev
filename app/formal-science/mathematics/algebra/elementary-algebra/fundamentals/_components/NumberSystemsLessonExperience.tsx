@@ -8,7 +8,6 @@ import {
   Check,
   CircleDot,
   Hash,
-  RefreshCcw,
   Sparkles,
 } from "lucide-react";
 import Assessment, { type AssessmentQuestion } from "@/app/_components/Assessment";
@@ -26,6 +25,7 @@ type NumberSystemsLessonExperienceProps = {
   previous?: NumberSystemsLessonNavItem;
   next?: NumberSystemsLessonNavItem;
   unitHref: string;
+  showVocabulary?: boolean;
 };
 
 type NumberSetId = "natural" | "integer" | "rational" | "irrational" | "real";
@@ -156,6 +156,7 @@ export default function NumberSystemsLessonExperience({
   previous,
   next,
   unitHref,
+  showVocabulary = true,
 }: NumberSystemsLessonExperienceProps) {
   const [caseIndex, setCaseIndex] = useState(0);
   const [answer, setAnswer] = useState<NumberSetId | null>(null);
@@ -189,7 +190,7 @@ export default function NumberSystemsLessonExperience({
 
         <LessonUtilityBar
           practiceTargetId="number-systems-practice"
-          vocabulary
+          vocabulary={showVocabulary}
           accentRgb={ACCENT}
         />
 

@@ -29,6 +29,7 @@ type EquationLessonExperienceProps = {
   previous?: EquationLessonNavItem;
   next?: EquationLessonNavItem;
   unitHref: string;
+  showVocabulary?: boolean;
 };
 
 type OperationChoice = {
@@ -305,7 +306,13 @@ export default function EquationLessonExperience(props: EquationLessonExperience
   );
 }
 
-function OneStepLesson({ breadcrumbs, previous, next, unitHref }: EquationLessonExperienceProps) {
+function OneStepLesson({
+  breadcrumbs,
+  previous,
+  next,
+  unitHref,
+  showVocabulary = true,
+}: EquationLessonExperienceProps) {
   const accent = "34, 211, 238";
   const [caseIndex, setCaseIndex] = useState(0);
   const [selectedOperation, setSelectedOperation] = useState<string | null>(null);
@@ -343,7 +350,11 @@ function OneStepLesson({ breadcrumbs, previous, next, unitHref }: EquationLesson
           headerClassName="border-white/[0.12]"
         />
 
-        <LessonUtilityBar practiceTargetId="fundamentals-practice" vocabulary accentRgb={accent} />
+        <LessonUtilityBar
+          practiceTargetId="fundamentals-practice"
+          vocabulary={showVocabulary}
+          accentRgb={accent}
+        />
 
         <section className="mt-4 grid gap-4 rounded-[26px] border border-cyan-200/[0.11] bg-black/[0.20] p-5 backdrop-blur-2xl lg:grid-cols-[minmax(0,1.2fr)_minmax(300px,0.8fr)]">
           <div>
@@ -498,7 +509,13 @@ function OneStepLesson({ breadcrumbs, previous, next, unitHref }: EquationLesson
   );
 }
 
-function TwoStepLesson({ breadcrumbs, previous, next, unitHref }: EquationLessonExperienceProps) {
+function TwoStepLesson({
+  breadcrumbs,
+  previous,
+  next,
+  unitHref,
+  showVocabulary = true,
+}: EquationLessonExperienceProps) {
   const accent = "96, 165, 250";
   const [caseIndex, setCaseIndex] = useState(0);
   const [stage, setStage] = useState(0);
@@ -545,7 +562,11 @@ function TwoStepLesson({ breadcrumbs, previous, next, unitHref }: EquationLesson
           headerClassName="border-white/[0.12]"
         />
 
-        <LessonUtilityBar practiceTargetId="fundamentals-practice" vocabulary accentRgb={accent} />
+        <LessonUtilityBar
+          practiceTargetId="fundamentals-practice"
+          vocabulary={showVocabulary}
+          accentRgb={accent}
+        />
 
         <section className="mt-4 grid gap-4 rounded-[26px] border border-blue-200/[0.11] bg-black/[0.20] p-5 backdrop-blur-2xl lg:grid-cols-[minmax(0,1.2fr)_minmax(300px,0.8fr)]">
           <div>

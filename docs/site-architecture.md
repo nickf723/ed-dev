@@ -14,6 +14,30 @@ Formal, Natural, Social, Humanities, and Applied are the five canonical knowledg
 
 The site should behave like one coherent learning product without making every subject page look the same.
 
+## Two learner entry modes
+
+Education Station now has two coordinated entry modes over the same body of educational work.
+
+### Classroom courses
+
+`/classroom` is the school-year path. Its hierarchy is deliberately shallow and conventional:
+
+`Subject -> Course -> Unit -> Lesson`
+
+Classroom pages optimize for direct assignment, pacing, standards inspection, and lesson sequence. They use a compact standalone shell instead of the full knowledge-atlas sidebar. A classroom lesson may reuse an existing substantive atlas lesson experience, but it supplies classroom-owned breadcrumbs and previous/next routes so the student remains inside the course sequence.
+
+### Knowledge atlas
+
+The five canonical knowledge branches and Interdisciplines remain the exploratory path. They preserve the deeper ontology, collections, conceptual cross-links, vocabulary inheritance, and field-specific worlds.
+
+The two systems are parallel views, not competing sources of truth:
+
+- `lib/curriculum/` owns what knowledge is and how concepts relate;
+- `lib/courses/` owns how selected knowledge is paced into a standards-aware school course;
+- a course lesson references its canonical knowledge node by stable ID when it reuses atlas instruction;
+- classroom course ordering must not be written back into the knowledge graph as if pacing were ontology;
+- standards alignment means alignment, not state authorship, sponsorship, endorsement, or a claim that standards prescribe the local lesson order.
+
 Consistency belongs primarily in:
 
 - knowledge relationships
@@ -208,6 +232,20 @@ It must not become a registry of every subject's local design system.
 Owns academic structure and shared semantic metadata.
 
 Dense branches should migrate into focused modules rather than indefinitely expanding one monolithic tree.
+
+### `lib/courses/`
+
+Owns classroom-facing subjects, courses, units, lessons, pacing, standards frameworks, and teacher context.
+
+It supplies:
+
+- stable subject, course, unit, and lesson IDs;
+- active/planned status and canonical classroom routes;
+- official standards sources and independently authored alignment notes;
+- lesson outcomes, duration, and references to canonical curriculum node IDs;
+- teacher warm-ups, misconception notes, exit tickets, prerequisites, and evidence plans.
+
+It must not duplicate the full curriculum ontology or imply that a state standards document supplies Education Station's curriculum sequence.
 
 ### `lib/navigation.ts`
 

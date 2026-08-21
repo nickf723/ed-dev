@@ -13,6 +13,7 @@ import {
   PanelLeftClose,
   PanelLeftOpen,
   Scan,
+  School,
   X,
 } from "lucide-react";
 import { DOMAIN_BY_ID, getDomainForPath, type DomainId } from "@/lib/domains";
@@ -259,6 +260,8 @@ function NavItem({
   const Icon =
     item.icon === "book-open"
       ? BookOpen
+      : item.icon === "school"
+        ? School
       : isTopLevel && itemDomain !== "meta"
         ? DOMAIN_BY_ID[itemDomain]?.icon
         : undefined;

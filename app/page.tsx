@@ -1,3 +1,5 @@
+import Link from "next/link";
+import { ArrowRight, GraduationCap } from "lucide-react";
 import HexGrid from "./_homepage/HexGrid";
 import LibraryBackground from "./_homepage/HomepageBackground";
 import NetworkBackground from "./_homepage/NetworkBackground";
@@ -31,16 +33,26 @@ export default function Home() {
 
             <div className="max-w-[450px] lg:text-right">
               <p className="text-[13px] leading-6 text-slate-400 sm:text-[14px]">
-                Six primary domains. Hover to inspect a field, then enter it to explore its curriculum map.
+                Open a classroom course for the school-year path, or inspect the atlas to explore connected fields of knowledge.
               </p>
-              <div className="mt-2 font-mono text-[9px] uppercase tracking-[0.11em] text-slate-700">
-                inspect → enter → explore
+              <div className="mt-3 flex flex-wrap justify-center gap-2 lg:justify-end">
+                <Link
+                  href="/classroom"
+                  className="inline-flex items-center gap-2 rounded-full border border-emerald-300/20 bg-emerald-300/[0.07] px-3.5 py-2 text-[11px] font-semibold text-emerald-200 transition-colors hover:bg-emerald-300/[0.12]"
+                >
+                  <GraduationCap size={14} />
+                  Classroom courses
+                  <ArrowRight size={13} />
+                </Link>
+                <span className="inline-flex items-center rounded-full border border-white/[0.07] px-3 py-2 font-mono text-[9px] uppercase tracking-[0.11em] text-slate-600">
+                  Atlas below
+                </span>
               </div>
             </div>
           </div>
         </header>
 
-        <div className="flex min-h-0 flex-1 items-center justify-center">
+        <div id="knowledge-atlas" className="flex min-h-0 flex-1 items-center justify-center">
           <HexGrid />
         </div>
       </div>
