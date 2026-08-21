@@ -1,221 +1,220 @@
-"use client";
-
-import { useEffect, useRef } from "react";
-
-const LENSES = ["TEXT", "PRACTICE", "COMMUNITY", "PLACE", "HISTORY", "EXPERIENCE", "IDEAS"] as const;
-
 export default function ReligionBackground() {
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
-
-  useEffect(() => {
-    const canvasElement = canvasRef.current;
-    if (!canvasElement) return;
-    const drawingContext = canvasElement.getContext("2d");
-    if (!drawingContext) return;
-
-    const canvas: HTMLCanvasElement = canvasElement;
-    const context: CanvasRenderingContext2D = drawingContext;
-    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    let width = 1;
-    let height = 1;
-    let ratio = 1;
-    let frame = 0;
-    let paused = document.hidden;
-
-    function resize() {
-      width = Math.max(1, window.innerWidth);
-      height = Math.max(1, window.innerHeight);
-      ratio = Math.min(window.devicePixelRatio || 1, width < 900 ? 1.05 : 1.4);
-      canvas.width = Math.floor(width * ratio);
-      canvas.height = Math.floor(height * ratio);
-      canvas.style.width = `${width}px`;
-      canvas.style.height = `${height}px`;
-      context.setTransform(ratio, 0, 0, ratio, 0, 0);
-      draw(38);
-    }
-
-    function onVisibility() {
-      paused = document.hidden;
-      if (!paused && !reducedMotion) frame = requestAnimationFrame(loop);
-    }
-
-    function loop(now: number) {
-      if (paused) return;
-      draw(now / 1000);
-      frame = requestAnimationFrame(loop);
-    }
-
-    function draw(time: number) {
-      context.setTransform(ratio, 0, 0, ratio, 0, 0);
-      context.clearRect(0, 0, width, height);
-      drawGround(context, width, height);
-      drawAstrolabe(context, width, height, reducedMotion ? 38 : time);
-      drawSourceCards(context, width, height);
-      drawReadingBeam(context, width, height, reducedMotion ? 38 : time);
-      drawVignette(context, width, height);
-    }
-
-    resize();
-    window.addEventListener("resize", resize);
-    document.addEventListener("visibilitychange", onVisibility);
-    if (!reducedMotion) frame = requestAnimationFrame(loop);
-
-    return () => {
-      cancelAnimationFrame(frame);
-      window.removeEventListener("resize", resize);
-      document.removeEventListener("visibilitychange", onVisibility);
-    };
-  }, []);
-
-  return (
-    <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden" aria-hidden="true">
-      <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
-      <div className="absolute inset-x-0 top-0 h-[18%] bg-gradient-to-b from-[#120b09]/88 to-transparent" />
-      <div className="absolute inset-x-0 bottom-0 h-[18%] bg-gradient-to-t from-[#120b09]/86 to-transparent" />
-    </div>
-  );
-}
-
-function drawGround(context: CanvasRenderingContext2D, width: number, height: number) {
-  const gradient = context.createLinearGradient(0, 0, width, height);
-  gradient.addColorStop(0, "#130b09");
-  gradient.addColorStop(0.48, "#21120d");
-  gradient.addColorStop(1, "#0b0a13");
-  context.fillStyle = gradient;
-  context.fillRect(0, 0, width, height);
-
-  const warm = context.createRadialGradient(width * 0.68, height * 0.45, 0, width * 0.68, height * 0.45, Math.max(width, height) * 0.6);
-  warm.addColorStop(0, "rgba(251,191,36,0.060)");
-  warm.addColorStop(0.5, "rgba(244,114,182,0.018)");
-  warm.addColorStop(1, "rgba(0,0,0,0)");
-  context.fillStyle = warm;
-  context.fillRect(0, 0, width, height);
-}
-
-function drawAstrolabe(context: CanvasRenderingContext2D, width: number, height: number, time: number) {
-  const cx = width < 900 ? width * 0.57 : width * 0.72;
-  const cy = height * 0.49;
-  const radius = Math.min(width < 900 ? width * 0.48 : width * 0.34, height * 0.43);
-  const rotation = time * 0.0032;
-
-  context.save();
-  context.translate(cx, cy);
-
-  const halo = context.createRadialGradient(0, 0, radius * 0.12, 0, 0, radius * 1.12);
-  halo.addColorStop(0, "rgba(251,191,36,0.045)");
-  halo.addColorStop(0.62, "rgba(192,132,252,0.014)");
-  halo.addColorStop(1, "rgba(0,0,0,0)");
-  context.fillStyle = halo;
-  context.beginPath();
-  context.arc(0, 0, radius * 1.14, 0, Math.PI * 2);
-  context.fill();
-
-  [1, 0.78, 0.55, 0.31].forEach((fraction, index) => {
-    context.strokeStyle = index === 0 ? "rgba(253,230,138,0.20)" : "rgba(253,230,138,0.105)";
-    context.lineWidth = index === 0 ? 1.35 : 0.8;
-    context.beginPath();
-    context.arc(0, 0, radius * fraction, 0, Math.PI * 2);
-    context.stroke();
-  });
-
-  context.rotate(rotation);
-  for (let index = 0; index < LENSES.length; index += 1) {
-    const angle = (index / LENSES.length) * Math.PI * 2 - Math.PI / 2;
-    const x1 = Math.cos(angle) * radius * 0.30;
-    const y1 = Math.sin(angle) * radius * 0.30;
-    const x2 = Math.cos(angle) * radius;
-    const y2 = Math.sin(angle) * radius;
-    context.strokeStyle = index % 2 === 0 ? "rgba(251,191,36,0.105)" : "rgba(192,132,252,0.09)";
-    context.beginPath();
-    context.moveTo(x1, y1);
-    context.lineTo(x2, y2);
-    context.stroke();
-
-    const labelRadius = radius * 0.88;
-    const lx = Math.cos(angle) * labelRadius;
-    const ly = Math.sin(angle) * labelRadius;
-    context.save();
-    context.translate(lx, ly);
-    context.rotate(-rotation);
-    context.font = `${width < 700 ? 8 : 10}px ui-monospace, SFMono-Regular, Menlo, monospace`;
-    context.textAlign = "center";
-    context.fillStyle = index % 2 === 0 ? "rgba(253,230,138,0.30)" : "rgba(216,180,254,0.26)";
-    context.fillText(LENSES[index], 0, 3);
-    context.restore();
-  }
-
-  context.rotate(-rotation);
-  context.fillStyle = "rgba(251,191,36,0.045)";
-  context.strokeStyle = "rgba(253,230,138,0.20)";
-  context.lineWidth = 1;
-  context.beginPath();
-  context.arc(0, 0, radius * 0.18, 0, Math.PI * 2);
-  context.fill();
-  context.stroke();
-
-  context.textAlign = "center";
-  context.font = `${width < 700 ? 9 : 11}px ui-monospace, SFMono-Regular, Menlo, monospace`;
-  context.fillStyle = "rgba(255,247,237,0.33)";
-  context.fillText("EVIDENCE", 0, -6);
-  context.fillStyle = "rgba(253,230,138,0.26)";
-  context.fillText("↕", 0, 8);
-  context.fillStyle = "rgba(255,247,237,0.29)";
-  context.fillText("INTERPRETATION", 0, 22);
-
-  context.restore();
-}
-
-function drawSourceCards(context: CanvasRenderingContext2D, width: number, height: number) {
-  if (width < 760) return;
-  const left = width * 0.055;
-  const top = height * 0.31;
-  const cardW = Math.min(260, width * 0.18);
-  const rows = [
-    { label: "FIELDNOTE", note: "practice observed", rgb: "251,191,36" },
-    { label: "TEXT FRAGMENT", note: "genre + transmission", rgb: "192,132,252" },
-    { label: "OBJECT RECORD", note: "material + use", rgb: "94,234,212" },
-    { label: "ORAL ACCOUNT", note: "speaker + context", rgb: "244,114,182" },
+  const archiveLines = [248, 288, 328, 368] as const;
+  const lensRays = [
+    [0, -214, "#fbbf24"],
+    [167, -134, "#7dd3fc"],
+    [208, 48, "#c084fc"],
+    [92, 193, "#f472b6"],
+    [-92, 193, "#5eead4"],
+    [-208, 48, "#60a5fa"],
+    [-167, -134, "#fb923c"],
   ] as const;
 
-  rows.forEach((row, index) => {
-    const y = top + index * 72;
-    context.fillStyle = "rgba(18,11,9,0.28)";
-    context.strokeStyle = `rgba(${row.rgb},0.13)`;
-    context.lineWidth = 1;
-    context.fillRect(left, y, cardW, 54);
-    context.strokeRect(left, y, cardW, 54);
-    context.fillStyle = `rgba(${row.rgb},0.32)`;
-    context.font = "9px ui-monospace, SFMono-Regular, Menlo, monospace";
-    context.fillText(row.label, left + 12, y + 18);
-    context.fillStyle = "rgba(231,229,228,0.20)";
-    context.fillText(row.note, left + 12, y + 36);
-  });
+  return (
+    <div
+      className="pointer-events-none fixed inset-0 z-0 overflow-hidden bg-[#130b09]"
+      aria-hidden="true"
+    >
+      <svg
+        viewBox="0 0 1600 1000"
+        preserveAspectRatio="xMidYMid slice"
+        className="absolute inset-0 h-full w-full"
+      >
+        <defs>
+          <linearGradient id="religion-ground" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stopColor="#130b09" />
+            <stop offset="0.48" stopColor="#21120d" />
+            <stop offset="1" stopColor="#0b0a13" />
+          </linearGradient>
+          <radialGradient id="religion-lamp" cx="50%" cy="50%" r="50%">
+            <stop offset="0" stopColor="#fbbf24" stopOpacity="0.13" />
+            <stop offset="0.46" stopColor="#f472b6" stopOpacity="0.035" />
+            <stop offset="1" stopColor="#0b0a13" stopOpacity="0" />
+          </radialGradient>
+          <pattern
+            id="religion-paper"
+            width="84"
+            height="84"
+            patternUnits="userSpaceOnUse"
+          >
+            <path
+              d="M84 0H0V84"
+              fill="none"
+              stroke="#fde68a"
+              strokeOpacity="0.025"
+            />
+          </pattern>
+        </defs>
 
-  context.strokeStyle = "rgba(253,230,138,0.08)";
-  context.setLineDash([4, 8]);
-  context.beginPath();
-  context.moveTo(left + cardW, top + 27);
-  context.bezierCurveTo(width * 0.36, top + 27, width * 0.42, height * 0.48, width * 0.52, height * 0.48);
-  context.stroke();
-  context.setLineDash([]);
-}
+        <rect width="1600" height="1000" fill="url(#religion-ground)" />
+        <rect width="1600" height="1000" fill="url(#religion-paper)" />
 
-function drawReadingBeam(context: CanvasRenderingContext2D, width: number, height: number, time: number) {
-  const sweep = (Math.sin(time * 0.018) + 1) / 2;
-  const x = width * (0.18 + sweep * 0.66);
-  const beam = context.createLinearGradient(x - 80, 0, x + 80, 0);
-  beam.addColorStop(0, "rgba(253,230,138,0)");
-  beam.addColorStop(0.5, "rgba(253,230,138,0.025)");
-  beam.addColorStop(1, "rgba(253,230,138,0)");
-  context.fillStyle = beam;
-  context.fillRect(x - 80, height * 0.16, 160, height * 0.70);
-}
+        <g opacity="0.68">
+          <path
+            d="M86 194H380V570H86Z"
+            fill="#120b09"
+            fillOpacity="0.26"
+            stroke="#fbbf24"
+            strokeOpacity="0.12"
+          />
+          {archiveLines.map((y, index) => (
+            <g key={y}>
+              <rect
+                x="112"
+                y={y}
+                width="232"
+                height="26"
+                rx="7"
+                fill={index % 2 === 0 ? "#fbbf24" : "#c084fc"}
+                fillOpacity="0.025"
+                stroke={index % 2 === 0 ? "#fbbf24" : "#c084fc"}
+                strokeOpacity="0.12"
+              />
+              <path
+                d={`M130 ${y + 13}H${index % 2 === 0 ? 270 : 312}`}
+                stroke="#fafaf9"
+                strokeOpacity="0.11"
+                strokeWidth="6"
+                strokeLinecap="round"
+              />
+            </g>
+          ))}
+          <rect
+            x="112"
+            y="438"
+            width="102"
+            height="92"
+            rx="12"
+            fill="#5eead4"
+            fillOpacity="0.025"
+            stroke="#5eead4"
+            strokeOpacity="0.14"
+          />
+          <path
+            d="M132 500L152 476L174 490L196 462"
+            fill="none"
+            stroke="#5eead4"
+            strokeOpacity="0.2"
+          />
+          <rect
+            x="230"
+            y="438"
+            width="114"
+            height="92"
+            rx="12"
+            fill="#7dd3fc"
+            fillOpacity="0.025"
+            stroke="#7dd3fc"
+            strokeOpacity="0.14"
+          />
+          <path
+            d="M246 484C256 464 266 504 276 484S296 464 306 484S326 504 334 484"
+            fill="none"
+            stroke="#7dd3fc"
+            strokeOpacity="0.2"
+          />
+          <path
+            d="M380 268C482 268 488 384 578 384M380 340C478 340 500 424 578 424M380 482C478 482 506 466 578 466"
+            fill="none"
+            stroke="#fde68a"
+            strokeOpacity="0.09"
+            strokeDasharray="6 10"
+          />
+        </g>
 
-function drawVignette(context: CanvasRenderingContext2D, width: number, height: number) {
-  const gradient = context.createRadialGradient(width * 0.56, height * 0.48, Math.min(width, height) * 0.16, width * 0.56, height * 0.48, Math.max(width, height) * 0.74);
-  gradient.addColorStop(0, "rgba(0,0,0,0)");
-  gradient.addColorStop(0.76, "rgba(8,5,8,0.16)");
-  gradient.addColorStop(1, "rgba(8,5,8,0.58)");
-  context.fillStyle = gradient;
-  context.fillRect(0, 0, width, height);
+        <g transform="translate(820 426)">
+          <circle r="286" fill="url(#religion-lamp)" />
+          <circle
+            r="220"
+            fill="#160d0b"
+            fillOpacity="0.09"
+            stroke="#fde68a"
+            strokeOpacity="0.16"
+          />
+          <circle r="154" fill="none" stroke="#d8b4fe" strokeOpacity="0.12" />
+          <circle
+            r="88"
+            fill="#1d120e"
+            fillOpacity="0.32"
+            stroke="#fbbf24"
+            strokeOpacity="0.18"
+          />
+          {lensRays.map(([x, y, color], index) => (
+            <g key={index}>
+              <path
+                d={`M${x * 0.42} ${y * 0.42}L${x} ${y}`}
+                stroke={color}
+                strokeOpacity="0.16"
+              />
+              <circle
+                cx={x}
+                cy={y}
+                r="9"
+                fill={color}
+                fillOpacity="0.11"
+                stroke={color}
+                strokeOpacity="0.26"
+              />
+            </g>
+          ))}
+          <path
+            d="M-45 -18H45M-32 7H32M-20 31H20"
+            stroke="#fff7ed"
+            strokeOpacity="0.18"
+            strokeWidth="6"
+            strokeLinecap="round"
+          />
+        </g>
+
+        <g opacity="0.62">
+          <rect
+            x="1180"
+            y="206"
+            width="328"
+            height="398"
+            rx="24"
+            fill="#0f0a10"
+            fillOpacity="0.25"
+            stroke="#c084fc"
+            strokeOpacity="0.12"
+          />
+          <path
+            d="M1214 258H1456M1214 310H1396M1214 362H1440M1214 414H1364"
+            stroke="#fafaf9"
+            strokeOpacity="0.1"
+            strokeWidth="8"
+            strokeLinecap="round"
+          />
+          <rect
+            x="1214"
+            y="468"
+            width="242"
+            height="96"
+            rx="16"
+            fill="#f472b6"
+            fillOpacity="0.025"
+            stroke="#f472b6"
+            strokeOpacity="0.14"
+          />
+          <path d="M1240 518H1430" stroke="#f472b6" strokeOpacity="0.2" />
+          <path
+            d="M1064 366C1124 366 1128 258 1180 258M1060 426H1180M1064 486C1124 486 1128 518 1180 518"
+            fill="none"
+            stroke="#d8b4fe"
+            strokeOpacity="0.09"
+            strokeDasharray="6 10"
+          />
+        </g>
+
+        <path
+          d="M60 716H1540M140 758H1460M240 800H1360"
+          stroke="#fde68a"
+          strokeOpacity="0.035"
+        />
+      </svg>
+      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(19,11,9,0.22),transparent_28%,transparent_76%,rgba(11,10,19,0.26))]" />
+      <div className="from-[#120b09]/88 absolute inset-x-0 top-0 h-[18%] bg-gradient-to-b to-transparent" />
+      <div className="from-[#120b09]/88 absolute inset-x-0 bottom-0 h-[20%] bg-gradient-to-t to-transparent" />
+    </div>
+  );
 }

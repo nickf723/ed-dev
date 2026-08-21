@@ -318,6 +318,16 @@ Priority examples:
 - Defined future GitHub, RFC Editor, and NVD repository boundaries without introducing render-time fetching.
 - The 413-page production build reached READY.
 
+### Religion root · Remastered
+
+- Preserved the comparative fieldnote instrument while reframing Religion as an academic, source-aware study hub rather than a catalog of beliefs.
+- Replaced the viewport-sized animated canvas with a deterministic server-rendered comparative reading table that separates sources, analytical lenses, and bounded claims.
+- Reconciled exact navigation across eight direct fields; Mythology is the only active child, while seven planned fields remain visible without becoming dead links.
+- Added a four-file evidence review spanning an exact `9 / 24 = 37.5%` source-share calculation, text and reception, dimension-specific comparison, and collection context.
+- Migrated Religion vocabulary to ten root terms plus two terms owned by each direct branch, aggregated automatically into Religion and Humanities with source-node provenance.
+- Defined ethical and collection boundaries for future AAR, Library of Congress, and Met integrations without introducing render-time fetching.
+- The 413-page production build reached READY.
+
 ## Phase C: curriculum depth
 
 Systematically fill learning sequences, beginning with mathematics because prerequisite order is unusually important there. Use curriculum nodes, prerequisites, and sequence navigation rather than creating isolated attractive pages.

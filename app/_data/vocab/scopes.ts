@@ -30,6 +30,7 @@ import { PHYSICS_VOCABULARY_REGISTRATIONS } from "./physics-node-registry";
 import { PHILOSOPHY_VOCABULARY_REGISTRATIONS } from "./philosophy-node-registry";
 import { ANTHROPOLOGY_VOCABULARY_REGISTRATIONS } from "./anthropology-node-registry";
 import { COMPUTER_SCIENCE_VOCABULARY_REGISTRATIONS } from "./computer-science-node-registry";
+import { RELIGION_VOCABULARY_REGISTRATIONS } from "./religion-node-registry";
 import { buildCurriculumVocabularyScopes } from "./aggregate.mjs";
 import { composeVocabulary } from "./compose";
 import { MATHEMATICS_VOCABULARY_REGISTRATIONS } from "./mathematics-node-registry";
@@ -686,12 +687,41 @@ const educationVocabulary = composeVocabulary(
   ...educationScope.groups.map((group) => group.terms)
 );
 
+const religionNode = curriculumRegistry.getNode("humanities.religion");
+if (!religionNode) {
+  throw new Error("Religion curriculum node is required for vocabulary scopes");
+}
+
+const religionVocabularyScopes = buildCurriculumVocabularyScopes({
+  roots: [religionNode],
+  registrations: RELIGION_VOCABULARY_REGISTRATIONS,
+  accent: "amber",
+  accentByNodeId: {
+    "humanities.religion.texts-interpretation": "violet",
+    "humanities.religion.ritual-practice": "rose",
+    "humanities.religion.material-place": "emerald",
+    "humanities.religion.society-politics": "sky",
+  },
+});
+
+const religionScope = religionVocabularyScopes.find(
+  (scope) => scope.path === religionNode.href
+);
+if (!religionScope) {
+  throw new Error("Religion vocabulary scope could not be derived");
+}
+
+const religionVocabulary = composeVocabulary(
+  ...religionScope.groups.map((group) => group.terms)
+);
+
 export const humanitiesVocabularyScopes: VocabularyScope[] = [
   ...philosophyVocabularyScopes,
   ...historyVocabularyScopes,
   ...literatureVocabularyScopes,
   ...visualArtsVocabularyScopes,
   ...musicVocabularyScopes,
+  ...religionVocabularyScopes,
   {
     path: "/humanities",
     title: "Humanities",
@@ -731,6 +761,13 @@ export const humanitiesVocabularyScopes: VocabularyScope[] = [
         terms: musicVocabulary,
         sourceNodeId: musicNode.id,
         sourcePath: musicNode.href,
+      },
+      {
+        id: religionNode.id,
+        label: religionNode.label,
+        terms: religionVocabulary,
+        sourceNodeId: religionNode.id,
+        sourcePath: religionNode.href,
       },
     ],
   },

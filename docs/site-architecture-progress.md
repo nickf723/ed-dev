@@ -389,3 +389,21 @@ along with the informational architecture/readability/remaster scans, all 413
 static page generations, and generated-HTML route/source/vocabulary/no-canvas
 checks. Rendered browser verification remains queued because the local server
 cannot start in this workspace.
+
+## 2026-08-21 Religion root checkpoint
+
+The Religion root now resolves and asserts its exact eight direct branches from
+the curriculum registry. It remains a server route; its preserved comparative
+fieldnote instrument and new bounded four-case evidence review are the only
+client-owned lesson regions. The former animated canvas background has been
+replaced by a deterministic server SVG comparative reading table. Seven planned
+fields remain visible but inert, while Mythology is the only live child route.
+
+Religion vocabulary now consists of ten root concepts plus sixteen terms owned
+by the eight direct fields. Curriculum containment aggregates all 26 terms into
+Religion and Humanities while retaining source-node provenance. Focused model,
+aggregation, TypeScript, and touched-file lint checks passed, along with the
+informational architecture/readability/remaster scans, all 413 static page
+generations, and generated-HTML route/source/vocabulary/no-canvas checks.
+Rendered browser verification remains queued because the local server cannot
+start in this workspace.

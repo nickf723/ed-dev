@@ -36,6 +36,7 @@ import { visualArtsVocab } from "./v/visual-arts";
 import { literatureVocab } from "./l/literature";
 import { narrativeFictionVocab } from "./n/narrative-fiction";
 import { religionVocab } from "./r/religion";
+import { religionBranchVocab } from "./r/religion-branches";
 import { algebraBasicsVocab } from "./a/algebra-basics";
 import { architectureVocab } from "./a/architecture";
 import { quantumMechanicsVocab } from "./q/quantum-mechanics";
@@ -120,6 +121,7 @@ export const ALL_VOCAB: VocabTerm[] = composeVocabulary(
   literatureVocab,
   narrativeFictionVocab,
   religionVocab,
+  religionBranchVocab,
   algebraBasicsVocab,
   architectureVocab,
   quantumMechanicsVocab,
