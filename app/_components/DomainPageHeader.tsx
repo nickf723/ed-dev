@@ -19,6 +19,7 @@ type DomainPageHeaderProps = {
   titleClassName?: string;
   subtitleClassName?: string;
   eyebrowClassName?: string;
+  metadataTextClassName?: string;
   eyebrowStyle?: PageEyebrowStyle;
   iconClassName?: string;
   headerClassName?: string;
@@ -35,6 +36,7 @@ export default function DomainPageHeader({
   titleClassName = "text-[clamp(3.2rem,5.8vw,6rem)] font-semibold leading-[0.86] tracking-[-0.06em] text-white",
   subtitleClassName = "text-sm leading-6 text-slate-400 sm:text-base",
   eyebrowClassName = "font-mono",
+  metadataTextClassName = "text-[9px]",
   eyebrowStyle = "dot",
   iconClassName = "rounded-[22px]",
   headerClassName = "",
@@ -48,6 +50,7 @@ export default function DomainPageHeader({
         <Eyebrow
           accentRgb={accentRgb}
           className={eyebrowClassName}
+          textClassName={metadataTextClassName}
           style={eyebrowStyle}
         >
           {eyebrow}
@@ -55,7 +58,7 @@ export default function DomainPageHeader({
 
         <nav
           aria-label="Breadcrumb"
-          className="flex items-center gap-2 rounded-full border border-white/[0.07] bg-black/20 px-3 py-2 font-mono text-[9px] uppercase tracking-[0.13em] text-slate-500 backdrop-blur-lg"
+          className={`flex items-center gap-2 rounded-full border border-white/[0.07] bg-black/20 px-3 py-2 font-mono uppercase tracking-[0.13em] text-slate-500 backdrop-blur-lg ${metadataTextClassName}`}
         >
           {breadcrumbs.map((crumb, index) => {
             const current = index === breadcrumbs.length - 1;
@@ -108,14 +111,16 @@ function Eyebrow({
   children,
   accentRgb,
   className,
+  textClassName,
   style,
 }: {
   children: ReactNode;
   accentRgb: string;
   className: string;
+  textClassName: string;
   style: PageEyebrowStyle;
 }) {
-  const base = `${className} flex items-center gap-2 text-[9px] uppercase tracking-[0.2em]`;
+  const base = `${className} ${textClassName} flex items-center gap-2 uppercase tracking-[0.2em]`;
 
   if (style === "pill") {
     return (

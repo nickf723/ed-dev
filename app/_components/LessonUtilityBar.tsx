@@ -8,6 +8,7 @@ type LessonUtilityBarProps = {
   practiceTargetId?: string;
   vocabulary?: boolean;
   accentRgb?: string;
+  labelClassName?: string;
 };
 
 function scrollToTarget(targetId: string) {
@@ -22,13 +23,14 @@ export default function LessonUtilityBar({
   practiceTargetId,
   vocabulary = false,
   accentRgb = "34, 211, 238",
+  labelClassName = "text-[9px]",
 }: LessonUtilityBarProps) {
   return (
     <nav
       aria-label="Lesson utilities"
       className="sticky top-3 z-30 mt-3 flex flex-wrap items-center gap-2 rounded-2xl border border-white/[0.07] bg-[#050b13]/88 p-2 shadow-[0_14px_44px_rgba(0,0,0,0.24)] backdrop-blur-xl"
     >
-      <span className="px-2 text-[9px] font-semibold uppercase tracking-[0.14em] text-slate-600">
+      <span className={`px-2 font-semibold uppercase tracking-[0.14em] text-slate-600 ${labelClassName}`}>
         Lesson tools
       </span>
 

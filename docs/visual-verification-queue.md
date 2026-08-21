@@ -12,6 +12,25 @@ A successful type check is not visual verification. A page leaves this queue onl
 
 **Status:** The calmer neoglass refinement passes targeted React/Next lint, regenerated route types, TypeScript, all three informational audits, the 413-page production build, and ten generated-HTML checks for the dark shell, trimmed copy, active/planned navigation, standards, lesson order, teaching resources, classroom navigation, and homepage entry. The local Next server reaches ready state, but the browser CLI is unavailable and the cloud browser security policy blocks local addresses; rendered responsive and interaction verification therefore remains pending for the hosted preview.
 
+### Expressions & Variables discovery flow
+
+**Routes:** `/classroom/math/algebra-1/unit-1/expressions-variables` and `/formal-science/mathematics/algebra/elementary-algebra/fundamentals/expressions-variables`.
+
+Verify:
+
+- changing x from −3 through 3 produces totals 38, 21, 10, 5, 6, 13, and 26
+- contribution bars extend left for negative values and right for positive values, with +5 staying fixed
+- the constant prediction gives immediate, concise feedback
+- selecting each signed term reveals its coefficient, variable, and exponent, with the sign included in coefficient −2
+- the sorter accepts only matching variable structures and keeps placed terms visible in the correct family bins
+- combining coefficients reveals `(3 − 2)x² + (4 − 1)x + 5` and then `x² + 3x + 5`
+- all four lesson stages remain obvious and usable at desktop, tablet, mobile, keyboard-only, and 200% text zoom
+- required lesson, header, toolbar, and navigation text never drops below 11px
+- the collapsed Stage 4 assessment and next-lesson navigation work without disrupting the discovery sequence
+- the Classroom alias omits Vocabulary while the canonical atlas lesson retains it
+
+**Status:** The lesson-specific 11px readability scan, regenerated route types, TypeScript, targeted React/Next lint, all three informational audits, the 413-page production build, the seven-value math model, and generated-HTML checks for all four stages, trimmed copy, and alias-specific Vocabulary behavior pass. Rendered responsive, keyboard, zoom, and interaction verification remains pending for the hosted preview.
+
 ---
 
 ## Verification protocol
