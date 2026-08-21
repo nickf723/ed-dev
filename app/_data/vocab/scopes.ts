@@ -17,6 +17,7 @@ import { ASTRONOMY_VOCABULARY_REGISTRATIONS } from "./astronomy-node-registry";
 import { EARTH_SCIENCE_VOCABULARY_REGISTRATIONS } from "./earth-science-node-registry";
 import { LITERATURE_VOCABULARY_REGISTRATIONS } from "./literature-node-registry";
 import { MEDICINE_VOCABULARY_REGISTRATIONS } from "./medicine-node-registry";
+import { GEOGRAPHY_VOCABULARY_REGISTRATIONS } from "./geography-node-registry";
 import { buildCurriculumVocabularyScopes } from "./aggregate.mjs";
 import { composeVocabulary } from "./compose";
 import { MATHEMATICS_VOCABULARY_REGISTRATIONS } from "./mathematics-node-registry";
@@ -180,6 +181,30 @@ const medicineVocabulary = composeVocabulary(
   ...medicineScope.groups.map((group) => group.terms)
 );
 
+const geographyNode = curriculumRegistry.getNode("social.geography");
+if (!geographyNode) {
+  throw new Error(
+    "Geography curriculum node is required for vocabulary scopes"
+  );
+}
+
+const geographyVocabularyScopes = buildCurriculumVocabularyScopes({
+  roots: [geographyNode],
+  registrations: GEOGRAPHY_VOCABULARY_REGISTRATIONS,
+  accent: "sky",
+});
+
+const geographyScope = geographyVocabularyScopes.find(
+  (scope) => scope.path === geographyNode.href
+);
+if (!geographyScope) {
+  throw new Error("Geography vocabulary scope could not be derived");
+}
+
+const geographyVocabulary = composeVocabulary(
+  ...geographyScope.groups.map((group) => group.terms)
+);
+
 export const humanitiesVocabularyScopes: VocabularyScope[] = [
   ...literatureVocabularyScopes,
 ];
@@ -197,6 +222,24 @@ export const appliedScienceVocabularyScopes: VocabularyScope[] = [
         terms: medicineVocabulary,
         sourceNodeId: medicineNode.id,
         sourcePath: medicineNode.href,
+      },
+    ],
+  },
+];
+
+export const socialScienceVocabularyScopes: VocabularyScope[] = [
+  ...geographyVocabularyScopes,
+  {
+    path: "/social-science",
+    title: "Social Science",
+    accent: "sky",
+    groups: [
+      {
+        id: geographyNode.id,
+        label: geographyNode.label,
+        terms: geographyVocabulary,
+        sourceNodeId: geographyNode.id,
+        sourcePath: geographyNode.href,
       },
     ],
   },

@@ -227,7 +227,13 @@ The return pass preserves Hanoi and the self-similar recursive world while chang
 
 The parent-first repair preserves the nested structure–function scale, regional scanner, and Skeletal System route while replacing the handwritten partial map with a registry-owned layer of two foundations and the conventional eleven organ systems. Six functional study families teach relationships without adding false hierarchy. The page and its Skeletal child now use deterministic human-study and radiograph worlds instead of random full-screen canvases; Medicine, Anatomy & Physiology, and Skeletal vocabulary aggregate through the first Applied Science vocabulary scope; and a three-case evidence check tests structure–function, region-versus-system, and organization-scale reasoning. Rendered verification remains required.
 
-Next, rotate to **Social Science → Geography** for a contrasting spatial-evidence hub audit before returning to another medical system.
+### Completed bounded-rotation checkpoint
+
+- Social Science → Geography
+
+The consolidation pass preserves the earlier GIS light table, eight bounded direct branches, inhabited globe, population-pyramid instrument, and six spatial-reasoning questions while bringing them into the current contract. The globe is now deterministic server-rendered scenery instead of a measured canvas loop; the layer deck raises instructional text to readable sizes; one shared model owns branches, demographic profiles, cohort shares, and three evidence cases; and Geography contributes the first curriculum-derived Social Science vocabulary scope. The new evidence lab asks learners to separate counts from rates, aggregates from local variation, and spatial association from mechanism. Rendered verification remains required.
+
+Next, rotate to **Natural Science → Biology → Botany** for a contrasting specimen/growth/collection audit. Inspect whether the existing iNaturalist provider contract can support a bounded plant collection without turning the lesson into a generic search interface.
 
 ---
 

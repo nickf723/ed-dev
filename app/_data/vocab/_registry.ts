@@ -24,6 +24,7 @@ import { politicalScienceVocab } from "./p/political-science";
 import { medicineVocab } from "./m/medicine";
 import { anatomyPhysiologyVocab } from "./a/anatomy-physiology";
 import { skeletalSystemVocab } from "./s/skeletal-system";
+import { geographyVocab } from "./g/geography";
 import { musicVocab } from "./m/music";
 import { visualArtsVocab } from "./v/visual-arts";
 import { literatureVocab } from "./l/literature";
@@ -92,6 +93,7 @@ export const ALL_VOCAB: VocabTerm[] = composeVocabulary(
   medicineVocab,
   anatomyPhysiologyVocab,
   skeletalSystemVocab,
+  geographyVocab,
   musicVocab,
   visualArtsVocab,
   literatureVocab,
