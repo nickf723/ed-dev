@@ -466,3 +466,11 @@ The visual grammar is a managed landscape viewed above and below ground: distinc
 Sociology keeps seven direct planned branches while using micro, meso, macro, and cross-cutting bands only as analytical scale cues. The root advances from registry-owned navigation and one event across scales through a seeded Schelling-style model, three theoretical lenses, a four-case evidence review, and public-data boundaries. One tested model owns branch parity, exact initial population metrics, seeded movement, count preservation, and answer fixtures; twenty-nine terms aggregate into Social Science.
 
 The visual grammar is relational and scalar: encounters and ties sit above groups and organizations, which sit above an institutional skyline. A deterministic server-rendered field replaces the random drifting-node canvas, the route returns to server ownership, and only the simulation and assessment remain client islands. The page avoids Psychology's participant laboratory, Economics' exchange ledger, and Agriculture's field transect.
+
+---
+
+## 21. Current cohesion checkpoint · Physics
+
+Physics keeps eight direct active branches while using familiar-scale and extended/specialized banks only as model-regime cues. The root advances from registry-owned navigation and a reusable define → measure → model → test cycle through an eight-scenario regime selector, a one-segment coordinate instrument, four exact SI-defining constants, a four-case evidence review, and official reference-data boundaries. One tested model owns branch parity, scenario coverage, signed motion arithmetic, exact-value fixtures, and answer paths; thirty-five narrowly owned terms aggregate into Natural Science.
+
+The visual grammar is metrological rather than generically futuristic: a fixed trajectory, velocity vector, coordinate field, wave trace, interaction response, and unit ruler establish a deterministic laboratory sheet behind open reading corridors. The root stays server-owned while the regime, measurement, and assessment instruments remain small deterministic client islands. It avoids Sociology's scale bands, Agriculture's transect, and the animated shared Physics background still used by specialized descendants.

@@ -1,8 +1,13 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import DomainPageHeader from "@/app/_components/DomainPageHeader";
-import PhysicsBackground from "./_components/PhysicsBackground";
+import { SceneFrame } from "@/app/_page-system/scene";
+import { requireCurriculumPageContext } from "@/lib/curriculum/page-context";
+import type { CurriculumNode } from "@/lib/curriculum/types";
+import type { LucideIcon } from "lucide-react";
 import {
   ArrowRight,
+  ArrowUpRight,
   Atom,
   Flame,
   Gauge,
@@ -10,411 +15,406 @@ import {
   Microscope,
   Orbit,
   RefreshCw,
+  Ruler,
+  ScanLine,
+  Sparkles,
   Waves,
   Zap,
-  type LucideIcon,
 } from "lucide-react";
+import PhysicsEvidenceReview from "./PhysicsEvidenceReview";
+import PhysicsMeasurementBench from "./PhysicsMeasurementBench";
+import PhysicsRegimeLab from "./PhysicsRegimeLab";
+import PhysicsRootBackground from "./PhysicsRootBackground";
+import {
+  PHYSICS_DEFINING_CONSTANTS,
+  PHYSICS_DIRECT_BRANCH_IDS,
+  type PhysicsBranchId,
+} from "./physicsModel";
 
-type PhysicsField = {
-  title: string;
-  description: string;
-  note: string;
-  href: string;
-  icon: LucideIcon;
-  rgb: string;
+const NODE_ID = "natural.physics";
+
+export const metadata: Metadata = {
+  title: "Physics | Education Station 64",
+  description:
+    "Learn physics by defining systems, matching model regimes, measuring change, testing predictions, and navigating mechanics through nuclear physics.",
 };
 
-const CLASSICAL_FIELDS: readonly PhysicsField[] = [
-  {
-    title: "Mechanics",
-    description: "Describe motion, identify interactions, and track energy and momentum through physical systems.",
-    note: "motion · forces · energy",
-    href: "/natural-science/physics/mechanics",
-    icon: Orbit,
-    rgb: "251, 146, 60",
-  },
-  {
-    title: "Waves & Optics",
-    description: "Study oscillation, propagation, interference, sound, light, reflection, refraction, and imaging.",
-    note: "oscillation · light · sound",
-    href: "/natural-science/physics/waves-optics",
-    icon: Waves,
-    rgb: "96, 165, 250",
-  },
-  {
-    title: "Thermodynamics",
-    description: "Connect microscopic motion to temperature, heat, internal energy, entropy, and macroscopic change.",
-    note: "temperature · transfer · entropy",
-    href: "/natural-science/physics/thermodynamics",
-    icon: Flame,
-    rgb: "248, 113, 113",
-  },
-  {
-    title: "Electromagnetism",
-    description: "Model charge, electric and magnetic fields, circuits, induction, and electromagnetic radiation.",
-    note: "charge · fields · circuits",
-    href: "/natural-science/physics/electromagnetism",
-    icon: Zap,
-    rgb: "34, 211, 238",
-  },
-] as const;
+type BranchMeta = {
+  icon: LucideIcon;
+  code: string;
+  question: string;
+  rgb: string;
+  bank: "familiar" | "extended";
+};
 
-const MODERN_FIELDS: readonly PhysicsField[] = [
-  {
-    title: "Relativity",
-    description: "Rebuild space, time, motion, and gravity when speed or gravitational curvature becomes significant.",
-    note: "spacetime · speed · gravity",
-    href: "/natural-science/physics/relativity",
+const BRANCH_META: Record<PhysicsBranchId, BranchMeta> = {
+  "natural.physics.mechanics": {
+    icon: Orbit,
+    code: "MEC",
+    question:
+      "How do motion, interactions, energy, and momentum change a physical system?",
+    rgb: "251,146,60",
+    bank: "familiar",
+  },
+  "natural.physics.thermodynamics": {
+    icon: Flame,
+    code: "THM",
+    question:
+      "How do microscopic possibilities become temperature, heat, work, and macroscopic direction?",
+    rgb: "248,113,113",
+    bank: "familiar",
+  },
+  "natural.physics.electromagnetism": {
+    icon: Zap,
+    code: "EMF",
+    question:
+      "How do charge, fields, potential, current, magnetism, and radiation fit together?",
+    rgb: "34,211,238",
+    bank: "familiar",
+  },
+  "natural.physics.waves-optics": {
+    icon: Waves,
+    code: "WAV",
+    question:
+      "How do oscillations propagate, overlap, reflect, refract, diffract, resonate, and form images?",
+    rgb: "96,165,250",
+    bank: "familiar",
+  },
+  "natural.physics.relativity": {
     icon: Hourglass,
-    rgb: "167, 139, 250",
+    code: "REL",
+    question:
+      "What must change when invariant laws meet high speed, precise clocks, or curved spacetime?",
+    rgb: "167,139,250",
+    bank: "extended",
   },
-  {
-    title: "Quantum Physics",
-    description: "Describe states, amplitudes, quantization, uncertainty, measurement, and nonclassical behavior.",
-    note: "states · probability · measurement",
-    href: "/natural-science/physics/quantum-mechanics",
-    icon: Atom,
-    rgb: "232, 121, 249",
+  "natural.physics.quantum-mechanics": {
+    icon: Sparkles,
+    code: "QTM",
+    question:
+      "How do states, amplitudes, quantization, uncertainty, and measurement determine probabilities?",
+    rgb: "232,121,249",
+    bank: "extended",
   },
-  {
-    title: "Atomic Physics",
-    description: "Apply quantum theory to electron structure, spectra, energy levels, transitions, and atom-light interactions.",
-    note: "electrons · spectra · photons",
-    href: "/natural-science/physics/atomic",
+  "natural.physics.atomic": {
     icon: RefreshCw,
-    rgb: "52, 211, 153",
+    code: "ATM",
+    question:
+      "How do quantized electrons, photons, spectra, and transitions organize atomic behavior?",
+    rgb: "52,211,153",
+    bank: "extended",
   },
-  {
-    title: "Nuclear Physics",
-    description: "Study nuclei, binding energy, radioactivity, fission, fusion, and nuclear reactions.",
-    note: "nuclei · decay · reactions",
-    href: "/natural-science/physics/nuclear",
+  "natural.physics.nuclear": {
     icon: Microscope,
-    rgb: "244, 114, 182",
+    code: "NUC",
+    question:
+      "How do nuclei bind, decay, split, combine, and transform through nuclear reactions?",
+    rgb: "244,114,182",
+    bank: "extended",
   },
+};
+
+const MODEL_CYCLE = [
+  ["01", "Define", "system · boundary · frame"],
+  ["02", "Measure", "quantity · unit · uncertainty"],
+  ["03", "Model", "assumptions · regime · relation"],
+  ["04", "Test", "prediction · residual · revision"],
 ] as const;
 
 export default function PhysicsPage() {
-  return (
-    <main className="relative min-h-screen overflow-x-hidden bg-[#03070d] text-slate-100 selection:bg-cyan-400/25">
-      <PhysicsBackground mode="overview" />
-      <div
-        className="pointer-events-none fixed inset-0 z-0 bg-[radial-gradient(circle_at_50%_18%,rgba(56,189,248,0.07),transparent_34%)]"
-        aria-hidden="true"
-      />
-
-      <div className="relative z-10 mx-auto w-full max-w-[1480px] px-4 pb-12 sm:px-6 xl:px-8">
-        <div className="sticky top-0 z-30 -mx-4 border-b border-white/[0.06] bg-[#03070d]/76 px-4 pb-3 pt-5 shadow-[0_18px_45px_rgba(0,0,0,0.18)] backdrop-blur-2xl sm:-mx-6 sm:px-6 xl:-mx-8 xl:px-8">
-          <DomainPageHeader
-            breadcrumbs={[
-              { label: "Natural Science", href: "/natural-science" },
-              { label: "Physics" },
-            ]}
-            eyebrow="Matter · motion · energy · fields · spacetime"
-            icon={Atom}
-            title={<span>Physics</span>}
-            subtitle="Physics builds models of the physical world. Begin with the regime that matches the system: familiar macroscopic conditions, or the high-speed, strong-gravity, atomic, and subatomic regimes where classical assumptions stop working."
-            accentRgb="56, 189, 248"
-            titleClassName="font-mono text-[clamp(2.6rem,4.6vw,5rem)] font-semibold uppercase leading-[0.86] tracking-[-0.058em] text-[#f7fbff]"
-            headerClassName="border-white/[0.08]"
-          />
-        </div>
-
-        <section className="mt-5 grid items-stretch gap-5 xl:grid-cols-2">
-          <RegimePanel
-            kind="classical"
-            title="Classical Physics"
-            condition="Best fit: ordinary speeds, macroscopic scales, and weak gravity."
-            description="Classical models describe most everyday systems extremely well. They treat motion, fields, waves, and bulk matter with continuous quantities and deterministic laws."
-            fields={CLASSICAL_FIELDS}
-          />
-
-          <RegimePanel
-            kind="modern"
-            title="Modern Physics"
-            condition="Required for near-light speed, strong gravity, and atomic or subatomic scales."
-            description="Modern physics extends the classical picture when its assumptions fail. Relativity changes spacetime; quantum theory changes how physical states and measurements behave."
-            fields={MODERN_FIELDS}
-          />
-        </section>
-
-        <section className="mt-5 overflow-hidden rounded-[30px] border border-white/[0.09] bg-black/[0.08] shadow-[0_28px_90px_rgba(0,0,0,0.18)] backdrop-blur-md">
-          <div className="grid lg:grid-cols-[310px_1fr]">
-            <div className="border-b border-white/[0.07] p-6 lg:border-b-0 lg:border-r">
-              <div className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.15em] text-cyan-300/72">
-                <Gauge size={13} /> Choosing a model
-              </div>
-              <h2 className="mt-2 text-[24px] font-semibold tracking-[-0.035em] text-white">
-                The conditions tell you which theory to use.
-              </h2>
-              <p className="mt-3 text-[12px] leading-6 text-slate-400">
-                A newer theory does not make an older one useless. It explains where the older model works, and what must change outside that range.
-              </p>
-            </div>
-
-            <div className="grid md:grid-cols-3">
-              <ModelChoice
-                icon={Orbit}
-                question="Are speeds far below light speed and gravity relatively weak?"
-                answer="Start with classical physics."
-                detail="Mechanics, thermodynamics, electromagnetism, and waves cover most human-scale phenomena."
-                rgb="251, 146, 60"
-                edgeClass="border-b md:border-b-0 md:border-r"
-              />
-              <ModelChoice
-                icon={Hourglass}
-                question="Are speeds close to light speed, or is gravity strongly curving spacetime?"
-                answer="Use relativity."
-                detail="Special relativity handles inertial high-speed motion; general relativity handles gravity as geometry."
-                rgb="167, 139, 250"
-                edgeClass="border-b md:border-b-0 md:border-r"
-              />
-              <ModelChoice
-                icon={Atom}
-                question="Does the system depend on atoms, nuclei, photons, or quantized states?"
-                answer="Use quantum physics."
-                detail="Atomic and nuclear physics apply quantum rules to particular kinds of matter and interaction."
-                rgb="232, 121, 249"
-                edgeClass=""
-              />
-            </div>
-          </div>
-        </section>
-      </div>
-    </main>
-  );
-}
-
-function RegimePanel({
-  kind,
-  title,
-  condition,
-  description,
-  fields,
-}: {
-  kind: "classical" | "modern";
-  title: string;
-  condition: string;
-  description: string;
-  fields: readonly PhysicsField[];
-}) {
-  const classical = kind === "classical";
-  const accent = classical ? "251, 146, 60" : "192, 132, 252";
-
-  return (
-    <section
-      className="relative flex h-full flex-col overflow-hidden rounded-[34px] border shadow-[0_34px_100px_rgba(0,0,0,0.20)]"
-      style={{
-        borderColor: `rgba(${accent},0.16)`,
-        background: classical
-          ? "linear-gradient(145deg, rgba(251,146,60,0.055), rgba(3,10,17,0.72) 48%, rgba(34,211,238,0.025))"
-          : "linear-gradient(145deg, rgba(167,139,250,0.055), rgba(5,6,16,0.72) 48%, rgba(232,121,249,0.03))",
-      }}
-    >
-      <RegimeArtwork kind={kind} />
-
-      <div className="relative z-10 min-h-[238px] border-b border-white/[0.07] p-6 sm:p-7">
-        <div
-          className="font-mono text-[10px] font-semibold uppercase tracking-[0.16em]"
-          style={{ color: `rgba(${accent},0.78)` }}
-        >
-          {classical ? "Everyday regime" : "Extended regime"}
-        </div>
-        <h2 className="mt-2 text-[clamp(1.9rem,3vw,2.7rem)] font-semibold tracking-[-0.045em] text-white">
-          {title}
-        </h2>
-        <p
-          className="mt-4 flex min-h-[42px] max-w-xl items-center border-l-2 pl-3 font-mono text-[9px] uppercase leading-5 tracking-[0.10em]"
-          style={{ color: `rgba(${accent},0.72)`, borderColor: `rgba(${accent},0.42)` }}
-        >
-          {condition}
-        </p>
-        <p className="mt-3 max-w-3xl text-[13px] leading-6 text-slate-300/78">{description}</p>
-      </div>
-
-      <nav aria-label={`${title} fields`} className="relative z-10 grid flex-1 sm:grid-cols-2">
-        {fields.map((field, index) => (
-          <FieldLink key={field.href} field={field} edgeClass={fieldEdgeClass(index)} />
-        ))}
-      </nav>
-    </section>
-  );
-}
-
-function FieldLink({ field, edgeClass }: { field: PhysicsField; edgeClass: string }) {
-  const Icon = field.icon;
-
-  return (
-    <Link
-      href={field.href}
-      className={`group relative flex min-h-[205px] flex-col overflow-hidden p-5 transition-colors duration-300 sm:p-6 ${edgeClass}`}
-      style={{ borderColor: "rgba(255,255,255,0.07)" }}
-    >
-      <div
-        className="absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-        style={{ background: `radial-gradient(circle at 24% 20%, rgba(${field.rgb},0.105), transparent 56%)` }}
-      />
-
-      <div className="relative z-10 flex items-start justify-between gap-4">
-        <div
-          className="flex h-11 w-11 items-center justify-center rounded-[15px] border"
-          style={{
-            color: `rgb(${field.rgb})`,
-            borderColor: `rgba(${field.rgb},0.23)`,
-            background: `rgba(${field.rgb},0.055)`,
-            boxShadow: `0 0 28px rgba(${field.rgb},0.08)`,
-          }}
-        >
-          <Icon size={19} />
-        </div>
-        <ArrowRight
-          size={15}
-          className="mt-2 text-slate-600 transition-transform duration-300 group-hover:translate-x-1"
-          style={{ color: `rgba(${field.rgb},0.58)` }}
-        />
-      </div>
-
-      <div className="relative z-10 mt-5">
-        <h3 className="text-[19px] font-semibold tracking-[-0.025em] text-white">{field.title}</h3>
-        <p className="mt-2 text-[12px] leading-5 text-slate-400">{field.description}</p>
-      </div>
-
-      <div
-        className="relative z-10 mt-auto pt-5 font-mono text-[9px] uppercase tracking-[0.11em]"
-        style={{ color: `rgba(${field.rgb},0.64)` }}
-      >
-        {field.note}
-      </div>
-    </Link>
-  );
-}
-
-function RegimeArtwork({ kind }: { kind: "classical" | "modern" }) {
-  if (kind === "classical") {
-    return (
-      <div className="pointer-events-none absolute inset-0 opacity-60" aria-hidden="true">
-        <div
-          className="absolute inset-0 opacity-40"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(56,189,248,0.045) 1px, transparent 1px), linear-gradient(90deg, rgba(56,189,248,0.045) 1px, transparent 1px)",
-            backgroundSize: "46px 46px",
-            maskImage: "linear-gradient(135deg, black, transparent 72%)",
-          }}
-        />
-        <svg viewBox="0 0 800 680" className="absolute inset-0 h-full w-full" preserveAspectRatio="none">
-          <path
-            d="M50 190 C170 80 305 85 430 205 S650 330 760 180"
-            fill="none"
-            stroke="rgba(251,146,60,0.15)"
-            strokeWidth="2"
-          />
-          <path
-            d="M38 500 C120 440 180 560 260 500 S400 440 480 500 S640 560 770 470"
-            fill="none"
-            stroke="rgba(96,165,250,0.16)"
-            strokeWidth="2"
-          />
-          <circle cx="590" cy="180" r="74" fill="none" stroke="rgba(34,211,238,0.11)" strokeWidth="1.5" />
-          <circle
-            cx="590"
-            cy="180"
-            r="118"
-            fill="none"
-            stroke="rgba(34,211,238,0.06)"
-            strokeWidth="1"
-            strokeDasharray="5 10"
-          />
-        </svg>
-      </div>
-    );
+  const context = requireCurriculumPageContext(NODE_ID);
+  const directIds = context.children.map((branch) => branch.id);
+  if (
+    directIds.length !== PHYSICS_DIRECT_BRANCH_IDS.length ||
+    directIds.some((id, index) => id !== PHYSICS_DIRECT_BRANCH_IDS[index])
+  ) {
+    throw new Error("Physics branches must match the curriculum registry");
   }
 
+  const familiar = context.children.filter(
+    (branch) => BRANCH_META[branch.id as PhysicsBranchId].bank === "familiar"
+  );
+  const extended = context.children.filter(
+    (branch) => BRANCH_META[branch.id as PhysicsBranchId].bank === "extended"
+  );
+  const branchRoutes = context.children.map((branch) => ({
+    id: branch.id as PhysicsBranchId,
+    label: branch.label,
+    href: branch.href,
+  }));
+
   return (
-    <div className="pointer-events-none absolute inset-0 opacity-65" aria-hidden="true">
-      <div
-        className="absolute inset-0 opacity-45"
-        style={{
-          backgroundImage: "radial-gradient(circle, rgba(232,121,249,0.13) 0 1px, transparent 1.5px)",
-          backgroundSize: "31px 31px",
-          maskImage: "linear-gradient(225deg, black, transparent 76%)",
-        }}
-      />
-      <svg viewBox="0 0 800 680" className="absolute inset-0 h-full w-full" preserveAspectRatio="none">
-        <path
-          d="M400 82 L245 360 L555 360 Z"
-          fill="rgba(167,139,250,0.022)"
-          stroke="rgba(167,139,250,0.12)"
-          strokeWidth="1.5"
+    <SceneFrame
+      background={<PhysicsRootBackground />}
+      className="bg-[#071019] text-slate-100 selection:bg-sky-300/25"
+      maxWidthClassName="max-w-[1600px]"
+      headerBackground="rgba(7,16,25,0.50)"
+      header={
+        <DomainPageHeader
+          breadcrumbs={context.breadcrumbs}
+          eyebrow="System · scale · interaction · state · prediction · measurement"
+          eyebrowStyle="rule"
+          icon={Atom}
+          title={<span>Physics</span>}
+          subtitle="Physics makes the physical world testable. Define a system and reference frame, measure quantities with units and uncertainty, choose a model whose assumptions fit the regime, then compare its prediction with what happens. The equations matter because that full contract travels with them."
+          accentRgb="125, 211, 252"
+          titleClassName="font-sans text-[clamp(3rem,6vw,6.7rem)] font-semibold leading-[0.82] tracking-[-0.074em] text-[#f0f9ff]"
+          headerClassName="border-sky-100/[0.10]"
         />
-        <ellipse
-          cx="590"
-          cy="180"
-          rx="122"
-          ry="58"
-          fill="none"
-          stroke="rgba(52,211,153,0.11)"
-          strokeWidth="1.5"
-          transform="rotate(-24 590 180)"
-        />
-        <ellipse
-          cx="590"
-          cy="180"
-          rx="122"
-          ry="58"
-          fill="none"
-          stroke="rgba(232,121,249,0.08)"
-          strokeWidth="1.5"
-          transform="rotate(38 590 180)"
-        />
-        <circle cx="590" cy="180" r="9" fill="rgba(244,114,182,0.32)" />
-        <path
-          d="M80 530 C200 420 310 620 430 500 S650 420 760 550"
-          fill="none"
-          stroke="rgba(232,121,249,0.10)"
-          strokeWidth="2"
-          strokeDasharray="4 9"
-        />
-      </svg>
-    </div>
+      }
+    >
+      <section className="relative isolate mt-6 border-y border-sky-100/[0.11] py-6">
+        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(7,16,25,0.56),transparent_27%,transparent_73%,rgba(7,16,25,0.54))] backdrop-blur-[2px]" />
+        <div className="relative">
+          <div className="text-sky-200/66 flex items-center gap-2 font-mono text-[11px] font-semibold uppercase tracking-[0.12em]">
+            <Gauge size={14} aria-hidden="true" /> Primary navigation · model
+            families
+          </div>
+          <h2 className="mt-2 max-w-5xl text-[clamp(2rem,3.8vw,3.8rem)] font-semibold leading-[0.93] tracking-[-0.055em] text-white">
+            Eight routes share one discipline; their useful boundaries come from
+            the system and scale.
+          </h2>
+          <p className="mt-3 max-w-4xl text-[14px] leading-6 text-slate-300/70">
+            Every destination below is a direct curriculum child. The two banks
+            are analytical cues, not extra ontology levels: familiar-scale
+            models on the left, extended or specialized regimes on the right.
+          </p>
+
+          <div className="mt-6 grid gap-4 xl:grid-cols-[minmax(0,1fr)_260px_minmax(0,1fr)]">
+            <div className="xl:col-start-1 xl:row-start-1">
+              <BranchBank
+                label="Familiar-scale toolkits"
+                branches={familiar}
+                side="left"
+              />
+            </div>
+            <div className="xl:col-start-3 xl:row-start-1">
+              <BranchBank
+                label="Extended & specialized regimes"
+                branches={extended}
+                side="right"
+              />
+            </div>
+            <div className="flex flex-col justify-center border-y border-white/[0.08] py-4 xl:col-start-2 xl:row-start-1 xl:border-x xl:border-y-0 xl:px-4 xl:py-0">
+              <div className="text-orange-200/58 font-mono text-[10px] font-semibold uppercase tracking-[0.12em]">
+                Reusable investigation cycle
+              </div>
+              <div className="mt-3 grid grid-cols-2 gap-px overflow-hidden rounded-[18px] border border-white/[0.07] bg-white/[0.06] xl:grid-cols-1">
+                {MODEL_CYCLE.map(([number, label, detail]) => (
+                  <div key={label} className="bg-[#071019]/92 p-3.5">
+                    <div className="flex items-center gap-3">
+                      <span className="font-mono text-[10px] text-sky-200/40">
+                        {number}
+                      </span>
+                      <strong className="text-white/82 text-[12px]">
+                        {label}
+                      </strong>
+                    </div>
+                    <span className="mt-1 block pl-7 font-mono text-[9px] uppercase tracking-[0.07em] text-slate-600">
+                      {detail}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="mt-12">
+        <PhysicsRegimeLab branches={branchRoutes} />
+      </section>
+
+      <section className="mt-20">
+        <PhysicsMeasurementBench />
+      </section>
+
+      <section className="mt-20 border-t border-sky-100/[0.10] pt-6">
+        <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_430px] lg:items-end">
+          <div>
+            <div className="text-sky-200/58 flex items-center gap-2 font-mono text-[11px] font-semibold uppercase tracking-[0.11em]">
+              <Ruler size={14} aria-hidden="true" /> Finite reference collection
+              · exact SI definitions
+            </div>
+            <h2 className="mt-2 max-w-4xl text-[clamp(1.9rem,3.4vw,3.3rem)] font-semibold leading-[0.95] tracking-[-0.05em] text-white">
+              Some constants are not merely measured numbers; they help define
+              the units used to measure everything else.
+            </h2>
+          </div>
+          <p className="text-[13px] leading-6 text-slate-400">
+            These four values are exact in the revised SI. Do not copy that
+            status onto every physical constant: many CODATA values are
+            measured, correlated, uncertain, versioned, and periodically
+            adjusted.
+          </p>
+        </div>
+
+        <div className="mt-6 grid gap-px overflow-hidden rounded-[24px] border border-white/[0.08] bg-white/[0.06] sm:grid-cols-2 xl:grid-cols-4">
+          {PHYSICS_DEFINING_CONSTANTS.map((constant) => (
+            <article key={constant.id} className="bg-[#071019]/94 p-5 sm:p-6">
+              <div className="flex items-start justify-between gap-3">
+                <span className="text-orange-200/86 font-serif text-[34px] italic">
+                  {constant.symbol}
+                </span>
+                <span className="border-emerald-200/16 text-emerald-200/58 rounded-full border px-2 py-1 font-mono text-[9px] uppercase tracking-[0.09em]">
+                  exact
+                </span>
+              </div>
+              <h3 className="text-white/84 mt-3 text-[13px] font-semibold">
+                {constant.name}
+              </h3>
+              <div className="mt-4 font-mono text-[17px] leading-6 text-sky-100">
+                {constant.value}
+              </div>
+              <div className="text-sky-200/52 mt-1 font-mono text-[11px]">
+                {constant.unit}
+              </div>
+              <p className="mt-4 border-t border-white/[0.07] pt-3 text-[11px] leading-5 text-slate-600">
+                {constant.connects}
+              </p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="mt-20">
+        <PhysicsEvidenceReview />
+      </section>
+
+      <section className="bg-[#071019]/48 mt-20 overflow-hidden border-y border-white/[0.09] backdrop-blur-xl">
+        <div className="grid lg:grid-cols-[minmax(0,0.78fr)_minmax(0,1.22fr)]">
+          <div className="border-b border-white/[0.07] p-5 sm:p-7 lg:border-b-0 lg:border-r">
+            <div className="text-orange-200/54 flex items-center gap-2 font-mono text-[11px] font-semibold uppercase tracking-[0.11em]">
+              <ScanLine size={14} aria-hidden="true" /> Reference-data boundary
+              · future repository
+            </div>
+            <h2 className="mt-3 text-[clamp(1.8rem,3.2vw,3rem)] font-semibold leading-[0.96] tracking-[-0.048em] text-white">
+              A constant or spectral line needs its definition, uncertainty,
+              version, and query context.
+            </h2>
+            <p className="mt-4 text-[13px] leading-6 text-slate-400">
+              The root makes no render-time provider request. A future physics
+              reference adapter can cache official records while retaining
+              whether a value is exact or measured, its unit and uncertainty,
+              release, correlations, species, ionization stage, wavelength
+              convention, observed or derived status, and bibliography.
+            </p>
+          </div>
+          <div className="grid gap-px bg-white/[0.055] sm:grid-cols-2">
+            {[
+              [
+                "NIST · Fundamental Physical Constants",
+                "The current reference distinguishes exact SI-defining constants from measured CODATA values and retains adjustment history, units, uncertainty, and correlations.",
+                "https://physics.nist.gov/cuu/Constants/",
+              ],
+              [
+                "NIST · Atomic Spectra Database",
+                "Query forms expose critically evaluated lines, levels, and ionization energies. Species, charge state, units, wavelength medium, uncertainty, output fields, version, and references must travel with a result.",
+                "https://physics.nist.gov/asd",
+              ],
+            ].map(([label, note, href]) => (
+              <a
+                key={label}
+                href={href}
+                target="_blank"
+                rel="noreferrer"
+                className="bg-[#071019]/94 group px-5 py-6 transition hover:bg-[#0a1723]"
+              >
+                <strong className="text-white/82 flex items-center justify-between gap-3 text-[12px] transition group-hover:text-sky-100">
+                  {label}
+                  <ArrowUpRight
+                    size={13}
+                    className="text-sky-200/40"
+                    aria-hidden="true"
+                  />
+                </strong>
+                <span className="mt-3 block text-[11px] leading-5 text-slate-500">
+                  {note}
+                </span>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+    </SceneFrame>
   );
 }
 
-function ModelChoice({
-  icon: Icon,
-  question,
-  answer,
-  detail,
-  rgb,
-  edgeClass,
+function BranchBank({
+  label,
+  branches,
+  side,
 }: {
-  icon: LucideIcon;
-  question: string;
-  answer: string;
-  detail: string;
-  rgb: string;
-  edgeClass: string;
+  label: string;
+  branches: readonly CurriculumNode[];
+  side: "left" | "right";
 }) {
   return (
-    <div className={`relative min-h-[245px] p-6 ${edgeClass}`} style={{ borderColor: "rgba(255,255,255,0.07)" }}>
+    <nav aria-label={label}>
       <div
-        className="flex items-center gap-2 font-mono text-[9px] font-semibold uppercase tracking-[0.13em]"
-        style={{ color: `rgba(${rgb},0.68)` }}
+        className={`mb-2 font-mono text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-500 ${
+          side === "right" ? "xl:text-right" : ""
+        }`}
       >
-        <Icon size={13} /> condition
+        {label}
       </div>
-      <p className="mt-4 text-[13px] font-medium leading-6 text-slate-300">{question}</p>
-      <div className="mt-4 text-[17px] font-semibold" style={{ color: `rgba(${rgb},0.9)` }}>
-        {answer}
+      <div className="grid gap-2 sm:grid-cols-2">
+        {branches.map((branch) => (
+          <BranchCard key={branch.id} branch={branch} />
+        ))}
       </div>
-      <p className="mt-2 text-[11px] leading-5 text-slate-500">{detail}</p>
-    </div>
+    </nav>
   );
 }
 
-function fieldEdgeClass(index: number) {
-  if (index === 0) return "border-b sm:border-r";
-  if (index === 1) return "border-b";
-  if (index === 2) return "border-b sm:border-b-0 sm:border-r";
-  return "";
+function BranchCard({ branch }: { branch: CurriculumNode }) {
+  const meta = BRANCH_META[branch.id as PhysicsBranchId];
+  const Icon = meta.icon;
+  const content = (
+    <>
+      <div className="flex items-start justify-between gap-4">
+        <span
+          className="flex h-10 w-10 items-center justify-center rounded-[13px] border"
+          style={{
+            color: `rgb(${meta.rgb})`,
+            borderColor: `rgba(${meta.rgb},0.24)`,
+            background: `rgba(${meta.rgb},0.055)`,
+          }}
+        >
+          <Icon size={18} aria-hidden="true" />
+        </span>
+        <span
+          className="font-mono text-[9px] font-semibold tracking-[0.12em]"
+          style={{ color: `rgba(${meta.rgb},0.54)` }}
+        >
+          {meta.code}
+        </span>
+      </div>
+      <h3 className="mt-4 text-[17px] font-semibold tracking-[-0.025em] text-white">
+        {branch.label}
+      </h3>
+      <p className="mt-2 text-[12px] leading-5 text-slate-400">
+        {meta.question}
+      </p>
+      <span className="mt-auto flex items-center justify-between gap-3 pt-5 font-mono text-[9px] uppercase tracking-[0.09em] text-slate-600">
+        {branch.status === "active" ? "Open field" : "Planned field"}
+        {branch.status === "active" ? (
+          <ArrowRight size={13} aria-hidden="true" />
+        ) : (
+          <span className="h-2 w-2 rounded-full border border-white/[0.14]" />
+        )}
+      </span>
+    </>
+  );
+
+  const className =
+    "group flex min-h-[205px] flex-col rounded-[20px] border border-white/[0.08] bg-[#071019]/62 p-5 backdrop-blur-[10px] transition hover:border-white/[0.16] hover:bg-[#0a1723]/76 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-200/60";
+
+  return branch.status === "active" ? (
+    <Link href={branch.href} className={className}>
+      {content}
+    </Link>
+  ) : (
+    <div className={`${className} opacity-72`}>{content}</div>
+  );
 }

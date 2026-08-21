@@ -6,7 +6,6 @@ import { formalScienceVocab } from "./f/formal-science";
 import { formalScienceLocalVocab } from "./f/formal-science-local";
 import { logicVocab } from "./l/logic";
 import { naturalScienceVocab } from "./n/natural-science";
-import { physicsVocab } from "./p/physics";
 import { propLogicVocab } from "./p/propositional-logic";
 import { systemsScienceVocab } from "./s/systems-science";
 import { ASTRONOMY_VOCABULARY_REGISTRATIONS } from "./astronomy-node-registry";
@@ -27,6 +26,7 @@ import { INFORMATION_SCIENCE_VOCABULARY_REGISTRATIONS } from "./information-scie
 import { HISTORY_VOCABULARY_REGISTRATIONS } from "./history-node-registry";
 import { AGRICULTURE_VOCABULARY_REGISTRATIONS } from "./agriculture-node-registry";
 import { SOCIOLOGY_VOCABULARY_REGISTRATIONS } from "./sociology-node-registry";
+import { PHYSICS_VOCABULARY_REGISTRATIONS } from "./physics-node-registry";
 import { buildCurriculumVocabularyScopes } from "./aggregate.mjs";
 import { composeVocabulary } from "./compose";
 import { MATHEMATICS_VOCABULARY_REGISTRATIONS } from "./mathematics-node-registry";
@@ -470,6 +470,34 @@ const chemistryVocabulary = composeVocabulary(
   ...chemistryScope.groups.map((group) => group.terms)
 );
 
+const physicsNode = curriculumRegistry.getNode("natural.physics");
+if (!physicsNode) {
+  throw new Error("Physics curriculum node is required for vocabulary scopes");
+}
+
+const physicsVocabularyScopes = buildCurriculumVocabularyScopes({
+  roots: [physicsNode],
+  registrations: PHYSICS_VOCABULARY_REGISTRATIONS,
+  accent: "sky",
+  accentByNodeId: {
+    "natural.physics.mechanics": "amber",
+    "natural.physics.thermodynamics": "rose",
+    "natural.physics.relativity": "violet",
+    "natural.physics.quantum-mechanics": "violet",
+  },
+});
+
+const physicsScope = physicsVocabularyScopes.find(
+  (scope) => scope.path === physicsNode.href
+);
+if (!physicsScope) {
+  throw new Error("Physics vocabulary scope could not be derived");
+}
+
+const physicsVocabulary = composeVocabulary(
+  ...physicsScope.groups.map((group) => group.terms)
+);
+
 const musicNode = curriculumRegistry.getNode("humanities.music");
 if (!musicNode) {
   throw new Error("Music curriculum node is required for vocabulary scopes");
@@ -672,6 +700,7 @@ export const socialScienceVocabularyScopes: VocabularyScope[] = [
 ];
 
 export const naturalScienceVocabularyScopes: VocabularyScope[] = [
+  ...physicsVocabularyScopes,
   ...biologyVocabularyScopes,
   ...astronomyVocabularyScopes,
   ...earthScienceVocabularyScopes,
@@ -686,7 +715,13 @@ export const naturalScienceVocabularyScopes: VocabularyScope[] = [
         label: "Natural Science",
         terms: naturalScienceVocab,
       },
-      { id: "physics", label: "Physics", terms: physicsVocab },
+      {
+        id: physicsNode.id,
+        label: physicsNode.label,
+        terms: physicsVocabulary,
+        sourceNodeId: physicsNode.id,
+        sourcePath: physicsNode.href,
+      },
       {
         id: chemistryNode.id,
         label: chemistryNode.label,

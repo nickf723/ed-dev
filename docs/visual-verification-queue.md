@@ -300,6 +300,25 @@ Verify:
 
 **Status:** Targeted React/Next lint, TypeScript, deterministic sociology-model tests, vocabulary aggregation, all three informational audits, the 404-page production build, and generated-HTML branch/non-link/seed/source/metadata/no-random-canvas checks passed; rendered responsive and interaction verification required
 
+---
+
+### Physics measurement field
+
+**Route:** `/natural-science/physics`
+
+Verify:
+
+- all eight direct active branches preserve registry order and destination parity inside two analytical—not curricular—banks
+- the fixed trajectory, velocity vector, field response, wave trace, grid, and ruler form a readable measurement world without animated glow or first-render shift
+- all eight regime scenarios select the correct primary route and every companion link resolves from server-provided registry context
+- initial positions −4 m and +8 m across 3 s produce +12 m displacement, 12 m distance, +4 m/s average velocity, and 4 m/s average speed
+- reversed, coincident, and endpoint-overlap states keep marker labels and signed/nonnegative outputs coordinated
+- the four exact defining constants remain legible at narrow widths and do not imply exactness for all CODATA values
+- all four evidence cases and all 35 vocabulary terms preserve tested ownership and feedback
+- NIST constants and ASD links keep exact/measured status, unit, uncertainty, version, species, ionization, wavelength convention, observed/derived status, and bibliography boundaries visible
+
+**Status:** Targeted React/Next lint, TypeScript, deterministic physics-model and vocabulary aggregation tests, all three informational audits, the 404-page production build, and generated-HTML branch/initial-math/constant/source/assessment/metadata/no-instability checks passed; rendered responsive and interaction verification required
+
 **Status:** Targeted React/Next lint, TypeScript, deterministic Information Science, entropy, retrieval, taxonomy, ontology, and evidence fixtures, vocabulary aggregation, all three informational audits, the 404-page production build, and generated-HTML ancestry/hierarchy/active-link/planned-non-link/model/source/background/no-canvas checks passed. The required browser CLI is unavailable, so rendered responsive and interaction verification remains pending. Remote publication and the zero-deployment guard are recorded in the commit handoff because they occur after this entry is committed.
 
 ---
