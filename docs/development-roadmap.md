@@ -131,11 +131,13 @@ Priority examples:
 
 ### Education · Developed
 
-- Preserved the Experience → Practice → Feedback → Transfer idea as one useful recurring planning loop while explicitly rejecting it as a universal stage theory.
-- Added a learning-evidence wall showing repeated attempts, feedback, revision, concept-map changes, and transfer to a new context with one slow review strip.
-- Added a nine-branch focused curriculum covering learning sciences, curriculum/instruction, assessment, instructional design, accessibility/special education, educational technology, learning environments, policy/systems, and teacher learning.
-- Added an alignment studio that compares generic learning goals, practice opportunities, and evidence tasks using direct / partial / weak alignment without ranking teaching methods or predicting learning.
-- Full 378-page Next.js preview build reached READY.
+- Preserves nine direct registry-owned branches inside three overlapping folio sheets while keeping every planned route inert and rejecting the sheets as false hierarchy or sequence.
+- Preserves the Experience → Practice → Feedback → Transfer idea as one useful recurring planning loop while explicitly rejecting it as a universal stage theory.
+- Moves the complete goal/activity/evidence matrix and next-move rules into one deterministic model shared by the alignment studio and regression tests.
+- Adds a four-case evidence conference distinguishing direct alignment, actionable feedback, reliability from validity, and access demands from the intended learning construct.
+- Gives ten root concepts and two terms in each direct branch one narrowest vocabulary owner, for 28 terms that aggregate into Applied Science.
+- Replaces the moving review strip with a fully static server-rendered evidence wall and links official WWC, NCES CCD, CAST UDL, and IDEA sources under explicit research, data, design, legal, and no-live-fetch boundaries.
+- The 413-route production build and generated-HTML contract checks pass; rendered responsive and interaction verification remains a separate queued requirement.
 
 ### Business · Developed
 

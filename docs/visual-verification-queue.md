@@ -349,6 +349,27 @@ Verify:
 
 ---
 
+### Education learning-evidence wall and alignment conference
+
+**Route:** `/applied-science/education`
+
+Verify:
+
+- all nine direct branches preserve registry order and remain visibly planned, inert, and distributed exactly once across the three conceptual folios
+- the overlapping desktop sheets remain legible without clipping at wide and narrower desktop sizes; the mobile folios flatten cleanly and retain complete descriptions
+- the folio sheets read as overlapping work areas rather than curriculum parents, sequence, or learner stages
+- the static learning-evidence wall establishes attempt → feedback → revision → transfer and changing concept connections without animation, random values, viewport reads, or first-render movement
+- all goal, activity, and evidence combinations update the direct / partial / weak labels and next-design question consistently; the default explanation combination begins directly aligned
+- all four evidence cases preserve correct and incorrect feedback across case switching and reset
+- the loop remains framed as a reusable lens rather than a universal stage theory
+- all 28 vocabulary terms retain tested narrow ownership and aggregate through Education into Applied Science without duplicate IDs
+- WWC, NCES CCD, CAST UDL, and IDEA links preserve research-review, descriptive-data, design-reference, legal-source, and no-render-fetch boundaries
+- keyboard focus, 200% zoom, reduced motion, and required text remain usable across the folio, alignment controls, assessment, and source shelf
+
+**Status:** Deterministic education-model and vocabulary aggregation tests, TypeScript, targeted React/Next lint, all three informational audits, the 413-route production build, and generated-HTML hierarchy/planned-non-link/default-model/assessment/source/metadata/background-stability checks passed. The production server cannot start reliably in this workspace because Node reports `uv_interface_addresses`, and the required browser CLI is unavailable, so rendered console, responsive, and interaction verification remains pending. Remote publication and the zero-deployment guard are recorded in the commit handoff because they occur after this entry is committed.
+
+---
+
 ## Priority 0: constitution-built Algebra lessons
 
 These lessons were built or substantially rebuilt without a trusted rendered preview. Their instructional structure is intentional; visual claims remain provisional until inspected.

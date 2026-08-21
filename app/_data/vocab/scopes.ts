@@ -25,6 +25,7 @@ import { PSYCHOLOGY_VOCABULARY_REGISTRATIONS } from "./psychology-node-registry"
 import { INFORMATION_SCIENCE_VOCABULARY_REGISTRATIONS } from "./information-science-node-registry";
 import { HISTORY_VOCABULARY_REGISTRATIONS } from "./history-node-registry";
 import { AGRICULTURE_VOCABULARY_REGISTRATIONS } from "./agriculture-node-registry";
+import { EDUCATION_VOCABULARY_REGISTRATIONS } from "./education-node-registry";
 import { SOCIOLOGY_VOCABULARY_REGISTRATIONS } from "./sociology-node-registry";
 import { PHYSICS_VOCABULARY_REGISTRATIONS } from "./physics-node-registry";
 import { PHILOSOPHY_VOCABULARY_REGISTRATIONS } from "./philosophy-node-registry";
@@ -604,6 +605,35 @@ const agricultureVocabulary = composeVocabulary(
   ...agricultureScope.groups.map((group) => group.terms)
 );
 
+const educationNode = curriculumRegistry.getNode("applied.education");
+if (!educationNode) {
+  throw new Error(
+    "Education curriculum node is required for vocabulary scopes"
+  );
+}
+
+const educationVocabularyScopes = buildCurriculumVocabularyScopes({
+  roots: [educationNode],
+  registrations: EDUCATION_VOCABULARY_REGISTRATIONS,
+  accent: "sky",
+  accentByNodeId: {
+    "applied.education.assessment": "emerald",
+    "applied.education.accessibility-special-education": "rose",
+    "applied.education.teacher-learning": "violet",
+  },
+});
+
+const educationScope = educationVocabularyScopes.find(
+  (scope) => scope.path === educationNode.href
+);
+if (!educationScope) {
+  throw new Error("Education vocabulary scope could not be derived");
+}
+
+const educationVocabulary = composeVocabulary(
+  ...educationScope.groups.map((group) => group.terms)
+);
+
 export const humanitiesVocabularyScopes: VocabularyScope[] = [
   ...philosophyVocabularyScopes,
   ...historyVocabularyScopes,
@@ -659,6 +689,7 @@ export const appliedScienceVocabularyScopes: VocabularyScope[] = [
   ...materialsScienceVocabularyScopes,
   ...architectureVocabularyScopes,
   ...agricultureVocabularyScopes,
+  ...educationVocabularyScopes,
   {
     path: "/applied-science",
     title: "Applied Science",
@@ -691,6 +722,13 @@ export const appliedScienceVocabularyScopes: VocabularyScope[] = [
         terms: agricultureVocabulary,
         sourceNodeId: agricultureNode.id,
         sourcePath: agricultureNode.href,
+      },
+      {
+        id: educationNode.id,
+        label: educationNode.label,
+        terms: educationVocabulary,
+        sourceNodeId: educationNode.id,
+        sourcePath: educationNode.href,
       },
     ],
   },

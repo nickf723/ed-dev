@@ -78,6 +78,8 @@ import { historyVocab } from "./h/history";
 import { historyBranchVocab } from "./h/history-branches";
 import { agricultureVocab } from "./a/agriculture";
 import { agricultureBranchVocab } from "./a/agriculture-branches";
+import { educationVocab } from "./e/education";
+import { educationBranchVocab } from "./e/education-branches";
 
 export { mathVocab, abstractAlgebraVocab, ludologyVocab, gameDesignVocab };
 
@@ -157,5 +159,7 @@ export const ALL_VOCAB: VocabTerm[] = composeVocabulary(
   historyVocab,
   historyBranchVocab,
   agricultureVocab,
-  agricultureBranchVocab
+  agricultureBranchVocab,
+  educationVocab,
+  educationBranchVocab
 );
