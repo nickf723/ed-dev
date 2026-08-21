@@ -528,3 +528,26 @@ territory canvas, and the unused ideology quadrant is removed. The route is
 server-owned while the coalition and assessment remain small client islands.
 It avoids Astronomy's light cone, Religion's comparative dossier, and the
 reduction of political analysis to decorative teams.
+
+---
+
+## 25. Current cohesion checkpoint · Medicine
+
+Medicine keeps ten direct branches while using four clinical-task bands only
+as relationship cues. Anatomy & Physiology remains active; Pathology,
+Diagnostics, Pharmacology, Procedures, Clinical Reasoning, Specialties, Acute
+Care, Longitudinal Care, and Ethics remain honest planned peers. The root
+advances from registry-owned navigation through the preserved synthetic
+reasoning laboratory, a body-system lens, four safety guardrails, a four-case
+evidence review, and official record boundaries. One tested model owns branch
+parity, five reasoning stages, evidence weights, exact diagnostic-table
+arithmetic, and assessment fixtures. Thirty-nine narrowly owned terms aggregate
+through Medicine into Applied Science.
+
+The visual grammar is clinical and revisable: pulse traces, a staged reasoning
+loop, evidence packets, anonymous working hypotheses, a conceptual body-system
+lens, and explicit follow-up. The deterministic server-rendered field shares
+its stage model with the client laboratory; only the bounded reasoning, anatomy,
+and review islands hydrate. It avoids Political Science's institutional
+chamber, Astronomy's deep-time cone, decorative anatomy as explanation, and any
+implication that a fictional model can diagnose or recommend care.

@@ -30,6 +30,7 @@ import { sociologyBranchVocab } from "./s/sociology-branches";
 import { politicalScienceVocab } from "./p/political-science";
 import { politicalScienceBranchVocab } from "./p/political-science-branches";
 import { medicineVocab } from "./m/medicine";
+import { medicineBranchVocab } from "./m/medicine-branches";
 import { anatomyPhysiologyVocab } from "./a/anatomy-physiology";
 import { skeletalSystemVocab } from "./s/skeletal-system";
 import { geographyVocab } from "./g/geography";
@@ -117,6 +118,7 @@ export const ALL_VOCAB: VocabTerm[] = composeVocabulary(
   politicalScienceVocab,
   politicalScienceBranchVocab,
   medicineVocab,
+  medicineBranchVocab,
   anatomyPhysiologyVocab,
   skeletalSystemVocab,
   geographyVocab,

@@ -348,6 +348,16 @@ Priority examples:
 - Defined future Congress.gov, World Bank Indicators, and V-Dem repository boundaries without introducing render-time fetching.
 - The 413-page production build reached READY.
 
+### Medicine root · Remastered
+
+- Preserved the deterministic pulse field, synthetic evidence-packet lab, body-system lens, active Anatomy & Physiology route, and full ten-field curriculum.
+- Replaced the compressed branch sidebar with four responsive clinical-task bands that keep all ten fields as direct peers and make one active versus nine planned destinations explicit.
+- Moved branch parity, the Observe → Interpret → Test → Act → Monitor loop, fictional evidence weights, diagnostic-test arithmetic, and four assessment cases into one tested shared model.
+- Added exact sensitivity and positive-predictive-value practice while explicitly separating a teaching table from a real diagnostic test, patient, or care decision.
+- Migrated Medicine vocabulary to six root terms, twenty planned-branch terms, seven Anatomy & Physiology terms, and six Skeletal terms, aggregated automatically into Medicine and Applied Science with source-node provenance.
+- Defined future ClinicalTrials.gov, openFDA label, and NCBI literature boundaries without introducing render-time fetching or medical advice.
+- The 413-page production build reached READY.
+
 ## Phase C: curriculum depth
 
 Systematically fill learning sequences, beginning with mathematics because prerequisite order is unusually important there. Use curriculum nodes, prerequisites, and sequence navigation rather than creating isolated attractive pages.

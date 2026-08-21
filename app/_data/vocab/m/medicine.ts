@@ -1,58 +1,66 @@
 import type { VocabTerm } from "../types";
 
-const medicineCoreTerms = [
+export const medicineCoreVocab: VocabTerm[] = [
   {
-    id: "med-etiology",
-    word: "Etiology",
+    id: "med-medicine",
+    word: "Medicine",
     definition:
-      "The cause or origin of a disease or condition, including interacting biological, environmental, behavioral, and social contributors when relevant.",
+      "The applied field concerned with understanding, preventing, recognizing, and caring for illness and injury while supporting health through evidence, clinical judgment, skilled action, ethics, communication, and follow-up.",
     domain: "Medicine",
-    tags: ["Clinical Reasoning", "Disease Mechanisms"],
+    tags: ["Field", "Clinical Care"],
+    relatedTerms: ["med-clinical-encounter", "med-follow-up"],
     isAdult: false,
   },
   {
-    id: "med-pathogenesis",
-    word: "Pathogenesis",
+    id: "med-clinical-encounter",
+    word: "Clinical Encounter",
     definition:
-      "The biological processes through which a disease or condition develops and produces its structural or functional effects.",
+      "A situated interaction in which a patient and clinician exchange information, examine concerns, make decisions, take or coordinate action, and establish responsibilities for communication and follow-up.",
     domain: "Medicine",
-    tags: ["Pathology", "Disease Mechanisms"],
+    tags: ["Patient Context", "Communication"],
+    relatedTerms: ["med-problem-representation", "med-follow-up"],
     isAdult: false,
   },
   {
-    id: "med-diagnosis",
-    word: "Diagnosis",
+    id: "med-problem-representation",
+    word: "Clinical Problem Representation",
     definition:
-      "A clinically supported identification of a disease, condition, or explanatory category based on the available history, examination, tests, and context.",
+      "A concise, revisable summary that preserves the patient context, time course, and discriminating findings needed to organize clinical reasoning without pretending to be the final diagnosis.",
     domain: "Medicine",
-    tags: ["Clinical Reasoning", "Evidence"],
-    isAdult: false,
-  },
-] as const satisfies readonly VocabTerm[];
-
-const retainedLegacyTerms = [
-  {
-    id: "med-apoptosis",
-    word: "Apoptosis",
-    definition:
-      "A regulated process of cell death that helps shape development and maintain tissues and can also be altered in disease.",
-    domain: "Medicine",
-    tags: ["Cell Biology", "Pathology"],
+    tags: ["Clinical Reasoning", "Synthesis"],
+    relatedTerms: ["med-clinical-uncertainty", "med-differential-diagnosis"],
     isAdult: false,
   },
   {
-    id: "med-pathogen",
-    word: "Pathogen",
+    id: "med-clinical-uncertainty",
+    word: "Clinical Uncertainty",
     definition:
-      "An infectious agent capable of causing disease in a host, such as a bacterium, virus, fungus, parasite, or prion.",
+      "Incomplete confidence about a clinical state, cause, course, response, or best action that should be characterized, updated with evidence, communicated, and managed rather than hidden.",
     domain: "Medicine",
-    tags: ["Infectious Disease", "Microbiology"],
+    tags: ["Evidence", "Decision"],
+    relatedTerms: ["med-problem-representation", "med-benefit-harm"],
     isAdult: false,
   },
-] as const satisfies readonly VocabTerm[];
-
-export const medicineCoreVocab: VocabTerm[] = [...medicineCoreTerms];
-export const medicineVocab: VocabTerm[] = [
-  ...medicineCoreTerms,
-  ...retainedLegacyTerms,
+  {
+    id: "med-benefit-harm",
+    word: "Benefit–Harm Balance",
+    definition:
+      "A context-sensitive comparison of intended benefits, possible harms, burdens, alternatives, timing, feasibility, uncertainty, equity, and the patient’s goals when considering an action.",
+    domain: "Medicine",
+    tags: ["Decision", "Ethics"],
+    relatedTerms: ["med-clinical-uncertainty", "med-informed-consent"],
+    isAdult: false,
+  },
+  {
+    id: "med-follow-up",
+    word: "Clinical Follow-Up",
+    definition:
+      "A planned reassessment of symptoms, function, measurements, response, adverse effects, adherence, new evidence, and goals at a stated time with criteria for continuing, changing, escalating, or stopping care.",
+    domain: "Medicine",
+    tags: ["Monitoring", "Time"],
+    relatedTerms: ["med-clinical-encounter", "med-continuity-care"],
+    isAdult: false,
+  },
 ];
+
+export const medicineVocab: VocabTerm[] = [...medicineCoreVocab];

@@ -449,3 +449,27 @@ aggregation, TypeScript, touched-file lint, informational repository audits,
 all 413 static page generations, and generated-HTML
 route/source/vocabulary/no-canvas checks passed. Rendered browser verification
 remains queued because the local server cannot start in this workspace.
+
+## 2026-08-21 Medicine root checkpoint
+
+The Medicine root now resolves and asserts its exact ten direct branches from
+the focused curriculum module. Anatomy & Physiology remains active; the other
+nine fields remain visibly planned and inert. Four responsive task bands
+organize the peers without creating false curriculum parents or compressing
+long clinical field descriptions into a narrow sidebar.
+
+The route remains server-owned around the preserved clinical-reasoning and
+body-system client islands plus a bounded four-case evidence review. One shared
+model owns the Observe → Interpret → Test → Act → Monitor loop, fictional
+evidence weights, exact diagnostic-table arithmetic, and every answer path. The
+background consumes the same reasoning stages, and all simulations remain
+explicitly synthetic educational abstractions.
+
+Vocabulary now aggregates six root terms, twenty terms owned by nine planned
+branches, seven Anatomy & Physiology terms, and six Skeletal terms into
+Medicine and Applied Science with source provenance. Focused model,
+aggregation, TypeScript, touched-file lint, informational repository audits,
+all 413 static page generations, and generated-HTML
+route/source/vocabulary/safety/no-canvas checks passed. Rendered browser
+verification remains queued because the local server cannot start in this
+workspace.
