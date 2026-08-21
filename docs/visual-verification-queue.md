@@ -220,6 +220,31 @@ Verify:
 
 ---
 
+### Information Science record desk and classification atelier
+
+**Routes:** `/formal-science/information-science` and `/formal-science/information-science/taxonomy-ontology`
+
+Verify:
+
+- the root record inspector appears before the lesson and reflects exactly seven direct branches
+- Metadata is structurally and visually nested under Encoding & Representation, while Knowledge Graphs is structurally and visually nested under Taxonomy & Ontology
+- Taxonomy & Ontology is linked and every planned route remains inert
+- the root source marks, representation gate, records, and query path and the child broader/narrower and typed-graph scenery remain legible without canvas, randomness, viewport measurement, animation loops, or hydration shift
+- empirical entropy remains correct for empty, binary, Unicode, and `BANANA_BANDANA` samples
+- all retrieval presets, distances, top-three connectors, and ranking boundaries stay coordinated
+- the Library of Congress protocol keeps query, field selection, pagination, rate limit, provenance, item rights, live JSON, and official documentation boundaries visible without a render-time fetch
+- all four root evidence files provide deterministic correct/wrong feedback across switch and reset states
+- the child begins with its direct Knowledge Graphs specialization and keeps that planned route inert
+- the same fictional game remains coordinated across five taxonomy nodes, five graph triples, and the mode toggle
+- polyhierarchy, mapping, governance, RDF, SKOS, and OWL boundaries remain legible without presenting a taxonomy as inevitable or an ontology as a decorative AI web
+- all four child challenges provide deterministic correct/wrong feedback across switch and reset states
+- fifty-eight vocabulary terms retain narrow ownership and aggregate through Taxonomy & Ontology, Information Science, and Formal Science
+- keyboard focus, zoomed text, responsive flow, and long-label behavior produce no clipping or overlap
+
+**Status:** Targeted React/Next lint, TypeScript, deterministic Information Science, entropy, retrieval, taxonomy, ontology, and evidence fixtures, vocabulary aggregation, all three informational audits, the 404-page production build, and generated-HTML ancestry/hierarchy/active-link/planned-non-link/model/source/background/no-canvas checks passed. The required browser CLI is unavailable, so rendered responsive and interaction verification remains pending. Remote publication and the zero-deployment guard are recorded in the commit handoff because they occur after this entry is committed.
+
+---
+
 ## Priority 0: constitution-built Algebra lessons
 
 These lessons were built or substantially rebuilt without a trusted rendered preview. Their instructional structure is intentional; visual claims remain provisional until inspected.

@@ -3,39 +3,17 @@
 import { useMemo, useState } from "react";
 import { Crosshair, Database, Search, Sparkles } from "lucide-react";
 import { Surface } from "@/app/_page-system/scene";
-
-type QueryKey = "archives" | "cities" | "software" | "water";
-
-type Point = {
-  id: string;
-  label: string;
-  x: number;
-  y: number;
-  rgb: string;
-};
-
-const RECORDS: readonly Point[] = [
-  { id: "archive-metadata", label: "archival metadata standard", x: 23, y: 27, rgb: "251,191,36" },
-  { id: "preservation", label: "digital preservation workflow", x: 30, y: 22, rgb: "251,191,36" },
-  { id: "city-heat", label: "urban heat mapping", x: 31, y: 69, rgb: "94,234,212" },
-  { id: "city-adaptation", label: "city climate adaptation", x: 38, y: 64, rgb: "94,234,212" },
-  { id: "river-monitor", label: "river nutrient monitoring", x: 61, y: 76, rgb: "125,211,252" },
-  { id: "freshwater", label: "freshwater ecology survey", x: 68, y: 70, rgb: "125,211,252" },
-  { id: "compiler", label: "compiler optimization", x: 77, y: 25, rgb: "192,132,252" },
-  { id: "language-design", label: "programming language design", x: 70, y: 18, rgb: "192,132,252" },
-] as const;
-
-const QUERIES: Record<QueryKey, { label: string; x: number; y: number; rgb: string }> = {
-  archives: { label: "digital archives", x: 27, y: 25, rgb: "251,191,36" },
-  cities: { label: "climate + cities", x: 34, y: 66, rgb: "94,234,212" },
-  software: { label: "software systems", x: 73, y: 22, rgb: "192,132,252" },
-  water: { label: "water ecology", x: 65, y: 73, rgb: "125,211,252" },
-};
+import {
+  RETRIEVAL_QUERIES,
+  RETRIEVAL_RECORDS,
+  rankRetrievalRecords,
+  type RetrievalQueryKey,
+} from "./informationScienceModel";
 
 export default function VectorSearchLab() {
-  const [queryKey, setQueryKey] = useState<QueryKey>("archives");
-  const query = QUERIES[queryKey];
-  const ranked = useMemo(() => RECORDS.map((record) => ({ ...record, distance: Math.hypot(record.x - query.x, record.y - query.y) })).sort((a, b) => a.distance - b.distance), [query]);
+  const [queryKey, setQueryKey] = useState<RetrievalQueryKey>("archives");
+  const query = RETRIEVAL_QUERIES[queryKey];
+  const ranked = useMemo(() => rankRetrievalRecords(query), [query]);
   const nearestIds = new Set(ranked.slice(0, 3).map((item) => item.id));
 
   return (
@@ -60,8 +38,8 @@ export default function VectorSearchLab() {
         <div>
           <div className="font-mono text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-500">Query presets</div>
           <div className="mt-3 grid gap-2 sm:grid-cols-2 xl:grid-cols-1">
-            {(Object.keys(QUERIES) as QueryKey[]).map((key) => {
-              const item = QUERIES[key];
+            {(Object.keys(RETRIEVAL_QUERIES) as RetrievalQueryKey[]).map((key) => {
+              const item = RETRIEVAL_QUERIES[key];
               const selected = key === queryKey;
               return (
                 <button key={key} type="button" onClick={() => setQueryKey(key)} className="flex items-center gap-3 border px-3 py-3 text-left transition" style={{ borderColor: selected ? `rgba(${item.rgb},0.34)` : "rgba(255,255,255,0.07)", background: selected ? `rgba(${item.rgb},0.065)` : "rgba(0,0,0,0.055)" }}>
@@ -77,7 +55,7 @@ export default function VectorSearchLab() {
           <div className="absolute inset-0 opacity-30 [background-image:linear-gradient(rgba(148,163,184,0.10)_1px,transparent_1px),linear-gradient(90deg,rgba(148,163,184,0.10)_1px,transparent_1px)] [background-size:10%_10%]" />
           <div className="absolute left-3 top-3 flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.08em] text-slate-600"><Database size={12} /> toy representation space</div>
 
-          {RECORDS.map((record) => {
+          {RETRIEVAL_RECORDS.map((record) => {
             const near = nearestIds.has(record.id);
             return (
               <div key={record.id} className="absolute -translate-x-1/2 -translate-y-1/2 transition-opacity" style={{ left: `${record.x}%`, top: `${record.y}%`, opacity: near ? 1 : 0.34 }}>

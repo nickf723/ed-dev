@@ -4,7 +4,6 @@ import { computerScienceVocab } from "./c/computer-science";
 import { firstOrderVocab } from "./f/first-order-logic";
 import { formalScienceVocab } from "./f/formal-science";
 import { formalScienceLocalVocab } from "./f/formal-science-local";
-import { informationScienceVocab } from "./i/information-science";
 import { logicVocab } from "./l/logic";
 import { naturalScienceVocab } from "./n/natural-science";
 import { physicsVocab } from "./p/physics";
@@ -24,6 +23,7 @@ import { CHEMISTRY_VOCABULARY_REGISTRATIONS } from "./chemistry-node-registry";
 import { MUSIC_VOCABULARY_REGISTRATIONS } from "./music-node-registry";
 import { ARCHITECTURE_VOCABULARY_REGISTRATIONS } from "./architecture-node-registry";
 import { PSYCHOLOGY_VOCABULARY_REGISTRATIONS } from "./psychology-node-registry";
+import { INFORMATION_SCIENCE_VOCABULARY_REGISTRATIONS } from "./information-science-node-registry";
 import { buildCurriculumVocabularyScopes } from "./aggregate.mjs";
 import { composeVocabulary } from "./compose";
 import { MATHEMATICS_VOCABULARY_REGISTRATIONS } from "./mathematics-node-registry";
@@ -76,11 +76,6 @@ const computerScienceVocabulary = composeVocabulary(
     "Theory of Computation",
     "Cryptography"
   )
-);
-
-const informationScienceVocabulary = composeVocabulary(
-  informationScienceVocab,
-  legacyVocabularyByDomain("Information Science")
 );
 
 const systemsScienceVocabulary = composeVocabulary(
@@ -159,6 +154,35 @@ if (!earthScienceScope) {
 
 const earthScienceVocabulary = composeVocabulary(
   ...earthScienceScope.groups.map((group) => group.terms)
+);
+
+const informationScienceNode = curriculumRegistry.getNode(
+  "formal.information-science",
+);
+if (!informationScienceNode) {
+  throw new Error(
+    "Information Science curriculum node is required for vocabulary scopes",
+  );
+}
+
+const informationScienceVocabularyScopes = buildCurriculumVocabularyScopes({
+  roots: [informationScienceNode],
+  registrations: INFORMATION_SCIENCE_VOCABULARY_REGISTRATIONS,
+  accent: "sky",
+  accentByNodeId: {
+    "formal.information-science.taxonomy-ontology": "violet",
+  },
+});
+
+const informationScienceScope = informationScienceVocabularyScopes.find(
+  (scope) => scope.path === informationScienceNode.href,
+);
+if (!informationScienceScope) {
+  throw new Error("Information Science vocabulary scope could not be derived");
+}
+
+const informationScienceVocabulary = composeVocabulary(
+  ...informationScienceScope.groups.map((group) => group.terms),
 );
 
 const literatureNode = curriculumRegistry.getNode("humanities.literature");
@@ -621,18 +645,7 @@ export const formalScienceVocabularyScopes: VocabularyScope[] = [
       },
     ],
   },
-  {
-    path: "/formal-science/information-science",
-    title: "Information Science",
-    accent: "sky",
-    groups: [
-      {
-        id: "information-science",
-        label: "Information Science",
-        terms: informationScienceVocabulary,
-      },
-    ],
-  },
+  ...informationScienceVocabularyScopes,
   ...dataScienceVocabularyScopes,
   {
     path: "/formal-science/systems-science",

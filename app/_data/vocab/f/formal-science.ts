@@ -291,14 +291,6 @@ export const formalScienceVocab: VocabTerm[] = [
 
     // --- DATA, STATS & SYSTEMS ---
     {
-        id: "fs-entropy",
-        word: "Entropy",
-        definition: "In information theory, the average level of 'information', 'surprise', or 'uncertainty' inherent to the variable's possible outcomes.",
-        domain: "Information Science",
-        tags: ["Data", "Uncertainty", "Physics"],
-        isAdult: false
-    },
-    {
         id: "fs-variance",
         word: "Variance",
         definition: "The expectation of the squared deviation of a random variable from its population mean or sample mean. A measure of dispersion.",

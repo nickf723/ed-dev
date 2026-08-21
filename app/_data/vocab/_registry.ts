@@ -43,6 +43,8 @@ import { cognitiveScienceVocab } from "./c/cognitive-science";
 import { formalScienceVocab } from "./f/formal-science";
 import { formalScienceLocalVocab } from "./f/formal-science-local";
 import { informationScienceVocab } from "./i/information-science";
+import { informationScienceBranchVocab } from "./i/information-science-branches";
+import { informationTheoryVocab } from "./i/information-theory";
 import { systemsScienceVocab } from "./s/systems-science";
 import { logicVocab } from "./l/logic";
 import { propLogicVocab } from "./p/propositional-logic";
@@ -113,6 +115,8 @@ export const ALL_VOCAB: VocabTerm[] = composeVocabulary(
   formalScienceLocalVocab,
   formalScienceVocab,
   informationScienceVocab,
+  informationScienceBranchVocab,
+  informationTheoryVocab,
   systemsScienceVocab,
   logicVocab,
   propLogicVocab,

@@ -428,3 +428,13 @@ Earth Science now keeps five direct branches instead of presenting a specialized
 The root advances from the field transect through four cross-system couplings, an interactive watershed ledger, and a four-file evidence review. One tested model owns branch parity, Mineralogy containment, water-budget arithmetic, and answer fixtures. Twenty-six root terms combine with descendant Mineralogy vocabulary and inherit into Natural Science.
 
 The visual grammar is field-based and sectional: ridge, snow, rain, stream, groundwater, coast, strata, fault, and fixed monitoring stations. A deterministic server-rendered ridge-to-coast world replaces the random animated globe, and client ownership is reduced to the flux and assessment islands without importing Psychology's participant ledger or Architecture's building sheet.
+
+---
+
+## 17. Current cohesion checkpoint · Information Science
+
+Information Science now keeps seven direct branches rather than showing nine apparent peers while visually implying an unregistered hierarchy. Metadata & Semantics is nested under Encoding & Representation; Knowledge Graphs & Linked Data is nested under the active Taxonomy & Ontology hub. The record inspector, sidebar tree, root assertions, model tests, and vocabulary aggregation now share that exact containment.
+
+The root advances from registry-owned navigation through empirical symbol entropy, synthetic vector retrieval, a no-render-fetch Library of Congress connector protocol, six system questions, and a four-file claim review. The active child advances from controlled vocabularies through taxonomy and ontology, comparing one fictional game across a category path and five typed relations before a deterministic design challenge. Fifty-eight terms are registered at their narrowest current nodes and aggregate into Information Science and Formal Science.
+
+The root visual grammar is a source-to-record signal desk; the child is a classification atelier with broader/narrower paths and typed graph relations. Deterministic server-rendered SVG/CSS replaces both animated canvas backgrounds, including the randomly regenerated taxonomy tree. Client ownership is limited to the entropy, retrieval, comparison, and assessment islands, with no initial-render randomness, viewport measurement, or wall-clock state.

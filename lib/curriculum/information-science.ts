@@ -1,6 +1,12 @@
 import type { CurriculumNode } from "@/lib/curriculum/types";
 
-function branch(id: string, label: string, href: string, description: string): CurriculumNode {
+function branch(
+  id: string,
+  label: string,
+  href: string,
+  description: string,
+  children?: readonly CurriculumNode[],
+): CurriculumNode {
   return {
     id,
     label,
@@ -8,7 +14,8 @@ function branch(id: string, label: string, href: string, description: string): C
     description,
     domainId: "formal",
     status: "placeholder",
-    pageKind: "unit",
+    pageKind: children?.length ? "hub" : "unit",
+    children,
   };
 }
 
@@ -33,6 +40,14 @@ export const INFORMATION_SCIENCE_CURRICULUM: CurriculumNode = {
       "Encoding & Representation",
       "/formal-science/information-science/encoding-representation",
       "Symbols, character encodings, formats, schemas, serialization, identifiers, data models, representation choices, interoperability, and the gap between a thing and its encoded description.",
+      [
+        branch(
+          "formal.information-science.metadata-semantics",
+          "Metadata & Semantics",
+          "/formal-science/information-science/metadata-semantics",
+          "Descriptive, structural, administrative, provenance, and preservation metadata; semantic models; standards; identifiers; context; and machine-readable meaning.",
+        ),
+      ],
     ),
     branch(
       "formal.information-science.information-retrieval",
@@ -48,20 +63,16 @@ export const INFORMATION_SCIENCE_CURRICULUM: CurriculumNode = {
         "Classification, controlled vocabularies, taxonomies, ontologies, entity types, relationships, constraints, inheritance, and ways of making conceptual structure explicit.",
       domainId: "formal",
       status: "active",
-      pageKind: "unit",
+      pageKind: "hub",
+      children: [
+        branch(
+          "formal.information-science.knowledge-graphs",
+          "Knowledge Graphs & Linked Data",
+          "/formal-science/information-science/knowledge-graphs",
+          "Entities, relationships, graph models, linked data, semantic queries, provenance, identity resolution, inference, and networks of structured knowledge.",
+        ),
+      ],
     },
-    branch(
-      "formal.information-science.metadata-semantics",
-      "Metadata & Semantics",
-      "/formal-science/information-science/metadata-semantics",
-      "Descriptive, structural, administrative, provenance, and preservation metadata; semantic models; standards; identifiers; context; and machine-readable meaning.",
-    ),
-    branch(
-      "formal.information-science.knowledge-graphs",
-      "Knowledge Graphs & Linked Data",
-      "/formal-science/information-science/knowledge-graphs",
-      "Entities, relationships, graph models, linked data, semantic queries, provenance, identity resolution, inference, and networks of structured knowledge.",
-    ),
     branch(
       "formal.information-science.archives-preservation",
       "Archives & Digital Preservation",

@@ -3,10 +3,11 @@
 import { useMemo, useState } from "react";
 import { Activity, Binary, FileText, Gauge, Sigma } from "lucide-react";
 import { Surface } from "@/app/_page-system/scene";
+import { measureSymbolStream } from "./informationScienceModel";
 
 export default function EntropyWidget() {
   const [text, setText] = useState("BANANA_BANDANA");
-  const stats = useMemo(() => measure(text), [text]);
+  const stats = useMemo(() => measureSymbolStream(text), [text]);
 
   return (
     <Surface
@@ -72,21 +73,6 @@ export default function EntropyWidget() {
       </div>
     </Surface>
   );
-}
-
-function measure(text: string) {
-  const symbols = Array.from(text);
-  const counts = new Map<string, number>();
-  symbols.forEach((symbol) => counts.set(symbol, (counts.get(symbol) ?? 0) + 1));
-  const count = symbols.length;
-  const frequencies = Array.from(counts.entries())
-    .map(([symbol, symbolCount]) => ({ symbol, count: symbolCount, probability: count > 0 ? symbolCount / count : 0 }))
-    .sort((a, b) => b.count - a.count || a.symbol.localeCompare(b.symbol));
-  const entropy = frequencies.reduce((sum, item) => item.probability > 0 ? sum - item.probability * Math.log2(item.probability) : sum, 0);
-  const unique = frequencies.length;
-  const maxEntropy = unique > 1 ? Math.log2(unique) : 0;
-  const utf8Bits = typeof TextEncoder === "undefined" ? 0 : new TextEncoder().encode(text).length * 8;
-  return { count, unique, entropy, maxEntropy, utf8Bits, empiricalBits: entropy * count, frequencies };
 }
 
 function visibleSymbol(symbol: string) {
