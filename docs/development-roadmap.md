@@ -358,6 +358,16 @@ Priority examples:
 - Defined future ClinicalTrials.gov, openFDA label, and NCBI literature boundaries without introducing render-time fetching or medical advice.
 - The 413-page production build reached READY.
 
+### Languages root · Remastered
+
+- Preserved the multilingual phrase window, fixed translation contrasts, five-stage practice loop, Linguistics cross-link, and full eight-field curriculum.
+- Replaced the viewport-measured canvas with a deterministic source-and-target reading desk whose aligned lines, fixed examples, margin notes, script cues, and practice loop teach the page model.
+- Replaced the compressed two-bank navigation around a fixed center column with two full-width folios that keep every planned branch a readable direct peer.
+- Moved branch parity, three phrase datasets, direction-share arithmetic, four translation examples, and four assessment cases into one tested shared model.
+- Added 22 narrowly owned vocabulary terms aggregated automatically into Languages and Humanities with source-node provenance.
+- Defined future Glottolog, Unicode CLDR, and OLAC catalog boundaries without introducing render-time fetching or confusing metadata access with content rights.
+- The 413-page production build reached READY.
+
 ## Phase C: curriculum depth
 
 Systematically fill learning sequences, beginning with mathematics because prerequisite order is unusually important there. Use curriculum nodes, prerequisites, and sequence navigation rather than creating isolated attractive pages.

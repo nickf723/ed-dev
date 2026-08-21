@@ -551,3 +551,25 @@ its stage model with the client laboratory; only the bounded reasoning, anatomy,
 and review islands hydrate. It avoids Political Science's institutional
 chamber, Astronomy's deep-time cone, decorative anatomy as explanation, and any
 implication that a fictional model can diagnose or recommend care.
+
+---
+
+## 26. Current cohesion checkpoint · Languages
+
+Languages keeps eight direct planned branches while using language-tradition
+and learning/use folios only as relationship cues. The root advances from
+registry-owned navigation through a five-stage practice loop, the preserved
+multilingual phrase window, the preserved translation-choices studio, six
+learning principles, a four-case evidence review, and public catalog/archive
+boundaries. One tested model owns branch parity, phrase datasets,
+direction-share arithmetic, fixed translation contrasts, and assessment
+fixtures. Twenty-two narrowly owned terms aggregate into Humanities.
+
+The visual grammar is communicative and editorial: facing source and target
+pages, aligned but nonidentical lines, a translator's margin, direction and
+modality rulers, fixed bilingual contrasts, and a cyclical practice register.
+A deterministic server-rendered field replaces the viewport canvas while the
+phrase, translation, and assessment remain small client islands. It avoids
+Medicine's clinical record, Religion's comparative dossier, flags as language
+identity, and phrase-table cells as substitutes for people, context, or
+culture.

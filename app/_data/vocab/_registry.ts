@@ -37,6 +37,8 @@ import { geographyVocab } from "./g/geography";
 import { musicVocab } from "./m/music";
 import { visualArtsVocab } from "./v/visual-arts";
 import { literatureVocab } from "./l/literature";
+import { languagesVocab } from "./l/languages";
+import { languageBranchVocab } from "./l/language-branches";
 import { narrativeFictionVocab } from "./n/narrative-fiction";
 import { religionVocab } from "./r/religion";
 import { religionBranchVocab } from "./r/religion-branches";
@@ -125,6 +127,8 @@ export const ALL_VOCAB: VocabTerm[] = composeVocabulary(
   musicVocab,
   visualArtsVocab,
   literatureVocab,
+  languagesVocab,
+  languageBranchVocab,
   narrativeFictionVocab,
   religionVocab,
   religionBranchVocab,

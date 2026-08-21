@@ -473,3 +473,28 @@ all 413 static page generations, and generated-HTML
 route/source/vocabulary/safety/no-canvas checks passed. Rendered browser
 verification remains queued because the local server cannot start in this
 workspace.
+
+## 2026-08-21 Languages root checkpoint
+
+The Languages root now resolves and asserts its exact eight direct branches
+from the focused curriculum module. All eight remain visibly planned and inert.
+Two responsive folios organize language traditions and practices for learning
+and use without creating false curriculum parents or compressing long
+descriptions around a fixed central column.
+
+The route returns to server ownership around bounded phrase, translation, and
+evidence-review client islands. A deterministic server SVG replaces the
+viewport-measured animated canvas and consumes the same five-stage practice
+loop and fixed translation examples as the foreground. One shared model also
+owns three phrase datasets, direction-share arithmetic, exact formatting, and
+every assessment path.
+
+Vocabulary now aggregates six root terms plus sixteen direct-branch terms into
+Languages and Humanities with source provenance. Focused model, aggregation,
+TypeScript, touched-file lint, architecture/readability/remaster audits, all
+413 static page generations, and generated-HTML metadata, ancestry, branch,
+lesson-stage, default-model, assessment, source, vocabulary, planned-non-link,
+and no-canvas checks passed. Rendered browser verification remains queued
+because the local server cannot start in this workspace. Publication and the
+zero-deployment guard are recorded in the commit handoff because they occur
+after this entry is committed.

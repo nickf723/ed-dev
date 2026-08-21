@@ -32,6 +32,7 @@ import { ANTHROPOLOGY_VOCABULARY_REGISTRATIONS } from "./anthropology-node-regis
 import { COMPUTER_SCIENCE_VOCABULARY_REGISTRATIONS } from "./computer-science-node-registry";
 import { RELIGION_VOCABULARY_REGISTRATIONS } from "./religion-node-registry";
 import { POLITICAL_SCIENCE_VOCABULARY_REGISTRATIONS } from "./political-science-node-registry";
+import { LANGUAGES_VOCABULARY_REGISTRATIONS } from "./languages-node-registry";
 import { buildCurriculumVocabularyScopes } from "./aggregate.mjs";
 import { composeVocabulary } from "./compose";
 import { MATHEMATICS_VOCABULARY_REGISTRATIONS } from "./mathematics-node-registry";
@@ -747,6 +748,35 @@ const religionVocabulary = composeVocabulary(
   ...religionScope.groups.map((group) => group.terms)
 );
 
+const languagesNode = curriculumRegistry.getNode("humanities.languages");
+if (!languagesNode) {
+  throw new Error(
+    "Languages curriculum node is required for vocabulary scopes"
+  );
+}
+
+const languagesVocabularyScopes = buildCurriculumVocabularyScopes({
+  roots: [languagesNode],
+  registrations: LANGUAGES_VOCABULARY_REGISTRATIONS,
+  accent: "violet",
+  accentByNodeId: {
+    "humanities.languages.signed": "emerald",
+    "humanities.languages.classical-historical": "amber",
+    "humanities.languages.translation-interpreting": "rose",
+  },
+});
+
+const languagesScope = languagesVocabularyScopes.find(
+  (scope) => scope.path === languagesNode.href
+);
+if (!languagesScope) {
+  throw new Error("Languages vocabulary scope could not be derived");
+}
+
+const languagesVocabulary = composeVocabulary(
+  ...languagesScope.groups.map((group) => group.terms)
+);
+
 export const humanitiesVocabularyScopes: VocabularyScope[] = [
   ...philosophyVocabularyScopes,
   ...historyVocabularyScopes,
@@ -754,6 +784,7 @@ export const humanitiesVocabularyScopes: VocabularyScope[] = [
   ...visualArtsVocabularyScopes,
   ...musicVocabularyScopes,
   ...religionVocabularyScopes,
+  ...languagesVocabularyScopes,
   {
     path: "/humanities",
     title: "Humanities",
@@ -800,6 +831,13 @@ export const humanitiesVocabularyScopes: VocabularyScope[] = [
         terms: religionVocabulary,
         sourceNodeId: religionNode.id,
         sourcePath: religionNode.href,
+      },
+      {
+        id: languagesNode.id,
+        label: languagesNode.label,
+        terms: languagesVocabulary,
+        sourceNodeId: languagesNode.id,
+        sourcePath: languagesNode.href,
       },
     ],
   },
