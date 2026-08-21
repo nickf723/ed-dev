@@ -15,6 +15,7 @@
     "test:combinatorics": "node --experimental-strip-types --no-warnings scripts/test-combinatorics-model.mjs",
     "test:narrative": "node --experimental-strip-types --no-warnings scripts/test-narrative-model.mjs",
     "test:recursion": "node --experimental-strip-types --no-warnings scripts/test-recursion-model.mjs",
+    "test:anatomy": "node --experimental-strip-types --no-warnings scripts/test-anatomy-model.mjs",
     "test:collections": "node scripts/test-collection-query.mjs && node scripts/test-collection-result.mjs && node scripts/test-musicbrainz-adapter.mjs && node scripts/test-inaturalist-adapter.mjs && node scripts/test-pubchem-elements-adapter.mjs && node scripts/test-nasa-exoplanet-adapter.mjs"
   },
   "dependencies": {

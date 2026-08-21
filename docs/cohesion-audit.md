@@ -215,11 +215,19 @@ After the coherent Graph Theory pass, production rotated from a Formal Science u
 
 The existing Literature reading room is preserved as a hub instead of being cosmetically replaced. Narrative & Fiction activates the hub's first honest child and bounds the unit at six planned lessons: narrator and perspective; story, plot, and time; character and desire; setting and world; scene, conflict, and structure; genre and convention. A deterministic four-event station story coordinates the background, worked registers, disclosure editor, reader-knowledge ledger, and transfer check. Its curriculum-owned vocabulary aggregates upward into Literature through the first Humanities vocabulary scope.
 
-### Active bounded-rotation checkpoint
+### Completed bounded-rotation checkpoint
 
 - Formal Science → Mathematics → Discrete Mathematics → Recursion & Recurrence
 
-The return pass preserves Hanoi and the self-similar recursive world while changing the macro-composition to a vertical call/return spine and the interaction to an exact deterministic trace plus legal manual play. After publication, rotate to **Applied Science → Medicine → Anatomy & Physiology**: repair its missing curriculum children and inherited data contracts while preserving its nested structure-function scale, body-system scanner, and existing Skeletal System child.
+The return pass preserves Hanoi and the self-similar recursive world while changing the macro-composition to a vertical call/return spine and the interaction to an exact deterministic trace plus legal manual play.
+
+### Completed bounded-rotation checkpoint
+
+- Applied Science → Medicine → Anatomy & Physiology
+
+The parent-first repair preserves the nested structure–function scale, regional scanner, and Skeletal System route while replacing the handwritten partial map with a registry-owned layer of two foundations and the conventional eleven organ systems. Six functional study families teach relationships without adding false hierarchy. The page and its Skeletal child now use deterministic human-study and radiograph worlds instead of random full-screen canvases; Medicine, Anatomy & Physiology, and Skeletal vocabulary aggregate through the first Applied Science vocabulary scope; and a three-case evidence check tests structure–function, region-versus-system, and organization-scale reasoning. Rendered verification remains required.
+
+Next, rotate to **Social Science → Geography** for a contrasting spatial-evidence hub audit before returning to another medical system.
 
 ---
 

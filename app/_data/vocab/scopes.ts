@@ -16,6 +16,7 @@ import { systemsScienceVocab } from "./s/systems-science";
 import { ASTRONOMY_VOCABULARY_REGISTRATIONS } from "./astronomy-node-registry";
 import { EARTH_SCIENCE_VOCABULARY_REGISTRATIONS } from "./earth-science-node-registry";
 import { LITERATURE_VOCABULARY_REGISTRATIONS } from "./literature-node-registry";
+import { MEDICINE_VOCABULARY_REGISTRATIONS } from "./medicine-node-registry";
 import { buildCurriculumVocabularyScopes } from "./aggregate.mjs";
 import { composeVocabulary } from "./compose";
 import { MATHEMATICS_VOCABULARY_REGISTRATIONS } from "./mathematics-node-registry";
@@ -152,8 +153,53 @@ const literatureVocabularyScopes = buildCurriculumVocabularyScopes({
   },
 });
 
+const medicineNode = curriculumRegistry.getNode("applied.medicine");
+if (!medicineNode) {
+  throw new Error("Medicine curriculum node is required for vocabulary scopes");
+}
+
+const medicineVocabularyScopes = buildCurriculumVocabularyScopes({
+  roots: [medicineNode],
+  registrations: MEDICINE_VOCABULARY_REGISTRATIONS,
+  accent: "violet",
+  accentByNodeId: {
+    "applied.medicine": "emerald",
+    "applied.medicine.anatomy-physiology": "rose",
+    "applied.medicine.anatomy-physiology.skeletal": "amber",
+  },
+});
+
+const medicineScope = medicineVocabularyScopes.find(
+  (scope) => scope.path === medicineNode.href
+);
+if (!medicineScope) {
+  throw new Error("Medicine vocabulary scope could not be derived");
+}
+
+const medicineVocabulary = composeVocabulary(
+  ...medicineScope.groups.map((group) => group.terms)
+);
+
 export const humanitiesVocabularyScopes: VocabularyScope[] = [
   ...literatureVocabularyScopes,
+];
+
+export const appliedScienceVocabularyScopes: VocabularyScope[] = [
+  ...medicineVocabularyScopes,
+  {
+    path: "/applied-science",
+    title: "Applied Science",
+    accent: "violet",
+    groups: [
+      {
+        id: medicineNode.id,
+        label: medicineNode.label,
+        terms: medicineVocabulary,
+        sourceNodeId: medicineNode.id,
+        sourcePath: medicineNode.href,
+      },
+    ],
+  },
 ];
 
 export const naturalScienceVocabularyScopes: VocabularyScope[] = [

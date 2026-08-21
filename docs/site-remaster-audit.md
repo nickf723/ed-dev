@@ -29,7 +29,7 @@ These are prompts for review, not automatic defects:
 
 - 178 route modules still declare the whole page as a Client Component.
 - 177 route modules use the shared `DomainPageHeader` family.
-- 129 route modules resolve curriculum page context directly.
+- 131 route modules resolve curriculum page context directly.
 - 62 route modules use the newer `SceneFrame` composition system.
 - 245 route modules explicitly import a background or world component.
 - 293 route modules contain at least one 6–10 px text token; every occurrence must be classified as decorative telemetry or raised to the readability floor.
@@ -187,6 +187,8 @@ Literature completes the contrasting Humanities pass without discarding its alre
 
 Recursion & Recurrence completes the current Discrete Mathematics root layer. The stable `recursion-theory` route remains intact, while the learner-facing name now matches the page's actual introductory scope and a source-linked boundary reserves “recursion theory” for computability theory. Six planned direct lessons bound the unit. One deterministic three-disk Hanoi case powers the recursive stair world, exact seven-move register, descent/return trace, recurrence, guided/manual workbench, transfer check, and generated practice. The remote hero, random canvas loop, joke definition, arbitrary unit code, implementation chrome, and isolated local glossary are gone; curriculum-owned vocabulary now aggregates upward.
 
-The next contrasting target is Applied Science → Medicine → Anatomy & Physiology. Preserve its nested structure-function scale, body-system scanner, and Skeletal System route while repairing the missing curriculum children, registry-derived context, vocabulary ownership, and unit evidence contract before descending further.
+Anatomy & Physiology completes the Applied Science rotation. Its focused Medicine curriculum subtree contains two shared foundations and the conventional eleven organ systems as one bounded direct-child layer. Six study families explain why the peers belong together without introducing false parent routes; Skeletal System remains the only active child. The page preserves and strengthens its nested scale and regional scanner, adds a deterministic evidence check, replaces both random anatomy canvases with stable human-study and radiograph plates, derives page context from the registry, and introduces inherited Medicine → Anatomy & Physiology → Skeletal vocabulary scopes.
+
+The next contrasting target is Social Science → Geography. Audit its canonical children, map/evidence grammar, vocabulary ownership, and relationship to the Interdisciplines atlas before descending into a geographic child.
 
 The program advances one coherent page or family at a time. A route leaves the ledger only when its semantic structure, educational job, distinctive world, geometry, verification record, and published `studio` commit all agree.
