@@ -82,6 +82,5 @@ export type CourseSubject = {
   description: string;
   status: CourseStatus;
   href: string;
-  launchNote: string;
   courses: readonly Course[];
 };

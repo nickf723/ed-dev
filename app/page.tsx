@@ -33,7 +33,7 @@ export default function Home() {
 
             <div className="max-w-[450px] lg:text-right">
               <p className="text-[13px] leading-6 text-slate-400 sm:text-[14px]">
-                Open a classroom course for the school-year path, or inspect the atlas to explore connected fields of knowledge.
+                High school courses and an interactive atlas of connected knowledge.
               </p>
               <div className="mt-3 flex flex-wrap justify-center gap-2 lg:justify-end">
                 <Link
@@ -44,9 +44,6 @@ export default function Home() {
                   Classroom courses
                   <ArrowRight size={13} />
                 </Link>
-                <span className="inline-flex items-center rounded-full border border-white/[0.07] px-3 py-2 font-mono text-[9px] uppercase tracking-[0.11em] text-slate-600">
-                  Atlas below
-                </span>
               </div>
             </div>
           </div>

@@ -13,10 +13,9 @@ export const COURSE_SUBJECTS: readonly CourseSubject[] = [
     slug: "math",
     title: "Math",
     description:
-      "Build mathematical structure, representation, reasoning, and procedural fluency in a deliberate school-year sequence.",
+      "Expressions, equations, functions, statistics, and mathematical modeling organized by course.",
     status: "active",
     href: "/classroom/math",
-    launchNote: "Algebra I · Unit 1 available now",
     courses: [NYS_ALGEBRA_I_COURSE],
   },
   {
@@ -24,10 +23,9 @@ export const COURSE_SUBJECTS: readonly CourseSubject[] = [
     slug: "science",
     title: "Science",
     description:
-      "Standards-aware laboratory, evidence, modeling, and explanation sequences for current New York science courses.",
+      "Laboratory investigation, evidence, modeling, and scientific explanation organized by course.",
     status: "planned",
     href: "/classroom/science",
-    launchNote: "Course selection follows the Algebra I pilot",
     courses: [],
   },
   {
@@ -35,10 +33,9 @@ export const COURSE_SUBJECTS: readonly CourseSubject[] = [
     slug: "social-studies",
     title: "Social Studies",
     description:
-      "Source reasoning, chronology, geography, claims, and civic evidence organized around New York course frameworks.",
+      "Sources, chronology, geography, historical claims, and civic evidence organized by course.",
     status: "planned",
     href: "/classroom/social-studies",
-    launchNote: "Global History & Geography II is a leading candidate",
     courses: [],
   },
   {
@@ -46,10 +43,9 @@ export const COURSE_SUBJECTS: readonly CourseSubject[] = [
     slug: "english",
     title: "English",
     description:
-      "Reading, writing, speaking, language, and text-based reasoning without locking instruction to one required novel.",
+      "Close reading, composition, speaking, language, and text-based reasoning organized by course.",
     status: "planned",
     href: "/classroom/english",
-    launchNote: "Skills-first course design is planned",
     courses: [],
   },
 ] as const;

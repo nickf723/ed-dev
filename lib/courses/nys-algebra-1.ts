@@ -311,7 +311,7 @@ export const NYS_ALGEBRA_I_COURSE: Course = {
   title: "New York Algebra I",
   shortTitle: "Algebra I",
   description:
-    "A classroom-ready Algebra I sequence built around the current New York State Next Generation standards and the Regents course expectations.",
+    "A New York Algebra I sequence organized around the Next Generation standards and Regents course expectations.",
   gradeBand: "High school · Regents course",
   status: "active",
   href: "/classroom/math/algebra-1",

@@ -17,13 +17,13 @@ export default function ClassroomBreadcrumbs({
         const current = index === crumbs.length - 1;
         return (
           <span key={`${crumb.label}-${index}`} className="contents">
-            {index > 0 ? <ChevronRight size={13} className="text-slate-300" /> : null}
+            {index > 0 ? <ChevronRight size={13} className="text-slate-700" /> : null}
             {crumb.href && !current ? (
-              <Link href={crumb.href} className="font-medium hover:text-slate-950">
+              <Link href={crumb.href} className="font-medium transition-colors hover:text-cyan-200">
                 {crumb.label}
               </Link>
             ) : (
-              <span className={current ? "font-semibold text-slate-800" : undefined}>
+              <span className={current ? "font-semibold text-slate-200" : undefined}>
                 {crumb.label}
               </span>
             )}
