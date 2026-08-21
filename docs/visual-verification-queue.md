@@ -282,6 +282,24 @@ Verify:
 
 **Status:** Targeted React/Next lint, TypeScript, deterministic agriculture-model tests, vocabulary aggregation, all three informational audits, the 404-page production build, and generated-HTML branch/model/source/metadata/background checks passed; rendered responsive and interaction verification required
 
+---
+
+### Sociology social-scale field
+
+**Route:** `/social-science/sociology`
+
+Verify:
+
+- seven planned direct branches remain inert and preserve registry order inside analytical—not curricular—micro, meso, macro, and cross-cutting bands
+- the fixed social field clearly separates encounters, networks/organizations, and institutions without random nodes, canvas, or hydration shift
+- seed 64 begins with 54 vacancies, 182 group-A agents, 164 group-B agents, 81 dissatisfied agents, 77% satisfied, and 48% mean local similarity at 30%
+- one seeded step preserves every population count while producing 32 dissatisfied, 91% satisfied, and 62% mean local similarity
+- run, pause, step, threshold, seeded reset, and settled states remain coordinated
+- all four evidence cases and all 29 vocabulary terms preserve their tested ownership and feedback
+- Census and BLS links keep dataset, universe, variable, denominator, unit, geography, period, series, release, revision, suppression, and key boundaries visible
+
+**Status:** Targeted React/Next lint, TypeScript, deterministic sociology-model tests, vocabulary aggregation, all three informational audits, the 404-page production build, and generated-HTML branch/non-link/seed/source/metadata/no-random-canvas checks passed; rendered responsive and interaction verification required
+
 **Status:** Targeted React/Next lint, TypeScript, deterministic Information Science, entropy, retrieval, taxonomy, ontology, and evidence fixtures, vocabulary aggregation, all three informational audits, the 404-page production build, and generated-HTML ancestry/hierarchy/active-link/planned-non-link/model/source/background/no-canvas checks passed. The required browser CLI is unavailable, so rendered responsive and interaction verification remains pending. Remote publication and the zero-deployment guard are recorded in the commit handoff because they occur after this entry is committed.
 
 ---

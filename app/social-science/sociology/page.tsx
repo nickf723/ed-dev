@@ -1,5 +1,4 @@
-"use client";
-
+import type { Metadata } from "next";
 import Link from "next/link";
 import DomainPageHeader from "@/app/_components/DomainPageHeader";
 import { SceneFrame, Surface } from "@/app/_page-system/scene";
@@ -7,6 +6,7 @@ import { requireCurriculumPageContext } from "@/lib/curriculum/page-context";
 import type { CurriculumNode } from "@/lib/curriculum/types";
 import {
   ArrowRight,
+  ArrowUpRight,
   Building2,
   GitBranch,
   Layers3,
@@ -20,8 +20,16 @@ import {
 } from "lucide-react";
 import SchellingModel from "./SchellingModel";
 import SociologyBackground from "./SociologyBackground";
+import SociologyEvidenceReview from "./SociologyEvidenceReview";
+import { SOCIOLOGY_DIRECT_BRANCH_IDS } from "./sociologyModel";
 
 const NODE_ID = "social.sociology";
+
+export const metadata: Metadata = {
+  title: "Sociology | Education Station 64",
+  description:
+    "Study social interaction, networks, institutions, inequality, population, change, and methods across micro, meso, and macro scales.",
+};
 
 type Level = "micro" | "meso" | "macro" | "cross";
 
@@ -37,14 +45,16 @@ const BRANCH_META: Record<string, BranchMeta> = {
   "social.sociology.interaction": {
     icon: MessageCircle,
     level: "micro",
-    question: "How do people create meaning, identity, norms, and roles in interaction?",
+    question:
+      "How do people create meaning, identity, norms, and roles in interaction?",
     rgb: "34,211,238",
     index: "01",
   },
   "social.sociology.groups-networks": {
     icon: Network,
     level: "meso",
-    question: "How do ties, groups, organizations, and network positions shape action?",
+    question:
+      "How do ties, groups, organizations, and network positions shape action?",
     rgb: "167,139,250",
     index: "02",
   },
@@ -58,28 +68,32 @@ const BRANCH_META: Record<string, BranchMeta> = {
   "social.sociology.stratification": {
     icon: Scale,
     level: "macro",
-    question: "How are resources, opportunities, status, and power distributed unequally?",
+    question:
+      "How are resources, opportunities, status, and power distributed unequally?",
     rgb: "244,114,182",
     index: "04",
   },
   "social.sociology.demography": {
     icon: Users,
     level: "macro",
-    question: "How do births, deaths, migration, households, and age structure reshape society?",
+    question:
+      "How do births, deaths, migration, households, and age structure reshape society?",
     rgb: "250,204,21",
     index: "05",
   },
   "social.sociology.social-change": {
     icon: TrendingUp,
     level: "macro",
-    question: "How do movements, technology, crisis, diffusion, and institutions transform social patterns?",
+    question:
+      "How do movements, technology, crisis, diffusion, and institutions transform social patterns?",
     rgb: "96,165,250",
     index: "06",
   },
   "social.sociology.theory-methods": {
     icon: Microscope,
     level: "cross",
-    question: "Which evidence and theoretical lens can distinguish competing explanations?",
+    question:
+      "Which evidence and theoretical lens can distinguish competing explanations?",
     rgb: "196,181,253",
     index: "07",
   },
@@ -100,7 +114,8 @@ const THEORY_LENSES = [
   },
   {
     label: "Functional / systems",
-    prompt: "What relationships hold a social arrangement together, and what consequences follow?",
+    prompt:
+      "What relationships hold a social arrangement together, and what consequences follow?",
     text: "Analyze interdependence, coordination, integration, dysfunction, and the intended or unintended consequences of institutions and norms.",
     rgb: "52,211,153",
   },
@@ -108,6 +123,13 @@ const THEORY_LENSES = [
 
 export default function SociologyPage() {
   const context = requireCurriculumPageContext(NODE_ID);
+  const directIds = context.children.map((branch) => branch.id);
+  if (
+    directIds.length !== SOCIOLOGY_DIRECT_BRANCH_IDS.length ||
+    directIds.some((id, index) => id !== SOCIOLOGY_DIRECT_BRANCH_IDS[index])
+  ) {
+    throw new Error("Sociology branches must match the curriculum registry");
+  }
 
   return (
     <SceneFrame
@@ -138,10 +160,14 @@ export default function SociologyPage() {
                 <Layers3 size={14} /> Primary navigation · social scales
               </div>
               <h2 className="mt-2 text-[clamp(2rem,4vw,4.1rem)] font-semibold leading-[0.93] tracking-[-0.055em] text-white">
-                Follow a social pattern from encounter to institution to population.
+                Follow a social pattern from encounter to institution to
+                population.
               </h2>
               <p className="mt-3 max-w-3xl text-[14px] leading-6 text-violet-100/70">
-                These branches are peers in the curriculum. The scale bands are an analytical map, not a ranking: sociologists move between micro, meso, and macro explanations and use theory and methods across all three.
+                These branches are peers in the curriculum. The scale bands are
+                an analytical map, not a ranking: sociologists move between
+                micro, meso, and macro explanations and use theory and methods
+                across all three.
               </p>
             </div>
 
@@ -164,7 +190,9 @@ export default function SociologyPage() {
                 note="institutions, inequality, population, change"
                 branches={branchesAt(context.children, "macro")}
               />
-              <CrossCuttingRoute branch={branchesAt(context.children, "cross")[0]} />
+              <CrossCuttingRoute
+                branch={branchesAt(context.children, "cross")[0]}
+              />
             </nav>
           </div>
 
@@ -189,20 +217,92 @@ export default function SociologyPage() {
         <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_430px] lg:items-end">
           <div>
             <div className="flex items-center gap-2 font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-cyan-200/60">
-              <GitBranch size={14} /> Theoretical lenses · reference, not navigation
+              <GitBranch size={14} /> Theoretical lenses · reference, not
+              navigation
             </div>
             <h2 className="mt-2 max-w-5xl text-[clamp(1.9rem,3.6vw,3.5rem)] font-semibold leading-[0.95] tracking-[-0.052em] text-white">
-              The same evidence can support different questions before it supports different conclusions.
+              The same evidence can support different questions before it
+              supports different conclusions.
             </h2>
           </div>
           <p className="text-[14px] leading-6 text-violet-100/60">
-            Sociological theories are not colored teams. They emphasize different mechanisms, scales, and kinds of evidence. Strong analysis states which lens is being used and what competing explanations would predict.
+            Sociological theories are not colored teams. They emphasize
+            different mechanisms, scales, and kinds of evidence. Strong analysis
+            states which lens is being used and what competing explanations
+            would predict.
           </p>
         </div>
 
         <div className="mt-5 grid border-y border-violet-100/[0.08] md:grid-cols-3">
           {THEORY_LENSES.map((lens) => (
             <TheoryLens key={lens.label} {...lens} />
+          ))}
+        </div>
+      </section>
+
+      <section className="mt-20">
+        <SociologyEvidenceReview />
+      </section>
+
+      <section className="bg-[#0c0612]/48 mt-20 grid overflow-hidden border-y border-violet-100/[0.09] backdrop-blur-xl lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)]">
+        <div className="border-b border-white/[0.07] p-5 sm:p-7 lg:border-b-0 lg:border-r">
+          <div className="text-cyan-200/56 font-mono text-[11px] font-semibold uppercase tracking-[0.11em]">
+            Public-data boundary
+          </div>
+          <h2 className="mt-3 text-[clamp(1.8rem,3.2vw,3rem)] font-semibold leading-[0.97] tracking-[-0.048em] text-white">
+            A population table is not a person, and a time series is not its
+            cause.
+          </h2>
+          <p className="mt-4 text-[13px] leading-6 text-slate-400">
+            A future social-data repository must retain dataset, universe,
+            variable, category, estimate, denominator, unit, geography,
+            reference period, release, revision, suppression, uncertainty, and
+            source. The root links protocols but performs no render-time
+            provider request.
+          </p>
+        </div>
+        <div className="grid gap-px bg-white/[0.05] sm:grid-cols-2">
+          {[
+            [
+              "U.S. Census Bureau · APIs",
+              "Population, housing, demographic, and economic datasets require an explicit dataset vintage, geography, variable group, universe, and key-aware query.",
+              "https://www.census.gov/data/developers.html",
+            ],
+            [
+              "Census · available datasets",
+              "ACS, Decennial Census, population estimates, business, and other programs have distinct designs, years, geographic coverage, and products.",
+              "https://www.census.gov/data/developers/data-sets.html",
+            ],
+            [
+              "BLS · Public Data API",
+              "Published labor time series travel by series ID, period, unit, seasonal-adjustment status, and revision; API versions have different registration limits.",
+              "https://www.bls.gov/developers/",
+            ],
+            [
+              "data.census.gov",
+              "The public exploration surface supports tables and microdata tools while preserving program documentation and geographic context.",
+              "https://www.census.gov/data/what-is-data-census-gov.html",
+            ],
+          ].map(([label, note, href]) => (
+            <a
+              key={label}
+              href={href}
+              target="_blank"
+              rel="noreferrer"
+              className="bg-[#0b0611]/94 group px-4 py-5 hover:bg-[#130a1d]"
+            >
+              <strong className="text-white/82 flex items-center justify-between gap-3 text-[12px] group-hover:text-violet-100">
+                {label}
+                <ArrowUpRight
+                  size={13}
+                  className="text-violet-200/40"
+                  aria-hidden="true"
+                />
+              </strong>
+              <span className="mt-3 block text-[11px] leading-5 text-slate-500">
+                {note}
+              </span>
+            </a>
           ))}
         </div>
       </section>
@@ -241,12 +341,17 @@ function ScaleBand({
           background: `linear-gradient(135deg,rgba(${bandRgb},0.075),rgba(8,5,14,0.16))`,
         }}
       >
-        <div className="font-mono text-[11px] font-semibold uppercase tracking-[0.12em]" style={{ color: `rgb(${bandRgb})` }}>
+        <div
+          className="font-mono text-[11px] font-semibold uppercase tracking-[0.12em]"
+          style={{ color: `rgb(${bandRgb})` }}
+        >
           {label}
         </div>
         <div className="mt-1 text-[11px] leading-4 text-slate-500">{note}</div>
       </div>
-      <div className={`grid gap-2 ${branches.length >= 3 ? "lg:grid-cols-3" : branches.length === 2 ? "lg:grid-cols-2" : ""}`}>
+      <div
+        className={`grid gap-2 ${branches.length >= 3 ? "lg:grid-cols-3" : branches.length === 2 ? "lg:grid-cols-2" : ""}`}
+      >
         {branches.map((branch) => (
           <BranchRoute key={branch.id} branch={branch} />
         ))}
@@ -270,12 +375,14 @@ function BranchRoute({ branch }: { branch: CurriculumNode }) {
       variant="glass"
       className={`group h-full rounded-[18px] p-0 ${planned ? "opacity-[0.62]" : "transition hover:-translate-y-0.5"}`}
       style={{
-        borderColor: `rgba(${meta.rgb},${planned ? 0.10 : 0.22})`,
+        borderColor: `rgba(${meta.rgb},${planned ? 0.1 : 0.22})`,
         background: `linear-gradient(145deg,rgba(${meta.rgb},0.055),rgba(8,5,14,0.18))`,
       }}
     >
       <div className="grid min-h-[96px] grid-cols-[34px_40px_minmax(0,1fr)_22px] items-start gap-2 px-3 py-3">
-        <span className="font-mono text-[11px] text-slate-600">{meta.index}</span>
+        <span className="font-mono text-[11px] text-slate-600">
+          {meta.index}
+        </span>
         <span
           className="flex h-9 w-9 items-center justify-center rounded-[11px] border"
           style={{
@@ -287,19 +394,30 @@ function BranchRoute({ branch }: { branch: CurriculumNode }) {
           <Icon size={16} />
         </span>
         <span className="min-w-0">
-          <strong className="block text-[15px] font-semibold leading-5 text-white">{branch.label}</strong>
-          <span className="mt-1 block text-[11px] leading-4 text-slate-500">{meta.question}</span>
+          <strong className="block text-[15px] font-semibold leading-5 text-white">
+            {branch.label}
+          </strong>
+          <span className="mt-1 block text-[11px] leading-4 text-slate-500">
+            {meta.question}
+          </span>
         </span>
         {planned ? (
           <span className="mt-1 h-2 w-2 rounded-full border border-white/[0.14]" />
         ) : (
-          <ArrowRight size={14} className="mt-1 text-white/30 transition group-hover:translate-x-1 group-hover:text-white/80" />
+          <ArrowRight
+            size={14}
+            className="mt-1 text-white/30 transition group-hover:translate-x-1 group-hover:text-white/80"
+          />
         )}
       </div>
     </Surface>
   );
 
-  return planned ? <div aria-disabled="true">{body}</div> : <Link href={branch.href}>{body}</Link>;
+  return planned ? (
+    <div aria-disabled="true">{body}</div>
+  ) : (
+    <Link href={branch.href}>{body}</Link>
+  );
 }
 
 function CrossCuttingRoute({ branch }: { branch?: CurriculumNode }) {
@@ -312,16 +430,31 @@ function CrossCuttingRoute({ branch }: { branch?: CurriculumNode }) {
     <div
       className={`group grid min-h-[62px] gap-3 border-y border-violet-100/[0.08] bg-black/[0.07] px-3 py-3 backdrop-blur-[10px] sm:grid-cols-[118px_42px_220px_minmax(0,1fr)_24px] sm:items-center ${planned ? "opacity-[0.62]" : "transition hover:bg-black/[0.12]"}`}
     >
-      <span className="font-mono text-[11px] font-semibold uppercase tracking-[0.11em] text-violet-200/60">Cross-cutting</span>
-      <span className="flex h-9 w-9 items-center justify-center rounded-full border" style={{ color: `rgb(${rgb})`, borderColor: `rgba(${rgb},0.24)` }}>
+      <span className="font-mono text-[11px] font-semibold uppercase tracking-[0.11em] text-violet-200/60">
+        Cross-cutting
+      </span>
+      <span
+        className="flex h-9 w-9 items-center justify-center rounded-full border"
+        style={{ color: `rgb(${rgb})`, borderColor: `rgba(${rgb},0.24)` }}
+      >
         <Icon size={15} />
       </span>
       <strong className="text-[15px] text-white">{branch.label}</strong>
-      <span className="text-[12px] leading-5 text-slate-500">{meta?.question}</span>
-      {planned ? <span className="h-2 w-2 rounded-full border border-white/[0.14]" /> : <ArrowRight size={14} className="text-white/30" />}
+      <span className="text-[12px] leading-5 text-slate-500">
+        {meta?.question}
+      </span>
+      {planned ? (
+        <span className="h-2 w-2 rounded-full border border-white/[0.14]" />
+      ) : (
+        <ArrowRight size={14} className="text-white/30" />
+      )}
     </div>
   );
-  return planned ? <div aria-disabled="true">{content}</div> : <Link href={branch.href}>{content}</Link>;
+  return planned ? (
+    <div aria-disabled="true">{content}</div>
+  ) : (
+    <Link href={branch.href}>{content}</Link>
+  );
 }
 
 function CrossScaleTrace() {
@@ -350,31 +483,53 @@ function CrossScaleTrace() {
         <div className="font-mono text-[11px] font-semibold uppercase tracking-[0.11em] text-violet-200/60">
           One event across scales
         </div>
-        <h3 className="mt-2 text-[20px] font-semibold tracking-[-0.03em] text-white">A new technology enters daily life.</h3>
+        <h3 className="mt-2 text-[20px] font-semibold tracking-[-0.03em] text-white">
+          A new technology enters daily life.
+        </h3>
         <p className="mt-2 text-[13px] leading-5 text-slate-400/70">
-          Sociology changes scale without pretending the levels are isolated. Explanations become stronger when mechanisms connect them.
+          Sociology changes scale without pretending the levels are isolated.
+          Explanations become stronger when mechanisms connect them.
         </p>
       </div>
 
       <div className="relative mx-5 mt-2">
-        <div className="pointer-events-none absolute bottom-6 left-[17px] top-6 w-px bg-gradient-to-b from-cyan-200/35 via-violet-200/32 to-pink-200/32" />
+        <div className="via-violet-200/32 to-pink-200/32 pointer-events-none absolute bottom-6 left-[17px] top-6 w-px bg-gradient-to-b from-cyan-200/35" />
         {rows.map((row, index) => (
-          <div key={row.label} className="relative grid grid-cols-[36px_minmax(0,1fr)] gap-4 py-5">
-            <span className="relative z-10 flex h-9 w-9 items-center justify-center rounded-full border bg-[#0a0610]/78 font-mono text-[11px]" style={{ color: `rgb(${row.rgb})`, borderColor: `rgba(${row.rgb},0.30)` }}>
+          <div
+            key={row.label}
+            className="relative grid grid-cols-[36px_minmax(0,1fr)] gap-4 py-5"
+          >
+            <span
+              className="bg-[#0a0610]/78 relative z-10 flex h-9 w-9 items-center justify-center rounded-full border font-mono text-[11px]"
+              style={{
+                color: `rgb(${row.rgb})`,
+                borderColor: `rgba(${row.rgb},0.30)`,
+              }}
+            >
               0{index + 1}
             </span>
             <div className="border-b border-white/[0.07] pb-5">
-              <strong className="text-[14px]" style={{ color: `rgb(${row.rgb})` }}>{row.label}</strong>
-              <p className="mt-1 text-[13px] leading-5 text-slate-400/70">{row.text}</p>
+              <strong
+                className="text-[14px]"
+                style={{ color: `rgb(${row.rgb})` }}
+              >
+                {row.label}
+              </strong>
+              <p className="mt-1 text-[13px] leading-5 text-slate-400/70">
+                {row.text}
+              </p>
             </div>
           </div>
         ))}
       </div>
 
       <div className="absolute inset-x-5 bottom-5 border-t border-violet-100/[0.08] pt-4">
-        <div className="font-mono text-[11px] font-semibold uppercase tracking-[0.09em] text-slate-500">Bridge question</div>
+        <div className="font-mono text-[11px] font-semibold uppercase tracking-[0.09em] text-slate-500">
+          Bridge question
+        </div>
         <p className="mt-2 text-[13px] leading-5 text-violet-100/60">
-          Which local interactions accumulate into institutional change, and which institutions reshape the choices available to individuals?
+          Which local interactions accumulate into institutional change, and
+          which institutions reshape the choices available to individuals?
         </p>
       </div>
     </aside>
@@ -394,11 +549,19 @@ function TheoryLens({
 }) {
   return (
     <article className="relative min-h-[210px] border-b border-violet-100/[0.07] px-5 py-5 last:border-b-0 md:border-b-0 md:border-r md:last:border-r-0">
-      <div className="absolute left-0 top-5 h-14 w-px" style={{ background: `rgba(${rgb},0.48)` }} />
-      <div className="font-mono text-[11px] font-semibold uppercase tracking-[0.10em]" style={{ color: `rgb(${rgb})` }}>
+      <div
+        className="absolute left-0 top-5 h-14 w-px"
+        style={{ background: `rgba(${rgb},0.48)` }}
+      />
+      <div
+        className="font-mono text-[11px] font-semibold uppercase tracking-[0.10em]"
+        style={{ color: `rgb(${rgb})` }}
+      >
         {label}
       </div>
-      <h3 className="mt-3 text-[17px] font-semibold leading-6 text-white">{prompt}</h3>
+      <h3 className="mt-3 text-[17px] font-semibold leading-6 text-white">
+        {prompt}
+      </h3>
       <p className="mt-2 text-[13px] leading-6 text-slate-400/70">{text}</p>
     </article>
   );

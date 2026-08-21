@@ -21,6 +21,7 @@ import { astronomyVocab } from "./a/astronomy";
 import { planetaryAstronomyVocab } from "./natural-science/astronomy/planetary-astronomy";
 import { psychologyVocab } from "./p/psychology";
 import { sociologyVocab } from "./s/sociology";
+import { sociologyBranchVocab } from "./s/sociology-branches";
 import { politicalScienceVocab } from "./p/political-science";
 import { medicineVocab } from "./m/medicine";
 import { anatomyPhysiologyVocab } from "./a/anatomy-physiology";
@@ -97,6 +98,7 @@ export const ALL_VOCAB: VocabTerm[] = composeVocabulary(
   planetaryAstronomyVocab,
   psychologyVocab,
   sociologyVocab,
+  sociologyBranchVocab,
   politicalScienceVocab,
   medicineVocab,
   anatomyPhysiologyVocab,

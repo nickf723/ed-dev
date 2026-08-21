@@ -26,6 +26,7 @@ import { PSYCHOLOGY_VOCABULARY_REGISTRATIONS } from "./psychology-node-registry"
 import { INFORMATION_SCIENCE_VOCABULARY_REGISTRATIONS } from "./information-science-node-registry";
 import { HISTORY_VOCABULARY_REGISTRATIONS } from "./history-node-registry";
 import { AGRICULTURE_VOCABULARY_REGISTRATIONS } from "./agriculture-node-registry";
+import { SOCIOLOGY_VOCABULARY_REGISTRATIONS } from "./sociology-node-registry";
 import { buildCurriculumVocabularyScopes } from "./aggregate.mjs";
 import { composeVocabulary } from "./compose";
 import { MATHEMATICS_VOCABULARY_REGISTRATIONS } from "./mathematics-node-registry";
@@ -416,6 +417,35 @@ const economicsVocabulary = composeVocabulary(
   ...economicsScope.groups.map((group) => group.terms)
 );
 
+const sociologyNode = curriculumRegistry.getNode("social.sociology");
+if (!sociologyNode) {
+  throw new Error(
+    "Sociology curriculum node is required for vocabulary scopes"
+  );
+}
+
+const sociologyVocabularyScopes = buildCurriculumVocabularyScopes({
+  roots: [sociologyNode],
+  registrations: SOCIOLOGY_VOCABULARY_REGISTRATIONS,
+  accent: "violet",
+  accentByNodeId: {
+    "social.sociology.interaction": "cyan",
+    "social.sociology.stratification": "rose",
+    "social.sociology.demography": "amber",
+  },
+});
+
+const sociologyScope = sociologyVocabularyScopes.find(
+  (scope) => scope.path === sociologyNode.href
+);
+if (!sociologyScope) {
+  throw new Error("Sociology vocabulary scope could not be derived");
+}
+
+const sociologyVocabulary = composeVocabulary(
+  ...sociologyScope.groups.map((group) => group.terms)
+);
+
 const chemistryNode = curriculumRegistry.getNode("natural.chemistry");
 if (!chemistryNode) {
   throw new Error(
@@ -603,6 +633,7 @@ export const socialScienceVocabularyScopes: VocabularyScope[] = [
   ...psychologyVocabularyScopes,
   ...geographyVocabularyScopes,
   ...economicsVocabularyScopes,
+  ...sociologyVocabularyScopes,
   {
     path: "/social-science",
     title: "Social Science",
@@ -628,6 +659,13 @@ export const socialScienceVocabularyScopes: VocabularyScope[] = [
         terms: economicsVocabulary,
         sourceNodeId: economicsNode.id,
         sourcePath: economicsNode.href,
+      },
+      {
+        id: sociologyNode.id,
+        label: sociologyNode.label,
+        terms: sociologyVocabulary,
+        sourceNodeId: sociologyNode.id,
+        sourcePath: sociologyNode.href,
       },
     ],
   },

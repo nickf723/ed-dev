@@ -458,3 +458,11 @@ Agriculture keeps one nine-branch root layer while treating its production and r
 The root advances from direct branch navigation and system layers through the preserved nitrogen instrument, six whole-farm questions, a four-file evidence review, and an official public-data protocol. One tested model owns branch parity, three crop-system fixtures, nitrogen pathway arithmetic, and answer fixtures. Thirty-six terms are registered at the root or narrowest direct branch and aggregate into Applied Science.
 
 The visual grammar is a managed landscape viewed above and below ground: distinct fields, hedgerows, orchard, pasture, protected culture, pond, lane, irrigation, buildings, soil, roots, and nutrient cues. A deterministic server-rendered isometric SVG replaces the viewport-measured animation canvas. Client state is confined to the nitrogen and assessment islands, without importing History's archive surfaces or Information Science's record desk.
+
+---
+
+## 20. Current cohesion checkpoint · Sociology
+
+Sociology keeps seven direct planned branches while using micro, meso, macro, and cross-cutting bands only as analytical scale cues. The root advances from registry-owned navigation and one event across scales through a seeded Schelling-style model, three theoretical lenses, a four-case evidence review, and public-data boundaries. One tested model owns branch parity, exact initial population metrics, seeded movement, count preservation, and answer fixtures; twenty-nine terms aggregate into Social Science.
+
+The visual grammar is relational and scalar: encounters and ties sit above groups and organizations, which sit above an institutional skyline. A deterministic server-rendered field replaces the random drifting-node canvas, the route returns to server ownership, and only the simulation and assessment remain client islands. The page avoids Psychology's participant laboratory, Economics' exchange ledger, and Agriculture's field transect.
