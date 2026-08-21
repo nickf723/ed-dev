@@ -418,3 +418,13 @@ Psychology keeps one six-branch root layer. Cognitive, Biological, Developmental
 The root now advances from direct branch navigation through levels of explanation, the preserved three-scene cognition laboratory, operationalization and causal boundaries, and a four-file evidence review. One tested model owns mean arithmetic, a fixed condition contrast, branch parity, and assessment fixtures. Twenty-four root terms inherit into Social Science, and the lab's wall-clock timer no longer participates in the initial render.
 
 The visual grammar is observational and inferential: masked participant ledgers, condition marks, trial sequences, construct notes, comparison records, and explicit claim boundaries. A deterministic server-rendered observation room replaces the viewport-measured animated canvas without importing Architecture's section drawing or presenting a decorative brain network as an explanation.
+
+---
+
+## 16. Current cohesion checkpoint · Earth Science
+
+Earth Science now keeps five direct branches instead of presenting a specialized material field as a root peer. Geology contains the existing Mineralogy reference route; Hydrology, Meteorology, Physical Geography, and planned Climatology remain direct. Human Geography is preserved as a Social Science cross-link. Climate is presented as cross-system behavior through time rather than another physical layer.
+
+The root advances from the field transect through four cross-system couplings, an interactive watershed ledger, and a four-file evidence review. One tested model owns branch parity, Mineralogy containment, water-budget arithmetic, and answer fixtures. Twenty-six root terms combine with descendant Mineralogy vocabulary and inherit into Natural Science.
+
+The visual grammar is field-based and sectional: ridge, snow, rain, stream, groundwater, coast, strata, fault, and fixed monitoring stations. A deterministic server-rendered ridge-to-coast world replaces the random animated globe, and client ownership is reduced to the flux and assessment islands without importing Psychology's participant ledger or Architecture's building sheet.

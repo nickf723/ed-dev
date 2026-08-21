@@ -200,6 +200,26 @@ Verify:
 
 ---
 
+### Earth Science field transect
+
+**Route:** `/natural-science/earth-science`
+
+Verify:
+
+- the five direct branch bands appear before the system lesson and preserve registry order
+- Mineralogy reads as a nested active child inside Geology rather than a sixth root peer
+- the existing Geology, Mineralogy, Hydrology, Meteorology, and Physical Geography routes remain reachable, while planned Climatology remains inert
+- Human Geography reads as a cross-link rather than direct Earth Science descent
+- the ridge-to-coast background exposes atmosphere, rain, snow, terrain, stream, groundwater, ocean, strata, and stations without overwhelming the foreground
+- all flux sliders remain co-visible with the equation and storage response at desktop and narrow widths
+- the 120 / 45 / 55 fixture produces +20 mm, zero and negative cases remain legible, and reset restores the canonical fixture
+- all four field files provide deterministic correct/wrong feedback and preserve system, spatial, and temporal boundaries
+- source links and the invented-fixture boundary remain readable without looking like live provider data
+
+**Status:** Targeted React/Next lint, TypeScript, deterministic model tests, vocabulary aggregation, all three informational audits, the 404-page production build, and generated-HTML hierarchy/model/source/background checks passed; rendered verification required
+
+---
+
 ## Priority 0: constitution-built Algebra lessons
 
 These lessons were built or substantially rebuilt without a trusted rendered preview. Their instructional structure is intentional; visual claims remain provisional until inspected.

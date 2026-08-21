@@ -6,7 +6,8 @@ function node(
   href: string,
   description: string,
   status: CurriculumNode["status"] = "active",
-  pageKind: CurriculumNode["pageKind"] = "hub"
+  pageKind: CurriculumNode["pageKind"] = "hub",
+  children?: readonly CurriculumNode[],
 ): CurriculumNode {
   return {
     id,
@@ -16,6 +17,7 @@ function node(
     domainId: "natural",
     status,
     pageKind,
+    children,
   };
 }
 
@@ -33,15 +35,19 @@ export const EARTH_SCIENCE_CURRICULUM: CurriculumNode = {
       "natural.earth-science.geology",
       "Geology",
       "/natural-science/earth-science/geology",
-      "Earth materials, tectonics, volcanism, deformation, deep time, and the processes that build and recycle the solid planet."
-    ),
-    node(
-      "natural.earth-science.mineralogy",
-      "Mineralogy",
-      "/natural-science/earth-science/mineralogy",
-      "Mineral chemistry, crystal structure, identification, formation, and the materials from which rocks and many Earth systems are built.",
+      "Earth materials, tectonics, volcanism, deformation, deep time, and the processes that build and recycle the solid planet.",
       "active",
-      "reference"
+      "hub",
+      [
+        node(
+          "natural.earth-science.mineralogy",
+          "Mineralogy",
+          "/natural-science/earth-science/mineralogy",
+          "Mineral chemistry, crystal structure, identification, formation, and the materials from which rocks and many Earth systems are built.",
+          "active",
+          "reference",
+        ),
+      ],
     ),
     node(
       "natural.earth-science.hydrology",
