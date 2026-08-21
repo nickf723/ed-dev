@@ -25,6 +25,7 @@
     "test:chemistry": "node --experimental-strip-types --no-warnings scripts/test-chemistry-model.mjs",
     "test:music": "node --experimental-strip-types --no-warnings scripts/test-music-model.mjs",
     "test:architecture": "node --experimental-strip-types --no-warnings scripts/test-architecture-model.mjs",
+    "test:psychology": "node --experimental-strip-types --no-warnings scripts/test-psychology-model.mjs",
     "test:collections": "node scripts/test-collection-query.mjs && node scripts/test-collection-result.mjs && node scripts/test-musicbrainz-adapter.mjs && node scripts/test-inaturalist-adapter.mjs && node scripts/test-pubchem-elements-adapter.mjs && node scripts/test-nasa-exoplanet-adapter.mjs && node scripts/test-met-adapter.mjs"
   },
   "dependencies": {

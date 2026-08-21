@@ -23,6 +23,7 @@ import { ECONOMICS_VOCABULARY_REGISTRATIONS } from "./economics-node-registry";
 import { CHEMISTRY_VOCABULARY_REGISTRATIONS } from "./chemistry-node-registry";
 import { MUSIC_VOCABULARY_REGISTRATIONS } from "./music-node-registry";
 import { ARCHITECTURE_VOCABULARY_REGISTRATIONS } from "./architecture-node-registry";
+import { PSYCHOLOGY_VOCABULARY_REGISTRATIONS } from "./psychology-node-registry";
 import { buildCurriculumVocabularyScopes } from "./aggregate.mjs";
 import { composeVocabulary } from "./compose";
 import { MATHEMATICS_VOCABULARY_REGISTRATIONS } from "./mathematics-node-registry";
@@ -315,6 +316,30 @@ const geographyVocabulary = composeVocabulary(
   ...geographyScope.groups.map((group) => group.terms)
 );
 
+const psychologyNode = curriculumRegistry.getNode("social.psychology");
+if (!psychologyNode) {
+  throw new Error(
+    "Psychology curriculum node is required for vocabulary scopes"
+  );
+}
+
+const psychologyVocabularyScopes = buildCurriculumVocabularyScopes({
+  roots: [psychologyNode],
+  registrations: PSYCHOLOGY_VOCABULARY_REGISTRATIONS,
+  accent: "rose",
+});
+
+const psychologyScope = psychologyVocabularyScopes.find(
+  (scope) => scope.path === psychologyNode.href
+);
+if (!psychologyScope) {
+  throw new Error("Psychology vocabulary scope could not be derived");
+}
+
+const psychologyVocabulary = composeVocabulary(
+  ...psychologyScope.groups.map((group) => group.terms)
+);
+
 const economicsNode = curriculumRegistry.getNode("social.economics");
 if (!economicsNode) {
   throw new Error(
@@ -478,6 +503,7 @@ export const appliedScienceVocabularyScopes: VocabularyScope[] = [
 ];
 
 export const socialScienceVocabularyScopes: VocabularyScope[] = [
+  ...psychologyVocabularyScopes,
   ...geographyVocabularyScopes,
   ...economicsVocabularyScopes,
   {
@@ -485,6 +511,13 @@ export const socialScienceVocabularyScopes: VocabularyScope[] = [
     title: "Social Science",
     accent: "sky",
     groups: [
+      {
+        id: psychologyNode.id,
+        label: psychologyNode.label,
+        terms: psychologyVocabulary,
+        sourceNodeId: psychologyNode.id,
+        sourcePath: psychologyNode.href,
+      },
       {
         id: geographyNode.id,
         label: geographyNode.label,

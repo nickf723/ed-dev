@@ -408,3 +408,13 @@ Architecture keeps one eight-branch root layer. Design Studio, Building Technolo
 The root lesson advances from the section-based branch atlas and body-to-city scale stack through a historically bounded Vitruvian question set, an integration desk, and a four-sheet coordination review. One shared module owns area, drawing-scale, and ramp-run arithmetic plus assessment fixtures; root vocabulary is registered to the curriculum node and inherited by Applied Science.
 
 The visual grammar is spatial and sectional: occupied levels, bays, stairs, voids, site contours, dimensions, daylight rays, load cues, plans, and coordination overlays. It preserves product-level navigation, focus, feedback, and vocabulary conventions without importing Music's mixer or Chemistry's specimen-and-reaction language as the page's identity.
+
+---
+
+## 15. Current cohesion checkpoint · Psychology
+
+Psychology keeps one six-branch root layer. Cognitive, Biological, Developmental, Social & Personality, Clinical & Counseling, and Methods & Measurement are compatible lenses rather than a sequence or six independent definitions of a person. Methods crosses the other five; narrower specialties remain deferred within or across the bounded branches.
+
+The root now advances from direct branch navigation through levels of explanation, the preserved three-scene cognition laboratory, operationalization and causal boundaries, and a four-file evidence review. One tested model owns mean arithmetic, a fixed condition contrast, branch parity, and assessment fixtures. Twenty-four root terms inherit into Social Science, and the lab's wall-clock timer no longer participates in the initial render.
+
+The visual grammar is observational and inferential: masked participant ledgers, condition marks, trial sequences, construct notes, comparison records, and explicit claim boundaries. A deterministic server-rendered observation room replaces the viewport-measured animated canvas without importing Architecture's section drawing or presenting a decorative brain network as an explanation.

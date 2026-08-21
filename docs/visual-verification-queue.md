@@ -181,6 +181,25 @@ Verify:
 
 ---
 
+### Psychology observation laboratory
+
+**Route:** `/social-science/psychology`
+
+Verify:
+
+- six direct planned branches appear before the cognition laboratory and remain non-clickable
+- registry breadcrumbs and sidebar ancestry identify Social Science → Psychology without a hydration shift
+- the static observation-room background remains visible without competing with required text
+- perception controls keep signal, noise, expectation, and organized-signal cues coordinated
+- attention trials reset cleanly, target selection works, and reaction time remains absent until a trial is completed
+- working-memory controls and directional readouts remain explicitly conceptual rather than diagnostic
+- all four evidence files provide deterministic correct/wrong feedback and the score means remain 8, 5, and a difference of 3
+- research-ethics and clinical-practice boundaries remain legible at desktop, tablet, and mobile widths
+
+**Status:** Targeted React/Next lint, TypeScript, deterministic model tests, vocabulary aggregation, all three informational audits, the 404-page production build, and generated-HTML branch/source/model checks passed; rendered verification required
+
+---
+
 ## Priority 0: constitution-built Algebra lessons
 
 These lessons were built or substantially rebuilt without a trusted rendered preview. Their instructional structure is intentional; visual claims remain provisional until inspected.

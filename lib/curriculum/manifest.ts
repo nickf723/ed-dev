@@ -59,6 +59,7 @@ import { GEOGRAPHY_CURRICULUM } from "@/lib/curriculum/social/geography";
 import { LAW_CURRICULUM } from "@/lib/curriculum/social/law";
 import { LINGUISTICS_CURRICULUM } from "@/lib/curriculum/social/linguistics";
 import { POLITICAL_SCIENCE_CURRICULUM } from "@/lib/curriculum/social/political-science";
+import { PSYCHOLOGY_CURRICULUM } from "@/lib/curriculum/social/psychology";
 import { SOCIOLOGY_CURRICULUM } from "@/lib/curriculum/social/sociology";
 import type { CurriculumNode } from "@/lib/curriculum/types";
 
@@ -120,6 +121,7 @@ export const CURRICULUM_MODULES: readonly CurriculumNode[] = [
   LAW_CURRICULUM,
   LINGUISTICS_CURRICULUM,
   POLITICAL_SCIENCE_CURRICULUM,
+  PSYCHOLOGY_CURRICULUM,
   SOCIOLOGY_CURRICULUM,
   CULINARY_ARTS_CURRICULUM,
   CULTURE_CURRICULUM,

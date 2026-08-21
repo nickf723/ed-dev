@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   Brain,
   Eye,
@@ -35,8 +35,8 @@ export default function CognitionLab() {
   const [trial, setTrial] = useState(1);
   const [found, setFound] = useState(false);
   const [mistakes, setMistakes] = useState(0);
-  const [startedAt, setStartedAt] = useState(() => Date.now());
   const [elapsed, setElapsed] = useState<number | null>(null);
+  const startedAtRef = useRef<number | null>(null);
 
   const evidence = clamp(signal * 0.72 + (100 - noise) * 0.28, 0, 100);
   const organization = clamp(evidence * 0.78 + expectation * 0.22, 0, 100);
@@ -48,47 +48,14 @@ export default function CognitionLab() {
   );
 
   useEffect(() => {
-    window.dispatchEvent(
-      new CustomEvent("psychology-world:update", {
-        detail: {
-          scene,
-          signal,
-          noise,
-          expectation,
-          distractors,
-          similarity,
-          cue,
-          span,
-          rehearsal,
-          interference,
-          evidence,
-          selection,
-          retention,
-        },
-      }),
-    );
-  }, [
-    cue,
-    distractors,
-    evidence,
-    expectation,
-    interference,
-    noise,
-    rehearsal,
-    retention,
-    scene,
-    selection,
-    signal,
-    similarity,
-    span,
-  ]);
+    if (scene === "attention") startedAtRef.current = Date.now();
+  }, [scene, trial]);
 
   function newTrial() {
     setTrial((value) => value + 1);
     setFound(false);
     setMistakes(0);
     setElapsed(null);
-    setStartedAt(Date.now());
   }
 
   return (
@@ -120,7 +87,11 @@ export default function CognitionLab() {
                 if (found) return;
                 if (item.target) {
                   setFound(true);
-                  setElapsed(Date.now() - startedAt);
+                  setElapsed(
+                    startedAtRef.current === null
+                      ? null
+                      : Date.now() - startedAtRef.current,
+                  );
                 } else {
                   setMistakes((value) => value + 1);
                 }
