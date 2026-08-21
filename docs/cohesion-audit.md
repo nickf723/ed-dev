@@ -233,7 +233,13 @@ The parent-first repair preserves the nested structure–function scale, regiona
 
 The consolidation pass preserves the earlier GIS light table, eight bounded direct branches, inhabited globe, population-pyramid instrument, and six spatial-reasoning questions while bringing them into the current contract. The globe is now deterministic server-rendered scenery instead of a measured canvas loop; the layer deck raises instructional text to readable sizes; one shared model owns branches, demographic profiles, cohort shares, and three evidence cases; and Geography contributes the first curriculum-derived Social Science vocabulary scope. The new evidence lab asks learners to separate counts from rates, aggregates from local variation, and spatial association from mechanism. Rendered verification remains required.
 
-Next, rotate to **Natural Science → Biology → Botany** for a contrasting specimen/growth/collection audit. Inspect whether the existing iNaturalist provider contract can support a bounded plant collection without turning the lesson into a generic search interface.
+### Completed bounded-rotation checkpoint
+
+- Natural Science → Biology → Botany
+
+The consolidation pass preserves the deterministic venation field, stomatal exchange instrument, and root → xylem → leaf → phloem reading order while adding a registry-owned six-branch atlas before the lesson. The numerical model now has one shared testable implementation, and a four-file check combines exact calculation with mechanism, transport-direction, and classification reasoning. Ten Botany terms inherit through Biology and Natural Science. The Animalia-only iNaturalist adapter remains honestly bounded; a future flora atlas requires a plant-specific specimen and provenance contract instead of a relabeled animal search. Rendered verification remains required.
+
+Next, rotate to **Humanities → Visual Arts** for a contrasting gallery/material/collection audit. Inspect whether a museum collection provider can support real works without hiding image rights, provenance, or provider availability.
 
 ---
 

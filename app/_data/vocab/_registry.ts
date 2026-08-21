@@ -16,6 +16,7 @@ import { computerScienceVocab } from "./c/computer-science";
 import { physicsVocab } from "./p/physics";
 import { chemistryVocab } from "./c/chemistry";
 import { biologyVocab } from "./natural-science/biology";
+import { botanyVocab } from "./b/botany";
 import { astronomyVocab } from "./a/astronomy";
 import { planetaryAstronomyVocab } from "./natural-science/astronomy/planetary-astronomy";
 import { psychologyVocab } from "./p/psychology";
@@ -85,6 +86,7 @@ export const ALL_VOCAB: VocabTerm[] = composeVocabulary(
   physicsVocab,
   chemistryVocab,
   biologyVocab,
+  botanyVocab,
   astronomyVocab,
   planetaryAstronomyVocab,
   psychologyVocab,

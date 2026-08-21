@@ -1,4 +1,5 @@
 import type { CurriculumNode } from "@/lib/curriculum/types";
+import { BOTANY_CURRICULUM } from "./botany";
 
 function node(
   id: string,
@@ -6,7 +7,7 @@ function node(
   href: string,
   description: string,
   status: CurriculumNode["status"] = "active",
-  pageKind?: CurriculumNode["pageKind"],
+  pageKind?: CurriculumNode["pageKind"]
 ): CurriculumNode {
   return {
     id,
@@ -33,40 +34,35 @@ export const BIOLOGY_CURRICULUM: CurriculumNode = {
       "natural.biology.cytology",
       "Cytology",
       "/natural-science/biology/cytology",
-      "Cell structure, organelles, membranes, transport, division, and the processes that make cells function.",
+      "Cell structure, organelles, membranes, transport, division, and the processes that make cells function."
     ),
     node(
       "natural.biology.genetics",
       "Genetics",
       "/natural-science/biology/genetics",
       "Genes, inheritance, variation, chromosomes, and the transmission of biological information.",
-      "placeholder",
+      "placeholder"
     ),
     node(
       "natural.biology.molecular",
       "Molecular Biology",
       "/natural-science/biology/molecular",
       "DNA, RNA, proteins, gene expression, and the molecular machinery underlying living systems.",
-      "placeholder",
+      "placeholder"
     ),
     node(
       "natural.biology.microbiology",
       "Microbiology",
       "/natural-science/biology/microbiology",
-      "Microscopic life and biological agents, including bacteria, archaea, protists, and viruses.",
+      "Microscopic life and biological agents, including bacteria, archaea, protists, and viruses."
     ),
     node(
       "natural.biology.mycology",
       "Mycology",
       "/natural-science/biology/mycology",
-      "Fungi, their structures, life cycles, ecological roles, symbioses, and interactions with other organisms.",
+      "Fungi, their structures, life cycles, ecological roles, symbioses, and interactions with other organisms."
     ),
-    node(
-      "natural.biology.botany",
-      "Botany",
-      "/natural-science/biology/botany",
-      "Plant structure, physiology, reproduction, diversity, adaptation, and ecological roles.",
-    ),
+    BOTANY_CURRICULUM,
     {
       id: "natural.biology.zoology",
       label: "Zoology",
@@ -83,7 +79,7 @@ export const BIOLOGY_CURRICULUM: CurriculumNode = {
           "/natural-science/biology/zoology/diversity",
           "Animal classification, body plans, phylogeny, species concepts, and the major lineages of the animal kingdom.",
           "active",
-          "unit",
+          "unit"
         ),
         node(
           "natural.biology.zoology.comparative",
@@ -91,7 +87,7 @@ export const BIOLOGY_CURRICULUM: CurriculumNode = {
           "/natural-science/biology/zoology/comparative",
           "Compare anatomy, physiology, development, and functional adaptations across animal groups.",
           "active",
-          "unit",
+          "unit"
         ),
         node(
           "natural.biology.zoology.ethology",
@@ -99,7 +95,7 @@ export const BIOLOGY_CURRICULUM: CurriculumNode = {
           "/natural-science/biology/zoology/ethology",
           "Animal behavior, communication, learning, mating, cooperation, conflict, and behavioral ecology.",
           "active",
-          "unit",
+          "unit"
         ),
         node(
           "natural.biology.zoology.paleozoology",
@@ -107,7 +103,7 @@ export const BIOLOGY_CURRICULUM: CurriculumNode = {
           "/natural-science/biology/zoology/paleozoology",
           "Extinct animals, fossils, evolutionary transitions, ancient ecosystems, and the history of animal life.",
           "active",
-          "unit",
+          "unit"
         ),
       ],
     },
@@ -115,21 +111,21 @@ export const BIOLOGY_CURRICULUM: CurriculumNode = {
       "natural.biology.anatomy",
       "Anatomy & Physiology",
       "/natural-science/biology/anatomy",
-      "The structures of organisms and how tissues, organs, and body systems work together.",
+      "The structures of organisms and how tissues, organs, and body systems work together."
     ),
     node(
       "natural.biology.ecology",
       "Ecology",
       "/natural-science/biology/ecology",
       "Relationships among organisms, populations, communities, ecosystems, resources, and environments.",
-      "placeholder",
+      "placeholder"
     ),
     node(
       "natural.biology.evolution",
       "Evolution",
       "/natural-science/biology/evolution",
       "Heritable change across generations, natural selection, common ancestry, adaptation, and biodiversity.",
-      "placeholder",
+      "placeholder"
     ),
   ],
 };
