@@ -1,7 +1,6 @@
 import "server-only";
 
 import { computerScienceVocab } from "./c/computer-science";
-import { dataScienceVocab } from "./d/data-science";
 import { firstOrderVocab } from "./f/first-order-logic";
 import { formalScienceVocab } from "./f/formal-science";
 import { formalScienceLocalVocab } from "./f/formal-science-local";
@@ -17,6 +16,7 @@ import { BIOLOGY_VOCABULARY_REGISTRATIONS } from "./biology-node-registry";
 import { EARTH_SCIENCE_VOCABULARY_REGISTRATIONS } from "./earth-science-node-registry";
 import { LITERATURE_VOCABULARY_REGISTRATIONS } from "./literature-node-registry";
 import { VISUAL_ARTS_VOCABULARY_REGISTRATIONS } from "./visual-arts-node-registry";
+import { DATA_SCIENCE_VOCABULARY_REGISTRATIONS } from "./data-science-node-registry";
 import { MEDICINE_VOCABULARY_REGISTRATIONS } from "./medicine-node-registry";
 import { GEOGRAPHY_VOCABULARY_REGISTRATIONS } from "./geography-node-registry";
 import { buildCurriculumVocabularyScopes } from "./aggregate.mjs";
@@ -76,11 +76,6 @@ const computerScienceVocabulary = composeVocabulary(
 const informationScienceVocabulary = composeVocabulary(
   informationScienceVocab,
   legacyVocabularyByDomain("Information Science")
-);
-
-const dataScienceVocabulary = composeVocabulary(
-  dataScienceVocab,
-  legacyVocabularyByDomain("Statistics", "Data Science")
 );
 
 const systemsScienceVocabulary = composeVocabulary(
@@ -213,6 +208,30 @@ if (!visualArtsScope) {
 
 const visualArtsVocabulary = composeVocabulary(
   ...visualArtsScope.groups.map((group) => group.terms)
+);
+
+const dataScienceNode = curriculumRegistry.getNode("formal.data-science");
+if (!dataScienceNode) {
+  throw new Error(
+    "Data Science curriculum node is required for vocabulary scopes"
+  );
+}
+
+const dataScienceVocabularyScopes = buildCurriculumVocabularyScopes({
+  roots: [dataScienceNode],
+  registrations: DATA_SCIENCE_VOCABULARY_REGISTRATIONS,
+  accent: "cyan",
+});
+
+const dataScienceScope = dataScienceVocabularyScopes.find(
+  (scope) => scope.path === dataScienceNode.href
+);
+if (!dataScienceScope) {
+  throw new Error("Data Science vocabulary scope could not be derived");
+}
+
+const dataScienceVocabulary = composeVocabulary(
+  ...dataScienceScope.groups.map((group) => group.terms)
 );
 
 const medicineNode = curriculumRegistry.getNode("applied.medicine");
@@ -418,18 +437,7 @@ export const formalScienceVocabularyScopes: VocabularyScope[] = [
       },
     ],
   },
-  {
-    path: "/formal-science/data-science",
-    title: "Data Science",
-    accent: "emerald",
-    groups: [
-      {
-        id: "data-science",
-        label: "Data Science",
-        terms: dataScienceVocabulary,
-      },
-    ],
-  },
+  ...dataScienceVocabularyScopes,
   {
     path: "/formal-science/systems-science",
     title: "Systems Science",
@@ -465,9 +473,11 @@ export const formalScienceVocabularyScopes: VocabularyScope[] = [
         terms: informationScienceVocabulary,
       },
       {
-        id: "data-science",
-        label: "Data Science",
+        id: dataScienceNode.id,
+        label: dataScienceNode.label,
         terms: dataScienceVocabulary,
+        sourceNodeId: dataScienceNode.id,
+        sourcePath: dataScienceNode.href,
       },
       {
         id: "systems-science",

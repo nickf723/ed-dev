@@ -348,3 +348,13 @@ A branch is cohesion-audited when:
 - child pages become meaningfully more specialized with depth
 
 The final test is whether the branch feels like **one curriculum designed deliberately over time**, rather than a folder containing pages from different development eras.
+
+---
+
+## 9. Current cohesion checkpoint · Data Science
+
+Data Science keeps one eight-branch root layer: collection and wrangling, exploration, statistical inference, machine learning, engineering, visualization, causal work, and responsible evaluation. These peers describe distinct recurring responsibilities rather than a required pipeline or eight competing definitions of the field.
+
+The root lesson now advances from navigation to a transparent fitted model, then from evaluation discipline to claim distinctions and an evidence audit. One fixed sample appears in the server-rendered workbench and the K-means laboratory; one shared model owns its calculations. The page-level vocabulary is registered to the curriculum node and inherited by Formal Science, so narrower terminology can move into future child units without maintaining a parallel glossary.
+
+The visual grammar is intentionally procedural and inspectable: sparse tables, coordinates, split boundaries, timelines, and audit rails. It keeps the product's header, focus, feedback, and vocabulary conventions while avoiding the pigment, gallery, living-field, globe, and anatomical-plate languages of the preceding rotations.
