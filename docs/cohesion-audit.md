@@ -388,3 +388,13 @@ Chemistry keeps one seven-branch root layer. General Chemistry provides the broa
 The root lesson now advances from direct navigation through elements → structures → reactions, a provenance-aware periodic repository, a deterministic molecular projection, a conservation ledger, and a four-file evidence review. One shared module owns the projection, equation arithmetic, and assessment fixtures; root vocabulary is registered to the curriculum node and inherited by Natural Science.
 
 The visual grammar is representational and laboratory-aware: element cells, atomic identity, molecular geometry, bond vectors, chemical equations, measurement records, and safety stops. It preserves product-level navigation, focus, feedback, repositories, and vocabulary conventions without importing Economics' institutional flows or claim receipts as the page's identity.
+
+---
+
+## 13. Current cohesion checkpoint · Music
+
+Music keeps one five-branch root layer. Theory & Composition, Acoustics, Performance & Instrumentation, Music History & Culture, and Recorded Music & Discography separate structural, physical, embodied, contextual, and catalog questions without implying that those dimensions exist alone. Theory, Performance, and Recorded Music are active; Acoustics and History & Culture remain honest planned peers.
+
+The root lesson now advances from direct branch navigation through composition/performance/recording identity, sound/structure/meaning claim layers, and a four-file evidence review. One shared module owns pitch transposition, duration arithmetic, branch parity, and assessment fixtures; root vocabulary is registered to the curriculum node and inherited by Humanities. The existing MusicBrainz collection remains the specialized repository rather than being duplicated on the root.
+
+The visual grammar is temporal and layered: staff lines, pitch events, a fixed signal trace, recording grooves, and mixer channels. It preserves product-level navigation, focus, feedback, repositories, and vocabulary conventions without importing Chemistry's specimen bench or Visual Arts' pigment-and-gallery language as the page's identity.

@@ -21,6 +21,7 @@ import { MEDICINE_VOCABULARY_REGISTRATIONS } from "./medicine-node-registry";
 import { GEOGRAPHY_VOCABULARY_REGISTRATIONS } from "./geography-node-registry";
 import { ECONOMICS_VOCABULARY_REGISTRATIONS } from "./economics-node-registry";
 import { CHEMISTRY_VOCABULARY_REGISTRATIONS } from "./chemistry-node-registry";
+import { MUSIC_VOCABULARY_REGISTRATIONS } from "./music-node-registry";
 import { buildCurriculumVocabularyScopes } from "./aggregate.mjs";
 import { composeVocabulary } from "./compose";
 import { MATHEMATICS_VOCABULARY_REGISTRATIONS } from "./mathematics-node-registry";
@@ -361,9 +362,32 @@ const chemistryVocabulary = composeVocabulary(
   ...chemistryScope.groups.map((group) => group.terms)
 );
 
+const musicNode = curriculumRegistry.getNode("humanities.music");
+if (!musicNode) {
+  throw new Error("Music curriculum node is required for vocabulary scopes");
+}
+
+const musicVocabularyScopes = buildCurriculumVocabularyScopes({
+  roots: [musicNode],
+  registrations: MUSIC_VOCABULARY_REGISTRATIONS,
+  accent: "rose",
+});
+
+const musicScope = musicVocabularyScopes.find(
+  (scope) => scope.path === musicNode.href
+);
+if (!musicScope) {
+  throw new Error("Music vocabulary scope could not be derived");
+}
+
+const musicVocabulary = composeVocabulary(
+  ...musicScope.groups.map((group) => group.terms)
+);
+
 export const humanitiesVocabularyScopes: VocabularyScope[] = [
   ...literatureVocabularyScopes,
   ...visualArtsVocabularyScopes,
+  ...musicVocabularyScopes,
   {
     path: "/humanities",
     title: "Humanities",
@@ -382,6 +406,13 @@ export const humanitiesVocabularyScopes: VocabularyScope[] = [
         terms: visualArtsVocabulary,
         sourceNodeId: visualArtsNode.id,
         sourcePath: visualArtsNode.href,
+      },
+      {
+        id: musicNode.id,
+        label: musicNode.label,
+        terms: musicVocabulary,
+        sourceNodeId: musicNode.id,
+        sourcePath: musicNode.href,
       },
     ],
   },
