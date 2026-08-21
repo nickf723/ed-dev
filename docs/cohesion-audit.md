@@ -239,7 +239,13 @@ The consolidation pass preserves the earlier GIS light table, eight bounded dire
 
 The consolidation pass preserves the deterministic venation field, stomatal exchange instrument, and root → xylem → leaf → phloem reading order while adding a registry-owned six-branch atlas before the lesson. The numerical model now has one shared testable implementation, and a four-file check combines exact calculation with mechanism, transport-direction, and classification reasoning. Ten Botany terms inherit through Biology and Natural Science. The Animalia-only iNaturalist adapter remains honestly bounded; a future flora atlas requires a plant-specific specimen and provenance contract instead of a relabeled animal search. Rendered verification remains required.
 
-Next, rotate to **Humanities → Visual Arts** for a contrasting gallery/material/collection audit. Inspect whether a museum collection provider can support real works without hiding image rights, provenance, or provider availability.
+### Completed bounded-rotation checkpoint
+
+- Humanities → Visual Arts
+
+The consolidation pass keeps the pigment world, six-branch practice studio, museum wall, composition experiment, and hue lab while changing the page into a server-rendered child-first hub. One shared model coordinates branch parity, hue arithmetic, and a four-file evidence assessment. Thirteen Visual Arts terms now inherit into Humanities. The Met integration has a pure tested provider adapter, separate provider-total and sample counts, explicit image-rights fields, named source links, partial and rate-limit states, contextual facets, stale-request protection, and a reviewed fallback wall. Rendered verification remains required.
+
+Next, rotate to **Formal Science → Data Science** for a contrasting uncertainty/data audit. Preserve any strong analytical tools while checking whether its child structure, sources, model claims, assessments, and vocabulary distinguish data, evidence, inference, and uncertainty.
 
 ---
 

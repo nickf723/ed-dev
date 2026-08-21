@@ -16,6 +16,7 @@ import { ASTRONOMY_VOCABULARY_REGISTRATIONS } from "./astronomy-node-registry";
 import { BIOLOGY_VOCABULARY_REGISTRATIONS } from "./biology-node-registry";
 import { EARTH_SCIENCE_VOCABULARY_REGISTRATIONS } from "./earth-science-node-registry";
 import { LITERATURE_VOCABULARY_REGISTRATIONS } from "./literature-node-registry";
+import { VISUAL_ARTS_VOCABULARY_REGISTRATIONS } from "./visual-arts-node-registry";
 import { MEDICINE_VOCABULARY_REGISTRATIONS } from "./medicine-node-registry";
 import { GEOGRAPHY_VOCABULARY_REGISTRATIONS } from "./geography-node-registry";
 import { buildCurriculumVocabularyScopes } from "./aggregate.mjs";
@@ -176,6 +177,44 @@ const literatureVocabularyScopes = buildCurriculumVocabularyScopes({
   },
 });
 
+const literatureScope = literatureVocabularyScopes.find(
+  (scope) => scope.path === literatureNode.href
+);
+if (!literatureScope) {
+  throw new Error("Literature vocabulary scope could not be derived");
+}
+
+const literatureVocabulary = composeVocabulary(
+  ...literatureScope.groups.map((group) => group.terms)
+);
+
+const visualArtsNode = curriculumRegistry.getNode("humanities.visual-arts");
+if (!visualArtsNode) {
+  throw new Error(
+    "Visual Arts curriculum node is required for vocabulary scopes"
+  );
+}
+
+const visualArtsVocabularyScopes = buildCurriculumVocabularyScopes({
+  roots: [visualArtsNode],
+  registrations: VISUAL_ARTS_VOCABULARY_REGISTRATIONS,
+  accent: "amber",
+  accentByNodeId: {
+    "humanities.visual-arts": "rose",
+  },
+});
+
+const visualArtsScope = visualArtsVocabularyScopes.find(
+  (scope) => scope.path === visualArtsNode.href
+);
+if (!visualArtsScope) {
+  throw new Error("Visual Arts vocabulary scope could not be derived");
+}
+
+const visualArtsVocabulary = composeVocabulary(
+  ...visualArtsScope.groups.map((group) => group.terms)
+);
+
 const medicineNode = curriculumRegistry.getNode("applied.medicine");
 if (!medicineNode) {
   throw new Error("Medicine curriculum node is required for vocabulary scopes");
@@ -229,6 +268,28 @@ const geographyVocabulary = composeVocabulary(
 
 export const humanitiesVocabularyScopes: VocabularyScope[] = [
   ...literatureVocabularyScopes,
+  ...visualArtsVocabularyScopes,
+  {
+    path: "/humanities",
+    title: "Humanities",
+    accent: "amber",
+    groups: [
+      {
+        id: literatureNode.id,
+        label: literatureNode.label,
+        terms: literatureVocabulary,
+        sourceNodeId: literatureNode.id,
+        sourcePath: literatureNode.href,
+      },
+      {
+        id: visualArtsNode.id,
+        label: visualArtsNode.label,
+        terms: visualArtsVocabulary,
+        sourceNodeId: visualArtsNode.id,
+        sourcePath: visualArtsNode.href,
+      },
+    ],
+  },
 ];
 
 export const appliedScienceVocabularyScopes: VocabularyScope[] = [
