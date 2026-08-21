@@ -26,7 +26,8 @@ export default function PartsStructureProcessTopology({
   const director = useWorldDirector();
   const [selectedId, setSelectedId] = useState(stages[0]?.id ?? "");
   const directed = stages.find((stage) => stage.id === director.scene);
-  const selected = directed ?? stages.find((stage) => stage.id === selectedId) ?? stages[0];
+  const selected =
+    directed ?? stages.find((stage) => stage.id === selectedId) ?? stages[0];
   if (!selected) return null;
 
   function selectStage(id: string) {
@@ -45,48 +46,61 @@ export default function PartsStructureProcessTopology({
       }`}
     >
       {!world ? (
-        <div className="grid gap-5 border-b border-white/[0.08] p-5 lg:grid-cols-[minmax(0,1fr)_420px] lg:items-end sm:p-7">
+        <div className="grid gap-5 border-b border-white/[0.08] p-5 sm:p-7 lg:grid-cols-[minmax(0,1fr)_420px] lg:items-end">
           <div>
-            <div className="font-mono text-[11px] font-semibold uppercase tracking-[0.14em] text-emerald-200/72">
+            <div className="text-emerald-200/72 font-mono text-[11px] font-semibold uppercase tracking-[0.14em]">
               Parts → structure → process
             </div>
             <h2 className="mt-3 text-[clamp(2rem,3.6vw,3.2rem)] font-semibold leading-[0.96] tracking-[-0.05em] text-white">
               Understanding a system means changing the unit you are looking at.
             </h2>
           </div>
-          <p className="text-[14px] leading-7 text-slate-300/68">
-            Identify the pieces, ask how their arrangement creates new properties, then follow how the structure changes over time. The same grammar works far beyond chemistry.
+          <p className="text-slate-300/68 text-[14px] leading-7">
+            Identify the pieces, ask how their arrangement creates new
+            properties, then follow how the structure changes over time. The
+            same grammar works far beyond chemistry.
           </p>
         </div>
       ) : (
         <div className="border-b border-white/[0.08] px-5 py-4 sm:px-6">
-          <div className="font-mono text-[11px] font-semibold uppercase tracking-[0.13em] text-emerald-100/64">
+          <div className="text-emerald-100/64 font-mono text-[11px] font-semibold uppercase tracking-[0.13em]">
             Move between chemical scales
           </div>
-          <p className="mt-2 max-w-4xl text-[14px] leading-6 text-slate-200/68">
-            Select a level to reorganize both the diagram and the living reaction field behind it.
+          <p className="text-slate-200/68 mt-2 max-w-4xl text-[14px] leading-6">
+            Select a level to reorganize the diagram, active record, and
+            specimen while the representation bench remains stable behind it.
           </p>
         </div>
       )}
 
-      <div className={`grid gap-4 ${world ? "p-4 sm:p-5 xl:grid-cols-[minmax(0,1fr)_390px]" : "p-5 sm:p-6 xl:grid-cols-[minmax(0,1fr)_360px]"}`}>
+      <div
+        className={`grid gap-4 ${world ? "p-4 sm:p-5 xl:grid-cols-[minmax(0,1fr)_390px]" : "p-5 sm:p-6 xl:grid-cols-[minmax(0,1fr)_360px]"}`}
+      >
         <div className="relative grid gap-3 md:grid-cols-3">
           <div className="pointer-events-none absolute left-[15%] right-[15%] top-[76px] hidden h-px bg-gradient-to-r from-emerald-300/30 via-cyan-300/30 to-amber-300/30 md:block" />
           {stages.map((stage, index) => {
             const Icon = stage.icon ?? FALLBACK_ICONS[index] ?? Boxes;
             const active = selected.id === stage.id;
             return (
-              <WorldSceneFocus key={stage.id} scene={stage.id} className="relative z-10">
+              <WorldSceneFocus
+                key={stage.id}
+                scene={stage.id}
+                className="relative z-10"
+              >
                 <button
                   type="button"
                   onClick={() => selectStage(stage.id)}
-                  className={`group relative w-full rounded-[22px] border p-5 text-left transition hover:-translate-y-1 ${
-                    world ? "min-h-[245px] bg-black/[0.20] backdrop-blur-sm" : "min-h-[270px]"
+                  className={`group relative w-full rounded-[22px] border p-5 text-left transition hover:-translate-y-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-200/60 ${
+                    world
+                      ? "min-h-[245px] bg-black/[0.20] backdrop-blur-sm"
+                      : "min-h-[270px]"
                   }`}
                   style={{
                     borderColor: `rgba(${stage.rgb},${active ? 0.36 : 0.13})`,
                     backgroundImage: `linear-gradient(145deg,rgba(${stage.rgb},${active ? 0.11 : 0.035}),rgba(0,0,0,${world ? 0.16 : 0.24}))`,
-                    boxShadow: active ? `0 18px 55px rgba(${stage.rgb},0.10)` : undefined,
+                    boxShadow: active
+                      ? `0 18px 55px rgba(${stage.rgb},0.10)`
+                      : undefined,
                   }}
                 >
                   <div className="flex items-center justify-between">
@@ -100,7 +114,7 @@ export default function PartsStructureProcessTopology({
                     >
                       <Icon size={19} />
                     </span>
-                    <span className="font-mono text-[11px] text-white/32">
+                    <span className="text-white/32 font-mono text-[11px]">
                       {String(index + 1).padStart(2, "0")}
                     </span>
                   </div>
@@ -113,7 +127,7 @@ export default function PartsStructureProcessTopology({
                   <h3 className="mt-2 text-[22px] font-semibold tracking-[-0.035em] text-white">
                     {stage.label}
                   </h3>
-                  <p className="mt-3 text-[14px] leading-6 text-slate-300/66">
+                  <p className="text-slate-300/66 mt-3 text-[14px] leading-6">
                     {stage.summary}
                   </p>
                   {index < stages.length - 1 ? (
@@ -138,13 +152,15 @@ export default function PartsStructureProcessTopology({
           <h3 className="mt-2 text-[28px] font-semibold tracking-[-0.045em] text-white">
             {selected.label}
           </h3>
-          <p className="mt-3 text-[15px] leading-7 text-slate-200/72">
+          <p className="text-slate-200/72 mt-3 text-[15px] leading-7">
             {selected.question}
           </p>
           <div className="mt-5 flex min-h-[210px] items-center justify-center overflow-hidden rounded-[19px] border border-white/[0.08] bg-black/[0.24] p-4">
-            {selected.specimen ?? <DefaultSpecimen rgb={selected.rgb} id={selected.id} />}
+            {selected.specimen ?? (
+              <DefaultSpecimen rgb={selected.rgb} id={selected.id} />
+            )}
           </div>
-          <p className="mt-4 text-[13px] leading-6 text-slate-400/72">
+          <p className="text-slate-400/72 mt-4 text-[13px] leading-6">
             {selected.summary}
           </p>
         </aside>
@@ -216,17 +232,26 @@ function DefaultSpecimen({ rgb, id }: { rgb: string; id: string }) {
     <div className="flex items-center gap-4">
       <span
         className="h-16 w-16 rounded-full border"
-        style={{ borderColor: `rgba(${rgb},0.34)`, background: `rgba(${rgb},0.08)` }}
+        style={{
+          borderColor: `rgba(${rgb},0.34)`,
+          background: `rgba(${rgb},0.08)`,
+        }}
       />
       <ArrowRight size={20} style={{ color: `rgba(${rgb},0.52)` }} />
       <span
         className="h-14 w-14 rounded-[16px] border"
-        style={{ borderColor: `rgba(${rgb},0.34)`, background: `rgba(${rgb},0.10)` }}
+        style={{
+          borderColor: `rgba(${rgb},0.34)`,
+          background: `rgba(${rgb},0.10)`,
+        }}
       />
       <span className="text-[18px] text-white/30">+</span>
       <span
         className="h-10 w-10 rounded-full border"
-        style={{ borderColor: `rgba(${rgb},0.34)`, background: `rgba(${rgb},0.05)` }}
+        style={{
+          borderColor: `rgba(${rgb},0.34)`,
+          background: `rgba(${rgb},0.05)`,
+        }}
       />
     </div>
   );

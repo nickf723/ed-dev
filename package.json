@@ -22,6 +22,7 @@
     "test:data-science": "node --experimental-strip-types --no-warnings scripts/test-data-science-model.mjs",
     "test:materials-science": "node --experimental-strip-types --no-warnings scripts/test-materials-science-model.mjs",
     "test:economics": "node --experimental-strip-types --no-warnings scripts/test-economics-model.mjs",
+    "test:chemistry": "node --experimental-strip-types --no-warnings scripts/test-chemistry-model.mjs",
     "test:collections": "node scripts/test-collection-query.mjs && node scripts/test-collection-result.mjs && node scripts/test-musicbrainz-adapter.mjs && node scripts/test-inaturalist-adapter.mjs && node scripts/test-pubchem-elements-adapter.mjs && node scripts/test-nasa-exoplanet-adapter.mjs && node scripts/test-met-adapter.mjs"
   },
   "dependencies": {

@@ -7,7 +7,6 @@ import { formalScienceLocalVocab } from "./f/formal-science-local";
 import { informationScienceVocab } from "./i/information-science";
 import { logicVocab } from "./l/logic";
 import { naturalScienceVocab } from "./n/natural-science";
-import { chemistryVocab } from "./c/chemistry";
 import { physicsVocab } from "./p/physics";
 import { propLogicVocab } from "./p/propositional-logic";
 import { systemsScienceVocab } from "./s/systems-science";
@@ -21,6 +20,7 @@ import { MATERIALS_SCIENCE_VOCABULARY_REGISTRATIONS } from "./materials-science-
 import { MEDICINE_VOCABULARY_REGISTRATIONS } from "./medicine-node-registry";
 import { GEOGRAPHY_VOCABULARY_REGISTRATIONS } from "./geography-node-registry";
 import { ECONOMICS_VOCABULARY_REGISTRATIONS } from "./economics-node-registry";
+import { CHEMISTRY_VOCABULARY_REGISTRATIONS } from "./chemistry-node-registry";
 import { buildCurriculumVocabularyScopes } from "./aggregate.mjs";
 import { composeVocabulary } from "./compose";
 import { MATHEMATICS_VOCABULARY_REGISTRATIONS } from "./mathematics-node-registry";
@@ -337,6 +337,30 @@ const economicsVocabulary = composeVocabulary(
   ...economicsScope.groups.map((group) => group.terms)
 );
 
+const chemistryNode = curriculumRegistry.getNode("natural.chemistry");
+if (!chemistryNode) {
+  throw new Error(
+    "Chemistry curriculum node is required for vocabulary scopes"
+  );
+}
+
+const chemistryVocabularyScopes = buildCurriculumVocabularyScopes({
+  roots: [chemistryNode],
+  registrations: CHEMISTRY_VOCABULARY_REGISTRATIONS,
+  accent: "emerald",
+});
+
+const chemistryScope = chemistryVocabularyScopes.find(
+  (scope) => scope.path === chemistryNode.href
+);
+if (!chemistryScope) {
+  throw new Error("Chemistry vocabulary scope could not be derived");
+}
+
+const chemistryVocabulary = composeVocabulary(
+  ...chemistryScope.groups.map((group) => group.terms)
+);
+
 export const humanitiesVocabularyScopes: VocabularyScope[] = [
   ...literatureVocabularyScopes,
   ...visualArtsVocabularyScopes,
@@ -419,6 +443,7 @@ export const naturalScienceVocabularyScopes: VocabularyScope[] = [
   ...biologyVocabularyScopes,
   ...astronomyVocabularyScopes,
   ...earthScienceVocabularyScopes,
+  ...chemistryVocabularyScopes,
   {
     path: "/natural-science",
     title: "Natural Science",
@@ -430,7 +455,13 @@ export const naturalScienceVocabularyScopes: VocabularyScope[] = [
         terms: naturalScienceVocab,
       },
       { id: "physics", label: "Physics", terms: physicsVocab },
-      { id: "chemistry", label: "Chemistry", terms: chemistryVocab },
+      {
+        id: chemistryNode.id,
+        label: chemistryNode.label,
+        terms: chemistryVocabulary,
+        sourceNodeId: chemistryNode.id,
+        sourcePath: chemistryNode.href,
+      },
       {
         id: biologyNode.id,
         label: biologyNode.label,

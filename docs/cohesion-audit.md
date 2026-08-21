@@ -378,3 +378,13 @@ Economics keeps one seven-branch root layer while distinguishing three kinds of 
 The root lesson now advances from branch navigation through circular resource and income flows, a normalized supply–demand instrument, and a four-file claim review. One shared module owns the curve math, GDP arithmetic, and assessment fixtures; root vocabulary is registered to the curriculum node and inherited by Social Science.
 
 The visual grammar is institutional and reconciliatory: households, firms, public systems, international exchange, curved flows, receipts, accounts, baskets, and comparison files. It preserves product-level navigation, focus, feedback, and vocabulary conventions without importing Materials Science's test bench or Data Science's fitted-model workbench as the page's identity.
+
+---
+
+## 12. Current cohesion checkpoint · Chemistry
+
+Chemistry keeps one seven-branch root layer. General Chemistry provides the broad foundational sequence; Organic, Inorganic, Physical, Analytical, Biochemistry, and Quantum Chemistry organize major systems, questions, or methods without pretending to be mutually exclusive partitions. General and Quantum are active; the other five remain honest planned destinations.
+
+The root lesson now advances from direct navigation through elements → structures → reactions, a provenance-aware periodic repository, a deterministic molecular projection, a conservation ledger, and a four-file evidence review. One shared module owns the projection, equation arithmetic, and assessment fixtures; root vocabulary is registered to the curriculum node and inherited by Natural Science.
+
+The visual grammar is representational and laboratory-aware: element cells, atomic identity, molecular geometry, bond vectors, chemical equations, measurement records, and safety stops. It preserves product-level navigation, focus, feedback, repositories, and vocabulary conventions without importing Economics' institutional flows or claim receipts as the page's identity.
