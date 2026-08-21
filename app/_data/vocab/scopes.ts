@@ -31,6 +31,7 @@ import { PHILOSOPHY_VOCABULARY_REGISTRATIONS } from "./philosophy-node-registry"
 import { ANTHROPOLOGY_VOCABULARY_REGISTRATIONS } from "./anthropology-node-registry";
 import { COMPUTER_SCIENCE_VOCABULARY_REGISTRATIONS } from "./computer-science-node-registry";
 import { RELIGION_VOCABULARY_REGISTRATIONS } from "./religion-node-registry";
+import { POLITICAL_SCIENCE_VOCABULARY_REGISTRATIONS } from "./political-science-node-registry";
 import { buildCurriculumVocabularyScopes } from "./aggregate.mjs";
 import { composeVocabulary } from "./compose";
 import { MATHEMATICS_VOCABULARY_REGISTRATIONS } from "./mathematics-node-registry";
@@ -531,6 +532,37 @@ const sociologyVocabulary = composeVocabulary(
   ...sociologyScope.groups.map((group) => group.terms)
 );
 
+const politicalScienceNode = curriculumRegistry.getNode(
+  "social.political-science"
+);
+if (!politicalScienceNode) {
+  throw new Error(
+    "Political Science curriculum node is required for vocabulary scopes"
+  );
+}
+
+const politicalScienceVocabularyScopes = buildCurriculumVocabularyScopes({
+  roots: [politicalScienceNode],
+  registrations: POLITICAL_SCIENCE_VOCABULARY_REGISTRATIONS,
+  accent: "amber",
+  accentByNodeId: {
+    "social.political-science.behavior": "rose",
+    "social.political-science.institutions": "violet",
+    "social.political-science.international-relations": "cyan",
+  },
+});
+
+const politicalScienceScope = politicalScienceVocabularyScopes.find(
+  (scope) => scope.path === politicalScienceNode.href
+);
+if (!politicalScienceScope) {
+  throw new Error("Political Science vocabulary scope could not be derived");
+}
+
+const politicalScienceVocabulary = composeVocabulary(
+  ...politicalScienceScope.groups.map((group) => group.terms)
+);
+
 const chemistryNode = curriculumRegistry.getNode("natural.chemistry");
 if (!chemistryNode) {
   throw new Error(
@@ -829,6 +861,7 @@ export const socialScienceVocabularyScopes: VocabularyScope[] = [
   ...anthropologyVocabularyScopes,
   ...economicsVocabularyScopes,
   ...sociologyVocabularyScopes,
+  ...politicalScienceVocabularyScopes,
   {
     path: "/social-science",
     title: "Social Science",
@@ -868,6 +901,13 @@ export const socialScienceVocabularyScopes: VocabularyScope[] = [
         terms: sociologyVocabulary,
         sourceNodeId: sociologyNode.id,
         sourcePath: sociologyNode.href,
+      },
+      {
+        id: politicalScienceNode.id,
+        label: politicalScienceNode.label,
+        terms: politicalScienceVocabulary,
+        sourceNodeId: politicalScienceNode.id,
+        sourcePath: politicalScienceNode.href,
       },
     ],
   },

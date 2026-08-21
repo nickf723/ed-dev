@@ -507,3 +507,24 @@ spectral comparison. A deterministic server-rendered field replaces the root
 canvas while retaining the existing observatory character. It avoids
 Religion's comparative dossier and Computer Science's execution buses while
 keeping client state confined to purposeful navigation and evidence islands.
+
+---
+
+## 24. Current cohesion checkpoint · Political Science
+
+Political Science keeps eight direct planned branches while using analytical
+lenses, governing mechanisms, and material/cross-border context only as visual
+groupings. The root advances from registry-owned navigation through the
+preserved 125-seat coalition laboratory, four recurring questions, a four-case
+evidence review, and official record/data boundaries. One tested model owns
+branch parity, five fictional parties, the 63-seat threshold, hemicycle marks,
+coalition arithmetic, and assessment fixtures. Twenty-two narrowly owned terms
+aggregate into Social Science.
+
+The visual grammar is institutional and procedural: a civic chamber connects
+preferences, seats, a governing threshold, rules, action, delivery, and
+outcome. A deterministic server-rendered field replaces the random partisan
+territory canvas, and the unused ideology quadrant is removed. The route is
+server-owned while the coalition and assessment remain small client islands.
+It avoids Astronomy's light cone, Religion's comparative dossier, and the
+reduction of political analysis to decorative teams.

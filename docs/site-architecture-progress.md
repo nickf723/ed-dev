@@ -429,3 +429,23 @@ along with the informational architecture/readability/remaster scans, all 413
 static page generations, and generated-HTML route/source/vocabulary/no-canvas
 checks. Rendered browser verification remains queued because the local server
 cannot start in this workspace.
+
+## 2026-08-21 Political Science root checkpoint
+
+The Political Science root now resolves and asserts its exact eight direct
+branches from the focused curriculum module. All eight remain visibly planned
+and inert. Three responsive analytical bands organize the peers without
+creating false curriculum parents or a fixed-height radial stage.
+
+The route returns to server ownership around the preserved Parliament and new
+evidence-review client islands. A deterministic server SVG replaces the random
+partisan-territory canvas and consumes the same fictional party, seat, color,
+hemicycle, total, and majority model as the coalition instrument. The unused
+ideology quadrant has been removed.
+
+Vocabulary now aggregates six root terms plus sixteen direct-branch terms into
+Political Science and Social Science with source provenance. Focused model,
+aggregation, TypeScript, touched-file lint, informational repository audits,
+all 413 static page generations, and generated-HTML
+route/source/vocabulary/no-canvas checks passed. Rendered browser verification
+remains queued because the local server cannot start in this workspace.

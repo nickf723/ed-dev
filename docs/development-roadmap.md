@@ -338,6 +338,16 @@ Priority examples:
 - Defined future MAST, GWOSC, and NASA ADS repository boundaries without introducing render-time fetching.
 - The 413-page production build reached READY.
 
+### Political Science root · Remastered
+
+- Preserved the fictional five-party, 125-seat coalition laboratory and its exact 63-seat majority threshold.
+- Replaced the fixed 610px radial route map with three responsive analytical bands that keep all eight branches as direct curriculum peers.
+- Removed the random partisan-territory canvas and unused ideology quadrant; a deterministic civic chamber now traces preferences → seats → coalition → governing record using the same party model as the interaction.
+- Added a four-case evidence review spanning exact `40 + 25 = 65` majority arithmetic, votes-to-seats translation, temporal sequence versus causal attribution, and adoption versus implementation and effects.
+- Migrated Political Science vocabulary to six root terms plus two terms owned by each direct branch, aggregated automatically into Political Science and Social Science with source-node provenance.
+- Defined future Congress.gov, World Bank Indicators, and V-Dem repository boundaries without introducing render-time fetching.
+- The 413-page production build reached READY.
+
 ## Phase C: curriculum depth
 
 Systematically fill learning sequences, beginning with mathematics because prerequisite order is unusually important there. Use curriculum nodes, prerequisites, and sequence navigation rather than creating isolated attractive pages.
