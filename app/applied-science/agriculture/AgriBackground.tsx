@@ -1,412 +1,380 @@
-"use client";
-
-import { useEffect, useRef } from "react";
-
-type IsoPoint = { x: number; y: number };
-type GridPoint = { x: number; y: number };
+const FIELD_LABELS = [
+  { x: 874, y: 263, label: "GRAIN" },
+  { x: 1086, y: 180, label: "COVER" },
+  { x: 1029, y: 341, label: "ORCHARD" },
+  { x: 1247, y: 258, label: "PASTURE" },
+  { x: 1191, y: 422, label: "RESIDUE" },
+] as const;
 
 export default function AgriBackground() {
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
-
-  useEffect(() => {
-    const canvasElement = canvasRef.current;
-    if (!canvasElement) return;
-    const drawingContext = canvasElement.getContext("2d");
-    if (!drawingContext) return;
-
-    const canvas: HTMLCanvasElement = canvasElement;
-    const context: CanvasRenderingContext2D = drawingContext;
-    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    let width = 1;
-    let height = 1;
-    let ratio = 1;
-    let frame = 0;
-    let paused = document.hidden;
-
-    function resize() {
-      width = Math.max(1, window.innerWidth);
-      height = Math.max(1, window.innerHeight);
-      ratio = Math.min(window.devicePixelRatio || 1, width < 900 ? 1.05 : 1.4);
-      canvas.width = Math.floor(width * ratio);
-      canvas.height = Math.floor(height * ratio);
-      canvas.style.width = `${width}px`;
-      canvas.style.height = `${height}px`;
-      context.setTransform(ratio, 0, 0, ratio, 0, 0);
-      draw(41);
-    }
-
-    function onVisibility() {
-      paused = document.hidden;
-      if (!paused && !reducedMotion) frame = requestAnimationFrame(loop);
-    }
-
-    function loop(now: number) {
-      if (paused) return;
-      draw(now / 1000);
-      frame = requestAnimationFrame(loop);
-    }
-
-    function draw(time: number) {
-      context.setTransform(ratio, 0, 0, ratio, 0, 0);
-      context.clearRect(0, 0, width, height);
-      drawSky(context, width, height);
-      drawFarm(context, width, height, reducedMotion ? 41 : time);
-      drawSoilEdge(context, width, height);
-      drawVignette(context, width, height);
-    }
-
-    resize();
-    window.addEventListener("resize", resize);
-    document.addEventListener("visibilitychange", onVisibility);
-    if (!reducedMotion) frame = requestAnimationFrame(loop);
-
-    return () => {
-      cancelAnimationFrame(frame);
-      window.removeEventListener("resize", resize);
-      document.removeEventListener("visibilitychange", onVisibility);
-    };
-  }, []);
-
   return (
-    <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden" aria-hidden="true">
-      <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
-      <div className="absolute inset-x-0 top-0 h-[16%] bg-gradient-to-b from-[#10170d]/88 to-transparent" />
-      <div className="absolute inset-x-0 bottom-0 h-[17%] bg-gradient-to-t from-[#12100a]/88 to-transparent" />
+    <div
+      className="pointer-events-none fixed inset-0 z-0 overflow-hidden bg-[#11170d]"
+      aria-hidden="true"
+    >
+      <svg
+        viewBox="0 0 1600 1000"
+        preserveAspectRatio="xMidYMid slice"
+        className="absolute inset-0 h-full w-full"
+      >
+        <defs>
+          <linearGradient id="agri-sky" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stopColor="#101b11" />
+            <stop offset="0.54" stopColor="#1a2616" />
+            <stop offset="1" stopColor="#17130c" />
+          </linearGradient>
+          <radialGradient id="agri-light" cx="76%" cy="18%" r="64%">
+            <stop offset="0" stopColor="#fde68a" stopOpacity="0.10" />
+            <stop offset="0.46" stopColor="#86efac" stopOpacity="0.025" />
+            <stop offset="1" stopColor="#000" stopOpacity="0" />
+          </radialGradient>
+          <linearGradient id="agri-soil" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stopColor="#3b2a17" stopOpacity="0.82" />
+            <stop offset="1" stopColor="#120d08" stopOpacity="0.96" />
+          </linearGradient>
+          <pattern
+            id="grain-rows"
+            width="20"
+            height="20"
+            patternUnits="userSpaceOnUse"
+            patternTransform="rotate(28)"
+          >
+            <path d="M 3 0 V 20" stroke="#facc15" strokeOpacity="0.25" />
+          </pattern>
+          <pattern
+            id="cover-rows"
+            width="13"
+            height="13"
+            patternUnits="userSpaceOnUse"
+            patternTransform="rotate(28)"
+          >
+            <path d="M 2 0 V 13" stroke="#4ade80" strokeOpacity="0.22" />
+          </pattern>
+          <pattern
+            id="residue-lines"
+            width="22"
+            height="22"
+            patternUnits="userSpaceOnUse"
+            patternTransform="rotate(28)"
+          >
+            <path
+              d="M 4 0 V 10"
+              stroke="#fb923c"
+              strokeOpacity="0.16"
+              strokeDasharray="4 5"
+            />
+          </pattern>
+          <filter id="agri-soft">
+            <feGaussianBlur stdDeviation="28" />
+          </filter>
+        </defs>
+
+        <rect width="1600" height="1000" fill="url(#agri-sky)" />
+        <rect width="1600" height="1000" fill="url(#agri-light)" />
+        <ellipse
+          cx="1210"
+          cy="230"
+          rx="330"
+          ry="130"
+          fill="#bef264"
+          opacity="0.025"
+          filter="url(#agri-soft)"
+        />
+
+        <g opacity="0.76">
+          <path
+            d="M 650 254 L 1100 80 L 1585 300 L 1115 492 Z"
+            fill="#392f18"
+            stroke="#d9f99d"
+            strokeOpacity="0.10"
+          />
+
+          <Field
+            points="690,268 914,181 1061,247 832,338"
+            fill="#665522"
+            pattern="url(#grain-rows)"
+          />
+          <Field
+            points="927,176 1101,109 1247,175 1068,243"
+            fill="#234522"
+            pattern="url(#cover-rows)"
+          />
+          <Field points="835,346 1069,255 1226,326 984,420" fill="#26381e" />
+          <Field points="1078,251 1258,182 1418,255 1233,324" fill="#314421" />
+          <Field
+            points="991,428 1235,334 1394,406 1144,503"
+            fill="#4a351d"
+            pattern="url(#residue-lines)"
+          />
+          <Field
+            points="1244,331 1428,260 1558,319 1370,392"
+            fill="#23381e"
+            pattern="url(#cover-rows)"
+          />
+
+          <path
+            d="M 1228 176 L 1249 183 L 1110 492 L 1085 481 Z"
+            fill="#a8a29e"
+            opacity="0.12"
+            stroke="#e7e5e4"
+            strokeOpacity="0.12"
+          />
+
+          <Hedgerow x1={818} y1={341} x2={1228} y2={176} />
+          <Hedgerow x1={984} y1={420} x2={1418} y2={255} />
+          <Hedgerow x1={1144} y1={503} x2={1394} y2={406} />
+
+          <g>
+            {[0, 1, 2, 3].flatMap((row) =>
+              [0, 1, 2, 3, 4].map((column) => {
+                const x = 867 + column * 38 + row * 10;
+                const y = 349 + row * 17 - column * 14;
+                return (
+                  <g key={`${row}-${column}`}>
+                    <path
+                      d={`M ${x} ${y + 11} V ${y - 6}`}
+                      stroke="#78350f"
+                      strokeOpacity="0.48"
+                    />
+                    <circle
+                      cx={x}
+                      cy={y - 10}
+                      r="8"
+                      fill="#4ade80"
+                      opacity="0.21"
+                    />
+                  </g>
+                );
+              })
+            )}
+          </g>
+
+          <g>
+            <path
+              d="M 1345 199 L 1450 158 L 1518 189 L 1411 231 Z"
+              fill="#7dd3fc"
+              fillOpacity="0.055"
+              stroke="#bae6fd"
+              strokeOpacity="0.28"
+            />
+            <path
+              d="M 1345 199 V 145 L 1450 104 L 1518 135 V 189"
+              fill="#7dd3fc"
+              fillOpacity="0.035"
+              stroke="#bae6fd"
+              strokeOpacity="0.23"
+            />
+            <path
+              d="M 1345 145 L 1397 91 L 1450 104 L 1484 82 L 1518 135"
+              fill="none"
+              stroke="#bae6fd"
+              strokeOpacity="0.28"
+            />
+            <text
+              x="1458"
+              y="106"
+              fill="#bae6fd"
+              fillOpacity="0.40"
+              fontSize="11"
+              letterSpacing="2"
+            >
+              PROTECTED CULTURE
+            </text>
+          </g>
+
+          <g>
+            <path
+              d="M 1450 375 L 1530 344 L 1583 368 L 1501 401 Z"
+              fill="#0e7490"
+              fillOpacity="0.35"
+              stroke="#67e8f9"
+              strokeOpacity="0.22"
+            />
+            <ellipse
+              cx="1517"
+              cy="371"
+              rx="34"
+              ry="10"
+              fill="none"
+              stroke="#a5f3fc"
+              strokeOpacity="0.16"
+            />
+            <text
+              x="1517"
+              y="421"
+              textAnchor="middle"
+              fill="#67e8f9"
+              fillOpacity="0.42"
+              fontSize="11"
+              letterSpacing="2"
+            >
+              POND
+            </text>
+          </g>
+
+          <g>
+            <rect
+              x="1302"
+              y="431"
+              width="58"
+              height="58"
+              fill="#78350f"
+              fillOpacity="0.42"
+              stroke="#fed7aa"
+              strokeOpacity="0.17"
+            />
+            <path
+              d="M 1293 431 L 1331 391 L 1369 431 Z"
+              fill="#7f1d1d"
+              fillOpacity="0.46"
+            />
+            <path
+              d="M 1323 489 V 457 H 1340 V 489"
+              fill="#160b06"
+              opacity="0.65"
+            />
+          </g>
+
+          <path
+            d="M 1512 374 L 1393 350 L 1285 297 L 1156 260 L 1027 243"
+            fill="none"
+            stroke="#22d3ee"
+            strokeOpacity="0.18"
+            strokeWidth="5"
+          />
+          <g fill="#e7e5e4" fillOpacity="0.28">
+            <rect x="1157" y="355" width="17" height="9" />
+            <rect x="1213" y="381" width="17" height="9" />
+            <rect x="1266" y="348" width="17" height="9" />
+          </g>
+
+          {FIELD_LABELS.map((item) => (
+            <text
+              key={item.label}
+              x={item.x}
+              y={item.y}
+              fill="#f7fee7"
+              fillOpacity="0.34"
+              fontSize="11"
+              letterSpacing="2.5"
+              textAnchor="middle"
+            >
+              {item.label}
+            </text>
+          ))}
+        </g>
+
+        <g opacity="0.64">
+          <path
+            d="M 0 720 C 305 671 550 754 792 708 C 1058 658 1285 703 1600 649 V 1000 H 0 Z"
+            fill="url(#agri-soil)"
+          />
+          <path
+            d="M 0 721 C 305 672 550 755 792 709 C 1058 659 1285 704 1600 650"
+            fill="none"
+            stroke="#bef264"
+            strokeOpacity="0.14"
+          />
+          <g
+            fill="none"
+            stroke="#d9f99d"
+            strokeOpacity="0.08"
+            strokeWidth="1.5"
+          >
+            <path d="M 1000 687 C 982 749 1024 790 998 872 C 986 911 1003 950 993 1000" />
+            <path d="M 1021 740 C 1062 775 1053 826 1097 866" />
+            <path d="M 988 805 C 944 831 925 873 887 903" />
+            <path d="M 1296 672 C 1270 743 1312 801 1279 886 C 1267 922 1289 965 1280 1000" />
+            <path d="M 1282 785 C 1235 812 1218 851 1185 884" />
+            <path d="M 1300 759 C 1344 790 1344 837 1382 864" />
+          </g>
+          <g fill="#facc15" fillOpacity="0.10">
+            <circle cx="1005" cy="822" r="4" />
+            <circle cx="956" cy="874" r="3" />
+            <circle cx="1090" cy="858" r="3" />
+            <circle cx="1283" cy="842" r="4" />
+            <circle cx="1226" cy="897" r="3" />
+          </g>
+          <text
+            x="90"
+            y="790"
+            fill="#d6d3d1"
+            fillOpacity="0.22"
+            fontSize="12"
+            letterSpacing="3"
+          >
+            SOIL PROFILE · ROOT ZONE · WATER · ORGANIC MATTER · NUTRIENT
+            PATHWAYS
+          </text>
+        </g>
+
+        <g
+          fill="none"
+          stroke="#d9f99d"
+          strokeOpacity="0.035"
+          strokeDasharray="8 24"
+        >
+          <path d="M 0 160 H 540" />
+          <path d="M 60 208 H 420" />
+          <path d="M 118 576 H 570" />
+        </g>
+      </svg>
+      <div className="from-[#10170d]/88 absolute inset-x-0 top-0 h-[16%] bg-gradient-to-b to-transparent" />
+      <div className="from-[#12100a]/92 absolute inset-x-0 bottom-0 h-[18%] bg-gradient-to-t to-transparent" />
+      <div className="from-[#11170d]/72 absolute inset-y-0 left-0 w-[24%] bg-gradient-to-r to-transparent" />
     </div>
   );
 }
 
-function drawSky(context: CanvasRenderingContext2D, width: number, height: number) {
-  const sky = context.createLinearGradient(0, 0, 0, height);
-  sky.addColorStop(0, "#111c12");
-  sky.addColorStop(0.48, "#1a2515");
-  sky.addColorStop(1, "#17140d");
-  context.fillStyle = sky;
-  context.fillRect(0, 0, width, height);
-
-  const light = context.createRadialGradient(width * 0.72, height * 0.22, 0, width * 0.72, height * 0.22, Math.max(width, height) * 0.62);
-  light.addColorStop(0, "rgba(253,230,138,0.070)");
-  light.addColorStop(0.42, "rgba(134,239,172,0.020)");
-  light.addColorStop(1, "rgba(0,0,0,0)");
-  context.fillStyle = light;
-  context.fillRect(0, 0, width, height);
+function Field({
+  points,
+  fill,
+  pattern,
+}: {
+  points: string;
+  fill: string;
+  pattern?: string;
+}) {
+  return (
+    <g>
+      <polygon
+        points={points}
+        fill={fill}
+        stroke="#fff"
+        strokeOpacity="0.055"
+      />
+      {pattern ? <polygon points={points} fill={pattern} /> : null}
+    </g>
+  );
 }
 
-function drawFarm(context: CanvasRenderingContext2D, width: number, height: number, time: number) {
-  const tileW = width < 760 ? 34 : Math.min(58, width * 0.038);
-  const tileH = tileW * 0.48;
-  const originX = width < 900 ? width * 0.54 : width * 0.70;
-  const originY = height * (width < 760 ? 0.27 : 0.20);
-  const iso = (point: GridPoint): IsoPoint => ({
-    x: originX + (point.x - point.y) * tileW,
-    y: originY + (point.x + point.y) * tileH,
-  });
-
-  drawBaseDiamond(context, iso, 0, 0, 12, 10);
-
-  // Fields form a stable patchwork rather than cycling every plant independently.
-  drawField(context, iso, 0.3, 0.4, 4.5, 3.1, "#675620", "rgba(250,204,21,0.30)", "grain", tileW);
-  drawField(context, iso, 4.9, 0.4, 3.0, 3.1, "#264522", "rgba(74,222,128,0.26)", "cover", tileW);
-  drawField(context, iso, 0.3, 3.9, 3.4, 3.0, "#28371d", "rgba(132,204,22,0.24)", "orchard", tileW);
-  drawField(context, iso, 4.0, 3.9, 3.8, 3.0, "#314321", "rgba(134,239,172,0.16)", "pasture", tileW);
-  drawField(context, iso, 0.3, 7.2, 4.2, 2.2, "#49351e", "rgba(251,146,60,0.14)", "residue", tileW);
-  drawField(context, iso, 4.8, 7.2, 3.0, 2.2, "#24371e", "rgba(74,222,128,0.18)", "rows", tileW);
-
-  drawGreenhouse(context, iso, 8.35, 0.8, 2.25, 2.1, tileW, tileH);
-  drawFarmBuildings(context, iso, tileW, tileH);
-  drawPond(context, iso, 8.2, 5.5, 2.7, 2.25);
-  drawLane(context, iso);
-  drawHedgerows(context, iso, tileW);
-  drawIrrigation(context, iso, time, tileW);
-  drawFarmLabels(context, iso, width);
-}
-
-function drawBaseDiamond(context: CanvasRenderingContext2D, iso: (p: GridPoint) => IsoPoint, x: number, y: number, w: number, h: number) {
-  const points = [iso({ x, y }), iso({ x: x + w, y }), iso({ x: x + w, y: y + h }), iso({ x, y: y + h })];
-  context.fillStyle = "rgba(48,39,20,0.94)";
-  context.strokeStyle = "rgba(217,249,157,0.08)";
-  polygon(context, points, true, true);
-}
-
-function drawField(
-  context: CanvasRenderingContext2D,
-  iso: (p: GridPoint) => IsoPoint,
-  x: number,
-  y: number,
-  w: number,
-  h: number,
-  soil: string,
-  crop: string,
-  pattern: "grain" | "cover" | "orchard" | "pasture" | "residue" | "rows",
-  tileW: number,
-) {
-  const corners = [iso({ x, y }), iso({ x: x + w, y }), iso({ x: x + w, y: y + h }), iso({ x, y: y + h })];
-  context.fillStyle = soil;
-  context.strokeStyle = "rgba(255,255,255,0.055)";
-  polygon(context, corners, true, true);
-
-  context.save();
-  context.beginPath();
-  corners.forEach((point, index) => index === 0 ? context.moveTo(point.x, point.y) : context.lineTo(point.x, point.y));
-  context.closePath();
-  context.clip();
-
-  if (pattern === "orchard") {
-    for (let gx = x + 0.45; gx < x + w; gx += 0.72) {
-      for (let gy = y + 0.45; gy < y + h; gy += 0.72) {
-        const p = iso({ x: gx, y: gy });
-        context.strokeStyle = "rgba(101,67,33,0.44)";
-        context.beginPath();
-        context.moveTo(p.x, p.y + 6);
-        context.lineTo(p.x, p.y - 7);
-        context.stroke();
-        context.fillStyle = "rgba(74,222,128,0.22)";
-        context.beginPath();
-        context.arc(p.x, p.y - 10, Math.max(3, tileW * 0.09), 0, Math.PI * 2);
-        context.fill();
-      }
-    }
-  } else if (pattern === "pasture") {
-    for (let gx = x + 0.3; gx < x + w; gx += 0.55) {
-      for (let gy = y + 0.3; gy < y + h; gy += 0.65) {
-        const p = iso({ x: gx, y: gy });
-        context.fillStyle = crop;
-        context.fillRect(p.x - 1, p.y - 3, 2, 5);
-      }
-    }
-    // A few stationary livestock cues, deliberately schematic.
-    [
-      { x: x + 1.1, y: y + 1.0 },
-      { x: x + 2.35, y: y + 1.75 },
-      { x: x + 2.9, y: y + 0.8 },
-    ].forEach((animal) => {
-      const p = iso(animal);
-      context.fillStyle = "rgba(245,245,244,0.30)";
-      context.fillRect(p.x - 4, p.y - 4, 8, 5);
-      context.fillRect(p.x + 3, p.y - 6, 3, 3);
-    });
-  } else {
-    const rowCount = pattern === "cover" ? 12 : pattern === "residue" ? 7 : 9;
-    for (let row = 0; row < rowCount; row += 1) {
-      const t = (row + 0.65) / rowCount;
-      const a = iso({ x: x + t * w, y: y + 0.08 });
-      const b = iso({ x: x + t * w, y: y + h - 0.08 });
-      context.strokeStyle = crop;
-      context.lineWidth = pattern === "cover" ? 2 : 1.15;
-      context.setLineDash(pattern === "residue" ? [5, 6] : []);
-      context.beginPath();
-      context.moveTo(a.x, a.y);
-      context.lineTo(b.x, b.y);
-      context.stroke();
-    }
-    context.setLineDash([]);
-  }
-  context.restore();
-}
-
-function drawGreenhouse(context: CanvasRenderingContext2D, iso: (p: GridPoint) => IsoPoint, x: number, y: number, w: number, h: number, tileW: number, tileH: number) {
-  const a = iso({ x, y });
-  const b = iso({ x: x + w, y });
-  const c = iso({ x: x + w, y: y + h });
-  const d = iso({ x, y: y + h });
-  const lift = tileH * 1.35;
-  context.fillStyle = "rgba(186,230,253,0.040)";
-  context.strokeStyle = "rgba(186,230,253,0.24)";
-  polygon(context, [a, b, c, d], true, true);
-  [a, b, c, d].forEach((point) => {
-    context.beginPath();
-    context.moveTo(point.x, point.y);
-    context.lineTo(point.x, point.y - lift);
-    context.stroke();
-  });
-  const topA = { x: a.x, y: a.y - lift };
-  const topB = { x: b.x, y: b.y - lift };
-  const topC = { x: c.x, y: c.y - lift };
-  const topD = { x: d.x, y: d.y - lift };
-  context.fillStyle = "rgba(125,211,252,0.055)";
-  polygon(context, [topA, topB, topC, topD], true, true);
-  const ridge1 = { x: (topA.x + topB.x) / 2, y: (topA.y + topB.y) / 2 - tileW * 0.20 };
-  const ridge2 = { x: (topD.x + topC.x) / 2, y: (topD.y + topC.y) / 2 - tileW * 0.20 };
-  context.beginPath();
-  context.moveTo(topA.x, topA.y);
-  context.lineTo(ridge1.x, ridge1.y);
-  context.lineTo(topB.x, topB.y);
-  context.moveTo(topD.x, topD.y);
-  context.lineTo(ridge2.x, ridge2.y);
-  context.lineTo(topC.x, topC.y);
-  context.moveTo(ridge1.x, ridge1.y);
-  context.lineTo(ridge2.x, ridge2.y);
-  context.stroke();
-}
-
-function drawFarmBuildings(context: CanvasRenderingContext2D, iso: (p: GridPoint) => IsoPoint, tileW: number, tileH: number) {
-  const base = iso({ x: 9.15, y: 3.75 });
-  const w = tileW * 0.72;
-  const h = tileH * 1.55;
-  context.fillStyle = "rgba(120,53,15,0.34)";
-  context.fillRect(base.x - w * 0.5, base.y - h, w, h);
-  context.fillStyle = "rgba(127,29,29,0.32)";
-  context.beginPath();
-  context.moveTo(base.x - w * 0.6, base.y - h);
-  context.lineTo(base.x, base.y - h - tileH * 0.85);
-  context.lineTo(base.x + w * 0.6, base.y - h);
-  context.closePath();
-  context.fill();
-  context.strokeStyle = "rgba(254,215,170,0.16)";
-  context.strokeRect(base.x - w * 0.5, base.y - h, w, h);
-}
-
-function drawPond(context: CanvasRenderingContext2D, iso: (p: GridPoint) => IsoPoint, x: number, y: number, w: number, h: number) {
-  const corners = [iso({ x, y }), iso({ x: x + w, y }), iso({ x: x + w, y: y + h }), iso({ x, y: y + h })];
-  context.fillStyle = "rgba(14,116,144,0.28)";
-  context.strokeStyle = "rgba(103,232,249,0.20)";
-  polygon(context, corners, true, true);
-  const center = iso({ x: x + w * 0.52, y: y + h * 0.52 });
-  context.strokeStyle = "rgba(165,243,252,0.14)";
-  context.beginPath();
-  context.ellipse(center.x, center.y, 34, 10, 0, 0, Math.PI * 2);
-  context.stroke();
-}
-
-function drawLane(context: CanvasRenderingContext2D, iso: (p: GridPoint) => IsoPoint) {
-  const points = [
-    iso({ x: 8.0, y: 0.2 }),
-    iso({ x: 8.0, y: 3.6 }),
-    iso({ x: 7.95, y: 7.0 }),
-    iso({ x: 7.95, y: 9.6 }),
-  ];
-  context.strokeStyle = "rgba(214,211,209,0.12)";
-  context.lineWidth = 9;
-  context.beginPath();
-  points.forEach((point, index) => index === 0 ? context.moveTo(point.x, point.y) : context.lineTo(point.x, point.y));
-  context.stroke();
-  context.strokeStyle = "rgba(120,113,108,0.30)";
-  context.lineWidth = 1;
-  context.stroke();
-}
-
-function drawHedgerows(context: CanvasRenderingContext2D, iso: (p: GridPoint) => IsoPoint, tileW: number) {
-  const segments = [
-    [{ x: 0.1, y: 3.55 }, { x: 7.7, y: 3.55 }],
-    [{ x: 3.75, y: 3.75 }, { x: 3.75, y: 9.45 }],
-    [{ x: 0.1, y: 7.0 }, { x: 7.7, y: 7.0 }],
-  ] as const;
-  segments.forEach(([start, end]) => {
-    const steps = 16;
-    for (let i = 0; i <= steps; i += 1) {
-      const t = i / steps;
-      const p = iso({ x: start.x + (end.x - start.x) * t, y: start.y + (end.y - start.y) * t });
-      context.fillStyle = i % 2 === 0 ? "rgba(74,222,128,0.18)" : "rgba(34,197,94,0.14)";
-      context.beginPath();
-      context.arc(p.x, p.y - tileW * 0.06, Math.max(2, tileW * 0.055), 0, Math.PI * 2);
-      context.fill();
-    }
-  });
-}
-
-function drawIrrigation(context: CanvasRenderingContext2D, iso: (p: GridPoint) => IsoPoint, time: number, tileW: number) {
-  const channel = [
-    iso({ x: 10.5, y: 6.2 }),
-    iso({ x: 8.1, y: 5.2 }),
-    iso({ x: 7.7, y: 3.5 }),
-    iso({ x: 6.2, y: 2.3 }),
-    iso({ x: 3.0, y: 1.8 }),
-  ];
-  context.strokeStyle = "rgba(34,211,238,0.12)";
-  context.lineWidth = Math.max(2, tileW * 0.055);
-  context.beginPath();
-  channel.forEach((point, index) => index === 0 ? context.moveTo(point.x, point.y) : context.lineTo(point.x, point.y));
-  context.stroke();
-
-  const t = (Math.sin(time * 0.11) + 1) / 2;
-  const segmentCount = channel.length - 1;
-  const scaled = t * segmentCount;
-  const index = Math.min(segmentCount - 1, Math.floor(scaled));
-  const local = scaled - index;
-  const a = channel[index];
-  const b = channel[index + 1];
-  const x = a.x + (b.x - a.x) * local;
-  const y = a.y + (b.y - a.y) * local;
-  const glow = context.createRadialGradient(x, y, 0, x, y, tileW * 0.28);
-  glow.addColorStop(0, "rgba(103,232,249,0.26)");
-  glow.addColorStop(1, "rgba(103,232,249,0)");
-  context.fillStyle = glow;
-  context.beginPath();
-  context.arc(x, y, tileW * 0.28, 0, Math.PI * 2);
-  context.fill();
-}
-
-function drawFarmLabels(context: CanvasRenderingContext2D, iso: (p: GridPoint) => IsoPoint, width: number) {
-  if (width < 760) return;
-  const labels = [
-    { point: { x: 1.25, y: 1.0 }, label: "FIELD A · GRAIN" },
-    { point: { x: 5.5, y: 0.8 }, label: "COVER CROP" },
-    { point: { x: 0.9, y: 4.5 }, label: "ORCHARD" },
-    { point: { x: 5.0, y: 4.7 }, label: "PASTURE" },
-    { point: { x: 8.4, y: 5.7 }, label: "WATER" },
-    { point: { x: 8.6, y: 0.7 }, label: "PROTECTED CULTURE" },
-  ] as const;
-  context.font = "9px ui-monospace, SFMono-Regular, Menlo, monospace";
-  labels.forEach(({ point, label }) => {
-    const p = iso(point);
-    context.fillStyle = "rgba(236,252,203,0.25)";
-    context.fillText(label, p.x + 5, p.y - 8);
-  });
-}
-
-function drawSoilEdge(context: CanvasRenderingContext2D, width: number, height: number) {
-  const top = height * 0.82;
-  const gradient = context.createLinearGradient(0, top, 0, height);
-  gradient.addColorStop(0, "rgba(87,61,30,0.45)");
-  gradient.addColorStop(0.28, "rgba(72,48,25,0.48)");
-  gradient.addColorStop(1, "rgba(36,27,18,0.65)");
-  context.fillStyle = gradient;
-  context.fillRect(0, top, width, height - top);
-
-  context.strokeStyle = "rgba(217,249,157,0.07)";
-  context.beginPath();
-  context.moveTo(0, top);
-  context.lineTo(width, top);
-  context.stroke();
-
-  // Root systems make the below-ground half of agriculture visible.
-  const rootCenters = width < 800 ? [0.22, 0.56, 0.82] : [0.12, 0.30, 0.52, 0.73, 0.90];
-  rootCenters.forEach((fraction, index) => {
-    const rootX = width * fraction;
-    const depth = height * (0.08 + (index % 3) * 0.025);
-    context.strokeStyle = index % 2 === 0 ? "rgba(190,242,100,0.10)" : "rgba(253,230,138,0.085)";
-    context.lineWidth = 1;
-    context.beginPath();
-    context.moveTo(rootX, top);
-    context.bezierCurveTo(rootX - 8, top + depth * 0.35, rootX + 11, top + depth * 0.68, rootX - 4, top + depth);
-    context.stroke();
-    for (let branch = 1; branch <= 3; branch += 1) {
-      const by = top + depth * (branch / 4);
-      context.beginPath();
-      context.moveTo(rootX, by);
-      context.lineTo(rootX + (branch % 2 === 0 ? 18 : -18), by + 14);
-      context.stroke();
-    }
-  });
-
-  context.font = "9px ui-monospace, SFMono-Regular, Menlo, monospace";
-  context.fillStyle = "rgba(236,252,203,0.20)";
-  context.fillText("TOPSOIL · ORGANIC MATTER · ROOTS · WATER · NUTRIENT CYCLING", 22, top + 23);
-}
-
-function drawVignette(context: CanvasRenderingContext2D, width: number, height: number) {
-  const gradient = context.createRadialGradient(width * 0.62, height * 0.48, Math.min(width, height) * 0.18, width * 0.62, height * 0.48, Math.max(width, height) * 0.76);
-  gradient.addColorStop(0, "rgba(0,0,0,0)");
-  gradient.addColorStop(0.74, "rgba(12,13,8,0.12)");
-  gradient.addColorStop(1, "rgba(12,10,7,0.58)");
-  context.fillStyle = gradient;
-  context.fillRect(0, 0, width, height);
-}
-
-function polygon(context: CanvasRenderingContext2D, points: readonly IsoPoint[], fill: boolean, stroke: boolean) {
-  context.beginPath();
-  points.forEach((point, index) => index === 0 ? context.moveTo(point.x, point.y) : context.lineTo(point.x, point.y));
-  context.closePath();
-  if (fill) context.fill();
-  if (stroke) context.stroke();
+function Hedgerow({
+  x1,
+  y1,
+  x2,
+  y2,
+}: {
+  x1: number;
+  y1: number;
+  x2: number;
+  y2: number;
+}) {
+  const count = 15;
+  return (
+    <g>
+      {Array.from({ length: count }, (_, index) => {
+        const t = index / (count - 1);
+        return (
+          <circle
+            key={index}
+            cx={x1 + (x2 - x1) * t}
+            cy={y1 + (y2 - y1) * t - 3}
+            r={index % 2 === 0 ? 7 : 5}
+            fill={index % 2 === 0 ? "#4ade80" : "#22c55e"}
+            opacity={index % 2 === 0 ? 0.18 : 0.13}
+          />
+        );
+      })}
+    </g>
+  );
 }

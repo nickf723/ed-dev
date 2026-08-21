@@ -25,6 +25,7 @@ import { ARCHITECTURE_VOCABULARY_REGISTRATIONS } from "./architecture-node-regis
 import { PSYCHOLOGY_VOCABULARY_REGISTRATIONS } from "./psychology-node-registry";
 import { INFORMATION_SCIENCE_VOCABULARY_REGISTRATIONS } from "./information-science-node-registry";
 import { HISTORY_VOCABULARY_REGISTRATIONS } from "./history-node-registry";
+import { AGRICULTURE_VOCABULARY_REGISTRATIONS } from "./agriculture-node-registry";
 import { buildCurriculumVocabularyScopes } from "./aggregate.mjs";
 import { composeVocabulary } from "./compose";
 import { MATHEMATICS_VOCABULARY_REGISTRATIONS } from "./mathematics-node-registry";
@@ -485,6 +486,35 @@ const architectureVocabulary = composeVocabulary(
   ...architectureScope.groups.map((group) => group.terms)
 );
 
+const agricultureNode = curriculumRegistry.getNode("applied.agriculture");
+if (!agricultureNode) {
+  throw new Error(
+    "Agriculture curriculum node is required for vocabulary scopes"
+  );
+}
+
+const agricultureVocabularyScopes = buildCurriculumVocabularyScopes({
+  roots: [agricultureNode],
+  registrations: AGRICULTURE_VOCABULARY_REGISTRATIONS,
+  accent: "emerald",
+  accentByNodeId: {
+    "applied.agriculture": "amber",
+    "applied.agriculture.aquaculture": "sky",
+    "applied.agriculture.engineering-technology": "violet",
+  },
+});
+
+const agricultureScope = agricultureVocabularyScopes.find(
+  (scope) => scope.path === agricultureNode.href
+);
+if (!agricultureScope) {
+  throw new Error("Agriculture vocabulary scope could not be derived");
+}
+
+const agricultureVocabulary = composeVocabulary(
+  ...agricultureScope.groups.map((group) => group.terms)
+);
+
 export const humanitiesVocabularyScopes: VocabularyScope[] = [
   ...historyVocabularyScopes,
   ...literatureVocabularyScopes,
@@ -531,6 +561,7 @@ export const appliedScienceVocabularyScopes: VocabularyScope[] = [
   ...medicineVocabularyScopes,
   ...materialsScienceVocabularyScopes,
   ...architectureVocabularyScopes,
+  ...agricultureVocabularyScopes,
   {
     path: "/applied-science",
     title: "Applied Science",
@@ -556,6 +587,13 @@ export const appliedScienceVocabularyScopes: VocabularyScope[] = [
         terms: architectureVocabulary,
         sourceNodeId: architectureNode.id,
         sourcePath: architectureNode.href,
+      },
+      {
+        id: agricultureNode.id,
+        label: agricultureNode.label,
+        terms: agricultureVocabulary,
+        sourceNodeId: agricultureNode.id,
+        sourcePath: agricultureNode.href,
       },
     ],
   },

@@ -448,3 +448,13 @@ History keeps one three-lens root layer: Time, Place, and Theme. These are organ
 The root advances from direct lens navigation and the existing printing-press case through an observe–contextualize–corroborate workshop, a BCE/CE interval instrument, a four-file evidence review, and explicit collection boundaries. One tested model owns astronomical-year conversion, elapsed-year arithmetic, exact branch parity, and assessment fixtures. Thirty-five terms are registered at the root or narrowest current lens and aggregate into Humanities.
 
 The visual grammar is archival and editorial: warm paper light, printing marks, source ledgers, restrained classification colors, and dark reading surfaces. Root motion is disabled, and the client boundary is limited to the interval and assessment islands without random values, viewport reads, effects, timers, or wall-clock state. This preserves the product shell while avoiding Information Science's record pipeline and Earth Science's field transect.
+
+---
+
+## 19. Current cohesion checkpoint · Agriculture
+
+Agriculture keeps one nine-branch root layer while treating its production and resources banks as visual groupings rather than false curriculum parents. Agronomy, soils, horticulture, animal science, aquaculture, forestry/agroforestry, agroecology, engineering/technology, and economics/food systems remain direct planned peers. Root concepts describe the whole-farm system; narrower vocabulary belongs to its branch.
+
+The root advances from direct branch navigation and system layers through the preserved nitrogen instrument, six whole-farm questions, a four-file evidence review, and an official public-data protocol. One tested model owns branch parity, three crop-system fixtures, nitrogen pathway arithmetic, and answer fixtures. Thirty-six terms are registered at the root or narrowest direct branch and aggregate into Applied Science.
+
+The visual grammar is a managed landscape viewed above and below ground: distinct fields, hedgerows, orchard, pasture, protected culture, pond, lane, irrigation, buildings, soil, roots, and nutrient cues. A deterministic server-rendered isometric SVG replaces the viewport-measured animation canvas. Client state is confined to the nitrogen and assessment islands, without importing History's archive surfaces or Information Science's record desk.

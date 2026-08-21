@@ -263,6 +263,25 @@ Verify:
 
 **Status:** Targeted React/Next lint, TypeScript, deterministic history-model tests, vocabulary aggregation, all three informational audits, the 404-page production build, and generated-HTML lens/model/source/metadata checks passed; rendered responsive and interaction verification required
 
+---
+
+### Agriculture whole-farm transect
+
+**Route:** `/applied-science/agriculture`
+
+Verify:
+
+- all nine planned direct branches appear first, remain inert, preserve registry order, and do not become children of the two visual banks
+- the static isometric world keeps grain, cover crop, orchard, pasture, residue, protected culture, pond, building, lane, hedgerows, irrigation, soil profile, and roots legible without canvas or hydration shift
+- the canonical grain-legume scenario begins at 24 external units, 35% loss pressure, and 75% residue retention
+- the canonical ledger preserves 69 starting units, 9.4875 modeled loss, 59.5125 soil uptake before fixation, 2.4875 fixation, 39.68 harvest export, 16.74 retained residue, and zero shortfall
+- cereal and cover-crop presets, all three sliders, conditional fixation/shortfall surfaces, and reset remain coordinated at narrow and wide widths
+- all four field files provide deterministic correct/wrong feedback across reset and case switching
+- Agriculture and all nine branch vocabulary groups inherit into Applied Science without duplicate IDs
+- NASS, Web Soil Survey, Soil Data Access, and ERS links preserve provider, key, query, geography, method, update, unit, and revision boundaries
+
+**Status:** Targeted React/Next lint, TypeScript, deterministic agriculture-model tests, vocabulary aggregation, all three informational audits, the 404-page production build, and generated-HTML branch/model/source/metadata/background checks passed; rendered responsive and interaction verification required
+
 **Status:** Targeted React/Next lint, TypeScript, deterministic Information Science, entropy, retrieval, taxonomy, ontology, and evidence fixtures, vocabulary aggregation, all three informational audits, the 404-page production build, and generated-HTML ancestry/hierarchy/active-link/planned-non-link/model/source/background/no-canvas checks passed. The required browser CLI is unavailable, so rendered responsive and interaction verification remains pending. Remote publication and the zero-deployment guard are recorded in the commit handoff because they occur after this entry is committed.
 
 ---

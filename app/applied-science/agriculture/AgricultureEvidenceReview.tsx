@@ -1,0 +1,170 @@
+"use client";
+
+import { useState } from "react";
+import { CheckCircle2, ClipboardCheck, RotateCcw, XCircle } from "lucide-react";
+import {
+  AGRICULTURE_EVIDENCE_CASES,
+  isAgricultureEvidenceAnswerCorrect,
+} from "./agricultureModel";
+
+type CaseId = (typeof AGRICULTURE_EVIDENCE_CASES)[number]["id"];
+
+export default function AgricultureEvidenceReview() {
+  const [activeId, setActiveId] = useState<CaseId>(
+    AGRICULTURE_EVIDENCE_CASES[0].id
+  );
+  const [answers, setAnswers] = useState<Partial<Record<CaseId, string>>>({});
+  const active =
+    AGRICULTURE_EVIDENCE_CASES.find((item) => item.id === activeId) ??
+    AGRICULTURE_EVIDENCE_CASES[0];
+  const selectedOptionId = answers[active.id];
+  const answered = selectedOptionId !== undefined;
+  const correct = answered
+    ? isAgricultureEvidenceAnswerCorrect(active.id, selectedOptionId)
+    : false;
+
+  function reset() {
+    setAnswers({});
+    setActiveId(AGRICULTURE_EVIDENCE_CASES[0].id);
+  }
+
+  return (
+    <section className="bg-[#11170d]/58 overflow-hidden rounded-[30px] border border-lime-100/[0.13] backdrop-blur-2xl">
+      <div className="grid gap-4 border-b border-white/[0.07] p-5 sm:p-7 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
+        <div>
+          <div className="text-lime-200/58 flex items-center gap-2 font-mono text-[11px] font-semibold uppercase tracking-[0.11em]">
+            <ClipboardCheck size={14} aria-hidden="true" /> Assessment · keep
+            scale, pathway, and claim attached
+          </div>
+          <h2 className="mt-2 max-w-5xl text-[clamp(2rem,3.7vw,3.5rem)] font-semibold leading-[0.94] tracking-[-0.052em] text-[#f7fee7]">
+            A farm decision joins arithmetic to biology, place, timing, and
+            uncertainty.
+          </h2>
+        </div>
+        <button
+          type="button"
+          onClick={reset}
+          className="hover:border-lime-100/28 inline-flex items-center justify-center gap-2 rounded-full border border-white/[0.10] bg-black/15 px-4 py-2 text-[12px] font-semibold text-stone-400 transition hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime-200/60"
+        >
+          <RotateCcw size={13} aria-hidden="true" /> Reset field review
+        </button>
+      </div>
+
+      <div className="grid xl:grid-cols-[310px_minmax(0,1fr)]">
+        <div className="grid gap-2 border-b border-white/[0.07] p-4 sm:grid-cols-2 xl:grid-cols-1 xl:border-b-0 xl:border-r">
+          {AGRICULTURE_EVIDENCE_CASES.map((item, index) => {
+            const answer = answers[item.id];
+            const itemCorrect = answer
+              ? isAgricultureEvidenceAnswerCorrect(item.id, answer)
+              : undefined;
+            const selected = item.id === active.id;
+            return (
+              <button
+                key={item.id}
+                type="button"
+                aria-pressed={selected}
+                onClick={() => setActiveId(item.id)}
+                className={`grid min-h-[70px] grid-cols-[34px_minmax(0,1fr)] items-center gap-3 rounded-[16px] border px-3 py-3 text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime-200/60 ${selected ? "border-lime-200/30 bg-lime-300/[0.06]" : "border-white/[0.06] bg-black/[0.04] hover:border-white/[0.14]"}`}
+              >
+                <span className="flex h-8 w-8 items-center justify-center rounded-full border border-white/[0.08] bg-black/15 font-mono text-[11px] text-stone-600">
+                  {itemCorrect === true ? (
+                    <CheckCircle2
+                      size={15}
+                      className="text-emerald-300"
+                      aria-label="Correct"
+                    />
+                  ) : itemCorrect === false ? (
+                    <XCircle
+                      size={15}
+                      className="text-rose-300"
+                      aria-label="Try again"
+                    />
+                  ) : (
+                    String(index + 1).padStart(2, "0")
+                  )}
+                </span>
+                <span>
+                  <strong className="text-white/82 block text-[12px]">
+                    {item.label}
+                  </strong>
+                  <span className="mt-1 block font-mono text-[10px] uppercase tracking-[0.08em] text-stone-600">
+                    {item.eyebrow}
+                  </span>
+                </span>
+              </button>
+            );
+          })}
+        </div>
+
+        <div className="p-5 sm:p-7 xl:p-9">
+          <div className="text-sky-200/48 font-mono text-[10px] font-semibold uppercase tracking-[0.10em]">
+            Field evidence
+          </div>
+          <p className="text-stone-300/76 mt-3 border-l border-sky-200/20 pl-4 text-[13px] leading-6">
+            {active.observation}
+          </p>
+          <h3 className="mt-6 max-w-4xl text-[clamp(1.4rem,2.4vw,2rem)] font-semibold leading-[1.15] tracking-[-0.03em] text-[#f7fee7]">
+            {active.prompt}
+          </h3>
+          <div
+            className="mt-6 grid gap-3"
+            role="group"
+            aria-label={active.prompt}
+          >
+            {active.options.map((option) => {
+              const selected = option.id === selectedOptionId;
+              const optionCorrect = isAgricultureEvidenceAnswerCorrect(
+                active.id,
+                option.id
+              );
+              const stateClass = answered
+                ? optionCorrect
+                  ? "border-emerald-300/38 bg-emerald-300/[0.07]"
+                  : selected
+                    ? "border-rose-300/38 bg-rose-300/[0.07]"
+                    : "border-white/[0.06] bg-black/[0.04] opacity-[0.62]"
+                : selected
+                  ? "border-lime-200/36 bg-lime-300/[0.07]"
+                  : "border-white/[0.08] bg-black/[0.07] hover:border-lime-100/24";
+              return (
+                <button
+                  key={option.id}
+                  type="button"
+                  aria-pressed={selected}
+                  onClick={() =>
+                    setAnswers((current) => ({
+                      ...current,
+                      [active.id]: option.id,
+                    }))
+                  }
+                  className={`rounded-[18px] border px-4 py-4 text-left text-[14px] leading-6 text-stone-300 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime-200/60 ${stateClass}`}
+                >
+                  {option.label}
+                </button>
+              );
+            })}
+          </div>
+          <div
+            className={`mt-5 min-h-[100px] border-l-2 px-4 py-3 ${answered ? (correct ? "border-emerald-300/50 bg-emerald-300/[0.035]" : "border-rose-300/50 bg-rose-300/[0.035]") : "border-white/[0.10] bg-black/[0.05]"}`}
+            aria-live="polite"
+          >
+            <strong className="text-[13px] text-white">
+              {answered
+                ? correct
+                  ? "The interpretation stays inside the field boundary."
+                  : "That conclusion outruns the measurement."
+                : "Choose a claim, then inspect its scale and pathway."}
+            </strong>
+            <p className="mt-2 text-[13px] leading-6 text-stone-400">
+              {answered
+                ? correct
+                  ? active.success
+                  : active.correction
+                : "Keep the variable, unit, location, time, biological form, comparison, source, and decision scale visible."}
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}

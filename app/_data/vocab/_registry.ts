@@ -73,6 +73,8 @@ import { setTheoryVocab } from "./s/set-theory";
 import { mineralogyVocab } from "./m/mineralogy";
 import { historyVocab } from "./h/history";
 import { historyBranchVocab } from "./h/history-branches";
+import { agricultureVocab } from "./a/agriculture";
+import { agricultureBranchVocab } from "./a/agriculture-branches";
 
 export { mathVocab, abstractAlgebraVocab, ludologyVocab, gameDesignVocab };
 
@@ -147,5 +149,7 @@ export const ALL_VOCAB: VocabTerm[] = composeVocabulary(
   recursionVocab,
   mineralogyVocab,
   historyVocab,
-  historyBranchVocab
+  historyBranchVocab,
+  agricultureVocab,
+  agricultureBranchVocab
 );
