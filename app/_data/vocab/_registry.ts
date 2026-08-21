@@ -18,6 +18,7 @@ import { physicsVocab } from "./p/physics";
 import { physicsBranchVocab } from "./p/physics-branches";
 import { chemistryVocab } from "./c/chemistry";
 import { biologyVocab } from "./natural-science/biology";
+import { biologyBranchVocab } from "./natural-science/biology/branches";
 import { botanyVocab } from "./b/botany";
 import { astronomyVocab } from "./a/astronomy";
 import { planetaryAstronomyVocab } from "./natural-science/astronomy/planetary-astronomy";
@@ -99,6 +100,7 @@ export const ALL_VOCAB: VocabTerm[] = composeVocabulary(
   physicsBranchVocab,
   chemistryVocab,
   biologyVocab,
+  biologyBranchVocab,
   botanyVocab,
   astronomyVocab,
   planetaryAstronomyVocab,

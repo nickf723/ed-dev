@@ -43,7 +43,7 @@ Goal: every major subject parent should be Developed before broad child expansio
 
 - Physics: Developed
 - Chemistry: Developed
-- Biology: Developed
+- Biology: Developed / remastered as a tested living-scale atlas
 - Earth Science: Developed
 - Astronomy: Developed
 
@@ -138,6 +138,15 @@ Priority examples:
 - Gives ten root concepts and two terms in each direct branch one narrowest vocabulary owner, for 28 terms that aggregate into Applied Science.
 - Replaces the moving review strip with a fully static server-rendered evidence wall and links official WWC, NCES CCD, CAST UDL, and IDEA sources under explicit research, data, design, legal, and no-live-fetch boundaries.
 - The 413-route production build and generated-HTML contract checks pass; rendered responsive and interaction verification remains a separate queued requirement.
+
+### Biology · Developed
+
+- Preserves all ten direct registry branches and distinguishes active routes from planned peers without turning scale bands into false curriculum parents.
+- Uses a four-band molecular → cellular → organismal → ecological atlas, with Evolution kept as a cross-scale process rather than forced into one level.
+- Adds a deterministic four-specimen magnification bench and four-file evidence review for unit conversion, homeostasis, selection, and phylogenetic relationship.
+- Gives 12 broad Biology terms and 26 specialized branch terms narrow owners while preserving Botany's 10 existing terms, yielding 48 unique terms in the Biology drawer.
+- Replaces the animated DNA canvas with a static server-rendered living-scale field and confines state to two deterministic teaching islands.
+- Establishes explicit NCBI Taxonomy, GBIF occurrence, and Open Tree of Life boundaries for future organism and biodiversity repositories without a render-time fetch.
 
 ### Business · Developed
 
