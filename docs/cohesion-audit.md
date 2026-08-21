@@ -358,3 +358,13 @@ Data Science keeps one eight-branch root layer: collection and wrangling, explor
 The root lesson now advances from navigation to a transparent fitted model, then from evaluation discipline to claim distinctions and an evidence audit. One fixed sample appears in the server-rendered workbench and the K-means laboratory; one shared model owns its calculations. The page-level vocabulary is registered to the curriculum node and inherited by Formal Science, so narrower terminology can move into future child units without maintaining a parallel glossary.
 
 The visual grammar is intentionally procedural and inspectable: sparse tables, coordinates, split boundaries, timelines, and audit rails. It keeps the product's header, focus, feedback, and vocabulary conventions while avoiding the pigment, gallery, living-field, globe, and anatomical-plate languages of the preceding rotations.
+
+---
+
+## 10. Current cohesion checkpoint · Materials Science
+
+Materials Science keeps one eight-branch root layer while clearly presenting its two useful axes. Structure, properties, and processing/characterization are cross-cutting lenses; metals, ceramics, polymers, composites, and functional materials are broad material families. The interface does not imply that a material family is a processing method or that the two tracks form one strict sequence.
+
+The root lesson now advances from the two-track atlas through the processing–structure–property–performance relationship, a normalized mechanical-response instrument, selection questions, and a specimen evidence review. One shared module owns the curve math and assessment fixtures; root vocabulary is registered to the curriculum node and inherited by Applied Science.
+
+The visual grammar is physical and test-conditioned: grips, gauge length, applied force, crack cues, microscope fields, grains, defects, service tags, and specimen records. It preserves product-level navigation, focus, feedback, and vocabulary conventions without importing Data Science's tables and split diagrams as the page's identity.

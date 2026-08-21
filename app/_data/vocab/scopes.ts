@@ -17,6 +17,7 @@ import { EARTH_SCIENCE_VOCABULARY_REGISTRATIONS } from "./earth-science-node-reg
 import { LITERATURE_VOCABULARY_REGISTRATIONS } from "./literature-node-registry";
 import { VISUAL_ARTS_VOCABULARY_REGISTRATIONS } from "./visual-arts-node-registry";
 import { DATA_SCIENCE_VOCABULARY_REGISTRATIONS } from "./data-science-node-registry";
+import { MATERIALS_SCIENCE_VOCABULARY_REGISTRATIONS } from "./materials-science-node-registry";
 import { MEDICINE_VOCABULARY_REGISTRATIONS } from "./medicine-node-registry";
 import { GEOGRAPHY_VOCABULARY_REGISTRATIONS } from "./geography-node-registry";
 import { buildCurriculumVocabularyScopes } from "./aggregate.mjs";
@@ -261,6 +262,32 @@ const medicineVocabulary = composeVocabulary(
   ...medicineScope.groups.map((group) => group.terms)
 );
 
+const materialsScienceNode = curriculumRegistry.getNode(
+  "applied.materials-science"
+);
+if (!materialsScienceNode) {
+  throw new Error(
+    "Materials Science curriculum node is required for vocabulary scopes"
+  );
+}
+
+const materialsScienceVocabularyScopes = buildCurriculumVocabularyScopes({
+  roots: [materialsScienceNode],
+  registrations: MATERIALS_SCIENCE_VOCABULARY_REGISTRATIONS,
+  accent: "sky",
+});
+
+const materialsScienceScope = materialsScienceVocabularyScopes.find(
+  (scope) => scope.path === materialsScienceNode.href
+);
+if (!materialsScienceScope) {
+  throw new Error("Materials Science vocabulary scope could not be derived");
+}
+
+const materialsScienceVocabulary = composeVocabulary(
+  ...materialsScienceScope.groups.map((group) => group.terms)
+);
+
 const geographyNode = curriculumRegistry.getNode("social.geography");
 if (!geographyNode) {
   throw new Error(
@@ -313,6 +340,7 @@ export const humanitiesVocabularyScopes: VocabularyScope[] = [
 
 export const appliedScienceVocabularyScopes: VocabularyScope[] = [
   ...medicineVocabularyScopes,
+  ...materialsScienceVocabularyScopes,
   {
     path: "/applied-science",
     title: "Applied Science",
@@ -324,6 +352,13 @@ export const appliedScienceVocabularyScopes: VocabularyScope[] = [
         terms: medicineVocabulary,
         sourceNodeId: medicineNode.id,
         sourcePath: medicineNode.href,
+      },
+      {
+        id: materialsScienceNode.id,
+        label: materialsScienceNode.label,
+        terms: materialsScienceVocabulary,
+        sourceNodeId: materialsScienceNode.id,
+        sourcePath: materialsScienceNode.href,
       },
     ],
   },
