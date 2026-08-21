@@ -27,6 +27,7 @@ import { HISTORY_VOCABULARY_REGISTRATIONS } from "./history-node-registry";
 import { AGRICULTURE_VOCABULARY_REGISTRATIONS } from "./agriculture-node-registry";
 import { SOCIOLOGY_VOCABULARY_REGISTRATIONS } from "./sociology-node-registry";
 import { PHYSICS_VOCABULARY_REGISTRATIONS } from "./physics-node-registry";
+import { PHILOSOPHY_VOCABULARY_REGISTRATIONS } from "./philosophy-node-registry";
 import { buildCurriculumVocabularyScopes } from "./aggregate.mjs";
 import { composeVocabulary } from "./compose";
 import { MATHEMATICS_VOCABULARY_REGISTRATIONS } from "./mathematics-node-registry";
@@ -212,6 +213,36 @@ if (!historyScope) {
 
 const historyVocabulary = composeVocabulary(
   ...historyScope.groups.map((group) => group.terms)
+);
+
+const philosophyNode = curriculumRegistry.getNode("humanities.philosophy");
+if (!philosophyNode) {
+  throw new Error(
+    "Philosophy curriculum node is required for vocabulary scopes"
+  );
+}
+
+const philosophyVocabularyScopes = buildCurriculumVocabularyScopes({
+  roots: [philosophyNode],
+  registrations: PHILOSOPHY_VOCABULARY_REGISTRATIONS,
+  accent: "amber",
+  accentByNodeId: {
+    "humanities.philosophy.epistemology": "cyan",
+    "humanities.philosophy.mind": "violet",
+    "humanities.philosophy.ethics": "emerald",
+    "humanities.philosophy.aesthetics": "rose",
+  },
+});
+
+const philosophyScope = philosophyVocabularyScopes.find(
+  (scope) => scope.path === philosophyNode.href
+);
+if (!philosophyScope) {
+  throw new Error("Philosophy vocabulary scope could not be derived");
+}
+
+const philosophyVocabulary = composeVocabulary(
+  ...philosophyScope.groups.map((group) => group.terms)
 );
 
 const literatureNode = curriculumRegistry.getNode("humanities.literature");
@@ -574,6 +605,7 @@ const agricultureVocabulary = composeVocabulary(
 );
 
 export const humanitiesVocabularyScopes: VocabularyScope[] = [
+  ...philosophyVocabularyScopes,
   ...historyVocabularyScopes,
   ...literatureVocabularyScopes,
   ...visualArtsVocabularyScopes,
@@ -583,6 +615,13 @@ export const humanitiesVocabularyScopes: VocabularyScope[] = [
     title: "Humanities",
     accent: "amber",
     groups: [
+      {
+        id: philosophyNode.id,
+        label: philosophyNode.label,
+        terms: philosophyVocabulary,
+        sourceNodeId: philosophyNode.id,
+        sourcePath: philosophyNode.href,
+      },
       {
         id: historyNode.id,
         label: historyNode.label,

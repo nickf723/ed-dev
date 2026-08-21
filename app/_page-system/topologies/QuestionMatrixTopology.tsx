@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import {
   ArrowRight,
@@ -55,7 +56,7 @@ export default function QuestionMatrixTopology({
 
   return (
     <div className="overflow-hidden rounded-[32px] border border-white/[0.08] bg-black/[0.14] shadow-[0_34px_110px_rgba(0,0,0,0.26)] backdrop-blur-xl">
-      <div className="grid gap-5 border-b border-white/[0.07] p-5 lg:grid-cols-[minmax(0,1fr)_420px] lg:items-end sm:p-6">
+      <div className="grid gap-5 border-b border-white/[0.07] p-5 sm:p-6 lg:grid-cols-[minmax(0,1fr)_420px] lg:items-end">
         <div>
           <div className="flex items-center gap-2 font-mono text-[11px] font-semibold uppercase tracking-[0.14em] text-amber-200/70">
             <Grid3X3 size={14} /> Question space
@@ -64,15 +65,37 @@ export default function QuestionMatrixTopology({
             Philosophical fields overlap because the questions overlap.
           </h2>
         </div>
-        <p className="text-[14px] leading-6 text-slate-400/72">
+        <p className="text-slate-400/72 text-[14px] leading-6">
           The matrix is not a rigid taxonomy. It locates each branch by the kind
           of subject and question it emphasizes while keeping neighboring
           problems visibly close.
         </p>
       </div>
 
-      <div className="grid gap-4 p-5 xl:grid-cols-[minmax(0,1fr)_350px] sm:p-6">
-        <div className="relative min-h-[560px] overflow-hidden rounded-[24px] border border-white/[0.07] bg-[#08070d]/78">
+      <nav
+        aria-label="Available philosophy fields"
+        className="flex flex-wrap gap-2 border-b border-white/[0.07] px-5 py-4 sm:px-6"
+      >
+        {nodes
+          .filter((node) => node.href && node.status !== "planned")
+          .map((node) => (
+            <Link
+              key={node.id}
+              href={node.href!}
+              className="inline-flex items-center gap-2 rounded-full border px-3.5 py-2 text-[12px] font-semibold transition hover:bg-white/[0.035] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-200/60"
+              style={{
+                color: `rgb(${node.rgb})`,
+                borderColor: `rgba(${node.rgb},0.2)`,
+              }}
+            >
+              {node.label}
+              <ArrowRight size={13} aria-hidden="true" />
+            </Link>
+          ))}
+      </nav>
+
+      <div className="grid gap-4 p-5 sm:p-6 xl:grid-cols-[minmax(0,1fr)_350px]">
+        <div className="bg-[#08070d]/78 relative min-h-[560px] overflow-hidden rounded-[24px] border border-white/[0.07]">
           <div className="absolute inset-[64px] grid grid-cols-3 grid-rows-3">
             {Array.from({ length: 9 }, (_, index) => (
               <div
@@ -96,9 +119,7 @@ export default function QuestionMatrixTopology({
 
           {nodes.map((node) => {
             const active = node.id === selected.id;
-            const Icon = node.icon
-              ? QUESTION_ICONS[node.icon]
-              : HelpCircle;
+            const Icon = node.icon ? QUESTION_ICONS[node.icon] : HelpCircle;
             return (
               <button
                 key={node.id}
@@ -115,7 +136,7 @@ export default function QuestionMatrixTopology({
                   className="rounded-[18px] border p-3 backdrop-blur-xl transition duration-300 group-hover:-translate-y-1"
                   style={{
                     borderColor: `rgba(${node.rgb},${active ? 0.34 : 0.14})`,
-                    background: `linear-gradient(145deg,rgba(${node.rgb},${active ? 0.10 : 0.035}),rgba(5,5,9,0.78))`,
+                    background: `linear-gradient(145deg,rgba(${node.rgb},${active ? 0.1 : 0.035}),rgba(5,5,9,0.78))`,
                     boxShadow: active
                       ? `0 0 42px rgba(${node.rgb},0.12)`
                       : undefined,
@@ -130,7 +151,7 @@ export default function QuestionMatrixTopology({
                   <strong className="mt-3 block text-[13px] text-white">
                     {node.label}
                   </strong>
-                  <span className="mt-1.5 line-clamp-3 block text-[11px] leading-4 text-slate-400/72">
+                  <span className="text-slate-400/72 mt-1.5 line-clamp-3 block text-[11px] leading-4">
                     {node.question}
                   </span>
                 </div>
@@ -149,10 +170,10 @@ export default function QuestionMatrixTopology({
           <h3 className="mt-2 text-[24px] font-semibold tracking-[-0.04em] text-white">
             {selected.label}
           </h3>
-          <p className="mt-2 text-[15px] font-medium leading-6 text-slate-200/82">
+          <p className="text-slate-200/82 mt-2 text-[15px] font-medium leading-6">
             {selected.question}
           </p>
-          <p className="mt-4 text-[14px] leading-6 text-slate-400/72">
+          <p className="text-slate-400/72 mt-4 text-[14px] leading-6">
             {selected.summary}
           </p>
           <div className="mt-5 rounded-[16px] border border-white/[0.06] bg-black/[0.18] p-4 text-[13px] leading-6 text-slate-400/70">
@@ -161,7 +182,7 @@ export default function QuestionMatrixTopology({
             questions together.
           </div>
           {selected.href && selected.status !== "planned" ? (
-            <a
+            <Link
               href={selected.href}
               className="mt-5 inline-flex items-center gap-2 rounded-full border px-4 py-2.5 text-[13px] font-semibold"
               style={{
@@ -170,7 +191,7 @@ export default function QuestionMatrixTopology({
               }}
             >
               Open field <ArrowRight size={14} />
-            </a>
+            </Link>
           ) : (
             <span className="mt-5 inline-block rounded-full border border-white/[0.07] px-3 py-2 font-mono text-[11px] uppercase tracking-[0.09em] text-slate-500/70">
               planned field

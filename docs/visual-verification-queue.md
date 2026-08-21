@@ -327,7 +327,25 @@ Verify:
 
 **Status:** Targeted React/Next lint, TypeScript, deterministic physics-model and vocabulary aggregation tests, all three informational audits, the 404-page production build, and generated-HTML branch/initial-math/constant/source/assessment/metadata/no-instability checks passed; rendered responsive and interaction verification required
 
-**Status:** Targeted React/Next lint, TypeScript, deterministic Information Science, entropy, retrieval, taxonomy, ontology, and evidence fixtures, vocabulary aggregation, all three informational audits, the 404-page production build, and generated-HTML ancestry/hierarchy/active-link/planned-non-link/model/source/background/no-canvas checks passed. The required browser CLI is unavailable, so rendered responsive and interaction verification remains pending. Remote publication and the zero-deployment guard are recorded in the commit handoff because they occur after this entry is committed.
+---
+
+### Philosophy dialectic field and argument review
+
+**Route:** `/humanities/philosophy`
+
+Verify:
+
+- all seven direct branches preserve registry order; Metaphysics, Ethics, and Aesthetics are live, while Epistemology, Philosophy of Mind, Political Philosophy, and Philosophy of Science remain inert
+- the question matrix is the first major object after the header and reads as overlapping emphases rather than a rigid coordinate taxonomy
+- the fixed dialogue threads and junctions establish a recognizable philosophical world without motion, random values, viewport measurement, or a first-render shift
+- the canonical six-node argument keeps question, claim, two reasons, objection, and reply readable and correctly nested at desktop, tablet, and mobile widths
+- selecting each node updates the inspector without changing the argument map's outer geometry or hiding required copy
+- Logic reads as a cross-disciplinary route rather than a Philosophy child
+- all four evidence cases preserve correct and incorrect feedback across case switching and reset
+- all 28 vocabulary terms retain tested ownership and aggregate through Philosophy into Humanities without duplicate IDs
+- Stanford Encyclopedia current and archive links keep changing-reference and fixed-citation roles distinct; Crossref remains bibliographic metadata rather than full text or philosophical authority
+
+**Status:** Deterministic model and vocabulary aggregation tests, TypeScript, targeted React/Next lint, all three informational audits, the 404-page production build, and generated-HTML hierarchy/active-link/planned-non-link/model/assessment/source/metadata/background-stability checks passed. The production server cannot start in this workspace because Node reports `uv_interface_addresses`, and the required browser CLI is unavailable, so rendered console, responsive, and interaction verification remains pending. Remote publication and the zero-deployment guard are recorded in the commit handoff because they occur after this entry is committed.
 
 ---
 

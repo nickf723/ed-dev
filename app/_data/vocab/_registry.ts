@@ -11,6 +11,7 @@ import { lawVocab } from "./l/law";
 import { linguisticsVocab } from "./l/linguistics";
 import { economicsVocab } from "./e/economics";
 import { philosophyVocab } from "./p/philosophy";
+import { philosophyBranchVocab } from "./p/philosophy-branches";
 import { earthScienceVocab } from "./e/earth-science";
 import { computerScienceVocab } from "./c/computer-science";
 import { physicsVocab } from "./p/physics";
@@ -89,6 +90,7 @@ export const ALL_VOCAB: VocabTerm[] = composeVocabulary(
   linguisticsVocab,
   economicsVocab,
   philosophyVocab,
+  philosophyBranchVocab,
   earthScienceVocab,
   computerScienceVocab,
   physicsVocab,

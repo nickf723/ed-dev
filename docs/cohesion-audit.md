@@ -474,3 +474,13 @@ The visual grammar is relational and scalar: encounters and ties sit above group
 Physics keeps eight direct active branches while using familiar-scale and extended/specialized banks only as model-regime cues. The root advances from registry-owned navigation and a reusable define → measure → model → test cycle through an eight-scenario regime selector, a one-segment coordinate instrument, four exact SI-defining constants, a four-case evidence review, and official reference-data boundaries. One tested model owns branch parity, scenario coverage, signed motion arithmetic, exact-value fixtures, and answer paths; thirty-five narrowly owned terms aggregate into Natural Science.
 
 The visual grammar is metrological rather than generically futuristic: a fixed trajectory, velocity vector, coordinate field, wave trace, interaction response, and unit ruler establish a deterministic laboratory sheet behind open reading corridors. The root stays server-owned while the regime, measurement, and assessment instruments remain small deterministic client islands. It avoids Sociology's scale bands, Agriculture's transect, and the animated shared Physics background still used by specialized descendants.
+
+---
+
+## 22. Current cohesion checkpoint · Philosophy
+
+Philosophy keeps seven direct branches organized by the kinds of questions they investigate: Metaphysics, Epistemology, Philosophy of Mind, Ethics, Political Philosophy, Aesthetics, and Philosophy of Science. Metaphysics, Ethics, and Aesthetics remain active; the other four are honest planned peers. Logic remains a cross-link to Formal Science rather than becoming a false Philosophy child.
+
+The root now puts its question matrix before the overview lesson, then separates a question, claim, reasons, objection, and reply in one inspectable argument. A four-case evidence review distinguishes validity from soundness, counterexample from universal opposite, necessary from sufficient conditions, and an argument-level objection from a personal attack. One tested model owns exact branch parity, the canonical argument tree, and every answer path. Twenty-eight terms are registered at the root or their narrowest current branch and aggregate into Humanities.
+
+The visual grammar is dialogical and editorial: fixed threads cross at junctions, while argument nodes and source trails expose where claims meet reasons and objections. The deterministic server-rendered field has no viewport reads, randomness, effects, timers, or animation loops; client ownership is confined to the question matrix, argument inspector, and evidence review. It avoids Physics' measurement sheet and does not turn positions into decorative teams or famous-name cards.
