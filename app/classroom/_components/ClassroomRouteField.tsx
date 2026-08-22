@@ -1,19 +1,19 @@
 export default function ClassroomRouteField() {
   const stations = [
-    [188, 188, "#34d399"],
-    [428, 296, "#22d3ee"],
-    [728, 254, "#a3e635"],
-    [1040, 386, "#fb923c"],
-    [1330, 324, "#a78bfa"],
-    [255, 690, "#a78bfa"],
-    [602, 620, "#34d399"],
-    [978, 744, "#22d3ee"],
-    [1316, 650, "#fb923c"],
+    [188, 188, "#f87171"],
+    [428, 296, "#f87171"],
+    [728, 254, "#4ade80"],
+    [1040, 386, "#4ade80"],
+    [1330, 324, "#60a5fa"],
+    [255, 690, "#facc15"],
+    [602, 620, "#facc15"],
+    [978, 744, "#60a5fa"],
+    [1316, 650, "#60a5fa"],
   ] as const;
 
   return (
     <div aria-hidden="true" className="pointer-events-none fixed inset-0 overflow-hidden">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_12%_4%,rgba(52,211,153,0.12),transparent_27%),radial-gradient(circle_at_88%_16%,rgba(34,211,238,0.09),transparent_30%),radial-gradient(circle_at_72%_94%,rgba(167,139,250,0.08),transparent_32%),linear-gradient(180deg,#031912_0%,#041610_56%,#030d0a_100%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_10%_4%,rgba(248,113,113,0.10),transparent_27%),radial-gradient(circle_at_90%_12%,rgba(74,222,128,0.09),transparent_30%),radial-gradient(circle_at_78%_94%,rgba(96,165,250,0.08),transparent_32%),radial-gradient(circle_at_20%_92%,rgba(250,204,21,0.06),transparent_28%),linear-gradient(180deg,#031912_0%,#041610_56%,#030d0a_100%)]" />
       <svg
         viewBox="0 0 1500 920"
         preserveAspectRatio="xMidYMid slice"
@@ -27,41 +27,34 @@ export default function ClassroomRouteField() {
               <feMergeNode in="SourceGraphic" />
             </feMerge>
           </filter>
-          <linearGradient id="classroom-math-line" x1="0" y1="0" x2="1" y2="1">
-            <stop stopColor="#34d399" stopOpacity="0.38" />
-            <stop offset="1" stopColor="#22d3ee" stopOpacity="0.12" />
-          </linearGradient>
-          <linearGradient id="classroom-humanities-line" x1="0" y1="0" x2="1" y2="0">
-            <stop stopColor="#a78bfa" stopOpacity="0.24" />
-            <stop offset="0.6" stopColor="#fb923c" stopOpacity="0.18" />
-            <stop offset="1" stopColor="#f472b6" stopOpacity="0.10" />
-          </linearGradient>
         </defs>
 
         <path
           d="M-80 130 C 170 120, 270 330, 510 292 S 860 120, 1090 310 S 1370 360, 1580 230"
           fill="none"
-          stroke="url(#classroom-math-line)"
+          stroke="#f87171"
+          strokeOpacity="0.20"
           strokeWidth="2"
         />
         <path
           d="M-110 760 C 180 780, 280 560, 560 620 S 900 830, 1160 710 S 1400 540, 1580 650"
           fill="none"
-          stroke="url(#classroom-humanities-line)"
+          stroke="#facc15"
+          strokeOpacity="0.15"
           strokeWidth="2"
         />
         <path
           d="M140 970 C 210 730, 520 720, 590 486 S 680 130, 945 -60"
           fill="none"
-          stroke="#a3e635"
-          strokeOpacity="0.11"
+          stroke="#4ade80"
+          strokeOpacity="0.14"
           strokeWidth="1.5"
         />
         <path
           d="M1540 840 C 1300 780, 1230 560, 1040 520 S 760 580, 610 430 S 400 70, 140 -80"
           fill="none"
-          stroke="#22d3ee"
-          strokeOpacity="0.09"
+          stroke="#60a5fa"
+          strokeOpacity="0.13"
           strokeWidth="1.5"
         />
 

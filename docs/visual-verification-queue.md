@@ -11,16 +11,21 @@ A successful type check is not visual verification. A page leaves this queue onl
 Verify:
 
 - the lesson's dark emerald, colorful neoglass identity carries through every navigation layer without overwhelming the reading path
+- Math stays red, Science green, Social Studies blue, and English yellow from the Classroom root through each subject header
+- Math uses a coordinate axis, Science a specimen grid, Social Studies a timeline, and English a reading shelf without changing the underlying course semantics
 - Math, Science, Social Studies, and English all open real subject hubs
 - planned course stops, including the AP options, are clearly visible but cannot be opened yet
 - Algebra I opens from Math, Unit 1 opens from Algebra I, and Units 2–7 remain visibly planned
+- Algebra I units use a deliberate red-to-pink sequence palette while preserving their course order and active/planned states
 - the Unit 1 page links all five lessons in order
+- each Unit 1 lesson card previews real lesson content: signed terms, an equality balance, a two-step transformation, a commutative rewrite, or nested real-number sets
+- hovering a live route moves only its destination surface; the numbered marker and connecting line stay fixed
 - standards codes, teacher notes, pacing, duration, prerequisites, evidence plans, and source panels do not appear in the learner path
 - classroom lesson breadcrumbs and previous/next links stay inside `/classroom`
 - the Classroom lesson alias omits Vocabulary while the canonical atlas lesson retains it
 - keyboard focus, 200% text zoom, mobile widths, and long course titles do not clip or create horizontal overflow
 
-**Status:** Regenerated route types, TypeScript, targeted React/Next lint, all three informational audits, the 416-page production build, the Classroom-specific 11px scan, and 32 generated-HTML assertions pass. The assertions cover all four subject hubs, planned-course and planned-unit link safety, five-lesson order, the learner-facing metadata removal, the shared route field, and alias-specific Vocabulary behavior. Rendered responsive, keyboard, zoom, and interaction verification remains pending for the hosted preview.
+**Status:** Regenerated route types, TypeScript, targeted React/Next lint, all three informational audits, the 416-page production build, the Classroom-specific 11px scan, and 87 generated-HTML assertions pass. The assertions cover the four fixed subject colors, four course-map typologies, planned-link safety, seven unit accents, five content-driven lesson previews, marker/link separation, learner-facing metadata removal, and alias-specific Vocabulary behavior. Rendered responsive, keyboard, zoom, and interaction verification remains pending for the hosted preview.
 
 ### Expressions & Variables discovery flow
 

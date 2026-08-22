@@ -14,7 +14,7 @@ export default function ClassroomPage() {
           icon={School}
           title={<span>High School</span>}
           subtitle="Math, science, social studies, and English."
-          accentRgb="52, 211, 153"
+          accentRgb="226, 232, 240"
           titleClassName="font-mono text-[clamp(2.7rem,5.8vw,5.8rem)] font-semibold uppercase leading-[0.88] tracking-[-0.06em] text-[#f4fff9]"
           metadataTextClassName="text-[11px]"
           iconClassName="rounded-[16px]"

@@ -10,7 +10,10 @@ export type ClassroomSubjectTone = "math" | "science" | "social-studies" | "engl
 
 export type ClassroomSubjectPresentation = {
   Icon: LucideIcon;
+  routeAccent: "red" | "green" | "blue" | "yellow";
   accentRgb: string;
+  courseMapLabel: string;
+  titleClassName: string;
   accentText: string;
   border: string;
   surface: string;
@@ -24,46 +27,63 @@ export const CLASSROOM_SUBJECT_PRESENTATIONS: Record<
 > = {
   math: {
     Icon: Sigma,
-    accentRgb: "52, 211, 153",
-    accentText: "text-emerald-200",
-    border: "border-emerald-200/[0.15]",
+    routeAccent: "red",
+    accentRgb: "248, 113, 113",
+    courseMapLabel: "Course axis",
+    titleClassName:
+      "font-mono text-[clamp(2.7rem,5.8vw,5.8rem)] font-semibold uppercase leading-[0.88] tracking-[-0.06em] text-[#f4fff9]",
+    accentText: "text-red-200",
+    border: "border-red-200/[0.16]",
     surface:
-      "bg-[linear-gradient(135deg,rgba(52,211,153,0.09),rgba(34,211,238,0.035)_52%,rgba(3,18,13,0.72))]",
+      "bg-[linear-gradient(135deg,rgba(248,113,113,0.11),rgba(239,68,68,0.03)_52%,rgba(3,18,13,0.72))]",
     marker:
-      "border-emerald-200/[0.25] bg-emerald-300/[0.14] text-emerald-100",
-    line: "bg-emerald-300/[0.45]",
+      "border-red-200/[0.28] bg-red-400/[0.15] text-red-100",
+    line: "bg-red-300/[0.48]",
   },
   science: {
     Icon: FlaskConical,
-    accentRgb: "163, 230, 53",
-    accentText: "text-lime-200",
-    border: "border-lime-200/[0.13]",
+    routeAccent: "green",
+    accentRgb: "74, 222, 128",
+    courseMapLabel: "Course lab",
+    titleClassName:
+      "text-[clamp(2.7rem,5.8vw,5.8rem)] font-semibold uppercase leading-[0.9] tracking-[-0.055em] text-[#f4fff9]",
+    accentText: "text-green-200",
+    border: "border-green-200/[0.15]",
     surface:
-      "bg-[linear-gradient(135deg,rgba(163,230,53,0.075),rgba(52,211,153,0.025)_52%,rgba(3,18,13,0.72))]",
-    marker: "border-lime-200/[0.20] bg-lime-300/[0.12] text-lime-100",
-    line: "bg-lime-300/[0.38]",
+      "bg-[linear-gradient(135deg,rgba(74,222,128,0.10),rgba(34,197,94,0.025)_52%,rgba(3,18,13,0.72))]",
+    marker:
+      "border-green-200/[0.26] bg-green-300/[0.14] text-green-100",
+    line: "bg-green-300/[0.45]",
   },
   "social-studies": {
     Icon: Landmark,
-    accentRgb: "251, 146, 60",
-    accentText: "text-orange-200",
-    border: "border-orange-200/[0.13]",
+    routeAccent: "blue",
+    accentRgb: "96, 165, 250",
+    courseMapLabel: "Course timeline",
+    titleClassName:
+      "font-serif text-[clamp(2.7rem,5.8vw,5.8rem)] font-semibold leading-[0.9] tracking-[-0.045em] text-[#f4fff9]",
+    accentText: "text-blue-200",
+    border: "border-blue-200/[0.15]",
     surface:
-      "bg-[linear-gradient(135deg,rgba(251,146,60,0.075),rgba(245,158,11,0.025)_52%,rgba(3,18,13,0.72))]",
+      "bg-[linear-gradient(135deg,rgba(96,165,250,0.10),rgba(59,130,246,0.025)_52%,rgba(3,18,13,0.72))]",
     marker:
-      "border-orange-200/[0.20] bg-orange-300/[0.12] text-orange-100",
-    line: "bg-orange-300/[0.38]",
+      "border-blue-200/[0.26] bg-blue-400/[0.14] text-blue-100",
+    line: "bg-blue-300/[0.45]",
   },
   english: {
     Icon: BookMarked,
-    accentRgb: "167, 139, 250",
-    accentText: "text-violet-200",
-    border: "border-violet-200/[0.14]",
+    routeAccent: "yellow",
+    accentRgb: "250, 204, 21",
+    courseMapLabel: "Reading shelf",
+    titleClassName:
+      "font-serif text-[clamp(2.7rem,5.8vw,5.8rem)] font-semibold leading-[0.9] tracking-[-0.045em] text-[#f4fff9]",
+    accentText: "text-yellow-200",
+    border: "border-yellow-200/[0.15]",
     surface:
-      "bg-[linear-gradient(135deg,rgba(167,139,250,0.085),rgba(244,114,182,0.025)_52%,rgba(3,18,13,0.72))]",
+      "bg-[linear-gradient(135deg,rgba(250,204,21,0.10),rgba(234,179,8,0.025)_52%,rgba(3,18,13,0.72))]",
     marker:
-      "border-violet-200/[0.22] bg-violet-300/[0.12] text-violet-100",
-    line: "bg-violet-300/[0.40]",
+      "border-yellow-200/[0.26] bg-yellow-300/[0.14] text-yellow-100",
+    line: "bg-yellow-300/[0.45]",
   },
 };
 

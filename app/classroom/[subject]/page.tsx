@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import DomainPageHeader from "@/app/_components/DomainPageHeader";
-import ClassroomRouteList from "@/app/classroom/_components/ClassroomRouteList";
+import ClassroomCourseMap from "@/app/classroom/_components/ClassroomCourseMap";
 import {
   getClassroomSubjectPresentation,
   type ClassroomSubjectTone,
@@ -48,14 +48,7 @@ export default async function ClassroomSubjectPage({
 
   const tone = subject.id as ClassroomSubjectTone;
   const presentation = getClassroomSubjectPresentation(tone);
-  const courses = getCourseNavigation(subject.slug).map((course, index) => ({
-    id: course.id,
-    label: String(index + 1).padStart(2, "0"),
-    title: course.shortTitle,
-    description: course.description,
-    status: course.status,
-    href: course.href,
-  }));
+  const courses = getCourseNavigation(subject.slug);
 
   return (
     <main className="min-h-[calc(100vh-3.5rem)]">
@@ -70,7 +63,7 @@ export default async function ClassroomSubjectPage({
           title={<span>{subject.title}</span>}
           subtitle={subject.description}
           accentRgb={presentation.accentRgb}
-          titleClassName="font-mono text-[clamp(2.7rem,5.8vw,5.8rem)] font-semibold uppercase leading-[0.88] tracking-[-0.06em] text-[#f4fff9]"
+          titleClassName={presentation.titleClassName}
           metadataTextClassName="text-[11px]"
           iconClassName="rounded-[16px]"
           headerClassName="border-white/[0.12]"
@@ -83,14 +76,10 @@ export default async function ClassroomSubjectPage({
               id={`${subject.slug}-course-map-title`}
               className={`text-[12px] font-semibold uppercase tracking-[0.14em] ${presentation.accentText}`}
             >
-              Course map
+              {presentation.courseMapLabel}
             </h2>
           </div>
-          <ClassroomRouteList
-            items={courses}
-            subjectTone={tone}
-            ariaLabel={`${subject.title} courses`}
-          />
+          <ClassroomCourseMap items={courses} subjectTone={tone} />
         </section>
       </div>
     </main>

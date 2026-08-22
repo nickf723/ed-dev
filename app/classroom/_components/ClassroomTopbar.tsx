@@ -9,11 +9,11 @@ export default function ClassroomTopbar() {
           href="/classroom"
           className="flex min-w-0 items-center gap-3 rounded-xl font-semibold tracking-[-0.02em] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-200/60"
         >
-          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border border-emerald-200/15 bg-gradient-to-br from-emerald-300/15 to-cyan-300/10 text-emerald-100 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
+          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border border-white/[0.13] bg-[conic-gradient(from_45deg,rgba(248,113,113,0.22),rgba(74,222,128,0.20),rgba(96,165,250,0.20),rgba(250,204,21,0.20),rgba(248,113,113,0.22))] text-stone-100 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
             <School size={16} />
           </span>
           <span className="truncate">
-            Education Station <span className="text-emerald-200">Classroom</span>
+            Education Station <span className="text-stone-300">Classroom</span>
           </span>
         </Link>
 

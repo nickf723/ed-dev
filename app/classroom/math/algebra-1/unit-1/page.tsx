@@ -1,6 +1,7 @@
 import { Route } from "lucide-react";
 import DomainPageHeader from "@/app/_components/DomainPageHeader";
-import ClassroomRouteList from "@/app/classroom/_components/ClassroomRouteList";
+import ClassroomLessonMap from "@/app/classroom/_components/ClassroomLessonMap";
+import type { ClassroomRouteAccent } from "@/app/classroom/_components/classroom-accents";
 import { getClassroomSubjectPresentation } from "@/app/classroom/_components/classroom-subjects";
 import { getCourse, getCourseUnit } from "@/lib/courses/catalog";
 
@@ -15,6 +16,13 @@ function requireUnitContext() {
 
 const { course, unit } = requireUnitContext();
 const presentation = getClassroomSubjectPresentation("math");
+const LESSON_ACCENTS: readonly ClassroomRouteAccent[] = [
+  "red",
+  "orange",
+  "yellow",
+  "violet",
+  "blue",
+];
 
 export default function AlgebraOneUnitOnePage() {
   const lessons = unit.lessons.map((lesson, index) => ({
@@ -24,6 +32,8 @@ export default function AlgebraOneUnitOnePage() {
     description: lesson.summary,
     status: lesson.status,
     href: lesson.href,
+    slug: lesson.slug,
+    accent: LESSON_ACCENTS[index] ?? "red",
   }));
 
   return (
@@ -57,9 +67,8 @@ export default function AlgebraOneUnitOnePage() {
               Lesson line
             </h2>
           </div>
-          <ClassroomRouteList
+          <ClassroomLessonMap
             items={lessons}
-            subjectTone="math"
             ariaLabel="Foundations of Algebra lessons"
           />
         </section>

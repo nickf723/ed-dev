@@ -28,6 +28,8 @@ Classroom pages optimize for direct course selection, lesson sequence, and immed
 
 The default Classroom path is student-facing. Standards codes, teacher notes, pacing plans, evidence plans, and implementation provenance do not appear in its primary navigation. Those records may remain internal editorial data; if a teacher edition returns later, it must be a deliberate, separately framed mode rather than extra chrome inserted between students and lessons.
 
+Classroom navigation keeps one recognizable shell while becoming more specific at each layer. Subjects own stable colors (Math red, Science green, Social Studies blue, English yellow); subject hubs may use different course-map typologies; course pages may coordinate units with a broader sequence palette; and unit pages should preview the actual ideas or operations inside each lesson instead of repeating generic destination cards. Hover and focus states may animate the destination surface, but route markers and hierarchy lines remain spatially fixed.
+
 ### Knowledge atlas
 
 The five canonical knowledge branches and Interdisciplines remain the exploratory path. They preserve the deeper ontology, collections, conceptual cross-links, vocabulary inheritance, and field-specific worlds.
