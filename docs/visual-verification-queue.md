@@ -35,16 +35,18 @@ Verify:
 
 - changing x from −3 through 3 produces totals 38, 21, 10, 5, 6, 13, and 26
 - contribution bars extend left for negative values and right for positive values, with +5 staying fixed
-- the constant prediction gives immediate, concise feedback
+- the learner predicts before experimenting; feedback stays provisional until at least two distinct x values have been tested
 - selecting each signed term reveals its coefficient, variable, and exponent, with the sign included in coefficient −2
 - the sorter accepts only matching variable structures and keeps placed terms visible in the correct family bins
 - combining coefficients reveals `(3 − 2)x² + (4 − 1)x + 5` and then `x² + 3x + 5`
-- all four lesson stages remain obvious and usable at desktop, tablet, mobile, keyboard-only, and 200% text zoom
+- the introduce → predict → experiment → conceptualize → organize → practice → conclude arc reads as one lesson rather than a widget stack
+- the 1050px lesson frame, shallower panels, compact controls, and larger instructional blurbs improve density without shrinking essential text
+- all seven lesson stages remain obvious and usable at desktop, tablet, mobile, keyboard-only, and 200% text zoom
 - required lesson, header, toolbar, and navigation text never drops below 11px
-- the collapsed Stage 4 assessment and next-lesson navigation work without disrupting the discovery sequence
+- the always-visible five-question Stage 6 assessment and compact conclusion remain part of the main scroll path
 - the Classroom alias omits Vocabulary while the canonical atlas lesson retains it
 
-**Status:** The lesson-specific 11px readability scan, regenerated route types, TypeScript, targeted React/Next lint, all three informational audits, the 413-page production build, the seven-value math model, and generated-HTML checks for all four stages, trimmed copy, and alias-specific Vocabulary behavior pass. Rendered responsive, keyboard, zoom, and interaction verification remains pending for the hosted preview.
+**Status:** Regenerated route types, TypeScript, targeted React/Next lint, all three informational audits, the 416-page production build, the seven-value math model, the lesson-specific 11px scan, five-question source assertions, and generated-HTML checks for all seven stages, always-visible practice, and alias-specific Vocabulary behavior pass. Rendered responsive, keyboard, zoom, and interaction verification remains pending for the hosted preview.
 
 ---
 

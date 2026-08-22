@@ -188,6 +188,7 @@ Atomic lessons should feel like a guided path, not a widescreen dashboard.
 - One major learner question or object dominates each viewport.
 - Use vertical space to establish pacing between meaningful ideas.
 - Let the subject background appear in the margins and between sections.
+- Create compactness with a narrower frame, shorter control rows, shallower padding, and grouped related actions before reducing instructional type.
 - Do not stretch weak content across the screen merely because horizontal space exists.
 - If content is sparse, condense it. If content is rich, let the page scroll and breathe.
 

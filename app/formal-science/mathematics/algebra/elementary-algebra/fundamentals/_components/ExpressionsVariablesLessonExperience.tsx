@@ -10,7 +10,9 @@ import {
   RefreshCcw,
   Sparkles,
 } from "lucide-react";
-import Assessment, { type AssessmentQuestion } from "@/app/_components/Assessment";
+import Assessment, {
+  type AssessmentQuestion,
+} from "@/app/_components/Assessment";
 import DomainPageHeader from "@/app/_components/DomainPageHeader";
 import LessonUtilityBar from "@/app/_components/LessonUtilityBar";
 import FundamentalsLessonBackgroundV2 from "./FundamentalsLessonBackgroundV2";
@@ -70,7 +72,8 @@ const EXPRESSION_TERMS: readonly ExpressionTerm[] = [
       { token: "x", label: "variable" },
       { token: "2", label: "exponent" },
     ],
-    insight: "The exponent applies to x. The coefficient 3 multiplies the result.",
+    insight:
+      "The exponent applies to x. The coefficient 3 multiplies the result.",
     borderClass: "border-emerald-200/[0.14]",
     surfaceClass: "bg-emerald-300/[0.055]",
     textClass: "text-emerald-100",
@@ -153,7 +156,8 @@ const QUIZ: AssessmentQuestion[] = [
     prompt: "What is the coefficient of x in −7x + 4?",
     options: ["−7", "7", "4"],
     correctAnswer: "−7",
-    explanation: "The sign belongs to the term, so the signed numerical factor is −7.",
+    explanation:
+      "The sign belongs to the term, so the signed numerical factor is −7.",
   },
   {
     id: "expression-transfer-like",
@@ -161,14 +165,33 @@ const QUIZ: AssessmentQuestion[] = [
     prompt: "Which terms are like terms with 5y²?",
     options: ["−3y²", "8y", "y²/2", "2y³"],
     correctAnswers: ["−3y²", "y²/2"],
-    explanation: "Like terms have the same variables raised to the same powers.",
+    explanation:
+      "Like terms have the same variables raised to the same powers.",
+  },
+  {
+    id: "expression-transfer-exponent",
+    type: "mcq",
+    prompt: "What exponent is understood in the term −4y?",
+    options: ["0", "1", "4"],
+    correctAnswer: "1",
+    explanation:
+      "A variable written without a visible exponent has an implied exponent of 1.",
+  },
+  {
+    id: "expression-transfer-constant",
+    type: "mcq",
+    prompt: "Which term stays unchanged when a changes in 2a² − 3a + 7?",
+    options: ["2a²", "−3a", "+7"],
+    correctAnswer: "+7",
+    explanation: "+7 contains no variable, so it is the constant term.",
   },
   {
     id: "expression-transfer-simplify",
     type: "short_answer",
     prompt: "Simplify 6x − 2x + 3. Enter the expression.",
     acceptableAnswers: ["4x+3", "4x + 3"],
-    explanation: "6x and −2x share the same variable structure, so their coefficients combine.",
+    explanation:
+      "6x and −2x share the same variable structure, so their coefficients combine.",
   },
 ];
 
@@ -184,7 +207,7 @@ export default function ExpressionsVariablesLessonExperience({
       <FundamentalsLessonBackgroundV2 lesson="expressions-variables" />
       <div className="pointer-events-none fixed inset-0 z-0 bg-[linear-gradient(to_bottom,rgba(0,0,0,0.18),rgba(0,0,0,0.58))]" />
 
-      <div className="relative z-10 mx-auto w-full max-w-[1380px] px-4 py-4 sm:px-6 xl:px-8 xl:py-5">
+      <div className="relative z-10 mx-auto w-full max-w-[1050px] px-4 py-4 sm:px-6 xl:py-5">
         <DomainPageHeader
           breadcrumbs={breadcrumbs}
           eyebrow="Lesson 01 · Expressions & Variables"
@@ -192,7 +215,7 @@ export default function ExpressionsVariablesLessonExperience({
           title={<span>Expressions & Variables</span>}
           subtitle="Change x, take the expression apart, and discover which terms can combine."
           accentRgb={ACCENT}
-          titleClassName="font-mono text-[clamp(2.2rem,4.35vw,4.55rem)] font-semibold uppercase leading-[0.88] tracking-[-0.055em] text-[#f4fff9]"
+          titleClassName="font-mono text-[clamp(2.05rem,4.1vw,4rem)] font-semibold uppercase leading-[0.9] tracking-[-0.055em] text-[#f4fff9]"
           metadataTextClassName="text-[11px]"
           iconClassName="rounded-[16px]"
           headerClassName="border-white/[0.12]"
@@ -206,24 +229,41 @@ export default function ExpressionsVariablesLessonExperience({
         />
 
         <LessonFlow />
+        <ConceptPrimer />
         <VariableDiscoveryLab />
+        <LessonBridge>
+          A term behaves the way it does because of the parts inside it. Inspect
+          those parts before deciding what can combine.
+        </LessonBridge>
         <TermAnatomyLab />
+        <LessonBridge>
+          Coefficients may differ. The variable and exponent determine the
+          family.
+        </LessonBridge>
         <StructureSorter />
         <PatternSummary />
 
         <section id="expressions-practice" className="mt-4 scroll-mt-24">
-          <details className="group overflow-hidden rounded-[22px] border border-white/[0.09] bg-black/[0.20] backdrop-blur-2xl">
-            <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-4">
-              <span>
-                <span className="block text-[11px] font-semibold uppercase tracking-[0.13em] text-emerald-300/75">
-                  Stage 4 · Check
-                </span>
-                <strong className="mt-1 block text-[16px] text-stone-100">
+          <div className="overflow-hidden rounded-[20px] border border-white/[0.09] bg-black/[0.20] backdrop-blur-2xl">
+            <div className="flex items-start justify-between gap-4 px-4 py-4 sm:px-5">
+              <div>
+                <div className="text-[11px] font-semibold uppercase tracking-[0.13em] text-emerald-300/75">
+                  Stage 6 · Practice
+                </div>
+                <h2 className="mt-1 text-[20px] font-semibold tracking-[-0.025em] text-stone-100">
                   Try a fresh expression
-                </strong>
-              </span>
-              <Sparkles size={17} className="text-emerald-300" />
-            </summary>
+                </h2>
+                <p className="mt-1 max-w-2xl text-[15px] leading-6 text-stone-400">
+                  Apply the same reading process without the original expression
+                  beside you.
+                </p>
+              </div>
+              <Sparkles
+                size={17}
+                className="mt-1 shrink-0 text-emerald-300"
+                aria-hidden="true"
+              />
+            </div>
             <div className="fundamentals-assessment border-t border-white/[0.06] p-3 sm:p-4">
               <Assessment
                 title="Expressions & Variables check"
@@ -231,16 +271,17 @@ export default function ExpressionsVariablesLessonExperience({
                 accentColor="emerald"
               />
             </div>
-          </details>
+          </div>
         </section>
 
+        <LessonConclusion />
         <LessonNavigation previous={previous} next={next} unitHref={unitHref} />
       </div>
 
       <style>{`
-        .fundamentals-assessment > div { border-radius: 18px !important; padding: 16px !important; background: rgba(0,0,0,0.10) !important; box-shadow: none !important; }
-        .fundamentals-assessment > div > div { min-height: 300px !important; }
-        .fundamentals-assessment h3 { margin-bottom: 16px !important; font-size: 1.05rem !important; line-height: 1.45 !important; }
+        .fundamentals-assessment > div { border-radius: 16px !important; padding: 14px !important; background: rgba(0,0,0,0.10) !important; box-shadow: none !important; }
+        .fundamentals-assessment > div > div { min-height: 260px !important; }
+        .fundamentals-assessment h3 { margin-bottom: 14px !important; font-size: 1.02rem !important; line-height: 1.45 !important; }
         .fundamentals-assessment button { padding-top: 10px !important; padding-bottom: 10px !important; }
       `}</style>
     </main>
@@ -249,67 +290,222 @@ export default function ExpressionsVariablesLessonExperience({
 
 function LessonFlow() {
   const stages = [
-    ["01", "Change x"],
-    ["02", "Split terms"],
-    ["03", "Sort families"],
-    ["04", "Check"],
+    ["01", "Introduce"],
+    ["02", "Predict"],
+    ["03", "Experiment"],
+    ["04", "Conceptualize"],
+    ["05", "Organize"],
+    ["06", "Practice"],
+    ["07", "Conclude"],
   ] as const;
 
   return (
     <ol
       aria-label="Lesson flow"
-      className="mt-4 grid gap-2 rounded-[22px] border border-white/[0.08] bg-black/[0.18] p-3 backdrop-blur-2xl sm:grid-cols-4"
+      className="mt-3 grid grid-cols-2 gap-1.5 rounded-[18px] border border-white/[0.08] bg-black/[0.18] p-2 backdrop-blur-2xl sm:grid-cols-4 lg:grid-cols-7"
     >
       {stages.map(([number, label]) => (
         <li
           key={number}
-          className="flex items-center gap-3 rounded-[15px] border border-white/[0.055] bg-white/[0.018] px-3 py-3"
+          className="flex min-h-10 items-center gap-2 rounded-[12px] border border-white/[0.055] bg-white/[0.018] px-2.5 py-2"
         >
           <span className="font-mono text-[12px] font-semibold text-emerald-300/80">
             {number}
           </span>
-          <span className="text-[13px] font-semibold text-stone-300">{label}</span>
+          <span className="text-[12px] font-semibold text-stone-300">
+            {label}
+          </span>
         </li>
       ))}
     </ol>
   );
 }
 
+function ConceptPrimer() {
+  const passes = [
+    {
+      number: "1",
+      label: "Find the terms",
+      detail: "Read each + or − sign with the term that follows it.",
+      example: "3x²  |  −2x  |  +5",
+    },
+    {
+      number: "2",
+      label: "Read each structure",
+      detail: "Coefficient × variable raised to an exponent.",
+      example: "3 · x²",
+    },
+    {
+      number: "3",
+      label: "Name the job",
+      detail: "Evaluate when x is known; simplify when structures match.",
+      example: "value or form",
+    },
+  ] as const;
+
+  return (
+    <section className="bg-[#03120d]/62 mt-4 rounded-[20px] border border-emerald-200/[0.12] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.035),0_20px_56px_rgba(0,0,0,0.18)] backdrop-blur-2xl sm:p-5">
+      <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-emerald-300/75">
+        Stage 1 · Introduce
+      </div>
+      <h2 className="mt-1.5 text-[clamp(1.45rem,3vw,2.15rem)] font-semibold tracking-[-0.035em] text-white">
+        An expression is a recipe for a value.
+      </h2>
+      <p className="mt-2 max-w-3xl text-[15px] leading-6 text-stone-400">
+        It can contain several signed terms, but it has no equals sign. Start by
+        reading its structure before calculating or simplifying anything.
+      </p>
+
+      <div className="mt-4 rounded-[16px] border border-white/[0.07] bg-black/[0.18] px-3 py-4 text-center font-mono text-[clamp(1.9rem,5vw,3.5rem)] font-semibold tracking-[-0.055em] sm:px-5">
+        <span className="text-emerald-100">3x²</span>
+        <span className="px-2 text-stone-600">−</span>
+        <span className="text-cyan-100">2x</span>
+        <span className="px-2 text-stone-600">+</span>
+        <span className="text-violet-100">5</span>
+      </div>
+
+      <div className="mt-3 grid gap-2 md:grid-cols-3">
+        {passes.map((pass) => (
+          <div
+            key={pass.number}
+            className="rounded-[15px] border border-white/[0.065] bg-white/[0.018] p-3"
+          >
+            <div className="flex items-center gap-2">
+              <span className="flex h-7 w-7 items-center justify-center rounded-lg border border-emerald-200/[0.14] bg-emerald-300/[0.045] font-mono text-[11px] font-semibold text-emerald-200">
+                {pass.number}
+              </span>
+              <h3 className="text-[13px] font-semibold text-stone-200">
+                {pass.label}
+              </h3>
+            </div>
+            <p className="mt-2 text-[13px] leading-5 text-stone-500">
+              {pass.detail}
+            </p>
+            <div className="mt-2 font-mono text-[13px] font-semibold text-stone-300">
+              {pass.example}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <ChunkedNotes
+        toneClass="bg-emerald-300/70"
+        items={[
+          "The sign is part of its term.",
+          "An exponent changes the variable structure.",
+          "A constant has no variable.",
+        ]}
+      />
+    </section>
+  );
+}
+
+function ChunkedNotes({
+  items,
+  toneClass,
+}: {
+  items: readonly string[];
+  toneClass: string;
+}) {
+  return (
+    <ul className="mt-3 grid gap-x-5 gap-y-1.5 text-[14px] leading-5 text-stone-400 sm:grid-cols-2">
+      {items.map((item) => (
+        <li key={item} className="flex items-start gap-2">
+          <span
+            className={`mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full ${toneClass}`}
+          />
+          <span>{item}</span>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+function LessonBridge({ children }: { children: React.ReactNode }) {
+  return (
+    <p className="mx-auto mt-4 max-w-2xl border-l-2 border-emerald-300/35 pl-3 text-[15px] leading-6 text-stone-400">
+      {children}
+    </p>
+  );
+}
+
 function VariableDiscoveryLab() {
   const [xValue, setXValue] = useState(2);
-  const [guess, setGuess] = useState<ExpressionTermId | null>(null);
+  const [prediction, setPrediction] = useState<ExpressionTermId | null>(null);
+  const [testedValues, setTestedValues] = useState<number[]>([2]);
   const values = EXPRESSION_TERMS.map((term) => ({
     term,
     value: term.evaluate(xValue),
   }));
   const total = values.reduce((sum, item) => sum + item.value, 0);
-  const correct = guess === "constant";
+  const enoughEvidence = testedValues.length >= 2;
+  const correct = prediction === "constant";
 
   function chooseValue(value: number) {
     setXValue(value);
-    setGuess(null);
+    setTestedValues((current) =>
+      current.includes(value) ? current : [...current, value]
+    );
   }
 
   return (
-    <section className="mt-4 rounded-[28px] border border-emerald-200/[0.12] bg-[#03120d]/62 p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.035),0_24px_70px_rgba(0,0,0,0.20)] backdrop-blur-2xl">
-      <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-        <div>
-          <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-emerald-300/75">
-            Stage 1 · Change x
-          </div>
-          <h2 className="mt-2 text-[clamp(1.55rem,3vw,2.35rem)] font-semibold tracking-[-0.035em] text-white">
-            What changes when x changes?
-          </h2>
+    <section className="bg-[#03120d]/62 mt-4 rounded-[20px] border border-emerald-200/[0.12] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.035),0_20px_56px_rgba(0,0,0,0.18)] backdrop-blur-2xl sm:p-5">
+      <div>
+        <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-emerald-300/75">
+          Stage 2 · Predict
         </div>
-        <div className="flex flex-wrap items-center gap-2" aria-label="Choose a value for x">
-          <span className="mr-1 text-[13px] font-semibold text-stone-400">x =</span>
+        <h2 className="mt-1.5 text-[clamp(1.45rem,3vw,2.15rem)] font-semibold tracking-[-0.035em] text-white">
+          Which term will stay unchanged?
+        </h2>
+        <p className="mt-2 max-w-2xl text-[15px] leading-6 text-stone-400">
+          Make a prediction before testing values. Look for the term whose value
+          does not depend on x.
+        </p>
+      </div>
+
+      <div
+        className="mt-3 grid gap-2 sm:grid-cols-3"
+        aria-label="Predict the term that stays unchanged"
+      >
+        {EXPRESSION_TERMS.map((term) => (
+          <button
+            key={term.id}
+            type="button"
+            onClick={() => setPrediction(term.id)}
+            aria-pressed={prediction === term.id}
+            className={`rounded-[14px] border px-3 py-3 font-mono text-[15px] font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-300/60 ${
+              prediction === term.id
+                ? `${term.borderClass} ${term.surfaceClass} ${term.textClass}`
+                : "border-white/[0.07] bg-black/[0.10] text-stone-400 hover:text-stone-200"
+            }`}
+          >
+            {term.symbol}
+          </button>
+        ))}
+      </div>
+
+      <div className="mt-4 border-t border-white/[0.07] pt-4">
+        <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-cyan-300/75">
+          Stage 3 · Experiment
+        </div>
+        <h3 className="mt-1.5 text-[19px] font-semibold tracking-[-0.025em] text-white">
+          Test your prediction with several values.
+        </h3>
+
+        <div
+          className="mt-3 flex flex-wrap items-center gap-2"
+          aria-label="Choose a value for x"
+        >
+          <span className="mr-1 text-[13px] font-semibold text-stone-400">
+            x =
+          </span>
           {X_VALUES.map((value) => (
             <button
               key={value}
               type="button"
               onClick={() => chooseValue(value)}
               aria-pressed={xValue === value}
-              className={`flex h-10 min-w-10 items-center justify-center rounded-xl border px-3 font-mono text-[14px] font-semibold transition-colors ${
+              className={`flex h-10 min-w-10 items-center justify-center rounded-xl border px-3 font-mono text-[14px] font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300/60 ${
                 xValue === value
                   ? "border-emerald-200/30 bg-emerald-300/[0.10] text-emerald-100"
                   : "border-white/[0.07] bg-black/[0.12] text-stone-400 hover:text-stone-200"
@@ -318,92 +514,119 @@ function VariableDiscoveryLab() {
               {value}
             </button>
           ))}
+          <span className="ml-1 text-[11px] font-semibold text-stone-600">
+            {testedValues.length} tested
+          </span>
         </div>
       </div>
 
-      <div className="mt-5 flex flex-wrap items-baseline justify-center gap-x-3 gap-y-1 rounded-[20px] border border-white/[0.07] bg-black/[0.16] px-4 py-5 font-mono">
-        <span className="text-[clamp(1.5rem,3.5vw,2.5rem)] text-emerald-100">3({xValue})²</span>
-        <span className="text-[clamp(1.2rem,3vw,2rem)] text-stone-600">−</span>
-        <span className="text-[clamp(1.5rem,3.5vw,2.5rem)] text-cyan-100">2({xValue})</span>
-        <span className="text-[clamp(1.2rem,3vw,2rem)] text-stone-600">+</span>
-        <span className="text-[clamp(1.5rem,3.5vw,2.5rem)] text-violet-100">5</span>
-        <span className="text-[clamp(1.2rem,3vw,2rem)] text-stone-600">=</span>
-        <span className="text-[clamp(1.7rem,4vw,2.8rem)] font-semibold text-white">{total}</span>
+      <div className="mt-3 flex flex-wrap items-baseline justify-center gap-x-2.5 gap-y-1 rounded-[16px] border border-white/[0.07] bg-black/[0.16] px-3 py-4 font-mono">
+        <span className="text-[clamp(1.35rem,3.5vw,2.15rem)] text-emerald-100">
+          3({xValue})²
+        </span>
+        <span className="text-[clamp(1.1rem,3vw,1.7rem)] text-stone-600">
+          −
+        </span>
+        <span className="text-[clamp(1.35rem,3.5vw,2.15rem)] text-cyan-100">
+          2({xValue})
+        </span>
+        <span className="text-[clamp(1.1rem,3vw,1.7rem)] text-stone-600">
+          +
+        </span>
+        <span className="text-[clamp(1.35rem,3.5vw,2.15rem)] text-violet-100">
+          5
+        </span>
+        <span className="text-[clamp(1.1rem,3vw,1.7rem)] text-stone-600">
+          =
+        </span>
+        <span className="text-[clamp(1.55rem,4vw,2.4rem)] font-semibold text-white">
+          {total}
+        </span>
       </div>
 
-      <div className="mt-3 grid gap-3 md:grid-cols-3">
+      <div className="mt-3 grid gap-2 md:grid-cols-3">
         {values.map(({ term, value }) => (
           <ContributionCard key={term.id} term={term} value={value} />
         ))}
       </div>
 
-      <div className="mt-5 grid gap-4 border-t border-white/[0.07] pt-5 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:items-center">
-        <h3 className="text-[18px] font-semibold text-stone-100">
-          Which term stays unchanged?
-        </h3>
-        <div className="grid gap-2 sm:grid-cols-3">
-          {EXPRESSION_TERMS.map((term) => (
-            <button
-              key={term.id}
-              type="button"
-              onClick={() => setGuess(term.id)}
-              aria-pressed={guess === term.id}
-              className={`rounded-[15px] border px-3 py-3 font-mono text-[15px] font-semibold transition-colors ${
-                guess === term.id
-                  ? `${term.borderClass} ${term.surfaceClass} ${term.textClass}`
-                  : "border-white/[0.07] bg-black/[0.10] text-stone-400 hover:text-stone-200"
-              }`}
-            >
-              {term.symbol}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {guess ? (
+      {prediction ? (
         <div
-          className={`mt-3 rounded-[16px] border px-4 py-3 text-[13px] leading-6 ${
-            correct
+          className={`mt-3 rounded-[14px] border px-3 py-2.5 text-[14px] leading-5 ${
+            enoughEvidence && correct
               ? "border-emerald-200/[0.16] bg-emerald-300/[0.045] text-emerald-100"
-              : "border-amber-200/[0.13] bg-amber-300/[0.035] text-amber-100"
+              : enoughEvidence
+                ? "border-amber-200/[0.13] bg-amber-300/[0.035] text-amber-100"
+                : "border-cyan-200/[0.13] bg-cyan-300/[0.035] text-cyan-100"
           }`}
           aria-live="polite"
         >
-          {correct
-            ? "+5 stays fixed because it contains no x. It is the constant."
-            : "Try another value of x and watch the three contribution bars."}
+          {!enoughEvidence
+            ? "Hypothesis recorded. Test at least one more value and compare the three contribution bars."
+            : correct
+              ? "+5 stays fixed because it contains no x. It is the constant term."
+              : "Revise your prediction: find the bar that keeps the same value each time x changes."}
         </div>
       ) : null}
+
+      <ChunkedNotes
+        toneClass="bg-cyan-300/70"
+        items={[
+          "Try zero, a negative value, and a positive value.",
+          "Compare each term contribution—not only the final total.",
+          "A changing total can still contain an unchanging term.",
+        ]}
+      />
     </section>
   );
 }
 
-function ContributionCard({ term, value }: { term: ExpressionTerm; value: number }) {
-  const width = Math.abs(value) === 0
-    ? 0
-    : Math.max(3, Math.min(50, (Math.abs(value) / 27) * 50));
+function ContributionCard({
+  term,
+  value,
+}: {
+  term: ExpressionTerm;
+  value: number;
+}) {
+  const width =
+    Math.abs(value) === 0
+      ? 0
+      : Math.max(3, Math.min(50, (Math.abs(value) / 27) * 50));
   const negative = value < 0;
 
   return (
-    <div className={`rounded-[19px] border p-4 ${term.borderClass} ${term.surfaceClass}`}>
+    <div
+      className={`rounded-[15px] border p-3 ${term.borderClass} ${term.surfaceClass}`}
+    >
       <div className="flex items-baseline justify-between gap-3">
-        <span className={`font-mono text-[18px] font-semibold ${term.textClass}`}>
+        <span
+          className={`font-mono text-[18px] font-semibold ${term.textClass}`}
+        >
           {term.symbol}
         </span>
-        <span className="font-mono text-[24px] font-semibold text-white">{value}</span>
+        <span className="font-mono text-[24px] font-semibold text-white">
+          {value}
+        </span>
       </div>
       <div
-        className="relative mt-4 h-3 rounded-full bg-black/[0.20]"
+        className="relative mt-3 h-2.5 rounded-full bg-black/[0.20]"
         role="img"
         aria-label={`${term.symbol} contributes ${value}`}
       >
         <span className="absolute inset-y-[-3px] left-1/2 w-px bg-white/20" />
         <span
           className={`absolute inset-y-0 rounded-full ${term.barClass}`}
-          style={negative ? { right: "50%", width: `${width}%` } : { left: "50%", width: `${width}%` }}
+          style={
+            negative
+              ? { right: "50%", width: `${width}%` }
+              : { left: "50%", width: `${width}%` }
+          }
         />
       </div>
-      <div className="mt-2 flex justify-between text-[11px] font-medium text-stone-600" aria-hidden="true">
+      <div
+        className="mt-2 flex justify-between text-[11px] font-medium text-stone-600"
+        aria-hidden="true"
+      >
         <span>negative</span>
         <span>positive</span>
       </div>
@@ -414,37 +637,45 @@ function ContributionCard({ term, value }: { term: ExpressionTerm; value: number
 function TermAnatomyLab() {
   const [selectedId, setSelectedId] = useState<ExpressionTermId>("quadratic");
   const [seen, setSeen] = useState<ExpressionTermId[]>(["quadratic"]);
-  const selectedTerm = EXPRESSION_TERMS.find((term) => term.id === selectedId) ?? EXPRESSION_TERMS[0];
+  const selectedTerm =
+    EXPRESSION_TERMS.find((term) => term.id === selectedId) ??
+    EXPRESSION_TERMS[0];
 
   function inspectTerm(termId: ExpressionTermId) {
     setSelectedId(termId);
-    setSeen((current) => current.includes(termId) ? current : [...current, termId]);
+    setSeen((current) =>
+      current.includes(termId) ? current : [...current, termId]
+    );
   }
 
   return (
-    <section className="mt-4 rounded-[28px] border border-cyan-200/[0.11] bg-[#04151a]/62 p-5 backdrop-blur-2xl">
+    <section className="bg-[#04151a]/62 mt-4 rounded-[20px] border border-cyan-200/[0.11] p-4 backdrop-blur-2xl sm:p-5">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-cyan-300/75">
-            Stage 2 · Split terms
+            Stage 4 · Conceptualize
           </div>
-          <h2 className="mt-2 text-[clamp(1.55rem,3vw,2.35rem)] font-semibold tracking-[-0.035em] text-white">
-            Select a signed term.
+          <h2 className="mt-1.5 text-[clamp(1.45rem,3vw,2.15rem)] font-semibold tracking-[-0.035em] text-white">
+            What gives each term its identity?
           </h2>
+          <p className="mt-2 max-w-2xl text-[15px] leading-6 text-stone-400">
+            Select each signed term and inspect the pieces that control its
+            behavior.
+          </p>
         </div>
         <div className="text-[12px] font-semibold text-stone-500">
           {seen.length} / {EXPRESSION_TERMS.length} inspected
         </div>
       </div>
 
-      <div className="mt-5 flex flex-wrap items-center justify-center gap-2 rounded-[22px] border border-white/[0.07] bg-black/[0.17] p-4">
+      <div className="mt-4 flex flex-wrap items-center justify-center gap-2 rounded-[16px] border border-white/[0.07] bg-black/[0.17] p-3">
         {EXPRESSION_TERMS.map((term) => (
           <div key={term.id} className="flex items-center gap-2">
             <button
               type="button"
               onClick={() => inspectTerm(term.id)}
               aria-pressed={selectedId === term.id}
-              className={`rounded-[16px] border px-5 py-4 font-mono text-[clamp(1.5rem,4vw,2.7rem)] font-semibold transition-colors ${
+              className={`rounded-[14px] border px-4 py-3 font-mono text-[clamp(1.35rem,4vw,2.25rem)] font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300/60 ${
                 selectedId === term.id
                   ? `${term.borderClass} ${term.surfaceClass} ${term.textClass}`
                   : "border-transparent text-stone-500 hover:border-white/[0.08] hover:text-stone-300"
@@ -456,12 +687,16 @@ function TermAnatomyLab() {
         ))}
       </div>
 
-      <div className="mt-4 grid gap-4 lg:grid-cols-[minmax(0,0.75fr)_minmax(0,1.25fr)] lg:items-center">
-        <div className={`rounded-[20px] border p-5 ${selectedTerm.borderClass} ${selectedTerm.surfaceClass}`}>
+      <div className="mt-3 grid gap-3 lg:grid-cols-[minmax(0,0.7fr)_minmax(0,1.3fr)] lg:items-center">
+        <div
+          className={`rounded-[16px] border p-4 ${selectedTerm.borderClass} ${selectedTerm.surfaceClass}`}
+        >
           <div className="text-[12px] font-semibold uppercase tracking-[0.12em] text-stone-500">
             Selected term
           </div>
-          <div className={`mt-3 font-mono text-[clamp(2.4rem,6vw,4.5rem)] font-semibold ${selectedTerm.textClass}`}>
+          <div
+            className={`mt-2 font-mono text-[clamp(2rem,6vw,3.5rem)] font-semibold ${selectedTerm.textClass}`}
+          >
             {selectedTerm.symbol}
           </div>
         </div>
@@ -471,22 +706,34 @@ function TermAnatomyLab() {
             {selectedTerm.anatomy.map((piece) => (
               <div
                 key={`${selectedTerm.id}-${piece.label}`}
-                className="rounded-[18px] border border-white/[0.07] bg-black/[0.14] p-4 text-center"
+                className="rounded-[14px] border border-white/[0.07] bg-black/[0.14] p-3 text-center"
               >
                 <div className="font-mono text-[26px] font-semibold text-white">
                   {piece.token}
                 </div>
-                <div className="mt-2 text-[12px] font-semibold text-stone-400">
+                <div className="mt-1.5 text-[12px] font-semibold text-stone-400">
                   {piece.label}
                 </div>
               </div>
             ))}
           </div>
-          <p className="mt-3 text-[13px] leading-6 text-stone-400" aria-live="polite">
+          <p
+            className="mt-3 text-[14px] leading-5 text-stone-400"
+            aria-live="polite"
+          >
             {selectedTerm.insight}
           </p>
         </div>
       </div>
+
+      <ChunkedNotes
+        toneClass="bg-cyan-300/70"
+        items={[
+          "The coefficient includes the sign.",
+          "The exponent belongs to the variable beside it.",
+          "A variable with no visible exponent has exponent 1.",
+        ]}
+      />
     </section>
   );
 }
@@ -513,7 +760,10 @@ function StructureSorter() {
     if (!currentTerm || answer !== currentTerm.family) return;
     setSorted((current) => ({
       ...current,
-      [currentTerm.family]: [...current[currentTerm.family], currentTerm.display],
+      [currentTerm.family]: [
+        ...current[currentTerm.family],
+        currentTerm.display,
+      ],
     }));
     setTermIndex((current) => current + 1);
     setAnswer(null);
@@ -527,15 +777,19 @@ function StructureSorter() {
   }
 
   return (
-    <section className="mt-4 rounded-[28px] border border-violet-200/[0.11] bg-[#0b0919]/60 p-5 backdrop-blur-2xl">
+    <section className="mt-4 rounded-[20px] border border-violet-200/[0.11] bg-[#0b0919]/60 p-4 backdrop-blur-2xl sm:p-5">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-violet-300/75">
-            Stage 3 · Sort families
+            Stage 5 · Organize
           </div>
-          <h2 className="mt-2 text-[clamp(1.55rem,3vw,2.35rem)] font-semibold tracking-[-0.035em] text-white">
+          <h2 className="mt-1.5 text-[clamp(1.45rem,3vw,2.15rem)] font-semibold tracking-[-0.035em] text-white">
             Which terms have the same shape?
           </h2>
+          <p className="mt-2 max-w-2xl text-[15px] leading-6 text-stone-400">
+            Sort by variable structure first. Then combine the coefficients
+            inside each family.
+          </p>
           <div className="mt-3 font-mono text-[16px] text-stone-400">
             3x² + 4x − 2x² + 5 − x
           </div>
@@ -543,21 +797,29 @@ function StructureSorter() {
         <button
           type="button"
           onClick={resetSorter}
-          className="inline-flex items-center gap-2 rounded-xl border border-white/[0.08] px-3 py-2 text-[11px] font-semibold text-stone-500 transition-colors hover:text-stone-300"
+          className="inline-flex items-center gap-2 rounded-xl border border-white/[0.08] px-3 py-2 text-[11px] font-semibold text-stone-500 transition-colors hover:text-stone-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-300/60"
         >
           <RefreshCcw size={14} />
           Reset
         </button>
       </div>
 
-      <div className="mt-5 grid gap-4 lg:grid-cols-[minmax(0,1fr)_400px]">
-        <div className="rounded-[24px] border border-white/[0.08] bg-black/[0.18] p-5">
+      <ChunkedNotes
+        toneClass="bg-violet-300/70"
+        items={[
+          "Ignore the coefficient when matching a family.",
+          "Variables and exponents must match exactly.",
+        ]}
+      />
+
+      <div className="mt-4 grid gap-3 lg:grid-cols-[minmax(0,1fr)_330px]">
+        <div className="rounded-[18px] border border-white/[0.08] bg-black/[0.18] p-4">
           {!complete && currentTerm ? (
             <>
               <div className="text-[12px] font-semibold text-stone-500">
                 Term {termIndex + 1} of {SORT_TERMS.length}
               </div>
-              <div className="mt-4 flex min-h-[124px] items-center justify-center rounded-[20px] border border-violet-200/[0.12] bg-violet-300/[0.04] font-mono text-[clamp(2.5rem,6vw,4.2rem)] font-semibold text-violet-100">
+              <div className="mt-3 flex min-h-[96px] items-center justify-center rounded-[16px] border border-violet-200/[0.12] bg-violet-300/[0.04] font-mono text-[clamp(2.15rem,6vw,3.5rem)] font-semibold text-violet-100">
                 {currentTerm.display}
               </div>
               <div className="mt-4 grid gap-2 sm:grid-cols-3">
@@ -569,7 +831,7 @@ function StructureSorter() {
                       type="button"
                       onClick={() => chooseFamily(family)}
                       aria-pressed={selected}
-                      className={`rounded-[16px] border px-3 py-3 transition-colors ${
+                      className={`rounded-[14px] border px-3 py-2.5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-300/60 ${
                         selected
                           ? "border-violet-200/25 bg-violet-300/[0.08] text-violet-100"
                           : "border-white/[0.07] bg-black/[0.10] text-stone-400 hover:text-stone-200"
@@ -595,14 +857,18 @@ function StructureSorter() {
                   }`}
                   aria-live="polite"
                 >
-                  <div className={`text-[13px] font-semibold ${correct ? "text-emerald-100" : "text-amber-100"}`}>
-                    {correct ? currentTerm.reason : "Match the variable and its exponent."}
+                  <div
+                    className={`text-[14px] font-semibold ${correct ? "text-emerald-100" : "text-amber-100"}`}
+                  >
+                    {correct
+                      ? currentTerm.reason
+                      : "Match the variable and its exponent."}
                   </div>
                   {correct ? (
                     <button
                       type="button"
                       onClick={placeTerm}
-                      className="mt-3 rounded-xl border border-emerald-200/[0.20] bg-emerald-300/[0.06] px-4 py-2.5 text-[12px] font-semibold text-emerald-100"
+                      className="mt-3 rounded-xl border border-emerald-200/[0.20] bg-emerald-300/[0.06] px-4 py-2.5 text-[12px] font-semibold text-emerald-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-300/60"
                     >
                       Place with {FAMILY_LABELS[currentTerm.family]}
                     </button>
@@ -611,21 +877,21 @@ function StructureSorter() {
               ) : null}
             </>
           ) : (
-            <div className="flex min-h-[285px] flex-col justify-center">
+            <div className="flex min-h-[230px] flex-col justify-center">
               <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-emerald-200/[0.18] bg-emerald-300/[0.06] text-emerald-100">
                 <Check size={20} />
               </div>
               <h3 className="mt-4 text-[22px] font-semibold text-white">
                 Every term has a family.
               </h3>
-              <p className="mt-2 text-[13px] leading-6 text-stone-400">
+              <p className="mt-2 text-[14px] leading-5 text-stone-400">
                 Now combine the numbers attached to matching structures.
               </p>
             </div>
           )}
         </div>
 
-        <div className="rounded-[24px] border border-white/[0.08] bg-black/[0.14] p-4">
+        <div className="rounded-[18px] border border-white/[0.08] bg-black/[0.14] p-4">
           <div className="text-[12px] font-semibold uppercase tracking-[0.12em] text-stone-500">
             Family bins
           </div>
@@ -641,7 +907,7 @@ function StructureSorter() {
                 <button
                   type="button"
                   onClick={() => setCombined(true)}
-                  className="w-full rounded-xl border border-cyan-200/[0.18] bg-cyan-300/[0.05] px-4 py-3 text-[12px] font-semibold text-cyan-100"
+                  className="w-full rounded-xl border border-cyan-200/[0.18] bg-cyan-300/[0.05] px-4 py-3 text-[12px] font-semibold text-cyan-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300/60"
                 >
                   Combine coefficients
                 </button>
@@ -663,9 +929,15 @@ function StructureSorter() {
   );
 }
 
-function FamilyBin({ family, terms }: { family: TermFamily; terms: readonly string[] }) {
+function FamilyBin({
+  family,
+  terms,
+}: {
+  family: TermFamily;
+  terms: readonly string[];
+}) {
   return (
-    <div className="grid grid-cols-[74px_minmax(0,1fr)] items-center gap-3 rounded-[17px] border border-white/[0.06] bg-white/[0.015] p-3">
+    <div className="grid grid-cols-[68px_minmax(0,1fr)] items-center gap-2 rounded-[14px] border border-white/[0.06] bg-white/[0.015] p-2.5">
       <div>
         <div className="font-mono text-[18px] font-semibold text-violet-200/80">
           {FAMILY_PATTERNS[family]}
@@ -701,18 +973,69 @@ function PatternSummary() {
   ] as const;
 
   return (
-    <section className="mt-4 grid gap-3 md:grid-cols-3" aria-label="Patterns discovered">
-      {patterns.map((pattern) => (
-        <div
-          key={pattern.label}
-          className="rounded-[20px] border border-white/[0.08] bg-black/[0.18] p-4 backdrop-blur-xl"
-        >
-          <div className="text-[12px] font-semibold text-stone-500">{pattern.label}</div>
-          <div className={`mt-3 font-mono text-[17px] font-semibold ${pattern.tone}`}>
-            {pattern.formula}
+    <section
+      className="mt-3 rounded-[18px] border border-white/[0.08] bg-black/[0.18] p-4 backdrop-blur-xl"
+      aria-label="Patterns discovered"
+    >
+      <div className="text-[11px] font-semibold uppercase tracking-[0.13em] text-violet-300/70">
+        Pattern checkpoint
+      </div>
+      <h3 className="mt-1 text-[18px] font-semibold text-stone-100">
+        The rule you discovered
+      </h3>
+      <p className="mt-1 text-[15px] leading-6 text-stone-400">
+        Same variables, same exponents—then the coefficients can combine.
+      </p>
+      <div className="mt-3 grid gap-2 md:grid-cols-3">
+        {patterns.map((pattern) => (
+          <div
+            key={pattern.label}
+            className="rounded-[13px] border border-white/[0.06] bg-white/[0.015] p-3"
+          >
+            <div className="text-[13px] font-semibold text-stone-500">
+              {pattern.label}
+            </div>
+            <div
+              className={`mt-2 font-mono text-[15px] font-semibold ${pattern.tone}`}
+            >
+              {pattern.formula}
+            </div>
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function LessonConclusion() {
+  return (
+    <section className="mt-4 rounded-[20px] border border-emerald-200/[0.12] bg-emerald-300/[0.035] p-4 backdrop-blur-xl sm:p-5">
+      <div className="text-[11px] font-semibold uppercase tracking-[0.13em] text-emerald-300/75">
+        Stage 7 · Conclude
+      </div>
+      <h2 className="mt-1.5 text-[clamp(1.4rem,3vw,2rem)] font-semibold tracking-[-0.03em] text-white">
+        Structure decides what can combine.
+      </h2>
+      <p className="mt-2 max-w-3xl text-[15px] leading-6 text-stone-400">
+        Terms combine only when their variable parts match exactly. The
+        coefficient may change; the variable structure does not.
+      </p>
+
+      <div className="mt-3 rounded-[15px] border border-white/[0.07] bg-black/[0.16] px-3 py-3 font-mono text-[clamp(1.05rem,3vw,1.45rem)] font-semibold text-stone-300">
+        <span className="text-stone-500">3x² − 2x² + 4x − x + 5</span>
+        <span className="mx-2 text-emerald-300/70">→</span>
+        <span className="text-emerald-100">x² + 3x + 5</span>
+      </div>
+
+      <ChunkedNotes
+        toneClass="bg-emerald-300/70"
+        items={[
+          "Keep the sign attached to its term.",
+          "Combine coefficients only inside matching families.",
+          "Constants form their own family.",
+          "If you can explain why x² and x do not combine, you are ready for equations.",
+        ]}
+      />
     </section>
   );
 }
@@ -727,7 +1050,10 @@ function LessonNavigation({
   unitHref: string;
 }) {
   return (
-    <nav className="mt-4 pb-8" aria-label="Algebra Fundamentals lesson navigation">
+    <nav
+      className="mt-4 pb-8"
+      aria-label="Algebra Fundamentals lesson navigation"
+    >
       <div className="mb-2 flex justify-end">
         <span className="font-mono text-[11px] text-stone-600">01 / 05</span>
       </div>
@@ -742,7 +1068,7 @@ function LessonNavigation({
         ) : (
           <Link
             href={unitHref}
-            className="group flex min-h-[76px] items-center rounded-[18px] border border-emerald-200/[0.14] bg-emerald-300/[0.03] px-4"
+            className="group flex min-h-[68px] items-center rounded-[16px] border border-emerald-200/[0.14] bg-emerald-300/[0.03] px-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-300/60"
           >
             <span className="min-w-0 flex-1 text-right">
               <span className="block text-[11px] font-semibold uppercase tracking-[0.10em] text-stone-500">
@@ -771,14 +1097,16 @@ function NavCard({
   return (
     <Link
       href={item.href}
-      className="group flex min-h-[76px] items-center gap-3 rounded-[18px] border border-emerald-200/[0.12] bg-emerald-300/[0.025] px-4 py-3"
+      className="group flex min-h-[68px] items-center gap-3 rounded-[16px] border border-emerald-200/[0.12] bg-emerald-300/[0.025] px-4 py-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-300/60"
     >
       {previous ? <ArrowLeft size={15} className="text-emerald-300" /> : null}
       <span className={`min-w-0 flex-1 ${previous ? "" : "text-right"}`}>
         <span className="block text-[11px] font-semibold uppercase tracking-[0.10em] text-stone-500">
           {previous ? "Previous lesson" : "Next lesson"}
         </span>
-        <strong className="mt-1 block text-[14px] text-stone-200">{item.label}</strong>
+        <strong className="mt-1 block text-[14px] text-stone-200">
+          {item.label}
+        </strong>
       </span>
       {!previous ? <ArrowRight size={15} className="text-emerald-300" /> : null}
     </Link>
