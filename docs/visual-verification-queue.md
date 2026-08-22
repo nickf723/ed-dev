@@ -4,9 +4,9 @@ Use this queue when code, curriculum, or educational structure changes while a r
 
 A successful type check is not visual verification. A page leaves this queue only after someone has looked at the rendered page at the relevant viewport sizes and exercised its important states.
 
-### Classroom route map and Algebra I Unit 1
+### Classroom route map and Unit 1 starters
 
-**Routes:** `/`, `/classroom`, all four `/classroom/[subject]` hubs, `/classroom/math/algebra-1`, `/classroom/math/algebra-1/unit-1`, and all five `/classroom/math/algebra-1/unit-1/[lesson]` routes.
+**Routes:** `/`, `/classroom`, all four `/classroom/[subject]` hubs; the active Algebra I, AP Biology, Global II, and Literature course pages; each active Unit 1 page; all five Algebra I Unit 1 lessons; and the opening AP Biology, Global II, and Literature lessons.
 
 Verify:
 
@@ -14,18 +14,22 @@ Verify:
 - Math stays red, Science green, Social Studies blue, and English yellow from the Classroom root through each subject header
 - Math uses a coordinate axis, Science a specimen grid, Social Studies a timeline, and English a reading shelf without changing the underlying course semantics
 - Math, Science, Social Studies, and English all open real subject hubs
-- planned course stops, including the AP options, are clearly visible but cannot be opened yet
+- AP Biology opens from Science, Global II from Social Studies, Literature from English, and all remaining planned courses stay visible but cannot be opened
 - Algebra I opens from Math, Unit 1 opens from Algebra I, and Units 2–7 remain visibly planned
+- each new course opens Unit 1 while its later units remain visibly planned
 - Algebra I units use a deliberate red-to-pink sequence palette while preserving their course order and active/planned states
-- the Unit 1 page links all five lessons in order
-- each Unit 1 lesson card previews real lesson content: signed terms, an equality balance, a two-step transformation, a commutative rewrite, or nested real-number sets
+- every Unit 1 page shows its opening lesson first and a coherent planned lesson line after it
+- lesson cards preview real lesson content: algebraic terms, molecular charge, a 1750 world map, or highlighted textual evidence
 - hovering a live route moves only its destination surface; the numbered marker and connecting line stay fixed
 - standards codes, teacher notes, pacing, duration, prerequisites, evidence plans, and source panels do not appear in the learner path
 - classroom lesson breadcrumbs and previous/next links stay inside `/classroom`
 - the Classroom lesson alias omits Vocabulary while the canonical atlas lesson retains it
+- the AP Biology lesson supports charge prediction, molecular-motion exploration, structure-to-function comparison, and scenario transfer
+- the Global II lesson supports mapped state selection, a fixed-lens comparison, and a claim backed by evidence from multiple regions
+- the Literature lesson supports numbered-line evidence selection, explicit-detail/inference separation, and claim-evidence-reasoning revision using only the original microfiction
 - keyboard focus, 200% text zoom, mobile widths, and long course titles do not clip or create horizontal overflow
 
-**Status:** Regenerated route types, TypeScript, targeted React/Next lint, all three informational audits, the 416-page production build, the Classroom-specific 11px scan, and 87 generated-HTML assertions pass. The assertions cover the four fixed subject colors, four course-map typologies, planned-link safety, seven unit accents, five content-driven lesson previews, marker/link separation, learner-facing metadata removal, and alias-specific Vocabulary behavior. Rendered responsive, keyboard, zoom, and interaction verification remains pending for the hosted preview.
+**Status:** Regenerated route types, TypeScript, targeted React/Next lint, all three informational audits, the 425-page production build, the Classroom-specific 11px scan, and 77 generated-HTML assertions pass for the cross-subject Unit 1 batch. The assertions cover active course, unit, and lesson links; planned sequence copy and planned-link safety; every seven-stage lesson flow; initial practice content; Classroom-owned navigation; and learner-facing metadata removal. Rendered responsive, keyboard, zoom, and interaction verification remains pending for the hosted preview.
 
 ### Expressions & Variables discovery flow
 

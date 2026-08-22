@@ -30,6 +30,8 @@ The default Classroom path is student-facing. Standards codes, teacher notes, pa
 
 Classroom navigation keeps one recognizable shell while becoming more specific at each layer. Subjects own stable colors (Math red, Science green, Social Studies blue, English yellow); subject hubs may use different course-map typologies; course pages may coordinate units with a broader sequence palette; and unit pages should preview the actual ideas or operations inside each lesson instead of repeating generic destination cards. Hover and focus states may animate the destination surface, but route markers and hierarchy lines remain spatially fixed.
 
+Non-Math Classroom courses use shared dynamic course, unit, and lesson route frames, while each lesson supplies a subject-native experience. The shared frame owns the compact 1050px reading width, student-only utilities, seven-stage orientation, breadcrumbs, and course navigation. The lesson owns its disciplinary method: molecular modeling in Science, mapped comparison and evidence in Social Studies, or close reading and textual reasoning in English. Shared routing must not collapse these experiences into one generic widget template.
+
 ### Knowledge atlas
 
 The five canonical knowledge branches and Interdisciplines remain the exploratory path. They preserve the deeper ontology, collections, conceptual cross-links, vocabulary inheritance, and field-specific worlds.

@@ -1,4 +1,7 @@
+import { AP_BIOLOGY_COURSE } from "@/lib/courses/ap-biology";
 import { NYS_ALGEBRA_I_COURSE } from "@/lib/courses/nys-algebra-1";
+import { NYS_GLOBAL_II_COURSE } from "@/lib/courses/nys-global-history-2";
+import { NYS_LITERATURE_COURSE } from "@/lib/courses/nys-literature";
 import { curriculumRegistry } from "@/lib/curriculum/registry";
 import type {
   Course,
@@ -96,13 +99,6 @@ const SCIENCE_COURSE_MAP: readonly PlannedCourse[] = [
     description: "Motion, forces, energy, waves, electricity, and models of matter.",
   },
   {
-    id: "course.ap-biology",
-    slug: "ap-biology",
-    title: "AP Biology",
-    shortTitle: "AP Biology",
-    description: "Cellular processes, genetics, evolution, energetics, and biological systems.",
-  },
-  {
     id: "course.ap-chemistry",
     slug: "ap-chemistry",
     title: "AP Chemistry",
@@ -125,13 +121,6 @@ const SOCIAL_STUDIES_COURSE_MAP: readonly PlannedCourse[] = [
     title: "Global History I",
     shortTitle: "Global I",
     description: "Early societies, belief systems, exchange, states, and global connections.",
-  },
-  {
-    id: "course.global-history-2",
-    slug: "global-history-2",
-    title: "Global History II",
-    shortTitle: "Global II",
-    description: "Revolutions, industrialization, imperialism, world wars, and the modern world.",
   },
   {
     id: "course.us-history-government",
@@ -193,13 +182,6 @@ const ENGLISH_COURSE_MAP: readonly PlannedCourse[] = [
     description: "Argument, American texts, source synthesis, and sustained writing.",
   },
   {
-    id: "course.literature",
-    slug: "literature",
-    title: "Literature",
-    shortTitle: "Literature",
-    description: "Narrator, character, structure, language, interpretation, and context.",
-  },
-  {
     id: "course.ap-language",
     slug: "ap-language",
     title: "AP English Language",
@@ -235,7 +217,7 @@ export const COURSE_SUBJECTS: readonly CourseSubject[] = [
       "Laboratory investigation, evidence, modeling, and scientific explanation organized by course.",
     status: "active",
     href: "/classroom/science",
-    courses: [],
+    courses: [AP_BIOLOGY_COURSE],
     plannedCourses: SCIENCE_COURSE_MAP,
   },
   {
@@ -246,7 +228,7 @@ export const COURSE_SUBJECTS: readonly CourseSubject[] = [
       "Sources, chronology, geography, historical claims, and civic evidence organized by course.",
     status: "active",
     href: "/classroom/social-studies",
-    courses: [],
+    courses: [NYS_GLOBAL_II_COURSE],
     plannedCourses: SOCIAL_STUDIES_COURSE_MAP,
   },
   {
@@ -257,7 +239,7 @@ export const COURSE_SUBJECTS: readonly CourseSubject[] = [
       "Close reading, composition, speaking, language, and text-based reasoning organized by course.",
     status: "active",
     href: "/classroom/english",
-    courses: [],
+    courses: [NYS_LITERATURE_COURSE],
     plannedCourses: ENGLISH_COURSE_MAP,
   },
 ] as const;
