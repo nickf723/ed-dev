@@ -1,5 +1,21 @@
 export type CourseStatus = "active" | "planned";
 
+export type PlannedCourse = {
+  id: string;
+  slug: string;
+  title: string;
+  shortTitle: string;
+  description: string;
+};
+
+export type PlannedCourseUnit = {
+  id: string;
+  slug: string;
+  number: number;
+  title: string;
+  summary: string;
+};
+
 export type StandardAlignment = {
   code: string;
   emphasis: "primary" | "supporting";
@@ -73,6 +89,7 @@ export type Course = {
   href: string;
   framework: StandardsFramework;
   units: readonly CourseUnit[];
+  plannedUnits: readonly PlannedCourseUnit[];
 };
 
 export type CourseSubject = {
@@ -83,4 +100,5 @@ export type CourseSubject = {
   status: CourseStatus;
   href: string;
   courses: readonly Course[];
+  plannedCourses: readonly PlannedCourse[];
 };

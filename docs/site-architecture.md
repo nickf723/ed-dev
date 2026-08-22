@@ -24,7 +24,9 @@ Education Station now has two coordinated entry modes over the same body of educ
 
 `Subject -> Course -> Unit -> Lesson`
 
-Classroom pages optimize for direct assignment, pacing, standards inspection, and lesson sequence. They use a compact standalone shell instead of the full knowledge-atlas sidebar. A classroom lesson may reuse an existing substantive atlas lesson experience, but it supplies classroom-owned breadcrumbs and previous/next routes so the student remains inside the course sequence.
+Classroom pages optimize for direct course selection, lesson sequence, and immediate entry into learning. They use a compact standalone shell instead of the full knowledge-atlas sidebar. A classroom lesson may reuse an existing substantive atlas lesson experience, but it supplies classroom-owned breadcrumbs and previous/next routes so the student remains inside the course sequence.
+
+The default Classroom path is student-facing. Standards codes, teacher notes, pacing plans, evidence plans, and implementation provenance do not appear in its primary navigation. Those records may remain internal editorial data; if a teacher edition returns later, it must be a deliberate, separately framed mode rather than extra chrome inserted between students and lessons.
 
 ### Knowledge atlas
 
@@ -33,7 +35,7 @@ The five canonical knowledge branches and Interdisciplines remain the explorator
 The two systems are parallel views, not competing sources of truth:
 
 - `lib/curriculum/` owns what knowledge is and how concepts relate;
-- `lib/courses/` owns how selected knowledge is paced into a standards-aware school course;
+- `lib/courses/` owns how selected knowledge is paced into a school course;
 - a course lesson references its canonical knowledge node by stable ID when it reuses atlas instruction;
 - classroom course ordering must not be written back into the knowledge graph as if pacing were ontology;
 - standards alignment means alignment, not state authorship, sponsorship, endorsement, or a claim that standards prescribe the local lesson order.

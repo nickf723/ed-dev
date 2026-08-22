@@ -4,13 +4,23 @@ Use this queue when code, curriculum, or educational structure changes while a r
 
 A successful type check is not visual verification. A page leaves this queue only after someone has looked at the rendered page at the relevant viewport sizes and exercised its important states.
 
-### Classroom course shell and NYS Algebra I Unit 1
+### Classroom route map and Algebra I Unit 1
 
-**Routes:** `/`, `/classroom`, `/classroom/math`, `/classroom/math/algebra-1`, `/classroom/math/algebra-1/unit-1`, and all five `/classroom/math/algebra-1/unit-1/[lesson]` routes.
+**Routes:** `/`, `/classroom`, all four `/classroom/[subject]` hubs, `/classroom/math/algebra-1`, `/classroom/math/algebra-1/unit-1`, and all five `/classroom/math/algebra-1/unit-1/[lesson]` routes.
 
-**Check:** Homepage Classroom call-to-action without weakening the existing atlas; calm dark Classroom shell at desktop and mobile widths; low-intensity cyan, emerald, lime, orange, and violet subject cues; readable glass surfaces without washed-out cream or white fields; real linked Subject -> Course -> Unit -> Lesson hierarchy; Math as the only active subject and Science, Social Studies, and English as visible non-links; Algebra I standards/source panel; Unit 1 five-lesson order, duration, standard badges, and teacher-guide disclosure states; official external links; classroom lesson breadcrumbs and previous/next links staying inside `/classroom`; no nonfunctional Vocabulary utility on classroom aliases; original atlas lesson vocabulary triggers and navigation unchanged; keyboard focus, text zoom, narrow-width overflow, and no clipping or hydration shift.
+Verify:
 
-**Status:** The calmer neoglass refinement passes targeted React/Next lint, regenerated route types, TypeScript, all three informational audits, the 413-page production build, and ten generated-HTML checks for the dark shell, trimmed copy, active/planned navigation, standards, lesson order, teaching resources, classroom navigation, and homepage entry. The local Next server reaches ready state, but the browser CLI is unavailable and the cloud browser security policy blocks local addresses; rendered responsive and interaction verification therefore remains pending for the hosted preview.
+- the lesson's dark emerald, colorful neoglass identity carries through every navigation layer without overwhelming the reading path
+- Math, Science, Social Studies, and English all open real subject hubs
+- planned course stops, including the AP options, are clearly visible but cannot be opened yet
+- Algebra I opens from Math, Unit 1 opens from Algebra I, and Units 2–7 remain visibly planned
+- the Unit 1 page links all five lessons in order
+- standards codes, teacher notes, pacing, duration, prerequisites, evidence plans, and source panels do not appear in the learner path
+- classroom lesson breadcrumbs and previous/next links stay inside `/classroom`
+- the Classroom lesson alias omits Vocabulary while the canonical atlas lesson retains it
+- keyboard focus, 200% text zoom, mobile widths, and long course titles do not clip or create horizontal overflow
+
+**Status:** Regenerated route types, TypeScript, targeted React/Next lint, all three informational audits, the 416-page production build, the Classroom-specific 11px scan, and 32 generated-HTML assertions pass. The assertions cover all four subject hubs, planned-course and planned-unit link safety, five-lesson order, the learner-facing metadata removal, the shared route field, and alias-specific Vocabulary behavior. Rendered responsive, keyboard, zoom, and interaction verification remains pending for the hosted preview.
 
 ### Expressions & Variables discovery flow
 
