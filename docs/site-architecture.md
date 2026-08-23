@@ -324,6 +324,30 @@ Collection pages may specialize their filters and detail views around the subjec
 
 Core instruction must remain understandable when an external provider is unavailable. Cached or curated fallback data must be labeled honestly; failures must never be disguised as successful live data.
 
+### Historical map data contract
+
+Historical maps need a stricter boundary than ordinary basemaps because a
+precise-looking polygon can imply evidence that the source does not contain.
+
+- Keep the renderer independent from the historical boundary provider. Leaflet,
+  MapLibre, or another view layer may change without changing the lesson model.
+- Normalize external boundaries through a typed adapter and preserve the source,
+  license, snapshot date, retrieval/review date, and source precision fields.
+- Prefer a reviewed local snapshot for core instruction. A runtime API may enrich
+  the map, but it may not be the only path to the lesson or silently replace a
+  failed request with fabricated geometry.
+- Treat premodern borders, layered sovereignty, tributary relationships,
+  protectorates, vassalage, and spheres of influence as distinct claims when
+  the source supports those distinctions. Do not collapse them into one solid
+  nation-state fill for visual convenience.
+- Show uncertainty in the representation itself through broken or softened
+  edges, transparent overlap, explicit date labels, or a comparable legend.
+- A nearest-period snapshot must say that it is not an exact boundary layer for
+  the lesson year. It supports location and comparison, not day-specific border
+  claims.
+- Provide a keyboard-operable text/list alternative that selects the same map
+  records and exposes the same learner-facing information.
+
 ## Registry composition strategy
 
 The current registry evolves from several layers:

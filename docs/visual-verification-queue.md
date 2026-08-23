@@ -24,12 +24,16 @@ Verify:
 - standards codes, teacher notes, pacing, duration, prerequisites, evidence plans, and source panels do not appear in the learner path
 - classroom lesson breadcrumbs and previous/next links stay inside `/classroom`
 - the Classroom lesson alias omits Vocabulary while the canonical atlas lesson retains it
-- the AP Biology lesson supports charge prediction, molecular-motion exploration, structure-to-function comparison, and scenario transfer
-- the Global II lesson supports mapped state selection, a fixed-lens comparison, and a claim backed by evidence from multiple regions
+- the AP Biology lesson opens with two visible drops, clearly changes from separated to joined without clipping, then supports charge prediction, molecular-motion exploration, structure-to-function comparison, and scenario transfer
+- the Global II lesson teaches the 1750 baseline and map legend before asking for analysis
+- the Global II map renders Natural Earth coastlines plus six colored geographic footprints instead of schematic continents or floating labels
+- selecting Ottoman, Mughal, Qing, Tokugawa, Bourbon France, and Asante from either the map or keyboard-operable list preserves the state color and moves the map to a useful regional view
+- the map legend distinguishes physical coastline, reconstructed footprint, and approximate near-period edge; the 1715/1783 source-snapshot limitation remains readable without dominating the lesson
+- the Global II lesson supports a fixed-lens comparison and a claim backed by evidence from multiple regions after the learner has been oriented
 - the Literature lesson supports numbered-line evidence selection, explicit-detail/inference separation, and claim-evidence-reasoning revision using only the original microfiction
 - keyboard focus, 200% text zoom, mobile widths, and long course titles do not clip or create horizontal overflow
 
-**Status:** Regenerated route types, TypeScript, targeted React/Next lint, all three informational audits, the 425-page production build, the Classroom-specific 11px scan, and 77 generated-HTML assertions pass for the cross-subject Unit 1 batch. The assertions cover active course, unit, and lesson links; planned sequence copy and planned-link safety; every seven-stage lesson flow; initial practice content; Classroom-owned navigation; and learner-facing metadata removal. Rendered responsive, keyboard, zoom, and interaction verification remains pending for the hosted preview.
+**Status:** The cross-subject Unit 1 checks previously passed. The AP Biology opening and Global II historical-map pass now also pass route type generation, TypeScript, focused React/Next lint, the three informational audits, the 425-page production build, lesson-flow and learner-chrome HTML assertions, six-feature/source-year map-data assertions, and dynamic map-chunk assertions. The preferred browser runner is absent, and the available cloud browser is blocked from localhost by workspace policy, so rendered responsive, keyboard, zoom, map-shape, and interaction verification remains pending until a hosted preview is available.
 
 ### Expressions & Variables discovery flow
 

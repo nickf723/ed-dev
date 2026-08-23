@@ -1,13 +1,32 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useState } from "react";
-import { Compass, Globe2, MapPinned, Sparkles } from "lucide-react";
+import { Compass, Globe2, Layers3, Sparkles } from "lucide-react";
 import Assessment, {
   type AssessmentQuestion,
 } from "@/app/_components/Assessment";
 import ClassroomLessonShell, {
   type ClassroomLessonNavItem,
 } from "@/app/classroom/_components/lessons/ClassroomLessonShell";
+import {
+  getState,
+  STATES,
+  type Lens,
+  type StateId,
+} from "@/app/classroom/_components/lessons/world-in-1750-model";
+
+const HistoricalWorldMap = dynamic(
+  () => import("@/app/classroom/_components/lessons/HistoricalWorldMap"),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="mt-4 flex h-[390px] items-center justify-center rounded-[18px] border border-blue-200/[0.13] bg-[#061525] text-[14px] text-blue-100/65 sm:h-[460px]">
+        Drawing the historical map…
+      </div>
+    ),
+  }
+);
 
 type WorldLessonProps = {
   breadcrumbs: readonly { label: string; href?: string }[];
@@ -16,116 +35,15 @@ type WorldLessonProps = {
   unitHref: string;
 };
 
-type StateId =
-  | "ottoman"
-  | "mughal"
-  | "qing"
-  | "tokugawa"
-  | "bourbon"
-  | "ashanti";
-type Lens = "government" | "geography" | "exchange";
-
-type StateRecord = {
-  id: StateId;
-  name: string;
-  region: string;
-  position: readonly [number, number];
-  government: string;
-  geography: string;
-  exchange: string;
-  color: string;
-};
-
 const STAGES = [
-  "Question",
-  "Map",
-  "Investigate",
+  "Orient",
+  "Read",
+  "Explore",
   "Compare",
   "Evidence",
   "Practice",
   "Conclude",
 ] as const;
-
-const STATES: readonly StateRecord[] = [
-  {
-    id: "ottoman",
-    name: "Ottoman Empire",
-    region: "Southeastern Europe, West Asia & North Africa",
-    position: [50, 40],
-    government:
-      "A dynastic empire governed through the sultan, court, provincial officials, and varied local arrangements.",
-    geography:
-      "Its territory connected the eastern Mediterranean, Black Sea, Red Sea, and overland routes between regions.",
-    exchange:
-      "Merchants and ports linked Mediterranean, African, Asian, and European commercial networks.",
-    color: "border-blue-200/25 bg-blue-300/[0.10] text-blue-100",
-  },
-  {
-    id: "mughal",
-    name: "Mughal Empire",
-    region: "South Asia",
-    position: [63, 50],
-    government:
-      "An imperial court governed a large, diverse population through administrators, regional elites, and taxation.",
-    geography:
-      "Its core included fertile plains, major cities, and access to Indian Ocean commercial routes.",
-    exchange:
-      "Textiles, agricultural goods, and urban markets connected the empire to wide trading networks.",
-    color: "border-violet-200/25 bg-violet-300/[0.10] text-violet-100",
-  },
-  {
-    id: "qing",
-    name: "Qing China",
-    region: "East Asia",
-    position: [78, 39],
-    government:
-      "A large bureaucratic empire ruled by the Qing dynasty through imperial institutions and provincial administration.",
-    geography:
-      "Expanding territory joined densely populated agricultural regions with extensive interior frontiers.",
-    exchange:
-      "Large internal markets and regulated foreign trade connected China to regional and global demand.",
-    color: "border-cyan-200/25 bg-cyan-300/[0.10] text-cyan-100",
-  },
-  {
-    id: "tokugawa",
-    name: "Tokugawa Japan",
-    region: "Japanese archipelago",
-    position: [89, 44],
-    government:
-      "The shogunate balanced central authority with regional daimyo and required political attendance in Edo.",
-    geography:
-      "An island setting shaped travel, defense, internal routes, and the regulation of overseas contact.",
-    exchange:
-      "Foreign exchange was restricted to controlled channels, while internal commerce and cities grew.",
-    color: "border-sky-200/25 bg-sky-300/[0.10] text-sky-100",
-  },
-  {
-    id: "bourbon",
-    name: "Bourbon France",
-    region: "Western Europe & Atlantic world",
-    position: [39, 32],
-    government:
-      "A monarchy centered authority around the crown, royal officials, and an elite political world symbolized by Versailles.",
-    geography:
-      "A European territorial base connected to Atlantic colonies, ports, and commercial competition.",
-    exchange:
-      "Domestic production and Atlantic trade tied France to colonial and maritime networks.",
-    color: "border-indigo-200/25 bg-indigo-300/[0.10] text-indigo-100",
-  },
-  {
-    id: "ashanti",
-    name: "Ashanti Kingdom",
-    region: "West Africa",
-    position: [43, 59],
-    government:
-      "A centralized kingdom coordinated constituent states through the Asantehene, councils, officials, and military power.",
-    geography:
-      "Its forest-region position connected gold-producing areas with inland and coastal routes.",
-    exchange:
-      "Gold and regional commerce supported influence within West African and Atlantic trade networks.",
-    color: "border-amber-200/25 bg-amber-300/[0.10] text-amber-100",
-  },
-];
 
 const QUIZ: AssessmentQuestion[] = [
   {
@@ -183,9 +101,9 @@ export default function WorldIn1750Lesson({
   const [lens, setLens] = useState<Lens>("government");
   const [claim, setClaim] = useState<"distributed" | "uniform" | null>(null);
   const [evidence, setEvidence] = useState<StateId[]>([]);
-  const selected = STATES.find((state) => state.id === selectedId) ?? STATES[0];
-  const left = STATES.find((state) => state.id === compareIds[0]) ?? STATES[0];
-  const right = STATES.find((state) => state.id === compareIds[1]) ?? STATES[1];
+  const selected = getState(selectedId);
+  const left = getState(compareIds[0]);
+  const right = getState(compareIds[1]);
   const evidenceRegions = new Set(
     evidence.map((id) => STATES.find((state) => state.id === id)?.region)
   ).size;
@@ -225,50 +143,64 @@ export default function WorldIn1750Lesson({
       background={<WorldField />}
     >
       <section className="bg-[#071321]/72 mt-4 rounded-[20px] border border-blue-200/[0.13] p-4 backdrop-blur-2xl sm:p-5">
-        <StageLabel number="1" label="Question" />
+        <StageLabel number="1" label="Orient" />
         <h2 className="mt-1.5 font-serif text-[clamp(1.5rem,3vw,2.2rem)] font-semibold tracking-[-0.03em] text-white">
-          Where did power reside in 1750?
+          Step into 1750 before judging it.
         </h2>
         <p className="mt-2 max-w-3xl text-[15px] leading-6 text-stone-300/80">
-          “Most powerful” is not a visible fact. First decide what evidence
-          could show: territory, political organization, military reach, trade
-          connections, population, or control over strategic routes.
+          This is not a blank world waiting for modern nations to appear. Large
+          empires, kingdoms, ports, and commercial networks already connect
+          Africa, Asia, Europe, and the Atlantic. Our first job is simply to get
+          oriented.
         </p>
-        <div className="mt-3 grid gap-2 sm:grid-cols-3">
-          {[
-            "Power needs a definition",
-            "Maps show space—not everything",
-            "Comparison needs a shared lens",
-          ].map((idea, index) => (
-            <div
-              key={idea}
-              className="rounded-[13px] border border-white/[0.07] bg-black/[0.14] p-3"
-            >
-              <div className="font-mono text-[11px] text-blue-200/70">
-                0{index + 1}
-              </div>
-              <div className="mt-1 text-[14px] font-semibold text-stone-200">
-                {idea}
-              </div>
-            </div>
-          ))}
+        <div className="mt-4 grid gap-2 md:grid-cols-[0.85fr_1.15fr_1.15fr]">
+          <OrientationCard
+            label="When"
+            value="1750"
+            text="A baseline before the revolutions and industrial changes studied later in Global II."
+          />
+          <OrientationCard
+            label="What to find"
+            value="Several centers"
+            text="Look across regions before assuming that political or economic power sat in one place."
+          />
+          <OrientationCard
+            label="What to ask"
+            value="Power by what measure?"
+            text="Territory, government, exchange, population, and military reach answer different questions."
+          />
         </div>
       </section>
 
       <section className="mt-4 rounded-[20px] border border-blue-200/[0.12] bg-blue-300/[0.03] p-4 backdrop-blur-2xl sm:p-5">
-        <StageLabel number="2" label="Map" />
+        <StageLabel number="2" label="Read" />
         <h2 className="mt-1.5 font-serif text-[clamp(1.45rem,3vw,2.05rem)] font-semibold tracking-[-0.03em] text-white">
-          Start with several centers—not one.
+          Learn the legend before making a claim.
         </h2>
         <p className="mt-2 text-[15px] leading-6 text-stone-400">
-          Select a state to inspect. Positions are schematic so the map can
-          emphasize global distribution.
+          Coastlines tell you where you are. Colored footprints help you locate
+          six states and empires. Broken edges remind us that premodern control
+          was often layered, changing, and reconstructed from incomplete
+          evidence.
         </p>
-        <WorldMap selectedId={selectedId} onSelect={setSelectedId} />
+        <HistoricalWorldMap selectedId={selectedId} onSelect={setSelectedId} />
+        <div className="mt-3 flex items-start gap-3 rounded-[14px] border border-blue-200/[0.10] bg-black/[0.13] p-3 text-[13px] leading-5 text-stone-400">
+          <Layers3
+            size={17}
+            className="mt-0.5 shrink-0 text-blue-200/75"
+            aria-hidden="true"
+          />
+          <p>
+            This orientation layer uses the nearest suitable open snapshots in
+            the source collection—1715 and 1783—not invented “exact” borders for
+            one day in 1750. Use it to locate and compare. Treat precise border
+            claims as questions for stronger sources.
+          </p>
+        </div>
       </section>
 
       <section className="mt-4 rounded-[20px] border border-cyan-200/[0.12] bg-cyan-300/[0.03] p-4 backdrop-blur-2xl sm:p-5">
-        <StageLabel number="3" label="Investigate" tone="cyan" />
+        <StageLabel number="3" label="Explore" tone="cyan" />
         <div className="mt-2 grid gap-3 lg:grid-cols-[260px_minmax(0,1fr)]">
           <div className={`rounded-[16px] border p-4 ${selected.color}`}>
             <div className="text-[11px] font-semibold uppercase tracking-[0.11em] opacity-65">
@@ -278,6 +210,9 @@ export default function WorldIn1750Lesson({
               {selected.name}
             </h2>
             <Compass size={19} className="mt-4 opacity-70" aria-hidden="true" />
+            <p className="mt-3 text-[12px] leading-5 text-white/65">
+              Map footprint source: {selected.sourceYear} snapshot
+            </p>
           </div>
           <div className="grid gap-2 sm:grid-cols-3">
             {(
@@ -509,41 +444,24 @@ function StageLabel({
   );
 }
 
-function WorldMap({
-  selectedId,
-  onSelect,
+function OrientationCard({
+  label,
+  value,
+  text,
 }: {
-  selectedId: StateId;
-  onSelect: (id: StateId) => void;
+  label: string;
+  value: string;
+  text: string;
 }) {
   return (
-    <div className="relative mt-4 min-h-[360px] overflow-hidden rounded-[18px] border border-blue-200/[0.11] bg-[#06111f] sm:min-h-[410px]">
-      <div className="absolute inset-0 opacity-25 [background-image:linear-gradient(rgba(96,165,250,0.18)_1px,transparent_1px),linear-gradient(90deg,rgba(96,165,250,0.18)_1px,transparent_1px)] [background-size:12.5%_20%]" />
-      <div className="absolute left-[7%] top-[20%] h-[58%] w-[31%] rounded-[48%_42%_46%_50%] border border-blue-100/[0.07] bg-blue-200/[0.025]" />
-      <div className="absolute left-[36%] top-[16%] h-[63%] w-[56%] rounded-[45%_48%_42%_50%] border border-blue-100/[0.07] bg-blue-200/[0.025]" />
-      {STATES.map((state) => (
-        <button
-          key={state.id}
-          type="button"
-          onClick={() => onSelect(state.id)}
-          aria-pressed={selectedId === state.id}
-          className={`absolute z-10 -translate-x-1/2 -translate-y-1/2 rounded-full border px-2.5 py-2 text-[11px] font-semibold shadow-[0_8px_24px_rgba(0,0,0,0.24)] transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-200/70 ${
-            selectedId === state.id
-              ? `${state.color} scale-105`
-              : "border-blue-200/[0.14] bg-[#091b2e] text-stone-400"
-          }`}
-          style={{
-            left: `${state.position[0]}%`,
-            top: `${state.position[1]}%`,
-          }}
-        >
-          {state.name}
-        </button>
-      ))}
-      <div className="absolute bottom-3 left-3 inline-flex items-center gap-2 rounded-full border border-blue-200/[0.12] bg-black/35 px-3 py-1.5 text-[11px] font-semibold text-blue-100/80">
-        <MapPinned size={13} aria-hidden="true" /> schematic positions · circa
-        1750
+    <div className="rounded-[15px] border border-white/[0.07] bg-black/[0.14] p-3">
+      <div className="text-[11px] font-semibold uppercase tracking-[0.11em] text-blue-200/70">
+        {label}
       </div>
+      <div className="mt-1.5 font-serif text-[19px] font-semibold text-blue-50">
+        {value}
+      </div>
+      <p className="mt-1.5 text-[13px] leading-5 text-stone-400">{text}</p>
     </div>
   );
 }

@@ -21,10 +21,10 @@ type WaterProperty = "cohesion" | "specific-heat" | "evaporation";
 type ScenarioId = "xylem" | "lake" | "sweat";
 
 const STAGES = [
-  "Observe",
-  "Predict",
-  "Model",
+  "Notice",
+  "Build",
   "Connect",
+  "Explore",
   "Apply",
   "Practice",
   "Conclude",
@@ -123,6 +123,7 @@ export default function WaterHydrogenBondingLesson({
   next,
   unitHref,
 }: WaterLessonProps) {
+  const [dropsJoined, setDropsJoined] = useState(false);
   const [prediction, setPrediction] = useState<Prediction | null>(null);
   const [motion, setMotion] = useState(0);
   const [property, setProperty] = useState<WaterProperty>("cohesion");
@@ -141,7 +142,7 @@ export default function WaterHydrogenBondingLesson({
       eyebrow="AP Biology · Unit 1 · Topic 1.1"
       icon={Droplets}
       title="Water & Hydrogen Bonding"
-      subtitle="Follow partial charges from molecular structure to the properties that sustain living systems."
+      subtitle="Begin with what a drop does, then build the molecular explanation that connects water to living systems."
       stages={STAGES}
       practiceTargetId="water-practice"
       unitHref={unitHref}
@@ -151,14 +152,43 @@ export default function WaterHydrogenBondingLesson({
       background={<WaterField />}
     >
       <section className="mt-4 rounded-[20px] border border-green-200/[0.13] bg-[#03150e]/70 p-4 backdrop-blur-2xl sm:p-5">
-        <StageLabel number="1" label="Observe" />
+        <StageLabel number="1" label="Notice" />
         <h2 className="mt-1.5 text-[clamp(1.45rem,3vw,2.15rem)] font-semibold tracking-[-0.035em] text-white">
-          One molecule has an uneven charge pattern.
+          Watch two drops become one.
         </h2>
         <p className="mt-2 max-w-3xl text-[15px] leading-6 text-stone-300/80">
-          Oxygen pulls the shared electrons closer than hydrogen does. The
-          molecule stays electrically neutral overall, but its oxygen side is
-          partially negative and its hydrogen sides are partially positive.
+          Start with the visible behavior, not the vocabulary. Bring the drops
+          together and notice whether the water acts like separate grains or a
+          connected liquid.
+        </p>
+
+        <DropObservation
+          joined={dropsJoined}
+          onToggle={() => setDropsJoined((current) => !current)}
+        />
+        <p
+          className={`mt-3 rounded-[14px] border px-3 py-2.5 text-[14px] leading-5 transition-colors ${
+            dropsJoined
+              ? "border-green-200/[0.18] bg-green-300/[0.045] text-green-100"
+              : "border-white/[0.07] bg-black/[0.12] text-stone-400"
+          }`}
+          aria-live="polite"
+        >
+          {dropsJoined
+            ? "The drops merge because nearby water molecules attract one another. Now we can build the molecular reason."
+            : "Prediction: when the surfaces touch, will the drops remain separate or pull into one larger drop?"}
+        </p>
+      </section>
+
+      <section className="mt-4 rounded-[20px] border border-green-200/[0.13] bg-[#03150e]/70 p-4 backdrop-blur-2xl sm:p-5">
+        <StageLabel number="2" label="Build" />
+        <h2 className="mt-1.5 text-[clamp(1.45rem,3vw,2.15rem)] font-semibold tracking-[-0.035em] text-white">
+          Build the charge pattern inside one molecule.
+        </h2>
+        <p className="mt-2 max-w-3xl text-[15px] leading-6 text-stone-300/80">
+          A water molecule has one oxygen and two hydrogens. Oxygen pulls the
+          shared electrons closer, so the molecule is neutral overall but not
+          evenly charged.
         </p>
 
         <div className="mt-4 grid gap-3 lg:grid-cols-[minmax(0,1fr)_280px] lg:items-center">
@@ -174,9 +204,9 @@ export default function WaterHydrogenBondingLesson({
       </section>
 
       <section className="mt-4 rounded-[20px] border border-cyan-200/[0.12] bg-cyan-300/[0.035] p-4 backdrop-blur-2xl sm:p-5">
-        <StageLabel number="2" label="Predict" tone="cyan" />
+        <StageLabel number="3" label="Connect" tone="cyan" />
         <h2 className="mt-1.5 text-[clamp(1.4rem,3vw,2rem)] font-semibold tracking-[-0.03em] text-white">
-          How will neighboring molecules orient?
+          Link one molecule to the next.
         </h2>
         <p className="mt-2 text-[15px] leading-6 text-stone-400">
           Choose the arrangement that should create the strongest intermolecular
@@ -221,10 +251,22 @@ export default function WaterHydrogenBondingLesson({
               : "Compare the charge labels again: like charges repel, while opposite partial charges attract."}
           </p>
         ) : null}
+        <div className="mt-3 grid gap-2 sm:grid-cols-2">
+          <BondType
+            label="Inside one molecule"
+            name="Polar covalent O—H bond"
+            detail="Atoms share electrons unevenly."
+          />
+          <BondType
+            label="Between molecules"
+            name="Hydrogen bond"
+            detail="Opposite partial charges attract."
+          />
+        </div>
       </section>
 
       <section className="mt-4 rounded-[20px] border border-green-200/[0.12] bg-black/[0.20] p-4 backdrop-blur-2xl sm:p-5">
-        <StageLabel number="3" label="Model" />
+        <StageLabel number="4" label="Explore" />
         <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_250px] lg:items-center">
           <div>
             <h2 className="mt-1.5 text-[clamp(1.4rem,3vw,2rem)] font-semibold tracking-[-0.03em] text-white">
@@ -271,10 +313,14 @@ export default function WaterHydrogenBondingLesson({
       </section>
 
       <section className="mt-4 rounded-[20px] border border-teal-200/[0.12] bg-teal-300/[0.03] p-4 backdrop-blur-2xl sm:p-5">
-        <StageLabel number="4" label="Connect" tone="teal" />
+        <StageLabel number="5" label="Apply" tone="teal" />
         <h2 className="mt-1.5 text-[clamp(1.4rem,3vw,2rem)] font-semibold tracking-[-0.03em] text-white">
-          Trace structure into biological function.
+          Follow one cause into a living system.
         </h2>
+        <p className="mt-2 max-w-3xl text-[15px] leading-6 text-stone-400">
+          Keep the explanation in order: molecular attraction produces a
+          physical property, and that property helps a biological process.
+        </p>
 
         <div
           className="mt-3 flex flex-wrap gap-2"
@@ -319,13 +365,10 @@ export default function WaterHydrogenBondingLesson({
             </div>
           ))}
         </div>
-      </section>
 
-      <section className="mt-4 rounded-[20px] border border-green-200/[0.12] bg-green-300/[0.03] p-4 backdrop-blur-2xl sm:p-5">
-        <StageLabel number="5" label="Apply" />
-        <h2 className="mt-1.5 text-[clamp(1.4rem,3vw,2rem)] font-semibold tracking-[-0.03em] text-white">
+        <h3 className="mt-5 border-t border-white/[0.07] pt-4 text-[18px] font-semibold text-white">
           Match the property to the living system.
-        </h2>
+        </h3>
 
         <div className="mt-3 grid gap-2 sm:grid-cols-3">
           {SCENARIOS.map((scenario) => (
@@ -467,6 +510,83 @@ function StageLabel({
       className={`text-[11px] font-semibold uppercase tracking-[0.14em] ${color}`}
     >
       Stage {number} · {label}
+    </div>
+  );
+}
+
+function DropObservation({
+  joined,
+  onToggle,
+}: {
+  joined: boolean;
+  onToggle: () => void;
+}) {
+  return (
+    <div className="mt-4 grid gap-3 lg:grid-cols-[minmax(0,1fr)_230px] lg:items-center">
+      <div
+        className="relative min-h-[220px] overflow-hidden rounded-[18px] border border-cyan-200/[0.11] bg-[radial-gradient(circle_at_50%_100%,rgba(34,211,238,0.13),rgba(0,0,0,0.16)_58%)]"
+        role="img"
+        aria-label={
+          joined
+            ? "Two water drops have joined into one larger drop"
+            : "Two water drops are separated by a small gap"
+        }
+      >
+        <div className="absolute inset-x-[10%] bottom-[22%] h-px bg-gradient-to-r from-transparent via-cyan-100/25 to-transparent" />
+        <div
+          className={`absolute top-1/2 h-24 w-20 -translate-y-1/2 rounded-[55%_55%_48%_48%] border border-cyan-100/30 bg-cyan-300/20 shadow-[inset_0_0_28px_rgba(207,250,254,0.13),0_0_34px_rgba(34,211,238,0.10)] transition-all duration-500 motion-reduce:transition-none ${
+            joined
+              ? "left-[calc(50%_-_38px)] w-28 -rotate-90"
+              : "left-[22%] -rotate-[18deg]"
+          }`}
+        />
+        <div
+          className={`absolute top-1/2 h-24 w-20 -translate-y-1/2 rounded-[55%_55%_48%_48%] border border-cyan-100/30 bg-cyan-300/20 shadow-[inset_0_0_28px_rgba(207,250,254,0.13),0_0_34px_rgba(34,211,238,0.10)] transition-all duration-500 motion-reduce:transition-none ${
+            joined
+              ? "left-[calc(50%_-_12px)] w-28 rotate-90 opacity-70"
+              : "right-[22%] rotate-[18deg]"
+          }`}
+        />
+        <div className="absolute bottom-3 left-3 text-[12px] font-semibold text-cyan-100/75">
+          {joined ? "One connected drop" : "Two separate drops"}
+        </div>
+      </div>
+
+      <div className="rounded-[16px] border border-green-200/[0.11] bg-black/[0.14] p-3">
+        <p className="text-[13px] leading-5 text-stone-400">
+          Change only one thing: whether the drop surfaces touch.
+        </p>
+        <button
+          type="button"
+          onClick={onToggle}
+          aria-pressed={joined}
+          className="mt-3 w-full rounded-[12px] border border-green-200/20 bg-green-300/[0.07] px-3 py-2.5 text-[13px] font-semibold text-green-50 transition-colors hover:bg-green-300/[0.11] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-300/60"
+        >
+          {joined ? "Separate the drops" : "Bring drops together"}
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function BondType({
+  label,
+  name,
+  detail,
+}: {
+  label: string;
+  name: string;
+  detail: string;
+}) {
+  return (
+    <div className="rounded-[14px] border border-white/[0.07] bg-black/[0.13] p-3">
+      <div className="text-[11px] font-semibold uppercase tracking-[0.1em] text-cyan-200/70">
+        {label}
+      </div>
+      <div className="mt-1.5 text-[14px] font-semibold text-stone-200">
+        {name}
+      </div>
+      <p className="mt-1 text-[13px] leading-5 text-stone-400">{detail}</p>
     </div>
   );
 }
