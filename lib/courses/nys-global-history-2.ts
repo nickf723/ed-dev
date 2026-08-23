@@ -174,6 +174,7 @@ const lessons: readonly CourseLesson[] = [
         note: "Distinguishes similarity from identical context.",
       },
     ],
+    status: "active",
   }),
   plannedLesson({
     slug: "outsiders-exchange",

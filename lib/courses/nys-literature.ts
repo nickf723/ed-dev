@@ -82,6 +82,7 @@ function plannedLesson({
   outcome,
   knowledgeNodeId,
   alignment,
+  status = "planned",
 }: {
   slug: string;
   title: string;
@@ -89,6 +90,7 @@ function plannedLesson({
   outcome: string;
   knowledgeNodeId: string;
   alignment: readonly StandardAlignment[];
+  status?: CourseLesson["status"];
 }): CourseLesson {
   return {
     id: `nys.literature.unit-1.${slug}`,
@@ -97,7 +99,7 @@ function plannedLesson({
     summary,
     outcome,
     durationMinutes: 45,
-    status: "planned",
+    status,
     href: `${UNIT_ONE_BASE}/${slug}`,
     knowledgeNodeId,
     alignment,
@@ -159,6 +161,7 @@ const lessons: readonly CourseLesson[] = [
         note: "Analyzes point of view and perspective.",
       },
     ],
+    status: "active",
   }),
   plannedLesson({
     slug: "character-desire",

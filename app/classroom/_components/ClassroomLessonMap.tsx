@@ -180,6 +180,28 @@ function ElementsBackdrop() {
   );
 }
 
+function PolymerBackdrop() {
+  return (
+    <div className="relative flex h-full items-center justify-center font-mono">
+      <div className="flex items-center">
+        {["M1", "M2", "M3", "M4"].map((label, index) => (
+          <div key={label} className="flex items-center">
+            {index ? (
+              <span className="h-1 w-5 bg-gradient-to-r from-green-300/30 to-cyan-300/30 sm:w-8" />
+            ) : null}
+            <span className="flex h-12 w-12 items-center justify-center rounded-[15px] border border-green-200/[0.17] bg-green-300/[0.055] text-[12px] font-semibold text-green-100/45">
+              {label}
+            </span>
+          </div>
+        ))}
+      </div>
+      <span className="absolute bottom-[18%] right-[16%] flex h-11 w-11 items-center justify-center rounded-full border border-cyan-200/[0.16] bg-cyan-300/[0.05] text-[11px] text-cyan-100/45">
+        H₂O
+      </span>
+    </div>
+  );
+}
+
 function World1750Backdrop() {
   return (
     <div className="flex h-full items-center justify-center">
@@ -219,6 +241,22 @@ function EmpireComparisonBackdrop() {
   );
 }
 
+function CentralizationBackdrop() {
+  return (
+    <div className="relative flex h-full items-center justify-center font-serif">
+      <div className="absolute left-[11%] flex h-28 w-28 items-center justify-center rounded-full border border-cyan-200/[0.16] bg-cyan-300/[0.035] text-[13px] font-semibold text-cyan-100/45">
+        Edo
+      </div>
+      <div className="absolute right-[9%] flex h-28 w-28 items-center justify-center rounded-full border border-violet-200/[0.16] bg-violet-300/[0.035] text-[13px] font-semibold text-violet-100/45">
+        Versailles
+      </div>
+      <div className="absolute left-[34%] w-[32%] border-t border-dashed border-blue-100/20" />
+      <span className="absolute left-[42%] top-[30%] h-3 w-3 rounded-full border border-blue-100/25 bg-blue-300/15" />
+      <span className="absolute bottom-[29%] right-[42%] h-3 w-3 rounded-full border border-blue-100/25 bg-blue-300/15" />
+    </div>
+  );
+}
+
 function EvidenceBackdrop() {
   return (
     <div className="flex h-full items-center justify-center font-serif">
@@ -239,6 +277,20 @@ function EvidenceBackdrop() {
           )
         )}
       </div>
+    </div>
+  );
+}
+
+function PerspectiveBackdrop() {
+  return (
+    <div className="relative flex h-full items-center justify-center font-serif">
+      <div className="absolute left-[16%] top-[23%] w-[48%] rotate-[-5deg] rounded-[12px] border border-yellow-100/[0.12] bg-yellow-100/[0.03] p-4 text-[13px] leading-5 text-yellow-50/35">
+        I slid the envelope beneath the atlas…
+      </div>
+      <div className="absolute bottom-[19%] right-[12%] w-[48%] rotate-[4deg] rounded-[12px] border border-orange-100/[0.12] bg-orange-100/[0.03] p-4 text-[13px] leading-5 text-orange-50/35">
+        Theo watched her hand leave the atlas…
+      </div>
+      <span className="absolute right-[22%] top-[19%] h-10 w-16 rounded-[50%] border border-yellow-100/[0.13]" />
     </div>
   );
 }
@@ -274,6 +326,11 @@ function LessonBackdrop({ slug }: { slug: string }) {
       fade =
         "bg-[linear-gradient(90deg,#03170f_0%,rgba(3,23,15,0.82)_18%,transparent_70%)]";
       break;
+    case "building-breaking-polymers":
+      visual = <PolymerBackdrop />;
+      fade =
+        "bg-[linear-gradient(90deg,#03170f_0%,rgba(3,23,15,0.82)_18%,transparent_70%)]";
+      break;
     case "world-in-1750":
       visual = <World1750Backdrop />;
       fade =
@@ -284,8 +341,18 @@ function LessonBackdrop({ slug }: { slug: string }) {
       fade =
         "bg-[linear-gradient(90deg,#05101c_0%,rgba(5,16,28,0.82)_18%,transparent_70%)]";
       break;
+    case "tokugawa-bourbon":
+      visual = <CentralizationBackdrop />;
+      fade =
+        "bg-[linear-gradient(90deg,#05101c_0%,rgba(5,16,28,0.82)_18%,transparent_70%)]";
+      break;
     case "evidence-inference":
       visual = <EvidenceBackdrop />;
+      fade =
+        "bg-[linear-gradient(90deg,#171205_0%,rgba(23,18,5,0.82)_18%,transparent_70%)]";
+      break;
+    case "narrator-perspective":
+      visual = <PerspectiveBackdrop />;
       fade =
         "bg-[linear-gradient(90deg,#171205_0%,rgba(23,18,5,0.82)_18%,transparent_70%)]";
       break;

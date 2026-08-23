@@ -184,6 +184,7 @@ const lessons: readonly CourseLesson[] = [
         note: "Models dehydration synthesis and hydrolysis.",
       },
     ],
+    status: "active",
   }),
   plannedLesson({
     slug: "carbohydrates",

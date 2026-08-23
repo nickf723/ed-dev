@@ -6,7 +6,7 @@ A successful type check is not visual verification. A page leaves this queue onl
 
 ### Classroom route map and Unit 1 starters
 
-**Routes:** `/`, `/classroom`, all four `/classroom/[subject]` hubs; the active Algebra I, AP Biology, Global II, and Literature course pages; each active Unit 1 page; all five Algebra I Unit 1 lessons; the first two AP Biology and Global II lessons; and the opening Literature lesson.
+**Routes:** `/`, `/classroom`, all four `/classroom/[subject]` hubs; the active Algebra I, AP Biology, Global II, and Literature course pages; each active Unit 1 page; all five Algebra I Unit 1 lessons; the first three AP Biology and Global II lessons; and the first two Literature lessons.
 
 Verify:
 
@@ -18,8 +18,8 @@ Verify:
 - Algebra I opens from Math, Unit 1 opens from Algebra I, and Units 2–7 remain visibly planned
 - each new course opens Unit 1 while its later units remain visibly planned
 - Algebra I units use a deliberate red-to-pink sequence palette while preserving their course order and active/planned states
-- every Unit 1 page shows its opening lesson first and a coherent planned lesson line after it; AP Biology and Global II expose their new second lessons as live destinations
-- lesson cards preview real lesson content: algebraic terms, molecular charge, elemental fingerprints, a 1750 world map, an Ottoman–Mughal comparison, or highlighted textual evidence
+- every Unit 1 page shows its opening lesson first and a coherent planned lesson line after it; AP Biology and Global II expose three live destinations and Literature exposes two
+- lesson cards preview real lesson content: algebraic terms, molecular charge, elemental fingerprints, polymer bonds, a 1750 world map, an Ottoman–Mughal comparison, an Edo–Versailles institutional network, highlighted textual evidence, or shifted narrative perspective
 - hovering a live route moves only its destination surface; the numbered marker and connecting line stay fixed
 - standards codes, teacher notes, pacing, duration, prerequisites, evidence plans, and source panels do not appear in the learner path
 - classroom lesson breadcrumbs and previous/next links stay inside `/classroom`
@@ -28,6 +28,8 @@ Verify:
 - Elements of Life opens with four formulas to notice before introducing CHNOPS, then coordinates all six element selectors, exact atom counts, and molecule fingerprints without implying that an element list alone identifies a molecule
 - the Elements of Life fingerprint lab handles empty, single-element, no-match, and multiple-match combinations; glucose, palmitic acid, cysteine, and AMP stay chemically exact across the formula, scanner, and filtering views
 - the Elements of Life transfer cases distinguish a nucleotide, fatty acid, and amino acid by combining elemental evidence with structural evidence before the three-question practice check
+- Building & Breaking Polymers opens with the H/OH reaction pattern, then keeps monomers, bonds, separate chains, free monomers, and water counts coordinated as students build and hydrolyze a linear chain
+- changing the polymer bench among three through six monomers resets it cleanly; build and break controls stop at valid boundaries; the n − 1 pattern and partial-hydrolysis transfer remain readable without implying that lipids are true polymers
 - the Global II lesson teaches the 1750 baseline and map legend before asking for analysis
 - the Global II map renders Natural Earth coastlines plus six colored geographic footprints instead of schematic continents or floating labels
 - selecting Ottoman, Mughal, Qing, Tokugawa, Bourbon France, and Asante from either the map or keyboard-operable list preserves the state color and moves the map to a useful regional view
@@ -37,10 +39,15 @@ Verify:
 - the Ottoman–Mughal map supports both-empires, Ottoman-only, and Mughal-only views from its controls and keyboard-operable list; its two reconstructed footprints fit useful regional bounds without suggesting uniform control
 - all four Ottoman–Mughal lenses coordinate the evidence dossiers, similarity, contextual difference, and claim-verdict workshop; switching lenses or resetting a verdict does not leave stale feedback behind
 - the Ottoman–Mughal claim workshop distinguishes supported, overgeneralized, and not-shown-by-evidence claims before its three-question practice check, while the 1715 near-period limitation stays visible
+- the Tokugawa–Bourbon map supports both-case, Japan-only, and France-only views; its 1715 and 1783 source-snapshot limitation remains explicit and its world-scale comparison does not imply uniform administration
+- the Tokugawa–Bourbon fixed lenses coordinate each case's political center, elite control, administrative reach, and limitation; the mechanism → intended effect → limit chain changes cleanly between alternate attendance and court-centered politics
+- the Tokugawa–Bourbon claim workshop distinguishes a supported similarity from identical-system, absolute-control, and map-proves-administration overreach
 - the Literature lesson supports numbered-line evidence selection, explicit-detail/inference separation, and claim-evidence-reasoning revision using only the original microfiction
+- Narrator & Perspective compares original retellings before naming the technique, then coordinates the selected telling with voice, perceiving character, reader-access ledger, interpretive effect, and transfer feedback
+- the Mara, Theo, and outside-observer tellings preserve the same core event while directly demonstrating that first person is not the author and third person is not automatically omniscient
 - keyboard focus, 200% text zoom, mobile widths, and long course titles do not clip or create horizontal overflow
 
-**Status:** The cross-subject Unit 1 checks previously passed. The AP Biology opening and Global II historical-map pass also passed their model and route checks. The new Elements of Life and Ottoman–Mughal pass now passes route type generation, TypeScript, focused React/Next lint, deterministic formula/filter/comparison model tests, all three informational audits, the 427-page production build, generated seven-stage/lesson-link/learner-chrome HTML assertions, and deferred Leaflet map-chunk assertions. The preferred browser runner is absent, and the available cloud browser is blocked from localhost by workspace policy, so rendered responsive, keyboard, zoom, map-shape, and interaction verification remains pending until a hosted preview is available.
+**Status:** The cross-subject Unit 1 checks previously passed. The AP Biology opening and Global II historical-map pass also passed their model and route checks. The Elements of Life and Ottoman–Mughal checkpoint passed its full verification pass. The Narrator & Perspective, Building & Breaking Polymers, and Tokugawa–Bourbon checkpoint now passes route type generation, TypeScript, focused React/Next lint, deterministic formula/filter/comparison/access/reaction/centralization model tests, all three informational audits, explicit 11px and learner-chrome scans, the 430-page production build, generated seven-stage/lesson-link/learner-chrome HTML assertions, and deferred Leaflet map-chunk assertions. The preferred browser runner is absent, and the available cloud browser is blocked from localhost by workspace policy, so rendered responsive, keyboard, zoom, map-shape, and interaction verification remains pending until a hosted preview is available.
 
 ### Expressions & Variables discovery flow
 

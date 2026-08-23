@@ -2,7 +2,10 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import EvidenceInferenceLesson from "@/app/classroom/_components/lessons/EvidenceInferenceLesson";
 import ElementsOfLifeLesson from "@/app/classroom/_components/lessons/ElementsOfLifeLesson";
+import NarratorPerspectiveLesson from "@/app/classroom/_components/lessons/NarratorPerspectiveLesson";
 import OttomanMughalLesson from "@/app/classroom/_components/lessons/OttomanMughalLesson";
+import PolymerReactionsLesson from "@/app/classroom/_components/lessons/PolymerReactionsLesson";
+import TokugawaBourbonLesson from "@/app/classroom/_components/lessons/TokugawaBourbonLesson";
 import WaterHydrogenBondingLesson from "@/app/classroom/_components/lessons/WaterHydrogenBondingLesson";
 import WorldIn1750Lesson from "@/app/classroom/_components/lessons/WorldIn1750Lesson";
 import {
@@ -120,6 +123,10 @@ export default async function ClassroomLessonPage({ params }: PageProps) {
     return <ElementsOfLifeLesson breadcrumbs={breadcrumbs} {...navigation} />;
   }
 
+  if (lesson.id === "ap-biology.unit-1.building-breaking-polymers") {
+    return <PolymerReactionsLesson breadcrumbs={breadcrumbs} {...navigation} />;
+  }
+
   if (lesson.id === "nys.global-2.unit-1.world-in-1750") {
     return <WorldIn1750Lesson breadcrumbs={breadcrumbs} {...navigation} />;
   }
@@ -128,9 +135,19 @@ export default async function ClassroomLessonPage({ params }: PageProps) {
     return <OttomanMughalLesson breadcrumbs={breadcrumbs} {...navigation} />;
   }
 
+  if (lesson.id === "nys.global-2.unit-1.tokugawa-bourbon") {
+    return <TokugawaBourbonLesson breadcrumbs={breadcrumbs} {...navigation} />;
+  }
+
   if (lesson.id === "nys.literature.unit-1.evidence-inference") {
     return (
       <EvidenceInferenceLesson breadcrumbs={breadcrumbs} {...navigation} />
+    );
+  }
+
+  if (lesson.id === "nys.literature.unit-1.narrator-perspective") {
+    return (
+      <NarratorPerspectiveLesson breadcrumbs={breadcrumbs} {...navigation} />
     );
   }
 
