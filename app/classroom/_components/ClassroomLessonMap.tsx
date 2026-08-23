@@ -143,6 +143,43 @@ function WaterBackdrop() {
   );
 }
 
+function ElementsBackdrop() {
+  const atoms = [
+    ["C", "left-[16%] top-[22%]", "text-green-100/55 border-green-200/[0.18]"],
+    ["H", "left-[45%] top-[12%]", "text-slate-100/50 border-slate-200/[0.16]"],
+    ["O", "right-[13%] top-[29%]", "text-red-100/55 border-red-200/[0.18]"],
+    [
+      "N",
+      "right-[20%] bottom-[15%]",
+      "text-cyan-100/55 border-cyan-200/[0.18]",
+    ],
+    [
+      "P",
+      "left-[38%] bottom-[10%]",
+      "text-amber-100/55 border-amber-200/[0.18]",
+    ],
+    [
+      "S",
+      "left-[10%] bottom-[24%]",
+      "text-violet-100/55 border-violet-200/[0.18]",
+    ],
+  ] as const;
+  return (
+    <div className="relative h-full w-full font-mono">
+      <div className="absolute left-[24%] top-[35%] h-px w-[52%] rotate-[8deg] border-t border-dashed border-green-100/15" />
+      <div className="border-cyan-100/12 absolute left-[18%] top-[54%] h-px w-[56%] -rotate-[12deg] border-t border-dashed" />
+      {atoms.map(([symbol, position, color]) => (
+        <span
+          key={symbol}
+          className={`absolute ${position} flex h-12 w-12 items-center justify-center rounded-full border bg-black/[0.12] text-[17px] font-semibold ${color}`}
+        >
+          {symbol}
+        </span>
+      ))}
+    </div>
+  );
+}
+
 function World1750Backdrop() {
   return (
     <div className="flex h-full items-center justify-center">
@@ -161,6 +198,22 @@ function World1750Backdrop() {
             className={`absolute ${position} h-2.5 w-2.5 rounded-full border border-cyan-100/30 bg-cyan-300/25 shadow-[0_0_14px_rgba(103,232,249,0.35)]`}
           />
         ))}
+      </div>
+    </div>
+  );
+}
+
+function EmpireComparisonBackdrop() {
+  return (
+    <div className="relative flex h-full items-center justify-center font-serif">
+      <div className="absolute left-[14%] h-32 w-28 rounded-[45%] border border-blue-200/[0.16] bg-blue-300/[0.04]" />
+      <div className="absolute right-[12%] h-36 w-32 rounded-[45%] border border-violet-200/[0.16] bg-violet-300/[0.04]" />
+      <div className="absolute left-[33%] w-[34%] border-t border-dashed border-cyan-100/20" />
+      <div className="absolute left-[25%] top-[34%] text-[13px] font-semibold text-blue-100/45">
+        Ottoman
+      </div>
+      <div className="absolute bottom-[31%] right-[20%] text-[13px] font-semibold text-violet-100/45">
+        Mughal
       </div>
     </div>
   );
@@ -216,8 +269,18 @@ function LessonBackdrop({ slug }: { slug: string }) {
       fade =
         "bg-[linear-gradient(90deg,#03170f_0%,rgba(3,23,15,0.82)_18%,transparent_70%)]";
       break;
+    case "elements-of-life":
+      visual = <ElementsBackdrop />;
+      fade =
+        "bg-[linear-gradient(90deg,#03170f_0%,rgba(3,23,15,0.82)_18%,transparent_70%)]";
+      break;
     case "world-in-1750":
       visual = <World1750Backdrop />;
+      fade =
+        "bg-[linear-gradient(90deg,#05101c_0%,rgba(5,16,28,0.82)_18%,transparent_70%)]";
+      break;
+    case "ottoman-mughal":
+      visual = <EmpireComparisonBackdrop />;
       fade =
         "bg-[linear-gradient(90deg,#05101c_0%,rgba(5,16,28,0.82)_18%,transparent_70%)]";
       break;

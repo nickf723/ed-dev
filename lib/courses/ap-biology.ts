@@ -92,12 +92,14 @@ function plannedLesson({
   summary,
   outcome,
   alignment,
+  status = "planned",
 }: {
   slug: string;
   title: string;
   summary: string;
   outcome: string;
   alignment: readonly StandardAlignment[];
+  status?: CourseLesson["status"];
 }): CourseLesson {
   return {
     id: `ap-biology.unit-1.${slug}`,
@@ -106,7 +108,7 @@ function plannedLesson({
     summary,
     outcome,
     durationMinutes: 45,
-    status: "planned",
+    status,
     href: `${UNIT_ONE_BASE}/${slug}`,
     knowledgeNodeId: "natural.biology.molecular",
     alignment,
@@ -166,6 +168,7 @@ const lessons: readonly CourseLesson[] = [
         note: "Maps elements to biological molecular composition.",
       },
     ],
+    status: "active",
   }),
   plannedLesson({
     slug: "building-breaking-polymers",

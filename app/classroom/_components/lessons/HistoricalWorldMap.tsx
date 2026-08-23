@@ -17,6 +17,7 @@ import {
 } from "@/app/classroom/_components/lessons/world-in-1750-model";
 import {
   getHistoricalEmpireFeature,
+  getGeometryBounds,
   WORLD_1750_NEAR_PERIOD,
   WORLD_LAND,
   type HistoricalEmpireProperties,
@@ -192,7 +193,7 @@ function SelectionController({ selectedId }: { selectedId: StateId }) {
     const selectedFeature = getHistoricalEmpireFeature(selectedId);
     if (!selectedFeature) return;
 
-    const bounds = featureBounds(selectedFeature.geometry);
+    const bounds = getGeometryBounds(selectedFeature.geometry);
     if (!bounds) return;
 
     map.flyToBounds(bounds, {
@@ -203,33 +204,6 @@ function SelectionController({ selectedId }: { selectedId: StateId }) {
   }, [map, selectedId]);
 
   return null;
-}
-
-function featureBounds(geometry: Geometry) {
-  const points: [number, number][] = [];
-
-  function visit(value: unknown) {
-    if (!Array.isArray(value)) return;
-    if (
-      value.length >= 2 &&
-      typeof value[0] === "number" &&
-      typeof value[1] === "number"
-    ) {
-      points.push([value[1], value[0]]);
-      return;
-    }
-    value.forEach(visit);
-  }
-
-  if ("coordinates" in geometry) visit(geometry.coordinates);
-  if (!points.length) return null;
-
-  const lats = points.map(([lat]) => lat);
-  const lngs = points.map(([, lng]) => lng);
-  return [
-    [Math.min(...lats), Math.min(...lngs)],
-    [Math.max(...lats), Math.max(...lngs)],
-  ] as [[number, number], [number, number]];
 }
 
 function LegendItem({

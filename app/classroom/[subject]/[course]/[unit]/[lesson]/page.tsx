@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import EvidenceInferenceLesson from "@/app/classroom/_components/lessons/EvidenceInferenceLesson";
+import ElementsOfLifeLesson from "@/app/classroom/_components/lessons/ElementsOfLifeLesson";
+import OttomanMughalLesson from "@/app/classroom/_components/lessons/OttomanMughalLesson";
 import WaterHydrogenBondingLesson from "@/app/classroom/_components/lessons/WaterHydrogenBondingLesson";
 import WorldIn1750Lesson from "@/app/classroom/_components/lessons/WorldIn1750Lesson";
 import {
@@ -114,8 +116,16 @@ export default async function ClassroomLessonPage({ params }: PageProps) {
     );
   }
 
+  if (lesson.id === "ap-biology.unit-1.elements-of-life") {
+    return <ElementsOfLifeLesson breadcrumbs={breadcrumbs} {...navigation} />;
+  }
+
   if (lesson.id === "nys.global-2.unit-1.world-in-1750") {
     return <WorldIn1750Lesson breadcrumbs={breadcrumbs} {...navigation} />;
+  }
+
+  if (lesson.id === "nys.global-2.unit-1.ottoman-mughal") {
+    return <OttomanMughalLesson breadcrumbs={breadcrumbs} {...navigation} />;
   }
 
   if (lesson.id === "nys.literature.unit-1.evidence-inference") {

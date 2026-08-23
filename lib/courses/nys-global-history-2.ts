@@ -67,12 +67,14 @@ function plannedLesson({
   summary,
   outcome,
   alignment,
+  status = "planned",
 }: {
   slug: string;
   title: string;
   summary: string;
   outcome: string;
   alignment: readonly StandardAlignment[];
+  status?: CourseLesson["status"];
 }): CourseLesson {
   return {
     id: `nys.global-2.unit-1.${slug}`,
@@ -81,7 +83,7 @@ function plannedLesson({
     summary,
     outcome,
     durationMinutes: 45,
-    status: "planned",
+    status,
     href: `${UNIT_ONE_BASE}/${slug}`,
     knowledgeNodeId: "humanities.history",
     alignment,
@@ -151,6 +153,7 @@ const lessons: readonly CourseLesson[] = [
         note: "Uses contextual comparison.",
       },
     ],
+    status: "active",
   }),
   plannedLesson({
     slug: "tokugawa-bourbon",
