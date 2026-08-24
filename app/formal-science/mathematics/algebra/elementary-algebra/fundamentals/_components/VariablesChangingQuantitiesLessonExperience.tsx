@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { ArrowLeft, ArrowRight, Check, RefreshCcw, Variable } from "lucide-react";
 import DomainPageHeader from "@/app/_components/DomainPageHeader";
 import LessonUtilityBar from "@/app/_components/LessonUtilityBar";
@@ -21,11 +21,7 @@ const ACCENT = "244, 114, 182";
 const HOURS = [0, 1, 2, 3, 4, 5, 6] as const;
 const RATE = 4;
 const START_FEE = 6;
-const PRACTICE = [
-  { rule: "d = 12t + 5", input: 3, answer: 41, inputName: "hours", outputName: "distance" },
-  { rule: "P = 7n + 2", input: 4, answer: 30, inputName: "notebooks", outputName: "price" },
-  { rule: "T = 18m + 10", input: 2, answer: 46, inputName: "months", outputName: "total" },
-] as const;
+const REGENTS_SOURCE = "https://www.nysedregents.org/algebraone/625/algone-62025-exam.pdf";
 
 export default function VariablesChangingQuantitiesLessonExperience({
   breadcrumbs,
@@ -85,8 +81,13 @@ export default function VariablesChangingQuantitiesLessonExperience({
           </div>
           <div className="rounded-[22px] border border-amber-200/[0.12] bg-[#1a1206]/68 p-5 backdrop-blur-2xl">
             <Stage tone="amber">Boundary · Variable does not mean mystery</Stage>
-            <h2 className="mt-2 text-[25px] font-semibold tracking-[-0.035em] text-white">Sometimes we solve. Here, we vary.</h2>
-            <p className="mt-3 text-[16px] leading-7 text-stone-300">In <M>{"x+3=10"}</M>, x is unknown because an equation asks for the value that makes it true. In <M>{"C=4h+6"}</M>, h can take many meaningful values.</p>
+            <h2 className="mt-2 text-[25px] font-semibold tracking-[-0.035em] text-white">The letter is a placeholder. The situation tells us its job.</h2>
+            <div className="mt-4 space-y-4 text-[16px] leading-7 text-stone-300">
+              <p><M>{"C=4h+6"}</M></p>
+              <p>Here, <strong className="text-pink-100">h is an input placeholder</strong>. We may choose a known value such as 2 hours, substitute it, and find the matching cost. Different allowed inputs produce different outputs.</p>
+              <p><M>{"x+7=10"}</M></p>
+              <p>Here, <strong className="text-amber-100">x is an unidentified-value placeholder</strong>. One value must make the statement true. We can identify it by solving: <M>{"x=3"}</M>.</p>
+            </div>
           </div>
         </section>
 
@@ -104,9 +105,24 @@ export default function VariablesChangingQuantitiesLessonExperience({
 
 function QuantityWorkbench() {
   const [hours, setHours] = useState(2);
-  const [prediction, setPrediction] = useState<number | null>(null);
+  const [prediction, setPrediction] = useState("");
+  const [revealedHours, setRevealedHours] = useState<readonly number[]>([]);
   const cost = RATE * hours + START_FEE;
-  const correctPrediction = prediction === cost;
+  const revealed = revealedHours.includes(hours);
+  const attempted = revealed && prediction !== "";
+  const correctPrediction = attempted && Number(prediction) === cost;
+
+  function chooseHours(value: number) {
+    setHours(value);
+    setPrediction("");
+  }
+
+  function checkPrediction() {
+    if (prediction === "") return;
+    setRevealedHours((current) =>
+      current.includes(hours) ? current : [...current, hours]
+    );
+  }
 
   return (
     <section className="mt-8 rounded-[24px] border border-pink-200/[0.14] bg-[#120b1d]/70 p-4 backdrop-blur-2xl sm:p-6">
@@ -118,31 +134,35 @@ function QuantityWorkbench() {
         <div className="rounded-[18px] border border-white/[0.08] bg-black/20 p-4">
           <label className="text-[14px] font-semibold text-stone-300">Hours rented, h</label>
           <div className="mt-3 grid grid-cols-4 gap-2 sm:grid-cols-7 lg:grid-cols-4">
-            {HOURS.map((value) => <button key={value} type="button" onClick={() => { setHours(value); setPrediction(null); }} aria-pressed={hours === value} className={`min-h-11 rounded-xl border font-mono text-[16px] font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-300/70 ${hours === value ? "border-pink-200/35 bg-pink-300/[0.12] text-pink-100" : "border-white/[0.08] bg-black/15 text-stone-400 hover:text-white"}`}>{value}</button>)}
+            {HOURS.map((value) => <button key={value} type="button" onClick={() => chooseHours(value)} aria-pressed={hours === value} className={`min-h-11 rounded-xl border font-mono text-[16px] font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-300/70 ${hours === value ? "border-pink-200/35 bg-pink-300/[0.12] text-pink-100" : "border-white/[0.08] bg-black/15 text-stone-400 hover:text-white"}`}>{value}</button>)}
           </div>
           <div className="mt-5 text-[14px] text-stone-400">Before revealing the total, predict it:</div>
           <div className="mt-2 flex gap-2">
-            <input type="number" value={prediction ?? ""} onChange={(event) => setPrediction(event.target.value === "" ? null : Number(event.target.value))} className="min-w-0 flex-1 rounded-xl border border-white/[0.10] bg-black/25 px-3 py-2.5 text-[16px] text-white outline-none focus:border-pink-300/45" aria-label="Predicted cost" placeholder="$" />
-            <button type="button" onClick={() => setPrediction(cost)} className="rounded-xl border border-pink-200/20 bg-pink-300/[0.07] px-4 text-[13px] font-semibold text-pink-100">Reveal</button>
+            <input type="number" value={prediction} onChange={(event) => { setPrediction(event.target.value); if (revealed) setRevealedHours((current) => current.filter((value) => value !== hours)); }} onKeyDown={(event) => { if (event.key === "Enter") checkPrediction(); }} className="min-w-0 flex-1 rounded-xl border border-white/[0.10] bg-black/25 px-3 py-2.5 text-[16px] text-white outline-none focus:border-pink-300/45" aria-label="Predicted cost" placeholder="$" />
+            <button type="button" onClick={checkPrediction} disabled={prediction === ""} className="rounded-xl border border-pink-200/20 bg-pink-300/[0.07] px-4 text-[13px] font-semibold text-pink-100 disabled:cursor-not-allowed disabled:opacity-45">Check</button>
           </div>
-          {prediction !== null ? <p className={`mt-3 text-[14px] leading-6 ${correctPrediction ? "text-emerald-200" : "text-amber-200"}`} aria-live="polite">{correctPrediction ? `Yes. 4(${hours}) + 6 = ${cost}.` : `Use the fixed rule: multiply ${hours} by 4, then add 6.`}</p> : null}
+          <div className="mt-3 min-h-[52px]" aria-live="polite">{attempted ? <p className={`text-[14px] leading-6 ${correctPrediction ? "text-emerald-200" : "text-amber-200"}`}>{correctPrediction ? `Yes. 4(${hours}) + 6 = ${cost}.` : `The model reveals ${cost}. Multiply ${hours} by 4, then add the fixed 6.`}</p> : <p className="text-[14px] leading-6 text-stone-500">Commit a prediction to reveal every connected representation.</p>}</div>
         </div>
 
         <div className="rounded-[18px] border border-white/[0.08] bg-black/20 p-4">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <div className="text-[clamp(1.45rem,4vw,2.4rem)] text-white"><M>{`C=4(${hours})+6=${cost}`}</M></div>
-            <div className="rounded-full border border-sky-200/15 bg-sky-300/[0.05] px-3 py-1.5 font-mono text-[13px] text-sky-100">({hours}, {cost})</div>
+          <div className="grid min-h-[58px] grid-cols-[minmax(0,1fr)_auto] items-center gap-3">
+            <div className="text-[clamp(1.35rem,4vw,2.25rem)] text-white"><M>{revealed ? `C=4(${hours})+6=${cost}` : `C=4(${hours})+6=\,?`}</M></div>
+            <div className="min-w-[84px] rounded-full border border-sky-200/15 bg-sky-300/[0.05] px-3 py-1.5 text-center font-mono text-[13px] text-sky-100">({hours}, {revealed ? cost : "?"})</div>
           </div>
-          <div className="mt-5 overflow-hidden rounded-full border border-white/[0.08] bg-black/30" role="img" aria-label={`Total cost ${cost} dollars: ${RATE * hours} dollars from hours plus ${START_FEE} dollar starting fee`}>
-            <div className="flex h-12" style={{ width: `${Math.max(34, (cost / 30) * 100)}%` }}>
-              <div className="grid place-items-center bg-pink-400/45 text-[12px] font-semibold text-pink-50" style={{ flex: RATE * hours || 0.001 }}>{RATE * hours > 0 ? `$${RATE * hours} hours` : ""}</div>
-              <div className="grid min-w-16 place-items-center bg-violet-400/45 text-[12px] font-semibold text-violet-50" style={{ flex: START_FEE }}>$6 start</div>
+          <div className="mt-5 grid min-h-[250px] grid-cols-[96px_minmax(0,1fr)] items-end gap-4 rounded-[18px] border border-white/[0.08] bg-black/22 p-4" role="img" aria-label={revealed ? `Total cost ${cost} dollars: ${RATE * hours} dollars accumulated above the fixed ${START_FEE} dollar starting fee` : `Cost model hidden until a prediction is checked. The fixed ${START_FEE} dollar starting fee remains visible.`}>
+            <div className="relative h-[210px] overflow-hidden rounded-[14px] border border-white/[0.09] bg-black/30">
+              <div className="absolute inset-x-0 bottom-0 grid h-[50px] place-items-center border-t border-violet-100/20 bg-violet-400/45 px-1 text-center text-[12px] font-semibold text-violet-50">$6 start</div>
+              <div className={`absolute inset-x-0 bottom-[50px] grid place-items-center overflow-hidden border-t border-pink-100/20 bg-pink-400/45 px-1 text-center text-[12px] font-semibold text-pink-50 transition-[height,opacity] duration-500 ${revealed ? "opacity-100" : "opacity-0"}`} style={{ height: revealed ? `${hours * 24}px` : "0px" }}>{hours > 0 ? `$${RATE * hours} hours` : ""}</div>
+            </div>
+            <div className="self-center">
+              <div className="text-[13px] font-semibold uppercase tracking-[0.12em] text-stone-500">Accumulation</div>
+              <p className="mt-2 min-h-[72px] text-[15px] leading-6 text-stone-300">{revealed ? <>Each hour adds another <strong className="text-pink-100">$4 layer</strong> above the anchored <strong className="text-violet-100">$6 starting fee</strong>.</> : <>The <strong className="text-violet-100">$6 starting fee</strong> is anchored. Check your prediction to build the hourly cost above it.</>}</p>
             </div>
           </div>
           <div className="mt-5 grid grid-cols-4 gap-1.5 sm:grid-cols-7">
-            {HOURS.map((value) => { const output = RATE * value + START_FEE; return <button key={value} type="button" onClick={() => { setHours(value); setPrediction(null); }} className={`rounded-xl border px-2 py-2 text-center ${hours === value ? "border-sky-200/30 bg-sky-300/[0.08]" : "border-white/[0.06] bg-black/10"}`}><span className="block font-mono text-[12px] text-pink-200">h={value}</span><span className="mt-1 block font-mono text-[13px] font-semibold text-sky-100">C={output}</span></button>; })}
+            {HOURS.map((value) => { const output = RATE * value + START_FEE; const valueRevealed = revealedHours.includes(value); return <button key={value} type="button" onClick={() => chooseHours(value)} className={`min-h-[58px] rounded-xl border px-2 py-2 text-center ${hours === value ? "border-sky-200/30 bg-sky-300/[0.08]" : "border-white/[0.06] bg-black/10"}`}><span className="block font-mono text-[12px] text-pink-200">h={value}</span><span className="mt-1 block font-mono text-[13px] font-semibold text-sky-100">C={valueRevealed ? output : "?"}</span></button>; })}
           </div>
-          <p className="mt-4 text-[14px] leading-6 text-stone-400"><strong className="text-white">Notice:</strong> every extra hour adds $4. The $6 section never changes.</p>
+          <p className="mt-4 min-h-[48px] text-[14px] leading-6 text-stone-400"><strong className="text-white">Notice:</strong> revealed pairs remain in the table so the pattern grows from your own predictions.</p>
         </div>
       </div>
     </section>
@@ -150,24 +170,54 @@ function QuantityWorkbench() {
 }
 
 function TransferPractice() {
-  const [index, setIndex] = useState(0);
-  const [answer, setAnswer] = useState("");
-  const [checked, setChecked] = useState(false);
-  const problem = PRACTICE[index];
-  const correct = Number(answer) === problem.answer;
-  const nextProblem = useMemo(() => (index + 1) % PRACTICE.length, [index]);
+  const [answers, setAnswers] = useState<Record<string, string>>({});
+  const [checked, setChecked] = useState<readonly string[]>([]);
+
+  function update(id: string, value: string) {
+    setAnswers((current) => ({ ...current, [id]: value }));
+    setChecked((current) => current.filter((item) => item !== id));
+  }
+
+  function check(id: string) {
+    setChecked((current) => current.includes(id) ? current : [...current, id]);
+  }
+
+  const items = [
+    { id: "evaluate", label: "Evaluate", prompt: <>A delivery rule is <M>{"d=12t+5"}</M>. Find <M>{"d"}</M> when <M>{"t=3"}</M>.</>, answer: "41", placeholder: "Output" },
+    { id: "interpret", label: "Interpret", prompt: <>In <M>{"P=7n+2"}</M>, what does the constant 2 represent?</>, answer: "starting fee", placeholder: "Meaning of 2" },
+    { id: "construct", label: "Construct", prompt: <>A club charges $8 to join and $3 per visit <M>{"v"}</M>. Write a rule for total cost <M>{"C"}</M>.</>, answer: "C=3v+8", placeholder: "C = ..." },
+    { id: "regents", label: "Regents transfer", prompt: <>For <M>{"g(x)=\frac{x^2-22}{x+3}"}</M>, find <M>{"g(-2)"}</M>.</>, answer: "-18", placeholder: "g(-2)" },
+  ] as const;
+
+  function isCorrect(id: string, expected: string) {
+    const normalized = (answers[id] ?? "").toLowerCase().replace(/\s+/g, "");
+    if (id === "interpret") return ["startingfee", "initialfee", "fixedfee", "$2startingfee", "2dollarstartingfee"].includes(normalized);
+    if (id === "construct") return ["c=3v+8", "c=8+3v"].includes(normalized);
+    return normalized === expected.toLowerCase().replace(/\s+/g, "");
+  }
 
   return (
     <section id="variable-practice" className="mt-8 scroll-mt-24 rounded-[24px] border border-emerald-200/[0.13] bg-[#071711]/70 p-4 backdrop-blur-2xl sm:p-6">
       <Stage tone="emerald">Check · Fresh context</Stage>
       <h2 className="mt-2 text-[clamp(1.55rem,3.3vw,2.3rem)] font-semibold tracking-[-0.04em] text-white">Can the relationship travel?</h2>
-      <p className="mt-2 text-[16px] leading-7 text-stone-300">In the rule <span className="font-mono text-emerald-100">{problem.rule}</span>, {problem.inputName} is the changing input. Find the {problem.outputName} when the input is {problem.input}.</p>
-      <div className="mt-4 flex max-w-xl gap-2">
-        <input value={answer} onChange={(event) => { setAnswer(event.target.value); setChecked(false); }} inputMode="numeric" className="min-w-0 flex-1 rounded-xl border border-white/[0.10] bg-black/25 px-3 py-3 text-[16px] text-white outline-none focus:border-emerald-300/45" aria-label="Practice answer" placeholder="Enter the output" />
-        <button type="button" onClick={() => setChecked(true)} className="rounded-xl bg-emerald-400/20 px-5 text-[14px] font-semibold text-emerald-100">Check</button>
+      <p className="mt-2 max-w-3xl text-[16px] leading-7 text-stone-300">Move from substitution to interpretation, construction, and an authentic Regents transfer. Each item checks a different kind of understanding.</p>
+      <div className="mt-5 grid gap-4 md:grid-cols-2">
+        {items.map((item) => {
+          const wasChecked = checked.includes(item.id);
+          const correct = isCorrect(item.id, item.answer);
+          return <article key={item.id} className="flex min-h-[264px] flex-col rounded-[18px] border border-white/[0.08] bg-black/20 p-4">
+            <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-emerald-300/75">{item.label}</div>
+            <div className="mt-3 min-h-[72px] text-[16px] leading-7 text-stone-200">{item.prompt}</div>
+            <div className="mt-auto flex gap-2 pt-4">
+              <input value={answers[item.id] ?? ""} onChange={(event) => update(item.id, event.target.value)} onKeyDown={(event) => { if (event.key === "Enter") check(item.id); }} className="min-w-0 flex-1 rounded-xl border border-white/[0.10] bg-black/25 px-3 py-3 text-[16px] text-white outline-none focus:border-emerald-300/45" aria-label={`${item.label} answer`} placeholder={item.placeholder} />
+              <button type="button" onClick={() => check(item.id)} className="rounded-xl bg-emerald-400/20 px-4 text-[14px] font-semibold text-emerald-100">Check</button>
+            </div>
+            <div className="mt-3 min-h-[52px]" aria-live="polite">{wasChecked ? <p className={`text-[14px] leading-6 ${correct ? "text-emerald-100" : "text-amber-100"}`}>{correct ? <><Check className="mr-2 inline" size={15} />Correct. {item.id === "regents" ? "Substitute before simplifying the fraction." : "The variable and fixed quantities keep their roles."}</> : <>Revisit what changes, what stays fixed, and which value is being substituted.</>}</p> : null}</div>
+          </article>;
+        })}
       </div>
-      {checked ? <div className={`mt-4 rounded-[16px] border p-4 text-[15px] leading-6 ${correct ? "border-emerald-200/20 bg-emerald-300/[0.05] text-emerald-100" : "border-amber-200/18 bg-amber-300/[0.04] text-amber-100"}`} aria-live="polite">{correct ? <><Check className="mr-2 inline" size={16} />Correct. You substituted the selected input into the unchanged rule.</> : <>Not yet. Replace the variable with {problem.input}, multiply first, and then add the constant.</>}</div> : null}
-      <button type="button" onClick={() => { setIndex(nextProblem); setAnswer(""); setChecked(false); }} className="mt-4 inline-flex items-center gap-2 text-[13px] font-semibold text-stone-400 hover:text-white"><RefreshCcw size={14} />Try another generated case</button>
+      <p className="mt-4 text-[12px] leading-5 text-stone-500">Regents transfer adapted into this lesson’s notation from <a href={REGENTS_SOURCE} target="_blank" rel="noreferrer" className="text-emerald-200/75 underline decoration-emerald-200/25 underline-offset-4">June 2025 Algebra I Regents, question 18</a>. The original released item and scoring materials remain the authority.</p>
+      <button type="button" onClick={() => { setAnswers({}); setChecked([]); }} className="mt-4 inline-flex items-center gap-2 text-[13px] font-semibold text-stone-400 hover:text-white"><RefreshCcw size={14} />Reset assessment</button>
     </section>
   );
 }

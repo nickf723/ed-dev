@@ -76,15 +76,17 @@ Verify:
 
 Verify:
 
-- selecting each hour value from 0 through 6 coordinates the equation, ordered pair, table highlight, and stacked quantity bar
-- the prediction remains distinct from the revealed value and reset restores the opening state
+- selecting each hour value from 0 through 6 keeps the equation, ordered pair, table output, and hourly accumulation unresolved until a prediction is checked
+- the fixed $6 block remains anchored at the bottom while the $4-per-hour accumulation grows above it
+- revealed values persist as a learner-built table while unrevealed values remain hidden
+- feedback, equations, labels, and assessment cards reserve enough space to avoid layout shifts as state changes
 - the variable, input, output, rate, and constant distinctions stay readable without turning the lesson into a glossary
-- the misconception boundary distinguishes a changing quantity from an unknown in an equation
-- all three transfer cases provide deterministic feedback and preserve their own response state
+- the misconception boundary distinguishes a chosen or varying input placeholder from an unidentified-value placeholder without implying that an unknown is unknowable
+- the assessment independently checks evaluation, interpretation, rule construction, and a cited Regents-style transfer
 - the seven-stage discovery arc, subject background, semantic navigation, keyboard focus, mobile widths, and 200% text zoom remain clear
 - the Classroom alias omits Vocabulary while the canonical atlas lesson retains it
 
-**Status:** TypeScript, focused lint, vocabulary aggregation, classroom model tests, architecture/readability audits, and the 432-page production build pass. Local preview startup is blocked by the workspace network-interface restriction, so rendered responsive, keyboard, zoom, and interaction verification remains pending for the hosted preview.
+**Status:** TypeScript, focused lint, vocabulary aggregation, classroom model tests, architecture/readability audits, and the updated 432-page production build pass. Local preview startup is blocked by the workspace network-interface restriction, so rendered responsive, keyboard, zoom, and interaction verification remains pending for the hosted preview.
 
 ---
 

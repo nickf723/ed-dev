@@ -27,15 +27,18 @@ function VariableField() {
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_78%_18%,rgba(244,114,182,0.19),transparent_29%),radial-gradient(circle_at_18%_72%,rgba(56,189,248,0.11),transparent_32%),linear-gradient(to_bottom,rgba(26,7,23,0.16),rgba(7,4,17,0.88))]" />
       <div className="absolute inset-0 opacity-25 [background-image:linear-gradient(rgba(244,114,182,0.026)_1px,transparent_1px),linear-gradient(90deg,rgba(56,189,248,0.024)_1px,transparent_1px)] [background-size:72px_72px]" />
       <svg viewBox="0 0 1200 800" className="absolute inset-0 h-full w-full opacity-70">
-        <path d="M120 650 C300 610 350 500 500 520 C650 540 730 310 1080 180" fill="none" stroke="rgba(244,114,182,0.16)" strokeWidth="3" />
+        <path d="M90 650 C270 635 360 540 505 550 C690 565 760 300 1110 185" fill="none" stroke="rgba(244,114,182,0.14)" strokeWidth="3" />
         {[0, 1, 2, 3, 4, 5].map((step) => (
           <g key={step} className={step % 2 ? "fund-bg-float-a" : "fund-bg-float-b"}>
-            <circle cx={160 + step * 170} cy={620 - step * 82} r="8" fill="rgba(244,114,182,0.42)" />
-            <text x={142 + step * 170} y={590 - step * 82} fill="rgba(251,207,232,0.18)" fontSize="24" fontFamily="monospace">{step}</text>
+            <circle cx={140 + step * 185} cy={625 - step * 82} r="8" fill="rgba(244,114,182,0.38)" />
+            <circle cx={140 + step * 185} cy={625 - step * 82} r={18 + step * 2} fill="none" stroke="rgba(186,230,253,0.08)" />
           </g>
         ))}
-        <text x="760" y="620" fill="rgba(186,230,253,0.10)" fontSize="72" fontFamily="monospace">C = 4h + 6</text>
-        <text x="80" y="220" fill="rgba(244,114,182,0.08)" fontSize="190" fontFamily="serif">h ↦ C</text>
+        <g fill="rgba(186,230,253,0.08)" fontSize="54" fontFamily="monospace">
+          <text x="760" y="650">y = mx + b</text>
+          <text x="92" y="220">input ↦ rule ↦ output</text>
+        </g>
+        <path d="M215 330 H440 M520 330 H745" stroke="rgba(244,114,182,0.08)" strokeWidth="2" strokeDasharray="10 14" className="fund-dash" />
       </svg>
       <BackgroundAnimationStyles />
     </div>
