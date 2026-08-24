@@ -296,7 +296,7 @@ export function getUnitNavigation(
       ...unit,
       status: "planned" as const,
     })),
-  ];
+  ].sort((a, b) => a.number - b.number);
 }
 
 export function getCourseUnit(

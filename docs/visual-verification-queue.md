@@ -89,6 +89,23 @@ Verify:
 
 **Status:** TypeScript, focused lint, vocabulary aggregation, classroom model tests, architecture/readability audits, and the updated 432-page production build pass. Local preview startup is blocked by the workspace network-interface restriction, so rendered responsive, keyboard, zoom, and interaction verification remains pending for the hosted preview.
 
+### Guided Algebra I Regents review
+
+**Routes:** `/classroom/math/algebra-1/exam-prep` and `/classroom/math/algebra-1/exam-prep/june-2025`.
+
+Verify:
+
+- Exam Prep appears as Unit 8 after Units 1–7 without moving ahead of planned course content
+- the June 2025 pilot links to NYSED's official exam and scoring key and clearly labels independently authored summaries and explanations
+- all four pilot items require an answer attempt before worked reasoning appears
+- hints remain separate from the final walkthrough and opening a hint does not mark an item complete
+- question navigation preserves answers, hint state, checked state, and correct/review status
+- each walkthrough identifies the tested skill, decisive reasoning, reusable takeaway, and a live connected lesson
+- mathematical notation renders through the shared math component with no raw commands or control characters
+- the sidebar, tables, answer choices, progress, and previous/next controls remain usable at mobile widths, keyboard-only, and 200% text zoom
+
+**Status:** Source, type, lint, model, production-build, and rendered interaction verification required.
+
 ---
 
 ## Verification protocol

@@ -94,6 +94,7 @@ export const NYS_ALGEBRA_I_FRAMEWORK: StandardsFramework = {
 };
 
 const UNIT_ONE_BASE = "/classroom/math/algebra-1/unit-1";
+const EXAM_PREP_BASE = "/classroom/math/algebra-1/exam-prep";
 
 const lessons: readonly CourseLesson[] = [
   {
@@ -377,6 +378,100 @@ export const NYS_ALGEBRA_I_UNIT_ONE: CourseUnit = {
   },
 };
 
+export const NYS_ALGEBRA_I_EXAM_PREP: CourseUnit = {
+  id: "nys.algebra-1.exam-prep",
+  slug: "exam-prep",
+  number: 8,
+  title: "Guided Regents Review",
+  summary:
+    "Choose a released Algebra I Regents exam and unpack its questions through hints, representations, and worked reasoning.",
+  essentialQuestion:
+    "How can exam questions reveal what we know, what we missed, and what to practice next?",
+  status: "active",
+  href: EXAM_PREP_BASE,
+  pacing: "Flexible review · complete by question, topic, or exam section",
+  prerequisites: [
+    "Completion of the corresponding Algebra I content",
+    "Familiarity with Regents multiple-choice and constructed-response formats",
+  ],
+  lessons: [
+    {
+      id: "nys.algebra-1.exam-prep.june-2025",
+      slug: "june-2025",
+      title: "June 2025 Algebra I Regents",
+      summary:
+        "Navigate a released exam by question, identify its mathematical demand, and study each solution as a reusable strategy.",
+      outcome:
+        "Analyze released Algebra I items, select justified answers, and connect errors to specific review targets.",
+      durationMinutes: 90,
+      status: "active",
+      href: `${EXAM_PREP_BASE}/june-2025`,
+      knowledgeNodeId:
+        "formal.mathematics.algebra.elementary-algebra",
+      evidence: [
+        {
+          kind: "solve",
+          description:
+            "Commit answers to released-exam item summaries before opening the worked reasoning.",
+        },
+        {
+          kind: "explain",
+          description:
+            "Identify the skill, decisive clue, and reusable strategy behind each answer.",
+        },
+      ],
+      alignment: [
+        {
+          code: "AI-A.SSE.1a",
+          emphasis: "primary",
+          coverage: ["assessed"],
+          note: "Reviews polynomial structure through a released item.",
+        },
+        {
+          code: "AI-N.Q.1",
+          emphasis: "primary",
+          coverage: ["assessed"],
+          note: "Reviews quantities, rates, and contextual modeling.",
+        },
+        {
+          code: "AI-A.REI.1a",
+          emphasis: "primary",
+          coverage: ["assessed"],
+          note: "Reviews the justification for an equation transformation.",
+        },
+        {
+          code: "MP.6",
+          emphasis: "supporting",
+          coverage: ["assessed"],
+          note: "Requires precise reading of notation, quantities, and answer choices.",
+        },
+      ],
+      teacher: {
+        warmUp:
+          "Ask students to sort missed questions into content gap, notation gap, strategy gap, or avoidable error.",
+        misconception:
+          "Students may treat review as answer memorization instead of identifying transferable mathematical decisions.",
+        exitTicket:
+          "Name one item you can now solve, the clue that unlocked it, and the lesson you would revisit next.",
+      },
+    },
+  ],
+  teacherGuide: {
+    openingRoutine:
+      "Have learners attempt an item before opening any hint or worked reasoning.",
+    evidencePlan: [
+      "Track first attempts separately from answers changed after hints.",
+      "Ask learners to name the tested skill before viewing the solution.",
+      "Use review targets to route students back to concept lessons.",
+    ],
+    differentiation: [
+      "Allow review by topic instead of exam order.",
+      "Reveal one hint at a time and keep the final answer gated behind an attempt.",
+      "For extension, ask learners to explain why every distractor is tempting but incorrect.",
+    ],
+  },
+};
+
 export const NYS_ALGEBRA_I_COURSE: Course = {
   id: "nys.algebra-1",
   slug: "algebra-1",
@@ -389,7 +484,7 @@ export const NYS_ALGEBRA_I_COURSE: Course = {
   status: "active",
   href: "/classroom/math/algebra-1",
   framework: NYS_ALGEBRA_I_FRAMEWORK,
-  units: [NYS_ALGEBRA_I_UNIT_ONE],
+  units: [NYS_ALGEBRA_I_UNIT_ONE, NYS_ALGEBRA_I_EXAM_PREP],
   plannedUnits: [
     {
       id: "nys.algebra-1.unit-2",

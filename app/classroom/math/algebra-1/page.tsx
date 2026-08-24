@@ -21,6 +21,7 @@ const UNIT_ACCENTS: readonly ClassroomRouteAccent[] = [
   "cyan",
   "violet",
   "pink",
+  "violet",
 ];
 
 export default function AlgebraOneCoursePage() {
