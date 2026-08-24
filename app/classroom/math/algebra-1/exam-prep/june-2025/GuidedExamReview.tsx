@@ -9,6 +9,7 @@ import {
   JUNE_2025_EXAM_URL,
   JUNE_2025_GUIDED_ITEMS,
   JUNE_2025_SCORING_URL,
+  type GuidedExamItem,
 } from "../_data/june-2025";
 
 export default function GuidedExamReview() {
@@ -124,6 +125,7 @@ export default function GuidedExamReview() {
               <ol className="mt-4 space-y-3">
                 {item.reasoning.map((step, stepIndex) => <li key={step} className="grid grid-cols-[28px_1fr] gap-3 text-[15px] leading-6 text-stone-200"><span className="grid h-7 w-7 place-items-center rounded-full border border-violet-200/20 bg-violet-300/[0.07] font-mono text-[12px] text-violet-200">{stepIndex + 1}</span><span>{step}</span></li>)}
               </ol>
+              <IntuitionLab key={item.number} item={item} />
               <div className="mt-5 rounded-[14px] border border-sky-200/12 bg-sky-300/[0.04] p-4 text-[14px] leading-6 text-sky-100"><strong>Carry forward:</strong> {item.takeaway}</div>
               <Link href={item.reviewHref} className="mt-4 inline-flex items-center gap-2 text-[13px] font-semibold text-violet-200">Review the connected lesson <ArrowRight size={14} /></Link>
             </div> : null}
@@ -136,8 +138,96 @@ export default function GuidedExamReview() {
           </section>
         </div>
 
-        <p className="mt-5 text-[12px] leading-5 text-stone-500">Pilot scope: four guided items from the 35-question June 2025 examination. Question summaries, hints, and explanations are independently authored; NYSED’s released exam and scoring materials remain the source of record.</p>
+        <p className="mt-5 text-[12px] leading-5 text-stone-500">Pilot scope: six guided items from the 35-question June 2025 examination. Short prompts may be transcribed while longer items are faithfully restated; hints, interactions, and explanations are independently authored. NYSED’s released exam and scoring materials remain the source of record.</p>
       </div>
     </main>
   );
+}
+
+function IntuitionLab({ item }: { item: GuidedExamItem }) {
+  const [stage, setStage] = useState(0);
+
+  if (item.number === 3) {
+    return <LabFrame title="Watch what repeats">
+      <div className="grid gap-3 sm:grid-cols-2">
+        <button type="button" onClick={() => setStage(0)} aria-pressed={stage === 0} className={`rounded-[14px] border p-3 text-left ${stage === 0 ? "border-sky-200/25 bg-sky-300/[0.07]" : "border-white/[0.07] bg-black/15"}`}>
+          <div className="text-[12px] font-semibold text-sky-200">Fixed amount: +5</div>
+          <div className="mt-3 flex items-end gap-1.5">{[100, 105, 110, 115].map((value) => <div key={value} className="grid flex-1 place-items-end rounded-t bg-sky-400/25 pb-1 text-[10px] text-sky-100" style={{ height: `${value - 52}px` }}>{value}</div>)}</div>
+        </button>
+        <button type="button" onClick={() => setStage(1)} aria-pressed={stage === 1} className={`rounded-[14px] border p-3 text-left ${stage === 1 ? "border-pink-200/25 bg-pink-300/[0.07]" : "border-white/[0.07] bg-black/15"}`}>
+          <div className="text-[12px] font-semibold text-pink-200">Fixed percent: ×1.05</div>
+          <div className="mt-3 flex items-end gap-1.5">{[100, 105, 110.25, 115.76].map((value) => <div key={value} className="grid flex-1 place-items-end rounded-t bg-pink-400/25 pb-1 text-[10px] text-pink-100" style={{ height: `${value - 52}px` }}>{value}</div>)}</div>
+        </button>
+      </div>
+      <p className="mt-3 min-h-[44px] text-[13px] leading-5 text-stone-300">{stage === 0 ? "Equal additions create equal vertical steps." : "The same percent acts on a changing total, so the additions themselves grow."}</p>
+    </LabFrame>;
+  }
+
+  if (item.number === 5) {
+    const secondPass = stage > 0;
+    return <LabFrame title="Run two filters">
+      <div className="grid gap-2 sm:grid-cols-2">
+        {["6x^3+3x^2-2x", "2x^3+x^2+4x"].map((expression) => <div key={expression} className={`rounded-[14px] border p-4 text-center text-[17px] ${secondPass && expression.startsWith("6") ? "border-white/[0.05] bg-black/10 text-stone-600" : "border-violet-200/16 bg-violet-300/[0.04] text-violet-100"}`}><M>{expression}</M></div>)}
+      </div>
+      <button type="button" onClick={() => setStage((current) => current ? 0 : 1)} className="mt-3 min-h-11 rounded-xl border border-violet-200/18 bg-violet-300/[0.06] px-4 text-[13px] font-semibold text-violet-100">{secondPass ? "Reset filters" : "Now require leading coefficient 2"}</button>
+      <p className="mt-3 min-h-[44px] text-[13px] leading-5 text-stone-300">{secondPass ? "Both survivors have degree 3; the second filter selects the one whose x³ term begins with 2." : "The degree filter keeps both expressions because each has greatest exponent 3."}</p>
+    </LabFrame>;
+  }
+
+  if (item.number === 6) {
+    const distributed = stage > 0;
+    return <LabFrame title="Push the subtraction through">
+      <div className="rounded-[14px] border border-white/[0.08] bg-black/20 p-4 text-center text-[clamp(1rem,3vw,1.45rem)] text-violet-100"><M>{distributed ? "-3x^2+9-7x^2+5x-4" : "(-3x^2+9)-(7x^2-5x+4)"}</M></div>
+      <div className="mt-3 grid grid-cols-3 gap-2 text-center text-[12px]">
+        {["7x² → −7x²", "−5x → +5x", "+4 → −4"].map((change) => <div key={change} className={`rounded-xl border px-2 py-3 ${distributed ? "border-pink-200/18 bg-pink-300/[0.05] text-pink-100" : "border-white/[0.06] text-stone-600"}`}>{change}</div>)}
+      </div>
+      <button type="button" onClick={() => setStage((current) => current ? 0 : 1)} className="mt-3 min-h-11 rounded-xl border border-violet-200/18 bg-violet-300/[0.06] px-4 text-[13px] font-semibold text-violet-100">{distributed ? "Restore parentheses" : "Distribute the negative"}</button>
+    </LabFrame>;
+  }
+
+  if (item.number === 7) {
+    const rateStage = Math.min(stage, 2);
+    return <LabFrame title="Build the rate from two changes">
+      <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-3 text-center">
+        <PointCard label="Week 4" value="12 in" />
+        <ArrowRight className="text-violet-300" />
+        <PointCard label="Week 12" value="60 in" />
+      </div>
+      <div className="mt-3 grid gap-2 sm:grid-cols-2">
+        <button type="button" onClick={() => setStage(1)} className={`rounded-xl border p-3 text-[13px] ${rateStage >= 1 ? "border-pink-200/20 bg-pink-300/[0.05] text-pink-100" : "border-white/[0.07] text-stone-400"}`}>Output change: 60 − 12 = 48 inches</button>
+        <button type="button" onClick={() => setStage(2)} className={`rounded-xl border p-3 text-[13px] ${rateStage >= 2 ? "border-sky-200/20 bg-sky-300/[0.05] text-sky-100" : "border-white/[0.07] text-stone-400"}`}>Input change: 12 − 4 = 8 weeks</button>
+      </div>
+      <div className={`mt-3 min-h-[54px] rounded-xl border p-3 text-center text-[16px] transition-opacity ${rateStage >= 2 ? "border-emerald-200/18 bg-emerald-300/[0.05] text-emerald-100 opacity-100" : "border-white/[0.05] text-stone-600 opacity-55"}`}>{rateStage >= 2 ? <M>{"\\frac{48\\text{ inches}}{8\\text{ weeks}}=6\\text{ inches per week}"}</M> : "Reveal both changes to form the rate."}</div>
+    </LabFrame>;
+  }
+
+  if (item.number === 8) {
+    const states = ["x^2+5x=3x+3", "x^2+2x=3", "x^2+2x-3=0"];
+    return <LabFrame title="Keep both sides synchronized">
+      <div className="rounded-[14px] border border-white/[0.08] bg-black/20 p-4 text-center text-[clamp(1rem,3vw,1.5rem)] text-violet-100"><M>{states[Math.min(stage, 2)]}</M></div>
+      <div className="mt-3 grid grid-cols-2 gap-2">
+        <button type="button" onClick={() => setStage(1)} className={`min-h-11 rounded-xl border text-[13px] ${stage >= 1 ? "border-pink-200/20 bg-pink-300/[0.05] text-pink-100" : "border-white/[0.07] text-stone-400"}`}>Subtract 3x from both sides</button>
+        <button type="button" onClick={() => setStage(2)} className={`min-h-11 rounded-xl border text-[13px] ${stage >= 2 ? "border-sky-200/20 bg-sky-300/[0.05] text-sky-100" : "border-white/[0.07] text-stone-400"}`}>Subtract 3 from both sides</button>
+      </div>
+      <p className="mt-3 min-h-[44px] text-[13px] leading-5 text-stone-300">The terms do not “jump” across the equals sign. Each state comes from the same subtraction on both sides.</p>
+    </LabFrame>;
+  }
+
+  return <LabFrame title="Assemble one relationship at a time">
+    <div className="grid gap-2 sm:grid-cols-3">
+      {[{ label: "Jack", math: "x" }, { label: "Tim", math: "7x-4" }, { label: "Together", math: "(7x-4)+x=44" }].map((part, partIndex) => <button key={part.label} type="button" onClick={() => setStage(partIndex + 1)} className={`rounded-[14px] border p-3 text-left ${stage > partIndex ? "border-violet-200/20 bg-violet-300/[0.06]" : "border-white/[0.07] bg-black/15"}`}><span className="block text-[11px] font-semibold uppercase tracking-[0.12em] text-stone-500">{part.label}</span><span className={`mt-2 block text-[17px] ${stage > partIndex ? "text-violet-100" : "text-stone-600"}`}><M>{stage > partIndex ? part.math : "?"}</M></span></button>)}
+    </div>
+    <p className="mt-3 min-h-[44px] text-[13px] leading-5 text-stone-300">Name each quantity before combining them. The final equation should preserve all three statements from the situation.</p>
+  </LabFrame>;
+}
+
+function LabFrame({ title, children }: { title: string; children: React.ReactNode }) {
+  return <div className="mt-5 rounded-[16px] border border-violet-200/[0.13] bg-black/20 p-4">
+    <div className="mb-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-violet-300/75">Intuition lab · {title}</div>
+    {children}
+  </div>;
+}
+
+function PointCard({ label, value }: { label: string; value: string }) {
+  return <div className="rounded-[14px] border border-white/[0.08] bg-black/20 p-3"><div className="text-[11px] uppercase tracking-[0.12em] text-stone-500">{label}</div><div className="mt-1 font-mono text-[18px] font-semibold text-white">{value}</div></div>;
 }

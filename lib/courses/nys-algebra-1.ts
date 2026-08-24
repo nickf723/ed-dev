@@ -440,6 +440,18 @@ export const NYS_ALGEBRA_I_EXAM_PREP: CourseUnit = {
           note: "Reviews the justification for an equation transformation.",
         },
         {
+          code: "AI-A.SSE.2",
+          emphasis: "primary",
+          coverage: ["assessed"],
+          note: "Reviews polynomial structure and equivalent expressions.",
+        },
+        {
+          code: "MP.7",
+          emphasis: "supporting",
+          coverage: ["assessed"],
+          note: "Uses repeated structure to distinguish additive from multiplicative change.",
+        },
+        {
           code: "MP.6",
           emphasis: "supporting",
           coverage: ["assessed"],

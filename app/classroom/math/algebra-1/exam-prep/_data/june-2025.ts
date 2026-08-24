@@ -26,12 +26,37 @@ export type GuidedExamItem = {
 
 export const JUNE_2025_GUIDED_ITEMS: readonly GuidedExamItem[] = [
   {
+    number: 3,
+    sourcePage: 2,
+    skill: "Recognize exponential change",
+    standard: "MP.7",
+    prompt:
+      "Which scenario represents an exponential relationship?",
+    options: [
+      { id: "1", label: "Lose 1 pound each week" },
+      { id: "2", label: "Raise a grade by 5 points each quarter" },
+      { id: "3", label: "Reduce spending by $50 each month" },
+      { id: "4", label: "Grow a business by 5% each month" },
+    ],
+    answer: "4",
+    hint:
+      "Separate repeated addition or subtraction from repeated multiplication by a percent factor.",
+    reasoning: [
+      "A fixed number added or removed each interval produces additive, linear change.",
+      "A fixed percent acts on the current amount, so the amount added changes as the total changes.",
+      "Growing by 5% each month repeatedly multiplies the current value by 1.05, making choice 4 exponential.",
+    ],
+    takeaway: "Fixed amount means additive change; fixed percent means multiplicative change.",
+    reviewHref:
+      "/formal-science/mathematics/algebra/elementary-algebra/exponents",
+  },
+  {
     number: 5,
     sourcePage: 3,
     skill: "Read polynomial structure",
     standard: "AI-A.SSE.1a",
     prompt:
-      "The released item asks for the polynomial whose degree is 3 and whose leading coefficient is 2.",
+      "Which polynomial has a degree of 3 and a leading coefficient of 2?",
     options: [
       { id: "1", math: "2x^2+3x+1" },
       { id: "2", math: "6x^3+3x^2-2x" },
@@ -49,6 +74,31 @@ export const JUNE_2025_GUIDED_ITEMS: readonly GuidedExamItem[] = [
     takeaway: "Read degree and leading coefficient from the same leading term.",
     reviewHref:
       "/classroom/math/algebra-1/unit-1/expressions-variables",
+  },
+  {
+    number: 6,
+    sourcePage: 3,
+    skill: "Subtract polynomial expressions",
+    standard: "AI-A.SSE.2",
+    prompt: "Which expression is equivalent to the subtraction shown?",
+    displayMath: "(-3x^2+9)-(7x^2-5x+4)",
+    options: [
+      { id: "1", math: "-10x^2+5x+5" },
+      { id: "2", math: "-10x^2+5x+13" },
+      { id: "3", math: "-10x^2-5x+5" },
+      { id: "4", math: "-10x^2-5x+13" },
+    ],
+    answer: "1",
+    hint:
+      "The subtraction sign changes every term inside the second parentheses.",
+    reasoning: [
+      "Distribute the subtraction across all three terms in the second polynomial.",
+      "The expression becomes −3x² + 9 − 7x² + 5x − 4.",
+      "Combine matching terms to get −10x² + 5x + 5, which is choice 1.",
+    ],
+    takeaway: "Subtracting a polynomial means adding the opposite of every term.",
+    reviewHref:
+      "/classroom/math/algebra-1/unit-1/algebraic-properties",
   },
   {
     number: 7,
@@ -87,7 +137,7 @@ export const JUNE_2025_GUIDED_ITEMS: readonly GuidedExamItem[] = [
     standard: "AI-A.REI.1a",
     prompt:
       "The released item asks which property justifies rewriting the given equation as the next equation.",
-    displayMath: "x^2+5x=3x+3\quad\longrightarrow\quad x^2+2x-3=0",
+    displayMath: "x^2+5x=3x+3\\quad\\longrightarrow\\quad x^2+2x-3=0",
     options: [
       { id: "1", label: "Zero product property" },
       { id: "2", label: "Commutative property" },
