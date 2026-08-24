@@ -4,6 +4,7 @@ import {
   Braces,
   Equal,
   Hash,
+  Variable,
   RefreshCcw,
   Scale,
   type LucideIcon,
@@ -45,10 +46,18 @@ const FUNDAMENTALS_BREADCRUMBS = FUNDAMENTALS_CONTEXT.breadcrumbs.map(
 );
 
 const PRESENTATION: Record<string, LessonPresentation> = {
+  "formal.mathematics.algebra.elementary-algebra.fundamentals.variables-changing-quantities": {
+    icon: Variable,
+    rgb: "244, 114, 182",
+    step: "01",
+    thesis: "A variable can move through many values while the rule stays fixed.",
+    specimen: "C = 4h + 6",
+    outcome: "Interpret changing inputs and the outputs produced by a contextual rule.",
+  },
   "formal.mathematics.algebra.elementary-algebra.fundamentals.expressions-variables": {
     icon: Braces,
     rgb: "52, 211, 153",
-    step: "01",
+    step: "02",
     thesis: "Read the grammar before trying to manipulate it.",
     specimen: "3x² − 2x + 5",
     outcome: "Identify signed terms, coefficients, variables, exponents, and constants.",
@@ -56,7 +65,7 @@ const PRESENTATION: Record<string, LessonPresentation> = {
   "formal.mathematics.algebra.elementary-algebra.fundamentals.one-step-equations": {
     icon: Scale,
     rgb: "34, 211, 238",
-    step: "02",
+    step: "03",
     thesis: "Undo one operation while keeping both sides equal.",
     specimen: "x + 6 = 14",
     outcome: "Solve one-step equations with inverse operations and preserve equality.",
@@ -64,7 +73,7 @@ const PRESENTATION: Record<string, LessonPresentation> = {
   "formal.mathematics.algebra.elementary-algebra.fundamentals.two-step-equations": {
     icon: Equal,
     rgb: "96, 165, 250",
-    step: "03",
+    step: "04",
     thesis: "Peel away operations one layer at a time.",
     specimen: "2x + 6 = 14",
     outcome: "Solve two-step equations by undoing the outer layer, then the inner layer.",
@@ -72,7 +81,7 @@ const PRESENTATION: Record<string, LessonPresentation> = {
   "formal.mathematics.algebra.elementary-algebra.fundamentals.algebraic-properties": {
     icon: RefreshCcw,
     rgb: "129, 140, 248",
-    step: "04",
+    step: "05",
     thesis: "Properties are permissions for changing form without changing value.",
     specimen: "a(b + c) = ab + ac",
     outcome: "Use commutative, associative, distributive, identity, and inverse rules precisely.",
@@ -80,7 +89,7 @@ const PRESENTATION: Record<string, LessonPresentation> = {
   "formal.mathematics.algebra.elementary-algebra.fundamentals.number-systems": {
     icon: Hash,
     rgb: "251, 191, 36",
-    step: "05",
+    step: "06",
     thesis: "Every algebra problem lives inside a universe of allowable values.",
     specimen: "ℕ ⊂ ℤ ⊂ ℚ ⊂ ℝ",
     outcome: "Place natural, integer, rational, irrational, and real values inside the real-number hierarchy.",
@@ -121,7 +130,7 @@ export default function FundamentalsPage() {
           eyebrow="Read · Isolate · Solve · Rewrite · Locate"
           icon={Hash}
           title={<span>Algebra Fundamentals</span>}
-          subtitle="A five-lesson unit on the grammar beneath algebra: how expressions are built, how equations are solved one layer at a time, which rewrites are legal, and which real numbers are available."
+          subtitle="A six-lesson unit on algebraic meaning: how quantities vary, expressions are built, equations preserve equality, rewrites stay legal, and real numbers are organized."
           accentRgb="52, 211, 153"
           titleClassName="font-mono text-[clamp(2.8rem,5vw,5.2rem)] font-semibold uppercase leading-[0.84] tracking-[-0.06em] text-[#f4fff9]"
           iconClassName="rounded-[16px]"
@@ -141,10 +150,12 @@ export default function FundamentalsPage() {
               <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-emerald-300/70">Unit throughline</div>
               <h2 className="mt-2 text-[26px] font-semibold tracking-[-0.035em] text-white">Algebra changes form without losing meaning.</h2>
               <p className="mt-3 text-[14px] leading-6 text-stone-400">
-                First read the structure. Then isolate a variable in one move, build up to two moves, justify the transformations you use, and keep track of which numbers are allowed. These five lessons build that grammar in order.
+                Begin with a quantity that can change. Then read its structure, isolate a variable in one move, build up to two moves, justify each rewrite, and track which numbers are allowed. These six lessons build that grammar in order.
               </p>
               <div className="mt-4 rounded-[16px] border border-white/[0.05] bg-white/[0.012] px-4 py-3">
                 <div className="font-mono text-[14px] text-stone-300">
+                  <span className="text-pink-300">C = 4h + 6</span>
+                  <span className="mx-2 text-stone-700">→</span>
                   <span className="text-emerald-300">3x + 5</span>
                   <span className="mx-2 text-stone-700">→</span>
                   <span className="text-cyan-300">x + 6 = 14</span>
@@ -155,11 +166,11 @@ export default function FundamentalsPage() {
                   <span className="mx-2 text-stone-700">→</span>
                   <span className="text-amber-300">x ∈ ℝ</span>
                 </div>
-                <p className="mt-2 text-[11px] leading-5 text-stone-600">Structure → one-step solve → two-step solve → rewrite rules → number systems.</p>
+                <p className="mt-2 text-[11px] leading-5 text-stone-600">Changing quantity → structure → one-step solve → two-step solve → rewrite rules → number systems.</p>
               </div>
             </div>
 
-            <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-5">
+            <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
               {LESSONS.map((lesson) => {
                 const Icon = lesson.icon;
                 return (

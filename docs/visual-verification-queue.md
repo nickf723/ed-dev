@@ -70,6 +70,22 @@ Verify:
 
 **Status:** Regenerated route types, TypeScript, targeted React/Next lint, all three informational audits, the 416-page production build, the seven-value math model, the lesson-specific 11px scan, five-question source assertions, and generated-HTML checks for all seven stages, always-visible practice, and alias-specific Vocabulary behavior pass. Rendered responsive, keyboard, zoom, and interaction verification remains pending for the hosted preview.
 
+### Variables as Changing Quantities
+
+**Routes:** `/classroom/math/algebra-1/unit-1/variables-changing-quantities` and `/formal-science/mathematics/algebra/elementary-algebra/fundamentals/variables-changing-quantities`.
+
+Verify:
+
+- selecting each hour value from 0 through 6 coordinates the equation, ordered pair, table highlight, and stacked quantity bar
+- the prediction remains distinct from the revealed value and reset restores the opening state
+- the variable, input, output, rate, and constant distinctions stay readable without turning the lesson into a glossary
+- the misconception boundary distinguishes a changing quantity from an unknown in an equation
+- all three transfer cases provide deterministic feedback and preserve their own response state
+- the seven-stage discovery arc, subject background, semantic navigation, keyboard focus, mobile widths, and 200% text zoom remain clear
+- the Classroom alias omits Vocabulary while the canonical atlas lesson retains it
+
+**Status:** TypeScript, focused lint, vocabulary aggregation, classroom model tests, architecture/readability audits, and the 432-page production build pass. Local preview startup is blocked by the workspace network-interface restriction, so rendered responsive, keyboard, zoom, and interaction verification remains pending for the hosted preview.
+
 ---
 
 ## Verification protocol

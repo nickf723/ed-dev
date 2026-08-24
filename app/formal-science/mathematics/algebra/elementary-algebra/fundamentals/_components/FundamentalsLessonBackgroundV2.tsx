@@ -1,6 +1,7 @@
 "use client";
 
 export type FundamentalsLessonKey =
+  | "variables-changing-quantities"
   | "expressions-variables"
   | "one-step-equations"
   | "two-step-equations"
@@ -12,11 +13,33 @@ export default function FundamentalsLessonBackgroundV2({
 }: {
   lesson: FundamentalsLessonKey;
 }) {
+  if (lesson === "variables-changing-quantities") return <VariableField />;
   if (lesson === "expressions-variables") return <ExpressionField />;
   if (lesson === "one-step-equations") return <EqualityField mode="one-step" />;
   if (lesson === "two-step-equations") return <EqualityField mode="two-step" />;
   if (lesson === "algebraic-properties") return <PropertyField />;
   return <NumberField />;
+}
+
+function VariableField() {
+  return (
+    <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden" aria-hidden="true">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_78%_18%,rgba(244,114,182,0.19),transparent_29%),radial-gradient(circle_at_18%_72%,rgba(56,189,248,0.11),transparent_32%),linear-gradient(to_bottom,rgba(26,7,23,0.16),rgba(7,4,17,0.88))]" />
+      <div className="absolute inset-0 opacity-25 [background-image:linear-gradient(rgba(244,114,182,0.026)_1px,transparent_1px),linear-gradient(90deg,rgba(56,189,248,0.024)_1px,transparent_1px)] [background-size:72px_72px]" />
+      <svg viewBox="0 0 1200 800" className="absolute inset-0 h-full w-full opacity-70">
+        <path d="M120 650 C300 610 350 500 500 520 C650 540 730 310 1080 180" fill="none" stroke="rgba(244,114,182,0.16)" strokeWidth="3" />
+        {[0, 1, 2, 3, 4, 5].map((step) => (
+          <g key={step} className={step % 2 ? "fund-bg-float-a" : "fund-bg-float-b"}>
+            <circle cx={160 + step * 170} cy={620 - step * 82} r="8" fill="rgba(244,114,182,0.42)" />
+            <text x={142 + step * 170} y={590 - step * 82} fill="rgba(251,207,232,0.18)" fontSize="24" fontFamily="monospace">{step}</text>
+          </g>
+        ))}
+        <text x="760" y="620" fill="rgba(186,230,253,0.10)" fontSize="72" fontFamily="monospace">C = 4h + 6</text>
+        <text x="80" y="220" fill="rgba(244,114,182,0.08)" fontSize="190" fontFamily="serif">h ↦ C</text>
+      </svg>
+      <BackgroundAnimationStyles />
+    </div>
+  );
 }
 
 function ExpressionField() {

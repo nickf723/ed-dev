@@ -20,6 +20,12 @@ export type StandardAlignment = {
   code: string;
   emphasis: "primary" | "supporting";
   note: string;
+  coverage?: readonly ("introduced" | "practiced" | "mastered" | "assessed")[];
+};
+
+export type LessonEvidence = {
+  kind: "explain" | "construct" | "model" | "solve" | "transfer";
+  description: string;
 };
 
 export type StandardDefinition = {
@@ -50,6 +56,8 @@ export type CourseLesson = {
   status: CourseStatus;
   href: string;
   knowledgeNodeId: string;
+  prerequisiteLessonIds?: readonly string[];
+  evidence?: readonly LessonEvidence[];
   alignment: readonly StandardAlignment[];
   teacher: {
     warmUp: string;

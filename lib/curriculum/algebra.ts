@@ -23,8 +23,17 @@ function node(
 
 const fundamentalsLessons = [
   node(
+    "formal.mathematics.algebra.elementary-algebra.fundamentals.variables-changing-quantities",
+    "Variables as Changing Quantities",
+    "/formal-science/mathematics/algebra/elementary-algebra/fundamentals/variables-changing-quantities",
+    "Interpret a variable as a quantity that can change while a rule continues to relate input and output.",
+    undefined,
+    "active",
+    "lesson",
+  ),
+  node(
     "formal.mathematics.algebra.elementary-algebra.fundamentals.expressions-variables",
-    "Expressions & Variables",
+    "Anatomy of an Expression",
     "/formal-science/mathematics/algebra/elementary-algebra/fundamentals/expressions-variables",
     "Read algebraic expressions structurally: signed terms, coefficients, variables, constants, and exponents.",
     undefined,
@@ -148,7 +157,7 @@ const integratedAlgebra = node(
       "formal.mathematics.algebra.elementary-algebra.fundamentals",
       "Algebra Fundamentals",
       "/formal-science/mathematics/algebra/elementary-algebra/fundamentals",
-      "Variable expressions, one- and two-step equations, algebraic properties, and real-number systems.",
+      "Changing quantities, expression anatomy, one- and two-step equations, algebraic properties, and real-number systems.",
       fundamentalsLessons,
       "active",
       "unit",

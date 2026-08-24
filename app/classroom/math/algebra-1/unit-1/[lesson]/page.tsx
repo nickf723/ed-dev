@@ -4,6 +4,7 @@ import AlgebraicPropertiesLessonExperience from "@/app/formal-science/mathematic
 import EquationLessonExperience from "@/app/formal-science/mathematics/algebra/elementary-algebra/fundamentals/_components/EquationLessonExperience";
 import ExpressionsVariablesLessonExperience from "@/app/formal-science/mathematics/algebra/elementary-algebra/fundamentals/_components/ExpressionsVariablesLessonExperience";
 import NumberSystemsLessonExperience from "@/app/formal-science/mathematics/algebra/elementary-algebra/fundamentals/_components/NumberSystemsLessonExperience";
+import VariablesChangingQuantitiesLessonExperience from "@/app/formal-science/mathematics/algebra/elementary-algebra/fundamentals/_components/VariablesChangingQuantitiesLessonExperience";
 import {
   getCourse,
   getCourseLesson,
@@ -61,6 +62,18 @@ export default async function ClassroomLessonPage({ params }: PageProps) {
     { label: `Unit ${unit.number}`, href: unit.href },
     { label: lesson.title },
   ] as const;
+
+  if (lesson.slug === "variables-changing-quantities") {
+    return (
+      <VariablesChangingQuantitiesLessonExperience
+        breadcrumbs={breadcrumbs}
+        previous={previous}
+        next={next}
+        unitHref={unit.href}
+        showVocabulary={false}
+      />
+    );
+  }
 
   if (lesson.slug === "expressions-variables") {
     return (

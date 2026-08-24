@@ -1,5 +1,6 @@
 import { abstractAlgebraVocab } from "./a/abstract-algebra";
 import { algebraVocab } from "./a/algebra";
+import { algebraVariablesVocab } from "./a/algebra-variables";
 import { algebraFundamentalsVocab } from "./a/algebra-fundamentals";
 import { propertiesVocab } from "./a/algebra-properties";
 import { combinatoricsVocab } from "./c/combinatorics";
@@ -92,6 +93,10 @@ export const MATHEMATICS_VOCABULARY_REGISTRATIONS = [
   {
     nodeId: "formal.mathematics.algebra.elementary-algebra.fundamentals",
     terms: algebraFundamentalsVocab,
+  },
+  {
+    nodeId: "formal.mathematics.algebra.elementary-algebra.fundamentals.variables-changing-quantities",
+    terms: algebraVariablesVocab,
   },
   {
     nodeId: "formal.mathematics.algebra.elementary-algebra.inequalities",

@@ -23,6 +23,13 @@ export const NYS_ALGEBRA_I_FRAMEWORK: StandardsFramework = {
     "Education Station is independently authored and standards-aligned. NYSED publishes learning standards, not this curriculum or its lesson order.",
   standards: [
     {
+      code: "AI-N.Q.1",
+      label: "Quantitative Reasoning",
+      summary:
+        "Select quantities and use units to interpret and guide multi-step problems and formulas.",
+      sourcePage: 109,
+    },
+    {
       code: "AI-A.SSE.1a",
       label: "Seeing Structure in Expressions",
       summary:
@@ -90,9 +97,59 @@ const UNIT_ONE_BASE = "/classroom/math/algebra-1/unit-1";
 
 const lessons: readonly CourseLesson[] = [
   {
+    id: "nys.algebra-1.unit-1.variables-changing-quantities",
+    slug: "variables-changing-quantities",
+    title: "Variables as Changing Quantities",
+    summary:
+      "Vary an input and watch a fixed algebraic rule produce a related output.",
+    outcome:
+      "Interpret a variable as a quantity that can change and explain how its value controls a contextual expression.",
+    durationMinutes: 42,
+    status: "active",
+    href: `${UNIT_ONE_BASE}/variables-changing-quantities`,
+    knowledgeNodeId:
+      "formal.mathematics.algebra.elementary-algebra.fundamentals.variables-changing-quantities",
+    evidence: [
+      {
+        kind: "model",
+        description: "Coordinate a contextual rule, input-output table, and quantity bar around one selected input.",
+      },
+      {
+        kind: "transfer",
+        description: "Interpret and evaluate a fresh contextual rule without the canonical model.",
+      },
+    ],
+    alignment: [
+      {
+        code: "AI-A.SSE.1b",
+        emphasis: "primary",
+        coverage: ["introduced", "practiced", "assessed"],
+        note: "Interprets the variable term and constant as meaningful parts of one contextual rule.",
+      },
+      {
+        code: "AI-N.Q.1",
+        emphasis: "primary",
+        coverage: ["introduced", "practiced"],
+        note: "Connects quantities and units to the expression that relates them.",
+      },
+      {
+        code: "MP.6",
+        emphasis: "supporting",
+        coverage: ["introduced"],
+        note: "Names the input, output, rate, and units precisely.",
+      },
+    ],
+    teacher: {
+      warmUp: "Ask what could change and what must stay fixed in a bike rental that costs $6 plus $4 per hour.",
+      misconception:
+        "Students may believe a variable is only an unknown answer rather than a quantity allowed to take several values.",
+      exitTicket: "In d = 12t + 5, identify the changing input and explain what stays fixed as t changes.",
+    },
+  },
+  {
     id: "nys.algebra-1.unit-1.expressions-variables",
     slug: "expressions-variables",
-    title: "Expressions & Variables",
+    title: "Anatomy of an Expression",
     summary:
       "Read signed terms, coefficients, variables, constants, and exponents before changing an expression.",
     outcome:
@@ -102,20 +159,36 @@ const lessons: readonly CourseLesson[] = [
     href: `${UNIT_ONE_BASE}/expressions-variables`,
     knowledgeNodeId:
       "formal.mathematics.algebra.elementary-algebra.fundamentals.expressions-variables",
+    prerequisiteLessonIds: [
+      "nys.algebra-1.unit-1.variables-changing-quantities",
+    ],
+    evidence: [
+      {
+        kind: "explain",
+        description: "Identify signed terms and explain how coefficients, variables, exponents, and constants determine structure.",
+      },
+      {
+        kind: "transfer",
+        description: "Classify and combine terms in a fresh polynomial expression.",
+      },
+    ],
     alignment: [
       {
         code: "AI-A.SSE.1a",
         emphasis: "primary",
+        coverage: ["introduced", "practiced", "assessed"],
         note: "Names and interprets the visible parts of a polynomial.",
       },
       {
         code: "AI-A.SSE.1b",
         emphasis: "supporting",
+        coverage: ["practiced"],
         note: "Builds the habit of seeing a term or variable part as one object.",
       },
       {
         code: "MP.7",
         emphasis: "primary",
+        coverage: ["introduced", "practiced", "assessed"],
         note: "Uses structure to decide which terms can combine.",
       },
     ],
@@ -281,7 +354,7 @@ export const NYS_ALGEBRA_I_UNIT_ONE: CourseUnit = {
   essentialQuestion: "How can symbols change form without changing meaning?",
   status: "active",
   href: UNIT_ONE_BASE,
-  pacing: "5 class periods · approximately 40–45 minutes each",
+  pacing: "6 class periods · approximately 40–45 minutes each",
   prerequisites: [
     "Whole-number operations and signed-number fluency",
     "Fraction and decimal representations",

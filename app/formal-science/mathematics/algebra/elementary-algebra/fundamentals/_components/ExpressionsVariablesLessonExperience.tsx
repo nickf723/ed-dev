@@ -210,10 +210,10 @@ export default function ExpressionsVariablesLessonExperience({
       <div className="relative z-10 mx-auto w-full max-w-[1050px] px-4 py-4 sm:px-6 xl:py-5">
         <DomainPageHeader
           breadcrumbs={breadcrumbs}
-          eyebrow="Lesson 01 · Expressions & Variables"
+          eyebrow="Lesson 02 · Expression anatomy"
           icon={Braces}
-          title={<span>Expressions & Variables</span>}
-          subtitle="Change x, take the expression apart, and discover which terms can combine."
+          title={<span>Anatomy of an Expression</span>}
+          subtitle="Take a polynomial apart, identify each structural role, and discover which terms can combine."
           accentRgb={ACCENT}
           titleClassName="font-mono text-[clamp(2.05rem,4.1vw,4rem)] font-semibold uppercase leading-[0.9] tracking-[-0.055em] text-[#f4fff9]"
           metadataTextClassName="text-[11px]"
@@ -266,7 +266,7 @@ export default function ExpressionsVariablesLessonExperience({
             </div>
             <div className="fundamentals-assessment border-t border-white/[0.06] p-3 sm:p-4">
               <Assessment
-                title="Expressions & Variables check"
+                title="Expression anatomy check"
                 questions={QUIZ}
                 accentColor="emerald"
               />
