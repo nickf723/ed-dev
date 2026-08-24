@@ -21,7 +21,6 @@ const ACCENT = "244, 114, 182";
 const HOURS = [0, 1, 2, 3, 4, 5, 6] as const;
 const RATE = 4;
 const START_FEE = 6;
-const REGENTS_SOURCE = "https://www.nysedregents.org/algebraone/625/algone-62025-exam.pdf";
 
 export default function VariablesChangingQuantitiesLessonExperience({
   breadcrumbs,
@@ -170,56 +169,65 @@ function QuantityWorkbench() {
 }
 
 function TransferPractice() {
-  const [answers, setAnswers] = useState<Record<string, string>>({});
-  const [checked, setChecked] = useState<readonly string[]>([]);
+  const [evaluation, setEvaluation] = useState("");
+  const [evaluationChecked, setEvaluationChecked] = useState(false);
+  const [choices, setChoices] = useState<Record<string, string>>({});
+  const [checkedChoices, setCheckedChoices] = useState<readonly string[]>([]);
 
-  function update(id: string, value: string) {
-    setAnswers((current) => ({ ...current, [id]: value }));
-    setChecked((current) => current.filter((item) => item !== id));
+  function selectChoice(id: string, value: string) {
+    setChoices((current) => ({ ...current, [id]: value }));
+    setCheckedChoices((current) => current.filter((item) => item !== id));
   }
 
-  function check(id: string) {
-    setChecked((current) => current.includes(id) ? current : [...current, id]);
-  }
-
-  const items = [
-    { id: "evaluate", label: "Evaluate", prompt: <>A delivery rule is <M>{"d=12t+5"}</M>. Find <M>{"d"}</M> when <M>{"t=3"}</M>.</>, answer: "41", placeholder: "Output" },
-    { id: "interpret", label: "Interpret", prompt: <>In <M>{"P=7n+2"}</M>, what does the constant 2 represent?</>, answer: "starting fee", placeholder: "Meaning of 2" },
-    { id: "construct", label: "Construct", prompt: <>A club charges $8 to join and $3 per visit <M>{"v"}</M>. Write a rule for total cost <M>{"C"}</M>.</>, answer: "C=3v+8", placeholder: "C = ..." },
-    { id: "regents", label: "Regents transfer", prompt: <>For <M>{"g(x)=\frac{x^2-22}{x+3}"}</M>, find <M>{"g(-2)"}</M>.</>, answer: "-18", placeholder: "g(-2)" },
-  ] as const;
-
-  function isCorrect(id: string, expected: string) {
-    const normalized = (answers[id] ?? "").toLowerCase().replace(/\s+/g, "");
-    if (id === "interpret") return ["startingfee", "initialfee", "fixedfee", "$2startingfee", "2dollarstartingfee"].includes(normalized);
-    if (id === "construct") return ["c=3v+8", "c=8+3v"].includes(normalized);
-    return normalized === expected.toLowerCase().replace(/\s+/g, "");
+  function checkChoice(id: string) {
+    if (!choices[id]) return;
+    setCheckedChoices((current) => current.includes(id) ? current : [...current, id]);
   }
 
   return (
     <section id="variable-practice" className="mt-8 scroll-mt-24 rounded-[24px] border border-emerald-200/[0.13] bg-[#071711]/70 p-4 backdrop-blur-2xl sm:p-6">
       <Stage tone="emerald">Check · Fresh context</Stage>
       <h2 className="mt-2 text-[clamp(1.55rem,3.3vw,2.3rem)] font-semibold tracking-[-0.04em] text-white">Can the relationship travel?</h2>
-      <p className="mt-2 max-w-3xl text-[16px] leading-7 text-stone-300">Move from substitution to interpretation, construction, and an authentic Regents transfer. Each item checks a different kind of understanding.</p>
+      <p className="mt-2 max-w-3xl text-[16px] leading-7 text-stone-300">Use a number, interpret a part, identify a variable’s role, and choose a model. Each task asks you to show the idea in a different way.</p>
       <div className="mt-5 grid gap-4 md:grid-cols-2">
-        {items.map((item) => {
-          const wasChecked = checked.includes(item.id);
-          const correct = isCorrect(item.id, item.answer);
-          return <article key={item.id} className="flex min-h-[264px] flex-col rounded-[18px] border border-white/[0.08] bg-black/20 p-4">
-            <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-emerald-300/75">{item.label}</div>
-            <div className="mt-3 min-h-[72px] text-[16px] leading-7 text-stone-200">{item.prompt}</div>
-            <div className="mt-auto flex gap-2 pt-4">
-              <input value={answers[item.id] ?? ""} onChange={(event) => update(item.id, event.target.value)} onKeyDown={(event) => { if (event.key === "Enter") check(item.id); }} className="min-w-0 flex-1 rounded-xl border border-white/[0.10] bg-black/25 px-3 py-3 text-[16px] text-white outline-none focus:border-emerald-300/45" aria-label={`${item.label} answer`} placeholder={item.placeholder} />
-              <button type="button" onClick={() => check(item.id)} className="rounded-xl bg-emerald-400/20 px-4 text-[14px] font-semibold text-emerald-100">Check</button>
-            </div>
-            <div className="mt-3 min-h-[52px]" aria-live="polite">{wasChecked ? <p className={`text-[14px] leading-6 ${correct ? "text-emerald-100" : "text-amber-100"}`}>{correct ? <><Check className="mr-2 inline" size={15} />Correct. {item.id === "regents" ? "Substitute before simplifying the fraction." : "The variable and fixed quantities keep their roles."}</> : <>Revisit what changes, what stays fixed, and which value is being substituted.</>}</p> : null}</div>
-          </article>;
-        })}
+        <article className="flex min-h-[292px] flex-col rounded-[18px] border border-white/[0.08] bg-black/20 p-4">
+          <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-emerald-300/75">Calculate · Enter a value</div>
+          <div className="mt-3 min-h-[72px] text-[16px] leading-7 text-stone-200">A delivery rule is <M>{"d=12t+5"}</M>. Find <M>{"d"}</M> when <M>{"t=3"}</M>.</div>
+          <div className="mt-auto flex gap-2 pt-4">
+            <input value={evaluation} onChange={(event) => { setEvaluation(event.target.value); setEvaluationChecked(false); }} onKeyDown={(event) => { if (event.key === "Enter" && evaluation) setEvaluationChecked(true); }} inputMode="numeric" className="min-w-0 flex-1 rounded-xl border border-white/[0.10] bg-black/25 px-3 py-3 text-[16px] text-white outline-none focus:border-emerald-300/45" aria-label="Calculated delivery distance" placeholder="Output" />
+            <button type="button" onClick={() => setEvaluationChecked(true)} disabled={!evaluation} className="rounded-xl bg-emerald-400/20 px-4 text-[14px] font-semibold text-emerald-100 disabled:opacity-45">Check</button>
+          </div>
+          <Feedback visible={evaluationChecked} correct={Number(evaluation) === 41} correctText="12 groups of 3 make 36; the fixed 5 makes 41." retryText="Replace t with 3, multiply, and then add the fixed 5." />
+        </article>
+
+        <ChoiceQuestion id="interpret" label="Interpret · Choose a meaning" prompt={<>A notebook shop uses <M>{"P=7n+2"}</M>. What does the <M>{"2"}</M> represent?</>} options={[{ value: "fixed", label: "$2 charged no matter how many notebooks are bought" }, { value: "rate", label: "$2 for each notebook" }, { value: "count", label: "The number of notebooks" }]} answer="fixed" selected={choices.interpret} checked={checkedChoices.includes("interpret")} onSelect={selectChoice} onCheck={checkChoice} correctText="The constant does not depend on n, so it is a fixed charge." />
+
+        <ChoiceQuestion id="role" label="Classify · Identify the placeholder" prompt={<>In <M>{"P=7n+2"}</M>, what job does <M>{"n"}</M> have?</>} options={[{ value: "input", label: "A chosen input: the number of notebooks" }, { value: "unknown", label: "One unidentified value that makes an equation true" }, { value: "constant", label: "A value that must stay fixed" }]} answer="input" selected={choices.role} checked={checkedChoices.includes("role")} onSelect={selectChoice} onCheck={checkChoice} correctText="n can take different chosen values, and P responds to each one." />
+
+        <ChoiceQuestion id="model" label="Model · Choose a rule" prompt={<>A club charges <strong className="text-violet-100">$8 to join</strong> and <strong className="text-pink-100">$3 per visit</strong>. Which rule gives total cost <M>{"C"}</M> after <M>{"v"}</M> visits?</>} options={[{ value: "correct", label: <M key="correct">{"C=3v+8"}</M> }, { value: "swapped", label: <M key="swapped">{"C=8v+3"}</M> }, { value: "missing", label: <M key="missing">{"C=3v"}</M> }]} answer="correct" selected={choices.model} checked={checkedChoices.includes("model")} onSelect={selectChoice} onCheck={checkChoice} correctText="The $3 rate changes with v; the $8 joining fee remains fixed." />
       </div>
-      <p className="mt-4 text-[12px] leading-5 text-stone-500">Regents transfer adapted into this lesson’s notation from <a href={REGENTS_SOURCE} target="_blank" rel="noreferrer" className="text-emerald-200/75 underline decoration-emerald-200/25 underline-offset-4">June 2025 Algebra I Regents, question 18</a>. The original released item and scoring materials remain the authority.</p>
-      <button type="button" onClick={() => { setAnswers({}); setChecked([]); }} className="mt-4 inline-flex items-center gap-2 text-[13px] font-semibold text-stone-400 hover:text-white"><RefreshCcw size={14} />Reset assessment</button>
+      <p className="mt-4 text-[13px] leading-6 text-stone-500">Released Regents items will enter the course only after their notation and prerequisite ideas have been taught. This opening lesson stays inside its own learning boundary.</p>
+      <button type="button" onClick={() => { setEvaluation(""); setEvaluationChecked(false); setChoices({}); setCheckedChoices([]); }} className="mt-4 inline-flex items-center gap-2 text-[13px] font-semibold text-stone-400 hover:text-white"><RefreshCcw size={14} />Reset assessment</button>
     </section>
   );
+}
+
+type ChoiceOption = { value: string; label: React.ReactNode };
+
+function ChoiceQuestion({ id, label, prompt, options, answer, selected, checked, onSelect, onCheck, correctText }: { id: string; label: string; prompt: React.ReactNode; options: readonly ChoiceOption[]; answer: string; selected?: string; checked: boolean; onSelect: (id: string, value: string) => void; onCheck: (id: string) => void; correctText: string }) {
+  return <article className="flex min-h-[292px] flex-col rounded-[18px] border border-white/[0.08] bg-black/20 p-4">
+    <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-emerald-300/75">{label}</div>
+    <div className="mt-3 min-h-[72px] text-[16px] leading-7 text-stone-200">{prompt}</div>
+    <div className="mt-3 grid gap-2" role="radiogroup" aria-label={label}>
+      {options.map((option) => <button key={option.value} type="button" role="radio" aria-checked={selected === option.value} onClick={() => onSelect(id, option.value)} className={`min-h-11 rounded-xl border px-3 py-2 text-left text-[14px] leading-5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-300/70 ${selected === option.value ? "border-emerald-200/30 bg-emerald-300/[0.08] text-emerald-50" : "border-white/[0.08] bg-black/15 text-stone-300 hover:border-white/[0.15]"}`}>{option.label}</button>)}
+    </div>
+    <button type="button" onClick={() => onCheck(id)} disabled={!selected} className="mt-3 min-h-11 rounded-xl bg-emerald-400/20 px-4 text-[14px] font-semibold text-emerald-100 disabled:opacity-45">Check choice</button>
+    <Feedback visible={checked} correct={selected === answer} correctText={correctText} retryText="Try the choice that keeps changing and fixed quantities in their correct roles." />
+  </article>;
+}
+
+function Feedback({ visible, correct, correctText, retryText }: { visible: boolean; correct: boolean; correctText: string; retryText: string }) {
+  return <div className="mt-3 min-h-[52px]" aria-live="polite">{visible ? <p className={`text-[14px] leading-6 ${correct ? "text-emerald-100" : "text-amber-100"}`}>{correct ? <><Check className="mr-2 inline" size={15} />{correctText}</> : retryText}</p> : null}</div>;
 }
 
 function Stage({ children, tone = "pink" }: { children: React.ReactNode; tone?: "pink" | "sky" | "amber" | "emerald" }) {

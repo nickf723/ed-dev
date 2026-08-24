@@ -82,7 +82,8 @@ Verify:
 - feedback, equations, labels, and assessment cards reserve enough space to avoid layout shifts as state changes
 - the variable, input, output, rate, and constant distinctions stay readable without turning the lesson into a glossary
 - the misconception boundary distinguishes a chosen or varying input placeholder from an unidentified-value placeholder without implying that an unknown is unknowable
-- the assessment independently checks evaluation, interpretation, rule construction, and a cited Regents-style transfer
+- the assessment uses numeric entry for calculation and selectable cards for constant interpretation, placeholder classification, and rule construction
+- no assessment item requires function notation, rational expressions, exponents, or other notation not taught in this lesson
 - the seven-stage discovery arc, subject background, semantic navigation, keyboard focus, mobile widths, and 200% text zoom remain clear
 - the Classroom alias omits Vocabulary while the canonical atlas lesson retains it
 
