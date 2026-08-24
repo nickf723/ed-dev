@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { ArrowLeft, ArrowRight, Check, ExternalLink, Lightbulb, RotateCcw } from "lucide-react";
 import DomainPageHeader from "@/app/_components/DomainPageHeader";
 import { M } from "@/app/_components/Math";
@@ -21,7 +21,7 @@ export default function GuidedExamReview() {
   const selected = answers[item.number];
   const isChecked = checked.includes(item.number);
   const isCorrect = selected === item.answer;
-  const completed = useMemo(() => checked.length, [checked]);
+  const completed = checked.length;
 
   function selectAnswer(value: string) {
     setAnswers((current) => ({ ...current, [item.number]: value }));
@@ -138,7 +138,7 @@ export default function GuidedExamReview() {
           </section>
         </div>
 
-        <p className="mt-5 text-[12px] leading-5 text-stone-500">Pilot scope: six guided items from the 35-question June 2025 examination. Short prompts may be transcribed while longer items are faithfully restated; hints, interactions, and explanations are independently authored. NYSED’s released exam and scoring materials remain the source of record.</p>
+        <p className="mt-5 text-[12px] leading-5 text-stone-500">Pilot scope: eight guided items from the 35-question June 2025 examination. Short prompts may be transcribed while longer items are faithfully restated; hints, interactions, and explanations are independently authored. NYSED’s released exam and scoring materials remain the source of record.</p>
       </div>
     </main>
   );
@@ -210,6 +210,57 @@ function IntuitionLab({ item }: { item: GuidedExamItem }) {
         <button type="button" onClick={() => setStage(2)} className={`min-h-11 rounded-xl border text-[13px] ${stage >= 2 ? "border-sky-200/20 bg-sky-300/[0.05] text-sky-100" : "border-white/[0.07] text-stone-400"}`}>Subtract 3 from both sides</button>
       </div>
       <p className="mt-3 min-h-[44px] text-[13px] leading-5 text-stone-300">The terms do not “jump” across the equals sign. Each state comes from the same subtraction on both sides.</p>
+    </LabFrame>;
+  }
+
+  if (item.number === 20) {
+    const formulaStage = Math.min(stage, 2);
+    const equations = ["K=\\frac{1}{2}mv^2", "2K=mv^2", "\\frac{2K}{v^2}=m"];
+    const captions = [
+      "m is wrapped in two multipliers: one-half and v².",
+      "Multiplying both sides by 2 removes the one-half without disturbing equality.",
+      "Dividing both sides by v² leaves m alone. The same inverse operation acts on each side.",
+    ];
+    return <LabFrame title="Unwrap the target quantity">
+      <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-3">
+        <div className="rounded-[14px] border border-violet-200/16 bg-violet-300/[0.05] p-4 text-center text-[clamp(1.05rem,3vw,1.5rem)] text-violet-100"><M>{equations[formulaStage]}</M></div>
+        <ArrowRight className="text-violet-300" aria-hidden="true" />
+        <div className="rounded-[14px] border border-sky-200/14 bg-sky-300/[0.04] p-4 text-center">
+          <span className="block text-[10px] font-semibold uppercase tracking-[0.12em] text-stone-500">Target</span>
+          <span className="mt-2 block text-[20px] text-sky-100"><M>{"m"}</M></span>
+        </div>
+      </div>
+      <div className="mt-3 grid grid-cols-2 gap-2">
+        <button type="button" onClick={() => setStage(1)} className={`min-h-11 rounded-xl border px-3 text-[13px] ${formulaStage >= 1 ? "border-pink-200/20 bg-pink-300/[0.05] text-pink-100" : "border-white/[0.07] text-stone-400"}`}>Multiply both sides by 2</button>
+        <button type="button" onClick={() => setStage(2)} disabled={formulaStage < 1} className={`min-h-11 rounded-xl border px-3 text-[13px] disabled:cursor-not-allowed ${formulaStage >= 2 ? "border-sky-200/20 bg-sky-300/[0.05] text-sky-100" : "border-white/[0.07] text-stone-400 disabled:opacity-45"}`}>Divide both sides by v²</button>
+      </div>
+      <p className="mt-3 min-h-[54px] text-[13px] leading-5 text-stone-300">{captions[formulaStage]}</p>
+    </LabFrame>;
+  }
+
+  if (item.number === 24) {
+    const conversionStage = Math.min(stage, 3);
+    const units = [
+      { label: "Start", math: "49\\;\\frac{\\text{mi}}{\\text{hr}}" },
+      { label: "Miles → feet", math: "\\times\\frac{5280\\;\\text{ft}}{1\\;\\text{mi}}" },
+      { label: "Hours → minutes", math: "\\times\\frac{1\\;\\text{hr}}{60\\;\\text{min}}" },
+      { label: "Feet → cars", math: "\\times\\frac{1\\;\\text{car}}{56\\;\\text{ft}}" },
+    ];
+    const prompts = [
+      "Begin with the train’s speed. The target is cars per minute.",
+      "Miles cancel because mi appears once above and once below.",
+      "Hours cancel next. Minutes remain in the denominator, exactly where the target needs them.",
+      "Feet cancel last. Only cars per minute survives: the unit proves the conversion chain is oriented correctly.",
+    ];
+    return <LabFrame title="Make only the target units survive">
+      <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-4">
+        {units.map((part, partIndex) => <button key={part.label} type="button" onClick={() => setStage(partIndex)} disabled={partIndex > conversionStage + 1} className={`min-h-[92px] rounded-[14px] border p-3 text-left disabled:cursor-not-allowed ${conversionStage >= partIndex ? "border-violet-200/20 bg-violet-300/[0.06]" : "border-white/[0.06] bg-black/10 opacity-45"}`}>
+          <span className="block text-[10px] font-semibold uppercase tracking-[0.12em] text-stone-500">{part.label}</span>
+          <span className="mt-3 block overflow-x-auto text-center text-[15px] text-violet-100"><M>{conversionStage >= partIndex ? part.math : "?"}</M></span>
+        </button>)}
+      </div>
+      <div className="mt-3 min-h-[66px] rounded-xl border border-white/[0.07] bg-black/15 p-3 text-[13px] leading-5 text-stone-300">{prompts[conversionStage]}</div>
+      <div className={`mt-3 min-h-[52px] rounded-xl border p-3 text-center text-[15px] ${conversionStage === 3 ? "border-emerald-200/18 bg-emerald-300/[0.05] text-emerald-100" : "border-white/[0.05] text-stone-600"}`}><M>{conversionStage === 3 ? "77\\;\\frac{\\text{cars}}{\\text{minute}}" : "\\frac{\\text{cars}}{\\text{minute}}\\;\\text{is the target}"}</M></div>
     </LabFrame>;
   }
 

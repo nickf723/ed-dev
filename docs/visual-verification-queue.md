@@ -97,7 +97,7 @@ Verify:
 
 - Exam Prep appears as Unit 8 after Units 1–7 without moving ahead of planned course content
 - the June 2025 pilot links to NYSED's official exam and scoring key and clearly labels independently authored summaries and explanations
-- all six pilot items require an answer attempt before worked reasoning appears
+- all eight pilot items require an answer attempt before worked reasoning appears
 - hints remain separate from the final walkthrough and opening a hint does not mark an item complete
 - question navigation preserves answers, hint state, checked state, and correct/review status
 - each walkthrough identifies the tested skill, decisive reasoning, reusable takeaway, and a live connected lesson

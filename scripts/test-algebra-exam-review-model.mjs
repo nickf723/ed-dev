@@ -5,14 +5,14 @@ import {
   JUNE_2025_SCORING_URL,
 } from "../app/classroom/math/algebra-1/exam-prep/_data/june-2025.ts";
 
-assert.equal(JUNE_2025_GUIDED_ITEMS.length, 6);
+assert.equal(JUNE_2025_GUIDED_ITEMS.length, 8);
 assert.deepEqual(
   JUNE_2025_GUIDED_ITEMS.map((item) => item.number),
-  [3, 5, 6, 7, 8, 17],
+  [3, 5, 6, 7, 8, 17, 20, 24],
 );
 assert.deepEqual(
   JUNE_2025_GUIDED_ITEMS.map((item) => item.answer),
-  ["4", "4", "1", "1", "4", "1"],
+  ["4", "4", "1", "1", "4", "1", "1", "3"],
   "Pilot answers must match NYSED's June 2025 Part I scoring key",
 );
 assert.ok(JUNE_2025_EXAM_URL.endsWith("algone-62025-exam.pdf"));

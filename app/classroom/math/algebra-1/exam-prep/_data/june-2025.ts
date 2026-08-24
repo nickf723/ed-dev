@@ -106,7 +106,7 @@ export const JUNE_2025_GUIDED_ITEMS: readonly GuidedExamItem[] = [
     skill: "Average rate of change",
     standard: "AI-N.Q.1",
     prompt:
-      "A tomato plant's average height is recorded by week. The released item asks for its average rate of change from week 4 through week 12.",
+      "Between weeks 4 and 12, what is the tomato plant’s average rate of change in inches per week?",
     table: [
       ["Week, x", "Height, h(x)"],
       ["4", "12"],
@@ -135,8 +135,7 @@ export const JUNE_2025_GUIDED_ITEMS: readonly GuidedExamItem[] = [
     sourcePage: 4,
     skill: "Justify an equation step",
     standard: "AI-A.REI.1a",
-    prompt:
-      "The released item asks which property justifies rewriting the given equation as the next equation.",
+    prompt: "Which property justifies this step?",
     displayMath: "x^2+5x=3x+3\\quad\\longrightarrow\\quad x^2+2x-3=0",
     options: [
       { id: "1", label: "Zero product property" },
@@ -180,5 +179,57 @@ export const JUNE_2025_GUIDED_ITEMS: readonly GuidedExamItem[] = [
     takeaway: "Translate one quantity at a time before connecting them with the stated relationship.",
     reviewHref:
       "/classroom/math/algebra-1/unit-1/two-step-equations",
+  },
+  {
+    number: 20,
+    sourcePage: 8,
+    skill: "Rearrange a formula",
+    standard: "AI-A.REI.3",
+    prompt:
+      "Kinetic energy is given by the formula below. Which equation expresses mass, m, in terms of K and v?",
+    displayMath: "K=\\frac{1}{2}mv^2",
+    options: [
+      { id: "1", math: "m=\\frac{2K}{v^2}" },
+      { id: "2", math: "m=2Kv^2" },
+      { id: "3", math: "m=\\frac{v^2}{2K}" },
+      { id: "4", math: "m=\\frac{2v^2}{K}" },
+    ],
+    answer: "1",
+    hint:
+      "Undo the factor of one-half first, then undo the multiplication by v².",
+    reasoning: [
+      "Multiply both sides by 2 so the one-half no longer scales the mass term: 2K = mv².",
+      "Mass is still multiplied by v², so divide both sides by v².",
+      "This isolates m as 2K divided by v², which is choice 1.",
+    ],
+    takeaway: "To isolate a formula’s target, undo its operations in reverse order on both sides.",
+    reviewHref:
+      "/classroom/math/algebra-1/unit-1/two-step-equations",
+  },
+  {
+    number: 24,
+    sourcePage: 10,
+    skill: "Convert a compound rate",
+    standard: "AI-N.Q.1",
+    prompt:
+      "A train travels 49 miles per hour, and each railroad car is 56 feet long. Which calculation gives the number of cars passing per minute?",
+    displayMath: "49\\;\\frac{\\text{miles}}{\\text{hour}}\\qquad 56\\;\\frac{\\text{feet}}{\\text{car}}",
+    options: [
+      { id: "1", math: "49\\times56\\times5280\\div60" },
+      { id: "2", math: "49\\times5280\\times60\\div56" },
+      { id: "3", math: "49\\times5280\\div60\\div56" },
+      { id: "4", math: "49\\div5280\\times60\\times56" },
+    ],
+    answer: "3",
+    hint:
+      "Choose operations that turn miles into feet, hours into minutes, and feet into railroad cars.",
+    reasoning: [
+      "Multiply by 5280 to convert each mile traveled into feet traveled.",
+      "Divide by 60 to spread one hour of travel across its 60 minutes.",
+      "Divide the feet passing each minute by 56 feet per car. This produces choice 3, measured in cars per minute.",
+    ],
+    takeaway: "A conversion chain is correct when unwanted units cancel and the requested unit survives.",
+    reviewHref:
+      "/classroom/math/algebra-1/unit-1/variables-changing-quantities",
   },
 ] as const;

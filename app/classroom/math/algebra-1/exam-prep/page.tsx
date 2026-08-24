@@ -48,7 +48,7 @@ export default function AlgebraOneExamPrepPage() {
                 <span className="rounded-full border border-emerald-200/20 bg-emerald-300/[0.07] px-2.5 py-1 text-[11px] font-semibold text-emerald-100">Pilot live</span>
               </div>
               <h3 className="mt-8 text-[25px] font-semibold tracking-[-0.035em] text-white">June 2025</h3>
-              <p className="mt-2 text-[14px] leading-6 text-stone-300">Start with six guided Part I items spanning patterns, polynomial structure, rates, equation reasoning, and modeling.</p>
+              <p className="mt-2 text-[14px] leading-6 text-stone-300">Start with eight guided Part I items spanning patterns, polynomial structure, rates, equation reasoning, modeling, formulas, and unit conversion.</p>
               <div className="mt-5 flex items-center gap-2 text-[12px] font-semibold text-violet-200"><CalendarDays size={14} />June 18, 2025</div>
             </Link>
             {[
