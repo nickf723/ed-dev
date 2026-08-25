@@ -200,6 +200,7 @@ const lessons: readonly CourseLesson[] = [
         note: "Connects carbohydrate structure and function.",
       },
     ],
+    status: "active",
   }),
   plannedLesson({
     slug: "lipids",

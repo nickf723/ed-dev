@@ -177,6 +177,7 @@ const lessons: readonly CourseLesson[] = [
         note: "Analyzes character development and interaction.",
       },
     ],
+    status: "active",
   }),
   plannedLesson({
     slug: "structure-time",

@@ -195,6 +195,7 @@ const lessons: readonly CourseLesson[] = [
         note: "Evaluates map and policy evidence.",
       },
     ],
+    status: "active",
   }),
 ];
 

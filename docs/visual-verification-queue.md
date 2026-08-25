@@ -6,7 +6,7 @@ A successful type check is not visual verification. A page leaves this queue onl
 
 ### Classroom route map and Unit 1 starters
 
-**Routes:** `/`, `/classroom`, all four `/classroom/[subject]` hubs; the active Algebra I, AP Biology, Global II, and Literature course pages; each active Unit 1 page; all five Algebra I Unit 1 lessons; the first three AP Biology and Global II lessons; and the first two Literature lessons.
+**Routes:** `/`, `/classroom`, all four `/classroom/[subject]` hubs; the active Algebra I, AP Biology, Global II, and Literature course pages; each active Unit 1 page; all Algebra I Unit 1 lessons; the first four AP Biology and Global II lessons; and the first three Literature lessons.
 
 Verify:
 
@@ -18,7 +18,7 @@ Verify:
 - Algebra I opens from Math, Unit 1 opens from Algebra I, and Units 2–7 remain visibly planned
 - each new course opens Unit 1 while its later units remain visibly planned
 - Algebra I units use a deliberate red-to-pink sequence palette while preserving their course order and active/planned states
-- every Unit 1 page shows its opening lesson first and a coherent planned lesson line after it; AP Biology and Global II expose three live destinations and Literature exposes two
+- every Unit 1 page shows its opening lesson first and a coherent planned lesson line after it; AP Biology and Global II expose four live destinations and Literature exposes three
 - lesson cards preview real lesson content: algebraic terms, molecular charge, elemental fingerprints, polymer bonds, a 1750 world map, an Ottoman–Mughal comparison, an Edo–Versailles institutional network, highlighted textual evidence, or shifted narrative perspective
 - hovering a live route moves only its destination surface; the numbered marker and connecting line stay fixed
 - standards codes, teacher notes, pacing, duration, prerequisites, evidence plans, and source panels do not appear in the learner path
@@ -45,9 +45,12 @@ Verify:
 - the Literature lesson supports numbered-line evidence selection, explicit-detail/inference separation, and claim-evidence-reasoning revision using only the original microfiction
 - Narrator & Perspective compares original retellings before naming the technique, then coordinates the selected telling with voice, perceiving character, reader-access ledger, interpretive effect, and transfer feedback
 - the Mara, Theo, and outside-observer tellings preserve the same core event while directly demonstrating that first person is not the author and third person is not automatically omniscient
+- Carbohydrates coordinates glucose, starch, and cellulose evidence without treating composition alone as proof of function; the transfer case selects chain alignment and hydrogen-bonded fibers as the decisive structural evidence
+- Outsiders & Exchange coordinates policy, enforcement, and permitted channel across Tokugawa, Qing, and Atlantic-imperial cases without teaching a false open/closed binary or presenting coercive exchange as equal exchange
+- Character & Desire coordinates action, speech, attention, contradiction, and pressure across three original cases; its sealed-letter transfer rewards the inference that accounts for both attention and avoidance
 - keyboard focus, 200% text zoom, mobile widths, and long course titles do not clip or create horizontal overflow
 
-**Status:** The cross-subject Unit 1 checks previously passed. The AP Biology opening and Global II historical-map pass also passed their model and route checks. The Elements of Life and Ottoman–Mughal checkpoint passed its full verification pass. The Narrator & Perspective, Building & Breaking Polymers, and Tokugawa–Bourbon checkpoint now passes route type generation, TypeScript, focused React/Next lint, deterministic formula/filter/comparison/access/reaction/centralization model tests, all three informational audits, explicit 11px and learner-chrome scans, the 430-page production build, generated seven-stage/lesson-link/learner-chrome HTML assertions, and deferred Leaflet map-chunk assertions. The preferred browser runner is absent, and the available cloud browser is blocked from localhost by workspace policy, so rendered responsive, keyboard, zoom, map-shape, and interaction verification remains pending until a hosted preview is available.
+**Status:** The earlier cross-subject Unit 1 checks passed as recorded. Carbohydrates, Outsiders & Exchange, and Character & Desire are now queued for rendered desktop, narrow-desktop, mobile, keyboard, zoom, case-switching, and transfer-feedback verification. Their focused TypeScript and lint checks pass under the bundled workspace runtime. The preferred browser runner is absent, and the available cloud browser is blocked from localhost by workspace policy, so rendered verification remains pending until a hosted preview is available.
 
 ### Expressions & Variables discovery flow
 

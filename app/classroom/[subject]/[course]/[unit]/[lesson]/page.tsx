@@ -8,6 +8,7 @@ import PolymerReactionsLesson from "@/app/classroom/_components/lessons/PolymerR
 import TokugawaBourbonLesson from "@/app/classroom/_components/lessons/TokugawaBourbonLesson";
 import WaterHydrogenBondingLesson from "@/app/classroom/_components/lessons/WaterHydrogenBondingLesson";
 import WorldIn1750Lesson from "@/app/classroom/_components/lessons/WorldIn1750Lesson";
+import UnitOneFrontierLesson from "@/app/classroom/_components/lessons/UnitOneFrontierLesson";
 import {
   COURSE_SUBJECTS,
   getCourse,
@@ -127,6 +128,16 @@ export default async function ClassroomLessonPage({ params }: PageProps) {
     return <PolymerReactionsLesson breadcrumbs={breadcrumbs} {...navigation} />;
   }
 
+  if (lesson.id === "ap-biology.unit-1.carbohydrates") {
+    return (
+      <UnitOneFrontierLesson
+        kind="carbohydrates"
+        breadcrumbs={breadcrumbs}
+        {...navigation}
+      />
+    );
+  }
+
   if (lesson.id === "nys.global-2.unit-1.world-in-1750") {
     return <WorldIn1750Lesson breadcrumbs={breadcrumbs} {...navigation} />;
   }
@@ -139,6 +150,16 @@ export default async function ClassroomLessonPage({ params }: PageProps) {
     return <TokugawaBourbonLesson breadcrumbs={breadcrumbs} {...navigation} />;
   }
 
+  if (lesson.id === "nys.global-2.unit-1.outsiders-exchange") {
+    return (
+      <UnitOneFrontierLesson
+        kind="outsiders-exchange"
+        breadcrumbs={breadcrumbs}
+        {...navigation}
+      />
+    );
+  }
+
   if (lesson.id === "nys.literature.unit-1.evidence-inference") {
     return (
       <EvidenceInferenceLesson breadcrumbs={breadcrumbs} {...navigation} />
@@ -148,6 +169,15 @@ export default async function ClassroomLessonPage({ params }: PageProps) {
   if (lesson.id === "nys.literature.unit-1.narrator-perspective") {
     return (
       <NarratorPerspectiveLesson breadcrumbs={breadcrumbs} {...navigation} />
+    );
+  }
+  if (lesson.id === "nys.literature.unit-1.character-desire") {
+    return (
+      <UnitOneFrontierLesson
+        kind="character-desire"
+        breadcrumbs={breadcrumbs}
+        {...navigation}
+      />
     );
   }
 
