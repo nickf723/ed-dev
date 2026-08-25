@@ -288,6 +288,25 @@ export const AP_BIOLOGY_UNIT_ONE: CourseUnit = {
   },
 };
 
+export const AP_BIOLOGY_EXAM_PREP: CourseUnit = {
+  id: "ap-biology.exam-prep",
+  slug: "exam-prep",
+  number: 9,
+  title: "AP Exam Review",
+  summary: "Deconstruct released free-response questions into experimental design, data reasoning, and point-earning explanations.",
+  essentialQuestion: "How does biological understanding become a precise, scoreable AP response?",
+  status: "active",
+  href: "/classroom/science/ap-biology/exam-prep",
+  pacing: "Flexible review cycle",
+  prerequisites: ["Units 1–8 content", "Experimental design", "Evidence-based scientific explanation"],
+  lessons: [],
+  teacherGuide: {
+    openingRoutine: "Ask students to identify the task verb before attempting each released prompt.",
+    evidencePlan: ["Track points by reasoning move, not only total score.", "Separate content gaps from response-construction gaps."],
+    differentiation: ["Build responses one rubric point at a time.", "Let students rehearse claims orally before writing complete paragraphs."],
+  },
+};
+
 export const AP_BIOLOGY_COURSE: Course = {
   id: "ap-biology",
   slug: "ap-biology",
@@ -300,7 +319,7 @@ export const AP_BIOLOGY_COURSE: Course = {
   status: "active",
   href: "/classroom/science/ap-biology",
   framework: AP_BIOLOGY_FRAMEWORK,
-  units: [AP_BIOLOGY_UNIT_ONE],
+  units: [AP_BIOLOGY_UNIT_ONE, AP_BIOLOGY_EXAM_PREP],
   plannedUnits: [
     {
       id: "ap-biology.unit-2",

@@ -232,6 +232,25 @@ export const NYS_GLOBAL_II_UNIT_ONE: CourseUnit = {
   },
 };
 
+export const NYS_GLOBAL_II_EXAM_PREP: CourseUnit = {
+  id: "nys.global-2.exam-prep",
+  slug: "exam-prep",
+  number: 8,
+  title: "Regents Exam Review",
+  summary: "Practice released multiple-choice, constructed-response, and enduring-issues tasks through source-first reasoning.",
+  essentialQuestion: "How can a source’s details support the strongest historical claim?",
+  status: "active",
+  href: "/classroom/social-studies/global-history-2/exam-prep",
+  pacing: "Flexible review cycle",
+  prerequisites: ["Units 1–7 content", "Source analysis", "Claim-evidence reasoning"],
+  lessons: [],
+  teacherGuide: {
+    openingRoutine: "Read the source before the choices and mark one detail that limits the possible claims.",
+    evidencePlan: ["Track source-use errors separately from content-recall errors.", "Require students to name the decisive evidence."],
+    differentiation: ["Reveal source details in chunks.", "Use claim-evidence matching before open written responses."],
+  },
+};
+
 export const NYS_GLOBAL_II_COURSE: Course = {
   id: "nys.global-history-2",
   slug: "global-history-2",
@@ -244,7 +263,7 @@ export const NYS_GLOBAL_II_COURSE: Course = {
   status: "active",
   href: "/classroom/social-studies/global-history-2",
   framework: NYS_GLOBAL_II_FRAMEWORK,
-  units: [NYS_GLOBAL_II_UNIT_ONE],
+  units: [NYS_GLOBAL_II_UNIT_ONE, NYS_GLOBAL_II_EXAM_PREP],
   plannedUnits: [
     {
       id: "nys.global-2.unit-2",

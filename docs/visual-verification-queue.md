@@ -108,6 +108,22 @@ Verify:
 
 **Status:** Source, type, lint, model, production-build, and rendered interaction verification required.
 
+### Cross-course guided exam review pilots
+
+**Routes:** `/classroom/science/ap-biology/exam-prep`, `/classroom/science/ap-biology/exam-prep/2025-frq`, `/classroom/social-studies/global-history-2/exam-prep`, and `/classroom/social-studies/global-history-2/exam-prep/june-2025`.
+
+Verify:
+
+- Exam Review appears after Units 1–8 in AP Biology and after Units 1–7 in Global History II
+- each landing page accurately explains its exam format and links to the issuing authority’s released materials
+- AP Biology preserves free-response reasoning: control selection, null-hypothesis construction, and a complete evidence-to-claim causal chain
+- AP feedback remains point-specific and does not pretend that selecting a scaffold is equivalent to writing the required paragraph response
+- Global History requires all three document details before answer checking and preserves June 2025 Questions 3–4 answer order
+- switching Global questions preserves each response and source-evidence state
+- both pilots reserve feedback space, expose visible keyboard focus, and remain readable at mobile widths and 200% text zoom
+
+**Status:** Source, type, lint, model, production-build, and rendered interaction verification required.
+
 ---
 
 ## Verification protocol
