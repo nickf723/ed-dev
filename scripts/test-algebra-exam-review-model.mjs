@@ -29,4 +29,12 @@ for (const item of JUNE_2025_GUIDED_ITEMS) {
   assert.equal(/[\u0000-\u0008\u000b\u000c\u000e-\u001f]/.test(serialized), false);
 }
 
+const unitConversionItem = JUNE_2025_GUIDED_ITEMS.find((item) => item.number === 24);
+assert.ok(unitConversionItem);
+assert.equal(unitConversionItem.answer, "3");
+for (const option of unitConversionItem.options) {
+  assert.ok(option.math?.includes("\\frac"), "Conversion factors must render as fractions");
+  assert.equal(option.math?.includes("\\div"), false, "Do not replace released fraction notation with division signs");
+}
+
 console.log("Algebra I guided exam review model tests passed.");

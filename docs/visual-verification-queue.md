@@ -103,6 +103,7 @@ Verify:
 - each walkthrough identifies the tested skill, decisive reasoning, reusable takeaway, and a live connected lesson
 - each revealed walkthrough includes a question-specific intuition lab whose controls expose the underlying comparison, transformation, rate, or model instead of merely rechecking the answer
 - mathematical notation renders through the shared math component with no raw commands or control characters
+- released answer choices preserve the exam's factor order and fraction structure; Question 24 uses stacked conversion fractions rather than division signs and remains horizontally readable
 - the sidebar, tables, answer choices, progress, and previous/next controls remain usable at mobile widths, keyboard-only, and 200% text zoom
 
 **Status:** Source, type, lint, model, production-build, and rendered interaction verification required.

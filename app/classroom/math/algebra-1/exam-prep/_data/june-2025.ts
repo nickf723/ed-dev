@@ -212,13 +212,13 @@ export const JUNE_2025_GUIDED_ITEMS: readonly GuidedExamItem[] = [
     skill: "Convert a compound rate",
     standard: "AI-N.Q.1",
     prompt:
-      "A train travels 49 miles per hour, and each railroad car is 56 feet long. Which calculation gives the number of cars passing per minute?",
+      "Anna watches a freight train traveling 49 miles per hour. Each car is 56 feet long. Which expression gives the cars passing her house per minute?",
     displayMath: "49\\;\\frac{\\text{miles}}{\\text{hour}}\\qquad 56\\;\\frac{\\text{feet}}{\\text{car}}",
     options: [
-      { id: "1", math: "49\\times56\\times5280\\div60" },
-      { id: "2", math: "49\\times5280\\times60\\div56" },
-      { id: "3", math: "49\\times5280\\div60\\div56" },
-      { id: "4", math: "49\\div5280\\times60\\times56" },
+      { id: "1", math: "\\frac{49\\;\\text{mi}}{1\\;\\text{hr}}\\cdot\\frac{1\\;\\text{mi}}{5280\\;\\text{ft}}\\cdot\\frac{1\\;\\text{hr}}{60\\;\\text{min}}\\cdot\\frac{1\\;\\text{car}}{56\\;\\text{ft}}" },
+      { id: "2", math: "\\frac{49\\;\\text{mi}}{1\\;\\text{hr}}\\cdot\\frac{1\\;\\text{mi}}{5280\\;\\text{ft}}\\cdot\\frac{60\\;\\text{min}}{1\\;\\text{hr}}\\cdot\\frac{1\\;\\text{car}}{56\\;\\text{ft}}" },
+      { id: "3", math: "\\frac{49\\;\\text{mi}}{1\\;\\text{hr}}\\cdot\\frac{5280\\;\\text{ft}}{1\\;\\text{mi}}\\cdot\\frac{1\\;\\text{hr}}{60\\;\\text{min}}\\cdot\\frac{1\\;\\text{car}}{56\\;\\text{ft}}" },
+      { id: "4", math: "\\frac{49\\;\\text{mi}}{1\\;\\text{hr}}\\cdot\\frac{5280\\;\\text{ft}}{1\\;\\text{mi}}\\cdot\\frac{60\\;\\text{min}}{1\\;\\text{hr}}\\cdot\\frac{1\\;\\text{car}}{56\\;\\text{ft}}" },
     ],
     answer: "3",
     hint:

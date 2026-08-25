@@ -108,7 +108,7 @@ export default function GuidedExamReview() {
             </div>
 
             <div className="mt-4 grid gap-2 sm:grid-cols-2" role="radiogroup" aria-label={`Question ${item.number} answer choices`}>
-              {item.options.map((option) => <button key={option.id} type="button" role="radio" aria-checked={selected === option.id} onClick={() => selectAnswer(option.id)} className={`min-h-[58px] rounded-[14px] border px-4 py-3 text-left text-[14px] leading-6 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-300/70 ${selected === option.id ? "border-violet-200/35 bg-violet-300/[0.10] text-white" : "border-white/[0.08] bg-black/16 text-stone-300 hover:border-white/[0.15]"}`}><span className="mr-3 font-mono text-violet-300">{option.id}</span>{option.math ? <M>{option.math}</M> : option.label}</button>)}
+              {item.options.map((option) => <button key={option.id} type="button" role="radio" aria-checked={selected === option.id} onClick={() => selectAnswer(option.id)} className={`min-h-[58px] overflow-x-auto rounded-[14px] border px-4 py-3 text-left leading-6 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-300/70 ${item.number === 24 ? "text-[12px]" : "text-[14px]"} ${selected === option.id ? "border-violet-200/35 bg-violet-300/[0.10] text-white" : "border-white/[0.08] bg-black/16 text-stone-300 hover:border-white/[0.15]"}`}><span className="mr-3 font-mono text-violet-300">{option.id}</span>{option.math ? <M>{option.math}</M> : option.label}</button>)}
             </div>
 
             <div className="mt-4 grid gap-3 sm:grid-cols-2">
