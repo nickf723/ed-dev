@@ -8,7 +8,9 @@ import PolymerReactionsLesson from "@/app/classroom/_components/lessons/PolymerR
 import TokugawaBourbonLesson from "@/app/classroom/_components/lessons/TokugawaBourbonLesson";
 import WaterHydrogenBondingLesson from "@/app/classroom/_components/lessons/WaterHydrogenBondingLesson";
 import WorldIn1750Lesson from "@/app/classroom/_components/lessons/WorldIn1750Lesson";
-import UnitOneFrontierLesson from "@/app/classroom/_components/lessons/UnitOneFrontierLesson";
+import CarbohydratesLesson from "@/app/classroom/_components/lessons/CarbohydratesLesson";
+import CharacterDesireLesson from "@/app/classroom/_components/lessons/CharacterDesireLesson";
+import OutsidersExchangeLesson from "@/app/classroom/_components/lessons/OutsidersExchangeLesson";
 import {
   COURSE_SUBJECTS,
   getCourse,
@@ -130,8 +132,7 @@ export default async function ClassroomLessonPage({ params }: PageProps) {
 
   if (lesson.id === "ap-biology.unit-1.carbohydrates") {
     return (
-      <UnitOneFrontierLesson
-        kind="carbohydrates"
+      <CarbohydratesLesson
         breadcrumbs={breadcrumbs}
         {...navigation}
       />
@@ -152,8 +153,7 @@ export default async function ClassroomLessonPage({ params }: PageProps) {
 
   if (lesson.id === "nys.global-2.unit-1.outsiders-exchange") {
     return (
-      <UnitOneFrontierLesson
-        kind="outsiders-exchange"
+      <OutsidersExchangeLesson
         breadcrumbs={breadcrumbs}
         {...navigation}
       />
@@ -173,8 +173,7 @@ export default async function ClassroomLessonPage({ params }: PageProps) {
   }
   if (lesson.id === "nys.literature.unit-1.character-desire") {
     return (
-      <UnitOneFrontierLesson
-        kind="character-desire"
+      <CharacterDesireLesson
         breadcrumbs={breadcrumbs}
         {...navigation}
       />

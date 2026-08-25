@@ -50,7 +50,7 @@ Verify:
 - Character & Desire coordinates action, speech, attention, contradiction, and pressure across three original cases; its sealed-letter transfer rewards the inference that accounts for both attention and avoidance
 - keyboard focus, 200% text zoom, mobile widths, and long course titles do not clip or create horizontal overflow
 
-**Status:** The earlier cross-subject Unit 1 checks passed as recorded. Carbohydrates, Outsiders & Exchange, and Character & Desire are now queued for rendered desktop, narrow-desktop, mobile, keyboard, zoom, case-switching, and transfer-feedback verification. Their focused TypeScript and lint checks pass under the bundled workspace runtime. The preferred browser runner is absent, and the available cloud browser is blocked from localhost by workspace policy, so rendered verification remains pending until a hosted preview is available.
+**Status:** The earlier cross-subject Unit 1 checks passed as recorded. The first generic fourth-frontier implementation failed the atomic-lesson design contract and has been replaced by three independent seven-stage experiences. Desktop and 390px mobile renders now pass in the Codex desktop in-app browser with no horizontal document overflow. Carbohydrate sample/transfer, Qing gate/claim, and sealed-letter motive/transfer state changes were exercised with coordinated feedback and no console errors. Focused TypeScript, lint, the Unit 1 model suite, and the 441-page production build pass. Keyboard-only traversal and 200% zoom remain queued.
 
 ### Expressions & Variables discovery flow
 
