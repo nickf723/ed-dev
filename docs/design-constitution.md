@@ -75,6 +75,8 @@ Examples:
 
 **Conventional representation is part of usability.** Learners should recognize how the idea appears in homework, exams, labs, source documents, diagrams, code, maps, or real practice.
 
+**Geographic-looking marks must use geographic geometry.** When a lesson claims to show real places, borders, coastlines, routes, or spatial relationships, use a mapping library/API with verified coordinates and sourced geographic data. Do not substitute hand-drawn continent blobs or decorative pseudo-maps. A deliberately schematic map is acceptable only when the abstraction is the lesson, the geometry remains directionally honest, and the schematic boundary is labeled beside the representation.
+
 Use Education Station styling around that representation. Borrow the clarity and structure of a worksheet or lab sheet without importing an alien paper skin into the interface.
 
 ---
