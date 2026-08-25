@@ -261,6 +261,18 @@ Good reference material:
 - ingredient technique compatibility
 - taxonomy legends
 
+### Released-item fidelity ladder
+
+Exam review should preserve the task students will actually encounter before adding scaffolds around it.
+
+1. Show the complete released item context: directions, stimulus, every subpart, and every answer choice needed for the selected item.
+2. Transcribe exact wording and answer order when the issuing authority permits classroom reuse. Label adaptations plainly; never describe a paraphrase as verbatim.
+3. Retype text into accessible semantic HTML instead of presenting a full exam page as a flat image.
+4. Recreate graphs, charts, maps, and timelines from verified source data when exact labels, values, geometry, legends, and relationships can be preserved. Include a source-view link and an accessible text or table equivalent.
+5. For political cartoons, historical photographs, artwork, or layouts whose visual authorship is itself evidence, use a faithful source crop or a properly licensed/public-domain copy rather than an invented substitute. Preserve attribution and meaningful alt text.
+6. If reproduction rights or source fidelity are uncertain, link or embed the official source beside a clearly labeled adaptation instead of silently omitting difficult context.
+7. Place Education Station guidance around the released item without changing its demand: first encounter the item, then annotate evidence, model the reasoning, construct a response, and finally compare with official scoring guidance.
+
 Reference blocks should reduce memory load without interrupting the lesson flow.
 
 Do not make a learner repeatedly infer a convention that can be stated once in a compact visual reference.

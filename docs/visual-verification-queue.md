@@ -121,6 +121,8 @@ Verify:
 - Global History requires all three document details before answer checking and preserves June 2025 Questions 3–4 answer order
 - switching Global questions preserves each response and source-evidence state
 - both pilots reserve feedback space, expose visible keyboard focus, and remain readable at mobile widths and 200% text zoom
+- the complete Global source excerpt and exact answer choices remain readable without clipping, and selection styling does not make the document look paraphrased
+- all four AP Biology subparts appear in released order; the complete prompt remains visually distinct from independently authored scaffolds
 
 **Status:** Source, type, lint, model, production-build, and rendered interaction verification required.
 

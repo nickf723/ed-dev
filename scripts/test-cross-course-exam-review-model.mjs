@@ -18,8 +18,12 @@ assert.match(apPilot, /ap25-frq-biology\.pdf/);
 assert.match(apPilot, /ap25-sg-biology\.pdf/);
 assert.match(apPilot, /Choose the control/);
 assert.match(apPilot, /Construct the null/);
+assert.match(apPilot, /Describe the effect that removing a keystone species/);
+assert.match(apPilot, /Scientists have found that the population growth rates of native grasses/);
 assert.match(globalPilot, /glhg2-62025-exam\.pdf/);
 assert.match(globalPilot, /glhg2-62025-sk\.pdf/);
+assert.match(globalPilot, /As all persons are held innocent until they shall have been declared guilty/);
+assert.match(globalPilot, /The rights of all citizens should be respected with fairness and justice/);
 assert.match(globalPilot, /number: 3[\s\S]*answer: 2/);
 assert.match(globalPilot, /number: 4[\s\S]*answer: 1/);
 
