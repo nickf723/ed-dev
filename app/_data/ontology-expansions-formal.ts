@@ -1,6 +1,6 @@
 import type { KnowledgeNode } from "./ontology";
 
-/** Verified routed branches for Formal Science disciplines outside the core algebra/CS catalog. */
+/** Verified routed branches plus explicit concepts taught inside Formal Science pages. */
 export const formalScienceOntologyExpansions: Record<string, KnowledgeNode[]> = {
   "algebra-fundamentals": [
     { id: "algebraic-properties", label: "Algebraic Properties", slug: "/formal-science/mathematics/algebra/elementary-algebra/fundamentals/algebraic-properties", kind: "topic", status: "live" },
@@ -10,6 +10,15 @@ export const formalScienceOntologyExpansions: Record<string, KnowledgeNode[]> = 
     { id: "one-step-equations", label: "One-Step Equations", slug: "/formal-science/mathematics/algebra/elementary-algebra/fundamentals/one-step-equations", kind: "topic", status: "live" },
     { id: "two-step-equations", label: "Two-Step Equations", slug: "/formal-science/mathematics/algebra/elementary-algebra/fundamentals/two-step-equations", kind: "topic", status: "live" },
     { id: "variables-changing-quantities", label: "Variables as Changing Quantities", slug: "/formal-science/mathematics/algebra/elementary-algebra/fundamentals/variables-changing-quantities", kind: "topic", status: "live" },
+  ],
+
+  "expressions-variables": [
+    { id: "term", label: "Term", kind: "concept", status: "live" },
+    { id: "coefficient", label: "Coefficient", kind: "concept", status: "live" },
+    { id: "variable", label: "Variable", kind: "concept", status: "live" },
+    { id: "exponent", label: "Exponent", kind: "concept", status: "live" },
+    { id: "constant", label: "Constant", kind: "concept", status: "live" },
+    { id: "like-terms", label: "Like Terms", kind: "concept", status: "live" },
   ],
 
   calculus: [
