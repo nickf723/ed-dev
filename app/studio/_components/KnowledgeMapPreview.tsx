@@ -58,7 +58,7 @@ export default function KnowledgeMapPreview({
   const domainChoices = graphChildren("education-station");
   const selected = selectedId ? navigationForKnowledgeNode(selectedId) : undefined;
   const selectedDescendants = selected ? graphDescendantCount(selected.current.id) : 0;
-  const conceptCount = layout.nodes.filter((node) => node.kind === "concept").length;
+  const embeddedCount = layout.nodes.filter((node) => !node.slug).length;
   const routedCount = layout.nodes.filter((node) => node.slug).length;
 
   const point = (id: string) => {
@@ -81,7 +81,7 @@ export default function KnowledgeMapPreview({
             <h1 className="text-3xl font-semibold tracking-tight">{root.label}</h1>
             <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-400">
               A live knowledge graph for navigation, discovery, and embedded concepts. Routed pages
-              are destinations; concept nodes describe knowledge taught inside those pages.
+              are destinations; unrouted nodes describe knowledge taught inside those pages.
             </p>
           </div>
           <div className="flex flex-wrap gap-2 text-xs text-slate-400">
@@ -92,7 +92,7 @@ export default function KnowledgeMapPreview({
               {routedCount} routed
             </span>
             <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5">
-              {conceptCount} concepts
+              {embeddedCount} embedded
             </span>
             <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5">
               depth {layout.maxDepth}
@@ -141,7 +141,7 @@ export default function KnowledgeMapPreview({
               <span className="relative h-2.5 w-5 rounded-full border border-dashed border-slate-500/50 bg-transparent">
                 <span className="absolute left-1/2 top-1/2 h-1 w-1 -translate-x-1/2 -translate-y-1/2 rounded-full bg-slate-400" />
               </span>
-              Embedded concept
+              Embedded knowledge
             </span>
           </div>
         </div>
@@ -169,7 +169,7 @@ export default function KnowledgeMapPreview({
                     const accent = domain ? DOMAIN_ACCENTS[domain] : "#64748b";
                     const bend = source.x + (target.x - source.x) * 0.5;
                     const selectedEdge = selectedId && (edge.sourceId === selectedId || edge.targetId === selectedId);
-                    const conceptEdge = targetNode?.kind === "concept";
+                    const embeddedEdge = targetNode ? !targetNode.slug : false;
 
                     return (
                       <path
@@ -177,9 +177,9 @@ export default function KnowledgeMapPreview({
                         d={`M ${source.x} ${source.y} C ${bend} ${source.y}, ${bend} ${target.y}, ${target.x} ${target.y}`}
                         fill="none"
                         stroke={accent}
-                        strokeDasharray={conceptEdge ? "4 5" : undefined}
-                        strokeOpacity={selectedEdge ? "0.72" : conceptEdge ? "0.18" : "0.25"}
-                        strokeWidth={selectedEdge ? "2.4" : conceptEdge ? "1.2" : "1.5"}
+                        strokeDasharray={embeddedEdge ? "4 5" : undefined}
+                        strokeOpacity={selectedEdge ? "0.72" : embeddedEdge ? "0.18" : "0.25"}
+                        strokeWidth={selectedEdge ? "2.4" : embeddedEdge ? "1.2" : "1.5"}
                       />
                     );
                   })}
@@ -191,17 +191,17 @@ export default function KnowledgeMapPreview({
                   const accent = domain ? DOMAIN_ACCENTS[domain] : "#e2e8f0";
                   const isRoot = node.depth === 0;
                   const isDomain = node.depth === 1 && root.id === "education-station";
-                  const isConcept = node.kind === "concept";
+                  const isEmbedded = !node.slug;
                   const isSelected = node.id === selectedId;
                   const className = [
                     "absolute -translate-x-1/2 -translate-y-1/2 rounded-full border backdrop-blur-md transition",
                     "hover:z-20 hover:scale-105",
-                    isConcept ? "border-dashed" : "",
+                    isEmbedded ? "border-dashed" : "",
                     isRoot
                       ? "min-w-36 px-5 py-3 text-center text-sm font-semibold"
                       : isDomain
                         ? "min-w-32 px-4 py-2.5 text-center text-xs font-semibold"
-                        : isConcept
+                        : isEmbedded
                           ? "max-w-36 px-2.5 py-1.5 text-center text-[10px] font-medium leading-tight"
                           : "max-w-44 px-3 py-2 text-center text-[11px] font-medium leading-tight",
                   ].join(" ");
@@ -209,13 +209,13 @@ export default function KnowledgeMapPreview({
                   const style = {
                     left: x,
                     top: y,
-                    borderColor: isSelected ? accent : isConcept ? `${accent}55` : `${accent}66`,
+                    borderColor: isSelected ? accent : isEmbedded ? `${accent}55` : `${accent}66`,
                     backgroundColor: isSelected
                       ? `${accent}33`
-                      : isConcept
+                      : isEmbedded
                         ? `${accent}08`
                         : `${accent}16`,
-                    color: isConcept && !isSelected ? `${accent}cc` : undefined,
+                    color: isEmbedded && !isSelected ? `${accent}cc` : undefined,
                     boxShadow: isSelected
                       ? `0 0 0 2px ${accent}33, 0 0 30px ${accent}44`
                       : isRoot || isDomain
@@ -232,7 +232,7 @@ export default function KnowledgeMapPreview({
                       title={`${node.label} · ${node.kind}${node.slug ? " · routed" : " · embedded"}`}
                     >
                       <span className="inline-flex items-center gap-1.5">
-                        {isConcept ? (
+                        {isEmbedded ? (
                           <span
                             className="h-1.5 w-1.5 shrink-0 rounded-full"
                             style={{ backgroundColor: accent }}
@@ -312,7 +312,7 @@ export default function KnowledgeMapPreview({
                   </div>
                 ) : (
                   <div className="mt-5 rounded-2xl border border-dashed border-white/10 bg-white/[0.025] p-3 text-xs leading-5 text-slate-500">
-                    This is an embedded concept taught inside its parent page. It belongs in the knowledge graph without requiring a standalone URL.
+                    This is knowledge embedded inside its nearest routed ancestor. It belongs in the graph without requiring a standalone URL.
                   </div>
                 )}
 
@@ -356,9 +356,9 @@ export default function KnowledgeMapPreview({
                           key={child.id}
                           href={mapHref(child.id, requestedRoot?.id)}
                           className={`rounded-full border px-2.5 py-1.5 text-xs hover:text-white ${
-                            child.kind === "concept"
-                              ? "border-dashed border-white/10 bg-transparent text-slate-400 hover:bg-white/[0.05]"
-                              : "border-white/10 bg-white/[0.03] text-slate-300 hover:bg-white/[0.08]"
+                            child.slug
+                              ? "border-white/10 bg-white/[0.03] text-slate-300 hover:bg-white/[0.08]"
+                              : "border-dashed border-white/10 bg-transparent text-slate-400 hover:bg-white/[0.05]"
                           }`}
                         >
                           {child.label}
@@ -380,7 +380,7 @@ export default function KnowledgeMapPreview({
         </div>
 
         <footer className="mt-4 flex flex-wrap items-center justify-between gap-3 text-xs leading-5 text-slate-500">
-          <span>Solid nodes are routed pages; dashed nodes are concepts embedded within those pages.</span>
+          <span>Solid nodes have routes; dashed nodes are knowledge embedded within the nearest routed ancestor.</span>
           {requestedRoot && requestedRoot.id !== "education-station" ? (
             <Link href="/studio/knowledge-map" className="text-slate-300 hover:text-white">
               Return to entire map
