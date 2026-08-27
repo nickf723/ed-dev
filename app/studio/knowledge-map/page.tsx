@@ -61,15 +61,16 @@ export default async function KnowledgeMapPreviewPage({
                 <div className="grid gap-2 md:grid-cols-2 xl:grid-cols-3">
                   {results.map((node) => {
                     const path = findGraphPath(node.id) ?? [];
-                    const searchParams = new URLSearchParams();
-                    if (focus) searchParams.set("focus", focus);
-                    searchParams.set("node", node.id);
-                    searchParams.set("q", query);
+                    const withinCurrentFocus = focus ? path.some((part) => part.id === focus) : false;
+                    const resultParams = new URLSearchParams();
+                    if (focus && withinCurrentFocus) resultParams.set("focus", focus);
+                    resultParams.set("node", node.id);
+                    resultParams.set("q", query);
 
                     return (
                       <Link
                         key={node.id}
-                        href={`/studio/knowledge-map?${searchParams.toString()}`}
+                        href={`/studio/knowledge-map?${resultParams.toString()}`}
                         className="rounded-2xl border border-white/10 bg-white/[0.03] px-3 py-2.5 hover:bg-white/[0.07]"
                       >
                         <span className="block text-sm font-medium text-slate-100">{node.label}</span>
