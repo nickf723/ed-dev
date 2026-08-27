@@ -3,34 +3,52 @@ import {
   findKnowledgeHostPage,
   graphDescendantCount,
 } from "@/app/_data/knowledge-graph";
-import { navigationForKnowledgeNode } from "@/app/_data/knowledge-navigation";
+import {
+  navigationForKnowledgeNode,
+  navigationForKnowledgeSlug,
+} from "@/app/_data/knowledge-navigation";
 import {
   knowledgeRelationsFor,
   relationLabel,
 } from "@/app/_data/knowledge-relations";
 import type { KnowledgeNode } from "@/app/_data/ontology";
 
-export type KnowledgeNavigatorProps = {
-  nodeId: string;
-  compact?: boolean;
-  showRelations?: boolean;
-  className?: string;
-};
+export type KnowledgeNavigatorProps =
+  | {
+      nodeId: string;
+      slug?: never;
+      compact?: boolean;
+      showRelations?: boolean;
+      className?: string;
+    }
+  | {
+      nodeId?: never;
+      slug: string;
+      compact?: boolean;
+      showRelations?: boolean;
+      className?: string;
+    };
 
 /**
- * A renderer-agnostic navigation surface backed by the canonical knowledge graph.
- * It is intentionally independent from curriculum registries so pages can migrate
- * toward ontology-driven navigation incrementally.
+ * Graph-driven navigation for gradual migration away from hand-maintained
+ * academic navigation. Existing pages can resolve by their current route while
+ * graph-native surfaces can resolve by stable ontology id.
  */
-export default function KnowledgeNavigator({
-  nodeId,
-  compact = false,
-  showRelations = true,
-  className = "",
-}: KnowledgeNavigatorProps) {
-  const context = navigationForKnowledgeNode(nodeId);
+export default function KnowledgeNavigator(props: KnowledgeNavigatorProps) {
+  const {
+    compact = false,
+    showRelations = true,
+    className = "",
+  } = props;
+  const context =
+    "nodeId" in props && props.nodeId
+      ? navigationForKnowledgeNode(props.nodeId)
+      : "slug" in props
+        ? navigationForKnowledgeSlug(props.slug)
+        : undefined;
   if (!context) return null;
 
+  const nodeId = context.current.id;
   const host = findKnowledgeHostPage(nodeId);
   const relations = showRelations ? knowledgeRelationsFor(nodeId) : [];
   const descendants = graphDescendantCount(nodeId);
