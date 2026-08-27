@@ -379,7 +379,7 @@ export default function KnowledgeMapPreview({
                       {selectedRelations.map(({ relation, direction, other }) => (
                         <Link
                           key={`${relation.sourceId}-${relation.kind}-${relation.targetId}`}
-                          href={mapHref(other.id, requestedRoot?.id)}
+                          href={byId.has(other.id) ? mapHref(other.id, requestedRoot?.id) : mapHref(other.id)}
                           className="block rounded-2xl border border-cyan-300/[0.08] bg-cyan-300/[0.025] px-3 py-2.5 hover:bg-cyan-300/[0.05]"
                         >
                           <span className="block text-[10px] font-semibold uppercase tracking-[0.12em] text-cyan-200/45">
