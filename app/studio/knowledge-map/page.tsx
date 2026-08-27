@@ -66,13 +66,14 @@ export default async function KnowledgeMapPreviewPage({
                     if (focus && withinCurrentFocus) resultParams.set("focus", focus);
                     resultParams.set("node", node.id);
                     resultParams.set("q", query);
+                    const isEmbedded = !node.slug;
 
                     return (
                       <Link
                         key={node.id}
                         href={`/studio/knowledge-map?${resultParams.toString()}`}
                         className={`rounded-2xl border px-3 py-2.5 transition ${
-                          node.kind === "concept"
+                          isEmbedded
                             ? "border-dashed border-white/10 bg-transparent hover:bg-white/[0.04]"
                             : "border-white/10 bg-white/[0.03] hover:bg-white/[0.07]"
                         }`}
@@ -80,16 +81,17 @@ export default async function KnowledgeMapPreviewPage({
                         <span className="flex items-center justify-between gap-3">
                           <span className="text-sm font-medium text-slate-100">{node.label}</span>
                           <span className={`shrink-0 rounded-full border px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[0.12em] ${
-                            node.kind === "concept"
+                            isEmbedded
                               ? "border-slate-600/40 text-slate-500"
                               : "border-violet-400/20 bg-violet-400/[0.07] text-violet-300/70"
                           }`}>
-                            {node.kind === "concept" ? "concept" : node.slug ? "page" : node.kind}
+                            {isEmbedded ? "embedded" : "page"}
                           </span>
                         </span>
                         <span className="mt-1 block truncate text-[11px] text-slate-500">
                           {path.map((part) => part.label).join(" / ")}
                         </span>
+                        <span className="mt-1 block text-[10px] text-slate-600">{node.kind}</span>
                       </Link>
                     );
                   })}
