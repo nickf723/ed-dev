@@ -19,10 +19,8 @@ assert.equal(educationStationKnowledgeGraph.children?.length, 6);
 assert.equal(new Set(ids).size, ids.length, "Knowledge graph node ids must be unique");
 assert.equal(new Set(slugs).size, slugs.length, "Knowledge graph slugs must be unique");
 
-assert.deepEqual(
-  findGraphPath("difference-of-perfect-squares")?.map((node) => node.id),
-  ["education-station", "formal-science", "mathematics", "algebra", "elementary-algebra", "factoring", "difference-of-perfect-squares"],
-);
+assert.deepEqual(findGraphPath("difference-of-perfect-squares")?.map((node) => node.id), ["education-station", "formal-science", "mathematics", "algebra", "elementary-algebra", "factoring", "difference-of-perfect-squares"]);
+assert.deepEqual(findGraphPath("coefficient")?.map((node) => node.id), ["education-station", "formal-science", "mathematics", "algebra", "elementary-algebra", "algebra-fundamentals", "expressions-variables", "coefficient"]);
 assert.deepEqual(findGraphPath("united-states-history")?.map((node) => node.id), ["education-station", "humanities", "history", "regional-history", "history-americas", "united-states-history"]);
 assert.deepEqual(findGraphPath("greek-mythology")?.map((node) => node.id), ["education-station", "humanities", "religion", "mythology", "greek-mythology"]);
 assert.deepEqual(findGraphPath("set-theory")?.map((node) => node.id), ["education-station", "formal-science", "mathematics", "discrete-mathematics", "set-theory"]);
@@ -34,10 +32,13 @@ assert.deepEqual(findGraphPath("paleozoology")?.map((node) => node.id), ["educat
 assert.equal(findGraphNodeBySlug("/formal-science/mathematics/statistics/descriptive")?.id, "descriptive-statistics");
 assert.equal(findGraphNodeBySlug("/natural-science/biology/zoology")?.id, "zoology");
 assert.equal(findGraphNodeBySlug("/humanities/religion/mythology/greek")?.id, "greek-mythology");
-assert.equal(findGraphNode("machine-learning")?.label, "Machine Learning");
+assert.equal(findGraphNode("coefficient")?.slug, undefined);
+assert.equal(findGraphNode("coefficient")?.kind, "concept");
 
 assert.ok(graphChildren("computer-science").length >= 6);
 assert.ok(graphChildren("elementary-algebra").length >= 10);
+assert.equal(graphChildren("algebra-fundamentals").length, 7);
+assert.equal(graphChildren("expressions-variables").length, 6);
 assert.equal(graphChildren("chronology").length, 5);
 assert.equal(graphChildren("engineering").length, 6);
 assert.equal(graphChildren("limits").length, 5);
@@ -48,6 +49,7 @@ assert.equal(graphChildren("forces").length, 3);
 assert.equal(graphChildren("mechanical-energy").length, 2);
 assert.equal(graphChildren("mythology").length, 1);
 
+assert.equal(graphDescendantCount("expressions-variables"), 6);
 assert.equal(graphDescendantCount("limits"), 5);
 assert.equal(graphDescendantCount("euclidean-geometry"), 6);
 assert.equal(graphDescendantCount("zoology"), 4);
@@ -56,6 +58,7 @@ assert.ok(graphDescendantCount("mechanics") >= 7);
 assert.ok(graphDescendantCount("mathematics") > graphChildren("mathematics").length);
 assert.deepEqual(graphDescendants("does-not-exist"), []);
 
+assert.equal(searchKnowledgeGraph("coefficient", 1)[0]?.id, "coefficient");
 assert.equal(searchKnowledgeGraph("set theory", 1)[0]?.id, "set-theory");
 assert.equal(searchKnowledgeGraph("greek mythology", 1)[0]?.id, "greek-mythology");
 assert.ok(searchKnowledgeGraph("geometry").some((node) => node.id === "geometry"));
