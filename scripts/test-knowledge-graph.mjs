@@ -44,6 +44,11 @@ assert.deepEqual(
   ["education-station", "social-science", "anthropology", "anthropology-archaeology"],
 );
 
+assert.deepEqual(
+  findGraphPath("game-studies-science")?.map((node) => node.id),
+  ["education-station", "interdisciplines", "game-studies", "game-studies-science"],
+);
+
 assert.equal(
   findGraphNodeBySlug("/natural-science/biology/zoology")?.id,
   "zoology",
@@ -56,6 +61,10 @@ assert.equal(
   findGraphNodeBySlug("/humanities/literature/narrative-fiction")?.id,
   "narrative-fiction",
 );
+assert.equal(
+  findGraphNodeBySlug("/natural-science/astronomy/cosmology")?.id,
+  "cosmology",
+);
 assert.equal(findGraphNode("machine-learning")?.label, "Machine Learning");
 assert.ok(graphChildren("computer-science").length >= 6);
 assert.ok(graphChildren("elementary-algebra").length >= 10);
@@ -64,5 +73,7 @@ assert.equal(graphChildren("chronology").length, 5);
 assert.equal(graphChildren("philosophy").length, 3);
 assert.equal(graphChildren("music").length, 4);
 assert.equal(graphChildren("engineering").length, 6);
+assert.equal(graphChildren("astronomy").length, 2);
+assert.equal(graphChildren("game-studies").length, 2);
 
 console.log(`Knowledge graph integrity OK: ${nodes.length} nodes, ${slugs.length} routed nodes.`);
