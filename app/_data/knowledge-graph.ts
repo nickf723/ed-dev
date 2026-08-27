@@ -112,6 +112,12 @@ export function searchKnowledgeGraph(query: string, limit = 12): KnowledgeNode[]
     const label = node.label.toLocaleLowerCase();
     const id = node.id.toLocaleLowerCase();
     const slug = node.slug?.toLocaleLowerCase() ?? "";
+    const path = findGraphPath(node.id) ?? [];
+    const pathText = path
+      .flatMap((part) => [part.label, part.id])
+      .join(" ")
+      .toLocaleLowerCase();
+    const searchable = `${label} ${id} ${slug} ${pathText}`;
     let value = 0;
 
     if (label === normalized) value += 100;
@@ -120,11 +126,14 @@ export function searchKnowledgeGraph(query: string, limit = 12): KnowledgeNode[]
     if (id.startsWith(normalized)) value += 50;
     if (label.includes(normalized)) value += 35;
     if (slug.includes(normalized)) value += 20;
+    if (pathText.includes(normalized)) value += 15;
+    if (terms.every((term) => searchable.includes(term))) value += 24;
 
     for (const term of terms) {
       if (label.includes(term)) value += 8;
       if (id.includes(term)) value += 5;
       if (slug.includes(term)) value += 3;
+      if (pathText.includes(term)) value += 2;
     }
 
     return value;
@@ -133,7 +142,7 @@ export function searchKnowledgeGraph(query: string, limit = 12): KnowledgeNode[]
   return flattenKnowledgeGraph()
     .map((node) => ({ node, score: score(node) }))
     .filter(({ score }) => score > 0)
-    .sort((a, b) => b.score - a.score || a.node.label.localeCompare(b.node.label))
+    .sort((a, b) => b.score - a.score || a.node.label.localeCompare(b.node.label) || a.node.id.localeCompare(b.node.id))
     .slice(0, limit)
     .map(({ node }) => node);
 }
