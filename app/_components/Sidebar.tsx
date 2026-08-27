@@ -12,8 +12,8 @@ import {
   Menu,
   PanelLeftClose,
   PanelLeftOpen,
-  Scan,
   School,
+  Wrench,
   X,
 } from "lucide-react";
 import { DOMAIN_BY_ID, getDomainForPath, type DomainId } from "@/lib/domains";
@@ -182,20 +182,18 @@ export default function Sidebar({
             <button
               type="button"
               onClick={toggleStructureScan}
-              title={isCollapsed ? "Structure scan" : undefined}
-              className={`flex w-full items-center gap-3 rounded-xl border border-transparent px-3 py-2.5 text-left text-slate-500 transition-all hover:border-white/[0.08] hover:bg-white/[0.035] hover:text-slate-300 ${isCollapsed ? "md:justify-center md:px-0" : ""}`}
+              title={isCollapsed ? "Developer tools" : undefined}
+              className={`flex w-full items-center gap-3 rounded-xl border border-transparent px-3 py-2.5 text-left text-slate-600 transition-all hover:border-white/[0.08] hover:bg-white/[0.03] hover:text-slate-300 ${isCollapsed ? "md:justify-center md:px-0" : ""}`}
             >
-              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-emerald-400/15 bg-emerald-400/[0.045] text-emerald-300/65">
-                <Scan size={15} />
+              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-white/[0.08] bg-white/[0.025] text-slate-500">
+                <Wrench size={14} />
               </span>
-              <span
-                className={`min-w-0 flex-1 ${isCollapsed ? "md:hidden" : ""}`}
-              >
+              <span className={`min-w-0 flex-1 ${isCollapsed ? "md:hidden" : ""}`}>
                 <strong className="block text-[10px] font-semibold uppercase tracking-[0.12em]">
-                  Structure scan
+                  Developer tools
                 </strong>
                 <span className="mt-0.5 block text-[9px] text-slate-700">
-                  Developer view
+                  diagnostics
                 </span>
               </span>
               <ChevronDown
@@ -213,6 +211,9 @@ export default function Sidebar({
                   className="overflow-hidden"
                 >
                   <div className="pt-2">
+                    <div className="mb-2 px-2 font-mono text-[8px] uppercase tracking-[0.16em] text-slate-700">
+                      Structure scan
+                    </div>
                     <XRayConsole />
                   </div>
                 </motion.div>
@@ -248,10 +249,6 @@ function NavItem({
     path: string;
     value: boolean;
   } | null>(null);
-  // Pathname is available during Next's server render and hydration pass, so
-  // active ancestry can be derived without a client-only "hydrated" frame.
-  // Manual choices remain scoped to one route; navigation reveals the new
-  // route's ancestry automatically.
   const expanded =
     manualExpansion?.path === currentPath
       ? manualExpansion.value
@@ -262,9 +259,9 @@ function NavItem({
       ? BookOpen
       : item.icon === "school"
         ? School
-      : isTopLevel && itemDomain !== "meta"
-        ? DOMAIN_BY_ID[itemDomain]?.icon
-        : undefined;
+        : isTopLevel && itemDomain !== "meta"
+          ? DOMAIN_BY_ID[itemDomain]?.icon
+          : undefined;
 
   const activeBackground = isTopLevel
     ? `linear-gradient(90deg, rgba(${rgb},0.12), rgba(${rgb},0.035))`
