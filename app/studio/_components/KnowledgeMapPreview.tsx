@@ -7,6 +7,7 @@ import {
   graphChildren,
   graphDescendantCount,
 } from "@/app/_data/knowledge-graph";
+import { knowledgeRelationsFor, relationLabel } from "@/app/_data/knowledge-relations";
 import { navigationForKnowledgeNode } from "@/app/_data/knowledge-navigation";
 
 const DOMAIN_ACCENTS: Record<string, string> = {
@@ -60,6 +61,7 @@ export default function KnowledgeMapPreview({
   const selected = selectedId ? navigationForKnowledgeNode(selectedId) : undefined;
   const selectedDescendants = selected ? graphDescendantCount(selected.current.id) : 0;
   const selectedHost = selected ? findKnowledgeHostPage(selected.current.id) : undefined;
+  const selectedRelations = selected ? knowledgeRelationsFor(selected.current.id) : [];
   const embeddedCount = layout.nodes.filter((node) => !node.slug).length;
   const routedCount = layout.nodes.filter((node) => node.slug).length;
 
@@ -328,6 +330,32 @@ export default function KnowledgeMapPreview({
                   </div>
                 ) : null}
 
+                {selectedRelations.length ? (
+                  <div className="mt-5">
+                    <div className="flex items-center justify-between gap-3">
+                      <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-500">Connections</p>
+                      <span className="text-[10px] text-slate-600">cross-links · not hierarchy</span>
+                    </div>
+                    <div className="mt-2 space-y-2">
+                      {selectedRelations.map(({ relation, direction, other }) => (
+                        <Link
+                          key={`${relation.sourceId}-${relation.kind}-${relation.targetId}`}
+                          href={mapHref(other.id, requestedRoot?.id)}
+                          className="block rounded-2xl border border-cyan-300/[0.08] bg-cyan-300/[0.025] px-3 py-2.5 hover:bg-cyan-300/[0.05]"
+                        >
+                          <span className="block text-[10px] font-semibold uppercase tracking-[0.12em] text-cyan-200/45">
+                            {relationLabel(relation.kind, direction)}
+                          </span>
+                          <span className="mt-0.5 block text-sm font-medium text-slate-200">{other.label}</span>
+                          {relation.note ? (
+                            <span className="mt-1 block text-[11px] leading-5 text-slate-500">{relation.note}</span>
+                          ) : null}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                ) : null}
+
                 <dl className="mt-5 grid grid-cols-2 gap-2 text-center sm:grid-cols-4 xl:grid-cols-2">
                   <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-3">
                     <dt className="text-[10px] uppercase tracking-wide text-slate-500">Siblings</dt>
@@ -384,7 +412,7 @@ export default function KnowledgeMapPreview({
               <div className="py-8 text-center">
                 <p className="text-sm font-medium text-slate-300">Select a node</p>
                 <p className="mx-auto mt-2 max-w-64 text-xs leading-5 text-slate-500">
-                  Inspect its canonical path, host page, route, parent, siblings, descendants, and children without leaving the map.
+                  Inspect its canonical path, host page, cross-links, route, parent, siblings, descendants, and children without leaving the map.
                 </p>
               </div>
             )}
@@ -392,7 +420,7 @@ export default function KnowledgeMapPreview({
         </div>
 
         <footer className="mt-4 flex flex-wrap items-center justify-between gap-3 text-xs leading-5 text-slate-500">
-          <span>Solid nodes have routes; dashed nodes are knowledge embedded within the nearest routed ancestor.</span>
+          <span>Solid/dashed nodes show route status. Connections in the inspector are typed cross-links, not parent-child edges.</span>
           {requestedRoot && requestedRoot.id !== "education-station" ? (
             <Link href="/studio/knowledge-map" className="text-slate-300 hover:text-white">
               Return to entire map
