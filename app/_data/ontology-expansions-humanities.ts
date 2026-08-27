@@ -1,6 +1,6 @@
 import type { KnowledgeNode } from "./ontology";
 
-/** Verified routed branches for Humanities disciplines. */
+/** Verified routed branches plus explicit concepts taught inside Humanities pages. */
 export const humanitiesOntologyExpansions: Record<string, KnowledgeNode[]> = {
   literature: [
     {
@@ -42,6 +42,15 @@ export const humanitiesOntologyExpansions: Record<string, KnowledgeNode[]> = {
         },
       ],
     },
+  ],
+
+  "greek-mythology": [
+    { id: "olympians", label: "Olympians", kind: "concept", status: "live" },
+    { id: "titans", label: "Titans", kind: "concept", status: "live" },
+    { id: "titanomachy", label: "Titanomachy", kind: "concept", status: "live" },
+    { id: "divine-reciprocity", label: "Divine Reciprocity", kind: "concept", status: "live" },
+    { id: "hubris", label: "Hubris", kind: "concept", status: "live" },
+    { id: "legendary-artifacts", label: "Legendary Artifacts", kind: "concept", status: "live" },
   ],
 };
 
