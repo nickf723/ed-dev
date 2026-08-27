@@ -32,6 +32,15 @@ export const humanitiesOntologyExpansions: Record<string, KnowledgeNode[]> = {
       slug: "/humanities/religion/mythology",
       kind: "branch",
       status: "live",
+      children: [
+        {
+          id: "greek-mythology",
+          label: "Greek Mythology",
+          slug: "/humanities/religion/mythology/greek",
+          kind: "topic",
+          status: "live",
+        },
+      ],
     },
   ],
 };
