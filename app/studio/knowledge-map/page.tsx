@@ -6,7 +6,17 @@ export const metadata = {
   robots: { index: false, follow: false },
 };
 
-export default function KnowledgeMapPreviewPage() {
+type SearchParams = Promise<Record<string, string | string[] | undefined>>;
+
+export default async function KnowledgeMapPreviewPage({
+  searchParams,
+}: {
+  searchParams: SearchParams;
+}) {
   if (process.env.NODE_ENV !== "development") notFound();
-  return <KnowledgeMapPreview />;
+
+  const params = await searchParams;
+  const focus = Array.isArray(params.focus) ? params.focus[0] : params.focus;
+
+  return <KnowledgeMapPreview focusId={focus} />;
 }
