@@ -10,6 +10,7 @@ import { humanitiesExpansionFor } from "./ontology-expansions-humanities";
 import { interdisciplinaryExpansionFor } from "./ontology-expansions-interdisciplines";
 import { naturalExpansionFor } from "./ontology-expansions-natural";
 import { socialExpansionFor } from "./ontology-expansions-social";
+import { aliasesForKnowledgeNode } from "./knowledge-aliases";
 
 function mergeChildren(base: KnowledgeNode[], additions: KnowledgeNode[]): KnowledgeNode[] {
   const byId = new Map<string, KnowledgeNode>();
@@ -112,25 +113,31 @@ export function searchKnowledgeGraph(query: string, limit = 12): KnowledgeNode[]
     const label = node.label.toLocaleLowerCase();
     const id = node.id.toLocaleLowerCase();
     const slug = node.slug?.toLocaleLowerCase() ?? "";
+    const aliases = aliasesForKnowledgeNode(node.id).map((alias) => alias.toLocaleLowerCase());
+    const aliasText = aliases.join(" ");
     const path = findGraphPath(node.id) ?? [];
     const pathText = path
       .flatMap((part) => [part.label, part.id])
       .join(" ")
       .toLocaleLowerCase();
-    const searchable = `${label} ${id} ${slug} ${pathText}`;
+    const searchable = `${label} ${id} ${slug} ${aliasText} ${pathText}`;
     let value = 0;
 
     if (label === normalized) value += 100;
+    if (aliases.includes(normalized)) value += 95;
     if (id === normalized) value += 90;
     if (label.startsWith(normalized)) value += 60;
+    if (aliases.some((alias) => alias.startsWith(normalized))) value += 56;
     if (id.startsWith(normalized)) value += 50;
     if (label.includes(normalized)) value += 35;
+    if (aliasText.includes(normalized)) value += 32;
     if (slug.includes(normalized)) value += 20;
     if (pathText.includes(normalized)) value += 15;
     if (terms.every((term) => searchable.includes(term))) value += 24;
 
     for (const term of terms) {
       if (label.includes(term)) value += 8;
+      if (aliasText.includes(term)) value += 7;
       if (id.includes(term)) value += 5;
       if (slug.includes(term)) value += 3;
       if (pathText.includes(term)) value += 2;
