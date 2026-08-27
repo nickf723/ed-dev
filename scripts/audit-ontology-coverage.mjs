@@ -1,6 +1,9 @@
 import fs from "node:fs";
 import path from "node:path";
-import { educationStationOntology, flattenKnowledgeTree } from "../app/_data/ontology.ts";
+import {
+  educationStationKnowledgeGraph,
+  flattenKnowledgeGraph,
+} from "../app/_data/knowledge-graph.ts";
 
 const ROOT = process.cwd();
 const APP = path.join(ROOT, "app");
@@ -44,39 +47,39 @@ const routes = walk(APP)
   .filter((route) => !route.includes("["))
   .sort((a, b) => depth(a) - depth(b) || a.localeCompare(b));
 
-const ontologyNodes = flattenKnowledgeTree(educationStationOntology);
-const ontologyRoutes = new Set(ontologyNodes.flatMap((node) => (node.slug ? [node.slug] : [])));
+const graphNodes = flattenKnowledgeGraph(educationStationKnowledgeGraph);
+const graphRoutes = new Set(graphNodes.flatMap((node) => (node.slug ? [node.slug] : [])));
 const routeSet = new Set(routes);
 
-const missingFromOntology = routes.filter((route) => !ontologyRoutes.has(route));
-const missingFromRoutes = [...ontologyRoutes].filter((route) => !routeSet.has(route));
+const missingFromGraph = routes.filter((route) => !graphRoutes.has(route));
+const missingFromRoutes = [...graphRoutes].filter((route) => !routeSet.has(route));
 
 const countsByDomain = Object.fromEntries(
   DOMAIN_ROOTS.map((domain) => {
     const prefix = `/${domain}`;
     const domainRoutes = routes.filter((route) => route === prefix || route.startsWith(`${prefix}/`));
-    const mapped = domainRoutes.filter((route) => ontologyRoutes.has(route));
+    const mapped = domainRoutes.filter((route) => graphRoutes.has(route));
     return [domain, { routes: domainRoutes.length, mapped: mapped.length }];
   }),
 );
 
-console.log("Education Station ontology coverage\n");
+console.log("Education Station knowledge graph coverage\n");
 for (const [domain, counts] of Object.entries(countsByDomain)) {
   const pct = counts.routes ? Math.round((counts.mapped / counts.routes) * 100) : 100;
   console.log(`  ${domain}: ${counts.mapped}/${counts.routes} routes mapped (${pct}%)`);
 }
 
 console.log(`\nAcademic routes discovered: ${routes.length}`);
-console.log(`Ontology routes: ${ontologyRoutes.size}`);
-console.log(`Routes not yet represented: ${missingFromOntology.length}`);
-console.log(`Ontology routes without a concrete page: ${missingFromRoutes.length}`);
+console.log(`Graph routes: ${graphRoutes.size}`);
+console.log(`Routes not yet represented: ${missingFromGraph.length}`);
+console.log(`Graph routes without a concrete page: ${missingFromRoutes.length}`);
 
-if (missingFromOntology.length) {
-  console.log("\nNext ontology expansion backlog:");
-  for (const route of missingFromOntology) console.log(`  - ${route}`);
+if (missingFromGraph.length) {
+  console.log("\nNext graph expansion backlog:");
+  for (const route of missingFromGraph) console.log(`  - ${route}`);
 }
 
 if (missingFromRoutes.length) {
-  console.log("\nOntology nodes without concrete pages:");
+  console.log("\nGraph nodes without concrete pages:");
   for (const route of missingFromRoutes.sort()) console.log(`  - ${route}`);
 }
