@@ -76,6 +76,17 @@ export function findGraphPath(id: string): KnowledgeNode[] | undefined {
   return walk(educationStationKnowledgeGraph, []);
 }
 
+/**
+ * Returns the nearest routed node that contains or represents this knowledge.
+ * Routed nodes host themselves; embedded nodes inherit the closest routed
+ * ancestor. This lets concept nodes navigate back to the page that teaches them.
+ */
+export function findKnowledgeHostPage(id: string): KnowledgeNode | undefined {
+  const path = findGraphPath(id);
+  if (!path) return undefined;
+  return [...path].reverse().find((node) => Boolean(node.slug));
+}
+
 export function graphChildren(id: string): KnowledgeNode[] {
   return findGraphNode(id)?.children ?? [];
 }
