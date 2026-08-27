@@ -43,9 +43,8 @@ const academicDomains: NavigationItem[] = curriculumRegistry.allDomains().map((e
 });
 
 /**
- * Serializable navigation snapshot built on the server from the existing
- * academic registry. The visible shell presents the site as a knowledge atlas;
- * classroom-specific routes remain available without occupying primary navigation.
+ * Serializable learner-facing navigation. Classroom-specific routes remain
+ * available without occupying the primary knowledge navigation.
  */
 export const NAVIGATION_DATA: NavigationSection[] = [
   {
@@ -53,9 +52,8 @@ export const NAVIGATION_DATA: NavigationSection[] = [
     items: academicDomains,
   },
   {
-    title: "Explore",
+    title: "Reference",
     items: [
-      { label: "About", href: "/about", domain: "meta" },
       { label: "Glossary", href: "/glossary", icon: "book-open", domain: "meta" },
     ],
   },
