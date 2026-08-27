@@ -30,17 +30,26 @@ assert.deepEqual(findGraphPath("anthropology-archaeology")?.map((node) => node.i
 assert.deepEqual(findGraphPath("game-studies-science")?.map((node) => node.id), ["education-station", "interdisciplines", "game-studies", "game-studies-science"]);
 assert.deepEqual(findGraphPath("newtons-second-law")?.map((node) => node.id), ["education-station", "natural-science", "physics", "mechanics", "forces", "newtons-second-law"]);
 assert.deepEqual(findGraphPath("paleozoology")?.map((node) => node.id), ["education-station", "natural-science", "biology", "zoology", "paleozoology"]);
+assert.deepEqual(findGraphPath("photosynthesis")?.map((node) => node.id), ["education-station", "natural-science", "biology", "botany", "plant-physiology", "photosynthesis"]);
+assert.deepEqual(findGraphPath("hubris")?.map((node) => node.id), ["education-station", "humanities", "religion", "mythology", "greek-mythology", "hubris"]);
 
 assert.equal(findGraphNodeBySlug("/formal-science/mathematics/statistics/descriptive")?.id, "descriptive-statistics");
 assert.equal(findGraphNodeBySlug("/natural-science/biology/zoology")?.id, "zoology");
 assert.equal(findGraphNodeBySlug("/humanities/religion/mythology/greek")?.id, "greek-mythology");
 assert.equal(findGraphNode("coefficient")?.slug, undefined);
 assert.equal(findGraphNode("coefficient")?.kind, "concept");
+assert.equal(findGraphNode("newtons-second-law")?.kind, "concept");
+assert.equal(findGraphNode("newtons-second-law")?.slug, "/natural-science/physics/mechanics/forces/newtons-second-law");
+assert.equal(findGraphNode("photosynthesis")?.slug, undefined);
+assert.equal(findGraphNode("hubris")?.slug, undefined);
 
 const coefficientLayoutNode = layout.nodes.find((node) => node.id === "coefficient");
 assert.equal(coefficientLayoutNode?.kind, "concept");
 assert.equal(coefficientLayoutNode?.status, "live");
 assert.equal(coefficientLayoutNode?.slug, undefined);
+const newtonsLayoutNode = layout.nodes.find((node) => node.id === "newtons-second-law");
+assert.equal(newtonsLayoutNode?.kind, "concept");
+assert.ok(newtonsLayoutNode?.slug, "Routed concepts must preserve their route in layout metadata");
 assert.equal(layout.nodes.find((node) => node.id === "set-theory")?.kind, "branch");
 assert.equal(layout.nodes.find((node) => node.id === "set-theory")?.slug, "/formal-science/mathematics/discrete/set-theory");
 
@@ -57,17 +66,23 @@ assert.equal(graphChildren("mechanics").length, 2);
 assert.equal(graphChildren("forces").length, 3);
 assert.equal(graphChildren("mechanical-energy").length, 2);
 assert.equal(graphChildren("mythology").length, 1);
+assert.equal(graphChildren("greek-mythology").length, 6);
+assert.equal(graphChildren("botany").length, 6);
+assert.equal(graphChildren("plant-physiology").length, 6);
 
 assert.equal(graphDescendantCount("expressions-variables"), 6);
 assert.equal(graphDescendantCount("limits"), 5);
 assert.equal(graphDescendantCount("euclidean-geometry"), 6);
 assert.equal(graphDescendantCount("zoology"), 4);
 assert.equal(graphDescendantCount("regional-history"), 3);
+assert.equal(graphDescendantCount("botany"), 12);
 assert.ok(graphDescendantCount("mechanics") >= 7);
 assert.ok(graphDescendantCount("mathematics") > graphChildren("mathematics").length);
 assert.deepEqual(graphDescendants("does-not-exist"), []);
 
 assert.equal(searchKnowledgeGraph("coefficient", 1)[0]?.id, "coefficient");
+assert.equal(searchKnowledgeGraph("photosynthesis", 1)[0]?.id, "photosynthesis");
+assert.equal(searchKnowledgeGraph("hubris", 1)[0]?.id, "hubris");
 assert.equal(searchKnowledgeGraph("set theory", 1)[0]?.id, "set-theory");
 assert.equal(searchKnowledgeGraph("greek mythology", 1)[0]?.id, "greek-mythology");
 assert.ok(searchKnowledgeGraph("geometry").some((node) => node.id === "geometry"));
