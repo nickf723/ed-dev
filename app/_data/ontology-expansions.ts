@@ -144,7 +144,26 @@ export const verifiedOntologyExpansions: Record<string, KnowledgeNode[]> = {
         { id: "modern-history", label: "Modern", slug: "/humanities/history/chronology/modern", kind: "topic", status: "live" },
       ],
     },
-    { id: "regional-history", label: "Regional History", slug: "/humanities/history/regional", kind: "branch", status: "live" },
+    {
+      id: "regional-history",
+      label: "Regional History",
+      slug: "/humanities/history/regional",
+      kind: "branch",
+      status: "live",
+      children: [
+        {
+          id: "history-americas",
+          label: "Americas",
+          slug: "/humanities/history/regional/americas",
+          kind: "topic",
+          status: "live",
+          children: [
+            { id: "north-american-history", label: "North America", slug: "/humanities/history/regional/americas/north-america", kind: "concept", status: "live" },
+            { id: "united-states-history", label: "United States", slug: "/humanities/history/regional/americas/usa", kind: "concept", status: "live" },
+          ],
+        },
+      ],
+    },
     { id: "thematic-history", label: "Thematic History", slug: "/humanities/history/theme", kind: "branch", status: "live" },
   ],
 };
