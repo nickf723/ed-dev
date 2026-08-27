@@ -4,6 +4,7 @@ import {
   educationStationKnowledgeGraph,
   findGraphNode,
   graphChildren,
+  graphDescendantCount,
 } from "@/app/_data/knowledge-graph";
 import { navigationForKnowledgeNode } from "@/app/_data/knowledge-navigation";
 
@@ -56,6 +57,7 @@ export default function KnowledgeMapPreview({
   const height = Math.max(620, Math.min(1900, layout.leafCount * 54 + PAD_Y * 2));
   const domainChoices = graphChildren("education-station");
   const selected = selectedId ? navigationForKnowledgeNode(selectedId) : undefined;
+  const selectedDescendants = selected ? graphDescendantCount(selected.current.id) : 0;
 
   const point = (id: string) => {
     const node = byId.get(id);
@@ -266,7 +268,7 @@ export default function KnowledgeMapPreview({
                   </div>
                 ) : null}
 
-                <dl className="mt-5 grid grid-cols-3 gap-2 text-center">
+                <dl className="mt-5 grid grid-cols-2 gap-2 text-center sm:grid-cols-4 xl:grid-cols-2">
                   <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-3">
                     <dt className="text-[10px] uppercase tracking-wide text-slate-500">Siblings</dt>
                     <dd className="mt-1 text-lg font-semibold">{selected.siblings.length}</dd>
@@ -274,6 +276,10 @@ export default function KnowledgeMapPreview({
                   <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-3">
                     <dt className="text-[10px] uppercase tracking-wide text-slate-500">Children</dt>
                     <dd className="mt-1 text-lg font-semibold">{selected.children.length}</dd>
+                  </div>
+                  <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-3">
+                    <dt className="text-[10px] uppercase tracking-wide text-slate-500">Descendants</dt>
+                    <dd className="mt-1 text-lg font-semibold">{selectedDescendants}</dd>
                   </div>
                   <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-3">
                     <dt className="text-[10px] uppercase tracking-wide text-slate-500">Depth</dt>
@@ -314,7 +320,7 @@ export default function KnowledgeMapPreview({
               <div className="py-8 text-center">
                 <p className="text-sm font-medium text-slate-300">Select a node</p>
                 <p className="mx-auto mt-2 max-w-64 text-xs leading-5 text-slate-500">
-                  Inspect its canonical path, route, parent, siblings, and children without leaving the map.
+                  Inspect its canonical path, route, parent, siblings, descendants, and children without leaving the map.
                 </p>
               </div>
             )}
