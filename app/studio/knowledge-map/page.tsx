@@ -1,7 +1,11 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import KnowledgeMapPreview from "@/app/studio/_components/KnowledgeMapPreview";
-import { findGraphPath, searchKnowledgeGraph } from "@/app/_data/knowledge-graph";
+import {
+  findGraphPath,
+  findKnowledgeHostPage,
+  searchKnowledgeGraph,
+} from "@/app/_data/knowledge-graph";
 
 export const metadata = {
   title: "Knowledge Map Preview",
@@ -67,6 +71,7 @@ export default async function KnowledgeMapPreviewPage({
                     resultParams.set("node", node.id);
                     resultParams.set("q", query);
                     const isEmbedded = !node.slug;
+                    const host = isEmbedded ? findKnowledgeHostPage(node.id) : undefined;
 
                     return (
                       <Link
@@ -91,7 +96,10 @@ export default async function KnowledgeMapPreviewPage({
                         <span className="mt-1 block truncate text-[11px] text-slate-500">
                           {path.map((part) => part.label).join(" / ")}
                         </span>
-                        <span className="mt-1 block text-[10px] text-slate-600">{node.kind}</span>
+                        <span className="mt-1 flex items-center justify-between gap-3 text-[10px] text-slate-600">
+                          <span>{node.kind}</span>
+                          {host ? <span className="truncate">Taught in {host.label}</span> : null}
+                        </span>
                       </Link>
                     );
                   })}
