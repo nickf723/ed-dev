@@ -93,6 +93,36 @@ export const knowledgeRelations: KnowledgeRelation[] = [
     targetId: "source-sink",
     kind: "related-to",
   },
+  {
+    sourceId: "political-authority",
+    targetId: "political-theory",
+    kind: "related-to",
+    note: "Political Theory asks what makes authority legitimate, just, free, equal, or binding.",
+  },
+  {
+    sourceId: "political-institutions-question",
+    targetId: "political-institutions",
+    kind: "related-to",
+    note: "The recurring institutions question asks which formal and informal rules structure incentives, veto points, representation, enforcement, and accountability.",
+  },
+  {
+    sourceId: "collective-choice",
+    targetId: "political-behavior",
+    kind: "related-to",
+    note: "Political behavior studies how citizens, parties, campaigns, identities, and information shape participation entering collective choice.",
+  },
+  {
+    sourceId: "collective-choice",
+    targetId: "political-institutions",
+    kind: "related-to",
+    note: "Political Science presents preferences and participation meeting institutional rules before producing collective outcomes.",
+  },
+  {
+    sourceId: "collective-choice",
+    targetId: "public-policy",
+    kind: "related-to",
+    note: "Public policy follows how collective problems reach agendas, become policy, and survive implementation.",
+  },
 ];
 
 export function knowledgeRelationsFor(nodeId: string): ResolvedKnowledgeRelation[] {
