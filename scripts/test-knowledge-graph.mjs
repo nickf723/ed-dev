@@ -29,12 +29,23 @@ assert.deepEqual(
   ],
 );
 
+assert.deepEqual(
+  findGraphPath("modern-history")?.map((node) => node.id),
+  ["education-station", "humanities", "history", "chronology", "modern-history"],
+);
+
 assert.equal(
   findGraphNodeBySlug("/natural-science/biology/zoology")?.id,
   "zoology",
 );
+assert.equal(
+  findGraphNodeBySlug("/natural-science/physics/mechanics")?.id,
+  "mechanics",
+);
 assert.equal(findGraphNode("machine-learning")?.label, "Machine Learning");
 assert.ok(graphChildren("computer-science").length >= 6);
 assert.ok(graphChildren("elementary-algebra").length >= 10);
+assert.ok(graphChildren("physics").length >= 6);
+assert.equal(graphChildren("chronology").length, 5);
 
 console.log(`Knowledge graph integrity OK: ${nodes.length} nodes, ${slugs.length} routed nodes.`);
