@@ -1,10 +1,12 @@
 import assert from "node:assert/strict";
+import { findKnowledgeHostPage } from "../app/_data/knowledge-graph.ts";
 import {
   knowledgeBreadcrumbForSlug,
   knowledgeDomainForSlug,
   navigationForKnowledgeNode,
   navigationForKnowledgeSlug,
 } from "../app/_data/knowledge-navigation.ts";
+import { knowledgeRelationsFor } from "../app/_data/knowledge-relations.ts";
 
 const factoring = navigationForKnowledgeNode("factoring");
 assert.ok(factoring);
@@ -23,7 +25,32 @@ assert.deepEqual(
   ["education-station", "natural-science", "earth-science", "geology"],
 );
 
+const coefficient = navigationForKnowledgeNode("coefficient");
+assert.ok(coefficient);
+assert.equal(coefficient.current.slug, undefined);
+assert.equal(coefficient.parent?.id, "expressions-variables");
+assert.equal(findKnowledgeHostPage(coefficient.current.id)?.id, "expressions-variables");
+assert.ok(coefficient.siblings.some((node) => node.id === "variable"));
+assert.ok(knowledgeRelationsFor(coefficient.current.id).some(({ other }) => other.id === "term"));
+
+const photosynthesis = navigationForKnowledgeNode("photosynthesis");
+assert.ok(photosynthesis);
+assert.equal(photosynthesis.parent?.id, "plant-physiology");
+assert.equal(findKnowledgeHostPage(photosynthesis.current.id)?.id, "botany");
+
+const collectiveChoice = navigationForKnowledgeNode("collective-choice");
+assert.ok(collectiveChoice);
+assert.equal(findKnowledgeHostPage(collectiveChoice.current.id)?.id, "political-science");
+assert.ok(knowledgeRelationsFor(collectiveChoice.current.id).length >= 3);
+
+const narrativeStory = navigationForKnowledgeNode("narrative-story");
+assert.ok(narrativeStory);
+assert.equal(narrativeStory.parent?.id, "story-plot-time");
+assert.equal(findKnowledgeHostPage(narrativeStory.current.id)?.id, "narrative-fiction");
+assert.ok(knowledgeRelationsFor(narrativeStory.current.id).some(({ other }) => other.id === "narrative-plot"));
+
 assert.equal(navigationForKnowledgeNode("does-not-exist"), undefined);
 assert.equal(navigationForKnowledgeSlug("/does-not-exist"), undefined);
+assert.equal(findKnowledgeHostPage("does-not-exist"), undefined);
 
-console.log("Knowledge navigation integrity OK.");
+console.log("Knowledge navigation integrity OK across routed pages, embedded concepts, hosts, and cross-links.");
