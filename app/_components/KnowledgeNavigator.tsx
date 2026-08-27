@@ -8,6 +8,7 @@ import {
   knowledgeRelationsFor,
   relationLabel,
 } from "@/app/_data/knowledge-relations";
+import type { KnowledgeNode } from "@/app/_data/ontology";
 
 export type KnowledgeNavigatorProps = {
   nodeId: string;
@@ -174,7 +175,7 @@ export default function KnowledgeNavigator({
   );
 }
 
-function KnowledgeLink({ node }: { node: ReturnType<typeof navigationForKnowledgeNode> extends infer T ? T extends { current: infer N } ? N : never : never }) {
+function KnowledgeLink({ node }: { node: KnowledgeNode }) {
   if (node.slug) {
     return (
       <Link
@@ -188,7 +189,7 @@ function KnowledgeLink({ node }: { node: ReturnType<typeof navigationForKnowledg
   return <div className="mt-2 text-sm text-slate-500">{node.label}</div>;
 }
 
-function KnowledgeChip({ node }: { node: ReturnType<typeof navigationForKnowledgeNode> extends infer T ? T extends { current: infer N } ? N : never : never }) {
+function KnowledgeChip({ node }: { node: KnowledgeNode }) {
   const destination = node.slug ?? findKnowledgeHostPage(node.id)?.slug;
   const className = `rounded-full border px-2.5 py-1 text-[11px] transition ${
     node.slug
