@@ -5,6 +5,7 @@ import {
   findGraphNode,
   graphChildren,
 } from "@/app/_data/knowledge-graph";
+import { navigationForKnowledgeNode } from "@/app/_data/knowledge-navigation";
 
 const DOMAIN_ACCENTS: Record<string, string> = {
   "formal-science": "#9b5cff",
@@ -28,7 +29,20 @@ function domainFor(nodeId: string, parentById: Map<string, string | undefined>):
   return undefined;
 }
 
-export default function KnowledgeMapPreview({ focusId }: { focusId?: string }) {
+function mapHref(nodeId: string, focusId?: string) {
+  const params = new URLSearchParams();
+  if (focusId) params.set("focus", focusId);
+  params.set("node", nodeId);
+  return `/studio/knowledge-map?${params.toString()}`;
+}
+
+export default function KnowledgeMapPreview({
+  focusId,
+  selectedId,
+}: {
+  focusId?: string;
+  selectedId?: string;
+}) {
   const requestedRoot = focusId ? findGraphNode(focusId) : undefined;
   const root = requestedRoot ?? educationStationKnowledgeGraph;
   const layout = requestedRoot ? layoutSubtree(requestedRoot.id)! : layoutKnowledgeTree(root);
@@ -36,6 +50,7 @@ export default function KnowledgeMapPreview({ focusId }: { focusId?: string }) {
   const parentById = new Map(layout.nodes.map((node) => [node.id, node.parentId]));
   const height = Math.max(620, Math.min(1900, layout.leafCount * 54 + PAD_Y * 2));
   const domainChoices = graphChildren("education-station");
+  const selected = selectedId ? navigationForKnowledgeNode(selectedId) : undefined;
 
   const point = (id: string) => {
     const node = byId.get(id);
@@ -104,90 +119,185 @@ export default function KnowledgeMapPreview({ focusId }: { focusId?: string }) {
           })}
         </nav>
 
-        {requestedRoot && requestedRoot.kind !== "domain" ? (
-          <div className="mb-4 text-xs text-slate-500">
-            Focused subtree: <span className="text-slate-300">{requestedRoot.label}</span>
-          </div>
-        ) : null}
+        <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_360px]">
+          <div>
+            {requestedRoot && requestedRoot.kind !== "domain" ? (
+              <div className="mb-4 text-xs text-slate-500">
+                Focused subtree: <span className="text-slate-300">{requestedRoot.label}</span>
+              </div>
+            ) : null}
 
-        <div className="overflow-auto rounded-3xl border border-white/10 bg-slate-900/70 shadow-2xl shadow-black/30">
-          <div className="relative" style={{ width: WIDTH, height }}>
-            <svg
-              className="pointer-events-none absolute inset-0 h-full w-full"
-              viewBox={`0 0 ${WIDTH} ${height}`}
-              aria-hidden="true"
-            >
-              {layout.edges.map((edge) => {
-                const source = point(edge.sourceId);
-                const target = point(edge.targetId);
-                const domain = domainFor(edge.targetId, parentById) ?? domainFor(root.id, parentById);
-                const accent = domain ? DOMAIN_ACCENTS[domain] : "#64748b";
-                const bend = source.x + (target.x - source.x) * 0.5;
-
-                return (
-                  <path
-                    key={`${edge.sourceId}-${edge.targetId}`}
-                    d={`M ${source.x} ${source.y} C ${bend} ${source.y}, ${bend} ${target.y}, ${target.x} ${target.y}`}
-                    fill="none"
-                    stroke={accent}
-                    strokeOpacity="0.25"
-                    strokeWidth="1.5"
-                  />
-                );
-              })}
-            </svg>
-
-            {layout.nodes.map((node) => {
-              const { x, y } = point(node.id);
-              const domain = domainFor(node.id, parentById) ?? domainFor(root.id, parentById);
-              const accent = domain ? DOMAIN_ACCENTS[domain] : "#e2e8f0";
-              const isRoot = node.depth === 0;
-              const isDomain = node.depth === 1 && root.id === "education-station";
-              const className = [
-                "absolute -translate-x-1/2 -translate-y-1/2 rounded-full border backdrop-blur-md transition",
-                node.slug ? "hover:z-20 hover:scale-105" : "cursor-default",
-                isRoot
-                  ? "min-w-36 px-5 py-3 text-center text-sm font-semibold"
-                  : isDomain
-                    ? "min-w-32 px-4 py-2.5 text-center text-xs font-semibold"
-                    : "max-w-44 px-3 py-2 text-center text-[11px] font-medium leading-tight",
-              ].join(" ");
-
-              const style = {
-                left: x,
-                top: y,
-                borderColor: `${accent}66`,
-                backgroundColor: `${accent}16`,
-                boxShadow: isRoot || isDomain ? `0 0 22px ${accent}22` : undefined,
-              };
-
-              const label = <>{node.label}</>;
-
-              if (!node.slug) {
-                return (
-                  <div key={node.id} className={className} style={style} title={node.id}>
-                    {label}
-                  </div>
-                );
-              }
-
-              return (
-                <Link
-                  key={node.id}
-                  href={node.slug}
-                  className={className}
-                  style={style}
-                  title={`${node.label} · ${node.slug}`}
+            <div className="overflow-auto rounded-3xl border border-white/10 bg-slate-900/70 shadow-2xl shadow-black/30">
+              <div className="relative" style={{ width: WIDTH, height }}>
+                <svg
+                  className="pointer-events-none absolute inset-0 h-full w-full"
+                  viewBox={`0 0 ${WIDTH} ${height}`}
+                  aria-hidden="true"
                 >
-                  {label}
-                </Link>
-              );
-            })}
+                  {layout.edges.map((edge) => {
+                    const source = point(edge.sourceId);
+                    const target = point(edge.targetId);
+                    const domain = domainFor(edge.targetId, parentById) ?? domainFor(root.id, parentById);
+                    const accent = domain ? DOMAIN_ACCENTS[domain] : "#64748b";
+                    const bend = source.x + (target.x - source.x) * 0.5;
+
+                    return (
+                      <path
+                        key={`${edge.sourceId}-${edge.targetId}`}
+                        d={`M ${source.x} ${source.y} C ${bend} ${source.y}, ${bend} ${target.y}, ${target.x} ${target.y}`}
+                        fill="none"
+                        stroke={accent}
+                        strokeOpacity={selectedId && (edge.sourceId === selectedId || edge.targetId === selectedId) ? "0.72" : "0.25"}
+                        strokeWidth={selectedId && (edge.sourceId === selectedId || edge.targetId === selectedId) ? "2.4" : "1.5"}
+                      />
+                    );
+                  })}
+                </svg>
+
+                {layout.nodes.map((node) => {
+                  const { x, y } = point(node.id);
+                  const domain = domainFor(node.id, parentById) ?? domainFor(root.id, parentById);
+                  const accent = domain ? DOMAIN_ACCENTS[domain] : "#e2e8f0";
+                  const isRoot = node.depth === 0;
+                  const isDomain = node.depth === 1 && root.id === "education-station";
+                  const isSelected = node.id === selectedId;
+                  const className = [
+                    "absolute -translate-x-1/2 -translate-y-1/2 rounded-full border backdrop-blur-md transition",
+                    "hover:z-20 hover:scale-105",
+                    isRoot
+                      ? "min-w-36 px-5 py-3 text-center text-sm font-semibold"
+                      : isDomain
+                        ? "min-w-32 px-4 py-2.5 text-center text-xs font-semibold"
+                        : "max-w-44 px-3 py-2 text-center text-[11px] font-medium leading-tight",
+                  ].join(" ");
+
+                  const style = {
+                    left: x,
+                    top: y,
+                    borderColor: isSelected ? accent : `${accent}66`,
+                    backgroundColor: isSelected ? `${accent}33` : `${accent}16`,
+                    boxShadow: isSelected
+                      ? `0 0 0 2px ${accent}33, 0 0 30px ${accent}44`
+                      : isRoot || isDomain
+                        ? `0 0 22px ${accent}22`
+                        : undefined,
+                  };
+
+                  return (
+                    <Link
+                      key={node.id}
+                      href={mapHref(node.id, requestedRoot?.id)}
+                      className={className}
+                      style={style}
+                      title={`${node.label} · ${node.id}`}
+                    >
+                      {node.label}
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
           </div>
+
+          <aside className="self-start rounded-3xl border border-white/10 bg-slate-900/75 p-5 xl:sticky xl:top-6">
+            {selected ? (
+              <div>
+                <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-slate-500">
+                  Node inspector
+                </p>
+                <h2 className="mt-2 text-xl font-semibold text-white">{selected.current.label}</h2>
+                <div className="mt-2 flex flex-wrap gap-2 text-[11px] text-slate-400">
+                  <span className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1">
+                    {selected.current.kind}
+                  </span>
+                  <span className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1">
+                    {selected.current.status ?? "unspecified"}
+                  </span>
+                </div>
+
+                <div className="mt-5">
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-500">Path</p>
+                  <div className="mt-2 flex flex-wrap items-center gap-1.5 text-xs text-slate-300">
+                    {selected.breadcrumb.map((node, index) => (
+                      <span key={node.id} className="contents">
+                        {index > 0 ? <span className="text-slate-600">/</span> : null}
+                        <Link href={mapHref(node.id, requestedRoot?.id)} className="hover:text-white">
+                          {node.label}
+                        </Link>
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                {selected.current.slug ? (
+                  <div className="mt-5 rounded-2xl border border-white/10 bg-black/20 p-3">
+                    <p className="break-all font-mono text-[11px] leading-5 text-slate-400">{selected.current.slug}</p>
+                    <Link
+                      href={selected.current.slug}
+                      className="mt-3 inline-flex rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-xs font-medium text-white hover:bg-white/10"
+                    >
+                      Open routed page
+                    </Link>
+                  </div>
+                ) : null}
+
+                <dl className="mt-5 grid grid-cols-3 gap-2 text-center">
+                  <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-3">
+                    <dt className="text-[10px] uppercase tracking-wide text-slate-500">Siblings</dt>
+                    <dd className="mt-1 text-lg font-semibold">{selected.siblings.length}</dd>
+                  </div>
+                  <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-3">
+                    <dt className="text-[10px] uppercase tracking-wide text-slate-500">Children</dt>
+                    <dd className="mt-1 text-lg font-semibold">{selected.children.length}</dd>
+                  </div>
+                  <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-3">
+                    <dt className="text-[10px] uppercase tracking-wide text-slate-500">Depth</dt>
+                    <dd className="mt-1 text-lg font-semibold">{selected.breadcrumb.length - 1}</dd>
+                  </div>
+                </dl>
+
+                {selected.parent ? (
+                  <div className="mt-5">
+                    <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-500">Parent</p>
+                    <Link
+                      href={mapHref(selected.parent.id, requestedRoot?.id)}
+                      className="mt-2 block rounded-2xl border border-white/10 bg-white/[0.03] px-3 py-2 text-sm text-slate-200 hover:bg-white/[0.06]"
+                    >
+                      {selected.parent.label}
+                    </Link>
+                  </div>
+                ) : null}
+
+                {selected.children.length ? (
+                  <div className="mt-5">
+                    <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-500">Children</p>
+                    <div className="mt-2 flex flex-wrap gap-2">
+                      {selected.children.map((child) => (
+                        <Link
+                          key={child.id}
+                          href={mapHref(child.id, requestedRoot?.id)}
+                          className="rounded-full border border-white/10 bg-white/[0.03] px-2.5 py-1.5 text-xs text-slate-300 hover:bg-white/[0.08] hover:text-white"
+                        >
+                          {child.label}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                ) : null}
+              </div>
+            ) : (
+              <div className="py-8 text-center">
+                <p className="text-sm font-medium text-slate-300">Select a node</p>
+                <p className="mx-auto mt-2 max-w-64 text-xs leading-5 text-slate-500">
+                  Inspect its canonical path, route, parent, siblings, and children without leaving the map.
+                </p>
+              </div>
+            )}
+          </aside>
         </div>
 
         <footer className="mt-4 flex flex-wrap items-center justify-between gap-3 text-xs leading-5 text-slate-500">
-          <span>Nodes link to their existing routed pages.</span>
+          <span>Map nodes inspect ontology structure; routed pages open from the inspector.</span>
           {requestedRoot && requestedRoot.id !== "education-station" ? (
             <Link href="/studio/knowledge-map" className="text-slate-300 hover:text-white">
               Return to entire map
