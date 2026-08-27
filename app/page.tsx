@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, GraduationCap } from "lucide-react";
+import { ArrowRight, Sparkles } from "lucide-react";
 import HexGrid from "./_homepage/HexGrid";
 import LibraryBackground from "./_homepage/HomepageBackground";
 import NetworkBackground from "./_homepage/NetworkBackground";
@@ -21,27 +21,35 @@ export default function Home() {
 
       <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-[1580px] flex-col px-4 py-5 sm:px-6 lg:px-8 lg:py-6">
         <header className="relative z-20 shrink-0 border-b border-white/[0.055] pb-4">
-          <div className="flex flex-col items-center justify-between gap-3 text-center lg:flex-row lg:text-left">
+          <div className="flex flex-col items-center justify-between gap-4 text-center lg:flex-row lg:text-left">
             <div>
               <div className="font-mono text-[10px] font-semibold uppercase tracking-[0.15em] text-cyan-100/45">
-                ES64 / interactive curriculum atlas
+                ES64 / a map of connected knowledge
               </div>
               <h1 className="mt-1.5 text-[clamp(2.55rem,4.6vw,4.9rem)] font-semibold leading-[0.9] tracking-[-0.045em] text-[#f7fbff]">
                 Education Station <span className="font-mono text-cyan-100">64</span>
               </h1>
             </div>
 
-            <div className="max-w-[450px] lg:text-right">
-              <p className="text-[13px] leading-6 text-slate-400 sm:text-[14px]">
-                High school courses and an interactive atlas of connected knowledge.
+            <div className="max-w-[520px] lg:text-right">
+              <p className="text-[13px] leading-6 text-slate-300/80 sm:text-[14px]">
+                An evolving collection of interactive explanations, visualizations, and notes
+                organized around how ideas fit together.
               </p>
               <div className="mt-3 flex flex-wrap justify-center gap-2 lg:justify-end">
                 <Link
-                  href="/classroom"
-                  className="inline-flex items-center gap-2 rounded-full border border-emerald-300/20 bg-emerald-300/[0.07] px-3.5 py-2 text-[11px] font-semibold text-emerald-200 transition-colors hover:bg-emerald-300/[0.12]"
+                  href="#knowledge-atlas"
+                  className="inline-flex items-center gap-2 rounded-full border border-cyan-200/20 bg-cyan-200/[0.06] px-3.5 py-2 text-[11px] font-semibold text-cyan-100 transition-colors hover:bg-cyan-200/[0.11]"
                 >
-                  <GraduationCap size={14} />
-                  Classroom courses
+                  <Sparkles size={13} />
+                  Explore the atlas
+                  <ArrowRight size={13} />
+                </Link>
+                <Link
+                  href="/formal-science/mathematics/discrete/set-theory"
+                  className="inline-flex items-center gap-2 rounded-full border border-white/[0.09] bg-white/[0.035] px-3.5 py-2 text-[11px] font-semibold text-slate-300 transition-colors hover:bg-white/[0.07] hover:text-white"
+                >
+                  See an interactive concept
                   <ArrowRight size={13} />
                 </Link>
               </div>
@@ -49,7 +57,7 @@ export default function Home() {
           </div>
         </header>
 
-        <div id="knowledge-atlas" className="flex min-h-0 flex-1 items-center justify-center">
+        <div id="knowledge-atlas" className="flex min-h-0 flex-1 items-center justify-center scroll-mt-6">
           <HexGrid />
         </div>
       </div>
