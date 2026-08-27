@@ -2,6 +2,16 @@ import type { KnowledgeNode } from "./ontology";
 
 /** Verified routed branches for Formal Science disciplines outside the core algebra/CS catalog. */
 export const formalScienceOntologyExpansions: Record<string, KnowledgeNode[]> = {
+  "algebra-fundamentals": [
+    { id: "algebraic-properties", label: "Algebraic Properties", slug: "/formal-science/mathematics/algebra/elementary-algebra/fundamentals/algebraic-properties", kind: "topic", status: "live" },
+    { id: "equality-equations", label: "Equality & Equations", slug: "/formal-science/mathematics/algebra/elementary-algebra/fundamentals/equality-equations", kind: "topic", status: "live" },
+    { id: "expressions-variables", label: "Expressions & Variables", slug: "/formal-science/mathematics/algebra/elementary-algebra/fundamentals/expressions-variables", kind: "topic", status: "live" },
+    { id: "number-systems", label: "Number Systems", slug: "/formal-science/mathematics/algebra/elementary-algebra/fundamentals/number-systems", kind: "topic", status: "live" },
+    { id: "one-step-equations", label: "One-Step Equations", slug: "/formal-science/mathematics/algebra/elementary-algebra/fundamentals/one-step-equations", kind: "topic", status: "live" },
+    { id: "two-step-equations", label: "Two-Step Equations", slug: "/formal-science/mathematics/algebra/elementary-algebra/fundamentals/two-step-equations", kind: "topic", status: "live" },
+    { id: "variables-changing-quantities", label: "Variables as Changing Quantities", slug: "/formal-science/mathematics/algebra/elementary-algebra/fundamentals/variables-changing-quantities", kind: "topic", status: "live" },
+  ],
+
   calculus: [
     {
       id: "limits",
@@ -20,34 +30,10 @@ export const formalScienceOntologyExpansions: Record<string, KnowledgeNode[]> = 
   ],
 
   "discrete-mathematics": [
-    {
-      id: "combinatorics",
-      label: "Combinatorics",
-      slug: "/formal-science/mathematics/discrete/combinatorics",
-      kind: "branch",
-      status: "live",
-    },
-    {
-      id: "graph-theory",
-      label: "Graph Theory",
-      slug: "/formal-science/mathematics/discrete/graph-theory",
-      kind: "branch",
-      status: "live",
-    },
-    {
-      id: "recursion-theory",
-      label: "Recursion Theory",
-      slug: "/formal-science/mathematics/discrete/recursion-theory",
-      kind: "branch",
-      status: "live",
-    },
-    {
-      id: "set-theory",
-      label: "Set Theory",
-      slug: "/formal-science/mathematics/discrete/set-theory",
-      kind: "branch",
-      status: "live",
-    },
+    { id: "combinatorics", label: "Combinatorics", slug: "/formal-science/mathematics/discrete/combinatorics", kind: "branch", status: "live" },
+    { id: "graph-theory", label: "Graph Theory", slug: "/formal-science/mathematics/discrete/graph-theory", kind: "branch", status: "live" },
+    { id: "recursion-theory", label: "Recursion Theory", slug: "/formal-science/mathematics/discrete/recursion-theory", kind: "branch", status: "live" },
+    { id: "set-theory", label: "Set Theory", slug: "/formal-science/mathematics/discrete/set-theory", kind: "branch", status: "live" },
   ],
 
   "foundations-of-mathematics": [
@@ -79,30 +65,12 @@ export const formalScienceOntologyExpansions: Record<string, KnowledgeNode[]> = 
   ],
 
   "number-theory": [
-    {
-      id: "diophantine-equations",
-      label: "Diophantine Equations",
-      slug: "/formal-science/mathematics/number-theory/diophantine",
-      kind: "branch",
-      status: "live",
-    },
+    { id: "diophantine-equations", label: "Diophantine Equations", slug: "/formal-science/mathematics/number-theory/diophantine", kind: "branch", status: "live" },
   ],
 
   statistics: [
-    {
-      id: "descriptive-statistics",
-      label: "Descriptive Statistics",
-      slug: "/formal-science/mathematics/statistics/descriptive",
-      kind: "branch",
-      status: "live",
-    },
-    {
-      id: "probability",
-      label: "Probability",
-      slug: "/formal-science/mathematics/statistics/probability",
-      kind: "branch",
-      status: "live",
-    },
+    { id: "descriptive-statistics", label: "Descriptive Statistics", slug: "/formal-science/mathematics/statistics/descriptive", kind: "branch", status: "live" },
+    { id: "probability", label: "Probability", slug: "/formal-science/mathematics/statistics/probability", kind: "branch", status: "live" },
   ],
 };
 
