@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { ArrowRight, Boxes } from "lucide-react";
+import { ArrowRight, Network } from "lucide-react";
 import { DOMAINS, type DomainDefinition } from "@/lib/domains";
 
 const HEX_POSITIONS = [
@@ -46,23 +46,27 @@ export default function HexGrid() {
         </div>
       </div>
 
-      <div className="grid gap-2.5 pb-8 sm:grid-cols-2 lg:hidden">
+      <div className="grid gap-3 pb-8 sm:grid-cols-2 lg:hidden">
         {DOMAINS.map((domain) => {
           const Icon = domain.icon;
           return (
             <Link
               key={domain.id}
               href={domain.href}
-              className="group relative overflow-hidden border border-white/[0.09] bg-[#05080d]/82 p-4 backdrop-blur-xl transition-all hover:border-white/[0.16]"
-              style={{ boxShadow: `inset 3px 0 0 rgba(${domain.theme.rgb},0.45)` }}
+              className="group relative overflow-hidden rounded-2xl border border-white/[0.08] bg-[#05080d]/78 p-4 shadow-[0_18px_50px_rgba(0,0,0,0.18)] backdrop-blur-xl transition-all hover:-translate-y-0.5 hover:border-white/[0.16] hover:bg-[#071019]/86"
+              style={{ boxShadow: `inset 3px 0 0 rgba(${domain.theme.rgb},0.42), 0 18px 50px rgba(0,0,0,0.18)` }}
             >
+              <div
+                className="pointer-events-none absolute -right-10 -top-10 h-28 w-28 rounded-full opacity-40 blur-3xl transition-opacity group-hover:opacity-70"
+                style={{ backgroundColor: `rgba(${domain.theme.rgb},0.16)` }}
+              />
               <div className="relative flex items-start gap-4">
                 <span
-                  className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center border"
+                  className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border"
                   style={{
                     color: `rgb(${domain.theme.rgb})`,
-                    borderColor: `rgba(${domain.theme.rgb},0.30)`,
-                    background: `rgba(${domain.theme.rgb},0.045)`,
+                    borderColor: `rgba(${domain.theme.rgb},0.28)`,
+                    background: `rgba(${domain.theme.rgb},0.05)`,
                   }}
                 >
                   <Icon size={19} />
@@ -70,7 +74,7 @@ export default function HexGrid() {
                 <span className="min-w-0 flex-1">
                   <strong className="block text-[15px] font-semibold text-white">{domain.title}</strong>
                   <span className="mt-1 block text-[12px] leading-5 text-slate-400">{domain.description}</span>
-                  <span className="mt-3 block font-mono text-[10px] uppercase tracking-[0.045em]" style={{ color: `rgba(${domain.theme.rgb},0.58)` }}>
+                  <span className="mt-3 block font-mono text-[9px] uppercase tracking-[0.08em]" style={{ color: `rgba(${domain.theme.rgb},0.58)` }}>
                     {domain.subtitle}
                   </span>
                 </span>
@@ -97,11 +101,11 @@ function AmbientGeometry({ active }: { active: DomainDefinition | null }) {
         className="absolute left-1/2 top-1/2 h-[560px] w-[560px] -translate-x-1/2 -translate-y-1/2 border transition-colors duration-300"
         style={{
           clipPath: "polygon(25% 0,75% 0,100% 50%,75% 100%,25% 100%,0 50%)",
-          borderColor: `rgba(${rgb},0.06)`,
+          borderColor: `rgba(${rgb},0.055)`,
         }}
       />
-      <div className="absolute left-1/2 top-1/2 h-px w-[920px] -translate-x-1/2 bg-gradient-to-r from-transparent via-white/[0.04] to-transparent" />
-      <div className="absolute left-1/2 top-1/2 h-[650px] w-px -translate-y-1/2 bg-gradient-to-b from-transparent via-white/[0.03] to-transparent" />
+      <div className="absolute left-1/2 top-1/2 h-px w-[920px] -translate-x-1/2 bg-gradient-to-r from-transparent via-white/[0.035] to-transparent" />
+      <div className="absolute left-1/2 top-1/2 h-[650px] w-px -translate-y-1/2 bg-gradient-to-b from-transparent via-white/[0.028] to-transparent" />
 
       {DOMAINS.map((domain, index) => (
         <div
@@ -110,8 +114,9 @@ function AmbientGeometry({ active }: { active: DomainDefinition | null }) {
           style={{
             marginLeft: `${HEX_POSITIONS[index].x}rem`,
             marginTop: `${HEX_POSITIONS[index].y}rem`,
-            borderColor: `rgba(${domain.theme.rgb},${active?.id === domain.id ? 0.8 : 0.22})`,
-            background: `rgba(${domain.theme.rgb},${active?.id === domain.id ? 0.30 : 0.055})`,
+            borderColor: `rgba(${domain.theme.rgb},${active?.id === domain.id ? 0.82 : 0.18})`,
+            background: `rgba(${domain.theme.rgb},${active?.id === domain.id ? 0.32 : 0.045})`,
+            boxShadow: active?.id === domain.id ? `0 0 28px rgba(${domain.theme.rgb},0.28)` : "none",
           }}
         />
       ))}
@@ -125,39 +130,44 @@ function CenterCore({ active }: { active: DomainDefinition | null }) {
   return (
     <section className="absolute left-1/2 top-1/2 z-40 h-56 w-48 -translate-x-1/2 -translate-y-1/2">
       <div
-        className="absolute inset-0 transition-colors duration-300"
+        className="absolute inset-0 transition-all duration-300"
         style={{
           clipPath: "polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%)",
-          background: active ? `rgba(${active.theme.rgb},0.52)` : "rgba(148,163,184,0.22)",
+          background: active ? `rgba(${active.theme.rgb},0.58)` : "rgba(125,211,252,0.22)",
+          boxShadow: active ? `0 0 70px rgba(${active.theme.rgb},0.13)` : "0 0 60px rgba(125,211,252,0.07)",
         }}
       />
       <div
-        className="absolute inset-[1px] bg-[#03070c]/88 backdrop-blur-md"
+        className="absolute inset-[1px] bg-[#03070c]/90 backdrop-blur-xl"
         style={{ clipPath: "polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%)" }}
       />
       <div className="relative flex h-full flex-col items-center justify-center px-5 text-center">
         {active && ActiveIcon ? (
           <>
             <ActiveIcon size={25} style={{ color: `rgb(${active.theme.rgb})` }} />
-            <div className="mt-3 font-mono text-[9px] font-semibold uppercase tracking-[0.08em]" style={{ color: `rgba(${active.theme.rgb},0.72)` }}>
-              knowledge domain
+            <div className="mt-3 font-mono text-[8px] font-semibold uppercase tracking-[0.14em]" style={{ color: `rgba(${active.theme.rgb},0.68)` }}>
+              {active.subtitle}
             </div>
-            <h2 className="mt-1.5 text-[19px] font-semibold tracking-[-0.02em] text-white">{active.title}</h2>
-            <p className="mt-2 max-w-[165px] text-[11px] leading-5 text-slate-400">{active.description}</p>
+            <h2 className="mt-1.5 text-[19px] font-semibold tracking-[-0.025em] text-white">{active.title}</h2>
+            <p className="mt-2 max-w-[166px] text-[11px] leading-[1.55] text-slate-400">{active.description}</p>
             <Link
               href={active.href}
-              className="mt-4 inline-flex items-center gap-2 border px-3 py-2 font-mono text-[10px] font-semibold uppercase tracking-[0.04em] transition hover:bg-white/[0.04]"
-              style={{ color: `rgb(${active.theme.rgb})`, borderColor: `rgba(${active.theme.rgb},0.32)` }}
+              className="mt-4 inline-flex items-center gap-2 rounded-full border px-3 py-1.5 font-mono text-[9px] font-semibold uppercase tracking-[0.08em] transition hover:bg-white/[0.045]"
+              style={{ color: `rgb(${active.theme.rgb})`, borderColor: `rgba(${active.theme.rgb},0.28)` }}
             >
-              explore <ArrowRight size={11} />
+              enter field <ArrowRight size={10} />
             </Link>
           </>
         ) : (
           <>
-            <Boxes size={24} className="text-cyan-100/75" />
-            <div className="mt-3 font-mono text-[9px] font-semibold uppercase tracking-[0.08em] text-cyan-100/55">knowledge atlas</div>
-            <div className="mt-1 text-[20px] font-semibold tracking-[-0.02em] text-white">Education Station 64</div>
-            <p className="mt-2 max-w-[165px] text-[11px] leading-5 text-slate-500">Choose a domain, then follow ideas from broad fields into specific concepts.</p>
+            <Network size={24} className="text-cyan-100/72" />
+            <div className="mt-3 font-mono text-[8px] font-semibold uppercase tracking-[0.15em] text-cyan-100/48">
+              knowledge atlas
+            </div>
+            <div className="mt-1.5 text-[21px] font-semibold tracking-[-0.035em] text-white">Choose a field</div>
+            <p className="mt-2 max-w-[160px] text-[11px] leading-[1.55] text-slate-500">
+              Six domains. One connected map of ideas.
+            </p>
           </>
         )}
       </div>
@@ -185,28 +195,29 @@ function DomainHex({
       aria-label={`Explore ${domain.title}`}
     >
       <div
-        className="absolute inset-0 transition-all duration-200 group-hover:scale-[1.025] group-focus-visible:scale-[1.025]"
+        className="absolute inset-0 transition-all duration-300 group-hover:scale-[1.025] group-focus-visible:scale-[1.025]"
         style={{
           clipPath: "polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%)",
-          background: active ? `rgba(${domain.theme.rgb},0.70)` : `rgba(${domain.theme.rgb},0.24)`,
+          background: active ? `rgba(${domain.theme.rgb},0.72)` : `rgba(${domain.theme.rgb},0.21)`,
+          filter: active ? `drop-shadow(0 0 22px rgba(${domain.theme.rgb},0.14))` : "none",
         }}
       >
         <div
-          className="absolute inset-[1px] backdrop-blur-sm"
+          className="absolute inset-[1px] backdrop-blur-md"
           style={{
             clipPath: "polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%)",
             background: active
-              ? `linear-gradient(155deg, rgba(${domain.theme.rgb},0.095), rgba(3,7,12,0.90) 54%)`
-              : "linear-gradient(155deg, rgba(255,255,255,0.018), rgba(3,7,12,0.88) 58%)",
+              ? `linear-gradient(155deg, rgba(${domain.theme.rgb},0.11), rgba(3,7,12,0.91) 56%)`
+              : "linear-gradient(155deg, rgba(255,255,255,0.022), rgba(3,7,12,0.90) 58%)",
           }}
         />
-        <div className="absolute inset-x-8 top-[31%] h-px" style={{ background: `rgba(${domain.theme.rgb},${active ? 0.38 : 0.12})` }} />
+        <div className="absolute inset-x-8 top-[31%] h-px" style={{ background: `rgba(${domain.theme.rgb},${active ? 0.36 : 0.10})` }} />
         <div className="relative flex h-full flex-col items-center justify-center px-5 text-center">
-          <Icon size={24} style={{ color: active ? `rgb(${domain.theme.rgb})` : `rgba(${domain.theme.rgb},0.58)` }} />
-          <strong className={`mt-4 text-[15px] font-semibold leading-5 tracking-[-0.01em] ${active ? "text-white" : "text-slate-300/78"}`}>
+          <Icon size={24} style={{ color: active ? `rgb(${domain.theme.rgb})` : `rgba(${domain.theme.rgb},0.60)` }} />
+          <strong className={`mt-4 text-[15px] font-semibold leading-5 tracking-[-0.015em] transition-colors ${active ? "text-white" : "text-slate-300/80"}`}>
             {domain.title}
           </strong>
-          <span className="mt-2 font-mono text-[9px] uppercase tracking-[0.045em]" style={{ color: `rgba(${domain.theme.rgb},${active ? 0.65 : 0.28})` }}>
+          <span className="mt-2 font-mono text-[8px] uppercase tracking-[0.11em]" style={{ color: `rgba(${domain.theme.rgb},${active ? 0.62 : 0.26})` }}>
             {domain.subtitle}
           </span>
         </div>
