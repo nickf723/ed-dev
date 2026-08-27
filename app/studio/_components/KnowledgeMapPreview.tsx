@@ -3,6 +3,7 @@ import { layoutKnowledgeTree, layoutSubtree } from "@/app/_data/knowledge-layout
 import {
   educationStationKnowledgeGraph,
   findGraphNode,
+  findKnowledgeHostPage,
   graphChildren,
   graphDescendantCount,
 } from "@/app/_data/knowledge-graph";
@@ -58,6 +59,7 @@ export default function KnowledgeMapPreview({
   const domainChoices = graphChildren("education-station");
   const selected = selectedId ? navigationForKnowledgeNode(selectedId) : undefined;
   const selectedDescendants = selected ? graphDescendantCount(selected.current.id) : 0;
+  const selectedHost = selected ? findKnowledgeHostPage(selected.current.id) : undefined;
   const embeddedCount = layout.nodes.filter((node) => !node.slug).length;
   const routedCount = layout.nodes.filter((node) => node.slug).length;
 
@@ -310,11 +312,21 @@ export default function KnowledgeMapPreview({
                       Open routed page
                     </Link>
                   </div>
-                ) : (
-                  <div className="mt-5 rounded-2xl border border-dashed border-white/10 bg-white/[0.025] p-3 text-xs leading-5 text-slate-500">
-                    This is knowledge embedded inside its nearest routed ancestor. It belongs in the graph without requiring a standalone URL.
+                ) : selectedHost?.slug ? (
+                  <div className="mt-5 rounded-2xl border border-dashed border-white/10 bg-white/[0.025] p-3">
+                    <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-500">Taught in</p>
+                    <p className="mt-1 text-sm font-medium text-slate-200">{selectedHost.label}</p>
+                    <p className="mt-1 text-xs leading-5 text-slate-500">
+                      This knowledge node lives inside the nearest routed page rather than requiring its own URL.
+                    </p>
+                    <Link
+                      href={selectedHost.slug}
+                      className="mt-3 inline-flex rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-xs font-medium text-white hover:bg-white/10"
+                    >
+                      Open host page
+                    </Link>
                   </div>
-                )}
+                ) : null}
 
                 <dl className="mt-5 grid grid-cols-2 gap-2 text-center sm:grid-cols-4 xl:grid-cols-2">
                   <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-3">
@@ -372,7 +384,7 @@ export default function KnowledgeMapPreview({
               <div className="py-8 text-center">
                 <p className="text-sm font-medium text-slate-300">Select a node</p>
                 <p className="mx-auto mt-2 max-w-64 text-xs leading-5 text-slate-500">
-                  Inspect its canonical path, route, parent, siblings, descendants, and children without leaving the map.
+                  Inspect its canonical path, host page, route, parent, siblings, descendants, and children without leaving the map.
                 </p>
               </div>
             )}
