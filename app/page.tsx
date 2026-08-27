@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, Sparkles } from "lucide-react";
+import { ArrowRight, Info, Sparkles } from "lucide-react";
 import HexGrid from "./_homepage/HexGrid";
 import LibraryBackground from "./_homepage/HomepageBackground";
 import NetworkBackground from "./_homepage/NetworkBackground";
@@ -31,7 +31,7 @@ export default function Home() {
               </h1>
             </div>
 
-            <div className="max-w-[520px] lg:text-right">
+            <div className="max-w-[540px] lg:text-right">
               <p className="text-[13px] leading-6 text-slate-300/80 sm:text-[14px]">
                 An evolving collection of interactive explanations, visualizations, and notes
                 organized around how ideas fit together.
@@ -43,7 +43,13 @@ export default function Home() {
                 >
                   <Sparkles size={13} />
                   Explore the atlas
-                  <ArrowRight size={13} />
+                </Link>
+                <Link
+                  href="/about"
+                  className="inline-flex items-center gap-2 rounded-full border border-violet-200/15 bg-violet-200/[0.045] px-3.5 py-2 text-[11px] font-semibold text-violet-100/85 transition-colors hover:bg-violet-200/[0.09] hover:text-violet-50"
+                >
+                  <Info size={13} />
+                  About the project
                 </Link>
                 <Link
                   href="/formal-science/mathematics/discrete/set-theory"
