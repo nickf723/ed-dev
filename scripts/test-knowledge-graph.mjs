@@ -21,11 +21,16 @@ import {
 const nodes = flattenKnowledgeGraph();
 const ids = nodes.map((node) => node.id);
 const slugs = nodes.flatMap((node) => (node.slug ? [node.slug] : []));
+const embeddedNodes = nodes.filter((node) => !node.slug && node.id !== "education-station");
 const layout = layoutKnowledgeTree();
 
 assert.equal(educationStationKnowledgeGraph.children?.length, 6);
 assert.equal(new Set(ids).size, ids.length, "Knowledge graph node ids must be unique");
 assert.equal(new Set(slugs).size, slugs.length, "Knowledge graph slugs must be unique");
+for (const node of embeddedNodes) {
+  const host = findKnowledgeHostPage(node.id);
+  assert.ok(host?.slug, `Embedded knowledge must resolve to a routed host page: ${node.id}`);
+}
 
 assert.deepEqual(findGraphPath("difference-of-perfect-squares")?.map((node) => node.id), ["education-station", "formal-science", "mathematics", "algebra", "elementary-algebra", "factoring", "difference-of-perfect-squares"]);
 assert.deepEqual(findGraphPath("coefficient")?.map((node) => node.id), ["education-station", "formal-science", "mathematics", "algebra", "elementary-algebra", "algebra-fundamentals", "expressions-variables", "coefficient"]);
@@ -124,4 +129,4 @@ assert.equal(relationLabel("prerequisite-for", "outgoing"), "prepares for");
 assert.equal(relationLabel("prerequisite-for", "incoming"), "builds on");
 assert.equal(relationLabel("contrasts-with", "incoming"), "contrasts with");
 
-console.log(`Knowledge graph integrity OK: ${nodes.length} nodes, ${slugs.length} routed nodes, ${knowledgeRelations.length} cross-links.`);
+console.log(`Knowledge graph integrity OK: ${nodes.length} nodes, ${slugs.length} routed nodes, ${embeddedNodes.length} hosted embedded nodes, ${knowledgeRelations.length} cross-links.`);
