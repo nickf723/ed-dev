@@ -17,9 +17,8 @@ export type KnowledgeAtlasBackdropProps = {
 
 /**
  * Decorative routed-page projection of the canonical knowledge graph.
- * Designed to sit behind homepage or hub content without becoming a second
- * navigation implementation. Interactive atlas behavior belongs in Studio/map
- * surfaces; this component is deliberately pointer-events-none.
+ * The atlas grows from the center outward: depth becomes radius and sibling
+ * branches occupy neighboring arcs around the circle.
  */
 export default function KnowledgeAtlasBackdrop({
   className = "",
@@ -41,8 +40,10 @@ export default function KnowledgeAtlasBackdrop({
 
   const point = (nodeId: string) => {
     const node = byId.get(nodeId);
-    return node ? { x: node.x * 1000, y: node.y * 700 } : { x: 0, y: 0 };
+    return node ? { x: node.x * 1000, y: node.y * 1000 } : { x: 500, y: 500 };
   };
+
+  const ringCount = Math.max(layout.maxDepth, 1);
 
   return (
     <div
@@ -52,36 +53,55 @@ export default function KnowledgeAtlasBackdrop({
     >
       <svg
         className="absolute inset-0 h-full w-full"
-        viewBox="0 0 1000 700"
+        viewBox="0 0 1000 1000"
         preserveAspectRatio="xMidYMid slice"
       >
         <defs>
-          <radialGradient id="knowledge-atlas-fade" cx="50%" cy="48%" r="68%">
-            <stop offset="0%" stopColor="white" stopOpacity="0.96" />
-            <stop offset="64%" stopColor="white" stopOpacity="0.54" />
+          <radialGradient id="knowledge-atlas-fade" cx="50%" cy="50%" r="56%">
+            <stop offset="0%" stopColor="white" stopOpacity="0.95" />
+            <stop offset="72%" stopColor="white" stopOpacity="0.5" />
             <stop offset="100%" stopColor="white" stopOpacity="0" />
           </radialGradient>
           <mask id="knowledge-atlas-mask">
-            <rect width="1000" height="700" fill="url(#knowledge-atlas-fade)" />
+            <rect width="1000" height="1000" fill="url(#knowledge-atlas-fade)" />
           </mask>
         </defs>
 
         <g mask="url(#knowledge-atlas-mask)">
+          {Array.from({ length: ringCount }, (_, index) => {
+            const radius = ((index + 1) / ringCount) * 460;
+            return (
+              <circle
+                key={`ring-${index}`}
+                cx="500"
+                cy="500"
+                r={radius}
+                fill="none"
+                stroke="#cbd5e1"
+                strokeOpacity="0.035"
+                strokeWidth="1"
+                strokeDasharray={index % 2 ? "2 8" : undefined}
+                vectorEffect="non-scaling-stroke"
+              />
+            );
+          })}
+
           {layout.edges.map((edge) => {
             const source = point(edge.sourceId);
             const target = point(edge.targetId);
             const domain = domainFor(edge.targetId);
             const accent = domain ? DOMAIN_ACCENTS[domain] : "#94a3b8";
-            const bend = source.x + (target.x - source.x) * 0.48;
 
             return (
-              <path
+              <line
                 key={`${edge.sourceId}-${edge.targetId}`}
-                d={`M ${source.x} ${source.y} C ${bend} ${source.y}, ${bend} ${target.y}, ${target.x} ${target.y}`}
-                fill="none"
+                x1={source.x}
+                y1={source.y}
+                x2={target.x}
+                y2={target.y}
                 stroke={accent}
-                strokeOpacity="0.19"
-                strokeWidth="1.2"
+                strokeOpacity="0.16"
+                strokeWidth="1.1"
                 vectorEffect="non-scaling-stroke"
               />
             );
@@ -91,19 +111,19 @@ export default function KnowledgeAtlasBackdrop({
             const { x, y } = point(node.id);
             const domain = domainFor(node.id);
             const accent = domain ? DOMAIN_ACCENTS[domain] : "#cbd5e1";
-            const radius = node.depth === 0 ? 5.5 : node.depth === 1 ? 4.2 : node.childIds.length ? 2.7 : 1.8;
-            const labelVisible = showLabels && (node.depth <= 2 || (node.childIds.length > 0 && node.depth <= 3));
+            const radius = node.depth === 0 ? 5.4 : node.depth === 1 ? 4 : node.childIds.length ? 2.6 : 1.7;
+            const labelVisible = showLabels && node.depth <= 1;
 
             return (
               <g key={node.id} transform={`translate(${x} ${y})`}>
-                <circle r={radius * 3.3} fill={accent} fillOpacity="0.035" />
+                <circle r={radius * 3.1} fill={accent} fillOpacity="0.025" />
                 <circle
                   r={radius}
                   fill={accent}
-                  fillOpacity={node.depth <= 1 ? "0.9" : "0.66"}
+                  fillOpacity={node.depth <= 1 ? "0.78" : "0.52"}
                   stroke={accent}
-                  strokeOpacity="0.38"
-                  strokeWidth="0.8"
+                  strokeOpacity="0.32"
+                  strokeWidth="0.75"
                   vectorEffect="non-scaling-stroke"
                 />
                 {labelVisible ? (
@@ -111,10 +131,10 @@ export default function KnowledgeAtlasBackdrop({
                     x={radius + 4}
                     y="3"
                     fill={accent}
-                    fillOpacity={node.depth <= 1 ? "0.72" : "0.42"}
-                    fontSize={node.depth <= 1 ? "10" : "7.5"}
+                    fillOpacity={node.depth === 0 ? "0.62" : "0.38"}
+                    fontSize={node.depth === 0 ? "9" : "7.2"}
                     fontFamily="ui-monospace, SFMono-Regular, Menlo, monospace"
-                    letterSpacing="0.35"
+                    letterSpacing="0.3"
                   >
                     {node.label}
                   </text>
@@ -125,7 +145,7 @@ export default function KnowledgeAtlasBackdrop({
         </g>
       </svg>
 
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_45%,transparent_0%,rgba(2,6,23,0.08)_48%,rgba(2,6,23,0.72)_100%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,transparent_0%,rgba(2,6,23,0.05)_46%,rgba(2,6,23,0.74)_100%)]" />
     </div>
   );
 }
