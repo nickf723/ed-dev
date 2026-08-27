@@ -9,6 +9,13 @@ export const formalScienceOntologyExpansions: Record<string, KnowledgeNode[]> = 
       slug: "/formal-science/mathematics/calculus/limits",
       kind: "branch",
       status: "live",
+      children: [
+        { id: "continuity", label: "Continuity", slug: "/formal-science/mathematics/calculus/limits/continuity", kind: "topic", status: "live" },
+        { id: "epsilon-delta", label: "Epsilon–Delta", slug: "/formal-science/mathematics/calculus/limits/epsilon-delta", kind: "topic", status: "live" },
+        { id: "infinite-limits", label: "Infinite Limits", slug: "/formal-science/mathematics/calculus/limits/infinity", kind: "topic", status: "live" },
+        { id: "limit-laws", label: "Limit Laws", slug: "/formal-science/mathematics/calculus/limits/laws", kind: "topic", status: "live" },
+        { id: "lhopitals-rule", label: "L’Hôpital’s Rule", slug: "/formal-science/mathematics/calculus/limits/lhopital", kind: "topic", status: "live" },
+      ],
     },
   ],
 
