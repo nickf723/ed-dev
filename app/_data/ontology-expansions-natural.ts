@@ -81,6 +81,11 @@ export const naturalScienceOntologyExpansions: Record<string, KnowledgeNode[]> =
       slug: "/natural-science/physics/mechanics/forces",
       kind: "topic",
       status: "live",
+      children: [
+        { id: "free-body-diagrams", label: "Free-Body Diagrams", slug: "/natural-science/physics/mechanics/forces/free-body-diagrams", kind: "concept", status: "live" },
+        { id: "net-force", label: "Net Force", slug: "/natural-science/physics/mechanics/forces/net-force", kind: "concept", status: "live" },
+        { id: "newtons-second-law", label: "Newton’s Second Law", slug: "/natural-science/physics/mechanics/forces/newtons-second-law", kind: "concept", status: "live" },
+      ],
     },
     {
       id: "mechanical-energy",
@@ -88,6 +93,10 @@ export const naturalScienceOntologyExpansions: Record<string, KnowledgeNode[]> =
       slug: "/natural-science/physics/mechanics/energy",
       kind: "topic",
       status: "live",
+      children: [
+        { id: "work-energy", label: "Work & Energy", slug: "/natural-science/physics/mechanics/energy/work-energy", kind: "concept", status: "live" },
+        { id: "momentum", label: "Momentum", slug: "/natural-science/physics/mechanics/energy/momentum", kind: "concept", status: "live" },
+      ],
     },
   ],
 };
