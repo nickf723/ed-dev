@@ -5,7 +5,7 @@ import {
 
 function renderTree(node, depth = 0) {
   const indent = "  ".repeat(depth);
-  const route = node.slug ? `  (${node.slug})` : "";
+  const route = node.slug ? `  (${node.slug})` : node.kind === "concept" ? "  [embedded concept]" : "";
   const status = node.status && node.status !== "live" ? `  [${node.status}]` : "";
   const lines = [`${indent}- ${node.label}${status}${route}`];
 
@@ -26,6 +26,8 @@ const flattened = flattenKnowledgeGraph();
 const withDepth = walkWithDepth(educationStationKnowledgeGraph);
 const depthById = new Map(withDepth.map(({ node, depth }) => [node.id, depth]));
 const routed = flattened.filter((node) => node.slug);
+const concepts = flattened.filter((node) => node.kind === "concept");
+const embeddedConcepts = concepts.filter((node) => !node.slug);
 const leaves = flattened.filter((node) => !(node.children?.length));
 const branchNodes = flattened.filter((node) => node.children?.length);
 const hubLeaves = leaves.filter((node) => node.kind === "discipline");
@@ -38,6 +40,8 @@ console.log(renderTree(educationStationKnowledgeGraph).join("\n"));
 console.log("\nCoverage summary");
 console.log(`- Nodes: ${flattened.length}`);
 console.log(`- Routed nodes: ${routed.length}`);
+console.log(`- Concept nodes: ${concepts.length}`);
+console.log(`- Embedded concepts: ${embeddedConcepts.length}`);
 console.log(`- Branch nodes: ${branchNodes.length}`);
 console.log(`- Leaves: ${leaves.length}`);
 console.log(`- Hub leaves: ${hubLeaves.length}`);
@@ -49,8 +53,9 @@ for (const domain of domains) {
   const domainNodes = flattenKnowledgeGraph(domain);
   const domainLeaves = domainNodes.filter((node) => !(node.children?.length));
   const routedDomainNodes = domainNodes.filter((node) => node.slug);
+  const domainConcepts = domainNodes.filter((node) => node.kind === "concept");
   console.log(
-    `- ${domain.label}: ${domainNodes.length} nodes, ${routedDomainNodes.length} routed, ${domainLeaves.length} leaves`,
+    `- ${domain.label}: ${domainNodes.length} nodes, ${routedDomainNodes.length} routed, ${domainConcepts.length} concepts, ${domainLeaves.length} leaves`,
   );
 }
 
@@ -62,5 +67,6 @@ for (const node of hubLeaves.sort((a, b) => a.label.localeCompare(b.label))) {
 console.log("\nDeep expansion frontier");
 for (const node of deepLeaves
   .sort((a, b) => (depthById.get(b.id) ?? 0) - (depthById.get(a.id) ?? 0) || a.label.localeCompare(b.label))) {
-  console.log(`- ${node.label} · depth ${depthById.get(node.id)}${node.slug ? ` (${node.slug})` : ""}`);
+  const destination = node.slug ? ` (${node.slug})` : node.kind === "concept" ? " [embedded concept]" : "";
+  console.log(`- ${node.label} · depth ${depthById.get(node.id)}${destination}`);
 }
