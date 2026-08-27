@@ -135,6 +135,24 @@ export const knowledgeRelations: KnowledgeRelation[] = [
     kind: "contrasts-with",
     note: "Predictive accuracy does not by itself identify what would happen under an intervention.",
   },
+  {
+    sourceId: "narrative-story",
+    targetId: "narrative-plot",
+    kind: "contrasts-with",
+    note: "Narrative Fiction distinguishes reconstructed chronological and causal events from the selection and arrangement through which the reader encounters them.",
+  },
+  {
+    sourceId: "narrator",
+    targetId: "author",
+    kind: "contrasts-with",
+    note: "The page explicitly warns that narrator is a constructed speaking position, not the author.",
+  },
+  {
+    sourceId: "narrative-order",
+    targetId: "narrative-plot",
+    kind: "part-of",
+    note: "Plot controls the order through which story material is disclosed to the reader.",
+  },
 ];
 
 export function knowledgeRelationsFor(nodeId: string): ResolvedKnowledgeRelation[] {
