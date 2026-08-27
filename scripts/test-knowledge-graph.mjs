@@ -37,6 +37,11 @@ assert.deepEqual(
 );
 
 assert.deepEqual(
+  findGraphPath("united-states-history")?.map((node) => node.id),
+  ["education-station", "humanities", "history", "regional-history", "history-americas", "united-states-history"],
+);
+
+assert.deepEqual(
   findGraphPath("set-theory")?.map((node) => node.id),
   ["education-station", "formal-science", "mathematics", "discrete-mathematics", "set-theory"],
 );
@@ -64,6 +69,16 @@ assert.deepEqual(
 assert.deepEqual(
   findGraphPath("diophantine-equations")?.map((node) => node.id),
   ["education-station", "formal-science", "mathematics", "number-theory", "diophantine-equations"],
+);
+
+assert.deepEqual(
+  findGraphPath("newtons-second-law")?.map((node) => node.id),
+  ["education-station", "natural-science", "physics", "mechanics", "forces", "newtons-second-law"],
+);
+
+assert.deepEqual(
+  findGraphPath("paleozoology")?.map((node) => node.id),
+  ["education-station", "natural-science", "biology", "zoology", "paleozoology"],
 );
 
 assert.equal(
@@ -103,8 +118,15 @@ assert.equal(graphChildren("game-studies").length, 2);
 assert.equal(graphChildren("statistics").length, 2);
 assert.equal(graphChildren("limits").length, 5);
 assert.equal(graphChildren("euclidean-geometry").length, 6);
+assert.equal(graphChildren("zoology").length, 4);
+assert.equal(graphChildren("mechanics").length, 2);
+assert.equal(graphChildren("forces").length, 3);
+assert.equal(graphChildren("mechanical-energy").length, 2);
 assert.equal(graphDescendantCount("limits"), 5);
 assert.equal(graphDescendantCount("euclidean-geometry"), 6);
+assert.equal(graphDescendantCount("zoology"), 4);
+assert.equal(graphDescendantCount("regional-history"), 3);
+assert.ok(graphDescendantCount("mechanics") >= 7);
 assert.ok(graphDescendantCount("mathematics") > graphChildren("mathematics").length);
 assert.deepEqual(graphDescendants("does-not-exist"), []);
 
