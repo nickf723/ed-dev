@@ -22,7 +22,8 @@ const nodes = flattenKnowledgeGraph();
 const ids = nodes.map((node) => node.id);
 const slugs = nodes.flatMap((node) => (node.slug ? [node.slug] : []));
 const embeddedNodes = nodes.filter((node) => !node.slug && node.id !== "education-station");
-const layout = layoutKnowledgeTree();
+const layout = layoutKnowledgeTree(educationStationKnowledgeGraph, "all");
+const overviewLayout = layoutKnowledgeTree(educationStationKnowledgeGraph, "routed");
 
 assert.equal(educationStationKnowledgeGraph.children?.length, 6);
 assert.equal(new Set(ids).size, ids.length, "Knowledge graph node ids must be unique");
@@ -31,6 +32,9 @@ for (const node of embeddedNodes) {
   const host = findKnowledgeHostPage(node.id);
   assert.ok(host?.slug, `Embedded knowledge must resolve to a routed host page: ${node.id}`);
 }
+assert.ok(layout.nodes.some((node) => node.id === "coefficient"));
+assert.ok(!overviewLayout.nodes.some((node) => node.id === "coefficient"));
+assert.ok(overviewLayout.nodes.some((node) => node.id === "expressions-variables"));
 
 assert.deepEqual(findGraphPath("difference-of-perfect-squares")?.map((node) => node.id), ["education-station", "formal-science", "mathematics", "algebra", "elementary-algebra", "factoring", "difference-of-perfect-squares"]);
 assert.deepEqual(findGraphPath("coefficient")?.map((node) => node.id), ["education-station", "formal-science", "mathematics", "algebra", "elementary-algebra", "algebra-fundamentals", "expressions-variables", "coefficient"]);
@@ -44,6 +48,8 @@ assert.deepEqual(findGraphPath("paleozoology")?.map((node) => node.id), ["educat
 assert.deepEqual(findGraphPath("photosynthesis")?.map((node) => node.id), ["education-station", "natural-science", "biology", "botany", "plant-physiology", "photosynthesis"]);
 assert.deepEqual(findGraphPath("hubris")?.map((node) => node.id), ["education-station", "humanities", "religion", "mythology", "greek-mythology", "hubris"]);
 assert.deepEqual(findGraphPath("conflict-theory")?.map((node) => node.id), ["education-station", "social-science", "sociology", "sociological-theory-methods", "conflict-theory"]);
+assert.deepEqual(findGraphPath("data-prediction")?.map((node) => node.id), ["education-station", "formal-science", "data-science", "data-claim-types", "data-prediction"]);
+assert.deepEqual(findGraphPath("agriculture-risk")?.map((node) => node.id), ["education-station", "applied-science", "agriculture", "farm-system-questions", "agriculture-risk"]);
 
 assert.equal(findGraphNodeBySlug("/formal-science/mathematics/statistics/descriptive")?.id, "descriptive-statistics");
 assert.equal(findGraphNodeBySlug("/natural-science/biology/zoology")?.id, "zoology");
@@ -59,6 +65,8 @@ assert.equal(findKnowledgeHostPage("coefficient")?.id, "expressions-variables");
 assert.equal(findKnowledgeHostPage("photosynthesis")?.id, "botany");
 assert.equal(findKnowledgeHostPage("hubris")?.id, "greek-mythology");
 assert.equal(findKnowledgeHostPage("conflict-theory")?.id, "sociology");
+assert.equal(findKnowledgeHostPage("data-prediction")?.id, "data-science");
+assert.equal(findKnowledgeHostPage("agriculture-risk")?.id, "agriculture");
 assert.equal(findKnowledgeHostPage("newtons-second-law")?.id, "newtons-second-law");
 assert.equal(findKnowledgeHostPage("does-not-exist"), undefined);
 
@@ -90,6 +98,15 @@ assert.equal(graphChildren("botany").length, 6);
 assert.equal(graphChildren("plant-physiology").length, 6);
 assert.equal(graphChildren("sociology").length, 7);
 assert.equal(graphChildren("sociological-theory-methods").length, 3);
+assert.equal(graphChildren("political-science").length, 9);
+assert.equal(graphChildren("political-recurring-questions").length, 4);
+assert.equal(graphChildren("data-science").length, 3);
+assert.equal(graphChildren("data-science-questions").length, 6);
+assert.equal(graphChildren("data-evaluation-discipline").length, 6);
+assert.equal(graphChildren("data-claim-types").length, 3);
+assert.equal(graphChildren("agriculture").length, 2);
+assert.equal(graphChildren("farm-system-layers").length, 5);
+assert.equal(graphChildren("farm-system-questions").length, 6);
 
 assert.equal(graphDescendantCount("expressions-variables"), 6);
 assert.equal(graphDescendantCount("limits"), 5);
@@ -98,6 +115,9 @@ assert.equal(graphDescendantCount("zoology"), 4);
 assert.equal(graphDescendantCount("regional-history"), 3);
 assert.equal(graphDescendantCount("botany"), 12);
 assert.equal(graphDescendantCount("sociology"), 10);
+assert.equal(graphDescendantCount("political-science"), 13);
+assert.equal(graphDescendantCount("data-science"), 18);
+assert.equal(graphDescendantCount("agriculture"), 13);
 assert.ok(graphDescendantCount("mechanics") >= 7);
 assert.ok(graphDescendantCount("mathematics") > graphChildren("mathematics").length);
 assert.deepEqual(graphDescendants("does-not-exist"), []);
@@ -106,12 +126,16 @@ assert.equal(searchKnowledgeGraph("coefficient", 1)[0]?.id, "coefficient");
 assert.equal(searchKnowledgeGraph("photosynthesis", 1)[0]?.id, "photosynthesis");
 assert.equal(searchKnowledgeGraph("hubris", 1)[0]?.id, "hubris");
 assert.equal(searchKnowledgeGraph("conflict", 1)[0]?.id, "conflict-theory");
+assert.equal(searchKnowledgeGraph("decision cost", 1)[0]?.id, "decision-cost");
+assert.equal(searchKnowledgeGraph("farm system", 1)[0]?.id, "farm-system-layers");
 assert.equal(searchKnowledgeGraph("set theory", 1)[0]?.id, "set-theory");
 assert.equal(searchKnowledgeGraph("greek mythology", 1)[0]?.id, "greek-mythology");
 assert.ok(searchKnowledgeGraph("geometry").some((node) => node.id === "geometry"));
 assert.ok(searchKnowledgeGraph("geometry").some((node) => node.id === "euclidean-geometry"));
 assert.ok(searchKnowledgeGraph("archaeology").some((node) => node.id === "archaeology"));
 assert.ok(searchKnowledgeGraph("archaeology").some((node) => node.id === "anthropology-archaeology"));
+assert.ok(searchKnowledgeGraph("institutions").some((node) => node.id === "social-institutions"));
+assert.ok(searchKnowledgeGraph("institutions").some((node) => node.id === "political-institutions"));
 assert.deepEqual(searchKnowledgeGraph(""), []);
 assert.deepEqual(searchKnowledgeGraph("set", 0), []);
 
@@ -125,6 +149,8 @@ for (const relation of knowledgeRelations) {
 assert.ok(knowledgeRelationsFor("coefficient").some(({ other, relation }) => other.id === "term" && relation.kind === "part-of"));
 assert.ok(knowledgeRelationsFor("term").some(({ other, direction }) => other.id === "coefficient" && direction === "incoming"));
 assert.ok(knowledgeRelationsFor("forces").some(({ other }) => other.id === "motion"));
+assert.ok(knowledgeRelationsFor("collective-choice").some(({ other }) => other.id === "political-institutions"));
+assert.ok(knowledgeRelationsFor("data-description").some(({ other, relation }) => other.id === "data-prediction" && relation.kind === "contrasts-with"));
 assert.equal(relationLabel("prerequisite-for", "outgoing"), "prepares for");
 assert.equal(relationLabel("prerequisite-for", "incoming"), "builds on");
 assert.equal(relationLabel("contrasts-with", "incoming"), "contrasts with");
