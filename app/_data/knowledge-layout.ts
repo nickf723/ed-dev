@@ -1,10 +1,16 @@
-import type { KnowledgeNode } from "./ontology";
+import type {
+  KnowledgeNode,
+  KnowledgeNodeKind,
+  KnowledgeNodeStatus,
+} from "./ontology";
 import { educationStationKnowledgeGraph } from "./knowledge-graph";
 
 export type KnowledgeLayoutNode = {
   id: string;
   label: string;
   slug?: string;
+  kind: KnowledgeNodeKind;
+  status?: KnowledgeNodeStatus;
   depth: number;
   x: number;
   y: number;
@@ -85,6 +91,8 @@ export function layoutKnowledgeTree(
       id: node.id,
       label: node.label,
       ...(node.slug ? { slug: node.slug } : {}),
+      kind: node.kind,
+      ...(node.status ? { status: node.status } : {}),
       depth,
       x: depth / depthDenominator,
       y: ((leafStart + leafEnd) / 2) / leafDenominator,
