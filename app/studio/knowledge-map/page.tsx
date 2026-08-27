@@ -66,12 +66,17 @@ export default async function KnowledgeMapPreviewPage({
                   {results.map((node) => {
                     const path = findGraphPath(node.id) ?? [];
                     const withinCurrentFocus = focus ? path.some((part) => part.id === focus) : false;
-                    const resultParams = new URLSearchParams();
-                    if (focus && withinCurrentFocus) resultParams.set("focus", focus);
-                    resultParams.set("node", node.id);
-                    resultParams.set("q", query);
                     const isEmbedded = !node.slug;
                     const host = isEmbedded ? findKnowledgeHostPage(node.id) : undefined;
+                    const resultParams = new URLSearchParams();
+
+                    if (focus && withinCurrentFocus) {
+                      resultParams.set("focus", focus);
+                    } else if (isEmbedded && host) {
+                      resultParams.set("focus", host.id);
+                    }
+                    resultParams.set("node", node.id);
+                    resultParams.set("q", query);
 
                     return (
                       <Link
