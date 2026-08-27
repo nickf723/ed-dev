@@ -89,3 +89,38 @@ export function graphDescendants(id: string): KnowledgeNode[] {
 export function graphDescendantCount(id: string): number {
   return graphDescendants(id).length;
 }
+
+export function searchKnowledgeGraph(query: string, limit = 12): KnowledgeNode[] {
+  const normalized = query.trim().toLocaleLowerCase();
+  if (!normalized || limit <= 0) return [];
+
+  const terms = normalized.split(/\s+/).filter(Boolean);
+  const score = (node: KnowledgeNode) => {
+    const label = node.label.toLocaleLowerCase();
+    const id = node.id.toLocaleLowerCase();
+    const slug = node.slug?.toLocaleLowerCase() ?? "";
+    let value = 0;
+
+    if (label === normalized) value += 100;
+    if (id === normalized) value += 90;
+    if (label.startsWith(normalized)) value += 60;
+    if (id.startsWith(normalized)) value += 50;
+    if (label.includes(normalized)) value += 35;
+    if (slug.includes(normalized)) value += 20;
+
+    for (const term of terms) {
+      if (label.includes(term)) value += 8;
+      if (id.includes(term)) value += 5;
+      if (slug.includes(term)) value += 3;
+    }
+
+    return value;
+  };
+
+  return flattenKnowledgeGraph()
+    .map((node) => ({ node, score: score(node) }))
+    .filter(({ score }) => score > 0)
+    .sort((a, b) => b.score - a.score || a.node.label.localeCompare(b.node.label))
+    .slice(0, limit)
+    .map(({ node }) => node);
+}
