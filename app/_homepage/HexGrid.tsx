@@ -140,7 +140,7 @@ function CenterCore({ active }: { active: DomainDefinition | null }) {
           <>
             <ActiveIcon size={25} style={{ color: `rgb(${active.theme.rgb})` }} />
             <div className="mt-3 font-mono text-[9px] font-semibold uppercase tracking-[0.08em]" style={{ color: `rgba(${active.theme.rgb},0.72)` }}>
-              domain
+              knowledge domain
             </div>
             <h2 className="mt-1.5 text-[19px] font-semibold tracking-[-0.02em] text-white">{active.title}</h2>
             <p className="mt-2 max-w-[165px] text-[11px] leading-5 text-slate-400">{active.description}</p>
@@ -149,15 +149,15 @@ function CenterCore({ active }: { active: DomainDefinition | null }) {
               className="mt-4 inline-flex items-center gap-2 border px-3 py-2 font-mono text-[10px] font-semibold uppercase tracking-[0.04em] transition hover:bg-white/[0.04]"
               style={{ color: `rgb(${active.theme.rgb})`, borderColor: `rgba(${active.theme.rgb},0.32)` }}
             >
-              enter <ArrowRight size={11} />
+              explore <ArrowRight size={11} />
             </Link>
           </>
         ) : (
           <>
             <Boxes size={24} className="text-cyan-100/75" />
-            <div className="mt-3 font-mono text-[9px] font-semibold uppercase tracking-[0.08em] text-cyan-100/55">domain array</div>
+            <div className="mt-3 font-mono text-[9px] font-semibold uppercase tracking-[0.08em] text-cyan-100/55">knowledge atlas</div>
             <div className="mt-1 text-[20px] font-semibold tracking-[-0.02em] text-white">Education Station 64</div>
-            <p className="mt-2 max-w-[165px] text-[11px] leading-5 text-slate-500">Hover to inspect a field. Click to enter it.</p>
+            <p className="mt-2 max-w-[165px] text-[11px] leading-5 text-slate-500">Choose a domain, then follow ideas from broad fields into specific concepts.</p>
           </>
         )}
       </div>
