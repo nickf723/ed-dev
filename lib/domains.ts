@@ -30,7 +30,7 @@ export type DomainDefinition = {
 export const DOMAINS: DomainDefinition[] = [
   {
     id: "formal",
-    title: "Formal Sciences",
+    title: "Formal Science",
     navLabel: "Formal Science",
     subtitle: "Structure & Proof",
     description: "Abstract systems of mathematics, logic, computation, information, data, and systems.",
@@ -47,7 +47,7 @@ export const DOMAINS: DomainDefinition[] = [
   },
   {
     id: "natural",
-    title: "Natural Sciences",
+    title: "Natural Science",
     navLabel: "Natural Science",
     subtitle: "Physical Laws",
     description: "The observable systems and laws governing the natural universe.",
@@ -64,7 +64,7 @@ export const DOMAINS: DomainDefinition[] = [
   },
   {
     id: "social",
-    title: "Social Sciences",
+    title: "Social Science",
     navLabel: "Social Science",
     subtitle: "Human Patterns",
     description: "People, behavior, institutions, societies, and collective systems.",
@@ -98,7 +98,7 @@ export const DOMAINS: DomainDefinition[] = [
   },
   {
     id: "applied",
-    title: "Applied Sciences",
+    title: "Applied Science",
     navLabel: "Applied Science",
     subtitle: "Knowledge in Action",
     description: "Knowledge turned into engineered systems, tools, treatments, and designs.",
