@@ -7,6 +7,7 @@ import { appliedExpansionFor } from "./ontology-expansions-applied";
 import { formalExpansionFor } from "./ontology-expansions-formal";
 import { humanitiesExpansionFor } from "./ontology-expansions-humanities";
 import { naturalExpansionFor } from "./ontology-expansions-natural";
+import { socialExpansionFor } from "./ontology-expansions-social";
 
 function mergeChildren(base: KnowledgeNode[], additions: KnowledgeNode[]): KnowledgeNode[] {
   const byId = new Map<string, KnowledgeNode>();
@@ -24,6 +25,7 @@ function materializeNode(node: KnowledgeNode): KnowledgeNode {
     ...expansionFor(node.id),
     ...formalExpansionFor(node.id),
     ...naturalExpansionFor(node.id),
+    ...socialExpansionFor(node.id),
     ...humanitiesExpansionFor(node.id),
     ...appliedExpansionFor(node.id),
   ];
