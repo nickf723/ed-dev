@@ -147,6 +147,10 @@ export default function KnowledgeMapPreview({
               </span>
               Embedded knowledge
             </span>
+            <span className="inline-flex items-center gap-1.5">
+              <span className="h-px w-5 border-t border-dashed border-cyan-300/60" />
+              Selected connection
+            </span>
           </div>
         </div>
 
@@ -187,6 +191,30 @@ export default function KnowledgeMapPreview({
                       />
                     );
                   })}
+
+                  {selectedId
+                    ? selectedRelations.map(({ relation, direction, other }) => {
+                        if (!byId.has(selectedId) || !byId.has(other.id)) return null;
+                        const source = point(selectedId);
+                        const target = point(other.id);
+                        const lift = Math.max(34, Math.min(120, Math.abs(target.y - source.y) * 0.24));
+                        const midX = (source.x + target.x) / 2;
+                        const controlY = Math.max(PAD_Y / 2, Math.min(source.y, target.y) - lift);
+                        return (
+                          <path
+                            key={`relation-${relation.sourceId}-${relation.kind}-${relation.targetId}`}
+                            d={`M ${source.x} ${source.y} Q ${midX} ${controlY}, ${target.x} ${target.y}`}
+                            fill="none"
+                            stroke="#67e8f9"
+                            strokeDasharray="7 6"
+                            strokeOpacity="0.62"
+                            strokeWidth="1.8"
+                          >
+                            <title>{`${relationLabel(relation.kind, direction)} ${other.label}`}</title>
+                          </path>
+                        );
+                      })
+                    : null}
                 </svg>
 
                 {layout.nodes.map((node) => {
@@ -197,6 +225,7 @@ export default function KnowledgeMapPreview({
                   const isDomain = node.depth === 1 && root.id === "education-station";
                   const isEmbedded = !node.slug;
                   const isSelected = node.id === selectedId;
+                  const isRelated = selectedRelations.some(({ other }) => other.id === node.id);
                   const className = [
                     "absolute -translate-x-1/2 -translate-y-1/2 rounded-full border backdrop-blur-md transition",
                     "hover:z-20 hover:scale-105",
@@ -213,18 +242,28 @@ export default function KnowledgeMapPreview({
                   const style = {
                     left: x,
                     top: y,
-                    borderColor: isSelected ? accent : isEmbedded ? `${accent}55` : `${accent}66`,
+                    borderColor: isSelected
+                      ? accent
+                      : isRelated
+                        ? "#67e8f9aa"
+                        : isEmbedded
+                          ? `${accent}55`
+                          : `${accent}66`,
                     backgroundColor: isSelected
                       ? `${accent}33`
-                      : isEmbedded
-                        ? `${accent}08`
-                        : `${accent}16`,
+                      : isRelated
+                        ? "rgba(103,232,249,0.10)"
+                        : isEmbedded
+                          ? `${accent}08`
+                          : `${accent}16`,
                     color: isEmbedded && !isSelected ? `${accent}cc` : undefined,
                     boxShadow: isSelected
                       ? `0 0 0 2px ${accent}33, 0 0 30px ${accent}44`
-                      : isRoot || isDomain
-                        ? `0 0 22px ${accent}22`
-                        : undefined,
+                      : isRelated
+                        ? "0 0 22px rgba(103,232,249,0.14)"
+                        : isRoot || isDomain
+                          ? `0 0 22px ${accent}22`
+                          : undefined,
                   };
 
                   return (
@@ -420,7 +459,7 @@ export default function KnowledgeMapPreview({
         </div>
 
         <footer className="mt-4 flex flex-wrap items-center justify-between gap-3 text-xs leading-5 text-slate-500">
-          <span>Solid/dashed nodes show route status. Connections in the inspector are typed cross-links, not parent-child edges.</span>
+          <span>Solid/dashed nodes show route status. Cyan dashed arcs show selected cross-links, not parent-child edges.</span>
           {requestedRoot && requestedRoot.id !== "education-station" ? (
             <Link href="/studio/knowledge-map" className="text-slate-300 hover:text-white">
               Return to entire map
