@@ -79,3 +79,13 @@ export function findGraphPath(id: string): KnowledgeNode[] | undefined {
 export function graphChildren(id: string): KnowledgeNode[] {
   return findGraphNode(id)?.children ?? [];
 }
+
+export function graphDescendants(id: string): KnowledgeNode[] {
+  const node = findGraphNode(id);
+  if (!node) return [];
+  return (node.children ?? []).flatMap((child) => [child, ...flattenKnowledgeGraph(child).slice(1)]);
+}
+
+export function graphDescendantCount(id: string): number {
+  return graphDescendants(id).length;
+}
