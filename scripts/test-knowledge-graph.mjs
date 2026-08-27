@@ -6,6 +6,8 @@ import {
   findGraphPath,
   flattenKnowledgeGraph,
   graphChildren,
+  graphDescendantCount,
+  graphDescendants,
 } from "../app/_data/knowledge-graph.ts";
 
 const nodes = flattenKnowledgeGraph();
@@ -99,5 +101,11 @@ assert.equal(graphChildren("engineering").length, 6);
 assert.equal(graphChildren("astronomy").length, 2);
 assert.equal(graphChildren("game-studies").length, 2);
 assert.equal(graphChildren("statistics").length, 2);
+assert.equal(graphChildren("limits").length, 5);
+assert.equal(graphChildren("euclidean-geometry").length, 6);
+assert.equal(graphDescendantCount("limits"), 5);
+assert.equal(graphDescendantCount("euclidean-geometry"), 6);
+assert.ok(graphDescendantCount("mathematics") > graphChildren("mathematics").length);
+assert.deepEqual(graphDescendants("does-not-exist"), []);
 
 console.log(`Knowledge graph integrity OK: ${nodes.length} nodes, ${slugs.length} routed nodes.`);
