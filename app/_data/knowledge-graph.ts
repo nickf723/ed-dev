@@ -3,6 +3,7 @@ import {
   type KnowledgeNode,
 } from "./ontology";
 import { expansionFor } from "./ontology-expansions";
+import { naturalExpansionFor } from "./ontology-expansions-natural";
 
 function mergeChildren(base: KnowledgeNode[], additions: KnowledgeNode[]): KnowledgeNode[] {
   const byId = new Map<string, KnowledgeNode>();
@@ -16,7 +17,10 @@ function mergeChildren(base: KnowledgeNode[], additions: KnowledgeNode[]): Knowl
 }
 
 function materializeNode(node: KnowledgeNode): KnowledgeNode {
-  const verifiedChildren = expansionFor(node.id);
+  const verifiedChildren = [
+    ...expansionFor(node.id),
+    ...naturalExpansionFor(node.id),
+  ];
   const children = mergeChildren(node.children ?? [], verifiedChildren).map(materializeNode);
 
   return {
