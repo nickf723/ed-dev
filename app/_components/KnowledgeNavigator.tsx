@@ -40,12 +40,11 @@ export default function KnowledgeNavigator(props: KnowledgeNavigatorProps) {
     showRelations = true,
     className = "",
   } = props;
-  const context =
-    "nodeId" in props && props.nodeId
-      ? navigationForKnowledgeNode(props.nodeId)
-      : "slug" in props
-        ? navigationForKnowledgeSlug(props.slug)
-        : undefined;
+  const context = props.nodeId
+    ? navigationForKnowledgeNode(props.nodeId)
+    : props.slug
+      ? navigationForKnowledgeSlug(props.slug)
+      : undefined;
   if (!context) return null;
 
   const nodeId = context.current.id;
