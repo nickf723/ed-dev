@@ -12,6 +12,35 @@ export const humanitiesOntologyExpansions: Record<string, KnowledgeNode[]> = {
     },
   ],
 
+  "narrative-fiction": [
+    {
+      id: "narrator-perspective",
+      label: "Narrator & Perspective",
+      kind: "concept",
+      status: "live",
+      children: [
+        { id: "narrator", label: "Narrator", kind: "concept", status: "live" },
+        { id: "author", label: "Author", kind: "concept", status: "live" },
+        { id: "focalization", label: "Perspective / Focalization", kind: "concept", status: "live" },
+      ],
+    },
+    {
+      id: "story-plot-time",
+      label: "Story, Plot & Time",
+      kind: "concept",
+      status: "live",
+      children: [
+        { id: "narrative-story", label: "Story", kind: "concept", status: "live" },
+        { id: "narrative-plot", label: "Plot", kind: "concept", status: "live" },
+        { id: "narrative-order", label: "Narrative Order", kind: "concept", status: "live" },
+      ],
+    },
+    { id: "character-desire", label: "Character & Desire", kind: "concept", status: "live" },
+    { id: "setting-world", label: "Setting & World", kind: "concept", status: "live" },
+    { id: "scene-conflict-structure", label: "Scene, Conflict & Structure", kind: "concept", status: "live" },
+    { id: "genre-convention", label: "Genre & Convention", kind: "concept", status: "live" },
+  ],
+
   music: [
     { id: "music-chords", label: "Chords", slug: "/humanities/music/chords", kind: "branch", status: "live" },
     { id: "music-harmony", label: "Harmony", slug: "/humanities/music/harmony", kind: "branch", status: "live" },
