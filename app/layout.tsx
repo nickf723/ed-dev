@@ -10,7 +10,7 @@ import { buildPagePolicyRouteSnapshot } from "@/lib/page-policy-snapshot";
 export const metadata = {
   title: "Education Station 64",
   description:
-    "High school classroom courses and an interactive atlas for exploring connected fields of knowledge.",
+    "An evolving collection of interactive explanations, visualizations, and notes organized as a connected map of knowledge.",
 };
 
 const PAGE_POLICY_ROUTES = buildPagePolicyRouteSnapshot();
