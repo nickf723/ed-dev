@@ -12,6 +12,11 @@ import {
   searchKnowledgeGraph,
 } from "../app/_data/knowledge-graph.ts";
 import { layoutKnowledgeTree } from "../app/_data/knowledge-layout.ts";
+import {
+  knowledgeRelations,
+  knowledgeRelationsFor,
+  relationLabel,
+} from "../app/_data/knowledge-relations.ts";
 
 const nodes = flattenKnowledgeGraph();
 const ids = nodes.map((node) => node.id);
@@ -105,4 +110,18 @@ assert.ok(searchKnowledgeGraph("archaeology").some((node) => node.id === "anthro
 assert.deepEqual(searchKnowledgeGraph(""), []);
 assert.deepEqual(searchKnowledgeGraph("set", 0), []);
 
-console.log(`Knowledge graph integrity OK: ${nodes.length} nodes, ${slugs.length} routed nodes.`);
+const relationKeys = knowledgeRelations.map((relation) => `${relation.sourceId}|${relation.kind}|${relation.targetId}`);
+assert.equal(new Set(relationKeys).size, relationKeys.length, "Knowledge relation triples must be unique");
+for (const relation of knowledgeRelations) {
+  assert.ok(findGraphNode(relation.sourceId), `Relation source must exist: ${relation.sourceId}`);
+  assert.ok(findGraphNode(relation.targetId), `Relation target must exist: ${relation.targetId}`);
+  assert.notEqual(relation.sourceId, relation.targetId, "Knowledge relations cannot self-link");
+}
+assert.ok(knowledgeRelationsFor("coefficient").some(({ other, relation }) => other.id === "term" && relation.kind === "part-of"));
+assert.ok(knowledgeRelationsFor("term").some(({ other, direction }) => other.id === "coefficient" && direction === "incoming"));
+assert.ok(knowledgeRelationsFor("forces").some(({ other }) => other.id === "motion"));
+assert.equal(relationLabel("prerequisite-for", "outgoing"), "prepares for");
+assert.equal(relationLabel("prerequisite-for", "incoming"), "builds on");
+assert.equal(relationLabel("contrasts-with", "incoming"), "contrasts with");
+
+console.log(`Knowledge graph integrity OK: ${nodes.length} nodes, ${slugs.length} routed nodes, ${knowledgeRelations.length} cross-links.`);
