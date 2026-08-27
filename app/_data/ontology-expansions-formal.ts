@@ -45,6 +45,16 @@ export const formalScienceOntologyExpansions: Record<string, KnowledgeNode[]> = 
     { id: "set-theory", label: "Set Theory", slug: "/formal-science/mathematics/discrete/set-theory", kind: "branch", status: "live" },
   ],
 
+  "set-theory": [
+    { id: "set-membership", label: "Membership", kind: "concept", status: "live" },
+    { id: "set-element", label: "Element", kind: "concept", status: "live" },
+    { id: "subset", label: "Subset", kind: "concept", status: "live" },
+    { id: "set-union", label: "Union", kind: "concept", status: "live" },
+    { id: "set-intersection", label: "Intersection", kind: "concept", status: "live" },
+    { id: "set-difference", label: "Difference", kind: "concept", status: "live" },
+    { id: "empty-set", label: "Empty Set", kind: "concept", status: "live" },
+  ],
+
   "foundations-of-mathematics": [
     { id: "arithmetic-foundations", label: "Arithmetic", slug: "/formal-science/mathematics/foundations/arithmetic", kind: "branch", status: "live" },
     { id: "fraction-foundations", label: "Fractions", slug: "/formal-science/mathematics/foundations/fractions", kind: "branch", status: "live" },
