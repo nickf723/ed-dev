@@ -1,5 +1,6 @@
 import {
   educationStationKnowledgeGraph,
+  findGraphPath,
   findKnowledgeHostPage,
   flattenKnowledgeGraph,
 } from "../app/_data/knowledge-graph.ts";
@@ -44,6 +45,17 @@ const relationCounts = new Map(
 );
 const relationNodeIds = new Set(knowledgeRelations.flatMap((relation) => [relation.sourceId, relation.targetId]));
 
+const nodesByLabel = new Map();
+for (const node of flattened) {
+  const key = node.label.trim().toLocaleLowerCase();
+  const group = nodesByLabel.get(key) ?? [];
+  group.push(node);
+  nodesByLabel.set(key, group);
+}
+const ambiguousLabels = [...nodesByLabel.values()]
+  .filter((group) => group.length > 1)
+  .sort((a, b) => a[0].label.localeCompare(b[0].label));
+
 console.log("Education Station Knowledge Map\n");
 console.log(renderTree(educationStationKnowledgeGraph).join("\n"));
 console.log("\nCoverage summary");
@@ -59,6 +71,7 @@ console.log(`- Deep frontier leaves: ${deepLeaves.length}`);
 console.log(`- Maximum depth: ${maxDepth}`);
 console.log(`- Cross-links: ${knowledgeRelations.length}`);
 console.log(`- Nodes participating in cross-links: ${relationNodeIds.size}`);
+console.log(`- Ambiguous display labels: ${ambiguousLabels.length}`);
 
 console.log("\nRelation summary");
 for (const kind of relationKinds) {
@@ -75,6 +88,17 @@ for (const domain of domains) {
   console.log(
     `- ${domain.label}: ${domainNodes.length} nodes, ${routedDomainNodes.length} routed, ${embeddedDomainNodes.length} embedded, ${domainConcepts.length} concepts, ${domainLeaves.length} leaves`,
   );
+}
+
+if (ambiguousLabels.length) {
+  console.log("\nAmbiguous display labels");
+  for (const group of ambiguousLabels) {
+    console.log(`- ${group[0].label}`);
+    for (const node of group) {
+      const path = findGraphPath(node.id) ?? [];
+      console.log(`  - ${node.id}: ${path.map((part) => part.label).join(" / ")}`);
+    }
+  }
 }
 
 if (unhostedEmbedded.length) {
