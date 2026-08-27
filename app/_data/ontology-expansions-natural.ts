@@ -73,6 +73,23 @@ export const naturalScienceOntologyExpansions: Record<string, KnowledgeNode[]> =
       status: "live",
     },
   ],
+
+  mechanics: [
+    {
+      id: "forces",
+      label: "Forces",
+      slug: "/natural-science/physics/mechanics/forces",
+      kind: "topic",
+      status: "live",
+    },
+    {
+      id: "mechanical-energy",
+      label: "Energy",
+      slug: "/natural-science/physics/mechanics/energy",
+      kind: "topic",
+      status: "live",
+    },
+  ],
 };
 
 export function naturalExpansionFor(nodeId: string): KnowledgeNode[] {
