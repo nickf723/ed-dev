@@ -30,82 +30,27 @@ assert.deepEqual(
     "difference-of-perfect-squares",
   ],
 );
+assert.deepEqual(findGraphPath("modern-history")?.map((node) => node.id), ["education-station", "humanities", "history", "chronology", "modern-history"]);
+assert.deepEqual(findGraphPath("united-states-history")?.map((node) => node.id), ["education-station", "humanities", "history", "regional-history", "history-americas", "united-states-history"]);
+assert.deepEqual(findGraphPath("greek-mythology")?.map((node) => node.id), ["education-station", "humanities", "religion", "mythology", "greek-mythology"]);
+assert.deepEqual(findGraphPath("set-theory")?.map((node) => node.id), ["education-station", "formal-science", "mathematics", "discrete-mathematics", "set-theory"]);
+assert.deepEqual(findGraphPath("anthropology-archaeology")?.map((node) => node.id), ["education-station", "social-science", "anthropology", "anthropology-archaeology"]);
+assert.deepEqual(findGraphPath("game-studies-science")?.map((node) => node.id), ["education-station", "interdisciplines", "game-studies", "game-studies-science"]);
+assert.deepEqual(findGraphPath("limits")?.map((node) => node.id), ["education-station", "formal-science", "mathematics", "calculus", "limits"]);
+assert.deepEqual(findGraphPath("euclidean-geometry")?.map((node) => node.id), ["education-station", "formal-science", "mathematics", "geometry", "euclidean-geometry"]);
+assert.deepEqual(findGraphPath("diophantine-equations")?.map((node) => node.id), ["education-station", "formal-science", "mathematics", "number-theory", "diophantine-equations"]);
+assert.deepEqual(findGraphPath("newtons-second-law")?.map((node) => node.id), ["education-station", "natural-science", "physics", "mechanics", "forces", "newtons-second-law"]);
+assert.deepEqual(findGraphPath("paleozoology")?.map((node) => node.id), ["education-station", "natural-science", "biology", "zoology", "paleozoology"]);
 
-assert.deepEqual(
-  findGraphPath("modern-history")?.map((node) => node.id),
-  ["education-station", "humanities", "history", "chronology", "modern-history"],
-);
-
-assert.deepEqual(
-  findGraphPath("united-states-history")?.map((node) => node.id),
-  ["education-station", "humanities", "history", "regional-history", "history-americas", "united-states-history"],
-);
-
-assert.deepEqual(
-  findGraphPath("set-theory")?.map((node) => node.id),
-  ["education-station", "formal-science", "mathematics", "discrete-mathematics", "set-theory"],
-);
-
-assert.deepEqual(
-  findGraphPath("anthropology-archaeology")?.map((node) => node.id),
-  ["education-station", "social-science", "anthropology", "anthropology-archaeology"],
-);
-
-assert.deepEqual(
-  findGraphPath("game-studies-science")?.map((node) => node.id),
-  ["education-station", "interdisciplines", "game-studies", "game-studies-science"],
-);
-
-assert.deepEqual(
-  findGraphPath("limits")?.map((node) => node.id),
-  ["education-station", "formal-science", "mathematics", "calculus", "limits"],
-);
-
-assert.deepEqual(
-  findGraphPath("euclidean-geometry")?.map((node) => node.id),
-  ["education-station", "formal-science", "mathematics", "geometry", "euclidean-geometry"],
-);
-
-assert.deepEqual(
-  findGraphPath("diophantine-equations")?.map((node) => node.id),
-  ["education-station", "formal-science", "mathematics", "number-theory", "diophantine-equations"],
-);
-
-assert.deepEqual(
-  findGraphPath("newtons-second-law")?.map((node) => node.id),
-  ["education-station", "natural-science", "physics", "mechanics", "forces", "newtons-second-law"],
-);
-
-assert.deepEqual(
-  findGraphPath("paleozoology")?.map((node) => node.id),
-  ["education-station", "natural-science", "biology", "zoology", "paleozoology"],
-);
-
-assert.equal(
-  findGraphNodeBySlug("/formal-science/mathematics/statistics/descriptive")?.id,
-  "descriptive-statistics",
-);
-assert.equal(
-  findGraphNodeBySlug("/formal-science/mathematics/statistics/probability")?.id,
-  "probability",
-);
-assert.equal(
-  findGraphNodeBySlug("/natural-science/biology/zoology")?.id,
-  "zoology",
-);
-assert.equal(
-  findGraphNodeBySlug("/natural-science/physics/mechanics")?.id,
-  "mechanics",
-);
-assert.equal(
-  findGraphNodeBySlug("/humanities/literature/narrative-fiction")?.id,
-  "narrative-fiction",
-);
-assert.equal(
-  findGraphNodeBySlug("/natural-science/astronomy/cosmology")?.id,
-  "cosmology",
-);
+assert.equal(findGraphNodeBySlug("/formal-science/mathematics/statistics/descriptive")?.id, "descriptive-statistics");
+assert.equal(findGraphNodeBySlug("/formal-science/mathematics/statistics/probability")?.id, "probability");
+assert.equal(findGraphNodeBySlug("/natural-science/biology/zoology")?.id, "zoology");
+assert.equal(findGraphNodeBySlug("/natural-science/physics/mechanics")?.id, "mechanics");
+assert.equal(findGraphNodeBySlug("/humanities/literature/narrative-fiction")?.id, "narrative-fiction");
+assert.equal(findGraphNodeBySlug("/natural-science/astronomy/cosmology")?.id, "cosmology");
+assert.equal(findGraphNodeBySlug("/humanities/religion/mythology/greek")?.id, "greek-mythology");
 assert.equal(findGraphNode("machine-learning")?.label, "Machine Learning");
+
 assert.ok(graphChildren("computer-science").length >= 6);
 assert.ok(graphChildren("elementary-algebra").length >= 10);
 assert.ok(graphChildren("physics").length >= 6);
@@ -122,6 +67,8 @@ assert.equal(graphChildren("zoology").length, 4);
 assert.equal(graphChildren("mechanics").length, 2);
 assert.equal(graphChildren("forces").length, 3);
 assert.equal(graphChildren("mechanical-energy").length, 2);
+assert.equal(graphChildren("mythology").length, 1);
+
 assert.equal(graphDescendantCount("limits"), 5);
 assert.equal(graphDescendantCount("euclidean-geometry"), 6);
 assert.equal(graphDescendantCount("zoology"), 4);
