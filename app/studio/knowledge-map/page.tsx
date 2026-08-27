@@ -17,6 +17,7 @@ export default async function KnowledgeMapPreviewPage({
 
   const params = await searchParams;
   const focus = Array.isArray(params.focus) ? params.focus[0] : params.focus;
+  const selected = Array.isArray(params.node) ? params.node[0] : params.node;
 
-  return <KnowledgeMapPreview focusId={focus} />;
+  return <KnowledgeMapPreview focusId={focus} selectedId={selected} />;
 }
