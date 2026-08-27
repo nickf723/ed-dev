@@ -4,6 +4,7 @@ import {
 } from "./ontology";
 import { expansionFor } from "./ontology-expansions";
 import { appliedExpansionFor } from "./ontology-expansions-applied";
+import { dataScienceExpansionFor } from "./ontology-expansions-data-science";
 import { formalExpansionFor } from "./ontology-expansions-formal";
 import { humanitiesExpansionFor } from "./ontology-expansions-humanities";
 import { interdisciplinaryExpansionFor } from "./ontology-expansions-interdisciplines";
@@ -25,6 +26,7 @@ function materializeNode(node: KnowledgeNode): KnowledgeNode {
   const verifiedChildren = [
     ...expansionFor(node.id),
     ...formalExpansionFor(node.id),
+    ...dataScienceExpansionFor(node.id),
     ...naturalExpansionFor(node.id),
     ...socialExpansionFor(node.id),
     ...humanitiesExpansionFor(node.id),
