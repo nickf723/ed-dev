@@ -24,6 +24,16 @@ export const humanitiesOntologyExpansions: Record<string, KnowledgeNode[]> = {
     { id: "ethics", label: "Ethics", slug: "/humanities/philosophy/ethics", kind: "branch", status: "live" },
     { id: "metaphysics", label: "Metaphysics", slug: "/humanities/philosophy/metaphysics", kind: "branch", status: "live" },
   ],
+
+  religion: [
+    {
+      id: "mythology",
+      label: "Mythology",
+      slug: "/humanities/religion/mythology",
+      kind: "branch",
+      status: "live",
+    },
+  ],
 };
 
 export function humanitiesExpansionFor(nodeId: string): KnowledgeNode[] {
