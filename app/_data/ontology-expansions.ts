@@ -105,7 +105,19 @@ export const verifiedOntologyExpansions: Record<string, KnowledgeNode[]> = {
     { id: "cytology", label: "Cytology", slug: "/natural-science/biology/cytology", kind: "branch", status: "live" },
     { id: "microbiology", label: "Microbiology", slug: "/natural-science/biology/microbiology", kind: "branch", status: "live" },
     { id: "mycology", label: "Mycology", slug: "/natural-science/biology/mycology", kind: "branch", status: "live" },
-    { id: "zoology", label: "Zoology", slug: "/natural-science/biology/zoology", kind: "branch", status: "live" },
+    {
+      id: "zoology",
+      label: "Zoology",
+      slug: "/natural-science/biology/zoology",
+      kind: "branch",
+      status: "live",
+      children: [
+        { id: "comparative-zoology", label: "Comparative Zoology", slug: "/natural-science/biology/zoology/comparative", kind: "topic", status: "live" },
+        { id: "animal-diversity", label: "Animal Diversity", slug: "/natural-science/biology/zoology/diversity", kind: "topic", status: "live" },
+        { id: "ethology", label: "Ethology", slug: "/natural-science/biology/zoology/ethology", kind: "topic", status: "live" },
+        { id: "paleozoology", label: "Paleozoology", slug: "/natural-science/biology/zoology/paleozoology", kind: "topic", status: "live" },
+      ],
+    },
   ],
 
   physics: [
