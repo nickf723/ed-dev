@@ -67,6 +67,14 @@ export const formalScienceOntologyExpansions: Record<string, KnowledgeNode[]> = 
       slug: "/formal-science/mathematics/geometry/euclidean",
       kind: "branch",
       status: "live",
+      children: [
+        { id: "points-lines", label: "Points & Lines", slug: "/formal-science/mathematics/geometry/euclidean/points-lines", kind: "topic", status: "live" },
+        { id: "angles-intersections", label: "Angles & Intersections", slug: "/formal-science/mathematics/geometry/euclidean/angles-intersections", kind: "topic", status: "live" },
+        { id: "classic-constructions", label: "Classic Constructions", slug: "/formal-science/mathematics/geometry/euclidean/classic-constructions", kind: "topic", status: "live" },
+        { id: "geometry-logic-proofs", label: "Logic & Proofs", slug: "/formal-science/mathematics/geometry/euclidean/logic-proofs", kind: "topic", status: "live" },
+        { id: "polygons-circles", label: "Polygons & Circles", slug: "/formal-science/mathematics/geometry/euclidean/polygons-circles", kind: "topic", status: "live" },
+        { id: "triangle-congruence", label: "Triangle Congruence", slug: "/formal-science/mathematics/geometry/euclidean/triangle-congruence", kind: "topic", status: "live" },
+      ],
     },
   ],
 
