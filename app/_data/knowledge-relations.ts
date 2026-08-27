@@ -39,21 +39,9 @@ export const knowledgeRelations: KnowledgeRelation[] = [
     kind: "related-to",
     note: "Mechanics connects interaction-based explanations with energy and momentum reasoning across change.",
   },
-  {
-    sourceId: "coefficient",
-    targetId: "term",
-    kind: "part-of",
-  },
-  {
-    sourceId: "variable",
-    targetId: "term",
-    kind: "part-of",
-  },
-  {
-    sourceId: "exponent",
-    targetId: "term",
-    kind: "part-of",
-  },
+  { sourceId: "coefficient", targetId: "term", kind: "part-of" },
+  { sourceId: "variable", targetId: "term", kind: "part-of" },
+  { sourceId: "exponent", targetId: "term", kind: "part-of" },
   {
     sourceId: "set-membership",
     targetId: "set-union",
@@ -78,21 +66,9 @@ export const knowledgeRelations: KnowledgeRelation[] = [
     kind: "contrasts-with",
     note: "Set Theory explicitly distinguishes object-to-set membership from set-to-set containment.",
   },
-  {
-    sourceId: "xylem",
-    targetId: "transpiration",
-    kind: "related-to",
-  },
-  {
-    sourceId: "stomata",
-    targetId: "transpiration",
-    kind: "related-to",
-  },
-  {
-    sourceId: "phloem",
-    targetId: "source-sink",
-    kind: "related-to",
-  },
+  { sourceId: "xylem", targetId: "transpiration", kind: "related-to" },
+  { sourceId: "stomata", targetId: "transpiration", kind: "related-to" },
+  { sourceId: "phloem", targetId: "source-sink", kind: "related-to" },
   {
     sourceId: "political-authority",
     targetId: "political-theory",
@@ -122,6 +98,42 @@ export const knowledgeRelations: KnowledgeRelation[] = [
     targetId: "public-policy",
     kind: "related-to",
     note: "Public policy follows how collective problems reach agendas, become policy, and survive implementation.",
+  },
+  {
+    sourceId: "data-measure",
+    targetId: "data-describe",
+    kind: "prerequisite-for",
+    note: "The Data Science hub begins with what rows, fields, labels, and missing values represent before describing patterns.",
+  },
+  {
+    sourceId: "data-measure",
+    targetId: "data-infer",
+    kind: "prerequisite-for",
+    note: "Inference depends on understanding how observations were measured and sampled.",
+  },
+  {
+    sourceId: "data-measure",
+    targetId: "data-predict",
+    kind: "prerequisite-for",
+    note: "Prediction quality depends on a defensible measurement process before model fitting begins.",
+  },
+  {
+    sourceId: "data-description",
+    targetId: "data-prediction",
+    kind: "contrasts-with",
+    note: "The Data Science page explicitly separates describing observed patterns from predicting relevant unseen cases.",
+  },
+  {
+    sourceId: "data-description",
+    targetId: "data-causal-claim",
+    kind: "contrasts-with",
+    note: "Observed patterns and intervention effects answer different questions.",
+  },
+  {
+    sourceId: "data-prediction",
+    targetId: "data-causal-claim",
+    kind: "contrasts-with",
+    note: "Predictive accuracy does not by itself identify what would happen under an intervention.",
   },
 ];
 
