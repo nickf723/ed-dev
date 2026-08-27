@@ -74,12 +74,12 @@ export function projectKnowledgeTree(
 
 /**
  * Produces a stable left-to-right tree layout in normalized 0..1 coordinates.
- * Parents are centered over the vertical span occupied by their descendants.
- * The output is renderer-agnostic and safe to use in SVG, Canvas, or DOM UIs.
+ * The Education Station root defaults to a routed overview so the full atlas
+ * stays legible; focused subtrees default to complete knowledge detail.
  */
 export function layoutKnowledgeTree(
   root: KnowledgeNode = educationStationKnowledgeGraph,
-  mode: KnowledgeLayoutMode = "all",
+  mode: KnowledgeLayoutMode = root.id === "education-station" ? "routed" : "all",
 ): KnowledgeTreeLayout {
   const projectedRoot = projectKnowledgeTree(root, mode);
   const positioned: PositionedNode[] = [];
