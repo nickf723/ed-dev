@@ -16,13 +16,7 @@ export const verifiedOntologyExpansions: Record<string, KnowledgeNode[]> = {
       kind: "branch",
       status: "live",
       children: [
-        {
-          id: "sorting-algorithms",
-          label: "Sorting",
-          slug: "/formal-science/computer-science/algorithms/sorting",
-          kind: "topic",
-          status: "live",
-        },
+        { id: "sorting-algorithms", label: "Sorting", slug: "/formal-science/computer-science/algorithms/sorting", kind: "topic", status: "live" },
       ],
     },
     {
@@ -32,13 +26,7 @@ export const verifiedOntologyExpansions: Record<string, KnowledgeNode[]> = {
       kind: "branch",
       status: "live",
       children: [
-        {
-          id: "machine-learning",
-          label: "Machine Learning",
-          slug: "/formal-science/computer-science/artificial-intelligence/machine-learning",
-          kind: "topic",
-          status: "live",
-        },
+        { id: "machine-learning", label: "Machine Learning", slug: "/formal-science/computer-science/artificial-intelligence/machine-learning", kind: "topic", status: "live" },
       ],
     },
     {
@@ -48,36 +36,12 @@ export const verifiedOntologyExpansions: Record<string, KnowledgeNode[]> = {
       kind: "branch",
       status: "live",
       children: [
-        {
-          id: "computer-circuits",
-          label: "Circuits",
-          slug: "/formal-science/computer-science/hardware/circuits",
-          kind: "topic",
-          status: "live",
-        },
+        { id: "computer-circuits", label: "Circuits", slug: "/formal-science/computer-science/hardware/circuits", kind: "topic", status: "live" },
       ],
     },
-    {
-      id: "security-cryptography",
-      label: "Security & Cryptography",
-      slug: "/formal-science/computer-science/security-cryptography",
-      kind: "branch",
-      status: "live",
-    },
-    {
-      id: "software",
-      label: "Software",
-      slug: "/formal-science/computer-science/software",
-      kind: "branch",
-      status: "live",
-    },
-    {
-      id: "computer-science-theory",
-      label: "Theory",
-      slug: "/formal-science/computer-science/theory",
-      kind: "branch",
-      status: "live",
-    },
+    { id: "security-cryptography", label: "Security & Cryptography", slug: "/formal-science/computer-science/security-cryptography", kind: "branch", status: "live" },
+    { id: "software", label: "Software", slug: "/formal-science/computer-science/software", kind: "branch", status: "live" },
+    { id: "computer-science-theory", label: "Theory", slug: "/formal-science/computer-science/theory", kind: "branch", status: "live" },
   ],
 
   algebra: [
@@ -88,13 +52,7 @@ export const verifiedOntologyExpansions: Record<string, KnowledgeNode[]> = {
       kind: "branch",
       status: "live",
       children: [
-        {
-          id: "field-theory",
-          label: "Field Theory",
-          slug: "/formal-science/mathematics/algebra/abstract-algebra/field-theory",
-          kind: "topic",
-          status: "live",
-        },
+        { id: "field-theory", label: "Field Theory", slug: "/formal-science/mathematics/algebra/abstract-algebra/field-theory", kind: "topic", status: "live" },
         {
           id: "group-theory",
           label: "Group Theory",
@@ -102,22 +60,10 @@ export const verifiedOntologyExpansions: Record<string, KnowledgeNode[]> = {
           kind: "topic",
           status: "live",
           children: [
-            {
-              id: "finite-groups",
-              label: "Finite Groups",
-              slug: "/formal-science/mathematics/algebra/abstract-algebra/group-theory/finite-groups",
-              kind: "concept",
-              status: "live",
-            },
+            { id: "finite-groups", label: "Finite Groups", slug: "/formal-science/mathematics/algebra/abstract-algebra/group-theory/finite-groups", kind: "concept", status: "live" },
           ],
         },
-        {
-          id: "homomorphisms",
-          label: "Maps & Homomorphisms",
-          slug: "/formal-science/mathematics/algebra/abstract-algebra/maps",
-          kind: "topic",
-          status: "live",
-        },
+        { id: "homomorphisms", label: "Maps & Homomorphisms", slug: "/formal-science/mathematics/algebra/abstract-algebra/maps", kind: "topic", status: "live" },
       ],
     },
     {
@@ -160,6 +106,34 @@ export const verifiedOntologyExpansions: Record<string, KnowledgeNode[]> = {
     { id: "microbiology", label: "Microbiology", slug: "/natural-science/biology/microbiology", kind: "branch", status: "live" },
     { id: "mycology", label: "Mycology", slug: "/natural-science/biology/mycology", kind: "branch", status: "live" },
     { id: "zoology", label: "Zoology", slug: "/natural-science/biology/zoology", kind: "branch", status: "live" },
+  ],
+
+  physics: [
+    { id: "atomic-physics", label: "Atomic Physics", slug: "/natural-science/physics/atomic", kind: "branch", status: "live" },
+    { id: "classical-mechanics", label: "Classical Mechanics", slug: "/natural-science/physics/classical-mechanics", kind: "branch", status: "live" },
+    { id: "electromagnetism", label: "Electromagnetism", slug: "/natural-science/physics/electromagnetism", kind: "branch", status: "live" },
+    { id: "mechanics", label: "Mechanics", slug: "/natural-science/physics/mechanics", kind: "branch", status: "live" },
+    { id: "motion", label: "Motion", slug: "/natural-science/physics/motion", kind: "branch", status: "live" },
+    { id: "nuclear-physics", label: "Nuclear Physics", slug: "/natural-science/physics/nuclear", kind: "branch", status: "live" },
+  ],
+
+  history: [
+    {
+      id: "chronology",
+      label: "Chronology",
+      slug: "/humanities/history/chronology",
+      kind: "branch",
+      status: "live",
+      children: [
+        { id: "prehistory", label: "Prehistory", slug: "/humanities/history/chronology/prehistory", kind: "topic", status: "live" },
+        { id: "antiquity", label: "Antiquity", slug: "/humanities/history/chronology/antiquity", kind: "topic", status: "live" },
+        { id: "medieval-history", label: "Medieval", slug: "/humanities/history/chronology/medieval", kind: "topic", status: "live" },
+        { id: "early-modern-history", label: "Early Modern", slug: "/humanities/history/chronology/early-modern", kind: "topic", status: "live" },
+        { id: "modern-history", label: "Modern", slug: "/humanities/history/chronology/modern", kind: "topic", status: "live" },
+      ],
+    },
+    { id: "regional-history", label: "Regional History", slug: "/humanities/history/regional", kind: "branch", status: "live" },
+    { id: "thematic-history", label: "Thematic History", slug: "/humanities/history/theme", kind: "branch", status: "live" },
   ],
 };
 
