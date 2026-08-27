@@ -33,7 +33,7 @@ export default async function KnowledgeMapPreviewPage({
               type="search"
               name="q"
               defaultValue={query}
-              placeholder="Find Set Theory, Greek Mythology, archaeology…"
+              placeholder="Find Set Theory, coefficient, Greek Mythology…"
               className="min-w-64 flex-1 rounded-2xl border border-white/10 bg-black/20 px-4 py-2.5 text-sm text-white outline-none placeholder:text-slate-600 focus:border-violet-400/50"
             />
             <button
@@ -71,9 +71,22 @@ export default async function KnowledgeMapPreviewPage({
                       <Link
                         key={node.id}
                         href={`/studio/knowledge-map?${resultParams.toString()}`}
-                        className="rounded-2xl border border-white/10 bg-white/[0.03] px-3 py-2.5 hover:bg-white/[0.07]"
+                        className={`rounded-2xl border px-3 py-2.5 transition ${
+                          node.kind === "concept"
+                            ? "border-dashed border-white/10 bg-transparent hover:bg-white/[0.04]"
+                            : "border-white/10 bg-white/[0.03] hover:bg-white/[0.07]"
+                        }`}
                       >
-                        <span className="block text-sm font-medium text-slate-100">{node.label}</span>
+                        <span className="flex items-center justify-between gap-3">
+                          <span className="text-sm font-medium text-slate-100">{node.label}</span>
+                          <span className={`shrink-0 rounded-full border px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[0.12em] ${
+                            node.kind === "concept"
+                              ? "border-slate-600/40 text-slate-500"
+                              : "border-violet-400/20 bg-violet-400/[0.07] text-violet-300/70"
+                          }`}>
+                            {node.kind === "concept" ? "concept" : node.slug ? "page" : node.kind}
+                          </span>
+                        </span>
                         <span className="mt-1 block truncate text-[11px] text-slate-500">
                           {path.map((part) => part.label).join(" / ")}
                         </span>
