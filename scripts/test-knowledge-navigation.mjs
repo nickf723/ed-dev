@@ -1,5 +1,8 @@
 import assert from "node:assert/strict";
-import { findKnowledgeHostPage } from "../app/_data/knowledge-graph.ts";
+import {
+  findKnowledgeHostPage,
+  searchKnowledgeGraph,
+} from "../app/_data/knowledge-graph.ts";
 import {
   knowledgeBreadcrumbForSlug,
   knowledgeDomainForSlug,
@@ -49,8 +52,14 @@ assert.equal(narrativeStory.parent?.id, "story-plot-time");
 assert.equal(findKnowledgeHostPage(narrativeStory.current.id)?.id, "narrative-fiction");
 assert.ok(knowledgeRelationsFor(narrativeStory.current.id).some(({ other }) => other.id === "narrative-plot"));
 
+assert.equal(searchKnowledgeGraph("DOPS", 1)[0]?.id, "difference-of-perfect-squares");
+assert.equal(searchKnowledgeGraph("FBD", 1)[0]?.id, "free-body-diagrams");
+assert.equal(searchKnowledgeGraph("F=ma", 1)[0]?.id, "newtons-second-law");
+assert.equal(searchKnowledgeGraph("POV", 1)[0]?.id, "narrator-perspective");
+assert.equal(searchKnowledgeGraph("GCF", 1)[0]?.id, "greatest-common-factor");
+
 assert.equal(navigationForKnowledgeNode("does-not-exist"), undefined);
 assert.equal(navigationForKnowledgeSlug("/does-not-exist"), undefined);
 assert.equal(findKnowledgeHostPage("does-not-exist"), undefined);
 
-console.log("Knowledge navigation integrity OK across routed pages, embedded concepts, hosts, and cross-links.");
+console.log("Knowledge navigation integrity OK across routes, concepts, hosts, cross-links, and search aliases.");
