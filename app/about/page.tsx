@@ -91,12 +91,12 @@ export default function AboutPage() {
           <div className="rounded-[30px] border border-white/[0.09] bg-black/25 p-5 backdrop-blur-xl sm:p-7">
             <div className="font-mono text-[11px] leading-8 text-slate-400">
               <div><span className="text-violet-200">Formal Science</span></div>
-              <div className="pl-5">↳ Mathematics</div>
-              <div className="pl-10">↳ Algebra</div>
-              <div className="pl-15">↳ Elementary Algebra</div>
-              <div className="pl-20">↳ Fundamentals</div>
-              <div className="pl-25">↳ Expressions &amp; Variables</div>
-              <div className="pl-30 text-cyan-100">↳ Coefficient</div>
+              <div className="pl-[1rem]">↳ Mathematics</div>
+              <div className="pl-[2rem]">↳ Algebra</div>
+              <div className="pl-[3rem]">↳ Elementary Algebra</div>
+              <div className="pl-[4rem]">↳ Fundamentals</div>
+              <div className="pl-[5rem]">↳ Expressions &amp; Variables</div>
+              <div className="pl-[6rem] text-cyan-100">↳ Coefficient</div>
             </div>
             <div className="mt-6 border-t border-white/[0.08] pt-5 text-[13px] leading-6 text-slate-500">
               A concept does not need its own page to have a place in the map. Fine-grained ideas
