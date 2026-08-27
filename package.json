@@ -11,6 +11,7 @@
     "audit:architecture": "node scripts/audit-site-architecture.mjs",
     "audit:readability": "node scripts/audit-page-readability.mjs",
     "audit:remaster": "node scripts/audit-remaster-readiness.mjs",
+    "test:ontology": "node --experimental-strip-types --no-warnings scripts/test-ontology.mjs",
     "test:vocabulary": "node scripts/test-vocabulary-aggregation.mjs",
     "test:combinatorics": "node --experimental-strip-types --no-warnings scripts/test-combinatorics-model.mjs",
     "test:narrative": "node --experimental-strip-types --no-warnings scripts/test-narrative-model.mjs",
