@@ -36,6 +36,11 @@ function mapHref(nodeId: string, focusId?: string) {
   return `/studio/knowledge-map?${params.toString()}`;
 }
 
+function focusHref(nodeId: string) {
+  const params = new URLSearchParams({ focus: nodeId, node: nodeId });
+  return `/studio/knowledge-map?${params.toString()}`;
+}
+
 export default function KnowledgeMapPreview({
   focusId,
   selectedId,
@@ -140,6 +145,7 @@ export default function KnowledgeMapPreview({
                     const domain = domainFor(edge.targetId, parentById) ?? domainFor(root.id, parentById);
                     const accent = domain ? DOMAIN_ACCENTS[domain] : "#64748b";
                     const bend = source.x + (target.x - source.x) * 0.5;
+                    const selectedEdge = selectedId && (edge.sourceId === selectedId || edge.targetId === selectedId);
 
                     return (
                       <path
@@ -147,8 +153,8 @@ export default function KnowledgeMapPreview({
                         d={`M ${source.x} ${source.y} C ${bend} ${source.y}, ${bend} ${target.y}, ${target.x} ${target.y}`}
                         fill="none"
                         stroke={accent}
-                        strokeOpacity={selectedId && (edge.sourceId === selectedId || edge.targetId === selectedId) ? "0.72" : "0.25"}
-                        strokeWidth={selectedId && (edge.sourceId === selectedId || edge.targetId === selectedId) ? "2.4" : "1.5"}
+                        strokeOpacity={selectedEdge ? "0.72" : "0.25"}
+                        strokeWidth={selectedEdge ? "2.4" : "1.5"}
                       />
                     );
                   })}
@@ -227,6 +233,25 @@ export default function KnowledgeMapPreview({
                       </span>
                     ))}
                   </div>
+                </div>
+
+                <div className="mt-5 flex flex-wrap gap-2">
+                  {selected.current.children?.length ? (
+                    <Link
+                      href={focusHref(selected.current.id)}
+                      className="inline-flex rounded-full border border-violet-400/30 bg-violet-400/10 px-3 py-1.5 text-xs font-medium text-violet-200 hover:bg-violet-400/15"
+                    >
+                      Focus subtree
+                    </Link>
+                  ) : null}
+                  {requestedRoot && requestedRoot.id !== "education-station" ? (
+                    <Link
+                      href={mapHref(selected.current.id)}
+                      className="inline-flex rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-medium text-slate-300 hover:bg-white/10 hover:text-white"
+                    >
+                      Show in entire map
+                    </Link>
+                  ) : null}
                 </div>
 
                 {selected.current.slug ? (
