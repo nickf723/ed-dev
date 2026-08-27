@@ -30,6 +30,8 @@ export type KnowledgeTreeLayout = {
   leafCount: number;
 };
 
+export type KnowledgeLayoutMode = "all" | "routed";
+
 type PositionedNode = {
   node: KnowledgeNode;
   depth: number;
@@ -44,13 +46,42 @@ function leafSpan(node: KnowledgeNode): number {
 }
 
 /**
+ * Removes embedded-only leaves for overview layouts while preserving any
+ * unrouted ancestor needed to reach a routed descendant. Canonical graph data
+ * remains unchanged; this is a renderer projection only.
+ */
+export function projectKnowledgeTree(
+  root: KnowledgeNode,
+  mode: KnowledgeLayoutMode = "all",
+): KnowledgeNode {
+  if (mode === "all") return root;
+
+  const project = (node: KnowledgeNode, keepRoot = false): KnowledgeNode | undefined => {
+    const children = (node.children ?? [])
+      .map((child) => project(child))
+      .filter((child): child is KnowledgeNode => Boolean(child));
+    const keep = keepRoot || Boolean(node.slug) || children.length > 0;
+    if (!keep) return undefined;
+
+    return {
+      ...node,
+      ...(children.length ? { children } : { children: undefined }),
+    };
+  };
+
+  return project(root, true) ?? root;
+}
+
+/**
  * Produces a stable left-to-right tree layout in normalized 0..1 coordinates.
  * Parents are centered over the vertical span occupied by their descendants.
  * The output is renderer-agnostic and safe to use in SVG, Canvas, or DOM UIs.
  */
 export function layoutKnowledgeTree(
   root: KnowledgeNode = educationStationKnowledgeGraph,
+  mode: KnowledgeLayoutMode = "all",
 ): KnowledgeTreeLayout {
+  const projectedRoot = projectKnowledgeTree(root, mode);
   const positioned: PositionedNode[] = [];
   const edges: KnowledgeLayoutEdge[] = [];
   let nextLeaf = 0;
@@ -80,9 +111,9 @@ export function layoutKnowledgeTree(
     return [leafStart, leafEnd];
   }
 
-  walk(root, 0);
+  walk(projectedRoot, 0);
 
-  const leafCount = Math.max(nextLeaf, leafSpan(root));
+  const leafCount = Math.max(nextLeaf, leafSpan(projectedRoot));
   const depthDenominator = Math.max(maxDepth, 1);
   const leafDenominator = Math.max(leafCount - 1, 1);
 
@@ -104,7 +135,10 @@ export function layoutKnowledgeTree(
   return { nodes, edges, maxDepth, leafCount };
 }
 
-export function layoutSubtree(nodeId: string): KnowledgeTreeLayout | undefined {
+export function layoutSubtree(
+  nodeId: string,
+  mode: KnowledgeLayoutMode = "all",
+): KnowledgeTreeLayout | undefined {
   const find = (node: KnowledgeNode): KnowledgeNode | undefined => {
     if (node.id === nodeId) return node;
     for (const child of node.children ?? []) {
@@ -115,5 +149,5 @@ export function layoutSubtree(nodeId: string): KnowledgeTreeLayout | undefined {
   };
 
   const subtree = find(educationStationKnowledgeGraph);
-  return subtree ? layoutKnowledgeTree(subtree) : undefined;
+  return subtree ? layoutKnowledgeTree(subtree, mode) : undefined;
 }
