@@ -2,6 +2,16 @@ import type { KnowledgeNode } from "./ontology";
 
 /** Verified routed branches for Formal Science disciplines outside the core algebra/CS catalog. */
 export const formalScienceOntologyExpansions: Record<string, KnowledgeNode[]> = {
+  calculus: [
+    {
+      id: "limits",
+      label: "Limits",
+      slug: "/formal-science/mathematics/calculus/limits",
+      kind: "branch",
+      status: "live",
+    },
+  ],
+
   "discrete-mathematics": [
     {
       id: "combinatorics",
@@ -41,6 +51,43 @@ export const formalScienceOntologyExpansions: Record<string, KnowledgeNode[]> = 
     { id: "inequality-foundations", label: "Inequalities", slug: "/formal-science/mathematics/foundations/inequalities", kind: "branch", status: "live" },
     { id: "measurement-foundations", label: "Measurement", slug: "/formal-science/mathematics/foundations/measurement", kind: "branch", status: "live" },
     { id: "statistics-foundations", label: "Statistics Foundations", slug: "/formal-science/mathematics/foundations/statistics", kind: "branch", status: "live" },
+  ],
+
+  geometry: [
+    {
+      id: "euclidean-geometry",
+      label: "Euclidean Geometry",
+      slug: "/formal-science/mathematics/geometry/euclidean",
+      kind: "branch",
+      status: "live",
+    },
+  ],
+
+  "number-theory": [
+    {
+      id: "diophantine-equations",
+      label: "Diophantine Equations",
+      slug: "/formal-science/mathematics/number-theory/diophantine",
+      kind: "branch",
+      status: "live",
+    },
+  ],
+
+  statistics: [
+    {
+      id: "descriptive-statistics",
+      label: "Descriptive Statistics",
+      slug: "/formal-science/mathematics/statistics/descriptive",
+      kind: "branch",
+      status: "live",
+    },
+    {
+      id: "probability",
+      label: "Probability",
+      slug: "/formal-science/mathematics/statistics/probability",
+      kind: "branch",
+      status: "live",
+    },
   ],
 };
 
