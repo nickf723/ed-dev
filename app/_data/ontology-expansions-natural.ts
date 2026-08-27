@@ -2,6 +2,23 @@ import type { KnowledgeNode } from "./ontology";
 
 /** Verified routed branches for Natural Science disciplines not yet promoted into the base ontology. */
 export const naturalScienceOntologyExpansions: Record<string, KnowledgeNode[]> = {
+  astronomy: [
+    {
+      id: "cosmology",
+      label: "Cosmology",
+      slug: "/natural-science/astronomy/cosmology",
+      kind: "branch",
+      status: "live",
+    },
+    {
+      id: "planetary-astronomy",
+      label: "Planetary Astronomy",
+      slug: "/natural-science/astronomy/planetary-astronomy",
+      kind: "branch",
+      status: "live",
+    },
+  ],
+
   chemistry: [
     {
       id: "general-chemistry",
