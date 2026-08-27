@@ -156,17 +156,22 @@ export const knowledgeRelations: KnowledgeRelation[] = [
 ];
 
 export function knowledgeRelationsFor(nodeId: string): ResolvedKnowledgeRelation[] {
-  return knowledgeRelations.flatMap((relation) => {
+  const resolved: ResolvedKnowledgeRelation[] = [];
+
+  for (const relation of knowledgeRelations) {
     if (relation.sourceId === nodeId) {
       const other = findGraphNode(relation.targetId);
-      return other ? [{ relation, direction: "outgoing" as const, other }] : [];
+      if (other) resolved.push({ relation, direction: "outgoing", other });
+      continue;
     }
+
     if (relation.targetId === nodeId) {
       const other = findGraphNode(relation.sourceId);
-      return other ? [{ relation, direction: "incoming" as const, other }] : [];
+      if (other) resolved.push({ relation, direction: "incoming", other });
     }
-    return [];
-  });
+  }
+
+  return resolved;
 }
 
 export function relationLabel(
