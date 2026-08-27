@@ -1,6 +1,6 @@
 import type { KnowledgeNode } from "./ontology";
 
-/** Verified routed branches for Natural Science disciplines not yet promoted into the base ontology. */
+/** Verified routed branches plus explicit concepts taught inside Natural Science pages. */
 export const naturalScienceOntologyExpansions: Record<string, KnowledgeNode[]> = {
   astronomy: [
     {
@@ -17,6 +17,28 @@ export const naturalScienceOntologyExpansions: Record<string, KnowledgeNode[]> =
       kind: "branch",
       status: "live",
     },
+  ],
+
+  botany: [
+    { id: "plant-structure-development", label: "Structure & Development", kind: "concept", status: "live" },
+    {
+      id: "plant-physiology",
+      label: "Plant Physiology",
+      kind: "concept",
+      status: "live",
+      children: [
+        { id: "photosynthesis", label: "Photosynthesis", kind: "concept", status: "live" },
+        { id: "xylem", label: "Xylem", kind: "concept", status: "live" },
+        { id: "stomata", label: "Stomata", kind: "concept", status: "live" },
+        { id: "phloem", label: "Phloem", kind: "concept", status: "live" },
+        { id: "transpiration", label: "Transpiration", kind: "concept", status: "live" },
+        { id: "source-sink", label: "Source–Sink Relationships", kind: "concept", status: "live" },
+      ],
+    },
+    { id: "plant-reproduction", label: "Plant Reproduction", kind: "concept", status: "live" },
+    { id: "plant-diversity-evolution", label: "Plant Diversity & Evolution", kind: "concept", status: "live" },
+    { id: "plant-ecology", label: "Plant Ecology", kind: "concept", status: "live" },
+    { id: "botanical-methods", label: "Methods & Collections", kind: "concept", status: "live" },
   ],
 
   chemistry: [
