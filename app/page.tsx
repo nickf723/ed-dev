@@ -1,13 +1,13 @@
+import KnowledgeAtlasBackdrop from "./_components/KnowledgeAtlasBackdrop";
 import HydrationSafeHexGrid from "./_homepage/HydrationSafeHexGrid";
 import LibraryBackground from "./_homepage/HomepageBackground";
-import NetworkBackground from "./_homepage/NetworkBackground";
 import WireframeBackground from "./_homepage/WireframeBackground";
 
 export default function Home() {
   return (
     <main className="relative min-h-screen overflow-x-hidden bg-[#020407] text-slate-100 selection:bg-cyan-300/25">
       <div className="pointer-events-none fixed inset-0 z-0">
-        <NetworkBackground />
+        <KnowledgeAtlasBackdrop className="scale-[1.06]" opacity={0.34} showLabels={false} />
         <LibraryBackground />
         <WireframeBackground />
       </div>
