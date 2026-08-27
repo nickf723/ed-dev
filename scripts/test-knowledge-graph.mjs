@@ -10,10 +10,12 @@ import {
   graphDescendants,
   searchKnowledgeGraph,
 } from "../app/_data/knowledge-graph.ts";
+import { layoutKnowledgeTree } from "../app/_data/knowledge-layout.ts";
 
 const nodes = flattenKnowledgeGraph();
 const ids = nodes.map((node) => node.id);
 const slugs = nodes.flatMap((node) => (node.slug ? [node.slug] : []));
+const layout = layoutKnowledgeTree();
 
 assert.equal(educationStationKnowledgeGraph.children?.length, 6);
 assert.equal(new Set(ids).size, ids.length, "Knowledge graph node ids must be unique");
@@ -34,6 +36,13 @@ assert.equal(findGraphNodeBySlug("/natural-science/biology/zoology")?.id, "zoolo
 assert.equal(findGraphNodeBySlug("/humanities/religion/mythology/greek")?.id, "greek-mythology");
 assert.equal(findGraphNode("coefficient")?.slug, undefined);
 assert.equal(findGraphNode("coefficient")?.kind, "concept");
+
+const coefficientLayoutNode = layout.nodes.find((node) => node.id === "coefficient");
+assert.equal(coefficientLayoutNode?.kind, "concept");
+assert.equal(coefficientLayoutNode?.status, "live");
+assert.equal(coefficientLayoutNode?.slug, undefined);
+assert.equal(layout.nodes.find((node) => node.id === "set-theory")?.kind, "branch");
+assert.equal(layout.nodes.find((node) => node.id === "set-theory")?.slug, "/formal-science/mathematics/discrete/set-theory");
 
 assert.ok(graphChildren("computer-science").length >= 6);
 assert.ok(graphChildren("elementary-algebra").length >= 10);
