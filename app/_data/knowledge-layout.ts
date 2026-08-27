@@ -73,9 +73,9 @@ export function projectKnowledgeTree(
 }
 
 /**
- * Produces a stable left-to-right tree layout in normalized 0..1 coordinates.
- * The Education Station root defaults to a routed overview so the full atlas
- * stays legible; focused subtrees default to complete knowledge detail.
+ * Produces a stable inside-out radial tree in normalized 0..1 coordinates.
+ * Depth controls distance from the center while leaf span controls angle, so
+ * broad branches receive proportionally larger arcs around the atlas.
  */
 export function layoutKnowledgeTree(
   root: KnowledgeNode = educationStationKnowledgeGraph,
@@ -115,22 +115,29 @@ export function layoutKnowledgeTree(
 
   const leafCount = Math.max(nextLeaf, leafSpan(projectedRoot));
   const depthDenominator = Math.max(maxDepth, 1);
-  const leafDenominator = Math.max(leafCount - 1, 1);
+  const leafDenominator = Math.max(leafCount, 1);
+  const outerRadius = 0.46;
 
   const nodes = positioned
-    .map(({ node, depth, parentId, leafStart, leafEnd }) => ({
-      id: node.id,
-      label: node.label,
-      ...(node.slug ? { slug: node.slug } : {}),
-      kind: node.kind,
-      ...(node.status ? { status: node.status } : {}),
-      depth,
-      x: depth / depthDenominator,
-      y: ((leafStart + leafEnd) / 2) / leafDenominator,
-      ...(parentId ? { parentId } : {}),
-      childIds: (node.children ?? []).map((child) => child.id),
-    }))
-    .sort((a, b) => a.depth - b.depth || a.y - b.y || a.id.localeCompare(b.id));
+    .map(({ node, depth, parentId, leafStart, leafEnd }) => {
+      const centerLeaf = (leafStart + leafEnd + 1) / 2;
+      const angle = -Math.PI / 2 + (centerLeaf / leafDenominator) * Math.PI * 2;
+      const radius = (depth / depthDenominator) * outerRadius;
+
+      return {
+        id: node.id,
+        label: node.label,
+        ...(node.slug ? { slug: node.slug } : {}),
+        kind: node.kind,
+        ...(node.status ? { status: node.status } : {}),
+        depth,
+        x: 0.5 + Math.cos(angle) * radius,
+        y: 0.5 + Math.sin(angle) * radius,
+        ...(parentId ? { parentId } : {}),
+        childIds: (node.children ?? []).map((child) => child.id),
+      };
+    })
+    .sort((a, b) => a.depth - b.depth || a.id.localeCompare(b.id));
 
   return { nodes, edges, maxDepth, leafCount };
 }
