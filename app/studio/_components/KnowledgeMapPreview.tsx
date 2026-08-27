@@ -58,6 +58,8 @@ export default function KnowledgeMapPreview({
   const domainChoices = graphChildren("education-station");
   const selected = selectedId ? navigationForKnowledgeNode(selectedId) : undefined;
   const selectedDescendants = selected ? graphDescendantCount(selected.current.id) : 0;
+  const conceptCount = layout.nodes.filter((node) => node.kind === "concept").length;
+  const routedCount = layout.nodes.filter((node) => node.slug).length;
 
   const point = (id: string) => {
     const node = byId.get(id);
@@ -78,16 +80,19 @@ export default function KnowledgeMapPreview({
             </p>
             <h1 className="text-3xl font-semibold tracking-tight">{root.label}</h1>
             <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-400">
-              A live tree generated from the knowledge graph intended to power navigation,
-              breadcrumbs, discovery, and the future homepage atlas.
+              A live knowledge graph for navigation, discovery, and embedded concepts. Routed pages
+              are destinations; concept nodes describe knowledge taught inside those pages.
             </p>
           </div>
-          <div className="flex gap-2 text-xs text-slate-400">
+          <div className="flex flex-wrap gap-2 text-xs text-slate-400">
             <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5">
               {layout.nodes.length} nodes
             </span>
             <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5">
-              {layout.edges.length} edges
+              {routedCount} routed
+            </span>
+            <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5">
+              {conceptCount} concepts
             </span>
             <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5">
               depth {layout.maxDepth}
@@ -95,36 +100,51 @@ export default function KnowledgeMapPreview({
           </div>
         </header>
 
-        <nav className="mb-5 flex flex-wrap gap-2" aria-label="Knowledge map focus">
-          <Link
-            href="/studio/knowledge-map"
-            className={`rounded-full border px-3 py-1.5 text-xs transition ${
-              !requestedRoot
-                ? "border-white/30 bg-white/10 text-white"
-                : "border-white/10 bg-white/5 text-slate-400 hover:bg-white/10 hover:text-white"
-            }`}
-          >
-            Entire map
-          </Link>
-          {domainChoices.map((domain) => {
-            const accent = DOMAIN_ACCENTS[domain.id] ?? "#94a3b8";
-            const active = requestedRoot?.id === domain.id;
-            return (
-              <Link
-                key={domain.id}
-                href={`/studio/knowledge-map?focus=${domain.id}`}
-                className="rounded-full border px-3 py-1.5 text-xs transition hover:-translate-y-px"
-                style={{
-                  borderColor: `${accent}${active ? "aa" : "44"}`,
-                  backgroundColor: `${accent}${active ? "22" : "0d"}`,
-                  color: active ? "white" : accent,
-                }}
-              >
-                {domain.label}
-              </Link>
-            );
-          })}
-        </nav>
+        <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
+          <nav className="flex flex-wrap gap-2" aria-label="Knowledge map focus">
+            <Link
+              href="/studio/knowledge-map"
+              className={`rounded-full border px-3 py-1.5 text-xs transition ${
+                !requestedRoot
+                  ? "border-white/30 bg-white/10 text-white"
+                  : "border-white/10 bg-white/5 text-slate-400 hover:bg-white/10 hover:text-white"
+              }`}
+            >
+              Entire map
+            </Link>
+            {domainChoices.map((domain) => {
+              const accent = DOMAIN_ACCENTS[domain.id] ?? "#94a3b8";
+              const active = requestedRoot?.id === domain.id;
+              return (
+                <Link
+                  key={domain.id}
+                  href={`/studio/knowledge-map?focus=${domain.id}`}
+                  className="rounded-full border px-3 py-1.5 text-xs transition hover:-translate-y-px"
+                  style={{
+                    borderColor: `${accent}${active ? "aa" : "44"}`,
+                    backgroundColor: `${accent}${active ? "22" : "0d"}`,
+                    color: active ? "white" : accent,
+                  }}
+                >
+                  {domain.label}
+                </Link>
+              );
+            })}
+          </nav>
+
+          <div className="flex items-center gap-3 text-[11px] text-slate-500" aria-label="Map legend">
+            <span className="inline-flex items-center gap-1.5">
+              <span className="h-2.5 w-5 rounded-full border border-slate-400/50 bg-slate-400/15" />
+              Routed page
+            </span>
+            <span className="inline-flex items-center gap-1.5">
+              <span className="relative h-2.5 w-5 rounded-full border border-dashed border-slate-500/50 bg-transparent">
+                <span className="absolute left-1/2 top-1/2 h-1 w-1 -translate-x-1/2 -translate-y-1/2 rounded-full bg-slate-400" />
+              </span>
+              Embedded concept
+            </span>
+          </div>
+        </div>
 
         <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_360px]">
           <div>
@@ -144,10 +164,12 @@ export default function KnowledgeMapPreview({
                   {layout.edges.map((edge) => {
                     const source = point(edge.sourceId);
                     const target = point(edge.targetId);
+                    const targetNode = byId.get(edge.targetId);
                     const domain = domainFor(edge.targetId, parentById) ?? domainFor(root.id, parentById);
                     const accent = domain ? DOMAIN_ACCENTS[domain] : "#64748b";
                     const bend = source.x + (target.x - source.x) * 0.5;
                     const selectedEdge = selectedId && (edge.sourceId === selectedId || edge.targetId === selectedId);
+                    const conceptEdge = targetNode?.kind === "concept";
 
                     return (
                       <path
@@ -155,8 +177,9 @@ export default function KnowledgeMapPreview({
                         d={`M ${source.x} ${source.y} C ${bend} ${source.y}, ${bend} ${target.y}, ${target.x} ${target.y}`}
                         fill="none"
                         stroke={accent}
-                        strokeOpacity={selectedEdge ? "0.72" : "0.25"}
-                        strokeWidth={selectedEdge ? "2.4" : "1.5"}
+                        strokeDasharray={conceptEdge ? "4 5" : undefined}
+                        strokeOpacity={selectedEdge ? "0.72" : conceptEdge ? "0.18" : "0.25"}
+                        strokeWidth={selectedEdge ? "2.4" : conceptEdge ? "1.2" : "1.5"}
                       />
                     );
                   })}
@@ -168,22 +191,31 @@ export default function KnowledgeMapPreview({
                   const accent = domain ? DOMAIN_ACCENTS[domain] : "#e2e8f0";
                   const isRoot = node.depth === 0;
                   const isDomain = node.depth === 1 && root.id === "education-station";
+                  const isConcept = node.kind === "concept";
                   const isSelected = node.id === selectedId;
                   const className = [
                     "absolute -translate-x-1/2 -translate-y-1/2 rounded-full border backdrop-blur-md transition",
                     "hover:z-20 hover:scale-105",
+                    isConcept ? "border-dashed" : "",
                     isRoot
                       ? "min-w-36 px-5 py-3 text-center text-sm font-semibold"
                       : isDomain
                         ? "min-w-32 px-4 py-2.5 text-center text-xs font-semibold"
-                        : "max-w-44 px-3 py-2 text-center text-[11px] font-medium leading-tight",
+                        : isConcept
+                          ? "max-w-36 px-2.5 py-1.5 text-center text-[10px] font-medium leading-tight"
+                          : "max-w-44 px-3 py-2 text-center text-[11px] font-medium leading-tight",
                   ].join(" ");
 
                   const style = {
                     left: x,
                     top: y,
-                    borderColor: isSelected ? accent : `${accent}66`,
-                    backgroundColor: isSelected ? `${accent}33` : `${accent}16`,
+                    borderColor: isSelected ? accent : isConcept ? `${accent}55` : `${accent}66`,
+                    backgroundColor: isSelected
+                      ? `${accent}33`
+                      : isConcept
+                        ? `${accent}08`
+                        : `${accent}16`,
+                    color: isConcept && !isSelected ? `${accent}cc` : undefined,
                     boxShadow: isSelected
                       ? `0 0 0 2px ${accent}33, 0 0 30px ${accent}44`
                       : isRoot || isDomain
@@ -197,9 +229,18 @@ export default function KnowledgeMapPreview({
                       href={mapHref(node.id, requestedRoot?.id)}
                       className={className}
                       style={style}
-                      title={`${node.label} · ${node.id}`}
+                      title={`${node.label} · ${node.kind}${node.slug ? " · routed" : " · embedded"}`}
                     >
-                      {node.label}
+                      <span className="inline-flex items-center gap-1.5">
+                        {isConcept ? (
+                          <span
+                            className="h-1.5 w-1.5 shrink-0 rounded-full"
+                            style={{ backgroundColor: accent }}
+                            aria-hidden="true"
+                          />
+                        ) : null}
+                        {node.label}
+                      </span>
                     </Link>
                   );
                 })}
@@ -220,6 +261,9 @@ export default function KnowledgeMapPreview({
                   </span>
                   <span className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1">
                     {selected.current.status ?? "unspecified"}
+                  </span>
+                  <span className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1">
+                    {selected.current.slug ? "routed page" : "embedded knowledge"}
                   </span>
                 </div>
 
@@ -266,7 +310,11 @@ export default function KnowledgeMapPreview({
                       Open routed page
                     </Link>
                   </div>
-                ) : null}
+                ) : (
+                  <div className="mt-5 rounded-2xl border border-dashed border-white/10 bg-white/[0.025] p-3 text-xs leading-5 text-slate-500">
+                    This is an embedded concept taught inside its parent page. It belongs in the knowledge graph without requiring a standalone URL.
+                  </div>
+                )}
 
                 <dl className="mt-5 grid grid-cols-2 gap-2 text-center sm:grid-cols-4 xl:grid-cols-2">
                   <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-3">
@@ -307,7 +355,11 @@ export default function KnowledgeMapPreview({
                         <Link
                           key={child.id}
                           href={mapHref(child.id, requestedRoot?.id)}
-                          className="rounded-full border border-white/10 bg-white/[0.03] px-2.5 py-1.5 text-xs text-slate-300 hover:bg-white/[0.08] hover:text-white"
+                          className={`rounded-full border px-2.5 py-1.5 text-xs hover:text-white ${
+                            child.kind === "concept"
+                              ? "border-dashed border-white/10 bg-transparent text-slate-400 hover:bg-white/[0.05]"
+                              : "border-white/10 bg-white/[0.03] text-slate-300 hover:bg-white/[0.08]"
+                          }`}
                         >
                           {child.label}
                         </Link>
@@ -328,7 +380,7 @@ export default function KnowledgeMapPreview({
         </div>
 
         <footer className="mt-4 flex flex-wrap items-center justify-between gap-3 text-xs leading-5 text-slate-500">
-          <span>Map nodes inspect ontology structure; routed pages open from the inspector.</span>
+          <span>Solid nodes are routed pages; dashed nodes are concepts embedded within those pages.</span>
           {requestedRoot && requestedRoot.id !== "education-station" ? (
             <Link href="/studio/knowledge-map" className="text-slate-300 hover:text-white">
               Return to entire map
