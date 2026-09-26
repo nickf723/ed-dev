@@ -92,6 +92,14 @@ Goal: every major subject parent should be Developed before broad child expansio
 
 Applied Sciences now has complete Phase A parent coverage. Future work there can move into representative children instead of creating more sibling foundations.
 
+## Curator reboot · September 25, 2026
+
+This direction supersedes the breadth-first autonomous queue below. Education Station is a curated, interactive presentation of academia, not a personal opinion blog or chronological publishing feed. Established facts, evidence, explicit model boundaries, and clearly labeled interpretations anchor the content. Each subject keeps its own academic environment.
+
+The first pass evolves the existing homepage into a discovery entrance: five canonical branch links, a featured diffraction preview, selected existing explorations, the preserved hexagonal atlas, and a separate Interdisciplines connection surface. Selections reference stable curriculum IDs; canonical routes and ancestry are resolved on the server. The preview and full diffraction lesson share one mathematical model.
+
+Next: audit and evolve the full Diffraction explanation in place, including readable notation, accessible graph geometry, sources, and a transfer check. Preserve its slit-and-screen identity. Then review one contrasting Humanities collection before selecting additional features. Do not mass-template existing pages or resume breadth expansion by default.
+
 ## Current autonomous queue
 
 Unless new feedback changes priorities, work through the remaining fresh Humanities parents in this order:

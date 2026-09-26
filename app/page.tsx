@@ -1,48 +1,155 @@
+import Link from "next/link";
+import { ArrowDown, ArrowRight, Network } from "lucide-react";
+import { DOMAINS, DOMAIN_BY_ID } from "@/lib/domains";
 import HexGrid from "./_homepage/HexGrid";
 import LibraryBackground from "./_homepage/HomepageBackground";
 import NetworkBackground from "./_homepage/NetworkBackground";
 import WireframeBackground from "./_homepage/WireframeBackground";
+import DiffractionPreview from "./_homepage/DiffractionPreview";
+import { getHomepageSelections } from "./_homepage/selections";
+import styles from "./_homepage/discovery.module.css";
 
+export const metadata = {
+  title: "Education Station 64 — Explore connected knowledge",
+  description:
+    "A curated atlas of academia. Explore interactive explanations, inspect collections, and discover how ideas connect.",
+};
 export default function Home() {
+  const [featured, ...selections] = getHomepageSelections();
   return (
-    <main className="relative min-h-screen overflow-x-hidden bg-[#020407] text-slate-100 selection:bg-cyan-300/25">
-      <div className="pointer-events-none fixed inset-0 z-0">
+    <main className={styles.home}>
+      <div className={styles.environment} aria-hidden="true">
         <NetworkBackground />
         <LibraryBackground />
         <WireframeBackground />
       </div>
-      <div
-        className="pointer-events-none fixed inset-0 z-0 bg-[radial-gradient(circle_at_50%_47%,rgba(6,16,25,0.02),rgba(2,4,7,0.28)_50%,rgba(2,4,7,0.74)_100%),linear-gradient(to_bottom,rgba(2,4,7,0.02),rgba(2,4,7,0.20)_78%,rgba(2,4,7,0.58))]"
-        aria-hidden="true"
-      />
-      <div className="pointer-events-none fixed inset-x-0 top-0 z-0 h-px bg-gradient-to-r from-transparent via-cyan-100/20 to-transparent" />
-
-      <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-[1580px] flex-col px-4 py-5 sm:px-6 lg:px-8 lg:py-6">
-        <header className="relative z-20 shrink-0 border-b border-white/[0.055] pb-4">
-          <div className="flex flex-col items-center justify-between gap-3 text-center lg:flex-row lg:text-left">
-            <div>
-              <div className="font-mono text-[10px] font-semibold uppercase tracking-[0.15em] text-cyan-100/45">
-                ES64 / interactive curriculum atlas
-              </div>
-              <h1 className="mt-1.5 text-[clamp(2.55rem,4.6vw,4.9rem)] font-semibold leading-[0.9] tracking-[-0.045em] text-[#f7fbff]">
-                Education Station <span className="font-mono text-cyan-100">64</span>
-              </h1>
-            </div>
-
-            <div className="max-w-[450px] lg:text-right">
-              <p className="text-[13px] leading-6 text-slate-400 sm:text-[14px]">
-                Six primary domains. Hover to inspect a field, then enter it to explore its curriculum map.
-              </p>
-              <div className="mt-2 font-mono text-[9px] uppercase tracking-[0.11em] text-slate-700">
-                inspect → enter → explore
-              </div>
-            </div>
-          </div>
+      <div className={styles.content}>
+        <header className={styles.header}>
+          <Link href="/" className={styles.wordmark}>
+            EDUCATION STATION <span>64</span>
+          </Link>
+          <a href="#atlas" className={styles.textLink}>
+            Knowledge atlas <ArrowDown size={15} />
+          </a>
         </header>
-
-        <div className="flex min-h-0 flex-1 items-center justify-center">
+        <section className={styles.intro} aria-labelledby="welcome">
+          <p className={styles.eyebrow}>A curated atlas of academia</p>
+          <h1 id="welcome">
+            Ideas worth
+            <br />
+            <em>understanding.</em>
+          </h1>
+          <p className={styles.introCopy}>
+            Explore the patterns, principles, and discoveries that shape our
+            world. See an idea. Change something. Understand why.
+          </p>
+        </section>
+        <nav className={styles.branchRail} aria-label="Branches of knowledge">
+          {DOMAINS.filter((d) => d.id !== "inter").map((domain) => {
+            const Icon = domain.icon;
+            return (
+              <Link
+                key={domain.id}
+                href={domain.href}
+                style={{ color: `rgb(${domain.theme.rgb})` }}
+              >
+                <Icon size={18} aria-hidden="true" />
+                <span>{domain.title}</span>
+                <ArrowRight size={14} aria-hidden="true" />
+              </Link>
+            );
+          })}
+        </nav>
+        <section className={styles.feature} aria-labelledby="featured-question">
+          <div className={styles.featureCopy}>
+            <p className={styles.eyebrow}>
+              Featured exploration · {featured.context.node.label}
+            </p>
+            <h2 id="featured-question">{featured.question}</h2>
+            <p>{featured.invitation}</p>
+            <Link
+              href={featured.context.node.href}
+              className={styles.primaryLink}
+            >
+              {featured.action}
+              <ArrowRight size={18} />
+            </Link>
+            <nav
+              className={styles.ancestry}
+              aria-label="Featured exploration ancestry"
+            >
+              {featured.context.breadcrumbs.slice(1, -1).map((crumb, index) => (
+                <span key={crumb.href}>
+                  {index > 0 && <span aria-hidden="true"> / </span>}
+                  <Link href={crumb.href!}>{crumb.label}</Link>
+                </span>
+              ))}
+            </nav>
+          </div>
+          <DiffractionPreview />
+        </section>
+        <section className={styles.selections} aria-labelledby="selected-title">
+          <div className={styles.sectionHeading}>
+            <h2 id="selected-title">Follow your curiosity.</h2>
+            <span>Selected from the atlas</span>
+          </div>
+          <div className={styles.selectionGrid}>
+            {selections.map((selection) => (
+              <article key={selection.id} className={styles.selection}>
+                <div className={styles.selectionMeta}>{selection.kind}</div>
+                <p className={styles.location}>
+                  {selection.context.domain.title} /{" "}
+                  {selection.context.parent?.label ??
+                    selection.context.node.label}
+                </p>
+                <h3>
+                  <Link href={selection.context.node.href}>
+                    {selection.question}
+                  </Link>
+                </h3>
+                <p>{selection.invitation}</p>
+                <Link
+                  href={selection.context.node.href}
+                  className={styles.textLink}
+                >
+                  {selection.action}
+                  <ArrowRight size={16} />
+                </Link>
+              </article>
+            ))}
+          </div>
+        </section>
+        <section
+          id="atlas"
+          className={styles.atlas}
+          aria-labelledby="atlas-title"
+        >
+          <div className={styles.sectionHeading}>
+            <h2 id="atlas-title">Every idea has a place.</h2>
+            <span>The knowledge atlas</span>
+          </div>
+          <p className={styles.atlasIntro}>
+            Five branches organize the collection. Descend into a field to find
+            its subjects, explanations, and tools.
+          </p>
           <HexGrid />
-        </div>
+          <Link href={DOMAIN_BY_ID.inter.href} className={styles.connections}>
+            <Network size={26} aria-hidden="true" />
+            <span>
+              <strong>Between the branches</strong>
+              <span>
+                Interdisciplines traces connections across academic fields.
+              </span>
+            </span>
+            <ArrowRight size={22} aria-hidden="true" />
+          </Link>
+        </section>
+        <footer className={styles.footer}>
+          <span>Education Station 64</span>
+          <span>
+            Connected knowledge. Distinct perspectives. Deeper understanding.
+          </span>
+        </footer>
       </div>
     </main>
   );
