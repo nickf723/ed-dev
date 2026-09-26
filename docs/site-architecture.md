@@ -36,6 +36,10 @@ Subject identity belongs primarily in:
 - interaction metaphors grounded in the subject
 - examples and explanatory voice
 
+## Curated discovery layer
+
+The homepage may select existing academic pages by stable curriculum ID. Selection copy expresses a useful entry question; names, routes, live status, and ancestry come from page context. This is a discovery view over the knowledge graph, not a second hierarchy or chronological blog. A featured widget can share a subject-local model with its full lesson without moving that model into the global shell. Facts, interpretive claims, and model limitations remain distinguishable.
+
 ## The four-layer page model
 
 Every curriculum page should conceptually pass through four layers.

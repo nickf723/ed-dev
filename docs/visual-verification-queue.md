@@ -429,3 +429,11 @@ Whenever a page changes without reliable visual verification:
 - state the exact states that need checking
 - do not silently declare it visually finished
 - remove or mark an entry verified only after rendered inspection
+
+## Curated entrance · September 25, 2026
+
+**Routes:** `/` and `/natural-science/physics/waves-optics/diffraction`
+
+**Status:** Build and TypeScript passed; rendered verification pending. Local browser startup is blocked by the execution environment's socket restrictions.
+
+Verify the homepage at 1440, 1280, 1024, 768, and 390 pixels: branch links, featured ancestry, all selected destinations, keyboard slider, ratio endpoints and reset, graph/readout agreement, no horizontal overflow, and reduced motion. Verify five atlas branches and the separate Interdisciplines link. Regression-check the diffraction lesson after extracting its unchanged mathematical functions into a shared model. Clear this entry only after a trusted render.
